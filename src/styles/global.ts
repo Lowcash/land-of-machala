@@ -3,15 +3,15 @@ export const GlobalStyle = `
     --unit: 8px;
   }
 
-  html,
-  body {
-    height: var(--app-height);
-
-    width: 100vw;
-    height: 100vh;
-  }
+  // html,
+  // body {
+  //   width: 100vw;
+  //   height: 100vh;
+  // }
 
   html {
+    overflow: hidden;
+
     font-size: calc(2*var(--unit));
   }
 
@@ -45,8 +45,8 @@ export const GlobalStyle = `
 
   // Firefox scroll
   * {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(221, 223, 228, 0.4) black;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(221, 223, 228, 0.4) black;
   }
 
   // Fix autofill yellow background color
@@ -54,8 +54,8 @@ export const GlobalStyle = `
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,
   input:-webkit-autofill:active {
-      -webkit-box-shadow: 0 0 0 60px black inset !important;
-      background-clip: content-box !important;
+    -webkit-box-shadow: 0 0 0 60px black inset !important;
+    background-clip: content-box !important;
   }
 `
 

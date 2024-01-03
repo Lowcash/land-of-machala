@@ -6,4 +6,5 @@ Menu.defaultProps = {
   as: 'aside',
   spacing: 2,
   direction: 'column',
+  justifyContent: 'space-between'
 }

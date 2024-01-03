@@ -1,5 +1,4 @@
 'use client'
-import useAppHeight from '~/hook/useAppHeight'
 
 import Menu from './_components/menu'
 import { Main } from '~/styles/common'

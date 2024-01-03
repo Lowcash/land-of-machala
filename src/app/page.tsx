@@ -1,7 +1,11 @@
 'use client'
 
+import useAppHeight from "~/hook/useAppHeight"
+
 export default function Page() {
-  return <>ABCD</>
+  useAppHeight()
+
+  return <></>
 }
 
 // import Link from "next/link";
