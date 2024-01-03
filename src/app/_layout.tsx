@@ -1,8 +1,8 @@
 'use client'
 
-import Menu from './_components/menu'
 import { Main } from '~/styles/common'
-import Menu2 from './_components/menu2'
+import MenuLeft from './_components/menu-left'
+import MenuRight from './_components/menu-right'
 
 export default function _Layout({ children }: { children: React.ReactNode }) {
   // useAppHeight()
@@ -11,9 +11,9 @@ export default function _Layout({ children }: { children: React.ReactNode }) {
     <>
       <header></header>
       <Main>
-        <Menu />
+        <MenuLeft />
         {children}
-        <Menu2 />
+        <MenuRight />
       </Main>
       <footer></footer>
     </>
