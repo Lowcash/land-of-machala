@@ -46,6 +46,9 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+
+    pos_x Int @default(0)
+    pos_y Int @default(0)
 }
 
 model VerificationToken {
@@ -54,4 +57,12 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Place {
+    id   String @id @default(cuid())
+    name String
+
+    pos_x Int
+    pos_y Int
 }
