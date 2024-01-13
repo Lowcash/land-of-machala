@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
+import { initUser } from './player'
 
 export const gameRouter = createTRPCRouter({
   init: protectedProcedure.query(async ({ ctx }) => {
@@ -48,28 +49,6 @@ export const gameRouter = createTRPCRouter({
     }
   }),
 })
-
-async function initUser(db: PrismaClient) {
-  const unassignedUser = await db.user.findFirst({
-    where: {
-      OR: [
-        {
-          race: null,
-        },
-        {
-          profession: null,
-        },
-      ],
-    },
-  })
-
-  if (!unassignedUser) return true
-
-  return await db.user.update({
-    data: { race: 'DWARF', profession: 'SAMURAI' },
-    where: { id: unassignedUser.id },
-  })
-}
 
 async function initPlaces(db: PrismaClient) {
   if ((await db.place.count()) > 0) return true

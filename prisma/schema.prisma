@@ -50,6 +50,20 @@ model User {
     race       Race?
     profession Profession?
 
+    hp_actual   Int?
+    hp_max      Int?
+    mana_actual Int?
+    mana_max    Int?
+
+    money Int @default(0)
+
+    level        Int @default(1)
+    damage_min   Int @default(0)
+    damage_max   Int @default(0)
+    strength     Int @default(0)
+    agility      Int @default(0)
+    intelligence Int @default(0)
+
     pos_x Int @default(0)
     pos_y Int @default(0)
 }
