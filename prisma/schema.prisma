@@ -47,6 +47,9 @@ model User {
     accounts      Account[]
     sessions      Session[]
 
+    race       Race?
+    profession Profession?
+
     pos_x Int @default(0)
     pos_y Int @default(0)
 }
@@ -70,4 +73,21 @@ model Place {
 model Enemy {
     id   String @id @default(cuid())
     name String
+}
+
+enum Race {
+    HUMAN
+    DWARF
+    GNOME
+}
+
+enum Profession {
+    WARRIOR
+    SAMURAI
+    MAGE
+}
+
+enum Role {
+    USER
+    ADMIN
 }

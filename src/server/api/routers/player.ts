@@ -6,6 +6,7 @@ import { DIRECTIONS } from '~/types/location'
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) =>
     ctx.db.user.findFirst({
+      select: { name: true, race: true, profession: true, pos_x: true, pos_y: true },
       where: { id: ctx.session.user.id },
     }),
   ),
