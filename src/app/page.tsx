@@ -1,5 +1,5 @@
-import Location from './_components/location'
+import Info from './_components/info'
 
 export default async function Page() {
-  return <Location />
+  return <Info />
 }

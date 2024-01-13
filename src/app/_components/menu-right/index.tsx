@@ -20,7 +20,7 @@ export default function MenuRight() {
   const move = api.player.move.useMutation({
     onSettled: () => {
       player.info.invalidate()
-      game.checkPlace.invalidate()
+      game.position.invalidate()
     },
   })
 
