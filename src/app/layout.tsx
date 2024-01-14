@@ -4,7 +4,10 @@ import ThemeRegistry from '~/styles/theme'
 import { TRPCReactProvider } from '~/trpc/react'
 import NextAuthProvider from '~/ctx/auth-provider'
 
-import _Layout from './_layout'
+import _Init from './_components/_init'
+import { Main } from '~/styles/common'
+import MenuLeft from './_components/menu-left'
+import MenuRight from './_components/menu-right'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,9 +25,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang='en'>
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider cookies={cookies().toString()}>
+          <_Init />
+
           <NextAuthProvider>
             <ThemeRegistry options={{ key: 'mui' }}>
-              <_Layout>{children}</_Layout>
+              <header></header>
+              <Main>
+                <MenuLeft />
+                {children}
+                <MenuRight />
+              </Main>
+              <footer></footer>
             </ThemeRegistry>
           </NextAuthProvider>
         </TRPCReactProvider>
