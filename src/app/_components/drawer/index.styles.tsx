@@ -15,6 +15,7 @@ const _Drawer = styled(SwipeableDrawer, {
   zIndex: 999,
   ['& .MuiDrawer-paper']: {
     width,
+    maxWidth: width,
     height,
     backgroundColor: 'sandybrown',
     // color: 'unset',

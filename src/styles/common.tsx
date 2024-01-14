@@ -10,4 +10,4 @@ const _Main = styled(Flex)`
   }
 `
 
-export const Main = (p: any) => <_Main as='main' direction='row' spacing={1} fullWidth fullHeight {...p} />
+export const Main = (p: any) => <_Main as='main' direction='row' fullWidth fullHeight {...p} />

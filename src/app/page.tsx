@@ -1,5 +1,12 @@
+import * as S from './styles'
+import Action from './_components/action'
 import Info from './_components/info'
 
-export default async function Page() {
-  return <Info />
+export default function Page() {
+  return (
+    <S.Page>
+      <Info />
+      <Action />
+    </S.Page>
+  )
 }

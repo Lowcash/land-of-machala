@@ -17,7 +17,7 @@ export const gameRouter = createTRPCRouter({
       },
     })
 
-    if (!user) return false
+    if (!user) return { place: undefined, enemy: undefined }
 
     const place = await ctx.db.place.findFirst({
       where: {
