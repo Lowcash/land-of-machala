@@ -12,8 +12,31 @@ const EMPTY = 'Žádné'
 export default function MenuLeft() {
   const { data } = api.player.info.useQuery()
 
-  const percHP = ((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100
-  const percMana = ((data?.mana_actual ?? 0) / (data?.mana_max ?? 0)) * 100
+  const progresses = [
+    {
+      label: 'HP:',
+      value: (
+        <div style={{ width: 200 }}>
+          <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme='red'>
+            {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
+          </Progress>
+        </div>
+      ),
+    },
+  ]
+
+  if (!!data?.mana_max) {
+    progresses.push({
+      label: 'Mana:',
+      value: (
+        <div style={{ width: 200 }}>
+          <Progress value={((data?.mana_actual ?? 0) / (data?.mana_max ?? 0)) * 100}>
+            {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
+          </Progress>
+        </div>
+      ),
+    })
+  }
 
   return (
     <Drawer anchor='left' open={true} width={350}>
@@ -25,34 +48,11 @@ export default function MenuLeft() {
               { label: 'Rasa:', value: data.race ?? '' },
               { label: 'Profese:', value: data.profession ?? '' },
             ],
-            [
-              {
-                label: 'HP:',
-                value: (
-                  <div style={{ width: 200 }}>
-                    <Progress value={percHP} theme='red'>
-                      {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
-                    </Progress>
-                  </div>
-                ),
-              },
-              {
-                label: 'Mana:',
-                value: (
-                  <div style={{ width: 200 }}>
-                    <Progress value={percMana}>
-                      {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
-                    </Progress>
-                  </div>
-                ),
-              },
-              { label: 'Peníze:', value: data.money?.toString() ?? '' },
-            ],
+            progresses,
             [
               { label: 'Levá ruka:', value: EMPTY },
               { label: 'Pravá ruka:', value: EMPTY },
             ],
-            [{ label: 'Zbroj:' }],
             [
               { label: 'Hlava:', value: EMPTY },
               { label: 'Ramena:', value: EMPTY },
@@ -61,7 +61,6 @@ export default function MenuLeft() {
               { label: 'Kalhoty:', value: EMPTY },
               { label: 'Boty:', value: EMPTY },
             ],
-            [{ label: 'Dovednosti:' }],
             [
               { label: 'Level:', value: data.level?.toString() ?? '' },
               {
