@@ -54,6 +54,8 @@ model User {
     hp_max      Int?
     mana_actual Int?
     mana_max    Int?
+    xp_actual   Int?
+    xp_max      Int?
 
     money Int @default(0)
 

@@ -17,6 +17,8 @@ export const playerRouter = createTRPCRouter({
         hp_max: true,
         mana_actual: true,
         mana_max: true,
+        xp_actual: true,
+        xp_max: true,
         money: true,
         level: true,
         damage_min: true,
@@ -71,7 +73,7 @@ export async function initUser(db: PrismaClient) {
   if (!unassignedUser) return false
 
   return await db.user.update({
-    data: { race: 'DWARF', profession: 'SAMURAI', hp_actual: 50, hp_max: 50 },
+    data: { race: 'DWARF', profession: 'SAMURAI', hp_actual: 50, hp_max: 50, xp_actual: 0, xp_max: 100 },
     where: { id: unassignedUser.id },
   })
 }
