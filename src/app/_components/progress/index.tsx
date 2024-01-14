@@ -1,7 +1,8 @@
-import { PropsWithChildren } from 'react'
+import { ComponentProps, PropsWithChildren } from 'react'
 import { styled } from '@mui/material/styles'
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress'
 import { Typography } from '@mui/material'
+import { StyledComponent } from '@emotion/styled'
 
 type ThemeT = 'red' | 'green' | 'blue' | 'orange'
 
@@ -52,8 +53,5 @@ const _ProgressWrap = styled('div')`
   }
 `
 
-const Text = styled(Typography)``
-Text.defaultProps = {
-  variant: 'h5',
-  color: 'text.secondary',
-}
+const _Text = styled(Typography)``
+const Text = (p: any) => <_Text variant='h5' color='text.secondary' {...p} />
