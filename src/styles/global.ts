@@ -3,11 +3,11 @@ export const GlobalStyle = `
     --unit: 8px;
   }
 
-  // html,
-  // body {
-  //   width: 100vw;
-  //   height: 100vh;
-  // }
+  html,
+  body {
+    width: 100vw;
+    height: 100vh;
+  }
 
   html {
     overflow: hidden;
@@ -18,8 +18,6 @@ export const GlobalStyle = `
   body {
     display: flex;
     flex-direction: column;
-
-    height: var(--app-height);
     
     letter-spacing: unset !important;
   }
