@@ -10,11 +10,9 @@ export default function XP() {
 
   return (
     <S.XP>
-      <div style={{ width: 200 }}>
-        <Progress value={((player?.mana_actual ?? 0) / (player?.mana_max ?? 0)) * 100}>
-          {player?.xp_actual ?? 0} / {player?.xp_max ?? 0}
-        </Progress>
-      </div>
+      <Progress value={((player?.mana_actual ?? 0) / (player?.mana_max ?? 0)) * 100} theme={'orange'}>
+        {player?.xp_actual ?? 0} / {player?.xp_max ?? 0}
+      </Progress>
     </S.XP>
   )
 }
