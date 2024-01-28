@@ -1,3 +1,6 @@
+import '~/styles/globals.css'
+
+import { getServerAuthSession } from '~/server/auth'
 import { Inter } from 'next/font/google'
 import { cookies } from 'next/headers'
 import ThemeRegistry from '~/styles/theme'
@@ -5,6 +8,7 @@ import { TRPCReactProvider } from '~/trpc/react'
 import NextAuthProvider from '~/ctx/auth-provider'
 
 import _Init from './_components/_init'
+import Link from 'next/link'
 import { Main } from '~/styles/common'
 import MenuLeft from './_components/menu-left'
 import MenuRight from './_components/menu-right'
@@ -20,7 +24,9 @@ export const metadata = {
   icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerAuthSession()
+
   return (
     <html lang='en'>
       <body className={`font-sans ${inter.variable}`}>
@@ -29,13 +35,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
           <NextAuthProvider>
             <ThemeRegistry options={{ key: 'mui' }}>
-              <header></header>
-              <Main>
-                <MenuLeft />
-                {children}
-                <MenuRight />
-              </Main>
-              <footer></footer>
+              {!session && (
+                <Link
+                  href={'/api/auth/signin'}
+                  className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
+                >
+                  {'Sign in'}
+                </Link>
+              )}
+
+              {session && (
+                <>
+                  <header></header>
+                  <Main>
+                    <MenuLeft />
+                    {children}
+                    <MenuRight />
+                  </Main>
+                  <footer></footer>
+                </>
+              )}
             </ThemeRegistry>
           </NextAuthProvider>
         </TRPCReactProvider>

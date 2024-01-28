@@ -3,6 +3,7 @@
 import { api } from '~/trpc/react'
 
 import * as S from './index.styles'
+import Link from 'next/link'
 import Progress from '../progress'
 import Drawer from '../drawer'
 import { MenuList } from '@mui/material'
@@ -92,6 +93,13 @@ function _Menu({ data }: _Props) {
           ))}
         </MenuList>
       ))}
+
+      <Link
+        href={'/api/auth/signout'}
+        className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
+      >
+        {'Sign out'}
+      </Link>
     </S.Menu>
   )
 }
