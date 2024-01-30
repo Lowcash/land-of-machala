@@ -1,19 +1,22 @@
 import '~/styles/globals.css'
-
-import { getServerAuthSession } from '~/server/auth'
 import { Inter } from 'next/font/google'
+import { cn } from '~/lib/utils'
+import { getServerAuthSession } from '~/server/auth'
 import { cookies } from 'next/headers'
-import ThemeRegistry from '~/styles/theme'
-import { TRPCReactProvider } from '~/trpc/react'
-import NextAuthProvider from '~/ctx/auth-provider'
 
-import _Init from './_components/_init'
+import NextAuthProvider from '~/ctx/auth-provider'
+import { TRPCReactProvider } from '~/trpc/react'
+import { ThemeProvider } from '~/components/theme-provider'
+
+import _Init from '../components/_init'
 import Link from 'next/link'
 import { Main } from '~/styles/common'
-import MenuLeft from './_components/menu-left'
-import MenuRight from './_components/menu-right'
+import MenuLeft from '../components/ui/menu-left'
+import MenuRight from '../components/ui/menu-right'
+import Sidebar from '../components/ui/sidebar'
+import GlobalStyles from '~/styles/GlobalStyles'
 
-const inter = Inter({
+const fontSans = Inter({
   subsets: ['latin'],
   variable: '--font-sans',
 })
@@ -29,12 +32,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang='en'>
-      <body className={`font-sans ${inter.variable}`}>
+      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
         <TRPCReactProvider cookies={cookies().toString()}>
+          <GlobalStyles />
           <_Init />
 
           <NextAuthProvider>
-            <ThemeRegistry options={{ key: 'mui' }}>
+            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
               {!session && (
                 <Link
                   href={'/api/auth/signin'}
@@ -47,15 +51,19 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               {session && (
                 <>
                   <header></header>
-                  <Main>
-                    <MenuLeft />
-                    {children}
-                    <MenuRight />
+                  <Main className='h-screen w-screen bg-white dark:bg-slate-900'>
+                    <Sidebar $direction='right'>
+                      <MenuLeft />
+                    </Sidebar>
+                    {/* <section className='p-5'>{children}</section> */}
+                    {/* <Sidebar $direction='right'>
+                      <MenuRight />
+                    </Sidebar> */}
                   </Main>
                   <footer></footer>
                 </>
               )}
-            </ThemeRegistry>
+            </ThemeProvider>
           </NextAuthProvider>
         </TRPCReactProvider>
       </body>

@@ -1,9 +1,9 @@
 import { unstable_noStore as noStore } from 'next/cache'
 
 import * as S from './styles'
-import Action from './_components/action'
-import Info from './_components/info'
-import XP from './_components/xp'
+import Action from '../components/ui/action'
+import Info from '../components/ui/info'
+import XP from '../components/ui/xp'
 
 export default async function Page() {
   noStore()

@@ -4,9 +4,9 @@ import { api } from '~/trpc/react'
 
 import * as S from './index.styles'
 import Link from 'next/link'
-import Progress from '../progress'
-import Drawer from '../drawer'
-import { MenuList } from '@mui/material'
+// import Progress from '../progress'
+// import Drawer from '../drawer'
+// import { MenuList } from '@mui/material'
 
 const EMPTY = 'Žádné'
 
@@ -18,9 +18,9 @@ export default function MenuLeft() {
       label: 'HP:',
       value: (
         <div style={{ width: 200 }}>
-          <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme='red'>
+          {/* <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme='red'>
             {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
-          </Progress>
+          </Progress> */}
         </div>
       ),
     },
@@ -31,16 +31,17 @@ export default function MenuLeft() {
       label: 'Mana:',
       value: (
         <div style={{ width: 200 }}>
-          <Progress value={((data?.mana_actual ?? 0) / (data?.mana_max ?? 0)) * 100}>
+          {/* <Progress value={((data?.mana_actual ?? 0) / (data?.mana_max ?? 0)) * 100}>
             {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
-          </Progress>
+          </Progress> */}
         </div>
       ),
     })
   }
 
   return (
-    <Drawer anchor='left' open={true} width={350}>
+    // <Drawer anchor='left' open={true} width={350}>
+    <div>
       {data && (
         <_Menu
           data={[
@@ -75,7 +76,7 @@ export default function MenuLeft() {
           ]}
         />
       )}
-    </Drawer>
+    </div>
   )
 }
 
@@ -87,11 +88,12 @@ function _Menu({ data }: _Props) {
   return (
     <S.Menu>
       {data.map((section, sectionIdx) => (
-        <MenuList key={`MenuSection_${sectionIdx}`}>
+        // <MenuList key={`MenuSection_${sectionIdx}`}>
+        <div key={`MenuSection_${sectionIdx}`}>
           {section.map((item, itemIdx) => (
             <Item key={`MenuItem_${itemIdx}`} {...item} />
           ))}
-        </MenuList>
+        </div>
       ))}
 
       <Link

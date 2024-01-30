@@ -2,8 +2,7 @@
 
 import { api } from '~/trpc/react'
 
-import { Flex } from '~/styles/flex'
-import { Button } from '@mui/material'
+import { Button } from '../button'
 
 export default function Action() {
   const { data } = api.game.position.useQuery()
@@ -11,10 +10,10 @@ export default function Action() {
   return (
     <>
       {data?.enemy && (
-        <Flex justifyContent='space-between'>
+        <div className='flex justify-between'>
           <Button>Útok</Button>
           <Button>Utéct</Button>
-        </Flex>
+        </div>
       )}
     </>
   )

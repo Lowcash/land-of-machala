@@ -1,7 +1,7 @@
 export const DIRECTIONS = ['up', 'down', 'left', 'right'] as const
-export type DirectionT = (typeof DIRECTIONS)[number]
+export type TDirection = (typeof DIRECTIONS)[number]
 
-export type PositionT = {
+export type TPosition = {
   x: number
   y: number
 }

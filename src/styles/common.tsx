@@ -1,20 +1,9 @@
 'use client'
 
-import { styled } from '@mui/system'
+import tw from 'twin.macro'
 
-import { Flex } from './flex'
-import { withAttrs } from '~/utils/style'
-
-export const Main = withAttrs(
-  styled(Flex)`
-    > * {
-      flex: 1;
-    }
-  `,
-  {
-    as: 'main',
-    direction: 'row',
-    fullWidth: true,
-    fullHeight: true,
-  },
-)
+export const Main = tw.main`
+  inline-flex
+  h-screen
+  w-screen
+`
