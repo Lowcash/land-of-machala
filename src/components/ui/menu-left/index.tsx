@@ -1,9 +1,11 @@
 'use client'
 
 import { api } from '~/trpc/react'
+import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
 import Link from 'next/link'
+import Sidebar from '../sidebar'
 // import Progress from '../progress'
 // import Drawer from '../drawer'
 // import { MenuList } from '@mui/material'
@@ -12,6 +14,8 @@ const EMPTY = 'Žádné'
 
 export default function MenuLeft() {
   const { data } = api.player.info.useQuery()
+
+  const open = useIsSidebarLeftOpen()
 
   const progresses = [
     {
@@ -40,8 +44,7 @@ export default function MenuLeft() {
   }
 
   return (
-    // <Drawer anchor='left' open={true} width={350}>
-    <div>
+    <Sidebar $direction='left' $open={open}>
       {data && (
         <_Menu
           data={[
@@ -76,7 +79,7 @@ export default function MenuLeft() {
           ]}
         />
       )}
-    </div>
+    </Sidebar>
   )
 }
 
@@ -119,3 +122,25 @@ function Item({ label, value }: ItemProps) {
     </S.Item>
   )
 }
+
+module SidebarLeftStore {
+  const SidebarLeftStore = {
+    open: signal(true),
+  }
+
+  export function useIsSidebarLeftOpen() {
+    return useSignalValue(SidebarLeftStore.open)
+  }
+
+  export function dispatchSidebarLeftOpen(open: boolean) {
+    SidebarLeftStore.open.value = open
+  }
+
+  export function dispatchSidebarLeftToggle() {
+    SidebarLeftStore.open.value = !SidebarLeftStore.open.value
+  }
+}
+
+export const useIsSidebarLeftOpen = SidebarLeftStore.useIsSidebarLeftOpen
+export const dispatchSidebarLeftOpen = SidebarLeftStore.dispatchSidebarLeftOpen
+export const dispatchSidebarLeftToggle = SidebarLeftStore.dispatchSidebarLeftToggle

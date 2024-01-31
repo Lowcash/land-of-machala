@@ -1,8 +1,10 @@
 'use client'
 
 import { api } from '~/trpc/react'
-
 import { TDirection } from '~/types/location'
+import { signal, useSignalValue } from 'signals-react-safe'
+
+import Sidebar from '../sidebar'
 
 export default function MenuRight() {
   const { player, game } = api.useUtils()
@@ -14,13 +16,14 @@ export default function MenuRight() {
     },
   })
 
+  const open = useIsSidebarRightOpen()
+
   function handleMoveDirection(direction: TDirection) {
     move.mutate(direction)
   }
 
   return (
-    // <Drawer anchor='right' open={true} width={350}>
-    <div>
+    <Sidebar $direction='right' $open={open}>
       <div>
         <div className='flex flex-col gap-2'>
           <div>
@@ -59,6 +62,28 @@ export default function MenuRight() {
           </IconButton> */}
         </div>
       </div>
-    </div>
+    </Sidebar>
   )
 }
+
+module SidebarRightStore {
+  const SidebarLeftStore = {
+    open: signal(true),
+  }
+
+  export function useIsSidebarRightOpen() {
+    return useSignalValue(SidebarLeftStore.open)
+  }
+
+  export function dispatchSidebarRightOpen(open: boolean) {
+    SidebarLeftStore.open.value = open
+  }
+
+  export function dispatchSidebarRightToggle() {
+    SidebarLeftStore.open.value = !SidebarLeftStore.open.value
+  }
+}
+
+export const useIsSidebarRightOpen = SidebarRightStore.useIsSidebarRightOpen
+export const dispatchSidebarRightOpen = SidebarRightStore.dispatchSidebarRightOpen
+export const dispatchSidebarRightToggle = SidebarRightStore.dispatchSidebarRightToggle

@@ -1,51 +1,60 @@
 'use client'
 
 import { PropsWithChildren } from 'react'
-import { TDirection } from '~/types/location'
+import { TBaseDirection } from '~/types/location'
 import tw from 'twin.macro'
 import styled from '@emotion/styled'
 
-const _SidebarInner = tw.div`
-  flex 
-  flex-col
-  h-full
-
-  px-3 
-  py-4 
-
-  overflow-y-auto
-  border-r 
-
-  border-slate-200 
-  bg-white 
-  dark:border-slate-700 
-  dark:bg-slate-900
-`
-
-const DIRECTION_MAP: Record<TDirection, any> = {
-  left: tw`left-0`,
-  right: tw`right-0`,
-  up: tw`top-0`,
-  down: tw`hidden`,
+type SidebarProps = {
+  $open: boolean
+  $direction: TBaseDirection
 }
 
-const _SidebarOuter = styled('aside')<SidebarProps>`
+const _SidebarInner = styled.div`
   ${tw`
-    flex-none 
-    h-screen 
-    w-64 
+    flex flex-col
+    h-full
+
+    px-3 py-4 
+
+   
+    overflow-y-auto
+
+    border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900
+  `}
+`
+_SidebarInner.defaultProps = {
+  className: 'sidebar-inner'
+}
+
+const DIRECTION_MAP: Record<TBaseDirection, { position: any, border: any }> = {
+  left: {
+    position: tw`left-0`,
+    border: tw`border-r`
+  },
+  right: {
+    position: tw`right-0`,
+    border: tw`border-l`
+  },
+}
+
+const _SidebarOuter = styled.aside<SidebarProps>`
+  ${tw`
+    fixed
+    h-screen
 
     transition-transform
 
     z-40
   `}
 
-  ${({ $direction }) => DIRECTION_MAP[$direction]}
-`
+  ${({ $open }) => ($open ? tw`w-64` : tw`hidden`)}
+  ${({ $direction }) => DIRECTION_MAP[$direction].position}
 
-type SidebarProps = {
-  $direction: TDirection
-}
+  > .sidebar-inner {
+    ${({ $direction }) => DIRECTION_MAP[$direction].border}
+  }
+`
 
 export const Sidebar = ({ children, ...sidebar }: PropsWithChildren<SidebarProps>) => (
   <_SidebarOuter aria-label='sidebar' {...sidebar}>

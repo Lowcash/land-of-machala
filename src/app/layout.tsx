@@ -9,12 +9,11 @@ import { TRPCReactProvider } from '~/trpc/react'
 import { ThemeProvider } from '~/components/theme-provider'
 
 import _Init from '../components/_init'
-import Link from 'next/link'
-import { Main } from '~/styles/common'
+import { Content, Main } from '~/styles/common'
 import MenuLeft from '../components/ui/menu-left'
 import MenuRight from '../components/ui/menu-right'
-import Sidebar from '../components/ui/sidebar'
 import GlobalStyles from '~/styles/GlobalStyles'
+import { Login } from '~/components/ui/login'
 
 const fontSans = Inter({
   subsets: ['latin'],
@@ -31,36 +30,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const session = await getServerAuthSession()
 
   return (
-    <html lang='en'>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', fontSans.variable)}>
+    <html lang='en' suppressHydrationWarning>
+      <body className={cn('min-h-screen bg-background font-sans antialiased')}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <GlobalStyles />
+
           <_Init />
 
           <NextAuthProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              {!session && (
-                <Link
-                  href={'/api/auth/signin'}
-                  className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
-                >
-                  {'Sign in'}
-                </Link>
-              )}
+              {!session && <Login />}
 
               {session && (
                 <>
-                  <header></header>
-                  <Main className='h-screen w-screen bg-white dark:bg-slate-900'>
-                    <Sidebar $direction='right'>
-                      <MenuLeft />
-                    </Sidebar>
-                    {/* <section className='p-5'>{children}</section> */}
-                    {/* <Sidebar $direction='right'>
-                      <MenuRight />
-                    </Sidebar> */}
+                  <Main>
+                    <button className='w-6'>Toggle Sidebars</button>
+                    <MenuLeft />
+                    <Content>{children}</Content>
+                    <MenuRight />
                   </Main>
-                  <footer></footer>
                 </>
               )}
             </ThemeProvider>
