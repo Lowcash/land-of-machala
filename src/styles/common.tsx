@@ -3,8 +3,8 @@
 import { PropsWithChildren } from 'react'
 import styled from '@emotion/styled'
 import tw from 'twin.macro'
-import { useIsSidebarLeftOpen } from '~/components/ui/menu-left'
-import { useIsSidebarRightOpen } from '~/components/ui/menu-right'
+import { useIsSidebarLeftOpen } from '~/components/menu-left'
+import { useIsSidebarRightOpen } from '~/components/menu-right'
 
 export const Main = tw.main`
   h-screen w-screen

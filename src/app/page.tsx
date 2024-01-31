@@ -1,21 +1,14 @@
-import { unstable_noStore as noStore } from 'next/cache'
-
 import * as S from './styles'
-import Action from '../components/ui/action'
-import Info from '../components/ui/info'
-import XP from '../components/ui/xp'
+import Info from '~/components/info'
+import Action from '~/components/action'
 
-export default async function Page() {
-  noStore()
-
+export default async function () {
   return (
-    <S.Page>
+    <div>
       <S.TopContainer>
         <Info />
         <Action />
       </S.TopContainer>
-
-      <XP />
-    </S.Page>
+    </div>
   )
 }
