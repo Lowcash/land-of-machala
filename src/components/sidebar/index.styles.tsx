@@ -23,18 +23,15 @@ const _SidebarInner = styled.div`
     border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900
   `}
 `
-_SidebarInner.defaultProps = {
-  className: 'sidebar-inner'
-}
 
-const DIRECTION_MAP: Record<TBaseDirection, { position: any, border: any }> = {
+const DIRECTION_MAP: Record<TBaseDirection, { position: any; border: any }> = {
   left: {
     position: tw`left-0`,
-    border: tw`border-r`
+    border: tw`border-r`,
   },
   right: {
     position: tw`right-0`,
-    border: tw`border-l`
+    border: tw`border-l`,
   },
 }
 
@@ -58,6 +55,6 @@ const _SidebarOuter = styled.aside<SidebarProps>`
 
 export const Sidebar = ({ children, ...sidebar }: PropsWithChildren<SidebarProps>) => (
   <_SidebarOuter aria-label='sidebar' {...sidebar}>
-    <_SidebarInner>{children}</_SidebarInner>
+    <_SidebarInner className='sidebar-inner'>{children}</_SidebarInner>
   </_SidebarOuter>
 )
