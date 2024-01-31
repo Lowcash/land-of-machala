@@ -1,8 +1,9 @@
-"use client";
+'use client'
 
 import React from 'react'
 import { Global } from '@emotion/react'
-import tw, { css, theme, GlobalStyles as BaseStyles } from 'twin.macro'
+import tw, { theme, GlobalStyles as BaseStyles } from 'twin.macro'
+import { css } from '@emotion/react'
 
 const customStyles = css({
   body: {
