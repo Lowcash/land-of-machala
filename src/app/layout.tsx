@@ -8,7 +8,7 @@ import { TRPCReactProvider } from '~/trpc/react'
 import { NextAuthProvider } from '~/ctx/auth-provider'
 import { ThemeProvider } from '~/ctx/theme-provider'
 
-import GlobalStyles from '~/styles/GlobalStyles'
+import GlobalStyles from '~/styles/globals'
 import { Content, Main } from '~/styles/common'
 import { Login } from '~/components/button/login'
 import MenuLeft from '~/components/menu-left'

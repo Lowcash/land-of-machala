@@ -1,6 +1,8 @@
 'use client'
 
-import tw, { styled, css, theme } from 'twin.macro'
+import tw, { theme } from 'twin.macro'
+import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 
 interface ButtonProps {
   variant?: 'primary' | 'secondary'
