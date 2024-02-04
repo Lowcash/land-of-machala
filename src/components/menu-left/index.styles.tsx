@@ -8,7 +8,8 @@ export const Menu = tw.aside`
 `
 
 export const Item = tw.div`
-  justify-between
+  inline-flex
+  w-full
   gap-2
 `
 

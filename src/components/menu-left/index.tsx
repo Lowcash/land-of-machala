@@ -6,7 +6,8 @@ import { signal, useSignalValue } from 'signals-react-safe'
 import * as S from './index.styles'
 import Link from 'next/link'
 import Sidebar from '../sidebar'
-// import Progress from '../progress'
+import Progress from '../progress'
+import { isString } from '~/utils/typeguard'
 // import Drawer from '../drawer'
 // import { MenuList } from '@mui/material'
 
@@ -21,11 +22,9 @@ export default function MenuLeft() {
     {
       label: 'HP:',
       value: (
-        <div style={{ width: 200 }}>
-          {/* <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme='red'>
-            {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
-          </Progress> */}
-        </div>
+        <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme_='gold'>
+          {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
+        </Progress>
       ),
     },
   ]
@@ -118,26 +117,26 @@ function Item({ label, value }: ItemProps) {
   return (
     <S.Item>
       <S.Text>{label}</S.Text>
-      <S.Text>{value}</S.Text>
+      {isString(value) ? <S.Text>{value}</S.Text> : value}
     </S.Item>
   )
 }
 
 module SidebarLeftStore {
-  const SidebarLeftStore = {
+  const _SidebarLeftSignal = {
     open: signal(true),
   }
 
   export function useIsSidebarLeftOpen() {
-    return useSignalValue(SidebarLeftStore.open)
+    return useSignalValue(_SidebarLeftSignal.open)
   }
 
   export function dispatchSidebarLeftOpen(open: boolean) {
-    SidebarLeftStore.open.value = open
+    _SidebarLeftSignal.open.value = open
   }
 
   export function dispatchSidebarLeftToggle() {
-    SidebarLeftStore.open.value = !SidebarLeftStore.open.value
+    _SidebarLeftSignal.open.value = !_SidebarLeftSignal.open.value
   }
 }
 

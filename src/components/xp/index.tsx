@@ -3,6 +3,7 @@
 import { api } from '~/trpc/react'
 
 import * as S from './index.styles'
+import { Progress } from '@radix-ui/react-progress'
 // import Progress from '../progress'
 
 export default function XP() {
@@ -10,6 +11,7 @@ export default function XP() {
 
   return (
     <S.XP>
+      <Progress value={33} />
       {/* <Progress value={((player?.mana_actual ?? 0) / (player?.mana_max ?? 0)) * 100} theme={'orange'}>
         {player?.xp_actual ?? 0} / {player?.xp_max ?? 0}
       </Progress> */}

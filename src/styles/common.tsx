@@ -1,6 +1,6 @@
 'use client'
 
-import { PropsWithChildren } from 'react'
+import React from 'react'
 import styled from '@emotion/styled'
 import tw from 'twin.macro'
 import { useIsSidebarLeftOpen } from '~/components/menu-left'
@@ -34,7 +34,7 @@ const _Content = styled.section<ContentProps>`
   ${({ isRightSidebarOpened }) => isRightSidebarOpened && tw`mr-64`}
 `
 
-export const Content = ({ children }: PropsWithChildren) => {
+export const Content = ({ children }: React.PropsWithChildren) => {
   const isLeftSidebarOpened = useIsSidebarLeftOpen()
   const isRightSidebarOpened = useIsSidebarRightOpen()
 
