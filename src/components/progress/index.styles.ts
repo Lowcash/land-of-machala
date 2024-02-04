@@ -6,10 +6,10 @@ import * as ProgressPrimitive from '@radix-ui/react-progress'
 type TTheme = 'red' | 'green' | 'blue' | 'gold'
 
 const THEME_MAP: Record<TTheme, any> = {
-  red: 'var(--red)',
-  green: 'var(--green)',
-  blue: 'var(--blue)',
-  gold: 'var(--gold)',
+  red: tw`bg-[var(--red)]`,
+  green: tw`bg-[var(--green)]`,
+  blue: tw`bg-[var(--blue)]`,
+  gold: tw`bg-[var(--gold)]`,
 }
 
 export type ProgressProps = {
@@ -26,7 +26,7 @@ export const ProgressRoot = styled(ProgressPrimitive.Root, {
     rounded-full
   `}
 
-  ${({ color }) => `background-color: ${THEME_MAP[color ?? 'blue']};`}
+  ${({ color }) => THEME_MAP[color ?? 'blue']}
 
   .text {
     ${tw`

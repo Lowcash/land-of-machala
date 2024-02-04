@@ -39,7 +39,7 @@ export default function MenuLeft() {
   }
 
   return (
-    <Sidebar $direction='left' $open={open}>
+    <Sidebar direction='left' open={open}>
       {data && (
         <_Menu
           data={[

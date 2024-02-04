@@ -35,8 +35,8 @@ const _Content = styled.section<ContentProps>`
 `
 
 export const Content = ({ children }: React.PropsWithChildren) => {
-  const isLeftSidebarOpened = useIsSidebarLeftOpen()
-  const isRightSidebarOpened = useIsSidebarRightOpen()
+  const { open: isLeftSidebarOpened } = useIsSidebarLeftOpen()
+  const { open: isRightSidebarOpened } = useIsSidebarRightOpen()
 
   return (
     <_Content isLeftSidebarOpened={isLeftSidebarOpened} isRightSidebarOpened={isRightSidebarOpened}>

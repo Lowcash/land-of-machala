@@ -24,7 +24,7 @@ export default function MenuRight() {
   }
 
   return (
-    <Sidebar $direction='right' $open={open}>
+    <Sidebar direction='right' open={open}>
       <div>
         <S.TopSection>
           <S.MoveWrap>
