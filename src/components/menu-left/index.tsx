@@ -2,27 +2,25 @@
 
 import { api } from '~/trpc/react'
 import { signal, useSignalValue } from 'signals-react-safe'
+import { isString } from '~/utils/typeguard'
 
 import * as S from './index.styles'
 import Link from 'next/link'
 import Sidebar from '../sidebar'
 import Progress from '../progress'
-import { isString } from '~/utils/typeguard'
-// import Drawer from '../drawer'
-// import { MenuList } from '@mui/material'
 
 const EMPTY = 'Žádné'
 
 export default function MenuLeft() {
   const { data } = api.player.info.useQuery()
 
-  const open = useIsSidebarLeftOpen()
+  const { open } = useIsSidebarLeftOpen()
 
   const progresses = [
     {
       label: 'HP:',
       value: (
-        <Progress value={((data?.hp_actual ?? 0) / (data?.hp_max ?? 0)) * 100} theme_='gold'>
+        <Progress value={data?.hp_actual} max={data?.hp_max} color='red'>
           {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
         </Progress>
       ),
@@ -33,11 +31,9 @@ export default function MenuLeft() {
     progresses.push({
       label: 'Mana:',
       value: (
-        <div style={{ width: 200 }}>
-          {/* <Progress value={((data?.mana_actual ?? 0) / (data?.mana_max ?? 0)) * 100}>
-            {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
-          </Progress> */}
-        </div>
+        <Progress value={data?.mana_actual} max={data?.mana_max}>
+          {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
+        </Progress>
       ),
     })
   }
@@ -88,22 +84,23 @@ type _Props = {
 
 function _Menu({ data }: _Props) {
   return (
-    <S.Menu>
+    <S.Menu
+      append={
+        <Link
+          href={'/api/auth/signout'}
+          className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
+        >
+          {'Sign out'}
+        </Link>
+      }
+    >
       {data.map((section, sectionIdx) => (
-        // <MenuList key={`MenuSection_${sectionIdx}`}>
-        <div key={`MenuSection_${sectionIdx}`}>
+        <S.Section key={`MenuSection_${sectionIdx}`}>
           {section.map((item, itemIdx) => (
             <Item key={`MenuItem_${itemIdx}`} {...item} />
           ))}
-        </div>
+        </S.Section>
       ))}
-
-      <Link
-        href={'/api/auth/signout'}
-        className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
-      >
-        {'Sign out'}
-      </Link>
     </S.Menu>
   )
 }
@@ -128,7 +125,9 @@ module SidebarLeftStore {
   }
 
   export function useIsSidebarLeftOpen() {
-    return useSignalValue(_SidebarLeftSignal.open)
+    return {
+      open: useSignalValue(_SidebarLeftSignal.open),
+    }
   }
 
   export function dispatchSidebarLeftOpen(open: boolean) {
