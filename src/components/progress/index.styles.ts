@@ -26,7 +26,7 @@ export const ProgressRoot = styled(ProgressPrimitive.Root, {
     rounded-full
   `}
 
-  ${({ color }) => `background-color: ${color ?? 'blue'};`}
+  ${({ color }) => `background-color: ${THEME_MAP[color ?? 'blue']};`}
 
   .text {
     ${tw`
