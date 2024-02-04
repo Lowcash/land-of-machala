@@ -113,8 +113,8 @@ type ItemProps = {
 function Item({ label, value }: ItemProps) {
   return (
     <S.Item>
-      <S.Text>{label}</S.Text>
-      {isString(value) ? <S.Text>{value}</S.Text> : value}
+      <S.Text light>{label}</S.Text>
+      {isString(value) ? <S.Text light>{value}</S.Text> : value}
     </S.Item>
   )
 }
