@@ -1,8 +1,8 @@
 import { z } from 'zod'
 import { PrismaClient } from '@prisma/client'
-import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
-import { DIRECTIONS } from '~/types/location'
+import { DIRECTIONS } from '@/types/location'
 
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) =>

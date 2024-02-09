@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { initUser } from './player'
 
 export const gameRouter = createTRPCRouter({

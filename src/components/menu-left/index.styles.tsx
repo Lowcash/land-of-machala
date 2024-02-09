@@ -1,7 +1,7 @@
 import React from 'react'
 import tw from 'twin.macro'
 
-export { Text } from '~/styles/text'
+export { Text } from '@/styles/text'
 
 const _MenuOuter = tw.div`
   flex flex-col justify-between

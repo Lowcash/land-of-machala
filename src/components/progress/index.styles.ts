@@ -1,6 +1,7 @@
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 
+import { Text } from '@/styles/text'
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 
 type TTheme = 'red' | 'green' | 'blue' | 'gold'
@@ -16,6 +17,14 @@ export type ProgressProps = {
   color?: TTheme
 }
 
+export const ProgressIndicator = styled(ProgressPrimitive.Indicator)`
+  ${tw`
+    h-full w-full 
+    flex-1 
+    transition-all
+  `}
+`
+
 export const ProgressRoot = styled(ProgressPrimitive.Root, {
   shouldForwardProp: (p) => p !== 'color',
 })<ProgressProps>`
@@ -26,9 +35,11 @@ export const ProgressRoot = styled(ProgressPrimitive.Root, {
     rounded-full
   `}
 
-  ${({ color }) => THEME_MAP[color ?? 'blue']}
+  &, ${ProgressIndicator} {
+    ${({ color }) => THEME_MAP[color ?? 'blue']}
+  }
 
-  .text {
+  ${Text} {
     ${tw`
       absolute
       top-0
@@ -36,13 +47,4 @@ export const ProgressRoot = styled(ProgressPrimitive.Root, {
       -translate-x-1/2
     `}
   }
-`
-
-export const ProgressIndicator = styled(ProgressPrimitive.Indicator)`
-  ${tw`
-    h-full w-full 
-    flex-1 
-    bg-primary 
-    transition-all
-  `}
 `

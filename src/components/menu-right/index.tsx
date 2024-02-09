@@ -1,7 +1,7 @@
 'use client'
 
-import { api } from '~/trpc/react'
-import { TDirection } from '~/types/location'
+import { api } from '@/trpc/react'
+import { TDirection } from '@/types/location'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'

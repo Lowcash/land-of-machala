@@ -4,7 +4,7 @@ import styled from '@emotion/styled/macro'
 
 import { FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
-export { Text } from '~/styles/text'
+export { Text } from '@/styles/text'
 
 const _Arrow = styled('div')(
   tw`

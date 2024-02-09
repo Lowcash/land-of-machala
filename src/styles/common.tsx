@@ -1,10 +1,10 @@
 'use client'
 
 import React from 'react'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
-import { useIsSidebarLeftOpen } from '~/components/menu-left'
-import { useIsSidebarRightOpen } from '~/components/menu-right'
+import { useIsSidebarLeftOpen } from '@/components/menu-left'
+import { useIsSidebarRightOpen } from '@/components/menu-right'
 
 export const Main = tw.main`
   h-screen w-screen
@@ -16,10 +16,11 @@ type ContentProps = {
   isRightSidebarOpened?: boolean
 }
 
-const _Content = styled.section<ContentProps>`
+const _Content = styled('section')<ContentProps>`
   ${tw`
-    fixed
+    flex flex-col justify-between
     h-screen
+    fixed
     p-5
   `}
 

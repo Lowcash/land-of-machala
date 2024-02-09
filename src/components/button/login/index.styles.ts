@@ -1,5 +1,5 @@
 import tw from 'twin.macro'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 
 import Link from 'next/link'
 

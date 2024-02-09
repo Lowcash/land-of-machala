@@ -1,17 +1,17 @@
 'use client'
 
 import React from 'react'
-import { TBaseDirection } from '~/types/location'
+import { TBaseDirection } from '@/types/location'
 import tw from 'twin.macro'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 
 type SidebarProps = {
   open: boolean
   direction: TBaseDirection
 }
 
-const _SidebarInner = styled('div', { label: 'sidebar-inner' })`
-  ${tw`
+const _SidebarInner = styled('div')(
+  tw`
     flex flex-col
     h-full
 
@@ -20,8 +20,8 @@ const _SidebarInner = styled('div', { label: 'sidebar-inner' })`
     overflow-y-auto
 
     border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900
-  `}
-`
+  `
+)
 
 const DIRECTION_MAP: Record<TBaseDirection, { position: any; border: any }> = {
   left: {
@@ -49,7 +49,7 @@ const _SidebarOuter = styled('aside', {
   ${({ open }) => (open ? tw`w-64` : tw`hidden`)}
   ${({ direction }) => DIRECTION_MAP[direction].position}
 
-  > [class*=sidebar-inner] {
+  > ${_SidebarInner} {
     ${({ direction }) => DIRECTION_MAP[direction].border}
   }
 `

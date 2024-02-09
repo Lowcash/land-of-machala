@@ -1,8 +1,8 @@
 'use client'
 
-import { api } from '~/trpc/react'
+import { api } from '@/trpc/react'
 import { signal, useSignalValue } from 'signals-react-safe'
-import { isString } from '~/utils/typeguard'
+import { isString } from '@/utils/typeguard'
 
 import * as S from './index.styles'
 import Link from 'next/link'
