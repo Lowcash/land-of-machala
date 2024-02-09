@@ -1,20 +1,21 @@
 import React from 'react'
 import tw from 'twin.macro'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 
 import { FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
 
 export { Text } from '~/styles/text'
 
-const _Arrow = styled('div', { label: 'arrow' })`
-  ${tw`
+const _Arrow = styled('div')(
+  tw`
     p-3
     font-bold 
     rounded
     cursor-pointer
+    
     bg-blue-500 hover:bg-blue-700 text-white 
-  `}
-`
+  `,
+)
 
 type ArrowProps = Pick<React.ComponentProps<typeof _Arrow>, 'onClick'>
 
@@ -42,18 +43,15 @@ export const ArrowRight = (p: ArrowProps) => (
   </_Arrow>
 )
 
-export const MoveWrap = styled('div', {
-  label: 'move-wrap',
-})`
+export const MoveWrap = styled('div')`
   ${tw`
     flex justify-center items-center
     w-full h-40
+
+    relative [&>*]:absolute
   `}
 
-  ${tw`relative`}
-  [class*=arrow] {
-    ${tw`absolute`}
-
+  ${_Arrow} {
     &.arrow-up {
       ${tw`-mt-28`}
     }
@@ -69,11 +67,9 @@ export const MoveWrap = styled('div', {
   }
 `
 
-export const TopSection = styled('div')`
-  ${tw`
-    flex flex-col 
-    gap-2
-  `}
+export const TopSection = tw.div`
+  flex flex-col 
+  gap-2
 `
 
 export const CoordsWrap = tw.div`

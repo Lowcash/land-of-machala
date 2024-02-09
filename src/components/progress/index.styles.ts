@@ -1,5 +1,5 @@
 import tw from 'twin.macro'
-import styled from '@emotion/styled'
+import styled from '@emotion/styled/macro'
 
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 

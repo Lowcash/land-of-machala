@@ -3,13 +3,12 @@ import styled from '@emotion/styled'
 
 import Link from 'next/link'
 
-export const Login = styled(Link)`
-  ${tw`
+export const Login = styled(Link)(
+  tw`
     px-10 py-3
 
     font-semibold no-underline
     rounded-full
     transition
     bg-white/10 hover:bg-white/20
-  `}
-`
+`)
