@@ -68,6 +68,23 @@ model User {
 
     pos_x Int @default(0)
     pos_y Int @default(0)
+
+    enemyInstance EnemyInstance?
+}
+
+model EnemyInstance {
+    id String @unique
+
+    hp_actual Int
+    hp_max    Int
+
+    enemy   Enemy  @relation(fields: [enemyId], references: [id])
+    enemyId String
+
+    user   User?   @relation(fields: [userId], references: [id])
+    userId String? @unique
+
+    @@index([enemyId, userId])
 }
 
 model VerificationToken {
@@ -79,7 +96,7 @@ model VerificationToken {
 }
 
 model Place {
-    id   String @id @default(cuid())
+    id   String @id @default(uuid())
     name String
 
     pos_x Int
@@ -87,8 +104,23 @@ model Place {
 }
 
 model Enemy {
-    id   String @id @default(cuid())
+    id   String @id @default(uuid())
     name String
+
+    hp_from Int?
+    hp_to   Int?
+
+    damage_from   Int
+    damage_to     Int
+    EnemyInstance EnemyInstance[]
+}
+
+model Weapon {
+    id   String @id @default(uuid())
+    name String
+
+    damage_from Int
+    damage_to   Int
 }
 
 enum Race {
