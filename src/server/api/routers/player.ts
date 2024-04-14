@@ -1,5 +1,4 @@
 import { z } from 'zod'
-import { PrismaClient } from '@prisma/client'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
 import { DIRECTIONS } from '@/types/location'
@@ -55,25 +54,3 @@ export const playerRouter = createTRPCRouter({
     })
   }),
 })
-
-export async function initUser(db: PrismaClient) {
-  const unassignedUser = await db.user.findFirst({
-    where: {
-      OR: [
-        {
-          race: null,
-        },
-        {
-          profession: null,
-        },
-      ],
-    },
-  })
-
-  if (!unassignedUser) return false
-
-  return await db.user.update({
-    data: { race: 'DWARF', profession: 'SAMURAI', hp_actual: 50, hp_max: 50, xp_actual: 0, xp_max: 100 },
-    where: { id: unassignedUser.id },
-  })
-}
