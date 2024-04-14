@@ -2,18 +2,10 @@ import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
 export const gameRouter = createTRPCRouter({
   position: protectedProcedure.query(async ({ ctx }) => {
-    const user = await ctx.db.user.findFirst({
-      where: {
-        id: ctx.session.user.id,
-      },
-    })
-
-    if (!user) return { place: undefined, enemy: undefined }
-
     const place = await ctx.db.place.findFirst({
       where: {
-        pos_x: user.pos_x,
-        pos_y: user.pos_y,
+        pos_x: ctx.session.user.pos_x,
+        pos_y: ctx.session.user.pos_y,
       },
       select: {
         name: true,
