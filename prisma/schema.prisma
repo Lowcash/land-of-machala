@@ -93,8 +93,8 @@ model Enemy {
     id   String @id @default(uuid())
     name String
 
-    hp_from Int?
-    hp_to   Int?
+    hp_from Int
+    hp_to   Int
 
     damage_from Int
     damage_to   Int
