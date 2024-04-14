@@ -6,6 +6,14 @@ import { DIRECTIONS } from '@/types/location'
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) => ctx.session.user),
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
+    const canMove = !Boolean(ctx.session.user.enemy_instance)
+
+    if (!canMove)
+      return {
+        pos_x: ctx.session.user.pos_x,
+        pos_y: ctx.session.user.pos_y,
+      }
+
     const horizontal = input === 'left' ? -1 : input === 'right' ? 1 : 0
     const vertical = input === 'down' ? -1 : input === 'up' ? 1 : 0
 

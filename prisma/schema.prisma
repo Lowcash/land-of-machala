@@ -69,22 +69,37 @@ model User {
     pos_x Int @default(0)
     pos_y Int @default(0)
 
-    enemyInstance EnemyInstance?
+    enemy_instance    EnemyInstance? @relation(fields: [enemy_instance_id], references: [id])
+    enemy_instance_id String?
+
+    @@index([enemy_instance_id])
 }
 
 model EnemyInstance {
-    id String @unique
+    id String @id @default(cuid())
 
     hp_actual Int
     hp_max    Int
 
-    enemy   Enemy  @relation(fields: [enemyId], references: [id])
-    enemyId String
+    enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+    enemy_id String
 
-    user   User?   @relation(fields: [userId], references: [id])
-    userId String? @unique
+    User User[]
 
-    @@index([enemyId, userId])
+    @@index([enemy_id])
+}
+
+model Enemy {
+    id   String @id @default(uuid())
+    name String
+
+    hp_from Int?
+    hp_to   Int?
+
+    damage_from Int
+    damage_to   Int
+
+    EnemyInstance EnemyInstance[]
 }
 
 model VerificationToken {
@@ -101,18 +116,6 @@ model Place {
 
     pos_x Int
     pos_y Int
-}
-
-model Enemy {
-    id   String @id @default(uuid())
-    name String
-
-    hp_from Int?
-    hp_to   Int?
-
-    damage_from   Int
-    damage_to     Int
-    EnemyInstance EnemyInstance[]
 }
 
 model Weapon {

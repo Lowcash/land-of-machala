@@ -12,23 +12,46 @@ export const gameRouter = createTRPCRouter({
       },
     })
 
-    if (place)
+    if (Boolean(place)) return { place, enemy: undefined }
+
+    const enemyInstance = ctx.session.user.enemy_instance
+
+    if (Boolean(enemyInstance)) return { place: undefined, enemy: enemyInstance.enemy }
+
+    const enemy =
+      Math.round(Math.random()) === 1 &&
+      (await ctx.db.enemy.findFirst({
+        skip: random(await ctx.db.enemy.count()),
+        take: 1,
+      }))
+
+    if (Boolean(enemy)) {
+      const hp = random(enemy.hp_to, enemy.hp_from)
+
       return {
-        place,
-        enemy: undefined,
-      }
-
-    const isEnemy = Math.round(Math.random()) === 1
-
-    return {
-      place: undefined,
-      enemy: isEnemy
-        ? await ctx.db.enemy.findFirst({
-            select: {
-              name: true,
+        place: undefined,
+        enemy: (
+          await ctx.db.user.update({
+            where: { id: ctx.session.user.id },
+            data: {
+              enemy_instance: {
+                create: {
+                  enemy: { connect: enemy },
+                  hp_actual: hp,
+                  hp_max: hp,
+                },
+              },
             },
+            include: { enemy_instance: { select: { enemy: true } } },
           })
-        : undefined,
+        ).enemy_instance.enemy,
+      }
     }
+
+    return { place: undefined, enemy: undefined }
   }),
 })
+
+function random(to: number, from: number = 0) {
+  return Math.floor(Math.random() * (to - from)) + from
+}

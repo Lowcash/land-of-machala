@@ -89,6 +89,7 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     where: {
       id: ctx.session.user.id,
     },
+    include: { enemy_instance: { include: { enemy: true } } },
   })
 
   return next({
