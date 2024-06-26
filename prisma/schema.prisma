@@ -72,6 +72,10 @@ model User {
     enemy_instance    EnemyInstance? @relation(fields: [enemy_instance_id], references: [id])
     enemy_instance_id String?
 
+    loot    Loot?   @relation(fields: [loot_id], references: [id])
+    loot_id String?
+
+    @@index([loot_id])
     @@index([enemy_instance_id])
 }
 
@@ -84,7 +88,7 @@ model EnemyInstance {
     enemy    Enemy  @relation(fields: [enemy_id], references: [id])
     enemy_id String
 
-    User User[]
+    users User[]
 
     @@index([enemy_id])
 }
@@ -99,7 +103,7 @@ model Enemy {
     damage_from Int
     damage_to   Int
 
-    EnemyInstance EnemyInstance[]
+    enemy_instances EnemyInstance[]
 }
 
 model VerificationToken {
@@ -124,6 +128,65 @@ model Weapon {
 
     damage_from Int
     damage_to   Int
+
+    WeaponInLoot WeaponInLoot[]
+}
+
+model Armor {
+    id   String @id @default(uuid())
+    name String
+
+    type ArmorType
+
+    armor        Int
+    strength     Int
+    agility      Int
+    intelligency Int
+
+    ArmorInLoot ArmorInLoot[]
+}
+
+enum ArmorType {
+    HEAD
+    SHOULDER
+    CHEST
+    HAND
+    PANTS
+    BOOTS
+}
+
+model Loot {
+    id String @id @default(uuid())
+
+    weapons WeaponInLoot[]
+    armors  ArmorInLoot[]
+    User    User[]
+}
+
+model WeaponInLoot {
+    id Int @id @default(autoincrement())
+
+    loot    Loot   @relation(fields: [loot_id], references: [id])
+    loot_id String
+
+    weapon    Weapon @relation(fields: [weapon_id], references: [id])
+    weapon_id String
+
+    @@index([loot_id])
+    @@index([weapon_id])
+}
+
+model ArmorInLoot {
+    id Int @id @default(autoincrement())
+
+    loot    Loot   @relation(fields: [loot_id], references: [id])
+    loot_id String
+
+    armor    Armor  @relation(fields: [armor_id], references: [id])
+    armor_id String
+
+    @@index([loot_id])
+    @@index([armor_id])
 }
 
 enum Race {

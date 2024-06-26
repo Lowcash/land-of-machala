@@ -19,11 +19,11 @@ export const playerRouter = createTRPCRouter({
     const vertical = input === 'down' ? -1 : input === 'up' ? 1 : 0
 
     const position = ctx.db.user.update({
+      where: { id: ctx.session.user.id },
       data: {
         pos_x: ctx.session.user.pos_x + horizontal,
         pos_y: ctx.session.user.pos_y + vertical,
       },
-      where: { id: ctx.session.user.id },
       select: {
         pos_x: true,
         pos_y: true,

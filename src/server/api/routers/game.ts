@@ -5,7 +5,7 @@ export const gameRouter = createTRPCRouter({
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
     // const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
-    const damageFromPlayer = 10
+    const damageFromPlayer = 1000
     const damageFromEnemy = random(
       ctx.session.user.enemy_instance.enemy.damage_from,
       ctx.session.user.enemy_instance.enemy.damage_to,
@@ -27,31 +27,51 @@ export const gameRouter = createTRPCRouter({
     if (playerDefeated || enemyDefeated) {
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
-      if (playerDefeated) {
+      if (playerDefeated)
         await ctx.db.user.update({
+          where: { id: ctx.session.user.id },
           data: {
             hp_actual: ctx.session.user.hp_max,
           },
-          where: { id: ctx.session.user.id },
         })
 
-        return { playerDefeated: true }
-      }
-
-      return {
-        enemyDefeated: true,
-        loot: await ctx.db.weapon.findFirst({
+      if (enemyDefeated) {
+        const weapon = await ctx.db.weapon.findFirst({
           skip: random(await ctx.db.weapon.count()),
           take: 1,
-        }),
+        })
+        const armor = await ctx.db.armor.findFirst({
+          skip: random(await ctx.db.armor.count()),
+          take: 1,
+        })
+
+        const loot = await ctx.db.loot.create({
+          data: {
+            weapons: {
+              create: [{ weapon: { connect: weapon } }],
+            },
+            armors: {
+              create: [{ armor: { connect: armor } }],
+            },
+          },
+        })
+
+        await ctx.db.user.update({
+          where: { id: ctx.session.user.id },
+          data: {
+            loot: { connect: loot },
+          },
+        })
       }
+
+      return
     }
 
     await ctx.db.enemyInstance.update({
+      where: { id: ctx.session.user.enemy_instance_id },
       data: {
         hp_actual: actualEnemyHP,
       },
-      where: { id: ctx.session.user.enemy_instance_id },
     })
   }),
   runAway: protectedProcedure.mutation(async ({ ctx }) => {
@@ -61,6 +81,10 @@ export const gameRouter = createTRPCRouter({
 
 async function info(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
+
+  const loot = ctx.session.user.loot
+
+  if (Boolean(loot)) return { loot }
 
   const place = await ctx.db.place.findFirst({
     where: {
@@ -74,7 +98,7 @@ async function info(ctx: TRPCContext) {
 
   if (Boolean(place)) return { place }
 
-  const enemyInstance = ctx?.session?.user.enemy_instance
+  const enemyInstance = ctx.session.user.enemy_instance
 
   if (Boolean(enemyInstance))
     return {
