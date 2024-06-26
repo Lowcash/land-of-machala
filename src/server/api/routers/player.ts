@@ -1,4 +1,5 @@
 import { z } from 'zod'
+import { inspectPosition } from './game'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 
 import { DIRECTIONS } from '@/types/location'
@@ -17,7 +18,7 @@ export const playerRouter = createTRPCRouter({
     const horizontal = input === 'left' ? -1 : input === 'right' ? 1 : 0
     const vertical = input === 'down' ? -1 : input === 'up' ? 1 : 0
 
-    return ctx.db.user.update({
+    const position = ctx.db.user.update({
       data: {
         pos_x: ctx.session.user.pos_x + horizontal,
         pos_y: ctx.session.user.pos_y + vertical,
@@ -28,5 +29,9 @@ export const playerRouter = createTRPCRouter({
         pos_y: true,
       },
     })
+
+    await inspectPosition(ctx)
+
+    return position
   }),
 })

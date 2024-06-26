@@ -7,17 +7,17 @@ import { Button } from '../button/shadcn'
 
 export default function Action() {
   const { player, game } = api.useUtils()
-  const { data } = api.game.position.useQuery()
+  const { data: gameInfo } = api.game.info.useQuery()
   const attack = api.game.attack.useMutation({
     onSettled: () => {
       player.info.invalidate()
-      game.position.invalidate()
+      game.info.invalidate()
     },
   })
   const runAway = api.game.runAway.useMutation({
     onSettled: () => {
-      game.position.invalidate()
-    }
+      game.info.invalidate()
+    },
   })
 
   const handleAttack = React.useCallback(() => attack.mutate(), [attack])
@@ -25,7 +25,7 @@ export default function Action() {
 
   return (
     <>
-      {data?.enemy && (
+      {gameInfo?.enemy && (
         <div className='flex justify-between'>
           <Button onClick={handleAttack}>Útok</Button>
           <Button onClick={handleRunAway}>Utéct</Button>
