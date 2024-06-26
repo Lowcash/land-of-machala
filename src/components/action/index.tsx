@@ -25,7 +25,7 @@ export default function Action() {
 
   return (
     <>
-      {gameInfo?.enemy && (
+      {gameInfo?.enemyInstance && (
         <div className='flex justify-between'>
           <Button onClick={handleAttack}>Útok</Button>
           <Button onClick={handleRunAway}>Utéct</Button>

@@ -82,38 +82,27 @@ export const gameRouter = createTRPCRouter({
 async function info(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
-  const loot = ctx.session.user.loot
-
-  if (Boolean(loot)) return { loot }
-
-  const place = await ctx.db.place.findFirst({
-    where: {
-      pos_x: ctx.session.user.pos_x,
-      pos_y: ctx.session.user.pos_y,
-    },
-    select: {
-      name: true,
-    },
-  })
-
-  if (Boolean(place)) return { place }
-
-  const enemyInstance = ctx.session.user.enemy_instance
-
-  if (Boolean(enemyInstance))
-    return {
-      enemy: { name: enemyInstance.enemy.name, hp_actual: enemyInstance.hp_actual, hp_max: enemyInstance.hp_max },
-    }
-
-  return {}
+  return {
+    place: await ctx.db.place.findFirst({
+      where: {
+        pos_x: ctx.session.user.pos_x,
+        pos_y: ctx.session.user.pos_y,
+      },
+      select: {
+        name: true,
+      },
+    }),
+    enemyInstance: ctx.session.user.enemy_instance,
+    loot: ctx.session.user.loot,
+  }
 }
 
 export async function inspectPosition(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
-  const gameInfo = await info(ctx)
+  const { enemyInstance, place } = await info(ctx)
 
-  if (gameInfo?.enemy || gameInfo?.place) return { enemy: gameInfo?.enemy, place: gameInfo?.place }
+  if (enemyInstance || place) return
 
   const hasEnemyAppear = Math.round(Math.random()) === 1
 
@@ -127,28 +116,20 @@ export async function inspectPosition(ctx: TRPCContext) {
   if (Boolean(enemy)) {
     const hp = random(enemy.hp_to, enemy.hp_from)
 
-    const enemyInstance = (
-      await ctx.db.user.update({
-        where: { id: ctx.session.user.id },
-        data: {
-          enemy_instance: {
-            create: {
-              enemy: { connect: enemy },
-              hp_actual: hp,
-              hp_max: hp,
-            },
+    await ctx.db.user.update({
+      where: { id: ctx.session.user.id },
+      data: {
+        enemy_instance: {
+          create: {
+            enemy: { connect: enemy },
+            hp_actual: hp,
+            hp_max: hp,
           },
         },
-        include: { enemy_instance: { select: { enemy: true, hp_actual: true, hp_max: true } } },
-      })
-    ).enemy_instance
-
-    return {
-      enemy: { name: enemyInstance.enemy.name, hp_actual: enemyInstance.hp_actual, hp_max: enemyInstance.hp_max },
-    }
+      },
+      include: { enemy_instance: { select: { enemy: true, hp_actual: true, hp_max: true } } },
+    })
   }
-
-  return {}
 }
 
 function random(to: number, from: number = 0) {
