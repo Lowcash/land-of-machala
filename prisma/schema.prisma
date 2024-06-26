@@ -78,8 +78,12 @@ model User {
     inventory    Inventory? @relation(fields: [inventory_id], references: [id])
     inventory_id String?
 
+    wearable    Wearable? @relation(fields: [wearable_id], references: [id])
+    wearable_id String?
+
     @@index([loot_id])
     @@index([inventory_id])
+    @@index([wearable_id])
     @@index([enemy_instance_id])
 }
 
@@ -152,6 +156,9 @@ model Weapon {
 
     weapon_loot      WeaponInLoot[]
     weapon_inventory WeaponInInventory[]
+
+    left_hand  Wearable[] @relation("LeftHandWeapon")
+    right_hand Wearable[] @relation("RightHandWeapon")
 }
 
 model Armor {
@@ -167,6 +174,13 @@ model Armor {
 
     armor_loot      ArmorInLoot[]
     armor_inventory ArmorInInventory[]
+
+    head     Wearable[] @relation("HeadArmor")
+    shoulder Wearable[] @relation("ShoulderArmor")
+    chest    Wearable[] @relation("ChestArmor")
+    hand     Wearable[] @relation("HandArmor")
+    pants    Wearable[] @relation("PantsArmor")
+    boots    Wearable[] @relation("BootsArmor")
 }
 
 enum ArmorType {
@@ -176,6 +190,41 @@ enum ArmorType {
     HAND
     PANTS
     BOOTS
+}
+
+model Wearable {
+    id String @id @default(uuid())
+
+    user User[]
+
+    left_hand  Weapon? @relation("LeftHandWeapon", fields: [left_hand_weapon_id], references: [id])
+    right_hand Weapon? @relation("RightHandWeapon", fields: [right_hand_weapon_id], references: [id])
+
+    head     Armor? @relation("HeadArmor", fields: [head_armor_id], references: [id])
+    shoulder Armor? @relation("ShoulderArmor", fields: [shoulder_armor_id], references: [id])
+    chest    Armor? @relation("ChestArmor", fields: [chest_armor_id], references: [id])
+    hand     Armor? @relation("HandArmor", fields: [hand_armor_id], references: [id])
+    pants    Armor? @relation("PantsArmor", fields: [pants_armor_id], references: [id])
+    boots    Armor? @relation("BootsArmor", fields: [boots_armor_id], references: [id])
+
+    left_hand_weapon_id  String?
+    right_hand_weapon_id String?
+
+    head_armor_id     String?
+    shoulder_armor_id String?
+    chest_armor_id    String?
+    hand_armor_id     String?
+    pants_armor_id    String?
+    boots_armor_id    String?
+
+    @@index([left_hand_weapon_id])
+    @@index([right_hand_weapon_id])
+    @@index([head_armor_id])
+    @@index([shoulder_armor_id])
+    @@index([chest_armor_id])
+    @@index([hand_armor_id])
+    @@index([pants_armor_id])
+    @@index([boots_armor_id])
 }
 
 model Loot {
@@ -221,7 +270,7 @@ model Inventory {
 }
 
 model WeaponInInventory {
-    id Int @id @default(autoincrement())
+    id String @id @default(uuid())
 
     weapon       Weapon    @relation(fields: [weapon_id], references: [id])
     weapon_id    String
@@ -233,7 +282,7 @@ model WeaponInInventory {
 }
 
 model ArmorInInventory {
-    id Int @id @default(autoincrement())
+    id String @id @default(uuid())
 
     armor        Armor     @relation(fields: [armor_id], references: [id])
     armor_id     String

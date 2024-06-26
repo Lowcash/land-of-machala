@@ -1,13 +1,13 @@
 'use client'
 
 import React from 'react'
-import { TBaseDirection } from '@/types/location'
+import { BaseDirection } from '@/types/location'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 
 type SidebarProps = {
   open: boolean
-  direction: TBaseDirection
+  direction: BaseDirection
 }
 
 const _SidebarInner = styled('div')(
@@ -23,7 +23,7 @@ const _SidebarInner = styled('div')(
   `
 )
 
-const DIRECTION_MAP: Record<TBaseDirection, { position: any; border: any }> = {
+const DIRECTION_MAP: Record<BaseDirection, { position: any; border: any }> = {
   left: {
     position: tw`left-0`,
     border: tw`border-r`,

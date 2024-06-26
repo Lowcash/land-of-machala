@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { TDirection } from '@/types/location'
+import { Direction } from '@/types/location'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
@@ -21,7 +21,7 @@ export default function MenuRight() {
 
   const { open } = useSidebar()
 
-  const handleMoveDirection = React.useCallback((direction: TDirection) => move.mutate(direction), [move])
+  const handleMoveDirection = React.useCallback((direction: Direction) => move.mutate(direction), [move])
 
   return (
     <Sidebar direction='right' open={open}>
