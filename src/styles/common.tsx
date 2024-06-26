@@ -3,8 +3,8 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
-import { useIsSidebarLeftOpen } from '@/components/menu-left'
-import { useIsSidebarRightOpen } from '@/components/menu-right'
+import { useSidebar as useLeftSidebar } from '@/components/menu-left'
+import { useSidebar as useRightSidebar } from '@/components/menu-right'
 
 export const Main = tw.main`
   h-screen w-screen
@@ -36,8 +36,8 @@ const _Content = styled('section')<ContentProps>`
 `
 
 export const Content = ({ children }: React.PropsWithChildren) => {
-  const { open: isLeftSidebarOpened } = useIsSidebarLeftOpen()
-  const { open: isRightSidebarOpened } = useIsSidebarRightOpen()
+  const { open: isLeftSidebarOpened } = useLeftSidebar()
+  const { open: isRightSidebarOpened } = useRightSidebar()
 
   return (
     <_Content isLeftSidebarOpened={isLeftSidebarOpened} isRightSidebarOpened={isRightSidebarOpened}>

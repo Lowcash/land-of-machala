@@ -14,7 +14,7 @@ const EMPTY = 'Žádné'
 export default function MenuLeft() {
   const { data } = api.player.info.useQuery()
 
-  const { open } = useIsSidebarLeftOpen()
+  const { open } = useSidebar()
 
   const progresses = [
     {
@@ -119,26 +119,19 @@ function Item({ label, value }: ItemProps) {
   )
 }
 
-module SidebarLeftStore {
-  const _SidebarLeftSignal = {
-    open: signal(true),
-  }
+type SidebarArgs = { open: boolean }
 
-  export function useIsSidebarLeftOpen() {
-    return {
-      open: useSignalValue(_SidebarLeftSignal.open),
-    }
-  }
+const _SidebarSignal = signal<SidebarArgs>({ open: true })
 
-  export function dispatchSidebarLeftOpen(open: boolean) {
-    _SidebarLeftSignal.open.value = open
-  }
-
-  export function dispatchSidebarLeftToggle() {
-    _SidebarLeftSignal.open.value = !_SidebarLeftSignal.open.value
-  }
+export function useSidebar() {
+  return useSignalValue(_SidebarSignal)
 }
 
-export const useIsSidebarLeftOpen = SidebarLeftStore.useIsSidebarLeftOpen
-export const dispatchSidebarLeftOpen = SidebarLeftStore.dispatchSidebarLeftOpen
-export const dispatchSidebarLeftToggle = SidebarLeftStore.dispatchSidebarLeftToggle
+export function dispatchSidebarOpen(args: SidebarArgs) {
+  _SidebarSignal.value = args
+}
+
+export function dispatchSidebarToggle() {
+  _SidebarSignal.value = { open: !_SidebarSignal.value.open }
+}
+

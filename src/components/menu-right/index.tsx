@@ -1,5 +1,6 @@
 'use client'
 
+import React from 'react'
 import { api } from '@/trpc/react'
 import { TDirection } from '@/types/location'
 import { signal, useSignalValue } from 'signals-react-safe'
@@ -17,11 +18,9 @@ export default function MenuRight() {
     },
   })
 
-  const { open } = useIsSidebarRightOpen()
+  const { open } = useSidebar()
 
-  function handleMoveDirection(direction: TDirection) {
-    move.mutate(direction)
-  }
+  const handleMoveDirection = React.useCallback((direction: TDirection) => move.mutate(direction), [move])
 
   return (
     <Sidebar direction='right' open={open}>
@@ -59,26 +58,18 @@ export default function MenuRight() {
   )
 }
 
-module SidebarRightStore {
-  const _SidebarRightSignal = {
-    open: signal(true),
-  }
+type SidebarArgs = { open: boolean }
 
-  export function useIsSidebarRightOpen() {
-    return {
-      open: useSignalValue(_SidebarRightSignal.open),
-    }
-  }
+const _SidebarSignal = signal<SidebarArgs>({ open: true })
 
-  export function dispatchSidebarRightOpen(open: boolean) {
-    _SidebarRightSignal.open.value = open
-  }
-
-  export function dispatchSidebarRightToggle() {
-    _SidebarRightSignal.open.value = !_SidebarRightSignal.open.value
-  }
+export function useSidebar() {
+  return useSignalValue(_SidebarSignal)
 }
 
-export const useIsSidebarRightOpen = SidebarRightStore.useIsSidebarRightOpen
-export const dispatchSidebarRightOpen = SidebarRightStore.dispatchSidebarRightOpen
-export const dispatchSidebarRightToggle = SidebarRightStore.dispatchSidebarRightToggle
+export function dispatchSidebarOpen(args: SidebarArgs) {
+  _SidebarSignal.value = args
+}
+
+export function dispatchSidebarToggle() {
+  _SidebarSignal.value = { open: !_SidebarSignal.value.open }
+}
