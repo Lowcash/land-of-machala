@@ -7,6 +7,7 @@ import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
 import Sidebar from '../sidebar'
+import Link from 'next/link'
 
 export default function MenuRight() {
   const { player, game } = api.useUtils()
@@ -41,7 +42,9 @@ export default function MenuRight() {
 
         <S.TopSection>
           <S.MoveWrap>
-            <S.Inventory />
+            <Link href={'/inventory'}>
+              <S.Inventory />
+            </Link>
           </S.MoveWrap>
         </S.TopSection>
       </div>

@@ -6,6 +6,7 @@ import { DIRECTIONS } from '@/types/location'
 
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) => ctx.session.user),
+  inventory: protectedProcedure.query(({ ctx }) => ctx.session.user.inventory),
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
     const canMove = !Boolean(ctx.session.user.enemy_instance) && !Boolean(ctx.session.user.loot)
 
