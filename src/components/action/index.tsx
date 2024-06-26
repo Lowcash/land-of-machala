@@ -19,9 +19,16 @@ export default function Action() {
       game.info.invalidate()
     },
   })
+  const loot = api.game.loot.useMutation({
+    onSettled: () => {
+      player.info.invalidate()
+      game.info.invalidate()
+    },
+  })
 
   const handleAttack = React.useCallback(() => attack.mutate(), [attack])
   const handleRunAway = React.useCallback(() => runAway.mutate(), [runAway])
+  const handleLoot = React.useCallback(() => loot.mutate(), [loot])
 
   return (
     <>
@@ -29,6 +36,11 @@ export default function Action() {
         <div className='flex justify-between'>
           <Button onClick={handleAttack}>Útok</Button>
           <Button onClick={handleRunAway}>Utéct</Button>
+        </div>
+      )}
+      {gameInfo?.loot && (
+        <div className='flex justify-between'>
+          <Button onClick={handleLoot}>Loot</Button>
         </div>
       )}
     </>

@@ -27,13 +27,15 @@ export const gameRouter = createTRPCRouter({
     if (playerDefeated || enemyDefeated) {
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
-      if (playerDefeated)
+      if (playerDefeated) {
         await ctx.db.user.update({
           where: { id: ctx.session.user.id },
           data: {
             hp_actual: ctx.session.user.hp_max,
           },
         })
+        return
+      }
 
       if (enemyDefeated) {
         const weapon = await ctx.db.weapon.findFirst({
@@ -76,6 +78,62 @@ export const gameRouter = createTRPCRouter({
   }),
   runAway: protectedProcedure.mutation(async ({ ctx }) => {
     await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
+  }),
+  loot: protectedProcedure.mutation(async ({ ctx }) => {
+    let inventoryId = ctx.session.user.inventory_id
+
+    if (!Boolean(inventoryId)) {
+      const inventory = await ctx.db.inventory.create({ data: {} })
+
+      await ctx.db.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          inventory: { connect: inventory },
+        },
+      })
+
+      inventoryId = inventory.id
+    }
+
+    const loot = ctx.session.user.loot
+
+    if (!Boolean(loot)) return
+
+    await ctx.db.$transaction(async (db: any) => {
+      for (const l of loot.weapons) {
+        await db.weaponInInventory.create({
+          data: {
+            weapon_id: l.weapon_id,
+            inventory_id: inventoryId,
+          },
+        })
+      }
+      for (const l of loot.armors) {
+        await db.armorInInventory.create({
+          data: {
+            armor_id: l.armor_id,
+            inventory_id: inventoryId,
+          },
+        })
+      }
+
+      await db.weaponInLoot.deleteMany({
+        where: { loot_id: loot.id },
+      })
+      await db.armorInLoot.deleteMany({
+        where: { loot_id: loot.id },
+      })
+      await db.loot.delete({
+        where: { id: loot.id },
+      })
+
+      await db.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          loot_id: null,
+        },
+      })
+    })
   }),
 })
 

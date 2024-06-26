@@ -2,11 +2,11 @@ import React from 'react'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 
-import { FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight } from 'react-icons/fa'
+import { FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight, FaTasks } from 'react-icons/fa'
 
 export { Text } from '@/styles/text'
 
-const _Arrow = styled('div')(
+const _ButtonWrap = styled('div')(
   tw`
     p-3
     font-bold 
@@ -17,30 +17,36 @@ const _Arrow = styled('div')(
   `,
 )
 
-type ArrowProps = Pick<React.ComponentProps<typeof _Arrow>, 'onClick'>
+type _ButtonProps = Pick<React.ComponentProps<typeof _ButtonWrap>, 'onClick'>
 
-export const ArrowUp = (p: ArrowProps) => (
-  <_Arrow {...p} className='arrow-up'>
+export const ArrowUp = (p: _ButtonProps) => (
+  <_ButtonWrap {...p} className='arrow-up'>
     <FaArrowUp />
-  </_Arrow>
+  </_ButtonWrap>
 )
 
-export const ArrowDown = (p: ArrowProps) => (
-  <_Arrow {...p} className='arrow-down'>
+export const ArrowDown = (p: _ButtonProps) => (
+  <_ButtonWrap {...p} className='arrow-down'>
     <FaArrowDown />
-  </_Arrow>
+  </_ButtonWrap>
 )
 
-export const ArrowLeft = (p: ArrowProps) => (
-  <_Arrow {...p} className='arrow-left'>
+export const ArrowLeft = (p: _ButtonProps) => (
+  <_ButtonWrap {...p} className='arrow-left'>
     <FaArrowLeft />
-  </_Arrow>
+  </_ButtonWrap>
 )
 
-export const ArrowRight = (p: ArrowProps) => (
-  <_Arrow {...p} className='arrow-right'>
+export const ArrowRight = (p: _ButtonProps) => (
+  <_ButtonWrap {...p} className='arrow-right'>
     <FaArrowRight />
-  </_Arrow>
+  </_ButtonWrap>
+)
+
+export const Inventory = (p: _ButtonProps) => (
+  <_ButtonWrap {...p} className='settings-tasks'>
+    <FaTasks />
+  </_ButtonWrap>
 )
 
 export const MoveWrap = styled('div')`
@@ -51,7 +57,7 @@ export const MoveWrap = styled('div')`
     relative [&>*]:absolute
   `}
 
-  ${_Arrow} {
+  ${_ButtonWrap} {
     &.arrow-up {
       ${tw`-mt-28`}
     }

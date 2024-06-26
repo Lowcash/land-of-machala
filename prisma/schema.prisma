@@ -75,8 +75,29 @@ model User {
     loot    Loot?   @relation(fields: [loot_id], references: [id])
     loot_id String?
 
+    inventory    Inventory? @relation(fields: [inventory_id], references: [id])
+    inventory_id String?
+
     @@index([loot_id])
+    @@index([inventory_id])
     @@index([enemy_instance_id])
+}
+
+enum Race {
+    HUMAN
+    DWARF
+    GNOME
+}
+
+enum Profession {
+    WARRIOR
+    SAMURAI
+    MAGE
+}
+
+enum Role {
+    USER
+    ADMIN
 }
 
 model EnemyInstance {
@@ -129,7 +150,8 @@ model Weapon {
     damage_from Int
     damage_to   Int
 
-    WeaponInLoot WeaponInLoot[]
+    weapon_loot      WeaponInLoot[]
+    weapon_inventory WeaponInInventory[]
 }
 
 model Armor {
@@ -143,7 +165,8 @@ model Armor {
     agility      Int
     intelligency Int
 
-    ArmorInLoot ArmorInLoot[]
+    armor_loot      ArmorInLoot[]
+    armor_inventory ArmorInInventory[]
 }
 
 enum ArmorType {
@@ -158,19 +181,19 @@ enum ArmorType {
 model Loot {
     id String @id @default(uuid())
 
+    User User[]
+
     weapons WeaponInLoot[]
     armors  ArmorInLoot[]
-    User    User[]
 }
 
 model WeaponInLoot {
     id Int @id @default(autoincrement())
 
-    loot    Loot   @relation(fields: [loot_id], references: [id])
-    loot_id String
-
     weapon    Weapon @relation(fields: [weapon_id], references: [id])
     weapon_id String
+    loot      Loot   @relation(fields: [loot_id], references: [id])
+    loot_id   String
 
     @@index([loot_id])
     @@index([weapon_id])
@@ -179,29 +202,44 @@ model WeaponInLoot {
 model ArmorInLoot {
     id Int @id @default(autoincrement())
 
-    loot    Loot   @relation(fields: [loot_id], references: [id])
-    loot_id String
-
     armor    Armor  @relation(fields: [armor_id], references: [id])
     armor_id String
+    loot     Loot   @relation(fields: [loot_id], references: [id])
+    loot_id  String
 
-    @@index([loot_id])
     @@index([armor_id])
+    @@index([loot_id])
 }
 
-enum Race {
-    HUMAN
-    DWARF
-    GNOME
+model Inventory {
+    id String @id @default(uuid())
+
+    User User[]
+
+    weapons WeaponInInventory[]
+    armors  ArmorInInventory[]
 }
 
-enum Profession {
-    WARRIOR
-    SAMURAI
-    MAGE
+model WeaponInInventory {
+    id Int @id @default(autoincrement())
+
+    weapon       Weapon    @relation(fields: [weapon_id], references: [id])
+    weapon_id    String
+    inventory    Inventory @relation(fields: [inventory_id], references: [id])
+    inventory_id String
+
+    @@index([weapon_id])
+    @@index([inventory_id])
 }
 
-enum Role {
-    USER
-    ADMIN
+model ArmorInInventory {
+    id Int @id @default(autoincrement())
+
+    armor        Armor     @relation(fields: [armor_id], references: [id])
+    armor_id     String
+    inventory    Inventory @relation(fields: [inventory_id], references: [id])
+    inventory_id String
+
+    @@index([armor_id])
+    @@index([inventory_id])
 }

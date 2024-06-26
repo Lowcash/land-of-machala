@@ -39,20 +39,11 @@ export default function MenuRight() {
           </S.CoordsWrap>
         </S.TopSection>
 
-        <div className='settings-container'>
-          {/* <IconButton color='secondary' style={{ marginTop: -75, marginLeft: -75 }}>
-            <SettingsIcon />
-          </IconButton>
-          <IconButton color='secondary' style={{ marginTop: -75, marginRight: -75 }}>
-            <SettingsIcon />
-          </IconButton>
-          <IconButton color='secondary' style={{ marginBottom: -75, marginLeft: -75 }}>
-            <SettingsIcon />
-          </IconButton>
-          <IconButton color='secondary' style={{ marginBottom: -75, marginRight: -75 }}>
-            <SettingsIcon />
-          </IconButton> */}
-        </div>
+        <S.TopSection>
+          <S.MoveWrap>
+            <S.Inventory />
+          </S.MoveWrap>
+        </S.TopSection>
       </div>
     </Sidebar>
   )
