@@ -95,11 +95,36 @@ export const playerRouter = createTRPCRouter({
       }
 
       switch (input.type) {
-        case 'weapon':
-          await ctx.db.wearable.update({
+        case 'left_weapon':
+          const left = await ctx.db.wearable.update({
             where: { id: wearableId },
             data: { left_hand_weapon_id: input.id },
+            select: { left_hand_weapon_id: true, right_hand_weapon_id: true },
           })
+
+          if (left.left_hand_weapon_id === left.right_hand_weapon_id)
+            await ctx.db.wearable.update({
+              where: { id: wearableId },
+              data: {
+                right_hand_weapon_id: null,
+              },
+            })
+
+          break
+        case 'right_weapon':
+          const right = await ctx.db.wearable.update({
+            where: { id: wearableId },
+            data: { right_hand_weapon_id: input.id },
+            select: { left_hand_weapon_id: true, right_hand_weapon_id: true },
+          })
+
+          if (right.left_hand_weapon_id === right.right_hand_weapon_id)
+            await ctx.db.wearable.update({
+              where: { id: wearableId },
+              data: {
+                left_hand_weapon_id: null,
+              },
+            })
 
           break
         case 'armor':

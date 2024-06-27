@@ -41,7 +41,8 @@ export default function Inventory() {
                   <td>{x.weapon.damage_from}</td>
                   <td>{x.weapon.damage_from}</td>
                   <td>
-                    <button onClick={() => handleWear('weapon', x.id)}>Use</button>
+                    <button onClick={() => handleWear('left_weapon', x.id)}>Use Left Hand</button>
+                    <button onClick={() => handleWear('right_weapon', x.id)}>Use Right Hand</button>
                   </td>
                 </tr>
               ))}

@@ -9,5 +9,5 @@ export type Position = {
   y: number
 }
 
-export const WEARABLE = ['weapon', 'armor'] as const
+export const WEARABLE = ['left_weapon', 'right_weapon', 'armor'] as const
 export type Wearable = (typeof WEARABLE)[number]
