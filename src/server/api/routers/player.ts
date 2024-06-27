@@ -3,10 +3,26 @@ import { inspectPosition } from './game'
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { ArmorType } from '@prisma/client'
 
-import { DIRECTIONS, WEARABLE } from '@/const'
+import { DIRECTIONS, PROFESSIONS, RACES, WEARABLES } from '@/const'
 
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) => ctx.session.user),
+  create: protectedProcedure
+    .input(
+      z.object({
+        race: z.enum(RACES),
+        profession: z.enum(PROFESSIONS),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        where: { id: ctx.session.user.id },
+        data: {
+          race: input.race,
+          profession: input.profession,
+        },
+      })
+    }),
   stats: protectedProcedure.query(async ({ ctx }) => {
     const wearable = await getWearable(ctx)
 
@@ -84,7 +100,7 @@ export const playerRouter = createTRPCRouter({
     }
   }),
   wear: protectedProcedure
-    .input(z.object({ type: z.enum(WEARABLE), id: z.string() }))
+    .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const canWear = !Boolean(ctx.session.user.enemy_instance)
 
@@ -162,7 +178,7 @@ export const playerRouter = createTRPCRouter({
       }
     }),
   unwear: protectedProcedure
-    .input(z.object({ type: z.enum(WEARABLE), id: z.string() }))
+    .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const wearable = await getWearable(ctx)
       const wearableId = wearable.id

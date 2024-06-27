@@ -8,8 +8,13 @@ $ npm i
 $ npm run dev
 ```
 
-### Migration
+### Database
 
+# Migration
 ```
 $ npx prisma db push
+```
+# Reset
+```
+$ npx prisma db push --force-reset
 ```

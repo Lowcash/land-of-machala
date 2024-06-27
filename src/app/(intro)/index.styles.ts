@@ -5,6 +5,7 @@ import Link from 'next/link'
 
 export const Login = styled(Link)(
   tw`
+    h-fit
     px-10 py-3
 
     font-semibold no-underline

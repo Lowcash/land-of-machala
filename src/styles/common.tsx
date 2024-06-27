@@ -7,8 +7,26 @@ import { useSidebar as useLeftSidebar } from '@/components/menu-left'
 import { useSidebar as useRightSidebar } from '@/components/menu-right'
 
 export const Main = tw.main`
-  h-screen w-screen
-  bg-white dark:bg-slate-900
+  flex flex-1
+  justify-center items-center
+`
+
+export const Header = styled('header')`
+  height: 36px;
+  
+  ${tw`
+    w-screen z-50
+    border-b border-slate-100 bg-white dark:border-slate-700 dark:bg-slate-900
+  `}
+`
+
+export const Footer = styled('footer')`
+  height: 36px;
+
+  ${tw`
+    w-screen z-50
+    border-t border-slate-100 bg-white dark:border-slate-700 dark:bg-slate-900
+  `}
 `
 
 type ContentProps = {

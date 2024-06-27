@@ -9,10 +9,10 @@ import { NextAuthProvider } from '@/ctx/auth-provider'
 import { ThemeProvider } from '@/ctx/theme-provider'
 
 import GlobalStyles from '@/styles/globals'
-import { Content, Main } from '@/styles/common'
-import { Login } from '@/components/button/login'
-import MenuLeft from '@/components/menu-left'
-import MenuRight from '@/components/menu-right'
+import { Header, Footer, Main } from '@/styles/common'
+import { ModeToggle } from '@/components/mode'
+import Intro from './(intro)'
+import Game from './(game)'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,21 +30,26 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={cn('min-h-screen bg-background font-sans antialiased', inter.variable)}>
+      <body className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', inter.variable)}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <NextAuthProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
               <GlobalStyles />
 
-              {!session && <Login />}
+              <Header>
+                <div className='w-fit ml-auto'>
+                  <ModeToggle />
+                </div>
+              </Header>
 
-              {session && (
-                <Main>
-                  <MenuLeft />
-                  <Content>{children}</Content>
-                  <MenuRight />
-                </Main>
-              )}
+              <Main>
+                {!session && <Intro />}
+                {session && <Game />}
+              </Main>
+
+              <Footer>
+                <div className='w-fit ml-auto mr-auto'></div>
+              </Footer>
             </ThemeProvider>
           </NextAuthProvider>
         </TRPCReactProvider>

@@ -14,11 +14,8 @@ const _SidebarInner = styled('div')(
   tw`
     flex flex-col
     h-full
-
     px-3 py-4 
-
     overflow-y-auto
-
     border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900
   `
 )
@@ -37,12 +34,13 @@ const DIRECTION_MAP: Record<BaseDirection, { position: any; border: any }> = {
 const _SidebarOuter = styled('aside', {
   shouldForwardProp: (p) => p !== 'open' && p !== 'direction',
 })<SidebarProps>`
+  height: calc(100vh - 72px);
+  top: 36px;
+  
   ${tw`
     fixed
-    h-screen
 
     transition-transform
-
     z-40
   `}
 
