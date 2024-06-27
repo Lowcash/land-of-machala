@@ -13,10 +13,19 @@ export default function Inventory() {
     onSettled: () => {
       player.wearable.invalidate()
       player.stats.invalidate()
+      player.inventory.invalidate()
+    },
+  })
+  const unwear = api.player.unwear.useMutation({
+    onSettled: () => {
+      player.wearable.invalidate()
+      player.stats.invalidate()
+      player.inventory.invalidate()
     },
   })
 
   const handleWear = React.useCallback((type: Wearable, id: string) => wear.mutate({ type, id }), [wear])
+  const handleUnwear = React.useCallback((type: Wearable, id: string) => unwear.mutate({ type, id }), [unwear])
 
   return (
     <S.Info>
@@ -44,6 +53,7 @@ export default function Inventory() {
                   <td>
                     <button onClick={() => handleWear('left_weapon', x.id)}>Use Left Hand</button>
                     <button onClick={() => handleWear('right_weapon', x.id)}>Use Right Hand</button>
+                    {x.armed && <button onClick={() => handleUnwear('weapon', x.id)}>Unarm</button>}
                   </td>
                 </tr>
               ))}
@@ -74,6 +84,7 @@ export default function Inventory() {
                   <td>{x.armor.intelligency}</td>
                   <td>
                     <button onClick={() => handleWear('armor', x.id)}>Use</button>
+                    {x.armed && <button onClick={() => handleUnwear('armor', x.id)}>Unarm</button>}
                   </td>
                 </tr>
               ))}

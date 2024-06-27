@@ -1,11 +1,11 @@
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { getInventory } from './player'
 
 export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
-    // const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
-    const damageFromPlayer = 1000
+    const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
     const damageFromEnemy = random(
       ctx.session.user.enemy_instance.enemy.damage_from,
       ctx.session.user.enemy_instance.enemy.damage_to,
@@ -80,20 +80,7 @@ export const gameRouter = createTRPCRouter({
     await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
   }),
   loot: protectedProcedure.mutation(async ({ ctx }) => {
-    let inventoryId = ctx.session.user.inventory_id
-
-    if (!Boolean(inventoryId)) {
-      const inventory = await ctx.db.inventory.create({ data: {} })
-
-      await ctx.db.user.update({
-        where: { id: ctx.session.user.id },
-        data: {
-          inventory: { connect: inventory },
-        },
-      })
-
-      inventoryId = inventory.id
-    }
+    const inventoryId = (await getInventory(ctx))?.id
 
     const loot = ctx.session.user.loot
 

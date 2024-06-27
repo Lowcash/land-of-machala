@@ -71,7 +71,7 @@ export default function MenuLeft() {
               },
               { label: 'Síla:', value: stats?.strength?.toString() ?? '' },
               { label: 'Obratnost:', value: stats?.agility?.toString() ?? '' },
-              { label: 'Inteligence:', value: stats?.intelligency?.toString() ?? '' },
+              { label: 'Inteligence:', value: stats?.intelligence?.toString() ?? '' },
             ],
           ]}
         />
