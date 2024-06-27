@@ -13,6 +13,7 @@ const EMPTY = 'Žádné'
 
 export default function MenuLeft() {
   const { data } = api.player.info.useQuery()
+  const { data: wearable } = api.player.wearable.useQuery()
 
   const { open } = useSidebar()
 
@@ -50,16 +51,16 @@ export default function MenuLeft() {
             ],
             progresses,
             [
-              { label: 'Levá ruka:', value: EMPTY },
-              { label: 'Pravá ruka:', value: EMPTY },
+              { label: 'Levá ruka:', value: wearable?.leftHand?.name ?? EMPTY },
+              { label: 'Pravá ruka:', value: wearable?.rightHand?.name ?? EMPTY },
             ],
             [
-              { label: 'Hlava:', value: EMPTY },
-              { label: 'Ramena:', value: EMPTY },
-              { label: 'Tělo:', value: EMPTY },
-              { label: 'Ruce:', value: EMPTY },
-              { label: 'Kalhoty:', value: EMPTY },
-              { label: 'Boty:', value: EMPTY },
+              { label: 'Hlava:', value: wearable?.head?.name ?? EMPTY },
+              { label: 'Ramena:', value: wearable?.shoulder?.name ?? EMPTY },
+              { label: 'Tělo:', value: wearable?.chest?.name ?? EMPTY },
+              { label: 'Ruce:', value: wearable?.hand?.name ?? EMPTY },
+              { label: 'Kalhoty:', value: wearable?.pants?.name ?? EMPTY },
+              { label: 'Boty:', value: wearable?.boots?.name ?? EMPTY },
             ],
             [
               { label: 'Level:', value: data.level?.toString() ?? '' },
@@ -134,4 +135,3 @@ export function dispatchSidebarOpen(args: SidebarArgs) {
 export function dispatchSidebarToggle() {
   _SidebarSignal.value = { open: !_SidebarSignal.value.open }
 }
-

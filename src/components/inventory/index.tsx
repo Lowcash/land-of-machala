@@ -11,7 +11,7 @@ export default function Inventory() {
   const { data: inventory } = api.player.inventory.useQuery()
   const wear = api.player.wear.useMutation({
     onSettled: () => {
-      player.info.invalidate()
+      player.wearable.invalidate()
     },
   })
 
@@ -35,8 +35,8 @@ export default function Inventory() {
               </tr>
             </thead>
             <tbody>
-              {inventory?.weapons?.map((x: any) => (
-                <tr>
+              {inventory?.weapons?.map((x: any, idx: number) => (
+                <tr key={`InventoryWeapon_${idx}`}>
                   <td>{x.weapon.name}</td>
                   <td>{x.weapon.damage_from}</td>
                   <td>{x.weapon.damage_from}</td>
@@ -62,8 +62,8 @@ export default function Inventory() {
               </tr>
             </thead>
             <tbody>
-              {inventory?.armors?.map((x: any) => (
-                <tr>
+              {inventory?.armors?.map((x: any, idx: number) => (
+                <tr key={`InventoryArmor_${idx}`}>
                   <td>{x.armor.name}</td>
                   <td>{x.armor.type}</td>
                   <td>{x.armor.armor}</td>
