@@ -5,6 +5,8 @@ import { api } from '@/trpc/react'
 import { Wearable } from '@/const'
 
 import * as S from './index.styles'
+import { Button } from '../ui/button'
+import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
 
 export default function Inventory() {
   const { player } = api.useUtils()
@@ -41,19 +43,40 @@ export default function Inventory() {
               <tr>
                 <th></th>
                 <th>Poškození</th>
-                <th></th>
+                <th>Levá</th>
+                <th>Pravá</th>
               </tr>
             </thead>
             <tbody>
               {inventory?.weapons?.map((x: any, idx: number) => (
                 <tr key={`InventoryWeapon_${idx}`}>
                   <td>{x.weapon.name}</td>
-                  <td>{x.weapon.damage_from}</td>
-                  <td>{x.weapon.damage_from}</td>
                   <td>
-                    <button onClick={() => handleWear('left_weapon', x.id)}>Use Left Hand</button>
-                    <button onClick={() => handleWear('right_weapon', x.id)}>Use Right Hand</button>
-                    {x.armed && <button onClick={() => handleUnwear('weapon', x.id)}>Unarm</button>}
+                    {x.weapon.damage_from}-{x.weapon.damage_to}
+                  </td>
+                  <td>
+                    {!x.armed_left && (
+                      <Button variant='secondary' onClick={() => handleWear('left_weapon', x.id)}>
+                        <CheckIcon />
+                      </Button>
+                    )}
+                    {x.armed_left && (
+                      <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
+                        <Cross2Icon />
+                      </Button>
+                    )}
+                  </td>
+                  <td>
+                    {!x.armed_right && (
+                      <Button variant='secondary' onClick={() => handleWear('right_weapon', x.id)}>
+                        <CheckIcon />
+                      </Button>
+                    )}
+                    {x.armed_right && (
+                      <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
+                        <Cross2Icon />
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -83,8 +106,16 @@ export default function Inventory() {
                   <td>{x.armor.agility}</td>
                   <td>{x.armor.intelligency}</td>
                   <td>
-                    <button onClick={() => handleWear('armor', x.id)}>Use</button>
-                    {x.armed && <button onClick={() => handleUnwear('armor', x.id)}>Unarm</button>}
+                    {!x.armed && (
+                      <Button variant='secondary' onClick={() => handleWear('armor', x.id)}>
+                        <CheckIcon />
+                      </Button>
+                    )}
+                    {x.armed && (
+                      <Button variant='destructive' onClick={() => handleUnwear('armor', x.id)}>
+                        <Cross2Icon />
+                      </Button>
+                    )}
                   </td>
                 </tr>
               ))}

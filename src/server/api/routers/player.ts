@@ -23,7 +23,7 @@ export const playerRouter = createTRPCRouter({
           hp_actual: 100,
           hp_max: 100,
           xp_actual: 0,
-          xp_max: 100
+          xp_max: 100,
         },
       })
     }),
@@ -75,10 +75,15 @@ export const playerRouter = createTRPCRouter({
   inventory: protectedProcedure.query(async ({ ctx }) => {
     const inventory = await getInventory(ctx)
 
-    const weapons = inventory.weapons.map((x: any) => ({
-      ...x,
-      armed: Object.values(ctx.session.user.wearable).some((y) => y === x.id),
-    }))
+    const weapons = inventory.weapons.map((x: any) => {
+      const armed = Object.entries(ctx.session.user.wearable).find(([_, v]) => v === x.id)
+
+      return {
+        ...x,
+        armed_left: armed?.[0] === 'left_hand_weapon_id',
+        armed_right: armed?.[0] === 'right_hand_weapon_id',
+      }
+    })
     const armors = inventory.armors.map((x: any) => ({
       ...x,
       armed: Object.values(ctx.session.user.wearable).some((y) => y === x.id),
