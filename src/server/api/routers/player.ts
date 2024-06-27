@@ -49,72 +49,20 @@ export const playerRouter = createTRPCRouter({
   }),
   inventory: protectedProcedure.query(({ ctx }) => ctx.session.user.inventory),
   wearable: protectedProcedure.query(async ({ ctx }) => {
-    const leftHand =
-      ctx.session.user.wearable.left_hand_weapon_id &&
-      (
-        await ctx.db.weaponInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.left_hand_weapon_id },
-          include: { weapon: { select: { name: true } } },
-        })
-      ).weapon
-    const rightHand =
-      ctx.session.user.wearable.right_hand_weapon_id &&
-      (
-        await ctx.db.weaponInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.right_hand_weapon_id },
-          include: { weapon: { select: { name: true } } },
-        })
-      ).weapon
-    const head =
-      ctx.session.user.wearable.head_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.head_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
-    const shoulder =
-      ctx.session.user.wearable.shoulder_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.shoulder_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
-    const chest =
-      ctx.session.user.wearable.chest_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.chest_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
-    const hand =
-      ctx.session.user.wearable.hand_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.hand_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
-    const pants =
-      ctx.session.user.wearable.pants_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.pants_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
-    const boots =
-      ctx.session.user.wearable.boots_armor_id &&
-      (
-        await ctx.db.armorInInventory.findFirst({
-          where: { id: ctx.session.user.wearable.boots_armor_id },
-          include: { armor: { select: { name: true } } },
-        })
-      ).armor
+    const wearable = await getWearable(ctx)
 
-    return { leftHand, rightHand, head, shoulder, chest, hand, pants, boots }
+    console.log(wearable)
+
+    return {
+      leftHand: wearable?.left_hand?.weapon,
+      rightHand: wearable?.right_hand?.weapon,
+      head: wearable?.head?.armor,
+      shoulder: wearable?.shoulder?.armor,
+      chest: wearable?.chest?.armor,
+      hand: wearable?.hand?.armor,
+      pants: wearable?.pants?.armor,
+      boots: wearable?.boots?.armor,
+    }
   }),
   wear: protectedProcedure
     .input(z.object({ type: z.enum(WEARABLE), id: z.string() }))
