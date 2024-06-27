@@ -31,10 +31,10 @@ export default function MenuRight() {
       <div>
         <S.TopSection>
           <S.MoveWrap>
-            <S.ArrowUp onClick={() => handleMoveDirection('up')} />
-            <S.ArrowDown onClick={() => handleMoveDirection('down')} />
-            <S.ArrowLeft onClick={() => handleMoveDirection('left')} />
-            <S.ArrowRight onClick={() => handleMoveDirection('right')} />
+            <S.ArrowUp onClick={() => handleMoveDirection('up')} disabled={pathname === ROUTE.INVENTORY} />
+            <S.ArrowDown onClick={() => handleMoveDirection('down')} disabled={pathname === ROUTE.INVENTORY} />
+            <S.ArrowLeft onClick={() => handleMoveDirection('left')} disabled={pathname === ROUTE.INVENTORY} />
+            <S.ArrowRight onClick={() => handleMoveDirection('right')} disabled={pathname === ROUTE.INVENTORY} />
           </S.MoveWrap>
 
           <S.CoordsWrap>

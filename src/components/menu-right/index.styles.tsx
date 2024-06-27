@@ -6,18 +6,33 @@ import { FaArrowUp, FaArrowDown, FaArrowLeft, FaArrowRight, FaTasks } from 'reac
 
 export { Text } from '@/styles/text'
 
-const _ButtonWrap = styled('div')(
-  tw`
+const _ButtonWrap = styled('button')`
+  ${tw`
     p-3
     font-bold 
     rounded
     cursor-pointer
     
-    bg-blue-500 hover:bg-blue-700 text-white 
-  `,
-)
+    text-white
+    bg-blue-500 
+  `}
 
-type _ButtonProps = Pick<React.ComponentProps<typeof _ButtonWrap>, 'onClick'>
+  &:hover {
+    ${tw`
+      bg-blue-700
+    `}
+  }
+
+  &:disabled {
+    ${tw`
+      cursor-default
+      text-stone-500
+      bg-gray-300
+    `}
+  }
+`
+
+type _ButtonProps = Pick<React.ComponentProps<typeof _ButtonWrap>, 'onClick' | 'disabled'>
 
 export const ArrowUp = (p: _ButtonProps) => (
   <_ButtonWrap {...p} className='arrow-up'>
