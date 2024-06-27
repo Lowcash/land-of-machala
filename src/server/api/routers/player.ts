@@ -148,21 +148,21 @@ export const playerRouter = createTRPCRouter({
     const horizontal = input === 'left' ? -1 : input === 'right' ? 1 : 0
     const vertical = input === 'down' ? -1 : input === 'up' ? 1 : 0
 
-    const position = ctx.db.user.update({
+    const user = await ctx.db.user.update({
       where: { id: ctx.session.user.id },
       data: {
         pos_x: ctx.session.user.pos_x + horizontal,
         pos_y: ctx.session.user.pos_y + vertical,
       },
-      select: {
-        pos_x: true,
-        pos_y: true,
-      },
     })
 
-    await inspectPosition(ctx)
-
-    return position
+    await inspectPosition({
+      ...ctx,
+      session: {
+        ...ctx.session,
+        user,
+      },
+    })
   }),
 })
 
