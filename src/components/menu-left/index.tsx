@@ -12,7 +12,8 @@ import Progress from '../progress'
 const EMPTY = 'Žádné'
 
 export default function MenuLeft() {
-  const { data } = api.player.info.useQuery()
+  const { data: info } = api.player.info.useQuery()
+  const { data: stats } = api.player.stats.useQuery()
   const { data: wearable } = api.player.wearable.useQuery()
 
   const { open } = useSidebar()
@@ -21,19 +22,19 @@ export default function MenuLeft() {
     {
       label: 'HP:',
       value: (
-        <Progress value={data?.hp_actual} max={data?.hp_max} color='red'>
-          {data?.hp_actual ?? 0} / {data?.hp_max ?? 0}
+        <Progress value={info?.hp_actual} max={info?.hp_max} color='red'>
+          {info?.hp_actual ?? 0} / {info?.hp_max ?? 0}
         </Progress>
       ),
     },
   ]
 
-  if (!!data?.mana_max) {
+  if (!!info?.mana_max) {
     progresses.push({
       label: 'Mana:',
       value: (
-        <Progress value={data?.mana_actual} max={data?.mana_max}>
-          {data?.mana_actual ?? 0} / {data?.mana_max ?? 0}
+        <Progress value={info?.mana_actual} max={info?.mana_max}>
+          {info?.mana_actual ?? 0} / {info?.mana_max ?? 0}
         </Progress>
       ),
     })
@@ -41,13 +42,13 @@ export default function MenuLeft() {
 
   return (
     <Sidebar direction='left' open={open}>
-      {data && (
+      {info && (
         <_Menu
           data={[
-            [{ label: 'Jméno:', value: data.name ?? '' }],
+            [{ label: 'Jméno:', value: info.name ?? '' }],
             [
-              { label: 'Rasa:', value: data.race ?? '' },
-              { label: 'Profese:', value: data.profession ?? '' },
+              { label: 'Rasa:', value: info.race ?? '' },
+              { label: 'Profese:', value: info.profession ?? '' },
             ],
             progresses,
             [
@@ -63,14 +64,14 @@ export default function MenuLeft() {
               { label: 'Boty:', value: wearable?.boots?.name ?? EMPTY },
             ],
             [
-              { label: 'Level:', value: data.level?.toString() ?? '' },
+              { label: 'Level:', value: stats?.level?.toString() ?? '' },
               {
                 label: 'Poškození:',
-                value: `${data.damage_min} - ${data.damage_max}`,
+                value: `${stats?.damage_min} - ${stats?.damage_max}`,
               },
-              { label: 'Síla:', value: data.strength?.toString() ?? '' },
-              { label: 'Obratnost:', value: data.agility?.toString() ?? '' },
-              { label: 'Inteligence:', value: data.intelligence?.toString() ?? '' },
+              { label: 'Síla:', value: stats?.strength?.toString() ?? '' },
+              { label: 'Obratnost:', value: stats?.agility?.toString() ?? '' },
+              { label: 'Inteligence:', value: stats?.intelligency?.toString() ?? '' },
             ],
           ]}
         />

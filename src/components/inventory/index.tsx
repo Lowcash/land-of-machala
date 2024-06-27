@@ -12,6 +12,7 @@ export default function Inventory() {
   const wear = api.player.wear.useMutation({
     onSettled: () => {
       player.wearable.invalidate()
+      player.stats.invalidate()
     },
   })
 
