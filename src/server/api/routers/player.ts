@@ -51,8 +51,6 @@ export const playerRouter = createTRPCRouter({
   wearable: protectedProcedure.query(async ({ ctx }) => {
     const wearable = await getWearable(ctx)
 
-    console.log(wearable)
-
     return {
       leftHand: wearable?.left_hand?.weapon,
       rightHand: wearable?.right_hand?.weapon,
