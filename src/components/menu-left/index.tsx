@@ -50,9 +50,7 @@ export default function MenuLeft() {
               { label: 'Rasa:', value: info.race ?? '' },
               { label: 'Profese:', value: info.profession ?? '' },
             ],
-            [
-              { label: 'Peníze:', value: info.money?.toString() ?? '' }
-            ],
+            [{ label: 'Peníze:', value: info.money?.toString() ?? '' }],
             progresses,
             [
               { label: 'Levá ruka:', value: wearable?.leftHand?.name ?? EMPTY },
@@ -89,16 +87,7 @@ type _Props = {
 
 function _Menu({ data }: _Props) {
   return (
-    <S.Menu
-      append={
-        <Link
-          href={'/api/auth/signout'}
-          className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
-        >
-          {'Sign out'}
-        </Link>
-      }
-    >
+    <S.Menu>
       {data.map((section, sectionIdx) => (
         <S.Section key={`MenuSection_${sectionIdx}`}>
           {section.map((item, itemIdx) => (

@@ -13,6 +13,7 @@ import { Header, Footer, Main } from '@/styles/common'
 import { ModeToggle } from '@/components/mode'
 import Intro from './(intro)'
 import Game from './(game)'
+import User from '@/components/user'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -37,8 +38,9 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
               <GlobalStyles />
 
               <Header>
-                <div className='w-fit ml-auto'>
+                <div className='w-fit ml-auto space-x-1'>
                   <ModeToggle />
+                  {session && <User />}
                 </div>
               </Header>
 
