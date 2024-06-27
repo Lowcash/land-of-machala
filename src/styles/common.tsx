@@ -35,9 +35,11 @@ type ContentProps = {
 }
 
 const _Content = styled('section')<ContentProps>`
+  height: calc(100vh - 72px);
+  top: 36px;
+
   ${tw`
     flex flex-col justify-between
-    h-screen
     fixed
     p-5
   `}

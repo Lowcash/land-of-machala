@@ -44,7 +44,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
               <Main>
                 {!session && <Intro />}
-                {session && <Game />}
+                {session && <Game>{children}</Game>}
               </Main>
 
               <Footer>
