@@ -79,6 +79,20 @@ UPDATE Enemy, TempMaxScore SET
     100
   );
 
+UPDATE Enemy, TempMaxScore SET 
+  Enemy.money_from = LEAST(
+    ROUND(
+      ((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25
+    ),
+    100
+  ),
+  Enemy.money_to = LEAST(
+    ROUND(
+      ((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5
+    ),
+    100
+  );
+
 DROP TEMPORARY TABLE TempMaxScore;
   
 INSERT IGNORE INTO Weapon (id, name, damage_from, damage_to)

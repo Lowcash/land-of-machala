@@ -27,6 +27,7 @@ export const gameRouter = createTRPCRouter({
 
     if (playerDefeated || enemyDefeated) {
       const possibleEnemyXpGain = random(ctx.session.user.enemy_instance.enemy.xp_from, ctx.session.user.enemy_instance.enemy.xp_to)
+      const possibleEnemyMoneyGain = random(ctx.session.user.enemy_instance.enemy.money_from, ctx.session.user.enemy_instance.enemy.money_to)
 
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
@@ -58,12 +59,13 @@ export const gameRouter = createTRPCRouter({
             armors: {
               create: [{ armor: { connect: armor } }],
             },
+            money: possibleEnemyMoneyGain
           },
         })
 
         const xpActual = (ctx.session.user.xp_actual ?? 0) + possibleEnemyXpGain
         const hasLevelUp = xpActual > ctx.session.user.xp_max
-
+        
         await ctx.db.user.update({
           where: { id: ctx.session.user.id },
           data: {
@@ -122,10 +124,13 @@ export const gameRouter = createTRPCRouter({
         where: { id: loot.id },
       })
 
+      const moneyActual = (ctx.session.user.money ?? 0) + (loot.money ?? 0)
+
       await db.user.update({
         where: { id: ctx.session.user.id },
         data: {
           loot_id: null,
+          money: moneyActual
         },
       })
     })

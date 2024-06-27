@@ -50,6 +50,9 @@ export default function MenuLeft() {
               { label: 'Rasa:', value: info.race ?? '' },
               { label: 'Profese:', value: info.profession ?? '' },
             ],
+            [
+              { label: 'Peníze:', value: info.money?.toString() ?? '' }
+            ],
             progresses,
             [
               { label: 'Levá ruka:', value: wearable?.leftHand?.name ?? EMPTY },

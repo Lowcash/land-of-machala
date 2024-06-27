@@ -131,6 +131,9 @@ model Enemy {
     xp_from Int?
     xp_to   Int?
 
+    money_from Int?
+    money_to   Int?
+
     enemy_instances EnemyInstance[]
 }
 
@@ -227,6 +230,8 @@ model Loot {
 
     weapons WeaponInLoot[]
     armors  ArmorInLoot[]
+
+    money Int
 }
 
 model WeaponInLoot {
