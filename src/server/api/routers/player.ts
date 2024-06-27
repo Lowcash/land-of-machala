@@ -20,6 +20,10 @@ export const playerRouter = createTRPCRouter({
         data: {
           race: input.race,
           profession: input.profession,
+          hp_actual: 100,
+          hp_max: 100,
+          xp_actual: 0,
+          xp_max: 100
         },
       })
     }),
