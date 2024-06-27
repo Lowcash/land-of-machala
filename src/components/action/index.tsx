@@ -16,6 +16,7 @@ export default function Action() {
   })
   const runAway = api.game.runAway.useMutation({
     onSettled: () => {
+      player.info.invalidate()
       game.info.invalidate()
     },
   })

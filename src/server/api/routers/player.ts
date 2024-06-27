@@ -86,6 +86,10 @@ export const playerRouter = createTRPCRouter({
   wear: protectedProcedure
     .input(z.object({ type: z.enum(WEARABLE), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const canWear = !Boolean(ctx.session.user.enemy_instance)
+
+      if (!canWear) return
+
       const wearableId = (await getWearable(ctx))?.id
 
       switch (input.type) {

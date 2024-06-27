@@ -3,18 +3,18 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 import { Direction, ROUTE } from '@/const'
+import { usePathname } from 'next/navigation'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
 import Sidebar from '../sidebar'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 export default function MenuRight() {
   const pathname = usePathname()
 
   const { player, game } = api.useUtils()
-  const { data } = api.player.info.useQuery()
+  const { data: info } = api.player.info.useQuery()
   const move = api.player.move.useMutation({
     onSettled: () => {
       player.info.invalidate()
@@ -26,27 +26,33 @@ export default function MenuRight() {
 
   const handleMoveDirection = React.useCallback((direction: Direction) => move.mutate(direction), [move])
 
+  const isCombat = Boolean(info?.enemy_instance)
+  const isInventory = pathname === ROUTE.INVENTORY
+
+  const disableMove = isCombat || isInventory
+  const disableInventory = isCombat
+
   return (
     <Sidebar direction='right' open={open}>
       <div>
         <S.TopSection>
           <S.MoveWrap>
-            <S.ArrowUp onClick={() => handleMoveDirection('up')} disabled={pathname === ROUTE.INVENTORY} />
-            <S.ArrowDown onClick={() => handleMoveDirection('down')} disabled={pathname === ROUTE.INVENTORY} />
-            <S.ArrowLeft onClick={() => handleMoveDirection('left')} disabled={pathname === ROUTE.INVENTORY} />
-            <S.ArrowRight onClick={() => handleMoveDirection('right')} disabled={pathname === ROUTE.INVENTORY} />
+            <S.ArrowUp onClick={() => handleMoveDirection('up')} disabled={disableMove} />
+            <S.ArrowDown onClick={() => handleMoveDirection('down')} disabled={disableMove} />
+            <S.ArrowLeft onClick={() => handleMoveDirection('left')} disabled={disableMove} />
+            <S.ArrowRight onClick={() => handleMoveDirection('right')} disabled={disableMove} />
           </S.MoveWrap>
 
           <S.CoordsWrap>
-            <S.Text light>x: {data?.pos_x}</S.Text>
-            <S.Text light>y: {data?.pos_y}</S.Text>
+            <S.Text light>x: {info?.pos_x}</S.Text>
+            <S.Text light>y: {info?.pos_y}</S.Text>
           </S.CoordsWrap>
         </S.TopSection>
 
         <S.TopSection>
           <S.MoveWrap>
             <Link href={pathname === ROUTE.INVENTORY ? ROUTE.HOME : ROUTE.INVENTORY}>
-              <S.Inventory />
+              <S.Inventory disabled={disableInventory} />
             </Link>
           </S.MoveWrap>
         </S.TopSection>
