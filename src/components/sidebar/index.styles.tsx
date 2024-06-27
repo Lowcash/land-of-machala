@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { BaseDirection } from '@/types/location'
+import { BaseDirection } from '@/const'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 

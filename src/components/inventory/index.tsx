@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { Wearable } from '@/types/location'
+import { Wearable } from '@/const'
 
 import * as S from './index.styles'
 

@@ -2,14 +2,17 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { Direction } from '@/types/location'
+import { Direction, ROUTE } from '@/const'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
 import Sidebar from '../sidebar'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 export default function MenuRight() {
+  const pathname = usePathname()
+
   const { player, game } = api.useUtils()
   const { data } = api.player.info.useQuery()
   const move = api.player.move.useMutation({
@@ -42,7 +45,7 @@ export default function MenuRight() {
 
         <S.TopSection>
           <S.MoveWrap>
-            <Link href={'/inventory'}>
+            <Link href={pathname === ROUTE.INVENTORY ? ROUTE.HOME : ROUTE.INVENTORY}>
               <S.Inventory />
             </Link>
           </S.MoveWrap>

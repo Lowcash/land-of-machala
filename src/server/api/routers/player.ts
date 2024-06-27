@@ -3,7 +3,7 @@ import { inspectPosition } from './game'
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { ArmorType } from '@prisma/client'
 
-import { DIRECTIONS, WEARABLE } from '@/types/location'
+import { DIRECTIONS, WEARABLE } from '@/const'
 
 export const playerRouter = createTRPCRouter({
   info: protectedProcedure.query(({ ctx }) => ctx.session.user),

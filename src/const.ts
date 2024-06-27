@@ -11,3 +11,8 @@ export type Position = {
 
 export const WEARABLE = ['left_weapon', 'right_weapon', 'armor'] as const
 export type Wearable = (typeof WEARABLE)[number]
+
+export const ROUTE = {
+  HOME: '/',
+  INVENTORY: '/inventory'
+} as const
