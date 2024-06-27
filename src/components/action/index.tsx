@@ -3,7 +3,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Button } from '../button/shadcn'
+import { Button } from '../ui/button'
 
 export default function Action() {
   const { player, game } = api.useUtils()
@@ -36,13 +36,19 @@ export default function Action() {
     <>
       {gameInfo?.enemyInstance && (
         <div className='flex justify-between'>
-          <Button onClick={handleAttack}>Útok</Button>
-          <Button onClick={handleRunAway}>Utéct</Button>
+          <Button variant='destructive' onClick={handleAttack}>
+            Útok
+          </Button>
+          <Button variant='secondary' onClick={handleRunAway}>
+            Utéct
+          </Button>
         </div>
       )}
       {gameInfo?.loot && (
         <div className='flex justify-between'>
-          <Button onClick={handleLoot}>Loot</Button>
+          <Button variant='destructive' onClick={handleLoot}>
+            Loot
+          </Button>
         </div>
       )}
     </>
