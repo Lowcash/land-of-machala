@@ -5,7 +5,8 @@ export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
-    const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
+    // const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
+    const damageFromPlayer = 1000
     const damageFromEnemy = random(
       ctx.session.user.enemy_instance.enemy.damage_from,
       ctx.session.user.enemy_instance.enemy.damage_to,
@@ -25,6 +26,8 @@ export const gameRouter = createTRPCRouter({
     const enemyDefeated = actualEnemyHP <= 0
 
     if (playerDefeated || enemyDefeated) {
+      const possibleEnemyXpGain = random(ctx.session.user.enemy_instance.enemy.xp_from, ctx.session.user.enemy_instance.enemy.xp_to)
+
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
       if (playerDefeated) {
@@ -58,9 +61,14 @@ export const gameRouter = createTRPCRouter({
           },
         })
 
+        const xpActual = (ctx.session.user.xp_actual ?? 0) + possibleEnemyXpGain
+        const hasLevelUp = xpActual > ctx.session.user.xp_max
+
         await ctx.db.user.update({
           where: { id: ctx.session.user.id },
           data: {
+            xp_actual: hasLevelUp ? xpActual - ctx.session.user.xp_max : xpActual,
+            level: hasLevelUp ? ctx.session.user.level + 1 : ctx.session.user.level,
             loot: { connect: loot },
           },
         })

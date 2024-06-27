@@ -11,6 +11,7 @@ export default function Action() {
   const attack = api.game.attack.useMutation({
     onSettled: () => {
       player.info.invalidate()
+      player.stats.invalidate()
       game.info.invalidate()
     },
   })

@@ -61,6 +61,26 @@ VALUES
 ('49', 'Cikáda', 118, 195, 15, 25)
 ON DUPLICATE KEY UPDATE name = VALUES(name), hp_from = VALUES(hp_from), hp_to = VALUES(hp_to), damage_from = VALUES(damage_from), damage_to = VALUES(damage_to);
 
+CREATE TEMPORARY TABLE TempMaxScore AS
+SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
+FROM Enemy;
+
+UPDATE Enemy, TempMaxScore SET 
+  Enemy.xp_from = LEAST(
+    ROUND(
+      ((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8
+    ),
+    100
+  ),
+  Enemy.xp_to = LEAST(
+    ROUND(
+      ((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2
+    ),
+    100
+  );
+
+DROP TEMPORARY TABLE TempMaxScore;
+  
 INSERT IGNORE INTO Weapon (id, name, damage_from, damage_to)
 VALUES 
 (1, 'Dýka', 5, 10),
