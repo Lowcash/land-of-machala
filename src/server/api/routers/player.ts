@@ -308,7 +308,6 @@ export async function getInventory(ctx: TRPCContext) {
       },
     })
   } else {
-    console.log('create')
     inventory = await ctx.db.inventory.create({
       data: {},
       include: {
@@ -325,9 +324,9 @@ export async function getInventory(ctx: TRPCContext) {
       where: { id: ctx.session.user.id },
       data: {
         inventory: {
-          connect: { 
-            id: inventory.id
-          }
+          connect: {
+            id: inventory.id,
+          },
         },
       },
     })
