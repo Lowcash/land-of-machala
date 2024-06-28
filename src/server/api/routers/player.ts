@@ -15,6 +15,8 @@ export const playerRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (!ctx.session?.user) throw new Error('No user!')
+
       await ctx.db.user.update({
         where: { id: ctx.session.user.id },
         data: {
@@ -28,6 +30,8 @@ export const playerRouter = createTRPCRouter({
       })
     }),
   stats: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+
     const wearable = await getWearable(ctx)
 
     const strength =
@@ -73,10 +77,15 @@ export const playerRouter = createTRPCRouter({
     }
   }),
   inventory: protectedProcedure.query(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+    if (!ctx.session?.user?.wearable) throw new Error('No wearable!')
+
     const inventory = await getInventory(ctx)
 
-    const weapons = inventory?.weapons?.map((x: any) => {
-      const armed = Object.entries(ctx.session.user.wearable).find(([_, v]) => v === x.id)
+    if (!inventory) throw new Error('No inventory!')
+
+    const weapons = inventory.weapons?.map((x: any) => {
+      const armed = Object.entries(ctx.session.user!.wearable!).find(([_, v]) => v === x.id)
 
       return {
         ...x,
@@ -84,9 +93,9 @@ export const playerRouter = createTRPCRouter({
         armed_right: armed?.[0] === 'right_hand_weapon_id',
       }
     })
-    const armors = inventory?.armors?.map((x: any) => ({
+    const armors = inventory.armors?.map((x: any) => ({
       ...x,
-      armed: Object.values(ctx.session.user.wearable).some((y) => y === x.id),
+      armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
     }))
 
     return {
@@ -111,6 +120,8 @@ export const playerRouter = createTRPCRouter({
   wear: protectedProcedure
     .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      if (!ctx.session?.user) throw new Error('No user!')
+
       const canWear = !Boolean(ctx.session.user.enemy_instance)
 
       if (!canWear) return
@@ -157,7 +168,7 @@ export const playerRouter = createTRPCRouter({
           })
 
           let wearableArmor
-          switch (armor.armor.type) {
+          switch (armor?.armor.type) {
             case ArmorType.HEAD:
               wearableArmor = { head_armor_id: armor.id }
               break
@@ -190,6 +201,9 @@ export const playerRouter = createTRPCRouter({
     .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
       const wearable = await getWearable(ctx)
+
+      if (!wearable) throw new Error('No wearable!')
+
       const wearableId = wearable.id
 
       switch (input.type) {
@@ -215,7 +229,7 @@ export const playerRouter = createTRPCRouter({
           })
 
           let wearableArmor
-          switch (armor.armor.type) {
+          switch (armor?.armor.type) {
             case ArmorType.HEAD:
               wearableArmor = { head_armor_id: null }
               break
@@ -244,6 +258,8 @@ export const playerRouter = createTRPCRouter({
       }
     }),
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+
     const canMove = !Boolean(ctx.session.user.enemy_instance) && !Boolean(ctx.session.user.loot)
 
     if (!canMove)
@@ -277,7 +293,7 @@ export async function getInventory(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
   let inventory
-  if (Boolean(ctx.session.user.inventory_id)) {
+  if (!!ctx.session.user.inventory_id) {
     inventory = await ctx.db.inventory.findFirst({
       where: { id: ctx.session.user.inventory_id },
       include: {
@@ -290,11 +306,22 @@ export async function getInventory(ctx: TRPCContext) {
       },
     })
   } else {
-    inventory = await ctx.db.inventory.create({ data: {} })
+    inventory = await ctx.db.inventory.create({
+      data: {},
+      include: {
+        weapons: {
+          include: { weapon: true },
+        },
+        armors: {
+          include: { armor: true },
+        },
+      },
+    })
 
     await ctx.db.user.update({
       where: { id: ctx.session.user.id },
       data: {
+        // @ts-ignore
         inventory: { connect: inventory },
       },
     })
@@ -307,7 +334,7 @@ export async function getWearable(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
   let wearable
-  if (Boolean(ctx.session.user.wearable_id)) {
+  if (!!ctx.session.user.wearable_id) {
     wearable = await ctx.db.wearable.findFirst({
       where: { id: ctx.session.user.wearable_id },
       include: {
@@ -322,7 +349,19 @@ export async function getWearable(ctx: TRPCContext) {
       },
     })
   } else {
-    wearable = await ctx.db.wearable.create({ data: {} })
+    wearable = await ctx.db.wearable.create({
+      data: {},
+      include: {
+        left_hand: { include: { weapon: true } },
+        right_hand: { include: { weapon: true } },
+        head: { include: { armor: true } },
+        shoulder: { include: { armor: true } },
+        chest: { include: { armor: true } },
+        hand: { include: { armor: true } },
+        pants: { include: { armor: true } },
+        boots: { include: { armor: true } },
+      },
+    })
 
     await ctx.db.user.update({
       where: { id: ctx.session.user.id },
