@@ -84,7 +84,7 @@ export const playerRouter = createTRPCRouter({
 
     if (!inventory) throw new Error('No inventory!')
 
-    const weapons = inventory.weapons?.map((x: any) => {
+    const weapons = inventory.weapons?.map(x => {
       const armed = Object.entries(ctx.session.user!.wearable!).find(([_, v]) => v === x.id)
 
       return {
@@ -93,7 +93,7 @@ export const playerRouter = createTRPCRouter({
         armed_right: armed?.[0] === 'right_hand_weapon_id',
       }
     })
-    const armors = inventory.armors?.map((x: any) => ({
+    const armors = inventory.armors?.map(x => ({
       ...x,
       armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
     }))
