@@ -32,13 +32,14 @@ export function Hospital(p: Props) {
       <Label>{p.subdescription}</Label>
       <br />
       <br />
-      <Label>
-        Uzdravení za <b>{p.price ?? 0}</b> zlaťáků{' '}
-        <Button variant='destructive' onClick={handleHeal}>
-          To chci!
-        </Button>
-      </Label>
-      <br /> <br />
+      {heal.data?.success === undefined && (
+        <Label>
+          Uzdravení za <b>{p.price ?? 0}</b> zlaťáků{' '}
+          <Button variant='destructive' onClick={handleHeal}>
+            To chci!
+          </Button>
+        </Label>
+      )}
       {heal.data?.success !== undefined && (
         <Alert>
           {heal.data?.success
