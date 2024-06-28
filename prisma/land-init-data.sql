@@ -1,5 +1,5 @@
 INSERT IGNORE INTO User (id, race, profession, hp_actual, hp_max, xp_actual, xp_max)
-VALUES ('cluzk3t670000xuy5ii57k1og' /* id by database id*/, 'DWARF', 'SAMURAI', 100, 100, 0, 100)
+VALUES ('clxxohayg000c141wxuz8p4hv' /* id by database id*/, 'DWARF', 'SAMURAI', 100, 100, 0, 100)
 ON DUPLICATE KEY UPDATE
 race = VALUES(race),
 profession = VALUES(profession),
@@ -7,6 +7,10 @@ hp_actual = VALUES(hp_actual),
 hp_max = VALUES(hp_max),
 xp_actual = VALUES(xp_actual),
 xp_max = VALUES(xp_max);
+
+-- UPDATE `User`
+-- SET role = 'ADMIN'
+-- WHERE id = 'clxxohayg000c141wxuz8p4hv'  /* id by database id*/;
 
 INSERT IGNORE INTO Enemy (id, name, hp_from, hp_to, damage_from, damage_to)
 VALUES 

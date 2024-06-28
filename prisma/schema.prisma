@@ -38,6 +38,11 @@ model Session {
     @@index([userId])
 }
 
+enum Role {
+    USER
+    ADMIN
+}
+
 model User {
     id            String    @id @default(cuid())
     name          String?
@@ -46,6 +51,7 @@ model User {
     image         String?
     accounts      Account[]
     sessions      Session[]
+    role          Role      @default(USER)
 
     race       Race?
     profession Profession?
@@ -97,11 +103,6 @@ enum Profession {
     WARRIOR
     SAMURAI
     MAGE
-}
-
-enum Role {
-    USER
-    ADMIN
 }
 
 model EnemyInstance {
