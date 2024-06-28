@@ -1,13 +1,44 @@
+import React from 'react'
 import * as S from './index.styles'
-import { Place as ModelPlace, Hospital as ModelHospital, Armor as ModelArmory } from '@prisma/client'
 import { Label } from '@radix-ui/react-label'
+import { Place as ModelPlace, Hospital as ModelHospital, Armor as ModelArmory } from '@prisma/client'
+import { Hospital } from './hospital'
+import { Armory } from './armory'
+import { Button } from '../ui/button'
 
-type Props = ModelPlace & {
+type SubPlace = 'hospital' | 'armory'
+
+type Props = Partial<ModelPlace> & {
   hospital: Partial<ModelHospital | null>
   armory: Partial<ModelArmory | null>
 }
 
 export function Place(p: Props) {
+  const [subplace, setSubplace] = React.useState<SubPlace | undefined>(undefined)
+
+  const handleGoToSubPlace = React.useCallback((subplace?: SubPlace) => setSubplace(subplace), [])
+
+  if (subplace === 'hospital')
+    return (
+      <S.Info>
+        <Button variant='outline' onClick={() => handleGoToSubPlace()}>
+          Vrátit se
+        </Button>
+        <br />
+        <Hospital {...p.hospital} />
+      </S.Info>
+    )
+  if (subplace === 'armory')
+    return (
+      <S.Info>
+        <Button variant='outline' onClick={() => handleGoToSubPlace()}>
+          Vrátit se
+        </Button>
+        <br />
+        <Armory {...p.armory} />
+      </S.Info>
+    )
+
   return (
     <S.Info>
       <>
@@ -16,9 +47,9 @@ export function Place(p: Props) {
         <Label>{p.description}</Label>
         <br />
         <br />
-        {p.hospital && <Label>{p.hospital.name}</Label>}
+        {p.hospital && <Label onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Label>}
         <br />
-        {p.armory && <Label>{p.armory.name}</Label>}
+        {p.armory && <Label onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Label>}
       </>
     </S.Info>
   )
