@@ -4,6 +4,7 @@ import { api } from '@/trpc/react'
 
 import * as S from './index.styles'
 import { Label } from '@radix-ui/react-label'
+import { Place } from './place'
 
 export default function Info() {
   const { data: info } = api.game.info.useQuery()
@@ -44,24 +45,7 @@ export default function Info() {
     )
   }
 
-  if (!!info?.place) {
-    return (
-      <S.Info>
-        {info?.place && (
-          <>
-            Nacházíš se v <b>{info.place.name}</b>
-            <br />
-            <Label>{info.place.description}</Label>
-            <br />
-            <br />
-            {info.place.hospital && <Label>{info.place.hospital.name}</Label>}
-            <br />
-            {info.place.armory && <Label>{info.place.armory.name}</Label>}
-          </>
-        )}
-      </S.Info>
-    )
-  }
+  if (!!info?.place) return <Place {...info.place} />
 
   return <S.Info>Jsi na průzkumu světa!</S.Info>
 }
