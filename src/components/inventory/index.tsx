@@ -7,6 +7,7 @@ import { Wearable } from '@/const'
 import * as S from './index.styles'
 import { Button } from '../ui/button'
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
+import { Label } from '@radix-ui/react-label'
 
 export default function Inventory() {
   const { player } = api.useUtils()
@@ -29,32 +30,44 @@ export default function Inventory() {
   const handleWear = React.useCallback((type: Wearable, id: string) => wear.mutate({ type, id }), [wear])
   const handleUnwear = React.useCallback((type: Wearable, id: string) => unwear.mutate({ type, id }), [unwear])
 
+  const hasWeapons = (inventory?.weapons?.length ?? 0) > 0
+  const hasArmors = (inventory?.armors?.length ?? 0) > 0
+
+  if (!hasWeapons && !hasArmors)
+    return (
+      <S.Info>
+        <b>
+          <Label>V batohu nic nemáš</Label>
+        </b>
+      </S.Info>
+    )
+
   return (
     <S.Info>
       <>
         <b>
-          V batohu se nachází:
+          <Label>V batohu se nachází:</Label>
           <br />
           <br />
-          Zbraň
+          <Label>Zbraň</Label>
           <br />
           <table style={{ width: '100%' }}>
             <thead>
               <tr>
                 <th></th>
-                <th>Poškození</th>
-                <th>Levá</th>
-                <th>Pravá</th>
+                <th className='text-center'>Poškození</th>
+                <th className='text-center'>Obléct (levá ruka)</th>
+                <th className='text-center'>Obléct (pravá ruka)</th>
               </tr>
             </thead>
             <tbody>
               {inventory?.weapons?.map((x: any, idx: number) => (
                 <tr key={`InventoryWeapon_${idx}`}>
-                  <td>{x.weapon.name}</td>
-                  <td>
+                  <td className='text-left'>{x.weapon.name}</td>
+                  <td className='text-center'>
                     {x.weapon.damage_from}-{x.weapon.damage_to}
                   </td>
-                  <td>
+                  <td className='text-center'>
                     {!x.armed_left && (
                       <Button variant='secondary' onClick={() => handleWear('left_weapon', x.id)}>
                         <CheckIcon />
@@ -66,7 +79,7 @@ export default function Inventory() {
                       </Button>
                     )}
                   </td>
-                  <td>
+                  <td className='text-center'>
                     {!x.armed_right && (
                       <Button variant='secondary' onClick={() => handleWear('right_weapon', x.id)}>
                         <CheckIcon />
@@ -82,7 +95,7 @@ export default function Inventory() {
               ))}
             </tbody>
           </table>
-          Zbroj
+          <Label>Zbroj</Label>
           <br />
           <table style={{ width: '100%' }}>
             <thead>
@@ -93,19 +106,19 @@ export default function Inventory() {
                 <th>Síla</th>
                 <th>Obratnost</th>
                 <th>Inteligence</th>
-                <th></th>
+                <th>Obléct</th>
               </tr>
             </thead>
             <tbody>
               {inventory?.armors?.map((x: any, idx: number) => (
                 <tr key={`InventoryArmor_${idx}`}>
-                  <td>{x.armor.name}</td>
-                  <td>{x.armor.type}</td>
-                  <td>{x.armor.armor}</td>
-                  <td>{x.armor.strength}</td>
-                  <td>{x.armor.agility}</td>
-                  <td>{x.armor.intelligency}</td>
-                  <td>
+                  <td className='text-left'>{x.armor.name}</td>
+                  <td className='text-center'>{x.armor.type}</td>
+                  <td className='text-center'>{x.armor.armor}</td>
+                  <td className='text-center'>{x.armor.strength}</td>
+                  <td className='text-center'>{x.armor.agility}</td>
+                  <td className='text-center'>{x.armor.intelligency}</td>
+                  <td className='text-center'>
                     {!x.armed && (
                       <Button variant='secondary' onClick={() => handleWear('armor', x.id)}>
                         <CheckIcon />
