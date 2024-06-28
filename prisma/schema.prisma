@@ -180,7 +180,7 @@ model Hospital {
 
     price Int?
 
-    Place Place[]
+    places Place[]
 }
 
 model Armory {
@@ -191,7 +191,7 @@ model Armory {
 
     weapons WeaponInArmory[]
     armors  ArmorInArmory[]
-    Place   Place[]
+    places  Place[]
 }
 
 model WeaponInArmory {
@@ -199,8 +199,10 @@ model WeaponInArmory {
 
     weapon    Weapon  @relation(fields: [weapon_id], references: [id])
     weapon_id String
-    Armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory    Armory? @relation(fields: [armory_id], references: [id])
     armory_id String?
+
+    price Int
 
     @@index([weapon_id])
     @@index([armory_id])
@@ -214,6 +216,8 @@ model ArmorInArmory {
     Armory    Armory? @relation(fields: [armory_id], references: [id])
     armory_id String?
 
+    price Int
+
     @@index([armor_id])
     @@index([armory_id])
 }
@@ -225,7 +229,7 @@ model ArmorInArmory {
 model Wearable {
     id String @id @default(uuid())
 
-    user User[]
+    users User[]
 
     left_hand  WeaponInInventory? @relation("LeftHandWeapon", fields: [left_hand_weapon_id], references: [id])
     right_hand WeaponInInventory? @relation("RightHandWeapon", fields: [right_hand_weapon_id], references: [id])
@@ -264,11 +268,9 @@ model Weapon {
     damage_from Int
     damage_to   Int
 
-    price Int
-
-    weapon_loot      WeaponInLoot[]
-    weapon_inventory WeaponInInventory[]
-    weapon_armory    WeaponInArmory[]
+    weapons_loot      WeaponInLoot[]
+    weapons_armory    WeaponInArmory[]
+    weapons_inventory WeaponInInventory[]
 }
 
 enum ArmorType {
@@ -291,11 +293,9 @@ model Armor {
     agility      Int
     intelligency Int
 
-    price Int
-
-    armor_loot      ArmorInLoot[]
-    armor_inventory ArmorInInventory[]
-    armor_armory    ArmorInArmory[]
+    armors_loot      ArmorInLoot[]
+    armors_armory    ArmorInArmory[]
+    armors_inventory ArmorInInventory[]
 }
 
 // -----------------------------
@@ -305,10 +305,10 @@ model Armor {
 model Loot {
     id String @id @default(uuid())
 
-    User User[]
+    user User[]
 
-    weapons WeaponInLoot[]
-    armors  ArmorInLoot[]
+    weapons_loot WeaponInLoot[]
+    armors_loot  ArmorInLoot[]
 
     money Int
 }
@@ -343,10 +343,10 @@ model ArmorInLoot {
 model Inventory {
     id String @id @default(uuid())
 
-    User User[]
+    user User[]
 
-    weapons WeaponInInventory[]
-    armors  ArmorInInventory[]
+    weapons_inventory WeaponInInventory[]
+    armors_inventory  ArmorInInventory[]
 }
 
 model WeaponInInventory {
@@ -357,8 +357,8 @@ model WeaponInInventory {
     inventory    Inventory @relation(fields: [inventory_id], references: [id])
     inventory_id String
 
-    left_hand_weapon  Wearable[] @relation("LeftHandWeapon")
-    right_hand_weapon Wearable[] @relation("RightHandWeapon")
+    left_hand_weapons  Wearable[] @relation("LeftHandWeapon")
+    right_hand_weapons Wearable[] @relation("RightHandWeapon")
 
     @@index([weapon_id])
     @@index([inventory_id])
@@ -372,12 +372,12 @@ model ArmorInInventory {
     inventory    Inventory @relation(fields: [inventory_id], references: [id])
     inventory_id String
 
-    head_armor     Wearable[] @relation("HeadArmor")
-    shoulder_armor Wearable[] @relation("ShoulderArmor")
-    chest_armor    Wearable[] @relation("ChestArmor")
-    hand_armor     Wearable[] @relation("HandArmor")
-    pants_armor    Wearable[] @relation("PantsArmor")
-    boots_armor    Wearable[] @relation("BootsArmor")
+    head_armors     Wearable[] @relation("HeadArmor")
+    shoulder_armors Wearable[] @relation("ShoulderArmor")
+    chest_armors    Wearable[] @relation("ChestArmor")
+    hand_armors     Wearable[] @relation("HandArmor")
+    pants_armors    Wearable[] @relation("PantsArmor")
+    boots_armors    Wearable[] @relation("BootsArmor")
 
     @@index([armor_id])
     @@index([inventory_id])

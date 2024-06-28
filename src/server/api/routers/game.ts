@@ -63,10 +63,10 @@ export const gameRouter = createTRPCRouter({
 
         const loot = await ctx.db.loot.create({
           data: {
-            weapons: {
+            weapons_loot: {
               create: weapon ? [{ weapon: { connect: weapon } }] : undefined,
             },
-            armors: {
+            armors_loot: {
               create: armor ? [{ armor: { connect: armor } }] : undefined,
             },
             money: possibleEnemyMoneyGain,
@@ -114,7 +114,7 @@ export const gameRouter = createTRPCRouter({
     if (!Boolean(loot)) return
 
     await ctx.db.$transaction(async (db: any) => {
-      for (const l of loot.weapons) {
+      for (const l of loot.weapons_loot) {
         await db.weaponInInventory.create({
           data: {
             weapon_id: l.weapon_id,
@@ -122,7 +122,7 @@ export const gameRouter = createTRPCRouter({
           },
         })
       }
-      for (const l of loot.armors) {
+      for (const l of loot.armors_loot) {
         await db.armorInInventory.create({
           data: {
             armor_id: l.armor_id,

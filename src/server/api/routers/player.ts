@@ -84,7 +84,7 @@ export const playerRouter = createTRPCRouter({
 
     if (!inventory) throw new Error('No inventory!')
 
-    const weapons = inventory.weapons?.map(x => {
+    const weapons = inventory.weapons_inventory?.map((x) => {
       const armed = Object.entries(ctx.session.user!.wearable!).find(([_, v]) => v === x.id)
 
       return {
@@ -93,7 +93,7 @@ export const playerRouter = createTRPCRouter({
         armed_right: armed?.[0] === 'right_hand_weapon_id',
       }
     })
-    const armors = inventory.armors?.map(x => ({
+    const armors = inventory.armors_inventory?.map((x) => ({
       ...x,
       armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
     }))
@@ -297,22 +297,25 @@ export async function getInventory(ctx: TRPCContext) {
     inventory = await ctx.db.inventory.findFirst({
       where: { id: ctx.session.user.inventory_id },
       include: {
-        weapons: {
-          include: { weapon: true },
+        weapons_inventory: {
+          include: {
+            weapon: true,
+          },
         },
-        armors: {
+        armors_inventory: {
           include: { armor: true },
         },
       },
     })
   } else {
+    console.log('create')
     inventory = await ctx.db.inventory.create({
       data: {},
       include: {
-        weapons: {
+        weapons_inventory: {
           include: { weapon: true },
         },
-        armors: {
+        armors_inventory: {
           include: { armor: true },
         },
       },
@@ -321,8 +324,11 @@ export async function getInventory(ctx: TRPCContext) {
     await ctx.db.user.update({
       where: { id: ctx.session.user.id },
       data: {
-        // @ts-ignore
-        inventory: { connect: inventory },
+        inventory: {
+          connect: { 
+            id: inventory.id
+          }
+        },
       },
     })
   }

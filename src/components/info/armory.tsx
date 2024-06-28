@@ -1,36 +1,49 @@
+import React from 'react'
 import { api } from '@/trpc/react'
+import { Armory as ModelArmory } from '@prisma/client'
+import { Wearable } from '@/const'
 
 import { Label } from '@radix-ui/react-label'
 import { Loading } from '../loading'
-import { Armory as ModelArmory } from '@prisma/client'
+import { Alert } from '../alert'
 import { Table } from '../table'
 import { Button } from '../ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
-import React from 'react'
 
 type Props = ModelArmory
 
 export function Armory(p: Props) {
-  const armory = api.armory.show.useQuery({ armoryId: p.id })
+  const show = api.armory.show.useQuery({ armoryId: p.id })
+  const buy = api.armory.buy.useMutation()
 
-  const handleBuy = React.useCallback(() => {}, [])
+  const handleBuy = React.useCallback(
+    (type: Wearable, id: string) => buy.mutate({ armoryId: p.id, itemId: id, itemType: type }),
+    [buy, p.id],
+  )
 
-  if (armory.isLoading) return <Loading />
-  if (!armory.data) return <></>
+  if (show.isLoading) return <Loading />
+  if (!show.data) return <></>
 
-  const hasWeapons = (armory.data.weapons?.length ?? 0) > 0
-  const hasArmors = (armory.data?.armors?.length ?? 0) > 0
+  const hasWeapons = (show.data.weapons?.length ?? 0) > 0
+  const hasArmors = (show.data?.armors?.length ?? 0) > 0
 
   return (
     <>
-      Nacházíš se v <b>{armory.data.name}</b>
+      Nacházíš se v <b>{show.data.name}</b>
       <br />
-      <Label>{armory.data.description}</Label>
-      <br />
-      <br />
-      <Label>{armory.data.subdescription}</Label>
+      <Label>{show.data.description}</Label>
       <br />
       <br />
+      <Label>{show.data.subdescription}</Label>
+      <br />
+      <br />
+      {buy.data?.success !== undefined && (
+        <Alert>
+          {buy.data?.success
+            ? 'Zboží zakoupeno (najdeš jej v inventáři)'
+            : 'Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)'}
+        </Alert>
+      )}
       {hasWeapons && (
         <>
           <Label>Zbraň</Label>
@@ -41,7 +54,7 @@ export function Armory(p: Props) {
               { className: 'text-center', content: 'Poškození' },
               { className: 'text-right', content: 'Koupit (Cena)' },
             ]}
-            cells={armory.data.weapons.map((x) => [
+            cells={show.data.weapons.map((x) => [
               { className: 'text-left', content: x.weapon.name },
               {
                 className: 'text-center',
@@ -55,9 +68,9 @@ export function Armory(p: Props) {
                 className: 'text-right',
                 content: (
                   <>
-                    <Label>{10} zlaťáků</Label>
+                    <Label>{x.price} zlaťáků</Label>
                     &nbsp;
-                    <Button variant='secondary' onClick={() => handleBuy()}>
+                    <Button variant='secondary' onClick={() => handleBuy('weapon', x.id)}>
                       <PaperPlaneIcon />
                     </Button>
                   </>
@@ -81,7 +94,7 @@ export function Armory(p: Props) {
               { className: 'text-center', content: 'Inteligence' },
               { className: 'text-right', content: 'Koupit (Cena)' },
             ]}
-            cells={armory.data.armors.map((x) => [
+            cells={show.data.armors.map((x) => [
               { className: 'text-left', content: x.armor.name },
               { className: 'text-center', content: x.armor.type },
               { className: 'text-center', content: x.armor.armor },
@@ -92,9 +105,9 @@ export function Armory(p: Props) {
                 className: 'text-right',
                 content: (
                   <>
-                    <Label>{10} zlaťáků</Label>
+                    <Label>{x.price} zlaťáků</Label>
                     &nbsp;
-                    <Button variant='secondary' onClick={() => handleBuy()}>
+                    <Button variant='secondary' onClick={() => handleBuy('armor', x.id)}>
                       <PaperPlaneIcon />
                     </Button>
                   </>
