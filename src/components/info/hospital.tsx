@@ -3,9 +3,8 @@ import { api } from '@/trpc/react'
 
 import { Label } from '@radix-ui/react-label'
 import { Button } from '../ui/button'
+import { Alert } from '../alert'
 import { Hospital as ModelHospital } from '@prisma/client'
-import { Alert, AlertDescription } from '../ui/alert'
-import { SketchLogoIcon } from '@radix-ui/react-icons'
 
 type Props = Partial<ModelHospital>
 
@@ -14,7 +13,7 @@ export function Hospital(p: Props) {
   const heal = api.hospital.heal.useMutation({
     onSuccess: () => {
       player.info.invalidate()
-    }
+    },
   })
 
   const handleHeal = React.useCallback(() => {
@@ -41,13 +40,10 @@ export function Hospital(p: Props) {
       </Label>
       <br /> <br />
       {heal.data?.success !== undefined && (
-        <Alert variant='default'>
-          <SketchLogoIcon className='h-4 w-4' />
-          <AlertDescription>
-            {heal.data?.success
-              ? 'Teď jsi jako rybička (vyléčen)'
-              : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}{' '}
-          </AlertDescription>
+        <Alert>
+          {heal.data?.success
+            ? 'Teď jsi jako rybička (vyléčen)'
+            : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
         </Alert>
       )}
     </>
