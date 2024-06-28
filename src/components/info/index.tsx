@@ -24,8 +24,8 @@ export default function Info() {
   }
 
   if (!!info?.loot) {
-    const armors = info?.loot?.armors.map((x: any) => x.armor.name)
-    const weapons = info?.loot?.weapons.map((x: any) => x.weapon.name)
+    const armors = info?.loot?.armors_loot.map((x: any) => x.armor.name)
+    const weapons = info?.loot?.weapons_loot.map((x: any) => x.weapon.name)
 
     return (
       <S.Info>

@@ -1,6 +1,5 @@
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
-import { getInventory } from './player'
-import {} from '@prisma/client'
+import { getInventory } from './inventory'
 
 export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),

@@ -1,6 +1,6 @@
 import { z } from 'zod'
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
-import { getInventory } from './player'
+import { getInventory } from './inventory'
 
 import { WEARABLES } from '@/const'
 

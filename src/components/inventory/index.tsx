@@ -11,28 +11,28 @@ import { Label } from '@radix-ui/react-label'
 import { Table } from '../table'
 
 export default function Inventory() {
-  const { player } = api.useUtils()
-  const { data: inventory } = api.player.inventory.useQuery()
+  const { player, inventory } = api.useUtils()
+  const show = api.inventory.show.useQuery()
   const wear = api.player.wear.useMutation({
     onSettled: () => {
       player.wearable.invalidate()
       player.stats.invalidate()
-      player.inventory.invalidate()
+      inventory.show.invalidate()
     },
   })
   const unwear = api.player.unwear.useMutation({
     onSettled: () => {
       player.wearable.invalidate()
       player.stats.invalidate()
-      player.inventory.invalidate()
+      inventory.show.invalidate()
     },
   })
 
   const handleWear = React.useCallback((type: Wearable, id: string) => wear.mutate({ type, id }), [wear])
   const handleUnwear = React.useCallback((type: Wearable, id: string) => unwear.mutate({ type, id }), [unwear])
 
-  const hasWeapons = (inventory?.weapons?.length ?? 0) > 0
-  const hasArmors = (inventory?.armors?.length ?? 0) > 0
+  const hasWeapons = (show.data?.weapons?.length ?? 0) > 0
+  const hasArmors = (show.data?.armors?.length ?? 0) > 0
 
   if (!hasWeapons && !hasArmors)
     return (
@@ -61,7 +61,7 @@ export default function Inventory() {
                   { className: 'text-center', content: 'Obléct (levá ruka)' },
                   { className: 'text-center', content: 'Obléct (pravá ruka)' },
                 ]}
-                cells={inventory!.weapons.map((x) => [
+                cells={show.data!.weapons.map((x) => [
                   { className: 'text-left', content: x.weapon.name },
                   {
                     className: 'text-center',
@@ -123,7 +123,7 @@ export default function Inventory() {
                   { className: 'text-center', content: 'Inteligence' },
                   { className: 'text-center', content: 'Obléct' },
                 ]}
-                cells={inventory!.armors.map((x) => [
+                cells={show.data!.armors.map((x) => [
                   { className: 'text-left', content: x.armor.name },
                   { className: 'text-center', content: x.armor.type },
                   { className: 'text-center', content: x.armor.armor },
