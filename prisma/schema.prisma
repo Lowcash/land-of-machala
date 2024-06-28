@@ -156,15 +156,66 @@ model EnemyInstance {
 // Place
 // -----------------------------
 model Place {
-    id   String @id @default(uuid())
-    name String
+    id          String  @id @default(uuid())
+    name        String
+    description String?
 
     pos_x Int
     pos_y Int
+
+    hospital    Hospital? @relation(fields: [hospital_id], references: [id])
+    hospital_id String?
+    armory      Armory?   @relation(fields: [armory_id], references: [id])
+    armory_id   String?
+
+    @@index([hospital_id])
+    @@index([armory_id])
 }
 
-model Options {
+model Hospital {
+    id             String  @id @default(uuid())
+    name           String
+    description    String?
+    subdescription String?
+
+    price Int?
+
+    Place Place[]
+}
+
+model Armory {
+    id             String  @id @default(uuid())
+    name           String
+    description    String?
+    subdescription String?
+
+    weapons WeaponInArmory[]
+    armors  ArmorInArmory[]
+    Place   Place[]
+}
+
+model WeaponInArmory {
     id String @id @default(uuid())
+
+    weapon    Weapon  @relation(fields: [weapon_id], references: [id])
+    weapon_id String
+    Armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory_id String?
+
+    @@index([weapon_id])
+    @@index([armory_id])
+}
+
+model ArmorInArmory {
+    id String @id @default(uuid())
+
+    armor     Armor   @relation(fields: [armor_id], references: [id])
+    armor_id  String
+    Armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory_id String?
+
+    @@index([armor_id])
+    @@index([armory_id])
 }
 
 // -----------------------------
@@ -213,8 +264,11 @@ model Weapon {
     damage_from Int
     damage_to   Int
 
+    price Int
+
     weapon_loot      WeaponInLoot[]
     weapon_inventory WeaponInInventory[]
+    weapon_armory    WeaponInArmory[]
 }
 
 enum ArmorType {
@@ -237,8 +291,11 @@ model Armor {
     agility      Int
     intelligency Int
 
+    price Int
+
     armor_loot      ArmorInLoot[]
     armor_inventory ArmorInInventory[]
+    armor_armory    ArmorInArmory[]
 }
 
 // -----------------------------
