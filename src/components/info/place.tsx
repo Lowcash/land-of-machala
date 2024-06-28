@@ -25,6 +25,7 @@ export function Place(p: Props) {
           Vrátit se
         </Button>
         <br />
+        <br />
         <Hospital {...p.hospital} />
       </S.Info>
     )
@@ -34,6 +35,7 @@ export function Place(p: Props) {
         <Button variant='outline' onClick={() => handleGoToSubPlace()}>
           Vrátit se
         </Button>
+        <br />
         <br />
         <Armory {...p.armory} />
       </S.Info>
