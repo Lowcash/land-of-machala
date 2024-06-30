@@ -5,7 +5,6 @@ import { getWeapons } from './weapon'
 import { getArmors } from './armors'
 
 import { WEARABLES } from '@/const'
-import { Weapon } from '@prisma/client'
 
 const MIN_PRICE = 1000
 const MAX_PRICE = 50000

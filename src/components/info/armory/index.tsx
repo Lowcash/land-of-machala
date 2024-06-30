@@ -5,9 +5,6 @@ import { Armor, Armory as ModelArmory, Weapon } from '@prisma/client'
 import { Label } from '@radix-ui/react-label'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
-import { Table } from '../../table'
-import { Button } from '../../ui/button'
-import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import { Action, ArmorMarket, WeaponMarket } from './market'
 
 type Props = ModelArmory
@@ -15,7 +12,7 @@ type Props = ModelArmory
 export function Armory(p: Props) {
   const show = api.armory.show.useQuery({ armoryId: p.id })
   const buy = api.armory.buy.useMutation()
-
+  console.log(show)
   const handleWeaponAction = React.useCallback(
     (action: Action, weapon: Weapon) => {
       switch (action) {
@@ -73,11 +70,11 @@ export function Armory(p: Props) {
           <br />
           <Label>Koupit Zbraň</Label>
           <br />
-          <WeaponMarket items={show.data.weapons as any} action='buy' onAction={handleWeaponAction} />
+          <WeaponMarket weapons={show.data.weapons} action='buy' onAction={handleWeaponAction} />
           <br />
           <Label>Prodat Zbraň</Label>
           <br />
-          <WeaponMarket items={show.data.weapons as any} action='sell' onAction={handleWeaponAction} />
+          <WeaponMarket weapons={show.data.weapons} action='sell' onAction={handleWeaponAction} />
         </>
       )}
       {hasArmors && (
@@ -86,9 +83,9 @@ export function Armory(p: Props) {
           <br />
           <Label>Koupit Zbroj</Label>
           <br />
-          <ArmorMarket items={show.data.armors as any} action='buy' onAction={handleArmorAction} />
+          <ArmorMarket armors={show.data.armors} action='buy' onAction={handleArmorAction} />
           <br />
-          <ArmorMarket items={show.data.armors as any} action='sell' onAction={handleArmorAction} />
+          <ArmorMarket armors={show.data.armors} action='sell' onAction={handleArmorAction} />
         </>
       )}
     </>

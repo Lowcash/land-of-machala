@@ -7,14 +7,14 @@ import { PaperPlaneIcon } from '@radix-ui/react-icons'
 
 export type Action = 'buy' | 'sell'
 
-type Props<T, K> = {
-  items: Array<T & { item: K }>
+type WeaponMarketProps = {
+  weapons: Array<WeaponInArmory & { weapon: Weapon }>
   action: Action
 
-  onAction?: (action: Action, item: K) => void
+  onAction?: (action: Action, weapon: Weapon) => void
 }
 
-export function WeaponMarket(p: Props<WeaponInArmory, Weapon>) {
+export function WeaponMarket(p: WeaponMarketProps) {
   return (
     <Table
       columns={[
@@ -22,13 +22,13 @@ export function WeaponMarket(p: Props<WeaponInArmory, Weapon>) {
         { className: 'text-center', content: 'Poškození' },
         { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
       ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.item.name },
+      cells={p.weapons.map((x) => [
+        { className: 'text-left', content: x.weapon.name },
         {
           className: 'text-center',
           content: (
             <>
-              {x.item.damage_from}-{x.item.damage_to}
+              {x.weapon.damage_from}-{x.weapon.damage_to}
             </>
           ),
         },
@@ -38,7 +38,7 @@ export function WeaponMarket(p: Props<WeaponInArmory, Weapon>) {
             <>
               <Label>{x.price} zlaťáků</Label>
               &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.item)}>
+              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.weapon)}>
                 <PaperPlaneIcon />
               </Button>
             </>
@@ -49,7 +49,14 @@ export function WeaponMarket(p: Props<WeaponInArmory, Weapon>) {
   )
 }
 
-export function ArmorMarket(p: Props<ArmorInArmory, Armor>) {
+type ArmorMarketProps = {
+  armors: Array<ArmorInArmory & { armor: Armor }>
+  action: Action
+
+  onAction?: (action: Action, armor: Armor) => void
+}
+
+export function ArmorMarket(p: ArmorMarketProps) {
   return (
     <Table
       columns={[
@@ -61,20 +68,20 @@ export function ArmorMarket(p: Props<ArmorInArmory, Armor>) {
         { className: 'text-center', content: 'Inteligence' },
         { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
       ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.item.name },
-        { className: 'text-center', content: x.item.type },
-        { className: 'text-center', content: x.item.armor },
-        { className: 'text-center', content: x.item.strength },
-        { className: 'text-center', content: x.item.agility },
-        { className: 'text-center', content: x.item.intelligency },
+      cells={p.armors.map((x) => [
+        { className: 'text-left', content: x.armor.name },
+        { className: 'text-center', content: x.armor.type },
+        { className: 'text-center', content: x.armor.armor },
+        { className: 'text-center', content: x.armor.strength },
+        { className: 'text-center', content: x.armor.agility },
+        { className: 'text-center', content: x.armor.intelligency },
         {
           className: 'text-right',
           content: (
             <>
               <Label>{x.price} zlaťáků</Label>
               &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.item)}>
+              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.armor)}>
                 <PaperPlaneIcon />
               </Button>
             </>
