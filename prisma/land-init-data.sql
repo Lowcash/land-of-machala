@@ -1,12 +1,12 @@
-INSERT IGNORE INTO User (id, race, profession, hp_actual, hp_max, xp_actual, xp_max)
-VALUES ('clxxohayg000c141wxuz8p4hv' /* id by database id*/, 'DWARF', 'SAMURAI', 100, 100, 0, 100)
-ON DUPLICATE KEY UPDATE
-race = VALUES(race),
-profession = VALUES(profession),
-hp_actual = VALUES(hp_actual),
-hp_max = VALUES(hp_max),
-xp_actual = VALUES(xp_actual),
-xp_max = VALUES(xp_max);
+-- INSERT IGNORE INTO User (id, race, profession, hp_actual, hp_max, xp_actual, xp_max)
+-- VALUES ('clxxohayg000c141wxuz8p4hv' /* id by database id*/, 'DWARF', 'SAMURAI', 100, 100, 0, 100)
+-- ON DUPLICATE KEY UPDATE
+-- race = VALUES(race),
+-- profession = VALUES(profession),
+-- hp_actual = VALUES(hp_actual),
+-- hp_max = VALUES(hp_max),
+-- xp_actual = VALUES(xp_actual),
+-- xp_max = VALUES(xp_max);
 
 -- UPDATE `User`
 -- SET role = 'ADMIN'
@@ -153,13 +153,57 @@ VALUES
 (50, 'Oštěp', 18, 36),
 (51, 'Ráže', 25, 50);
 
-INSERT IGNORE INTO Place (id, name, pos_x, pos_y)
+INSERT IGNORE INTO Place (id, name, description, pos_x, pos_y, hospital_id, armory_id)
 VALUES 
-(1, 'Královský palác', 0, 0),
-(2, 'Lesní oltář', -30, 25),
-(3, 'Havraní věž', 15, -40),
-(4, 'Ztracená jeskyně', 40, 10),
-(5, 'Jezerní útočiště', -20, 35);
+(1, 'Královský palác', 'Elegantní palác s rozlehlými zahradami a bohatou historií.', 0, 0, 1, 1),
+(2, 'Lesní oltář', 'Starobylý oltář obklopený mystickými stromy a tajemnou atmosférou.', -30, 25, NULL, NULL),
+(3, 'Havraní věž', 'Vysoká věž s výhledem na okolní krajinu, obývaná havrany a čarodějnicemi.', 15, -40, NULL, NULL),
+(4, 'Ztracená jeskyně', 'Tajemná jeskyně plná starověkých artefaktů a nebezpečných pastí.', 40, 10, NULL, NULL),
+(5, 'Jezerní útočiště', 'Klidné útočiště u jezera s pozoruhodným výhledem na hladinu vody a okolní lesy.', -20, 35, NULL, NULL);
+
+INSERT IGNORE INTO Hospital (id, name, description, subdescription, price)
+VALUES 
+(1, 'Nemocnice Sv. Lukáše', 'Oprava rozbitých kosti a rozbité srdcovky', 'Buď zdráv, dobrodruhu! U nás společně s dobrým pivem poléčíme všechny tvoje starosti!', 250);
+
+INSERT IGNORE INTO WeaponInArmory (id, weapon_id, armory_id, price)
+VALUES 
+(1, 7, 1, 2200),
+(2, 42, 1, 2500),
+(3, 19, 1, 2900),
+(4, 31, 1, 1700),
+(5, 5, 1, 1500),
+(6, 14, 1, 9500),
+(7, 25, 1, 2100),
+(8, 38, 1, 2100),
+(9, 10, 1, 2300),
+(10, 3, 1, 1000),
+(11, 50, 1, 2000),
+(12, 12, 1, 800),
+(13, 28, 1, 800),
+(14, 6, 1, 1800),
+(15, 21, 1, 1400);
+
+INSERT IGNORE INTO ArmorInArmory (id, armor_id, armory_id, price)
+VALUES 
+(1, 30, 1, 10500),
+(2, 8, 1, 9000),
+(3, 15, 1, 8800),
+(4, 36, 1, 8600),
+(5, 41, 1, 8800),
+(6, 34, 1, 7000),
+(7, 24, 1, 8800),
+(8, 45, 1, 9800),
+(9, 18, 1, 9000),
+(10, 4, 1, 7300),
+(11, 20, 1, 7800),
+(12, 13, 1, 7600),
+(13, 37, 1, 9000),
+(14, 22, 1, 7700),
+(15, 47, 1, 8900);
+
+INSERT IGNORE INTO Armory (id, name, description, subdescription)
+VALUES 
+(1, 'Kovárna Dračí hřebíky', 'Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly.', 'Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?');
 
 INSERT IGNORE INTO Armor (id, type, name, armor, strength, agility, intelligency)
 VALUES 

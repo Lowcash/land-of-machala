@@ -10,7 +10,7 @@ export default function XP() {
 
   return (
     <S.XP>
-      <Progress value={player?.xp_actual} max={player?.xp_max} color={'gold'}>
+      <Progress value={player?.xp_actual} max={player?.xp_max ?? 0} color={'gold'}>
         {player?.xp_actual ?? 0} / {player?.xp_max ?? 0}
       </Progress>
     </S.XP>

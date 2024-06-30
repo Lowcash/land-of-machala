@@ -2,7 +2,7 @@ import * as S from '.././styles'
 import Inventory from '@/components/inventory'
 import XP from '@/components/xp'
 
-export default async function () {
+export default function () {
   return (
     <>
       <S.TopContainer>

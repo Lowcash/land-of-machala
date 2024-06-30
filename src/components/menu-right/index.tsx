@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
-import Sidebar from '../sidebar'
+import { Sidebar } from '../sidebar'
 import Link from 'next/link'
 
 export default function MenuRight() {
