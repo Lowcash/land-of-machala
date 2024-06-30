@@ -21,7 +21,7 @@ export default function MenuLeft() {
     {
       label: 'HP:',
       value: (
-        <Progress value={info?.hp_actual} max={info?.hp_max} color='red'>
+        <Progress value={info?.hp_actual} max={info?.hp_max ?? 0} color='red'>
           {info?.hp_actual ?? 0} / {info?.hp_max ?? 0}
         </Progress>
       ),
