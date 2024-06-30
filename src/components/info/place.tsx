@@ -29,7 +29,7 @@ export function Place(p: Props) {
         <Hospital {...p.hospital} />
       </S.Info>
     )
-  if (subplace === 'armory')
+  if (subplace === 'armory' && !!p.armory?.id)
     return (
       <S.Info>
         <Button variant='outline' onClick={() => handleGoToSubPlace()}>
@@ -37,7 +37,7 @@ export function Place(p: Props) {
         </Button>
         <br />
         <br />
-        <Armory {...p.armory} />
+        <Armory id={p.armory?.id} />
       </S.Info>
     )
 

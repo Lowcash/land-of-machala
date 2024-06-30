@@ -1,18 +1,20 @@
 import React from 'react'
 import { api } from '@/trpc/react'
-import { Armor, Armory as ModelArmory, Weapon } from '@prisma/client'
+import { Armor, Weapon } from '@prisma/client'
 
 import { Label } from '@radix-ui/react-label'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
 import { Action, ArmorMarket, WeaponMarket } from './market'
 
-type Props = ModelArmory
+type Props = {
+  id: string
+}
 
 export function Armory(p: Props) {
   const show = api.armory.show.useQuery({ armoryId: p.id })
   const buy = api.armory.buy.useMutation()
-  console.log(show)
+
   const handleWeaponAction = React.useCallback(
     (action: Action, weapon: Weapon) => {
       switch (action) {
