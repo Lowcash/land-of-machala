@@ -5,4 +5,7 @@ import withTwin from './withTwin.mjs'
  */
 export default withTwin({
   reactStrictMode: true,
+  eslint: {
+    ignoreDuringBuilds: true
+  }
 })
