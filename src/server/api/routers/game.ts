@@ -112,7 +112,7 @@ export const gameRouter = createTRPCRouter({
 
     if (!Boolean(loot)) return
 
-    await ctx.db.$transaction(async (db: any) => {
+    await ctx.db.$transaction(async db => {
       for (const l of loot.weapons_loot) {
         await db.weaponInInventory.create({
           data: {
