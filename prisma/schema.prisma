@@ -8,7 +8,10 @@ datasource db {
     relationMode = "prisma"
 }
 
-// Necessary for Next auth
+// -----------------------------
+// Authorization/Authentication
+// (Necessary for Next auth)
+// -----------------------------
 model Account {
     id                String  @id @default(cuid())
     userId            String
@@ -36,6 +39,14 @@ model Session {
     user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@index([userId])
+}
+
+model VerificationToken {
+    identifier String
+    token      String   @unique
+    expires    DateTime
+
+    @@unique([identifier, token])
 }
 
 enum Role {
@@ -105,20 +116,9 @@ enum Profession {
     MAGE
 }
 
-model EnemyInstance {
-    id String @id @default(cuid())
-
-    hp_actual Int
-    hp_max    Int
-
-    enemy    Enemy  @relation(fields: [enemy_id], references: [id])
-    enemy_id String
-
-    users User[]
-
-    @@index([enemy_id])
-}
-
+// -----------------------------
+// Enemy
+// -----------------------------
 model Enemy {
     id   String @id @default(uuid())
     name String
@@ -138,61 +138,98 @@ model Enemy {
     enemy_instances EnemyInstance[]
 }
 
-model VerificationToken {
-    identifier String
-    token      String   @unique
-    expires    DateTime
+model EnemyInstance {
+    id String @id @default(cuid())
 
-    @@unique([identifier, token])
+    hp_actual Int
+    hp_max    Int
+
+    enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+    enemy_id String
+
+    users User[]
+
+    @@index([enemy_id])
 }
 
+// -----------------------------
+// Place
+// -----------------------------
 model Place {
-    id   String @id @default(uuid())
-    name String
+    id          String  @id @default(uuid())
+    name        String
+    description String?
 
     pos_x Int
     pos_y Int
+
+    hospital    Hospital? @relation(fields: [hospital_id], references: [id])
+    hospital_id String?
+    armory      Armory?   @relation(fields: [armory_id], references: [id])
+    armory_id   String?
+
+    @@index([hospital_id])
+    @@index([armory_id])
 }
 
-model Weapon {
-    id   String @id @default(uuid())
-    name String
+model Hospital {
+    id             String  @id @default(uuid())
+    name           String
+    description    String?
+    subdescription String?
 
-    damage_from Int
-    damage_to   Int
+    price Int?
 
-    weapon_loot      WeaponInLoot[]
-    weapon_inventory WeaponInInventory[]
+    places Place[]
 }
 
-model Armor {
-    id   String @id @default(uuid())
-    name String
+model Armory {
+    id             String  @id @default(uuid())
+    name           String
+    description    String?
+    subdescription String?
 
-    type ArmorType
-
-    armor        Int
-    strength     Int
-    agility      Int
-    intelligency Int
-
-    armor_loot      ArmorInLoot[]
-    armor_inventory ArmorInInventory[]
+    weapons WeaponInArmory[]
+    armors  ArmorInArmory[]
+    places  Place[]
 }
 
-enum ArmorType {
-    HEAD
-    SHOULDER
-    CHEST
-    HAND
-    PANTS
-    BOOTS
+model WeaponInArmory {
+    id String @id @default(uuid())
+
+    weapon    Weapon  @relation(fields: [weapon_id], references: [id])
+    weapon_id String
+    armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory_id String?
+
+    price Int
+
+    @@index([weapon_id])
+    @@index([armory_id])
 }
+
+model ArmorInArmory {
+    id String @id @default(uuid())
+
+    armor     Armor   @relation(fields: [armor_id], references: [id])
+    armor_id  String
+    Armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory_id String?
+
+    price Int
+
+    @@index([armor_id])
+    @@index([armory_id])
+}
+
+// -----------------------------
+// Wearables
+// -----------------------------
 
 model Wearable {
     id String @id @default(uuid())
 
-    user User[]
+    users User[]
 
     left_hand  WeaponInInventory? @relation("LeftHandWeapon", fields: [left_hand_weapon_id], references: [id])
     right_hand WeaponInInventory? @relation("RightHandWeapon", fields: [right_hand_weapon_id], references: [id])
@@ -224,13 +261,54 @@ model Wearable {
     @@index([boots_armor_id])
 }
 
+model Weapon {
+    id   String @id @default(uuid())
+    name String
+
+    damage_from Int
+    damage_to   Int
+
+    weapons_loot      WeaponInLoot[]
+    weapons_armory    WeaponInArmory[]
+    weapons_inventory WeaponInInventory[]
+}
+
+enum ArmorType {
+    HEAD
+    SHOULDER
+    CHEST
+    HAND
+    PANTS
+    BOOTS
+}
+
+model Armor {
+    id   String @id @default(uuid())
+    name String
+
+    type ArmorType
+
+    armor        Int
+    strength     Int
+    agility      Int
+    intelligency Int
+
+    armors_loot      ArmorInLoot[]
+    armors_armory    ArmorInArmory[]
+    armors_inventory ArmorInInventory[]
+}
+
+// -----------------------------
+// Loot
+// -----------------------------
+
 model Loot {
     id String @id @default(uuid())
 
-    User User[]
+    user User[]
 
-    weapons WeaponInLoot[]
-    armors  ArmorInLoot[]
+    weapons_loot WeaponInLoot[]
+    armors_loot  ArmorInLoot[]
 
     money Int
 }
@@ -259,13 +337,16 @@ model ArmorInLoot {
     @@index([loot_id])
 }
 
+// -----------------------------
+// Inventory
+// -----------------------------
 model Inventory {
     id String @id @default(uuid())
 
-    User User[]
+    user User[]
 
-    weapons WeaponInInventory[]
-    armors  ArmorInInventory[]
+    weapons_inventory WeaponInInventory[]
+    armors_inventory  ArmorInInventory[]
 }
 
 model WeaponInInventory {
@@ -276,8 +357,8 @@ model WeaponInInventory {
     inventory    Inventory @relation(fields: [inventory_id], references: [id])
     inventory_id String
 
-    left_hand_weapon  Wearable[] @relation("LeftHandWeapon")
-    right_hand_weapon Wearable[] @relation("RightHandWeapon")
+    left_hand_weapons  Wearable[] @relation("LeftHandWeapon")
+    right_hand_weapons Wearable[] @relation("RightHandWeapon")
 
     @@index([weapon_id])
     @@index([inventory_id])
@@ -291,12 +372,12 @@ model ArmorInInventory {
     inventory    Inventory @relation(fields: [inventory_id], references: [id])
     inventory_id String
 
-    head_armor     Wearable[] @relation("HeadArmor")
-    shoulder_armor Wearable[] @relation("ShoulderArmor")
-    chest_armor    Wearable[] @relation("ChestArmor")
-    hand_armor     Wearable[] @relation("HandArmor")
-    pants_armor    Wearable[] @relation("PantsArmor")
-    boots_armor    Wearable[] @relation("BootsArmor")
+    head_armors     Wearable[] @relation("HeadArmor")
+    shoulder_armors Wearable[] @relation("ShoulderArmor")
+    chest_armors    Wearable[] @relation("ChestArmor")
+    hand_armors     Wearable[] @relation("HandArmor")
+    pants_armors    Wearable[] @relation("PantsArmor")
+    boots_armors    Wearable[] @relation("BootsArmor")
 
     @@index([armor_id])
     @@index([inventory_id])

@@ -5,8 +5,7 @@ import { signal, useSignalValue } from 'signals-react-safe'
 import { isString } from '@/utils/typeguard'
 
 import * as S from './index.styles'
-import Link from 'next/link'
-import Sidebar from '../sidebar'
+import { Sidebar } from '../sidebar'
 import Progress from '../progress'
 
 const EMPTY = 'Žádné'
@@ -22,7 +21,7 @@ export default function MenuLeft() {
     {
       label: 'HP:',
       value: (
-        <Progress value={info?.hp_actual} max={info?.hp_max} color='red'>
+        <Progress value={info?.hp_actual} max={info?.hp_max ?? 0} color='red'>
           {info?.hp_actual ?? 0} / {info?.hp_max ?? 0}
         </Progress>
       ),

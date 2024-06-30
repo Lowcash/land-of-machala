@@ -1,18 +1,21 @@
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
-import { getInventory } from './player'
+import { getInventory } from './inventory'
 
 export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id) throw new Error('No enemy!')
+
     // const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
     const damageFromPlayer = 1000
     const damageFromEnemy = random(
-      ctx.session.user.enemy_instance.enemy.damage_from,
+      ctx.session.user.enemy_instance.enemy.damage_from ?? 0,
       ctx.session.user.enemy_instance.enemy.damage_to,
     )
 
-    const actualPlayerHP = ctx.session.user.hp_actual - damageFromEnemy
+    const actualPlayerHP = (ctx.session.user.hp_actual ?? 0) - damageFromEnemy
     const actualEnemyHP = ctx.session.user.enemy_instance.hp_actual - damageFromPlayer
 
     await ctx.db.user.update({
@@ -26,8 +29,14 @@ export const gameRouter = createTRPCRouter({
     const enemyDefeated = actualEnemyHP <= 0
 
     if (playerDefeated || enemyDefeated) {
-      const possibleEnemyXpGain = random(ctx.session.user.enemy_instance.enemy.xp_from, ctx.session.user.enemy_instance.enemy.xp_to)
-      const possibleEnemyMoneyGain = random(ctx.session.user.enemy_instance.enemy.money_from, ctx.session.user.enemy_instance.enemy.money_to)
+      const possibleEnemyXpGain = random(
+        ctx.session.user.enemy_instance.enemy.xp_from ?? 0,
+        ctx.session.user.enemy_instance.enemy.xp_to ?? 0,
+      )
+      const possibleEnemyMoneyGain = random(
+        ctx.session.user.enemy_instance.enemy.money_from ?? 0,
+        ctx.session.user.enemy_instance.enemy.money_to ?? 0,
+      )
 
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
@@ -53,23 +62,24 @@ export const gameRouter = createTRPCRouter({
 
         const loot = await ctx.db.loot.create({
           data: {
-            weapons: {
-              create: [{ weapon: { connect: weapon } }],
+            weapons_loot: {
+              create: weapon ? [{ weapon: { connect: weapon } }] : undefined,
             },
-            armors: {
-              create: [{ armor: { connect: armor } }],
+            armors_loot: {
+              create: armor ? [{ armor: { connect: armor } }] : undefined,
             },
-            money: possibleEnemyMoneyGain
+            money: possibleEnemyMoneyGain,
           },
         })
 
         const xpActual = (ctx.session.user.xp_actual ?? 0) + possibleEnemyXpGain
-        const hasLevelUp = xpActual > ctx.session.user.xp_max
-        
+        const xpMax = ctx.session.user.xp_max ?? 0
+        const hasLevelUp = xpActual > xpMax
+
         await ctx.db.user.update({
           where: { id: ctx.session.user.id },
           data: {
-            xp_actual: hasLevelUp ? xpActual - ctx.session.user.xp_max : xpActual,
+            xp_actual: hasLevelUp ? xpActual - xpMax : xpActual,
             level: hasLevelUp ? ctx.session.user.level + 1 : ctx.session.user.level,
             loot: { connect: loot },
           },
@@ -87,17 +97,23 @@ export const gameRouter = createTRPCRouter({
     })
   }),
   runAway: protectedProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id) throw new Error('No enemy!')
+
     await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
   }),
   loot: protectedProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+    if (!ctx.session?.user?.loot || !ctx.session?.user?.loot_id) throw new Error('No loot!')
+
     const inventoryId = (await getInventory(ctx))?.id
 
     const loot = ctx.session.user.loot
 
     if (!Boolean(loot)) return
 
-    await ctx.db.$transaction(async (db: any) => {
-      for (const l of loot.weapons) {
+    await ctx.db.$transaction(async db => {
+      for (const l of loot.weapons_loot) {
         await db.weaponInInventory.create({
           data: {
             weapon_id: l.weapon_id,
@@ -105,7 +121,7 @@ export const gameRouter = createTRPCRouter({
           },
         })
       }
-      for (const l of loot.armors) {
+      for (const l of loot.armors_loot) {
         await db.armorInInventory.create({
           data: {
             armor_id: l.armor_id,
@@ -124,13 +140,13 @@ export const gameRouter = createTRPCRouter({
         where: { id: loot.id },
       })
 
-      const moneyActual = (ctx.session.user.money ?? 0) + (loot.money ?? 0)
+      const moneyActual = (ctx.session.user!.money ?? 0) + (loot.money ?? 0)
 
       await db.user.update({
-        where: { id: ctx.session.user.id },
+        where: { id: ctx.session.user!.id },
         data: {
           loot_id: null,
-          money: moneyActual
+          money: moneyActual,
         },
       })
     })
@@ -146,8 +162,14 @@ async function info(ctx: TRPCContext) {
         pos_x: ctx.session.user.pos_x,
         pos_y: ctx.session.user.pos_y,
       },
-      select: {
-        name: true,
+      include: {
+        hospital: true,
+        armory: {
+          include: {
+            weapons: { include: { weapon: true } },
+            armors: { include: { armor: true } },
+          },
+        },
       },
     }),
     enemyInstance: ctx.session.user.enemy_instance,
@@ -171,7 +193,7 @@ export async function inspectPosition(ctx: TRPCContext) {
       take: 1,
     }))
 
-  if (Boolean(enemy)) {
+  if (!!enemy) {
     const hp = random(enemy.hp_to, enemy.hp_from)
 
     await ctx.db.user.update({

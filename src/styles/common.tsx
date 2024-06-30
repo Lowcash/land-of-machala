@@ -42,6 +42,7 @@ const _Content = styled('section')<ContentProps>`
     flex flex-col justify-between
     fixed
     p-5
+    overflow-auto
   `}
 
   ${({ isLeftSidebarOpened, isRightSidebarOpened }) => {

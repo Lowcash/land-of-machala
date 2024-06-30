@@ -94,8 +94,10 @@ const enforceUserIsAuthed = t.middleware(async ({ ctx, next }) => {
     include: {
       enemy_instance: { include: { enemy: true } },
       wearable: true,
-      loot: { include: { weapons: { include: { weapon: true } }, armors: { include: { armor: true } } } },
-      inventory: { include: { weapons: { include: { weapon: true } }, armors: { include: { armor: true } } } },
+      loot: { include: { weapons_loot: { include: { weapon: true } }, armors_loot: { include: { armor: true } } } },
+      inventory: {
+        include: { weapons_inventory: { include: { weapon: true } }, armors_inventory: { include: { armor: true } } },
+      },
     },
   })
 
