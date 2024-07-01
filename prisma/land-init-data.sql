@@ -11,7 +11,7 @@
 -- UPDATE `User`
 -- SET role = 'ADMIN'
 -- WHERE id = 'clxxohayg000c141wxuz8p4hv'  /* id by database id*/;
- 
+  
 INSERT IGNORE INTO Enemy (id, name, hp_from, hp_to, damage_from, damage_to)
 VALUES 
 ('1', 'Troll', 234, 284, 10, 20),
