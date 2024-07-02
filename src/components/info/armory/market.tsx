@@ -1,4 +1,4 @@
-import { Armor, ArmorInArmory, Weapon, WeaponInArmory } from '@prisma/client'
+import { Armor, Weapon } from '@prisma/client'
 
 import { Table } from '@/components/table'
 import { Label } from '@radix-ui/react-label'
@@ -8,7 +8,7 @@ import { PaperPlaneIcon } from '@radix-ui/react-icons'
 export type Action = 'buy' | 'sell'
 
 type WeaponMarketProps = {
-  weapons: Array<WeaponInArmory & { weapon: Weapon }>
+  weapons: Array<Weapon & { price: number }>
   action: Action
 
   onAction?: (action: Action, weapon: Weapon) => void
@@ -23,12 +23,12 @@ export function WeaponMarket(p: WeaponMarketProps) {
         { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
       ]}
       cells={p.weapons.map((x) => [
-        { className: 'text-left', content: x.weapon.name },
+        { className: 'text-left', content: x.name },
         {
           className: 'text-center',
           content: (
             <>
-              {x.weapon.damage_from}-{x.weapon.damage_to}
+              {x.damage_from}-{x.damage_to}
             </>
           ),
         },
@@ -38,7 +38,7 @@ export function WeaponMarket(p: WeaponMarketProps) {
             <>
               <Label>{x.price} zlaťáků</Label>
               &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.weapon)}>
+              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
                 <PaperPlaneIcon />
               </Button>
             </>
@@ -50,7 +50,7 @@ export function WeaponMarket(p: WeaponMarketProps) {
 }
 
 type ArmorMarketProps = {
-  armors: Array<ArmorInArmory & { armor: Armor }>
+  armors: Array<Armor & { price: number }>
   action: Action
 
   onAction?: (action: Action, armor: Armor) => void
@@ -69,19 +69,19 @@ export function ArmorMarket(p: ArmorMarketProps) {
         { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
       ]}
       cells={p.armors.map((x) => [
-        { className: 'text-left', content: x.armor.name },
-        { className: 'text-center', content: x.armor.type },
-        { className: 'text-center', content: x.armor.armor },
-        { className: 'text-center', content: x.armor.strength },
-        { className: 'text-center', content: x.armor.agility },
-        { className: 'text-center', content: x.armor.intelligency },
+        { className: 'text-left', content: x.name },
+        { className: 'text-center', content: x.type },
+        { className: 'text-center', content: x.armor },
+        { className: 'text-center', content: x.strength },
+        { className: 'text-center', content: x.agility },
+        { className: 'text-center', content: x.intelligency },
         {
           className: 'text-right',
           content: (
             <>
               <Label>{x.price} zlaťáků</Label>
               &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x.armor)}>
+              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
                 <PaperPlaneIcon />
               </Button>
             </>

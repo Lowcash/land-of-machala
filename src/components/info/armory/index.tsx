@@ -14,6 +14,7 @@ type Props = {
 export function Armory(p: Props) {
   const show = api.armory.show.useQuery({ armoryId: p.id })
   const buy = api.armory.buy.useMutation()
+  const sell = api.armory.sell.useMutation()
 
   const handleWeaponAction = React.useCallback(
     (action: Action, weapon: Weapon) => {
@@ -22,7 +23,7 @@ export function Armory(p: Props) {
           buy.mutate({ armoryId: p.id, itemId: weapon.id, itemType: 'weapon' }), [buy, p.id]
           break
         case 'sell':
-          buy.mutate({ armoryId: p.id, itemId: weapon.id, itemType: 'weapon' }), [buy, p.id]
+          sell.mutate({ armoryId: p.id, itemId: weapon.id, itemType: 'weapon' }), [sell, p.id]
           break
       }
     },
@@ -36,18 +37,37 @@ export function Armory(p: Props) {
           buy.mutate({ armoryId: p.id, itemId: armor.id, itemType: 'armor' }), [buy, p.id]
           break
         case 'sell':
-          buy.mutate({ armoryId: p.id, itemId: armor.id, itemType: 'armor' }), [buy, p.id]
+          sell.mutate({ armoryId: p.id, itemId: armor.id, itemType: 'armor' }), [sell, p.id]
           break
       }
     },
     [p.id, buy],
   )
 
+  const buyWeapons = React.useMemo(
+    () => show.data?.buyWeapons.map((x) => ({ ...x.weapon, price: x.price })),
+    [show.data?.buyWeapons],
+  )
+  const buyArmors = React.useMemo(
+    () => show.data?.buyArmors.map((x) => ({ ...x.armor, price: x.price })),
+    [show.data?.buyArmors],
+  )
+  const sellWeapons = React.useMemo(
+    () => show.data?.sellWeapons.map((x) => ({ ...x.weapon, price: x.price })),
+    [show.data?.sellWeapons],
+  )
+  const sellArmors = React.useMemo(
+    () => show.data?.sellArmors.map((x) => ({ ...x.armor, price: x.price })),
+    [show.data?.sellArmors],
+  )
+
   if (show.isLoading) return <Loading />
   if (!show.data) return <></>
 
-  const hasWeapons = (show.data.weapons?.length ?? 0) > 0
-  const hasArmors = (show.data?.armors?.length ?? 0) > 0
+  const hasBuyWeapons = (buyWeapons?.length ?? 0) > 0
+  const hasBuyArmors = (buyArmors?.length ?? 0) > 0
+  const hasSellWeapons = (sellWeapons?.length ?? 0) > 0
+  const hasSellArmors = (sellArmors?.length ?? 0) > 0
 
   return (
     <>
@@ -66,28 +86,40 @@ export function Armory(p: Props) {
             : 'Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)'}
         </Alert>
       )}
-      {hasWeapons && (
+      {hasBuyWeapons && (
         <>
           <br />
           <br />
           <Label>Koupit Zbraň</Label>
           <br />
-          <WeaponMarket weapons={show.data.weapons} action='buy' onAction={handleWeaponAction} />
+          <WeaponMarket weapons={buyWeapons!} action='buy' onAction={handleWeaponAction} />
+        </>
+      )}
+      {hasSellWeapons && (
+        <>
+          <br />
           <br />
           <Label>Prodat Zbraň</Label>
           <br />
-          <WeaponMarket weapons={show.data.weapons} action='sell' onAction={handleWeaponAction} />
+          <WeaponMarket weapons={sellWeapons!} action='sell' onAction={handleWeaponAction} />
         </>
       )}
-      {hasArmors && (
+      {hasBuyArmors && (
         <>
           <br />
           <br />
           <Label>Koupit Zbroj</Label>
           <br />
-          <ArmorMarket armors={show.data.armors} action='buy' onAction={handleArmorAction} />
+          <ArmorMarket armors={buyArmors!} action='buy' onAction={handleArmorAction} />
+        </>
+      )}
+      {hasSellArmors && (
+        <>
           <br />
-          <ArmorMarket armors={show.data.armors} action='sell' onAction={handleArmorAction} />
+          <br />
+          <Label>Prodat Zbroj</Label>
+          <br />
+          <ArmorMarket armors={sellArmors!} action='sell' onAction={handleArmorAction} />
         </>
       )}
     </>
