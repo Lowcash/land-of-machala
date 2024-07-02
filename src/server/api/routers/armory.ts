@@ -33,7 +33,7 @@ export const armoryRoute = createTRPCRouter({
     }
   }),
   buy: protectedProcedure
-    .input(z.object({ armoryId: z.string(), itemId: z.string(), itemType: z.enum(WEARABLES) }))
+    .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), itemType: z.enum(WEARABLES) }))
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session?.user) throw new Error('User does not exist!')
 
@@ -41,7 +41,7 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const armoryWeapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.weapon_id === input.itemId)
+          const armoryWeapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.id === input.armoryItemId)
 
           if (!armoryWeapon) throw new Error('Armory does not have weapon!')
 
@@ -70,7 +70,7 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armoryArmor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.armor_id === input.itemId)
+            const armoryArmor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.id === input.armoryItemId)
 
             if (!armoryArmor) throw new Error('Armory does not have armor!')
 
@@ -100,7 +100,7 @@ export const armoryRoute = createTRPCRouter({
       }
     }),
   sell: protectedProcedure
-    .input(z.object({ armoryId: z.string(), itemId: z.string(), itemType: z.enum(WEARABLES) }))
+    .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), itemType: z.enum(WEARABLES) }))
     .mutation(async ({ ctx, input }) => {
       if (!ctx.session?.user) throw new Error('User does not exist!')
 
@@ -108,8 +108,8 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const armoryWeapon = (await getSellWeapons(ctx)).find((x) => x.weapon_id === input.itemId)
-
+          const armoryWeapon = (await getSellWeapons(ctx)).find((x) => x.id === input.armoryItemId)
+          
           if (!armoryWeapon) throw new Error('Armory does not accept this weapon!')
 
           const balance = ctx.session.user.money + (armoryWeapon?.price ?? 0)
@@ -121,7 +121,7 @@ export const armoryRoute = createTRPCRouter({
                 money: balance,
               },
             })
-           
+
             const weaponToDelete = await ctx.db.weaponInInventory.findFirst({
               where: {
                 inventory_id: inventory.id,
@@ -143,8 +143,8 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armoryArmor = (await getSellArmors(ctx)).find((x) => x.armor_id === input.itemId)
-
+            const armoryArmor = (await getSellArmors(ctx)).find((x) => x.id === input.armoryItemId)
+            console.log(armoryArmor)
             if (!armoryArmor) throw new Error('Armory does not accept this armor!')
 
             const balance = ctx.session.user.money + (armoryArmor?.price ?? 0)
