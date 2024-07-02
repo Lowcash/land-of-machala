@@ -24,6 +24,7 @@ export function Armory(p: Props) {
     onSettled: () => {
       player.info.invalidate()
       player.stats.invalidate()
+      player.wearable.invalidate()
       armory.show.invalidate()
     },
   })
