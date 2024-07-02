@@ -41,11 +41,11 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const weapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.weapon_id === input.itemId)
+          const armoryWeapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.weapon_id === input.itemId)
 
-          if (!weapon) throw new Error('Armory does not have weapon!')
+          if (!armoryWeapon) throw new Error('Armory does not have weapon!')
 
-          const balance = ctx.session.user.money - (weapon?.price ?? 0)
+          const balance = ctx.session.user.money - (armoryWeapon?.price ?? 0)
 
           if (balance < 0) return { success: false }
 
@@ -59,7 +59,7 @@ export const armoryRoute = createTRPCRouter({
 
             await ctx.db.weaponInInventory.create({
               data: {
-                weapon_id: weapon.id,
+                weapon_id: armoryWeapon.weapon_id,
                 inventory_id: inventory.id,
               },
             })
@@ -70,11 +70,11 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.armor_id === input.itemId)
+            const armoryArmor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.armor_id === input.itemId)
 
-            if (!armor) throw new Error('Armory does not have armor!')
+            if (!armoryArmor) throw new Error('Armory does not have armor!')
 
-            const balance = ctx.session.user.money - (armor?.price ?? 0)
+            const balance = ctx.session.user.money - (armoryArmor?.price ?? 0)
 
             if (balance < 0) return { success: false }
 
@@ -88,7 +88,7 @@ export const armoryRoute = createTRPCRouter({
 
               await ctx.db.armorInInventory.create({
                 data: {
-                  armor_id: armor.id,
+                  armor_id: armoryArmor.armor_id,
                   inventory_id: inventory.id,
                 },
               })
@@ -108,11 +108,11 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const weapon = (await getSellWeapons(ctx)).find((x) => x.weapon_id === input.itemId)
+          const armoryWeapon = (await getSellWeapons(ctx)).find((x) => x.weapon_id === input.itemId)
 
-          if (!weapon) throw new Error('Armory does not accept this weapon!')
+          if (!armoryWeapon) throw new Error('Armory does not accept this weapon!')
 
-          const balance = ctx.session.user.money + (weapon?.price ?? 0)
+          const balance = ctx.session.user.money + (armoryWeapon?.price ?? 0)
 
           await ctx.db.$transaction(async (db) => {
             await db.user.update({
@@ -125,7 +125,7 @@ export const armoryRoute = createTRPCRouter({
             const weaponToDelete = await ctx.db.weaponInInventory.findFirst({
               where: {
                 inventory_id: inventory.id,
-                weapon_id: weapon.weapon_id,
+                weapon_id: armoryWeapon.weapon_id,
               },
             })
 
@@ -143,11 +143,11 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armor = (await getSellArmors(ctx)).find((x) => x.armor_id === input.itemId)
+            const armoryArmor = (await getSellArmors(ctx)).find((x) => x.armor_id === input.itemId)
 
-            if (!armor) throw new Error('Armory does not accept this armor!')
+            if (!armoryArmor) throw new Error('Armory does not accept this armor!')
 
-            const balance = ctx.session.user.money + (armor?.price ?? 0)
+            const balance = ctx.session.user.money + (armoryArmor?.price ?? 0)
 
             await ctx.db.$transaction(async (db) => {
               await db.user.update({
@@ -160,7 +160,7 @@ export const armoryRoute = createTRPCRouter({
               const armorToDelete = await ctx.db.armorInInventory.findFirst({
                 where: {
                   inventory_id: inventory.id,
-                  armor_id: armor.armor_id,
+                  armor_id: armoryArmor.armor_id,
                 },
               })
 
