@@ -12,9 +12,19 @@ type Props = {
 }
 
 export function Armory(p: Props) {
+  const { player, armory } = api.useUtils()
   const show = api.armory.show.useQuery({ armoryId: p.id })
-  const buy = api.armory.buy.useMutation()
-  const sell = api.armory.sell.useMutation()
+  const buy = api.armory.buy.useMutation({
+    onSettled: () => {
+      player.info.invalidate()
+    },
+  })
+  const sell = api.armory.sell.useMutation({
+    onSettled: () => {
+      player.info.invalidate()
+      armory.show.invalidate()
+    },
+  })
 
   const handleWeaponAction = React.useCallback(
     (action: Action, weapon: Weapon) => {

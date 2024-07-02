@@ -108,7 +108,7 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const weapon = (await getSellWeapons(ctx)).find((x) => x.id === input.itemId)
+          const weapon = (await getSellWeapons(ctx)).find((x) => x.weapon_id === input.itemId)
 
           if (!weapon) throw new Error('Armory does not accept this weapon!')
 
@@ -121,11 +121,11 @@ export const armoryRoute = createTRPCRouter({
                 money: balance,
               },
             })
-
+           
             const weaponToDelete = await ctx.db.weaponInInventory.findFirst({
               where: {
                 inventory_id: inventory.id,
-                weapon_id: weapon.id,
+                weapon_id: weapon.weapon_id,
               },
             })
 
@@ -143,7 +143,7 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armor = (await getSellArmors(ctx)).find((x) => x.id === input.itemId)
+            const armor = (await getSellArmors(ctx)).find((x) => x.armor_id === input.itemId)
 
             if (!armor) throw new Error('Armory does not accept this armor!')
 
@@ -160,7 +160,7 @@ export const armoryRoute = createTRPCRouter({
               const armorToDelete = await ctx.db.armorInInventory.findFirst({
                 where: {
                   inventory_id: inventory.id,
-                  armor_id: armor.id,
+                  armor_id: armor.armor_id,
                 },
               })
 
