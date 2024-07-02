@@ -1,5 +1,6 @@
-import { Weapon } from '@prisma/client'
-import { TRPCContext, createTRPCRouter, protectedProcedure } from '../trpc'
+import { createTRPCRouter, protectedProcedure } from '../trpc'
+import type { Weapon } from '@prisma/client'
+import type { TRPCContext } from '../trpc'
 
 const cache: Map<string, Weapon[]> = new Map()
 
@@ -14,21 +15,14 @@ export async function getWeapons(ctx: TRPCContext, opt?: { sorted?: boolean }) {
 
   let weapons: Weapon[]
   if (opt?.sorted) {
-    await ctx.db.$executeRaw`
-      CREATE TEMPORARY TABLE WeaponTemp AS
-      SELECT id, name, damage_from, damage_to, (damage_from + damage_to) AS stats_sum
-      FROM Weapon;
-    `
-
-    weapons = await ctx.db.$queryRaw`
-      SELECT *
-      FROM WeaponTemp
-      ORDER BY stats_sum ASC;
-    `
-
-    await ctx.db.$executeRaw`
-      DROP TEMPORARY TABLE IF EXISTS WeaponTemp;
-    `
+    weapons = (await ctx.db.$queryRaw`
+      CALL GetWeaponsSortedByStats();
+    ` as any[]).map(x => ({
+      id: x.f0,
+      name: x.f1,
+      damage_from: x.f2,
+      damage_to: x.f3
+    }))
   } else {
     weapons = await ctx.db.weapon.findMany()
   }
