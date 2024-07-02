@@ -16,14 +16,13 @@ const ROUND_PRICE_BY = 100
 export const armoryRoute = createTRPCRouter({
   show: protectedProcedure.input(z.object({ armoryId: z.string() })).query(async ({ ctx, input }) => {
     const { weapons, armors, ...armory } = await getArmory(ctx, input.armoryId)
-    
-    // cache is not ready fix TODO
-    // const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([getBuyWeapons(ctx, armory.id), getBuyArmors(ctx, armory.id), getSellWeapons(ctx), getSellArmors(ctx)])
 
-    const buyWeapons = await getBuyWeapons(ctx, armory.id)
-    const buyArmors = await getBuyArmors(ctx, armory.id)
-    const sellWeapons = await getSellWeapons(ctx)
-    const sellArmors = await getSellArmors(ctx)
+    const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
+      getBuyWeapons(ctx, armory.id),
+      getBuyArmors(ctx, armory.id),
+      getSellWeapons(ctx),
+      getSellArmors(ctx),
+    ])
 
     return {
       ...armory,

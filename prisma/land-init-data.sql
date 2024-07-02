@@ -278,3 +278,31 @@ VALUES
 (58, 'BOOTS', 'Kotníkové Boty', 5, 7, 3, 4),
 (59, 'BOOTS', 'Kožené Boty Lovce', 6, 5, 4, 8),
 (60, 'BOOTS', 'Plátové Boty Ochránce', 7, 8, 3, 5);
+
+DROP PROCEDURE IF EXISTS GetWeaponsSortedByStats;
+CREATE PROCEDURE GetWeaponsSortedByStats()
+BEGIN
+    CREATE TEMPORARY TABLE WeaponTemp AS
+    SELECT *, (damage_from + damage_to) AS stats_sum
+    FROM Weapon;
+    
+    SELECT *
+    FROM WeaponTemp
+    ORDER BY stats_sum ASC;
+
+    DROP TEMPORARY TABLE IF EXISTS WeaponTemp;
+END;
+
+DROP PROCEDURE IF EXISTS GetArmorsSortedByStats;
+CREATE PROCEDURE GetArmorsSortedByStats()
+BEGIN
+    CREATE TEMPORARY TABLE ArmorTemp AS
+    SELECT *, (armor + strength + agility + intelligency) AS stats_sum
+      FROM Armor;
+    
+    SELECT *
+    FROM ArmorTemp
+    ORDER BY stats_sum ASC;
+
+    DROP TEMPORARY TABLE IF EXISTS ArmorTemp;
+END;
