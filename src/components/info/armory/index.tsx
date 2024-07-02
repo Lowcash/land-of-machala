@@ -1,11 +1,11 @@
 import React from 'react'
 import { api } from '@/trpc/react'
-import { Armor, Weapon } from '@prisma/client'
 
 import { Label } from '@radix-ui/react-label'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
-import { Action, ArmorMarket, WeaponMarket } from './market'
+import { ArmorMarket, WeaponMarket } from './market'
+import type { Action, ArmorItem, WeaponItem } from './market'
 
 type Props = {
   id: string
@@ -28,13 +28,13 @@ export function Armory(p: Props) {
   })
 
   const handleWeaponAction = React.useCallback(
-    (action: Action, weapon: Weapon) => {
+    (action: Action, weapon: WeaponItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, itemId: weapon.id, itemType: 'weapon' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [buy, p.id]
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, itemId: weapon.id, itemType: 'weapon' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [sell, p.id]
           break
       }
     },
@@ -42,13 +42,13 @@ export function Armory(p: Props) {
   )
 
   const handleArmorAction = React.useCallback(
-    (action: Action, armor: Armor) => {
+    (action: Action, armor: ArmorItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, itemId: armor.id, itemType: 'armor' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [buy, p.id]
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, itemId: armor.id, itemType: 'armor' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [sell, p.id]
           break
       }
     },
@@ -56,19 +56,19 @@ export function Armory(p: Props) {
   )
 
   const buyWeapons = React.useMemo(
-    () => show.data?.buyWeapons.map((x) => ({ ...x.weapon, price: x.price })),
+    () => show.data?.buyWeapons.map((x) => ({ ...x.weapon, armoryWeaponId: x.id, price: x.price })),
     [show.data?.buyWeapons],
   )
   const buyArmors = React.useMemo(
-    () => show.data?.buyArmors.map((x) => ({ ...x.armor, price: x.price })),
+    () => show.data?.buyArmors.map((x) => ({ ...x.armor, armoryArmorId: x.id, price: x.price })),
     [show.data?.buyArmors],
   )
   const sellWeapons = React.useMemo(
-    () => show.data?.sellWeapons.map((x) => ({ ...x.weapon, price: x.price })),
+    () => show.data?.sellWeapons.map((x) => ({ ...x.weapon, armoryWeaponId: x.id, price: x.price })),
     [show.data?.sellWeapons],
   )
   const sellArmors = React.useMemo(
-    () => show.data?.sellArmors.map((x) => ({ ...x.armor, price: x.price })),
+    () => show.data?.sellArmors.map((x) => ({ ...x.armor, armoryArmorId: x.id, price: x.price })),
     [show.data?.sellArmors],
   )
 
