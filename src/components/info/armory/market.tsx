@@ -7,11 +7,13 @@ import { PaperPlaneIcon } from '@radix-ui/react-icons'
 
 export type Action = 'buy' | 'sell'
 
+export type WeaponItem = Weapon & { armoryWeaponId: string; price: number }
+
 type WeaponMarketProps = {
-  weapons: Array<Weapon & { price: number }>
+  weapons: Array<WeaponItem>
   action: Action
 
-  onAction?: (action: Action, weapon: Weapon) => void
+  onAction?: (action: Action, weapon: WeaponItem) => void
 }
 
 export function WeaponMarket(p: WeaponMarketProps) {
@@ -49,11 +51,13 @@ export function WeaponMarket(p: WeaponMarketProps) {
   )
 }
 
+export type ArmorItem = Armor & { armoryArmorId: string; price: number }
+
 type ArmorMarketProps = {
-  armors: Array<Armor & { price: number }>
+  armors: Array<ArmorItem>
   action: Action
 
-  onAction?: (action: Action, armor: Armor) => void
+  onAction?: (action: Action, armor: ArmorItem) => void
 }
 
 export function ArmorMarket(p: ArmorMarketProps) {
