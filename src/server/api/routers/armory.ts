@@ -41,7 +41,7 @@ export const armoryRoute = createTRPCRouter({
 
       switch (input.itemType) {
         case 'weapon': {
-          const weapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.id === input.itemId)
+          const weapon = (await getBuyWeapons(ctx, input.armoryId)).find((x) => x.weapon_id === input.itemId)
 
           if (!weapon) throw new Error('Armory does not have weapon!')
 
@@ -70,7 +70,7 @@ export const armoryRoute = createTRPCRouter({
         }
         case 'armor':
           {
-            const armor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.id === input.itemId)
+            const armor = (await getBuyArmors(ctx, input.armoryId)).find((x) => x.armor_id === input.itemId)
 
             if (!armor) throw new Error('Armory does not have armor!')
 
