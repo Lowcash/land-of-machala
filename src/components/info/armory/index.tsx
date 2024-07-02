@@ -17,6 +17,7 @@ export function Armory(p: Props) {
   const buy = api.armory.buy.useMutation({
     onSettled: () => {
       player.info.invalidate()
+      armory.show.invalidate()
     },
   })
   const sell = api.armory.sell.useMutation({
