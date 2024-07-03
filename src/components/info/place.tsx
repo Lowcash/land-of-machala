@@ -1,17 +1,24 @@
 import React from 'react'
 import * as S from './index.styles'
-import { Place as ModelPlace, Hospital as ModelHospital, Armor as ModelArmory } from '@prisma/client'
-import { Hospital } from './hospital'
-import { Armory } from './armory'
 import { Button } from '../ui/button'
 import { Text, Link } from '@/styles/text'
 import { List } from '@/styles/common'
+import { Hospital } from './hospital'
+import { Armory } from './armory'
+import { Bank } from './bank'
+import type {
+  Place as ModelPlace,
+  Hospital as ModelHospital,
+  Armor as ModelArmory,
+  Bank as ModelBank,
+} from '@prisma/client'
 
-type SubPlace = 'hospital' | 'armory'
+type SubPlace = 'hospital' | 'armory' | 'bank'
 
 type Props = Partial<ModelPlace> & {
   hospital: Partial<ModelHospital | null>
   armory: Partial<ModelArmory | null>
+  bank: Partial<ModelBank | null>
 }
 
 export function Place(p: Props) {
@@ -19,7 +26,7 @@ export function Place(p: Props) {
 
   const handleGoToSubPlace = React.useCallback((subplace?: SubPlace) => setSubplace(subplace), [])
 
-  if (subplace === 'hospital')
+  if (subplace !== undefined)
     return (
       <S.Info>
         <Button variant='outline' onClick={() => handleGoToSubPlace()}>
@@ -27,18 +34,9 @@ export function Place(p: Props) {
         </Button>
         <br />
         <br />
-        <Hospital {...p.hospital} />
-      </S.Info>
-    )
-  if (subplace === 'armory' && !!p.armory?.id)
-    return (
-      <S.Info>
-        <Button variant='outline' onClick={() => handleGoToSubPlace()}>
-          Vrátit se
-        </Button>
-        <br />
-        <br />
-        <Armory id={p.armory?.id} />
+        {subplace === 'hospital' && <Hospital {...p.hospital} />}
+        {subplace === 'armory' && !!p.armory?.id && <Armory id={p.armory?.id} />}
+        {subplace === 'bank' && !!p.bank?.id && <Bank id={p.bank?.id} />}
       </S.Info>
     )
 
@@ -59,6 +57,11 @@ export function Place(p: Props) {
           {p.armory && (
             <li>
               <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>
+            </li>
+          )}
+          {p.bank && (
+            <li>
+              <Link onClick={() => handleGoToSubPlace('bank')}>{p.bank.name}</Link>
             </li>
           )}
         </List>

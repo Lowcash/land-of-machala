@@ -95,8 +95,9 @@ model User {
     inventory    Inventory? @relation(fields: [inventory_id], references: [id])
     inventory_id String?
 
-    wearable    Wearable? @relation(fields: [wearable_id], references: [id])
-    wearable_id String?
+    wearable      Wearable?     @relation(fields: [wearable_id], references: [id])
+    wearable_id   String?
+    bank_accounts BankAccount[]
 
     @@index([loot_id])
     @@index([inventory_id])
@@ -167,9 +168,12 @@ model Place {
     hospital_id String?
     armory      Armory?   @relation(fields: [armory_id], references: [id])
     armory_id   String?
+    bank        Bank?     @relation(fields: [bank_id], references: [id])
+    bank_id     String?
 
     @@index([hospital_id])
     @@index([armory_id])
+    @@index([bank_id])
 }
 
 model Hospital {
@@ -222,6 +226,55 @@ model ArmorInArmory {
     @@index([armory_id])
 }
 
+model Bank {
+    id             String  @id @default(uuid())
+    name           String
+    description    String?
+    subdescription String?
+
+    accounts BankAccount[]
+    places   Place[]
+}
+
+model BankAccount {
+    id String @id @default(uuid())
+
+    weapons WeaponInBank[]
+    armors  ArmorInBank[]
+
+    bank    Bank   @relation(fields: [bank_id], references: [id])
+    bank_id String
+    user    User   @relation(fields: [user_id], references: [id])
+    user_id String
+
+    @@index([bank_id])
+    @@index([user_id])
+}
+
+model WeaponInBank {
+    id String @id @default(uuid())
+
+    weapon          Weapon      @relation(fields: [weapon_id], references: [id])
+    weapon_id       String
+    bank_account    BankAccount @relation(fields: [bank_account_id], references: [id])
+    bank_account_id String
+
+    @@index([weapon_id])
+    @@index([bank_account_id])
+}
+
+model ArmorInBank {
+    id String @id @default(uuid())
+
+    armor           Armor       @relation(fields: [armor_id], references: [id])
+    armor_id        String
+    bank_acount     BankAccount @relation(fields: [bank_account_id], references: [id])
+    bank_account_id String
+
+    @@index([armor_id])
+    @@index([bank_account_id])
+}
+
 // -----------------------------
 // Wearables
 // -----------------------------
@@ -271,6 +324,7 @@ model Weapon {
     weapons_loot      WeaponInLoot[]
     weapons_armory    WeaponInArmory[]
     weapons_inventory WeaponInInventory[]
+    WeaponInBank      WeaponInBank[]
 }
 
 enum ArmorType {
@@ -296,6 +350,7 @@ model Armor {
     armors_loot      ArmorInLoot[]
     armors_armory    ArmorInArmory[]
     armors_inventory ArmorInInventory[]
+    ArmorInBank      ArmorInBank[]
 }
 
 // -----------------------------
