@@ -1,5 +1,6 @@
 import { z } from 'zod'
-import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import type { TRPCContext } from '@/server/api/trpc'
 import { getInventory } from './inventory'
 import { getWeapons } from './weapon'
 import { getArmors } from './armors'
@@ -180,17 +181,6 @@ export const armoryRoute = createTRPCRouter({
     }),
 })
 
-export async function getArmory(ctx: TRPCContext, id: string) {
-  const armory = await ctx.db.armory.findFirst({
-    where: { id },
-    include: { weapons: { include: { weapon: true } }, armors: { include: { armor: true } } },
-  })
-
-  if (!armory) throw new Error('Armory does not exist!')
-
-  return armory
-}
-
 async function getBuyWeapons(ctx: TRPCContext, armoryId: string) {
   const armory = await getArmory(ctx, armoryId)
   const weapons = await getWeapons(ctx, { sorted: true })
@@ -255,4 +245,15 @@ function spreadItemsPrices<T extends { id: string | number }>(
     id: x.id,
     price: Math.round((minPrice + (idx + 1) * priceStep) / roundBy) * roundBy,
   }))
+}
+
+export async function getArmory(ctx: TRPCContext, id: string) {
+  const armory = await ctx.db.armory.findFirst({
+    where: { id },
+    include: { weapons: { include: { weapon: true } }, armors: { include: { armor: true } } },
+  })
+
+  if (!armory) throw new Error('Armory does not exist!')
+
+  return armory
 }

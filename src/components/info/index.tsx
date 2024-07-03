@@ -3,7 +3,7 @@
 import { api } from '@/trpc/react'
 
 import * as S from './index.styles'
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Place } from './place'
 
 export default function Info() {
@@ -12,13 +12,13 @@ export default function Info() {
   if (!!info?.enemyInstance?.enemy) {
     return (
       <S.Info>
-        <Label>
+        <Text>
           Najednou se před tebou objevil{' '}
           <b>
             {info.enemyInstance.enemy.name} ({info.enemyInstance.hp_actual}/{info.enemyInstance.hp_max})
           </b>{' '}
           a vyzývá tě na souboj
-        </Label>
+        </Text>
       </S.Info>
     )
   }
@@ -31,16 +31,16 @@ export default function Info() {
       <S.Info>
         V lootu se nachází: <br /> <br />
         {armors.map((x: string) => (
-          <Label>
+          <Text>
             {x} <br />
-          </Label>
+          </Text>
         ))}
         {weapons.map((x: string) => (
-          <Label>
+          <Text>
             {x} <br />
-          </Label>
+          </Text>
         ))}
-        <Label>{info.loot.money} zlaťáků</Label>
+        <Text>{info.loot.money} zlaťáků</Text>
       </S.Info>
     )
   }

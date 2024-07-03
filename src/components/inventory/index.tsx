@@ -7,7 +7,7 @@ import { Wearable } from '@/const'
 import * as S from './index.styles'
 import { Button } from '../ui/button'
 import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Table } from '../table'
 
 export default function Inventory() {
@@ -38,7 +38,7 @@ export default function Inventory() {
     return (
       <S.Info>
         <b>
-          <Label>V batohu nic nemáš</Label>
+          <Text>V batohu nic nemáš</Text>
         </b>
       </S.Info>
     )
@@ -47,12 +47,12 @@ export default function Inventory() {
     <S.Info>
       <>
         <b>
-          <Label>V batohu se nachází:</Label>
+          <Text>V batohu se nachází:</Text>
           <br />
           <br />
           {hasWeapons && (
             <>
-              <Label>Zbraň</Label>
+              <Text>Zbraň</Text>
               <br />
               <Table
                 columns={[
@@ -111,7 +111,7 @@ export default function Inventory() {
           )}
           {hasArmors && (
             <>
-              <Label>Zbroj</Label>
+              <Text>Zbroj</Text>
               <br />
               <Table
                 columns={[
