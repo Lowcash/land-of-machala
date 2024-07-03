@@ -33,28 +33,28 @@ export function Armory(p: Props) {
     (action: Action, weapon: WeaponItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' })
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' })
           break
       }
     },
-    [p.id, buy],
+    [p.id, buy, sell],
   )
 
   const handleArmorAction = React.useCallback(
     (action: Action, armor: ArmorItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' })
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' })
           break
       }
     },
-    [p.id, buy],
+    [p.id, buy, sell],
   )
 
   const buyWeapons = React.useMemo(

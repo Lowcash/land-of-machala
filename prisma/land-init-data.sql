@@ -153,13 +153,14 @@ VALUES
 (50, 'Oštěp', 18, 36),
 (51, 'Ráže', 25, 50);
 
-INSERT IGNORE INTO Place (id, name, description, pos_x, pos_y, hospital_id, armory_id)
+INSERT IGNORE INTO Place (id, name, description, pos_x, pos_y, hospital_id, armory_id, bank_id)
 VALUES 
-(1, 'Královský palác', 'Elegantní palác s rozlehlými zahradami a bohatou historií.', 0, 0, 1, 1),
-(2, 'Lesní oltář', 'Starobylý oltář obklopený mystickými stromy a tajemnou atmosférou.', -30, 25, NULL, NULL),
-(3, 'Havraní věž', 'Vysoká věž s výhledem na okolní krajinu, obývaná havrany a čarodějnicemi.', 15, -40, NULL, NULL),
-(4, 'Ztracená jeskyně', 'Tajemná jeskyně plná starověkých artefaktů a nebezpečných pastí.', 40, 10, NULL, NULL),
-(5, 'Jezerní útočiště', 'Klidné útočiště u jezera s pozoruhodným výhledem na hladinu vody a okolní lesy.', -20, 35, NULL, NULL);
+(1, 'Královský palác', 'Elegantní palác s rozlehlými zahradami a bohatou historií.', 0, 0, 1, 1, 1),
+(2, 'Lesní oltář', 'Starobylý oltář obklopený mystickými stromy a tajemnou atmosférou.', -30, 25, NULL, NULL, NULL),
+(3, 'Havraní věž', 'Vysoká věž s výhledem na okolní krajinu, obývaná havrany a čarodějnicemi.', 15, -40, NULL, NULL, NULL),
+(4, 'Ztracená jeskyně', 'Tajemná jeskyně plná starověkých artefaktů a nebezpečných pastí.', 40, 10, NULL, NULL, NULL),
+(5, 'Jezerní útočiště', 'Klidné útočiště u jezera s pozoruhodným výhledem na hladinu vody a okolní lesy.', -20, 35, NULL, NULL, NULL)
+ON DUPLICATE KEY UPDATE name = VALUES(name), description = VALUES(description), pos_x = VALUES(pos_x), pos_y = VALUES(pos_y), hospital_id = VALUES(hospital_id), armory_id = VALUES(armory_id), armory_id = VALUES(armory_id), bank_id = VALUES(bank_id);
 
 INSERT IGNORE INTO Hospital (id, name, description, subdescription, price)
 VALUES 
@@ -204,6 +205,10 @@ VALUES
 INSERT IGNORE INTO Armory (id, name, description, subdescription)
 VALUES 
 (1, 'Kovárna Dračí hřebíky', 'Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly.', 'Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?');
+
+INSERT IGNORE INTO Bank (id, name, description, subdescription)
+VALUES 
+(1, 'Banka U dvou přátel', 'Místo, kde jsou tvoje cennosti v bezpečí.', 'Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?');
 
 INSERT IGNORE INTO Armor (id, type, name, armor, strength, agility, intelligency)
 VALUES 
