@@ -1,7 +1,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
 import { ArmorMarket, WeaponMarket } from './market'
@@ -86,10 +86,10 @@ export function Armory(p: Props) {
     <>
       Nacházíš se v <b>{show.data.name}</b>
       <br />
-      <Label>{show.data.description}</Label>
+      <Text>{show.data.description}</Text>
       <br />
       <br />
-      <Label>{show.data.subdescription}</Label>
+      <Text>{show.data.subdescription}</Text>
       <br />
       <br />
       {buy.data?.success !== undefined && (
@@ -103,7 +103,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Koupit Zbraň</Label>
+          <Text>Koupit Zbraň</Text>
           <br />
           <WeaponMarket weapons={buyWeapons!} action='buy' onAction={handleWeaponAction} />
         </>
@@ -112,7 +112,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Prodat Zbraň</Label>
+          <Text>Prodat Zbraň</Text>
           <br />
           <WeaponMarket weapons={sellWeapons!} action='sell' onAction={handleWeaponAction} />
         </>
@@ -121,7 +121,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Koupit Zbroj</Label>
+          <Text>Koupit Zbroj</Text>
           <br />
           <ArmorMarket armors={buyArmors!} action='buy' onAction={handleArmorAction} />
         </>
@@ -130,7 +130,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Prodat Zbroj</Label>
+          <Text>Prodat Zbroj</Text>
           <br />
           <ArmorMarket armors={sellArmors!} action='sell' onAction={handleArmorAction} />
         </>

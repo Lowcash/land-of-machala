@@ -1,7 +1,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Button } from '../ui/button'
 import { Alert } from '../alert'
 import { Hospital as ModelHospital } from '@prisma/client'
@@ -26,19 +26,19 @@ export function Hospital(p: Props) {
     <>
       Nacházíš se v <b>{p.name}</b>
       <br />
-      <Label>{p.description}</Label>
+      <Text>{p.description}</Text>
       <br />
       <br />
-      <Label>{p.subdescription}</Label>
+      <Text>{p.subdescription}</Text>
       <br />
       <br />
       {heal.data?.success === undefined && (
-        <Label>
+        <Text>
           Uzdravení za <b>{p.price ?? 0}</b> zlaťáků{' '}
           <Button variant='destructive' onClick={handleHeal}>
             To chci!
           </Button>
-        </Label>
+        </Text>
       )}
       {heal.data?.success !== undefined && (
         <Alert>
