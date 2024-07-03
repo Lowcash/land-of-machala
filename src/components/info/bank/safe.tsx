@@ -1,28 +1,26 @@
-import { Armor, Weapon } from '@prisma/client'
-
 import { Table } from '@/components/table'
-import { Text } from '@/styles/text'
 import { Button } from '../../ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
+import type { Armor, Weapon } from '@prisma/client'
 
-export type Action = 'buy' | 'sell'
+export type Action = 'deposit' | 'withdraw'
 
-export type WeaponItem = Weapon & { armoryWeaponId: string; price: number }
+export type WeaponItem = Weapon & { refItemId: string }
 
-type WeaponMarketProps = {
-  weapons: Array<WeaponItem>
+type WeaponSafeProps = {
+  weapons: WeaponItem[]
   action: Action
 
   onAction?: (action: Action, weapon: WeaponItem) => void
 }
 
-export function WeaponMarket(p: WeaponMarketProps) {
+export function WeaponSafe(p: WeaponSafeProps) {
   return (
     <Table
       columns={[
         {},
         { className: 'text-center', content: 'Poškození' },
-        { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
+        { className: 'text-right', content: `${p.action === 'deposit' ? 'Uložit' : 'Vybrat'}` },
       ]}
       cells={p.weapons.map((x) => [
         { className: 'text-left', content: x.name },
@@ -37,13 +35,9 @@ export function WeaponMarket(p: WeaponMarketProps) {
         {
           className: 'text-right',
           content: (
-            <>
-              <Text>{x.price} zlaťáků</Text>
-              &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
-                <PaperPlaneIcon />
-              </Button>
-            </>
+            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
+              <PaperPlaneIcon />
+            </Button>
           ),
         },
       ])}
@@ -51,16 +45,16 @@ export function WeaponMarket(p: WeaponMarketProps) {
   )
 }
 
-export type ArmorItem = Armor & { armoryArmorId: string; price: number }
+export type ArmorItem = Armor & { refItemId: string }
 
-type ArmorMarketProps = {
-  armors: Array<ArmorItem>
+type ArmorSafeProps = {
+  armors: ArmorItem[]
   action: Action
 
   onAction?: (action: Action, armor: ArmorItem) => void
 }
 
-export function ArmorMarket(p: ArmorMarketProps) {
+export function ArmorSafe(p: ArmorSafeProps) {
   return (
     <Table
       columns={[
@@ -70,7 +64,7 @@ export function ArmorMarket(p: ArmorMarketProps) {
         { className: 'text-center', content: 'Síla' },
         { className: 'text-center', content: 'Obratnost' },
         { className: 'text-center', content: 'Inteligence' },
-        { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
+        { className: 'text-right', content: `${p.action === 'deposit' ? 'Uložit' : 'Vybrat'}` },
       ]}
       cells={p.armors.map((x) => [
         { className: 'text-left', content: x.name },
@@ -82,13 +76,9 @@ export function ArmorMarket(p: ArmorMarketProps) {
         {
           className: 'text-right',
           content: (
-            <>
-              <Text>{x.price} zlaťáků</Text>
-              &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
-                <PaperPlaneIcon />
-              </Button>
-            </>
+            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
+              <PaperPlaneIcon />
+            </Button>
           ),
         },
       ])}

@@ -170,6 +170,7 @@ async function info(ctx: TRPCContext) {
             armors: { include: { armor: true } },
           },
         },
+        bank: true
       },
     }),
     enemyInstance: ctx.session.user.enemy_instance,

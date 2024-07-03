@@ -1,7 +1,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
 import { ArmorMarket, WeaponMarket } from './market'
@@ -24,6 +24,7 @@ export function Armory(p: Props) {
     onSettled: () => {
       player.info.invalidate()
       player.stats.invalidate()
+      player.wearable.invalidate()
       armory.show.invalidate()
     },
   })
@@ -32,28 +33,28 @@ export function Armory(p: Props) {
     (action: Action, weapon: WeaponItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' })
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: weapon.armoryWeaponId, itemType: 'weapon' })
           break
       }
     },
-    [p.id, buy],
+    [p.id, buy, sell],
   )
 
   const handleArmorAction = React.useCallback(
     (action: Action, armor: ArmorItem) => {
       switch (action) {
         case 'buy':
-          buy.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [buy, p.id]
+          buy.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' })
           break
         case 'sell':
-          sell.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' }), [sell, p.id]
+          sell.mutate({ armoryId: p.id, armoryItemId: armor.armoryArmorId, itemType: 'armor' })
           break
       }
     },
-    [p.id, buy],
+    [p.id, buy, sell],
   )
 
   const buyWeapons = React.useMemo(
@@ -85,10 +86,10 @@ export function Armory(p: Props) {
     <>
       Nacházíš se v <b>{show.data.name}</b>
       <br />
-      <Label>{show.data.description}</Label>
+      <Text>{show.data.description}</Text>
       <br />
       <br />
-      <Label>{show.data.subdescription}</Label>
+      <Text>{show.data.subdescription}</Text>
       <br />
       <br />
       {buy.data?.success !== undefined && (
@@ -102,7 +103,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Koupit Zbraň</Label>
+          <Text>Koupit Zbraň</Text>
           <br />
           <WeaponMarket weapons={buyWeapons!} action='buy' onAction={handleWeaponAction} />
         </>
@@ -111,7 +112,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Prodat Zbraň</Label>
+          <Text>Prodat Zbraň</Text>
           <br />
           <WeaponMarket weapons={sellWeapons!} action='sell' onAction={handleWeaponAction} />
         </>
@@ -120,7 +121,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Koupit Zbroj</Label>
+          <Text>Koupit Zbroj</Text>
           <br />
           <ArmorMarket armors={buyArmors!} action='buy' onAction={handleArmorAction} />
         </>
@@ -129,7 +130,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Label>Prodat Zbroj</Label>
+          <Text>Prodat Zbroj</Text>
           <br />
           <ArmorMarket armors={sellArmors!} action='sell' onAction={handleArmorAction} />
         </>

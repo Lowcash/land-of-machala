@@ -30,43 +30,40 @@ export const inventoryRoute = createTRPCRouter({
 export async function getInventory(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
-  let inventory
-  if (!!ctx.session.user.inventory_id) {
-    inventory = await ctx.db.inventory.findFirst({
-      where: { id: ctx.session.user.inventory_id },
-      include: {
-        weapons_inventory: {
-          include: {
-            weapon: true,
-          },
-        },
-        armors_inventory: {
-          include: { armor: true },
-        },
+  let inventory = await ctx.db.inventory.findFirst({
+    where: { id: ctx.session.user.inventory_id },
+    include: {
+      weapons_inventory: {
+        include: { weapon: true },
       },
-    })
-  } else {
-    inventory = await ctx.db.inventory.create({
-      data: {},
-      include: {
-        weapons_inventory: {
-          include: { weapon: true },
-        },
-        armors_inventory: {
-          include: { armor: true },
-        },
+      armors_inventory: {
+        include: { armor: true },
       },
-    })
+    },
+  })
 
-    await ctx.db.user.update({
-      where: { id: ctx.session.user.id },
-      data: {
-        inventory: {
-          connect: {
-            id: inventory.id,
+  if (!inventory) {
+    inventory = await ctx.db.$transaction(async (db) => {
+      const _inventory = await ctx.db.inventory.create({
+        data: {},
+        include: {
+          weapons_inventory: {
+            include: { weapon: true },
+          },
+          armors_inventory: {
+            include: { armor: true },
           },
         },
-      },
+      })
+
+      await ctx.db.user.update({
+        where: { id: ctx.session!.user.id },
+        data: {
+          inventory: { connect: { id: _inventory.id } },
+        },
+      })
+
+      return _inventory
     })
   }
 
