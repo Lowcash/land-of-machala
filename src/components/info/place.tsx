@@ -5,6 +5,7 @@ import { Hospital } from './hospital'
 import { Armory } from './armory'
 import { Button } from '../ui/button'
 import { Text, Link } from '@/styles/text'
+import { List } from '@/styles/common'
 
 type SubPlace = 'hospital' | 'armory'
 
@@ -49,9 +50,18 @@ export function Place(p: Props) {
         <Text>{p.description}</Text>
         <br />
         <br />
-        {p.hospital && <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>}
-        <br />
-        {p.armory && <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>}
+        <List>
+          {p.hospital && (
+            <li>
+              <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>
+            </li>
+          )}
+          {p.armory && (
+            <li>
+              <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>
+            </li>
+          )}
+        </List>
       </>
     </S.Info>
   )

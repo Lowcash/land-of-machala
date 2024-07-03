@@ -66,3 +66,9 @@ export const Content = ({ children }: React.PropsWithChildren) => {
     </_Content>
   )
 }
+
+export const List = styled('ul')`
+  ${tw`
+    list-disc pl-4 
+  `}
+`
