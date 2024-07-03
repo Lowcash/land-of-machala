@@ -1,10 +1,10 @@
 import React from 'react'
 import * as S from './index.styles'
-import { Label } from '@radix-ui/react-label'
 import { Place as ModelPlace, Hospital as ModelHospital, Armor as ModelArmory } from '@prisma/client'
 import { Hospital } from './hospital'
 import { Armory } from './armory'
 import { Button } from '../ui/button'
+import { Text, Link } from '@/styles/text'
 
 type SubPlace = 'hospital' | 'armory'
 
@@ -46,12 +46,12 @@ export function Place(p: Props) {
       <>
         Nacházíš se v <b>{p.name}</b>
         <br />
-        <Label>{p.description}</Label>
+        <Text>{p.description}</Text>
         <br />
         <br />
-        {p.hospital && <Label onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Label>}
+        {p.hospital && <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>}
         <br />
-        {p.armory && <Label onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Label>}
+        {p.armory && <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>}
       </>
     </S.Info>
   )

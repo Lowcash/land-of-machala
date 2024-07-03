@@ -1,7 +1,7 @@
 import { Armor, Weapon } from '@prisma/client'
 
 import { Table } from '@/components/table'
-import { Label } from '@radix-ui/react-label'
+import { Text } from '@/styles/text'
 import { Button } from '../../ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 
@@ -38,7 +38,7 @@ export function WeaponMarket(p: WeaponMarketProps) {
           className: 'text-right',
           content: (
             <>
-              <Label>{x.price} zlaťáků</Label>
+              <Text>{x.price} zlaťáků</Text>
               &nbsp;
               <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
                 <PaperPlaneIcon />
@@ -83,7 +83,7 @@ export function ArmorMarket(p: ArmorMarketProps) {
           className: 'text-right',
           content: (
             <>
-              <Label>{x.price} zlaťáků</Label>
+              <Text>{x.price} zlaťáků</Text>
               &nbsp;
               <Button variant='secondary' onClick={() => p.onAction?.(p.action, x)}>
                 <PaperPlaneIcon />
