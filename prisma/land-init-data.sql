@@ -166,6 +166,18 @@ INSERT IGNORE INTO Hospital (id, name, description, subdescription, price)
 VALUES 
 (1, 'Nemocnice Sv. Lukáše', 'Oprava rozbitých kosti a rozbité srdcovky', 'Buď zdráv, dobrodruhu! U nás společně s dobrým pivem poléčíme všechny tvoje starosti!', 250);
 
+INSERT IGNORE INTO Potion (id, name, hp_gain)
+VALUES 
+(1, 'Slabý lék', 50),
+(2, 'Středně silný lék', 100),
+(3, 'Silný lék', 200);
+
+INSERT IGNORE INTO PotionInHospital (id, price, potion_id, hospital_id)
+VALUES 
+(1, 100, 1, 1),
+(2, 250, 2, 1),
+(3, 500, 3, 1);
+
 INSERT IGNORE INTO WeaponInArmory (id, weapon_id, armory_id, price)
 VALUES 
 (1, 7, 1, 2200),
