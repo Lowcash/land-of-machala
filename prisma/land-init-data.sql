@@ -213,7 +213,7 @@ VALUES
 (13, 37, 1, 9000),
 (14, 22, 1, 7700),
 (15, 47, 1, 8900);
-
+ 
 INSERT IGNORE INTO Armory (id, name, description, subdescription)
 VALUES 
 (1, 'Kovárna Dračí hřebíky', 'Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly.', 'Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?');
