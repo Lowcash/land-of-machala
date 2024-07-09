@@ -32,7 +32,7 @@ export async function getInventory(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
   let inventory = await ctx.db.inventory.findFirst({
-    where: { id: ctx.session.user.inventory_id },
+    where: { id: ctx.session.user.inventory_id ?? '-1' },
     include: {
       weapons_inventory: {
         include: { weapon: true },

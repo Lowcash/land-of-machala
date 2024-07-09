@@ -305,41 +305,44 @@ export const playerRouter = createTRPCRouter({
 export async function getWearable(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('No user!')
 
-  let wearable
-  if (!!ctx.session.user.wearable_id) {
-    wearable = await ctx.db.wearable.findFirst({
-      where: { id: ctx.session.user.wearable_id },
-      include: {
-        left_hand: { include: { weapon: true } },
-        right_hand: { include: { weapon: true } },
-        head: { include: { armor: true } },
-        shoulder: { include: { armor: true } },
-        chest: { include: { armor: true } },
-        hand: { include: { armor: true } },
-        pants: { include: { armor: true } },
-        boots: { include: { armor: true } },
-      },
-    })
-  } else {
-    wearable = await ctx.db.wearable.create({
-      data: {},
-      include: {
-        left_hand: { include: { weapon: true } },
-        right_hand: { include: { weapon: true } },
-        head: { include: { armor: true } },
-        shoulder: { include: { armor: true } },
-        chest: { include: { armor: true } },
-        hand: { include: { armor: true } },
-        pants: { include: { armor: true } },
-        boots: { include: { armor: true } },
-      },
-    })
+  let wearable = await ctx.db.wearable.findFirst({
+    where: { id: ctx.session.user.wearable_id ?? '-1' },
+    include: {
+      left_hand: { include: { weapon: true } },
+      right_hand: { include: { weapon: true } },
+      head: { include: { armor: true } },
+      shoulder: { include: { armor: true } },
+      chest: { include: { armor: true } },
+      hand: { include: { armor: true } },
+      pants: { include: { armor: true } },
+      boots: { include: { armor: true } },
+    },
+  })
 
-    await ctx.db.user.update({
-      where: { id: ctx.session.user.id },
-      data: {
-        wearable: { connect: wearable },
-      },
+  if (!wearable) {
+    wearable = await ctx.db.$transaction(async db => {
+      const _wearable = await db.wearable.create({
+        data: {},
+        include: {
+          left_hand: { include: { weapon: true } },
+          right_hand: { include: { weapon: true } },
+          head: { include: { armor: true } },
+          shoulder: { include: { armor: true } },
+          chest: { include: { armor: true } },
+          hand: { include: { armor: true } },
+          pants: { include: { armor: true } },
+          boots: { include: { armor: true } },
+        },
+      })
+  
+      await db.user.update({
+        where: { id: ctx.session!.user.id },
+        data: {
+          wearable: { connect: _wearable },
+        },
+      })
+
+      return _wearable
     })
   }
 
