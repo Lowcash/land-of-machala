@@ -9,6 +9,20 @@ import { Place } from './place'
 export default function Info() {
   const { data: info } = api.game.info.useQuery()
 
+  if (!!info?.defeated)
+    return (
+      <>
+        <S.Info>
+          <Text>Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!</Text>
+        </S.Info>
+        {!!info.place && (
+          <S.Info>
+            <Place {...info.place} forceSubplace='hospital' defeated />
+          </S.Info>
+        )}
+      </>
+    )
+
   if (!!info?.enemyInstance?.enemy) {
     return (
       <S.Info>
@@ -30,13 +44,13 @@ export default function Info() {
     return (
       <S.Info>
         V lootu se nachází: <br /> <br />
-        {armors.map((x: string) => (
-          <Text>
+        {armors.map((x: string, idx: number) => (
+          <Text key={`LootArmor_${idx}`}>
             {x} <br />
           </Text>
         ))}
-        {weapons.map((x: string) => (
-          <Text>
+        {weapons.map((x: string, idx: number) => (
+          <Text key={`LootWeapon_${idx}`}>
             {x} <br />
           </Text>
         ))}

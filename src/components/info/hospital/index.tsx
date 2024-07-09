@@ -10,11 +10,18 @@ import type { PotionItem } from './potion'
 
 type Props = {
   id: string
+  defeated?: boolean
 }
 
 export function Hospital(p: Props) {
-  const { player } = api.useUtils()
+  const { player, game } = api.useUtils()
   const show = api.hospital.show.useQuery({ hospitalId: p.id })
+  const resurect = api.hospital.resurect.useMutation({
+    onSuccess: () => {
+      player.info.invalidate()
+      game.info.invalidate()
+    },
+  })
   const heal = api.hospital.heal.useMutation({
     onSuccess: () => {
       player.info.invalidate()
@@ -26,11 +33,8 @@ export function Hospital(p: Props) {
     },
   })
 
-  const handleHeal = React.useCallback(() => {
-    if (!p.id) return
-
-    heal.mutate({ hospitalId: p.id })
-  }, [heal, p.id])
+  const handleHeal = React.useCallback(() => heal.mutate({ hospitalId: p.id }), [p.id, heal])
+  const handleResurect = React.useCallback(() => resurect.mutate(), [p.id, resurect])
 
   const handlePotionAction = React.useCallback(
     (potion: PotionItem) => buy.mutate({ hospitalId: p.id, potionId: potion.id }),
@@ -54,31 +58,43 @@ export function Hospital(p: Props) {
       <Text>{show.data?.description}</Text>
       <br />
       <br />
-      <Text>{show.data?.subdescription}</Text>
-      <br />
-      <br />
-      {heal.data?.success === undefined && (
+      {p.defeated && (
         <Text>
-          Uzdravení za <b>{show.data?.price ?? 0}</b> zlaťáků{' '}
-          <Button variant='destructive' onClick={handleHeal}>
-            To chci!
+          Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..
+          <Button variant='destructive' onClick={handleResurect}>
+            Uzdravit!
           </Button>
         </Text>
       )}
-      {heal.data?.success !== undefined && (
-        <Alert>
-          {heal.data?.success
-            ? 'Teď jsi jako rybička (vyléčen)'
-            : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
-        </Alert>
-      )}
-      {hasBuyPotions && (
+      {!p.defeated && (
         <>
+          <Text>{show.data?.subdescription}</Text>
           <br />
           <br />
-          <Text>Koupit Potion</Text>
-          <br />
-          <Potions potions={potions!} onAction={handlePotionAction} />
+          {heal.data?.success === undefined && (
+            <Text>
+              Uzdravení za <b>{show.data?.price ?? 0}</b> zlaťáků{' '}
+              <Button variant='destructive' onClick={handleHeal}>
+                To chci!
+              </Button>
+            </Text>
+          )}
+          {heal.data?.success !== undefined && (
+            <Alert>
+              {heal.data?.success
+                ? 'Teď jsi jako rybička (vyléčen)'
+                : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
+            </Alert>
+          )}
+          {hasBuyPotions && (
+            <>
+              <br />
+              <br />
+              <Text>Koupit Potion</Text>
+              <br />
+              <Potions potions={potions!} onAction={handlePotionAction} />
+            </>
+          )}
         </>
       )}
     </>

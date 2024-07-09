@@ -7,6 +7,14 @@ export const hospitalRoute = createTRPCRouter({
   show: protectedProcedure
     .input(z.object({ hospitalId: z.string() }))
     .query(async ({ ctx, input }) => getHospital(ctx, input.hospitalId)),
+  resurect: protectedProcedure.mutation(async ({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('User does not exist!')
+
+    await ctx.db.user.update({
+      where: { id: ctx.session.user.id },
+      data: { hp_actual: ctx.session.user.hp_max, defeated: false },
+    })
+  }),
   heal: protectedProcedure.input(z.object({ hospitalId: z.string() })).mutation(async ({ ctx, input }) => {
     if (!ctx.session?.user) throw new Error('User does not exist!')
 
