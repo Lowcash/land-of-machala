@@ -221,7 +221,7 @@ VALUES
 INSERT IGNORE INTO Bank (id, name, description, subdescription)
 VALUES 
 (1, 'Banka U dvou přátel', 'Místo, kde jsou tvoje cennosti v bezpečí.', 'Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?');
- 
+  
 INSERT IGNORE INTO Armor (id, type, name, armor, strength, agility, intelligency)
 VALUES 
 -- Head items
