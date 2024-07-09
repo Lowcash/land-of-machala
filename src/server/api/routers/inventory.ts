@@ -20,9 +20,14 @@ export const inventoryRoute = createTRPCRouter({
       armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
     }))
 
+    const potions = inventory.potions_inventory
+      ?.map((x) => ({ ...x }))
+      .sort((a, b) => a.potion.hp_gain - b.potion.hp_gain)
+
     return {
       weapons,
       armors,
+      potions,
     }
   }),
 })
@@ -39,12 +44,15 @@ export async function getInventory(ctx: TRPCContext) {
       armors_inventory: {
         include: { armor: true },
       },
+      potions_inventory: {
+        include: { potion: true },
+      },
     },
   })
 
   if (!inventory) {
     inventory = await ctx.db.$transaction(async (db) => {
-      const _inventory = await ctx.db.inventory.create({
+      const _inventory = await db.inventory.create({
         data: {},
         include: {
           weapons_inventory: {
@@ -53,10 +61,13 @@ export async function getInventory(ctx: TRPCContext) {
           armors_inventory: {
             include: { armor: true },
           },
+          potions_inventory: {
+            include: { potion: true },
+          },
         },
       })
 
-      await ctx.db.user.update({
+      await db.user.update({
         where: { id: ctx.session!.user.id },
         data: {
           inventory: { connect: { id: _inventory.id } },
