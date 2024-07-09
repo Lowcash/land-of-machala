@@ -4,6 +4,7 @@ import { api } from '@/trpc/react'
 import { Text } from '@/styles/text'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
+import { Button } from '@/components/ui/button'
 import { ArmorSafe, PotionSafe, WeaponSafe } from './safe'
 import type { Action, ArmorItem, PotionItem, WeaponItem } from './safe'
 
@@ -37,7 +38,7 @@ export function Bank(p: Props) {
     },
   })
 
-  const handleAction = React.useCallback(
+  const handleItemAction = React.useCallback(
     (action: Action, item: WeaponItem | ArmorItem | PotionItem, type: 'weapon' | 'armor' | 'potion') => {
       switch (action) {
         case 'deposit':
@@ -50,6 +51,29 @@ export function Bank(p: Props) {
     },
     [p.id, deposit, withdraw],
   )
+
+  const handleMoneyAction = React.useCallback(
+    (action: Action) => {
+      switch (action) {
+        case 'deposit':
+          if (!depositMoneyRef.current?.value === undefined) return
+
+          deposit.mutate({ bankId: p.id, money: Number(depositMoneyRef.current!.value) })
+          depositMoneyRef.current!.value = '0'
+          break
+        case 'withdraw':
+          if (!withdrawMoneyRef.current?.value === undefined) return
+
+          withdraw.mutate({ bankId: p.id, money: Number(withdrawMoneyRef.current!.value) })
+          withdrawMoneyRef.current!.value = '0'
+          break
+      }
+    },
+    [p.id, deposit, withdraw],
+  )
+
+  const depositMoneyRef = React.useRef<React.ElementRef<'input'>>(null)
+  const withdrawMoneyRef = React.useRef<React.ElementRef<'input'>>(null)
 
   const depositWeapons = React.useMemo(
     () => showInventory.data?.weapons?.map((x) => ({ ...x.weapon, refItemId: x.id })),
@@ -88,7 +112,9 @@ export function Bank(p: Props) {
 
   return (
     <>
-      Nacházíš se v <b>{showBank.data.name}</b>
+      <Text>
+        Nacházíš se v <b>{showBank.data.name}</b>
+      </Text>
       <br />
       <Text>{showBank.data.description}</Text>
       <br />
@@ -102,20 +128,37 @@ export function Bank(p: Props) {
       {showInfo === 'withdraw' && withdraw.data?.success !== undefined && (
         <Alert>{withdraw.data.success ? 'Zboží vybráno z banky' : 'Nějak se nám to zkomplikovalo?!'}</Alert>
       )}
-      <>
-        <br />
-        <br />
-        <Text>Uložit Peníze</Text>
-        <br />
-        <input type='number' />
-      </>
-      <>
-        <br />
-        <br />
-        <Text>Vybrat Peníze</Text>
-        <br />
-        <input type='number' />
-      </>
+      <br />
+      <br />
+      <div className='flex justify-between space-x-4'>
+        <div>
+          <Text className='whitespace-nowrap'>Uloženo peněz</Text>
+          <br />
+          <Text>{showAccount.data?.money ?? 0}</Text>
+        </div>
+        <div className='flex space-x-6'>
+          <div>
+            <Text>Uložit Peníze</Text>
+            <br />
+            <div className='flex space-x-2'>
+              <input ref={depositMoneyRef} type='number' defaultValue={0} style={{ maxWidth: 100 }} />
+              <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
+                Uložit
+              </Button>
+            </div>
+          </div>
+          <div>
+            <Text>Vybrat Peníze</Text>
+            <br />
+            <div className='flex space-x-2'>
+              <input ref={withdrawMoneyRef} type='number' defaultValue={0} style={{ maxWidth: 100 }} />
+              <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
+                Vybrat
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
       {hasDepositWeapons && (
         <>
           <br />
@@ -125,7 +168,7 @@ export function Bank(p: Props) {
           <WeaponSafe
             weapons={depositWeapons!}
             action='deposit'
-            onAction={(action, item) => handleAction(action, item, 'weapon')}
+            onAction={(action, item) => handleItemAction(action, item, 'weapon')}
           />
         </>
       )}
@@ -138,7 +181,7 @@ export function Bank(p: Props) {
           <ArmorSafe
             armors={depositArmors!}
             action='deposit'
-            onAction={(action, item) => handleAction(action, item, 'armor')}
+            onAction={(action, item) => handleItemAction(action, item, 'armor')}
           />
         </>
       )}
@@ -151,7 +194,7 @@ export function Bank(p: Props) {
           <PotionSafe
             potions={depositPotions!}
             action='deposit'
-            onAction={(action, item) => handleAction(action, item, 'potion')}
+            onAction={(action, item) => handleItemAction(action, item, 'potion')}
           />
         </>
       )}
@@ -164,7 +207,7 @@ export function Bank(p: Props) {
           <WeaponSafe
             weapons={withdrawWeapons!}
             action='withdraw'
-            onAction={(action, item) => handleAction(action, item, 'weapon')}
+            onAction={(action, item) => handleItemAction(action, item, 'weapon')}
           />
         </>
       )}
@@ -177,7 +220,7 @@ export function Bank(p: Props) {
           <ArmorSafe
             armors={withdrawArmors!}
             action='withdraw'
-            onAction={(action, item) => handleAction(action, item, 'armor')}
+            onAction={(action, item) => handleItemAction(action, item, 'armor')}
           />
         </>
       )}
@@ -190,7 +233,7 @@ export function Bank(p: Props) {
           <PotionSafe
             potions={withdrawPotions!}
             action='withdraw'
-            onAction={(action, item) => handleAction(action, item, 'potion')}
+            onAction={(action, item) => handleItemAction(action, item, 'potion')}
           />
         </>
       )}
