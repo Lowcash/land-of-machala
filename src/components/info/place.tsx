@@ -34,9 +34,9 @@ export function Place(p: Props) {
         </Button>
         <br />
         <br />
-        {subplace === 'hospital' && <Hospital {...p.hospital} />}
-        {subplace === 'armory' && !!p.armory?.id && <Armory id={p.armory?.id} />}
-        {subplace === 'bank' && !!p.bank?.id && <Bank id={p.bank?.id} />}
+        {subplace === 'hospital' && !!p.hospital?.id && <Hospital id={p.hospital.id} />}
+        {subplace === 'armory' && !!p.armory?.id && <Armory id={p.armory.id} />}
+        {subplace === 'bank' && !!p.bank?.id && <Bank id={p.bank.id} />}
       </S.Info>
     )
 
