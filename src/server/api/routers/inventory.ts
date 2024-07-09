@@ -20,14 +20,10 @@ export const inventoryRoute = createTRPCRouter({
       armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
     }))
 
-    const potions = inventory.potions_inventory
-      ?.map((x) => ({ ...x }))
-      .sort((a, b) => a.potion.hp_gain - b.potion.hp_gain)
-
     return {
       weapons,
       armors,
-      potions,
+      potions: inventory.potions_inventory,
     }
   }),
 })
@@ -80,5 +76,8 @@ export async function getInventory(ctx: TRPCContext) {
 
   if (!inventory) throw new Error('Inventory does not exist!')
 
-  return inventory
+  return {
+    ...inventory,
+    potions: inventory.potions_inventory.sort((a, b) => a.potion.hp_gain - b.potion.hp_gain),
+  }
 }

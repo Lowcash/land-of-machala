@@ -263,15 +263,16 @@ model Bank {
 model BankAccount {
     id String @id @default(uuid())
 
-    weapons WeaponInBank[]
-    armors  ArmorInBank[]
-
     bank    Bank   @relation(fields: [bank_id], references: [id])
     bank_id String
     user    User   @relation(fields: [user_id], references: [id])
     user_id String
 
-    potions_bank PotionInBank[]
+    money Int @default(0)
+
+    weapons WeaponInBank[]
+    armors  ArmorInBank[]
+    potions PotionInBank[]
 
     @@index([bank_id])
     @@index([user_id])
