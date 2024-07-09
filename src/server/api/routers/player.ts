@@ -7,7 +7,19 @@ import { ArmorType } from '@prisma/client'
 import { DIRECTIONS, PROFESSIONS, RACES, WEARABLES } from '@/const'
 
 export const playerRouter = createTRPCRouter({
-  info: protectedProcedure.query(({ ctx }) => ctx.session.user),
+  info: protectedProcedure.query(({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+
+    const canMove =
+      !Boolean(ctx.session.user.enemy_instance) &&
+      !Boolean(ctx.session.user.loot) &&
+      !Boolean(ctx.session.user.defeated)
+
+    return {
+      ...ctx.session.user,
+      canMove,
+    }
+  }),
   create: protectedProcedure
     .input(
       z.object({
@@ -258,7 +270,10 @@ export const playerRouter = createTRPCRouter({
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
     if (!ctx.session?.user) throw new Error('No user!')
 
-    const canMove = !Boolean(ctx.session.user.enemy_instance) && !Boolean(ctx.session.user.loot)
+    const canMove =
+      !Boolean(ctx.session.user.enemy_instance) &&
+      !Boolean(ctx.session.user.loot) &&
+      !Boolean(ctx.session.user.defeated)
 
     if (!canMove)
       return {

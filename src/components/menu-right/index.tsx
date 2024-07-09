@@ -25,13 +25,13 @@ export default function MenuRight() {
   const { open } = useSidebar()
 
   const handleMoveDirection = React.useCallback((direction: Direction) => move.mutate(direction), [move])
-
+  
   const hasCombat = Boolean(info?.enemy_instance)
   const hasLoot = Boolean(info?.loot)
   const hasInventory = pathname === ROUTE.INVENTORY
-
-  const disableMove = hasCombat || hasLoot || hasInventory
-  const disableInventory = hasCombat || hasLoot
+  
+  const disableMove = hasCombat || hasLoot || hasInventory || !info?.canMove
+  const disableInventory = hasCombat || hasLoot || !info?.canMove
 
   return (
     <Sidebar direction='right' open={open}>

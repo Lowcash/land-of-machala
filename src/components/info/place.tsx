@@ -19,22 +19,29 @@ type Props = Partial<ModelPlace> & {
   hospital: Partial<ModelHospital | null>
   armory: Partial<ModelArmory | null>
   bank: Partial<ModelBank | null>
+
+  defeated?: boolean
+  forceSubplace?: SubPlace
 }
 
 export function Place(p: Props) {
-  const [subplace, setSubplace] = React.useState<SubPlace | undefined>(undefined)
+  const [subplace, setSubplace] = React.useState<SubPlace | undefined>(p.forceSubplace)
 
   const handleGoToSubPlace = React.useCallback((subplace?: SubPlace) => setSubplace(subplace), [])
 
   if (subplace !== undefined)
     return (
       <S.Info>
-        <Button variant='outline' onClick={() => handleGoToSubPlace()}>
-          Vrátit se
-        </Button>
-        <br />
-        <br />
-        {subplace === 'hospital' && !!p.hospital?.id && <Hospital id={p.hospital.id} />}
+        {!p.defeated && (
+          <>
+            <Button variant='outline' onClick={() => handleGoToSubPlace()}>
+              Vrátit se
+            </Button>
+            <br />
+            <br />
+          </>
+        )}
+        {subplace === 'hospital' && !!p.hospital?.id && <Hospital id={p.hospital.id} defeated={p.defeated} />}
         {subplace === 'armory' && !!p.armory?.id && <Armory id={p.armory.id} />}
         {subplace === 'bank' && !!p.bank?.id && <Bank id={p.bank.id} />}
       </S.Info>
