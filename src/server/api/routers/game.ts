@@ -42,9 +42,25 @@ export const gameRouter = createTRPCRouter({
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
       if (playerDefeated) {
-        await ctx.db.user.update({
-          where: { id: ctx.session.user.id },
-          data: { defeated: true, pos_x: 0, pos_y: 0 },
+        const inventory = await getInventory(ctx)
+
+        await ctx.db.$transaction(async (db) => {
+          await Promise.all([
+            db.armorInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+            db.weaponInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+            db.potionInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+          ])
+
+          await db.user.update({
+            where: { id: ctx.session.user!.id },
+            data: { defeated: true, money: 0, pos_x: 0, pos_y: 0 },
+          })
         })
         return
       }
@@ -175,7 +191,7 @@ async function info(ctx: TRPCContext) {
     }),
     enemyInstance: ctx.session.user.enemy_instance,
     loot: ctx.session.user.loot,
-    defeated: ctx.session.user.defeated
+    defeated: ctx.session.user.defeated,
   }
 }
 
