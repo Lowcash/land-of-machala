@@ -68,7 +68,7 @@ ON DUPLICATE KEY UPDATE name = VALUES(name), hp_from = VALUES(hp_from), hp_to = 
 CREATE TEMPORARY TABLE TempMaxScore AS
 SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
 FROM Enemy;
-
+ 
 UPDATE Enemy, TempMaxScore SET 
   Enemy.xp_from = LEAST(
     ROUND(
