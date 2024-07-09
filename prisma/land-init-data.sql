@@ -68,7 +68,7 @@ ON DUPLICATE KEY UPDATE name = VALUES(name), hp_from = VALUES(hp_from), hp_to = 
 CREATE TEMPORARY TABLE TempMaxScore AS
 SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
 FROM Enemy;
-
+ 
 UPDATE Enemy, TempMaxScore SET 
   Enemy.xp_from = LEAST(
     ROUND(
@@ -213,7 +213,7 @@ VALUES
 (13, 37, 1, 9000),
 (14, 22, 1, 7700),
 (15, 47, 1, 8900);
-
+ 
 INSERT IGNORE INTO Armory (id, name, description, subdescription)
 VALUES 
 (1, 'Kovárna Dračí hřebíky', 'Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly.', 'Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?');
@@ -221,7 +221,7 @@ VALUES
 INSERT IGNORE INTO Bank (id, name, description, subdescription)
 VALUES 
 (1, 'Banka U dvou přátel', 'Místo, kde jsou tvoje cennosti v bezpečí.', 'Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?');
-
+  
 INSERT IGNORE INTO Armor (id, type, name, armor, strength, agility, intelligency)
 VALUES 
 -- Head items
