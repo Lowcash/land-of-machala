@@ -12,12 +12,15 @@ export default function Action() {
     onSettled: () => {
       player.info.invalidate()
       player.stats.invalidate()
+      player.wearable.invalidate()
       game.info.invalidate()
     },
   })
   const runAway = api.game.runAway.useMutation({
     onSettled: () => {
       player.info.invalidate()
+      player.stats.invalidate()
+      player.wearable.invalidate()
       game.info.invalidate()
     },
   })
