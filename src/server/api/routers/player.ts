@@ -1,12 +1,25 @@
 import { z } from 'zod'
 import { inspectPosition } from './game'
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { getInventory } from './inventory'
 import { ArmorType } from '@prisma/client'
 
 import { DIRECTIONS, PROFESSIONS, RACES, WEARABLES } from '@/const'
 
 export const playerRouter = createTRPCRouter({
-  info: protectedProcedure.query(({ ctx }) => ctx.session.user),
+  info: protectedProcedure.query(({ ctx }) => {
+    if (!ctx.session?.user) throw new Error('No user!')
+
+    const canMove =
+      !Boolean(ctx.session.user.enemy_instance) &&
+      !Boolean(ctx.session.user.loot) &&
+      !Boolean(ctx.session.user.defeated)
+
+    return {
+      ...ctx.session.user,
+      canMove,
+    }
+  }),
   create: protectedProcedure
     .input(
       z.object({
@@ -230,10 +243,37 @@ export const playerRouter = createTRPCRouter({
           break
       }
     }),
+  drink: protectedProcedure.input(z.object({ potionId: z.string() })).mutation(async ({ ctx, input }) => {
+    if (!ctx.session?.user) throw new Error('User does not exist!')
+
+    const inventory = await getInventory(ctx)
+
+    const potion = inventory.potions_inventory.find((x) => x.id === input.potionId)
+
+    if (!potion) throw new Error('Potion does not exist!')
+
+    await ctx.db.$transaction(async (db) => {
+      await db.user.update({
+        where: { id: ctx.session.user!.id },
+        data: {
+          hp_actual: Math.min(ctx.session.user!.hp_actual! + potion.potion.hp_gain, ctx.session.user!.hp_max!),
+        },
+      })
+
+      await db.potionInInventory.delete({
+        where: { id: potion.id },
+      })
+
+      return { success: true }
+    })
+  }),
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
     if (!ctx.session?.user) throw new Error('No user!')
 
-    const canMove = !Boolean(ctx.session.user.enemy_instance) && !Boolean(ctx.session.user.loot)
+    const canMove =
+      !Boolean(ctx.session.user.enemy_instance) &&
+      !Boolean(ctx.session.user.loot) &&
+      !Boolean(ctx.session.user.defeated)
 
     if (!canMove)
       return {

@@ -23,6 +23,7 @@ export const inventoryRoute = createTRPCRouter({
     return {
       weapons,
       armors,
+      potions: inventory.potions_inventory,
     }
   }),
 })
@@ -39,12 +40,15 @@ export async function getInventory(ctx: TRPCContext) {
       armors_inventory: {
         include: { armor: true },
       },
+      potions_inventory: {
+        include: { potion: true },
+      },
     },
   })
 
   if (!inventory) {
     inventory = await ctx.db.$transaction(async (db) => {
-      const _inventory = await ctx.db.inventory.create({
+      const _inventory = await db.inventory.create({
         data: {},
         include: {
           weapons_inventory: {
@@ -53,10 +57,13 @@ export async function getInventory(ctx: TRPCContext) {
           armors_inventory: {
             include: { armor: true },
           },
+          potions_inventory: {
+            include: { potion: true },
+          },
         },
       })
 
-      await ctx.db.user.update({
+      await db.user.update({
         where: { id: ctx.session!.user.id },
         data: {
           inventory: { connect: { id: _inventory.id } },
@@ -69,5 +76,8 @@ export async function getInventory(ctx: TRPCContext) {
 
   if (!inventory) throw new Error('Inventory does not exist!')
 
-  return inventory
+  return {
+    ...inventory,
+    potions: inventory.potions_inventory.sort((a, b) => a.potion.hp_gain - b.potion.hp_gain),
+  }
 }

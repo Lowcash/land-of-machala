@@ -10,7 +10,7 @@ export type Action = 'buy' | 'sell'
 export type WeaponItem = Weapon & { armoryWeaponId: string; price: number }
 
 type WeaponMarketProps = {
-  weapons: Array<WeaponItem>
+  weapons: WeaponItem[]
   action: Action
 
   onAction?: (action: Action, weapon: WeaponItem) => void
@@ -54,7 +54,7 @@ export function WeaponMarket(p: WeaponMarketProps) {
 export type ArmorItem = Armor & { armoryArmorId: string; price: number }
 
 type ArmorMarketProps = {
-  armors: Array<ArmorItem>
+  armors: ArmorItem[]
   action: Action
 
   onAction?: (action: Action, armor: ArmorItem) => void

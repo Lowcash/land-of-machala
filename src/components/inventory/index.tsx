@@ -6,9 +6,9 @@ import { Wearable } from '@/const'
 
 import * as S from './index.styles'
 import { Button } from '../ui/button'
-import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
 import { Text } from '@/styles/text'
 import { Table } from '../table'
+import { CheckIcon, Cross2Icon, PaperPlaneIcon } from '@radix-ui/react-icons'
 
 export default function Inventory() {
   const { player, inventory } = api.useUtils()
@@ -27,14 +27,22 @@ export default function Inventory() {
       inventory.show.invalidate()
     },
   })
+  const drink = api.player.drink.useMutation({
+    onSettled: () => {
+      player.info.invalidate()
+      inventory.show.invalidate()
+    },
+  })
 
   const handleWear = React.useCallback((type: Wearable, id: string) => wear.mutate({ type, id }), [wear])
   const handleUnwear = React.useCallback((type: Wearable, id: string) => unwear.mutate({ type, id }), [unwear])
+  const handleUsePotion = React.useCallback((id: string) => drink.mutate({ potionId: id }), [unwear])
 
   const hasWeapons = (show.data?.weapons?.length ?? 0) > 0
   const hasArmors = (show.data?.armors?.length ?? 0) > 0
+  const hasPotions = (show.data?.potions?.length ?? 0) > 0
 
-  if (!hasWeapons && !hasArmors)
+  if (!hasWeapons && !hasArmors && !hasPotions)
     return (
       <S.Info>
         <b>
@@ -150,6 +158,30 @@ export default function Inventory() {
                 ])}
               />
             </>
+          )}
+          {hasPotions && (
+            <Table
+              columns={[
+                {},
+                { className: 'text-center', content: 'Účinnost' },
+                { className: 'text-right', content: 'Použít' },
+              ]}
+              cells={show.data!.potions.map((x) => [
+                { className: 'text-left', content: x.potion.name },
+                {
+                  className: 'text-center',
+                  content: `+${x.potion.hp_gain} HP`,
+                },
+                {
+                  className: 'text-right',
+                  content: (
+                    <Button variant='secondary' onClick={() => handleUsePotion(x.id)}>
+                      <PaperPlaneIcon />
+                    </Button>
+                  ),
+                },
+              ])}
+            />
           )}
         </b>
       </>
