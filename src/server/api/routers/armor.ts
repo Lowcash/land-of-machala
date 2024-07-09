@@ -1,12 +1,7 @@
-import { createTRPCRouter, protectedProcedure } from '../trpc'
 import type { Armor } from '@prisma/client'
 import type { TRPCContext } from '../trpc'
 
 const cache: Map<string, Armor[]> = new Map()
-
-export const armorRoute = createTRPCRouter({
-  show: protectedProcedure.query(({ ctx }) => getArmors(ctx)),
-})
 
 export async function getArmors(ctx: TRPCContext, opt?: { sorted?: boolean }) {
   const cacheKey = `getArmors_${opt?.sorted ? 'sorted' : 'unsorted'}`

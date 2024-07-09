@@ -5,8 +5,9 @@ export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
-    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id) throw new Error('No enemy!')
+    if (!ctx.session?.user) throw new Error('User does not exist!')
+    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id)
+      throw new Error('Enemy instance does not exist!')
 
     // const damageFromPlayer = random(ctx.session.user.damage_min, ctx.session.user.damage_max)
     const damageFromPlayer = 1000
@@ -41,11 +42,25 @@ export const gameRouter = createTRPCRouter({
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
       if (playerDefeated) {
-        await ctx.db.user.update({
-          where: { id: ctx.session.user.id },
-          data: {
-            hp_actual: ctx.session.user.hp_max,
-          },
+        const inventory = await getInventory(ctx)
+
+        await ctx.db.$transaction(async (db) => {
+          await Promise.all([
+            db.armorInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+            db.weaponInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+            db.potionInInventory.deleteMany({
+              where: { inventory_id: inventory.id },
+            }),
+          ])
+
+          await db.user.update({
+            where: { id: ctx.session.user!.id },
+            data: { defeated: true, money: 0, pos_x: 0, pos_y: 0 },
+          })
         })
         return
       }
@@ -97,14 +112,15 @@ export const gameRouter = createTRPCRouter({
     })
   }),
   runAway: protectedProcedure.mutation(async ({ ctx }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
-    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id) throw new Error('No enemy!')
+    if (!ctx.session?.user) throw new Error('User does not exist!')
+    if (!ctx.session?.user?.enemy_instance || !ctx.session?.user?.enemy_instance_id)
+      throw new Error('Enemy instance does not exist!')
 
     await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
   }),
   loot: protectedProcedure.mutation(async ({ ctx }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
-    if (!ctx.session?.user?.loot || !ctx.session?.user?.loot_id) throw new Error('No loot!')
+    if (!ctx.session?.user) throw new Error('User does not exist!')
+    if (!ctx.session?.user?.loot || !ctx.session?.user?.loot_id) throw new Error('Loot does not exist!')
 
     const inventoryId = (await getInventory(ctx))?.id
 
@@ -112,7 +128,7 @@ export const gameRouter = createTRPCRouter({
 
     if (!Boolean(loot)) return
 
-    await ctx.db.$transaction(async db => {
+    await ctx.db.$transaction(async (db) => {
       for (const l of loot.weapons_loot) {
         await db.weaponInInventory.create({
           data: {
@@ -154,7 +170,7 @@ export const gameRouter = createTRPCRouter({
 })
 
 async function info(ctx: TRPCContext) {
-  if (!ctx.session?.user) throw new Error('No user!')
+  if (!ctx.session?.user) throw new Error('User does not exist!')
 
   return {
     place: await ctx.db.place.findFirst({
@@ -170,16 +186,17 @@ async function info(ctx: TRPCContext) {
             armors: { include: { armor: true } },
           },
         },
-        bank: true
+        bank: true,
       },
     }),
     enemyInstance: ctx.session.user.enemy_instance,
     loot: ctx.session.user.loot,
+    defeated: ctx.session.user.defeated,
   }
 }
 
 export async function inspectPosition(ctx: TRPCContext) {
-  if (!ctx.session?.user) throw new Error('No user!')
+  if (!ctx.session?.user) throw new Error('User does not exist!')
 
   const { enemyInstance, place } = await info(ctx)
 

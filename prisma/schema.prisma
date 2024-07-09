@@ -95,8 +95,11 @@ model User {
     inventory    Inventory? @relation(fields: [inventory_id], references: [id])
     inventory_id String?
 
-    wearable      Wearable?     @relation(fields: [wearable_id], references: [id])
-    wearable_id   String?
+    wearable    Wearable? @relation(fields: [wearable_id], references: [id])
+    wearable_id String?
+
+    defeated Boolean @default(false)
+
     bank_accounts BankAccount[]
 
     @@index([loot_id])
@@ -176,6 +179,9 @@ model Place {
     @@index([bank_id])
 }
 
+// -----------------------------
+// Hospital
+// -----------------------------
 model Hospital {
     id             String  @id @default(uuid())
     name           String
@@ -184,9 +190,27 @@ model Hospital {
 
     price Int?
 
-    places Place[]
+    places           Place[]
+    potions_hospital PotionInHospital[]
 }
 
+model PotionInHospital {
+    id String @id @default(uuid())
+
+    price Int
+
+    potion      Potion   @relation(fields: [potion_id], references: [id])
+    potion_id   Int
+    hospital    Hospital @relation(fields: [hospital_id], references: [id])
+    hospital_id String
+
+    @@index([potion_id])
+    @@index([hospital_id])
+}
+
+// -----------------------------
+// Armory
+// -----------------------------
 model Armory {
     id             String  @id @default(uuid())
     name           String
@@ -217,7 +241,7 @@ model ArmorInArmory {
 
     armor     Armor   @relation(fields: [armor_id], references: [id])
     armor_id  String
-    Armory    Armory? @relation(fields: [armory_id], references: [id])
+    armory    Armory? @relation(fields: [armory_id], references: [id])
     armory_id String?
 
     price Int
@@ -226,6 +250,9 @@ model ArmorInArmory {
     @@index([armory_id])
 }
 
+// -----------------------------
+// Bank
+// -----------------------------
 model Bank {
     id             String  @id @default(uuid())
     name           String
@@ -239,13 +266,16 @@ model Bank {
 model BankAccount {
     id String @id @default(uuid())
 
-    weapons WeaponInBank[]
-    armors  ArmorInBank[]
-
     bank    Bank   @relation(fields: [bank_id], references: [id])
     bank_id String
     user    User   @relation(fields: [user_id], references: [id])
     user_id String
+
+    money Int @default(0)
+
+    weapons WeaponInBank[]
+    armors  ArmorInBank[]
+    potions PotionInBank[]
 
     @@index([bank_id])
     @@index([user_id])
@@ -272,6 +302,18 @@ model ArmorInBank {
     bank_account_id String
 
     @@index([armor_id])
+    @@index([bank_account_id])
+}
+
+model PotionInBank {
+    id String @id @default(uuid())
+
+    potion          Potion      @relation(fields: [potion_id], references: [id])
+    potion_id       Int
+    bank_acount     BankAccount @relation(fields: [bank_account_id], references: [id])
+    bank_account_id String
+
+    @@index([potion_id])
     @@index([bank_account_id])
 }
 
@@ -324,7 +366,7 @@ model Weapon {
     weapons_loot      WeaponInLoot[]
     weapons_armory    WeaponInArmory[]
     weapons_inventory WeaponInInventory[]
-    WeaponInBank      WeaponInBank[]
+    weapons_bank      WeaponInBank[]
 }
 
 enum ArmorType {
@@ -350,7 +392,21 @@ model Armor {
     armors_loot      ArmorInLoot[]
     armors_armory    ArmorInArmory[]
     armors_inventory ArmorInInventory[]
-    ArmorInBank      ArmorInBank[]
+    armors_bank      ArmorInBank[]
+}
+
+// -----------------------------
+// Consumable
+// -----------------------------
+model Potion {
+    id   Int     @id @default(autoincrement())
+    name String?
+
+    hp_gain Int
+
+    potions_bank      PotionInBank[]
+    potions_hospital  PotionInHospital[]
+    potions_inventory PotionInInventory[]
 }
 
 // -----------------------------
@@ -402,6 +458,7 @@ model Inventory {
 
     weapons_inventory WeaponInInventory[]
     armors_inventory  ArmorInInventory[]
+    potions_inventory PotionInInventory[]
 }
 
 model WeaponInInventory {
@@ -435,5 +492,17 @@ model ArmorInInventory {
     boots_armors    Wearable[] @relation("BootsArmor")
 
     @@index([armor_id])
+    @@index([inventory_id])
+}
+
+model PotionInInventory {
+    id String @id @default(uuid())
+
+    potion       Potion    @relation(fields: [potion_id], references: [id])
+    potion_id    Int
+    inventory    Inventory @relation(fields: [inventory_id], references: [id])
+    inventory_id String
+
+    @@index([potion_id])
     @@index([inventory_id])
 }

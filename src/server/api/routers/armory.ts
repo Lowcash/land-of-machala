@@ -3,7 +3,7 @@ import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import type { TRPCContext } from '@/server/api/trpc'
 import { getInventory } from './inventory'
 import { getWeapons } from './weapon'
-import { getArmors } from './armors'
+import { getArmors } from './armor'
 
 import { WEARABLES } from '@/const'
 
@@ -58,7 +58,7 @@ export const armoryRoute = createTRPCRouter({
               },
             })
 
-            await ctx.db.weaponInInventory.create({
+            await db.weaponInInventory.create({
               data: {
                 weapon_id: armoryWeapon.weapon_id,
                 inventory_id: inventory.id,
@@ -87,7 +87,7 @@ export const armoryRoute = createTRPCRouter({
                 },
               })
 
-              await ctx.db.armorInInventory.create({
+              await db.armorInInventory.create({
                 data: {
                   armor_id: armoryArmor.armor_id,
                   inventory_id: inventory.id,
@@ -123,7 +123,7 @@ export const armoryRoute = createTRPCRouter({
               },
             })
 
-            const weaponToDelete = await ctx.db.weaponInInventory.findFirst({
+            const weaponToDelete = await db.weaponInInventory.findFirst({
               where: {
                 inventory_id: inventory.id,
                 weapon_id: armoryWeapon.weapon_id,
@@ -132,7 +132,7 @@ export const armoryRoute = createTRPCRouter({
 
             if (!weaponToDelete) throw new Error('Cannot find weapon in inventory!')
 
-            await ctx.db.weaponInInventory.delete({
+            await db.weaponInInventory.delete({
               where: {
                 id: weaponToDelete.id,
               },
@@ -145,7 +145,7 @@ export const armoryRoute = createTRPCRouter({
         case 'armor':
           {
             const armoryArmor = (await getSellArmors(ctx)).find((x) => x.id === input.armoryItemId)
-            console.log(armoryArmor)
+
             if (!armoryArmor) throw new Error('Armory does not accept this armor!')
 
             const balance = ctx.session.user.money + (armoryArmor?.price ?? 0)
@@ -158,7 +158,7 @@ export const armoryRoute = createTRPCRouter({
                 },
               })
 
-              const armorToDelete = await ctx.db.armorInInventory.findFirst({
+              const armorToDelete = await db.armorInInventory.findFirst({
                 where: {
                   inventory_id: inventory.id,
                   armor_id: armoryArmor.armor_id,
@@ -167,7 +167,7 @@ export const armoryRoute = createTRPCRouter({
 
               if (!armorToDelete) throw new Error('Cannot find armor in inventory!')
 
-              await ctx.db.armorInInventory.delete({
+              await db.armorInInventory.delete({
                 where: {
                   id: armorToDelete.id,
                 },

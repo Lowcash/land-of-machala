@@ -7,12 +7,14 @@ type Props = {
   light?: boolean
 }
 
-export const Text = styled(Label)<Props>`
+export const Text = styled(Label, {
+  shouldForwardProp: (p) => p !== 'light',
+})<Props>`
   ${tw`
     font-sans  text-gray-300
   `}
 
-  ${({ light }) => light && tw`text-gray-500`}
+  ${({ light }) => !!light && tw`text-gray-500`}
 `
 
 export const Link = styled(Text)`

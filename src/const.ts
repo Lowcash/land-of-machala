@@ -11,7 +11,7 @@ export type Position = {
   y: number
 }
 
-export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor'] as const
+export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor', 'potion'] as const
 export type Wearable = (typeof WEARABLES)[number]
 
 export const RACES = [Race.HUMAN, Race.GNOME, Race.DWARF] as const
