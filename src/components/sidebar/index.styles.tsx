@@ -16,10 +16,10 @@ const _SidebarInner = styled('div')`
   ${tw`
     flex flex-col h-full px-3 py-4 
     overflow-y-auto
-    rounded-lg border-4
+    rounded-lg
   `}
 
-  background: #f0e6d2;
+  background: var(--gold2);;
 `
 
 const _SidebarOuter = styled('aside', {
@@ -28,7 +28,7 @@ const _SidebarOuter = styled('aside', {
   height: calc(100vh - 72px);
   top: 36px;
 
-  ${tw`fixed z-40`}
+  ${tw`fixed z-50`}
 
   ${({ open }) => (open ? tw`w-64` : tw`hidden`)}
   ${({ position }) => (
