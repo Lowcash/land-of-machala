@@ -68,7 +68,10 @@ Sidebar.SectionHeader = styled(H3)`
   border-radius: 0.5rem;
 `
 Sidebar.SectionContent = styled('div')`
-  ${tw`space-y-2`}
+  ${tw`
+    flex flex-col justify-center
+    min-h-8 space-y-2
+  `}
   margin-left: 1rem;
   padding-left: 0.5rem;
   border-left: 2px solid rgba(0, 0, 0, 0.1);

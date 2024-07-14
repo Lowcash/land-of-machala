@@ -1,5 +1,4 @@
 import * as S from './index.styles'
-import { Sidebar } from '@/components/sidebar'
 
 interface Props {
   data: Array<{
@@ -12,14 +11,14 @@ export function Content({ data }: Props) {
   return (
     <S.Content>
       {data.map((section, sectionIdx) => (
-        <Sidebar.Section key={`MenuSection_${sectionIdx}`}>
-          {section.header && <Sidebar.SectionHeader>{section.header}</Sidebar.SectionHeader>}
-          <Sidebar.SectionContent>
+        <S.SidebarSection key={`MenuContentSection_${sectionIdx}`}>
+          {section.header && <S.SidebarSectionHeader>{section.header}</S.SidebarSectionHeader>}
+          <S.SidebarSectionContent>
             {section.items.map((item, itemIdx) => (
-              <S.Content.Item key={`MenuItem_${itemIdx}`} {...item} />
+              <S.Content.Item key={`MenuContentItem_${itemIdx}`} {...item} />
             ))}
-          </Sidebar.SectionContent>
-        </Sidebar.Section>
+          </S.SidebarSectionContent>
+        </S.SidebarSection>
       ))}
     </S.Content>
   )

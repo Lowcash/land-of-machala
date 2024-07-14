@@ -2,6 +2,7 @@ import React from 'react'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
 import { isString } from '@/utils/typeguard'
+import { Sidebar } from '@/components/sidebar'
 
 import { Text } from '@/styles/text'
 
@@ -32,12 +33,9 @@ interface ItemProps {
 }
 
 const _Item = styled('div')`
-  border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
-
   ${tw`
-    inline-flex justify-between
-    w-full
-    gap-1
+    inline-flex justify-between gap-1
+    h-6 w-full
   `}
 `
 
@@ -49,3 +47,12 @@ Content.Item = function (p: ItemProps) {
     </_Item>
   )
 }
+
+export const SidebarSection = Sidebar.Section
+export const SidebarSectionHeader = Sidebar.SectionHeader
+
+export const SidebarSectionContent = styled(Sidebar.SectionContent)`
+  > ${_Item}:not(:last-of-type) {
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+  }
+`
