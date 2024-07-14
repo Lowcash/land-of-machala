@@ -4,8 +4,8 @@
  
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 40 50% 93%;
+    --foreground: 220.91deg 39.29% 10.98%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -40,11 +40,13 @@
     --green: rgb(77 124 15 / var(--tw-bg-opacity));
     --blue: rgb(59 130 246 / var(--tw-bg-opacity));
     --gold: rgb(202 138 4 / var(--tw-bg-opacity));
+    --gold2: #f0e6d2;
+    --gold3: #f5e8c7;
   }
  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 40 50% 93%;
+    --foreground: 220.91deg 39.29% 10.98%;
  
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -77,6 +79,8 @@
     --green: rgb(77 124 15 / var(--tw-bg-opacity));
     --blue: rgb(59 130 246 / var(--tw-bg-opacity));
     --gold: rgb(202 138 4 / var(--tw-bg-opacity));
+    --gold2: #f0e6d2;
+    --gold3: #f5e8c7;
   }
 }
  
