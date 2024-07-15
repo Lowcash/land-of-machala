@@ -76,7 +76,7 @@ export default function () {
           )}
         />
 
-        <Button variant='outline'>Vytvořit charakter</Button>
+        <Button variant='warning'>Vytvořit charakter</Button>
       </form>
     </Form>
   )
