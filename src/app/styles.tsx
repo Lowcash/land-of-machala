@@ -1,7 +1,6 @@
-'use client'
-
 import tw from 'twin.macro'
+import styled from '@emotion/styled/macro'
 
-export const TopContainer = tw.div`
-  flex flex-col gap-5
+export const TopContainer = styled('div')`
+  ${tw`flex flex-col flex-1 mb-4`}
 `

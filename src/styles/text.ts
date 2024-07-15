@@ -12,14 +12,14 @@ export const H3 = tw.h3`
 `
 
 interface TextProps {
+  bold?: boolean
   light?: boolean
 }
 
 export const Text = styled(Label, {
-  shouldForwardProp: (p) => p !== 'light',
+  shouldForwardProp: (p) => p !== 'light' && p !== 'bold',
 })<TextProps>`
-  ${tw`font-bold`}
-
+  ${({ bold }) => !!bold && tw`font-bold`}
   ${({ light }) => !!light && tw`text-gray-500`}
 `
 
