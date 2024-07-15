@@ -7,11 +7,12 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Profession, Race } from '@prisma/client'
 
-import { Option} from '@/components/option'
+import { Card } from '@/styles/common'
+import { Option } from '@/components/option'
 import { Button } from '@/components/ui/button'
 import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
-import { PROFESSIONS, RACES, ROUTE } from '@/const'
+import { PROFESSIONS, RACES } from '@/const'
 
 const SCHEMA = z.object({
   race: z.enum(RACES),
@@ -39,45 +40,47 @@ export default function () {
   const handleSubmitForm = React.useCallback((values: Values) => create.mutate(values), [create])
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmitForm)} className='space-y-8'>
-        <FormField
-          control={form.control}
-          name='race'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Profese</FormLabel>
-              <FormControl>
-                <Option
-                  value={field.value}
-                  options={RACES as any}
-                  onChange={field.onChange}
-                  disabled={field.disabled}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name='profession'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Profese</FormLabel>
-              <FormControl>
-                <Option
-                  value={field.value}
-                  options={PROFESSIONS as any}
-                  onChange={field.onChange}
-                  disabled={field.disabled}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
+    <Card>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(handleSubmitForm)} className='space-y-8'>
+          <FormField
+            control={form.control}
+            name='race'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profese</FormLabel>
+                <FormControl>
+                  <Option
+                    value={field.value}
+                    options={RACES as any}
+                    onChange={field.onChange}
+                    disabled={field.disabled}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='profession'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Profese</FormLabel>
+                <FormControl>
+                  <Option
+                    value={field.value}
+                    options={PROFESSIONS as any}
+                    onChange={field.onChange}
+                    disabled={field.disabled}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
-        <Button variant='warning'>Vytvořit charakter</Button>
-      </form>
-    </Form>
+          <Button variant='warning'>Vytvořit charakter</Button>
+        </form>
+      </Form>
+    </Card>
   )
 }

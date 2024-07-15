@@ -1,9 +1,9 @@
 import React from 'react'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
-import { isString } from '@/utils/typeguard'
-import { Sidebar } from '@/components/sidebar'
+import { isString } from '@/lib/typeguard'
 
+import { Sidebar } from '@/components/sidebar'
 import { Text } from '@/styles/text'
 
 const _ContentOuter = tw.div`
@@ -42,8 +42,8 @@ const _Item = styled('div')`
 Content.Item = function (p: ItemProps) {
   return (
     <_Item>
-      <Text light>{p.label}</Text>
-      {isString(p.value) ? <Text light>{p.value}</Text> : p.value}
+      <Text light bold>{p.label}</Text>
+      {isString(p.value) ? <Text light bold>{p.value}</Text> : p.value}
     </_Item>
   )
 }
