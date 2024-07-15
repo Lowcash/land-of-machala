@@ -1,3 +1,5 @@
+import * as S from './index.styles'
+
 type Cell = { className?: string; content?: React.ReactNode }
 
 type Props = {
@@ -7,7 +9,7 @@ type Props = {
 
 export function Table(p: Props) {
   return (
-    <table style={{ width: '100%' }}>
+    <S.Table>
       <thead>
         <tr key={`TableHeadRow_${0}`}>
           {p.columns?.map((cell, idx) => (
@@ -28,6 +30,6 @@ export function Table(p: Props) {
           </tr>
         ))}
       </tbody>
-    </table>
+    </S.Table>
   )
 }
