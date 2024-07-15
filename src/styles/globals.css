@@ -33,7 +33,7 @@
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
  
-    --primary: 210 40% 98%;
+    --primary: 0 0% 0%;
     --primary-foreground: 222.2 47.4% 11.2%;
  
     --muted: 217.2 32.6% 17.5%;
@@ -54,8 +54,8 @@
     --green: rgb(77 124 15);
     --blue: rgb(59 130 246);
     --gold: rgb(202 138 4);
-    --gold2: #f0e6d2;
-    --gold3: #f5e8c7;
+    --gold2: #f0e6d2ee;
+    --gold3: #f5e8c7cc;
   }
  
   /* .dark {
