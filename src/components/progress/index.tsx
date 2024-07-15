@@ -4,7 +4,6 @@ import * as React from 'react'
 import * as ProgressPrimitive from '@radix-ui/react-progress'
 
 import * as S from './index.styles'
-import { Text } from '@/styles/text'
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
@@ -15,7 +14,11 @@ const Progress = React.forwardRef<
   return (
     <S.ProgressRoot ref={ref} {...props}>
       <S.ProgressIndicator style={{ transform: `translateX(-${indicatorValue}%)` }} />
-      {children && <Text className='text'>{children}</Text>}
+      {children && (
+        <S.ProgressText>
+          <div style={{ marginTop: 3 }}>{children}</div>
+        </S.ProgressText>
+      )}
     </S.ProgressRoot>
   )
 })
