@@ -1,7 +1,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Text } from '@/styles/text'
+import { H3, Text } from '@/styles/text'
 import { Button } from '../../ui/button'
 import { Alert } from '../../alert'
 import { Loading } from '@/components/loading'
@@ -90,8 +90,7 @@ export function Hospital(p: Props) {
             <>
               <br />
               <br />
-              <Text>Koupit Potion</Text>
-              <br />
+              <H3>Koupit Potion</H3>
               <Potions potions={potions!} onAction={handlePotionAction} />
             </>
           )}
