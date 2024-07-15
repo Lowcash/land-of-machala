@@ -3,6 +3,7 @@
 import { api } from '@/trpc/react'
 
 import * as S from './index.styles'
+import Image from 'next/image'
 import { Text } from '@/styles/text'
 import { Place } from './place'
 
@@ -24,16 +25,22 @@ export default function Info() {
     )
 
   if (!!info?.enemyInstance?.enemy) {
+    const name = info.enemyInstance.enemy.name
+
     return (
-      <S.Info>
-        <Text>
-          Najednou se před tebou objevil{' '}
-          <b>
-            {info.enemyInstance.enemy.name} ({info.enemyInstance.hp_actual}/{info.enemyInstance.hp_max})
-          </b>{' '}
-          a vyzývá tě na souboj
-        </Text>
-      </S.Info>
+      <>
+        <S.Info>
+          <Text>
+            Najednou se před tebou objevil{' '}
+            <b>
+              {name} ({info.enemyInstance.hp_actual}/{info.enemyInstance.hp_max})
+            </b>{' '}
+            a vyzývá tě na souboj
+          </Text>
+        </S.Info>
+
+        <Image src={`/images/enemies/${name}.png`} alt={name} width={500} height={500} className='mt-auto' />
+      </>
     )
   }
 
