@@ -31,10 +31,10 @@ export function Place(p: Props) {
 
   if (subplace !== undefined)
     return (
-      <S.Info>
+      <>
         {!p.defeated && (
           <>
-            <Button variant='outline' onClick={() => handleGoToSubPlace()}>
+            <Button variant='warning' onClick={() => handleGoToSubPlace()}>
               Vrátit se
             </Button>
             <br />
@@ -44,35 +44,33 @@ export function Place(p: Props) {
         {subplace === 'hospital' && !!p.hospital?.id && <Hospital id={p.hospital.id} defeated={p.defeated} />}
         {subplace === 'armory' && !!p.armory?.id && <Armory id={p.armory.id} />}
         {subplace === 'bank' && !!p.bank?.id && <Bank id={p.bank.id} />}
-      </S.Info>
+      </>
     )
 
   return (
-    <S.Info>
-      <>
-        Nacházíš se v <b>{p.name}</b>
-        <br />
-        <Text>{p.description}</Text>
-        <br />
-        <br />
-        <List>
-          {p.hospital && (
-            <li>
-              <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>
-            </li>
-          )}
-          {p.armory && (
-            <li>
-              <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>
-            </li>
-          )}
-          {p.bank && (
-            <li>
-              <Link onClick={() => handleGoToSubPlace('bank')}>{p.bank.name}</Link>
-            </li>
-          )}
-        </List>
-      </>
-    </S.Info>
+    <>
+      Nacházíš se v <b>{p.name}</b>
+      <br />
+      <Text>{p.description}</Text>
+      <br />
+      <br />
+      <List>
+        {p.hospital && (
+          <li>
+            <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>
+          </li>
+        )}
+        {p.armory && (
+          <li>
+            <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>
+          </li>
+        )}
+        {p.bank && (
+          <li>
+            <Link onClick={() => handleGoToSubPlace('bank')}>{p.bank.name}</Link>
+          </li>
+        )}
+      </List>
+    </>
   )
 }

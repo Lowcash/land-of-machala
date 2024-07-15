@@ -58,10 +58,8 @@ export default function Inventory() {
           <Text>V batohu se nachází:</Text>
           <br />
           <br />
-          {hasWeapons && (
-            <>
-              <Text>Zbraň</Text>
-              <br />
+          <S.Inventory>
+            {hasWeapons && (
               <Table
                 columns={[
                   {},
@@ -115,12 +113,8 @@ export default function Inventory() {
                   },
                 ])}
               />
-            </>
-          )}
-          {hasArmors && (
-            <>
-              <Text>Zbroj</Text>
-              <br />
+            )}
+            {hasArmors && (
               <Table
                 columns={[
                   {},
@@ -157,32 +151,32 @@ export default function Inventory() {
                   },
                 ])}
               />
-            </>
-          )}
-          {hasPotions && (
-            <Table
-              columns={[
-                {},
-                { className: 'text-center', content: 'Účinnost' },
-                { className: 'text-right', content: 'Použít' },
-              ]}
-              cells={show.data!.potions.map((x) => [
-                { className: 'text-left', content: x.potion.name },
-                {
-                  className: 'text-center',
-                  content: `+${x.potion.hp_gain} HP`,
-                },
-                {
-                  className: 'text-right',
-                  content: (
-                    <Button variant='secondary' onClick={() => handleUsePotion(x.id)}>
-                      <PaperPlaneIcon />
-                    </Button>
-                  ),
-                },
-              ])}
-            />
-          )}
+            )}
+            {hasPotions && (
+              <Table
+                columns={[
+                  {},
+                  { className: 'text-center', content: 'Účinnost' },
+                  { className: 'text-right', content: 'Použít' },
+                ]}
+                cells={show.data!.potions.map((x) => [
+                  { className: 'text-left', content: x.potion.name },
+                  {
+                    className: 'text-center',
+                    content: `+${x.potion.hp_gain} HP`,
+                  },
+                  {
+                    className: 'text-right',
+                    content: (
+                      <Button variant='secondary' onClick={() => handleUsePotion(x.id)}>
+                        <PaperPlaneIcon />
+                      </Button>
+                    ),
+                  },
+                ])}
+              />
+            )}
+          </S.Inventory>
         </b>
       </>
     </S.Info>

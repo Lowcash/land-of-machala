@@ -59,7 +59,12 @@ export default function Info() {
     )
   }
 
-  if (!!info?.place) return <Place {...info.place} />
+  if (!!info?.place)
+    return (
+      <S.Info>
+        <Place {...info.place} />
+      </S.Info>
+    )
 
   return <S.Info>Jsi na průzkumu světa!</S.Info>
 }

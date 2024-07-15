@@ -3,16 +3,22 @@ import tw from 'twin.macro'
 
 import { Label } from '@radix-ui/react-label'
 
-type Props = {
+export const H2 = tw.h2`
+  text-2xl font-bold
+`
+
+export const H3 = tw.h3`
+  text-xl font-bold
+`
+
+interface TextProps {
   light?: boolean
 }
 
 export const Text = styled(Label, {
   shouldForwardProp: (p) => p !== 'light',
-})<Props>`
-  ${tw`
-    font-sans  text-gray-300
-  `}
+})<TextProps>`
+  ${tw`font-bold`}
 
   ${({ light }) => !!light && tw`text-gray-500`}
 `
@@ -24,7 +30,7 @@ export const Link = styled(Text)`
 
   &:hover {
     ${tw`
-      text-gray-400
+      text-gray-600
     `}
   }
 `.withComponent('a')
