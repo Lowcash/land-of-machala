@@ -1,3 +1,5 @@
+'use client'
+
 import * as S from './styles'
 import Info from '@/components/info'
 import Action from '@/components/action'
