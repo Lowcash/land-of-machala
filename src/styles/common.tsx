@@ -13,23 +13,19 @@ export const Main = tw.main`
 
 export const Header = styled('header')`
   height: 36px;
-  
-  ${tw`
-    w-screen z-50
-    border-b border-slate-100 bg-white dark:border-slate-700 dark:bg-slate-900
-  `}
+  background: var(--gold3);
+
+  ${tw`w-screen z-40`}
 `
 
 export const Footer = styled('footer')`
   height: 36px;
+  background: var(--gold3);
 
-  ${tw`
-    w-screen z-50
-    border-t border-slate-100 bg-white dark:border-slate-700 dark:bg-slate-900
-  `}
+  ${tw`w-screen z-40`}
 `
 
-type ContentProps = {
+interface ContentProps {
   isLeftSidebarOpened?: boolean
   isRightSidebarOpened?: boolean
 }
@@ -71,4 +67,12 @@ export const List = styled('ul')`
   ${tw`
     list-disc pl-4 
   `}
+`
+
+export const Card = styled('div')`
+  background: var(--gold3);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 `
