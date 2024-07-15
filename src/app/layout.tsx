@@ -1,6 +1,6 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { MedievalSharp } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { cookies } from 'next/headers'
 import { getServerAuthSession } from '@/server/auth'
@@ -8,14 +8,14 @@ import { TRPCReactProvider } from '@/trpc/react'
 import { NextAuthProvider } from '@/ctx/auth-provider'
 import { ThemeProvider } from '@/ctx/theme-provider'
 
-import GlobalStyles from '@/styles/globals'
 import { Header, Footer, Main } from '@/styles/common'
 import { ModeToggle } from '@/components/mode'
 import Intro from './(intro)'
 import Game from './(game)'
 import User from '@/components/user'
 
-const inter = Inter({
+const medieval = MedievalSharp({
+  weight: '400',
   subsets: ['latin'],
   variable: '--font-sans',
 })
@@ -31,15 +31,13 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
 
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', inter.variable)}>
+      <body className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}>
         <TRPCReactProvider cookies={cookies().toString()}>
           <NextAuthProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              <GlobalStyles />
-
               <Header>
                 <div className='w-fit ml-auto space-x-1'>
-                  <ModeToggle />
+                  {/* <ModeToggle /> */}
                   {session && <User />}
                 </div>
               </Header>

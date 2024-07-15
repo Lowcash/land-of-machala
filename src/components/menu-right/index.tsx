@@ -34,7 +34,7 @@ export default function MenuRight() {
   const disableInventory = hasCombat || hasLoot || !info?.canMove
 
   return (
-    <Sidebar direction='right' open={open}>
+    <Sidebar position='right' open={open}>
       <div>
         <S.TopSection>
           <S.MoveWrap>

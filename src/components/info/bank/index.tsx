@@ -1,7 +1,8 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Text } from '@/styles/text'
+import * as S from './index.styles'
+import { H3, Text } from '@/styles/text'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
 import { Button } from '@/components/ui/button'
@@ -132,26 +133,23 @@ export function Bank(p: Props) {
       <br />
       <div className='flex justify-between space-x-4'>
         <div>
-          <Text className='whitespace-nowrap'>Uloženo peněz</Text>
-          <br />
+          <H3 className='whitespace-nowrap'>Uloženo peněz</H3>
           <Text>{showAccount.data?.money ?? 0}</Text>
         </div>
         <div className='flex space-x-6'>
           <div>
-            <Text>Uložit Peníze</Text>
-            <br />
+            <H3>Uložit Peníze</H3>
             <div className='flex space-x-2'>
-              <input ref={depositMoneyRef} type='number' defaultValue={0} style={{ maxWidth: 100 }} />
+              <S.Input ref={depositMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
                 Uložit
               </Button>
             </div>
           </div>
           <div>
-            <Text>Vybrat Peníze</Text>
-            <br />
+            <H3>Vybrat Peníze</H3>
             <div className='flex space-x-2'>
-              <input ref={withdrawMoneyRef} type='number' defaultValue={0} style={{ maxWidth: 100 }} />
+              <S.Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
                 Vybrat
               </Button>
@@ -163,8 +161,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Uložit Zbraň</Text>
-          <br />
+          <H3>Uložit Zbraň</H3>
           <WeaponSafe
             weapons={depositWeapons!}
             action='deposit'
@@ -176,8 +173,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Uložit Zbroj</Text>
-          <br />
+          <H3>Uložit Zbroj</H3>
           <ArmorSafe
             armors={depositArmors!}
             action='deposit'
@@ -189,8 +185,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Uložit Potion</Text>
-          <br />
+          <H3>Uložit Potion</H3>
           <PotionSafe
             potions={depositPotions!}
             action='deposit'
@@ -202,8 +197,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Vybrat Zbraň</Text>
-          <br />
+          <H3>Vybrat Zbraň</H3>
           <WeaponSafe
             weapons={withdrawWeapons!}
             action='withdraw'
@@ -215,8 +209,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Vybrat Zbroj</Text>
-          <br />
+          <H3>Vybrat Zbroj</H3>
           <ArmorSafe
             armors={withdrawArmors!}
             action='withdraw'
@@ -228,8 +221,7 @@ export function Bank(p: Props) {
         <>
           <br />
           <br />
-          <Text>Vybrat Potion</Text>
-          <br />
+          <H3>Vybrat Potion</H3>
           <PotionSafe
             potions={withdrawPotions!}
             action='withdraw'
