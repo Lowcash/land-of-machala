@@ -1,6 +1,8 @@
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
 
+import { Label } from '@radix-ui/react-label'
+
 export const H2 = tw.h2`
   text-2xl font-bold
 `
@@ -13,7 +15,7 @@ interface TextProps {
   light?: boolean
 }
 
-export const Text = styled('span', {
+export const Text = styled(Label, {
   shouldForwardProp: (p) => p !== 'light',
 })<TextProps>`
   ${tw`font-bold`}
