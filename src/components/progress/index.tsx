@@ -9,7 +9,7 @@ const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & S.ProgressProps
 >(({ className, value, max, children, ...props }, ref) => {
-  const indicatorValue = ((value ?? 0) / (max ?? 100)) * 100
+  const indicatorValue = 100 - ((value ?? 0) / (max ?? 100)) * 100
 
   return (
     <S.ProgressRoot ref={ref} {...props}>
