@@ -1,7 +1,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
-import { Text } from '@/styles/text'
+import { H3, Text } from '@/styles/text'
 import { Loading } from '../../loading'
 import { Alert } from '../../alert'
 import { ArmorMarket, WeaponMarket } from './market'
@@ -103,8 +103,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Text>Koupit Zbraň</Text>
-          <br />
+          <H3>Koupit Zbraň</H3>
           <WeaponMarket weapons={buyWeapons!} action='buy' onAction={handleWeaponAction} />
         </>
       )}
@@ -112,8 +111,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Text>Prodat Zbraň</Text>
-          <br />
+          <H3>Prodat Zbraň</H3>
           <WeaponMarket weapons={sellWeapons!} action='sell' onAction={handleWeaponAction} />
         </>
       )}
@@ -121,8 +119,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Text>Koupit Zbroj</Text>
-          <br />
+          <H3>Koupit Zbroj</H3>
           <ArmorMarket armors={buyArmors!} action='buy' onAction={handleArmorAction} />
         </>
       )}
@@ -130,8 +127,7 @@ export function Armory(p: Props) {
         <>
           <br />
           <br />
-          <Text>Prodat Zbroj</Text>
-          <br />
+          <H3>Prodat Zbroj</H3>
           <ArmorMarket armors={sellArmors!} action='sell' onAction={handleArmorAction} />
         </>
       )}

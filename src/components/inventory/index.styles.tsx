@@ -1,7 +1,7 @@
 import tw from 'twin.macro'
 
-export const Info = tw.div`
-  p-4
-  -m-2
-  bg-slate-700
+export { Card as Info } from '@/styles/common'
+
+export const Inventory = tw.div`
+  flex flex-col space-y-6
 `
