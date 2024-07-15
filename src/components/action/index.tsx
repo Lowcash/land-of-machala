@@ -3,6 +3,7 @@
 import React from 'react'
 import { api } from '@/trpc/react'
 
+import * as S from './index.styles'
 import { Button } from '../ui/button'
 
 export default function Action() {
@@ -35,9 +36,14 @@ export default function Action() {
   const handleRunAway = React.useCallback(() => runAway.mutate(), [runAway])
   const handleLoot = React.useCallback(() => loot.mutate(), [loot])
 
+  const hasEnemy = Boolean(gameInfo?.enemyInstance)
+  const hasLoot = Boolean(gameInfo?.loot)
+
+  if (!hasEnemy && !hasLoot) return <></>
+
   return (
-    <>
-      {gameInfo?.enemyInstance && (
+    <S.Info>
+      {hasEnemy && (
         <div className='flex justify-between'>
           <Button variant='destructive' onClick={handleAttack}>
             Útok
@@ -47,13 +53,13 @@ export default function Action() {
           </Button>
         </div>
       )}
-      {gameInfo?.loot && (
+      {hasLoot && (
         <div className='flex justify-between'>
           <Button variant='destructive' onClick={handleLoot}>
             Loot
           </Button>
         </div>
       )}
-    </>
+    </S.Info>
   )
 }

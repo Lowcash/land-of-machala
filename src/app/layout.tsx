@@ -29,9 +29,14 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const session = await getServerAuthSession()
 
+  const path = '/images/environment/forest.webp'
+
   return (
     <html lang='en' suppressHydrationWarning>
-      <body className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}>
+      <body
+        className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}
+        style={session ? { backgroundImage: `url(${path})`, backgroundSize: '100% 100%' } : undefined}
+      >
         <TRPCReactProvider cookies={cookies().toString()}>
           <NextAuthProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
