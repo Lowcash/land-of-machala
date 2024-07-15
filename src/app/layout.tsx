@@ -37,7 +37,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
               <Header>
                 <div className='w-fit ml-auto space-x-1'>
-                  <ModeToggle />
+                  {/* <ModeToggle /> */}
                   {session && <User />}
                 </div>
               </Header>

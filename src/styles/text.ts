@@ -28,7 +28,7 @@ export const Link = styled(Text)`
 
   &:hover {
     ${tw`
-      text-gray-400
+      text-gray-600
     `}
   }
 `.withComponent('a')
