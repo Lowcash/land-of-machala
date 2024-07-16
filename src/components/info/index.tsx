@@ -39,7 +39,7 @@ export default function Info() {
           </Text>
         </S.Info>
 
-        <Image src={`/images/enemies/${name}.png`} alt={name} width={500} height={500} className='mt-auto' />
+        <Image src={`/images/enemies/${name}.png`} alt={name} width={500} height={500} className='mt-auto ml-auto mr-auto' />
       </>
     )
   }
