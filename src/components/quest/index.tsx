@@ -4,20 +4,37 @@ import React from 'react'
 import { api } from '@/trpc/react'
 
 import * as S from './index.styles'
-import { H3 } from '@/styles/text'
+import { H3, Link } from '@/styles/text'
 import { Table } from '../table'
-import { CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
+import { Button } from '../ui/button'
+import { ChevronLeftIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
+
+import { ROUTE } from '@/const'
 
 export default function Quest() {
-  const { player, inventory } = api.useUtils()
   const show = api.quest.show.useQuery()
 
-  const hasSlainEnemyQuest = show.data?.quest_slain_enemy?.id !== undefined
-  const hasSlainTrollQuest = show.data?.quest_slain_troll?.id !== undefined
+  const slainEnemyQuest = show.data?.quest_slain_enemy
+  const slainTrollQuest = show.data?.quest_slain_troll
+
+  const hasSlainEnemyQuest = slainEnemyQuest?.id !== undefined
+  const hasSlainTrollQuest = slainTrollQuest?.id !== undefined
+
+  const BackBtn = (
+    <Link href={ROUTE.HOME}>
+      <Button variant='default'>
+        <ChevronLeftIcon />
+        &nbsp; Zpět do světa
+      </Button>
+    </Link>
+  )
 
   if (!hasSlainEnemyQuest && !hasSlainTrollQuest)
     return (
       <S.Info>
+        {BackBtn}
+        <br />
+        <br />
         <H3>Žádný quest nemáš</H3>
       </S.Info>
     )
@@ -26,17 +43,29 @@ export default function Quest() {
 
   if (hasSlainEnemyQuest) {
     quests.push(
-      buildQuest(show.data!.quest_slain_enemy!.ident, 'popis slain enemy questu', show.data!.quest_slain_enemy_done),
+      buildQuest(
+        slainEnemyQuest!.ident,
+        <>
+          popis slain enemy questu
+          <br />
+          <br />
+          <b>
+            Zabito nepřátel: {slainEnemyQuest.slain.actual_slain}/{slainEnemyQuest.slain.desired_slain}
+          </b>
+        </>,
+        show.data!.quest_slain_enemy_complete,
+      ),
     )
   }
   if (hasSlainTrollQuest) {
-    quests.push(
-      buildQuest(show.data!.quest_slain_troll!.ident, 'popis slain troll questu', show.data!.quest_slain_troll_done),
-    )
+    quests.push(buildQuest(slainTrollQuest!.ident, 'popis slain troll questu', show.data!.quest_slain_troll_complete))
   }
 
   return (
     <S.Info>
+      {BackBtn}
+      <br />
+      <br />
       <H3>Questy:</H3>
       <br />
       <S.Quest>
@@ -46,7 +75,7 @@ export default function Quest() {
   )
 }
 
-function buildQuest(name: string, description: string, done: boolean) {
+function buildQuest(name: string, description: React.ReactNode, done: boolean) {
   return [
     { className: 'text-left', content: name },
     {
@@ -54,8 +83,7 @@ function buildQuest(name: string, description: string, done: boolean) {
       content: description,
     },
     {
-      className: 'text-center',
-      content: done ? <CheckIcon /> : <Cross2Icon />,
+      content: done ? <CheckIcon className='m-auto' /> : <Cross2Icon className='m-auto' />,
     },
   ]
 }

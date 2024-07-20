@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getInventory } from './inventory'
-import { acceptQuest, checkQuestProgress, completeQuest } from './quest'
+import { acceptQuest, checkQuestProgress, completeQuest, getQuest } from './quest'
 import type { TRPCContext } from '@/server/api/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { collectReward } from './game'
@@ -14,7 +14,10 @@ export const hospitalRoute = createTRPCRouter({
 
     return {
       ...hospital,
-      slainEnemyQuest: await checkQuestProgress(ctx, 'SLAIN_ENEMY'),
+      slainEnemyQuest: {
+        state: await checkQuestProgress(ctx, 'SLAIN_ENEMY'),
+        reward: (await getQuest(ctx, 'SLAIN_ENEMY')).money,
+      },
     }
   }),
   resurect: protectedProcedure.mutation(async ({ ctx }) => {
@@ -84,11 +87,7 @@ export const hospitalRoute = createTRPCRouter({
     if ((await checkQuestProgress(ctx, 'SLAIN_ENEMY')) !== 'COMPLETE')
       throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-    await ctx.db.$transaction(async (_db) => {
-      const _ctx = { db: _db as any, session: ctx.session }
-
-      await collectReward(_ctx, { money: await completeQuest(_ctx, 'SLAIN_ENEMY') })
-    })
+    await collectReward(ctx, { money: await completeQuest(ctx, 'SLAIN_ENEMY') })
   }),
 })
 

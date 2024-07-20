@@ -31,8 +31,9 @@ export default function MenuRight() {
   const hasCombat = Boolean(info?.enemy_instance)
   const hasLoot = Boolean(info?.loot)
   const hasInventory = pathname === ROUTE.INVENTORY
+  const hasQuest = pathname === ROUTE.QUEST
 
-  const disableMove = hasCombat || hasLoot || hasInventory || !info?.canMove
+  const disableMove = hasCombat || hasLoot || hasInventory || hasQuest || !info?.canMove
   const disableInventory = hasCombat || hasLoot || !info?.canMove
 
   return (
@@ -52,7 +53,7 @@ export default function MenuRight() {
 
         <S.Container>
           <Link href={pathname === ROUTE.QUEST ? ROUTE.HOME : ROUTE.QUEST}>
-            <S.Quest disabled={disableInventory} />
+            <S.Quest />
           </Link>
           <Link href={pathname === ROUTE.INVENTORY ? ROUTE.HOME : ROUTE.INVENTORY}>
             <S.Inventory disabled={disableInventory} />
