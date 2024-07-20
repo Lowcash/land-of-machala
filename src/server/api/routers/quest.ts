@@ -36,7 +36,11 @@ export async function acceptQuest(ctx: TRPCContext, ident: QuestIdent) {
 
         await db.userQuest.update({
           where: { id: userQuest.id },
-          data: { quest_slain_enemy_id: _questSlainEnemy.id },
+          data: {
+            quest_slain_enemy_id: _questSlainEnemy.id,
+            quest_slain_enemy_complete: false,
+            quest_slain_enemy_done: false,
+          },
         })
 
         break
@@ -45,7 +49,11 @@ export async function acceptQuest(ctx: TRPCContext, ident: QuestIdent) {
 
         await db.userQuest.update({
           where: { id: userQuest.id },
-          data: { quest_slain_enemy_id: _questSlainTroll.id },
+          data: {
+            quest_slain_enemy_id: _questSlainTroll.id,
+            quest_slain_troll_complete: false,
+            quest_slain_troll_done: false,
+          },
         })
 
         break
@@ -75,10 +83,6 @@ export async function completeQuest(ctx: TRPCContext, ident: QuestIdent) {
   return await ctx.db.$transaction(async (db) => {
     const reward = userQuest[questKey]!.quest.money
 
-    await db.slain.delete({
-      where: { id: userQuest[questKey]!.slain_id },
-    })
-
     switch (ident) {
       case 'SLAIN_ENEMY':
         await db.questSlainEnemy.delete({
@@ -91,6 +95,10 @@ export async function completeQuest(ctx: TRPCContext, ident: QuestIdent) {
         })
         break
     }
+
+    await db.slain.delete({
+      where: { id: userQuest[questKey]!.slain_id },
+    })
 
     await db.userQuest.update({
       where: { id: userQuest.id },
@@ -106,21 +114,33 @@ export async function checkQuestProgress(ctx: TRPCContext, ident: QuestIdent): P
 
   let questKey: keyof typeof userQuest
   let questDoneKey: keyof typeof userQuest
+  let questCompleteKey: keyof typeof userQuest
   switch (ident) {
     case 'SLAIN_ENEMY':
       questKey = 'quest_slain_enemy'
       questDoneKey = 'quest_slain_enemy_done'
+      questCompleteKey = 'quest_slain_enemy_complete'
       break
     case 'SLAIN_TROLL':
       questKey = 'quest_slain_troll'
       questDoneKey = 'quest_slain_troll_done'
+      questCompleteKey = 'quest_slain_troll_complete'
       break
   }
 
   if (!userQuest[questKey]) return 'READY'
   if (userQuest[questDoneKey]) return 'DONE'
 
-  return (await rules(ctx, ident)) ? 'COMPLETE' : 'PROGRESS'
+  const isComplete = await rules(ctx, ident)
+
+  if (isComplete) {
+    await ctx.db.userQuest.update({
+      where: { id: userQuest.id },
+      data: { [questCompleteKey]: true },
+    })
+  }
+
+  return isComplete ? 'COMPLETE' : 'PROGRESS'
 }
 
 enemyEmitter.on('defeated', async ({ ctx, ...enemy }) => {
@@ -128,21 +148,31 @@ enemyEmitter.on('defeated', async ({ ctx, ...enemy }) => {
 
   if (!!userQuest.quest_slain_enemy) {
     const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain
+    const desiredSlain = userQuest.quest_slain_enemy.slain.desired_slain
+
+    if (actualSlain >= desiredSlain) return
 
     await ctx.db.slain.update({
       where: { id: userQuest.quest_slain_enemy.slain.id },
       data: { actual_slain: actualSlain + 1 },
     })
+
+    await checkQuestProgress(ctx, 'SLAIN_ENEMY')
   }
   if (!!userQuest.quest_slain_troll) {
     if (enemy.name !== 'troll') return
 
     const actualSlain = userQuest.quest_slain_troll.slain.actual_slain
+    const desiredSlain = userQuest.quest_slain_troll.slain.desired_slain
+
+    if (actualSlain >= desiredSlain) return
 
     await ctx.db.slain.update({
       where: { id: userQuest.quest_slain_troll.slain.id },
       data: { actual_slain: actualSlain + 1 },
     })
+
+    await checkQuestProgress(ctx, 'SLAIN_TROLL')
   }
 })
 

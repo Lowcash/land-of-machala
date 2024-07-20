@@ -133,6 +133,9 @@ model UserQuest {
     quest_slain_enemy_id Int?
     quest_slain_troll_id Int?
 
+    quest_slain_enemy_complete Boolean @default(false)
+    quest_slain_troll_complete Boolean @default(false)
+
     quest_slain_enemy_done Boolean @default(false)
     quest_slain_troll_done Boolean @default(false)
 
