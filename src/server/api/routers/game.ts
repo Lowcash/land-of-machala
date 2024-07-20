@@ -1,5 +1,13 @@
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getInventory } from './inventory'
+import TypedEventEmitter from '@/lib/emitter'
+import type { Enemy } from '@prisma/client'
+
+type EmitterEnemy = Enemy & { ctx: TRPCContext }
+
+export const enemyEmitter = new TypedEventEmitter<{
+  defeated: EmitterEnemy
+}>()
 
 export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
@@ -39,6 +47,8 @@ export const gameRouter = createTRPCRouter({
         ctx.session.user.enemy_instance.enemy.money_to ?? 0,
       )
 
+      const enemy = ctx.session.user.enemy_instance.enemy as Enemy
+
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
       if (playerDefeated) {
@@ -66,6 +76,8 @@ export const gameRouter = createTRPCRouter({
       }
 
       if (enemyDefeated) {
+        enemyEmitter.emit('defeated', { ...enemy, ctx })
+
         const weapon = await ctx.db.weapon.findFirst({
           skip: random(await ctx.db.weapon.count()),
           take: 1,

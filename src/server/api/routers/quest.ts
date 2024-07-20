@@ -1,6 +1,7 @@
 import { QuestIdent } from '@prisma/client'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import type { TRPCContext } from '../trpc'
+import { enemyEmitter } from './game'
 
 import { ERROR_CAUSE } from '@/const'
 
@@ -116,6 +117,29 @@ export async function checkQuestProgress(ctx: TRPCContext, ident: QuestIdent): P
 
   return (await rules(ctx, ident)) ? 'COMPLETE' : 'PROGRESS'
 }
+
+enemyEmitter.on('defeated', async ({ ctx, ...enemy }) => {
+  const userQuest = await getUserQuest(ctx)
+
+  if (!!userQuest.quest_slain_enemy) {
+    const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain
+
+    await ctx.db.slain.update({
+      where: { id: userQuest.quest_slain_enemy.slain.id },
+      data: { actual_slain: actualSlain + 1 },
+    })
+  }
+  if (!!userQuest.quest_slain_troll) {
+    if (enemy.name !== 'troll') return
+
+    const actualSlain = userQuest.quest_slain_troll.slain.actual_slain
+
+    await ctx.db.slain.update({
+      where: { id: userQuest.quest_slain_troll.slain.id },
+      data: { actual_slain: actualSlain + 1 },
+    })
+  }
+})
 
 export async function getQuest(ctx: TRPCContext, ident: QuestIdent) {
   const quest = await ctx.db.quest.findFirst({
