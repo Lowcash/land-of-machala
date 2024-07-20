@@ -1,4 +1,5 @@
-import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import type { TRPCContext } from '@/server/api/trpc'
 
 export const inventoryRoute = createTRPCRouter({
   show: protectedProcedure.query(async ({ ctx }) => {
