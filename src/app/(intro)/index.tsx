@@ -1,7 +1,8 @@
 'use client'
+import { signIn } from 'next-auth/react'
 
-import * as S from './index.styles'
+import { Button } from '@/components/ui/button'
 
 export default function () {
-  return <S.Login href={'/api/auth/signin'}>Sign in</S.Login>
+  return <Button onClick={() => signIn('discord')} variant={'warning'}>Sign in</Button>
 }
