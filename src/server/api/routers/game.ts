@@ -1,5 +1,13 @@
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getInventory } from './inventory'
+import TypedEventEmitter from '@/lib/emitter'
+import type { Enemy } from '@prisma/client'
+
+type EmitterEnemy = Enemy & { ctx: TRPCContext }
+
+export const enemyEmitter = new TypedEventEmitter<{
+  defeated: EmitterEnemy
+}>()
 
 export const gameRouter = createTRPCRouter({
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
@@ -39,6 +47,8 @@ export const gameRouter = createTRPCRouter({
         ctx.session.user.enemy_instance.enemy.money_to ?? 0,
       )
 
+      const enemy = ctx.session.user.enemy_instance.enemy as Enemy
+
       await ctx.db.enemyInstance.delete({ where: { id: ctx.session.user.enemy_instance_id } })
 
       if (playerDefeated) {
@@ -66,6 +76,8 @@ export const gameRouter = createTRPCRouter({
       }
 
       if (enemyDefeated) {
+        enemyEmitter.emit('defeated', { ...enemy, ctx })
+
         const weapon = await ctx.db.weapon.findFirst({
           skip: random(await ctx.db.weapon.count()),
           take: 1,
@@ -156,18 +168,26 @@ export const gameRouter = createTRPCRouter({
         where: { id: loot.id },
       })
 
-      const moneyActual = (ctx.session.user!.money ?? 0) + (loot.money ?? 0)
+      await collectReward({ db: db as any, session: ctx.session }, { money: loot.money })
 
       await db.user.update({
         where: { id: ctx.session.user!.id },
-        data: {
-          loot_id: null,
-          money: moneyActual,
-        },
+        data: { loot_id: null },
       })
     })
   }),
 })
+
+export async function collectReward(ctx: TRPCContext, reward: { money?: number | null }) {
+  const moneyActual = (ctx.session!.user!.money ?? 0) + (reward.money ?? 0)
+
+  await ctx.db.user.update({
+    where: { id: ctx.session!.user!.id },
+    data: {
+      money: moneyActual,
+    },
+  })
+}
 
 async function info(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('User does not exist!')

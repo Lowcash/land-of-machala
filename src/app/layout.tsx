@@ -9,7 +9,6 @@ import { NextAuthProvider } from '@/ctx/auth-provider'
 import { ThemeProvider } from '@/ctx/theme-provider'
 
 import { Header, Footer, Main } from '@/styles/common'
-import { ModeToggle } from '@/components/mode'
 import Intro from './(intro)'
 import Game from './(game)'
 import User from '@/components/user'
@@ -42,7 +41,6 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
               <Header>
                 <div className='w-fit ml-auto space-x-1'>
-                  {/* <ModeToggle /> */}
                   {session && <User />}
                 </div>
               </Header>

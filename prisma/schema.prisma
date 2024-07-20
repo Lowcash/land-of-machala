@@ -98,6 +98,9 @@ model User {
     wearable    Wearable? @relation(fields: [wearable_id], references: [id])
     wearable_id String?
 
+    user_quest    UserQuest? @relation(fields: [user_quest_id], references: [id])
+    user_quest_id Int?
+
     defeated Boolean @default(false)
 
     bank_accounts BankAccount[]
@@ -105,6 +108,7 @@ model User {
     @@index([loot_id])
     @@index([inventory_id])
     @@index([wearable_id])
+    @@index([user_quest_id])
     @@index([enemy_instance_id])
 }
 
@@ -118,6 +122,27 @@ enum Profession {
     WARRIOR
     SAMURAI
     MAGE
+}
+
+model UserQuest {
+    id Int @id @default(autoincrement())
+
+    quest_slain_enemy QuestSlainEnemy? @relation(fields: [quest_slain_enemy_id], references: [id])
+    quest_slain_troll QuestSlainTroll? @relation(fields: [quest_slain_troll_id], references: [id])
+
+    quest_slain_enemy_id Int?
+    quest_slain_troll_id Int?
+
+    quest_slain_enemy_complete Boolean @default(false)
+    quest_slain_troll_complete Boolean @default(false)
+
+    quest_slain_enemy_done Boolean @default(false)
+    quest_slain_troll_done Boolean @default(false)
+
+    User User[]
+
+    @@index([quest_slain_enemy_id])
+    @@index([quest_slain_troll_id])
 }
 
 // -----------------------------
@@ -140,6 +165,7 @@ model Enemy {
     money_to   Int?
 
     enemy_instances EnemyInstance[]
+    slain           Slain[]
 }
 
 model EnemyInstance {
@@ -505,4 +531,70 @@ model PotionInInventory {
 
     @@index([potion_id])
     @@index([inventory_id])
+}
+
+// -----------------------------
+// Quest
+// -----------------------------
+
+enum QuestIdent {
+    SLAIN_ENEMY
+    SLAIN_TROLL
+}
+
+model Quest {
+    id    Int        @id @default(autoincrement())
+    ident QuestIdent @unique
+
+    money Int?
+
+    quest_slain_enemy QuestSlainEnemy[]
+    quest_slain_troll QuestSlainTroll[]
+}
+
+model Slain {
+    id Int @id @default(autoincrement())
+
+    enemy         Enemy? @relation(fields: [enemy_id], references: [id])
+    actual_slain  Int    @default(0)
+    desired_slain Int
+
+    enemy_id String?
+
+    quest_slain_enemy QuestSlainEnemy[]
+    quest_slain_troll QuestSlainTroll[]
+
+    @@index([enemy_id])
+}
+
+model QuestSlainEnemy {
+    id    Int        @id @default(autoincrement())
+    ident QuestIdent @default(SLAIN_ENEMY)
+
+    quest Quest @relation(fields: [quest_id], references: [id])
+    slain Slain @relation(fields: [slain_id], references: [id])
+
+    quest_id Int
+    slain_id Int
+
+    user_quest UserQuest[]
+
+    @@index([quest_id])
+    @@index([slain_id])
+}
+
+model QuestSlainTroll {
+    id    Int        @id @default(autoincrement())
+    ident QuestIdent @default(SLAIN_TROLL)
+
+    quest Quest @relation(fields: [quest_id], references: [id])
+    slain Slain @relation(fields: [slain_id], references: [id])
+
+    quest_id Int
+    slain_id Int
+
+    user_quest UserQuest[]
+
+    @@index([quest_id])
+    @@index([slain_id])
 }
