@@ -6,7 +6,7 @@ import { Wearable } from '@/const'
 
 import * as S from './index.styles'
 import { Button } from '../ui/button'
-import { Text } from '@/styles/text'
+import { H3 } from '@/styles/text'
 import { Table } from '../table'
 import { CheckIcon, Cross2Icon, PaperPlaneIcon } from '@radix-ui/react-icons'
 
@@ -45,139 +45,134 @@ export default function Inventory() {
   if (!hasWeapons && !hasArmors && !hasPotions)
     return (
       <S.Info>
-        <b>
-          <Text>V batohu nic nemáš</Text>
-        </b>
+        <H3>V batohu nic nemáš</H3>
       </S.Info>
     )
 
   return (
     <S.Info>
       <>
-        <b>
-          <Text>V batohu se nachází:</Text>
-          <br />
-          <br />
-          <S.Inventory>
-            {hasWeapons && (
-              <Table
-                columns={[
-                  {},
-                  { className: 'text-center', content: 'Poškození' },
-                  { className: 'text-center', content: 'Obléct (levá ruka)' },
-                  { className: 'text-center', content: 'Obléct (pravá ruka)' },
-                ]}
-                cells={show.data!.weapons.map((x) => [
-                  { className: 'text-left', content: x.weapon.name },
-                  {
-                    className: 'text-center',
-                    content: (
-                      <>
-                        {x.weapon.damage_from}-{x.weapon.damage_to}
-                      </>
-                    ),
-                  },
-                  {
-                    className: 'text-center',
-                    content: (
-                      <>
-                        {!x.armed_left && (
-                          <Button variant='secondary' onClick={() => handleWear('left_weapon', x.id)}>
-                            <CheckIcon />
-                          </Button>
-                        )}
-                        {x.armed_left && (
-                          <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
-                            <Cross2Icon />
-                          </Button>
-                        )}
-                      </>
-                    ),
-                  },
-                  {
-                    className: 'text-center',
-                    content: (
-                      <>
-                        {!x.armed_right && (
-                          <Button variant='secondary' onClick={() => handleWear('right_weapon', x.id)}>
-                            <CheckIcon />
-                          </Button>
-                        )}
-                        {x.armed_right && (
-                          <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
-                            <Cross2Icon />
-                          </Button>
-                        )}
-                      </>
-                    ),
-                  },
-                ])}
-              />
-            )}
-            {hasArmors && (
-              <Table
-                columns={[
-                  {},
-                  {},
-                  { className: 'text-center', content: 'Zbroj' },
-                  { className: 'text-center', content: 'Síla' },
-                  { className: 'text-center', content: 'Obratnost' },
-                  { className: 'text-center', content: 'Inteligence' },
-                  { className: 'text-center', content: 'Obléct' },
-                ]}
-                cells={show.data!.armors.map((x) => [
-                  { className: 'text-left', content: x.armor.name },
-                  { className: 'text-center', content: x.armor.type },
-                  { className: 'text-center', content: x.armor.armor },
-                  { className: 'text-center', content: x.armor.strength },
-                  { className: 'text-center', content: x.armor.agility },
-                  { className: 'text-center', content: x.armor.intelligency },
-                  {
-                    className: 'text-center',
-                    content: (
-                      <>
-                        {!x.armed && (
-                          <Button variant='secondary' onClick={() => handleWear('armor', x.id)}>
-                            <CheckIcon />
-                          </Button>
-                        )}
-                        {x.armed && (
-                          <Button variant='destructive' onClick={() => handleUnwear('armor', x.id)}>
-                            <Cross2Icon />
-                          </Button>
-                        )}
-                      </>
-                    ),
-                  },
-                ])}
-              />
-            )}
-            {hasPotions && (
-              <Table
-                columns={[
-                  {},
-                  { className: 'text-center', content: 'Účinnost' },
-                  { className: 'text-right', content: 'Použít' },
-                ]}
-                cells={show.data!.potions.map((x) => [
-                  { className: 'text-left', content: x.potion.name },
-                  {
-                    className: 'text-center',
-                    content: `+${x.potion.hp_gain} HP`,
-                  },
-                  {
-                    className: 'text-right',
-                    content: (
-                      <Button variant='secondary' onClick={() => handleUsePotion(x.id)}>
-                        <PaperPlaneIcon />
-                      </Button>
-                    ),
-                  },
-                ])}
-              />
-            )}
-          </S.Inventory>
-        </b>
+        <H3>V batohu se nachází:</H3>
+        <br />
+        <S.Inventory>
+          {hasWeapons && (
+            <Table
+              columns={[
+                {},
+                { className: 'text-center', content: 'Poškození' },
+                { className: 'text-center', content: 'Obléct (levá ruka)' },
+                { className: 'text-center', content: 'Obléct (pravá ruka)' },
+              ]}
+              cells={show.data!.weapons.map((x) => [
+                { className: 'text-left', content: x.weapon.name },
+                {
+                  className: 'text-center',
+                  content: (
+                    <>
+                      {x.weapon.damage_from}-{x.weapon.damage_to}
+                    </>
+                  ),
+                },
+                {
+                  className: 'text-center',
+                  content: (
+                    <>
+                      {!x.armed_left && (
+                        <Button variant='secondary' onClick={() => handleWear('left_weapon', x.id)}>
+                          <CheckIcon />
+                        </Button>
+                      )}
+                      {x.armed_left && (
+                        <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
+                          <Cross2Icon />
+                        </Button>
+                      )}
+                    </>
+                  ),
+                },
+                {
+                  className: 'text-center',
+                  content: (
+                    <>
+                      {!x.armed_right && (
+                        <Button variant='secondary' onClick={() => handleWear('right_weapon', x.id)}>
+                          <CheckIcon />
+                        </Button>
+                      )}
+                      {x.armed_right && (
+                        <Button variant='destructive' onClick={() => handleUnwear('weapon', x.id)}>
+                          <Cross2Icon />
+                        </Button>
+                      )}
+                    </>
+                  ),
+                },
+              ])}
+            />
+          )}
+          {hasArmors && (
+            <Table
+              columns={[
+                {},
+                {},
+                { className: 'text-center', content: 'Zbroj' },
+                { className: 'text-center', content: 'Síla' },
+                { className: 'text-center', content: 'Obratnost' },
+                { className: 'text-center', content: 'Inteligence' },
+                { className: 'text-center', content: 'Obléct' },
+              ]}
+              cells={show.data!.armors.map((x) => [
+                { className: 'text-left', content: x.armor.name },
+                { className: 'text-center', content: x.armor.type },
+                { className: 'text-center', content: x.armor.armor },
+                { className: 'text-center', content: x.armor.strength },
+                { className: 'text-center', content: x.armor.agility },
+                { className: 'text-center', content: x.armor.intelligency },
+                {
+                  className: 'text-center',
+                  content: (
+                    <>
+                      {!x.armed && (
+                        <Button variant='secondary' onClick={() => handleWear('armor', x.id)}>
+                          <CheckIcon />
+                        </Button>
+                      )}
+                      {x.armed && (
+                        <Button variant='destructive' onClick={() => handleUnwear('armor', x.id)}>
+                          <Cross2Icon />
+                        </Button>
+                      )}
+                    </>
+                  ),
+                },
+              ])}
+            />
+          )}
+          {hasPotions && (
+            <Table
+              columns={[
+                {},
+                { className: 'text-center', content: 'Účinnost' },
+                { className: 'text-right', content: 'Použít' },
+              ]}
+              cells={show.data!.potions.map((x) => [
+                { className: 'text-left', content: x.potion.name },
+                {
+                  className: 'text-center',
+                  content: `+${x.potion.hp_gain} HP`,
+                },
+                {
+                  className: 'text-right',
+                  content: (
+                    <Button variant='secondary' onClick={() => handleUsePotion(x.id)}>
+                      <PaperPlaneIcon />
+                    </Button>
+                  ),
+                },
+              ])}
+            />
+          )}
+        </S.Inventory>
       </>
     </S.Info>
   )

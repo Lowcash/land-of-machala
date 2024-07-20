@@ -1,11 +1,16 @@
 import { QuestIdent } from '@prisma/client'
+import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import type { TRPCContext } from '../trpc'
 import { enemyEmitter } from './game'
+import type { TRPCContext } from '../trpc'
 
 import { ERROR_CAUSE } from '@/const'
 
 type State = 'WAITING' | 'READY' | 'PROGRESS' | 'COMPLETE' | 'DONE'
+
+export default createTRPCRouter({
+  show: protectedProcedure.query(async ({ ctx }) => await getUserQuest(ctx)),
+})
 
 async function rules(ctx: TRPCContext, ident: QuestIdent) {
   const userQuest = await getUserQuest(ctx)

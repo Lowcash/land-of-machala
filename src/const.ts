@@ -20,6 +20,7 @@ export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.M
 export const ROUTE = {
   HOME: '/',
   INVENTORY: '/inventory',
+  QUEST: '/quest',
 } as const
 
 export enum ERROR_CAUSE {
