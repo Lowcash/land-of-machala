@@ -6,6 +6,7 @@ import { hospitalRoute } from './routers/hospital'
 import { armoryRoute } from './routers/armory'
 import { inventoryRoute } from './routers/inventory'
 import { bankRoute } from './routers/bank'
+import questRoute from './routers/quest'
 
 /**
  * This is the primary router for your server.
@@ -19,6 +20,7 @@ export const appRouter = createTRPCRouter({
   armory: armoryRoute,
   inventory: inventoryRoute,
   bank: bankRoute,
+  quest: questRoute,
 })
 
 // export type definition of API
