@@ -1,17 +1,20 @@
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getInventory } from './inventory'
-import { acceptQuest, getUserQuest } from './quest'
+import { acceptQuest, checkQuestProgress, completeQuest } from './quest'
 import type { TRPCContext } from '@/server/api/trpc'
+import { getTRPCErrorFromUnknown } from '@trpc/server'
+import { collectReward } from './game'
+
+import { ERROR_CAUSE } from '@/const'
 
 export const hospitalRoute = createTRPCRouter({
   show: protectedProcedure.input(z.object({ hospitalId: z.string() })).query(async ({ ctx, input }) => {
     const hospital = await getHospital(ctx, input.hospitalId)
-    const userQuest = await getUserQuest(ctx)
 
     return {
       ...hospital,
-      quest: !userQuest.quest_slain_enemy,
+      slainEnemyQuest: await checkQuestProgress(ctx, 'SLAIN_ENEMY'),
     }
   }),
   resurect: protectedProcedure.mutation(async ({ ctx }) => {
@@ -71,7 +74,22 @@ export const hospitalRoute = createTRPCRouter({
 
       return { success }
     }),
-  acceptSlainEnemyQuest: protectedProcedure.mutation(({ ctx }) => acceptQuest(ctx, 'SLAIN_ENEMY')),
+  acceptSlainEnemyQuest: protectedProcedure.mutation(async ({ ctx }) => {
+    if ((await checkQuestProgress(ctx, 'SLAIN_ENEMY')) !== 'READY')
+      throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+    await acceptQuest(ctx, 'SLAIN_ENEMY')
+  }),
+  completeSlainEnemyQuest: protectedProcedure.mutation(async ({ ctx }) => {
+    if ((await checkQuestProgress(ctx, 'SLAIN_ENEMY')) !== 'COMPLETE')
+      throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+    await ctx.db.$transaction(async (_db) => {
+      const _ctx = { db: _db as any, session: ctx.session }
+
+      await collectReward(_ctx, { money: await completeQuest(_ctx, 'SLAIN_ENEMY') })
+    })
+  }),
 })
 
 export async function getHospital(ctx: TRPCContext, id: string) {

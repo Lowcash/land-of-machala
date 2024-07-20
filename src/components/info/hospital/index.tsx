@@ -86,7 +86,7 @@ export function Hospital(p: Props) {
             </Text>
           )}
           {acceptSlainEnemyQuest.isSuccess && <Alert>Hezky pěkně, dej se do toho</Alert>}
-          {show.data?.quest && (
+          {show.data?.slainEnemyQuest === 'READY' && (
             <Text>
               Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se
               ti odměním. Bereš?

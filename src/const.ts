@@ -21,3 +21,8 @@ export const ROUTE = {
   HOME: '/',
   INVENTORY: '/inventory',
 } as const
+
+export enum ERROR_CAUSE {
+  ENTITY_NOT_EXIST,
+  NOT_AVAILABLE
+}
