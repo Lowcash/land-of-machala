@@ -1,5 +1,21 @@
 import { QuestIdent } from '@prisma/client'
+import { getTRPCErrorFromUnknown } from '@trpc/server'
 import type { TRPCContext } from '../trpc'
+
+import { ERROR_CAUSE } from '@/const'
+
+type State = 'WAITING' | 'READY' | 'PROGRESS' | 'COMPLETE' | 'DONE'
+
+async function rules(ctx: TRPCContext, ident: QuestIdent) {
+  const userQuest = await getUserQuest(ctx)
+
+  switch (ident) {
+    case 'SLAIN_ENEMY':
+      return userQuest.quest_slain_enemy!.slain.actual_slain >= userQuest.quest_slain_enemy!.slain.desired_slain
+    case 'SLAIN_TROLL':
+      return userQuest.quest_slain_troll!.slain.actual_slain >= userQuest.quest_slain_troll!.slain.desired_slain
+  }
+}
 
 export async function acceptQuest(ctx: TRPCContext, ident: QuestIdent) {
   const quest = await getQuest(ctx, ident)
@@ -31,19 +47,84 @@ export async function acceptQuest(ctx: TRPCContext, ident: QuestIdent) {
   })
 }
 
-export async function checkQuest(ctx: TRPCContext, ident: QuestIdent) {
+export async function completeQuest(ctx: TRPCContext, ident: QuestIdent) {
   const userQuest = await getUserQuest(ctx)
+
+  let questKey: keyof typeof userQuest
+  let questDoneKey: keyof typeof userQuest
 
   switch (ident) {
     case 'SLAIN_ENEMY':
-      if (!userQuest.quest_slain_enemy) return false
-
-      return userQuest.quest_slain_enemy?.slain.actual_slain >= userQuest.quest_slain_enemy?.slain.desired_slain
+      questKey = 'quest_slain_enemy'
+      questDoneKey = 'quest_slain_enemy_done'
+      break
     case 'SLAIN_TROLL':
-      if (!userQuest.quest_slain_troll) return false
-
-      return userQuest.quest_slain_troll?.slain.actual_slain >= userQuest.quest_slain_troll?.slain.desired_slain
+      questKey = 'quest_slain_troll'
+      questDoneKey = 'quest_slain_troll_done'
+      break
   }
+
+  if (!userQuest[questKey]) throw getTRPCErrorFromUnknown(ERROR_CAUSE.ENTITY_NOT_EXIST)
+
+  return await ctx.db.$transaction(async (db) => {
+    const reward = userQuest[questKey]!.quest.money
+
+    await db.slain.delete({
+      where: { id: userQuest[questKey]!.slain_id },
+    })
+
+    switch (ident) {
+      case 'SLAIN_ENEMY':
+        await db.questSlainEnemy.delete({
+          where: { id: userQuest[questKey]!.id },
+        })
+        break
+      case 'SLAIN_ENEMY':
+        await db.questSlainTroll.delete({
+          where: { id: userQuest[questKey]!.id },
+        })
+        break
+    }
+
+    await db.userQuest.update({
+      where: { id: userQuest.id },
+      data: { [questDoneKey]: true },
+    })
+
+    return reward
+  })
+}
+
+export async function checkQuestProgress(ctx: TRPCContext, ident: QuestIdent): Promise<State> {
+  const userQuest = await getUserQuest(ctx)
+
+  let questKey: keyof typeof userQuest
+  let questDoneKey: keyof typeof userQuest
+  switch (ident) {
+    case 'SLAIN_ENEMY':
+      questKey = 'quest_slain_enemy'
+      questDoneKey = 'quest_slain_enemy_done'
+      break
+    case 'SLAIN_TROLL':
+      questKey = 'quest_slain_troll'
+      questDoneKey = 'quest_slain_troll_done'
+      break
+  }
+
+  if (!userQuest[questKey]) return 'READY'
+  if (userQuest[questDoneKey]) return 'DONE'
+
+  return (await rules(ctx, ident)) ? 'COMPLETE' : 'PROGRESS'
+}
+
+export async function getQuest(ctx: TRPCContext, ident: QuestIdent) {
+  const quest = await ctx.db.quest.findFirst({
+    where: { ident },
+  })
+
+  if (!quest) throw getTRPCErrorFromUnknown(ERROR_CAUSE.ENTITY_NOT_EXIST)
+
+  return quest
 }
 
 export async function getUserQuest(ctx: TRPCContext) {
@@ -76,17 +157,7 @@ export async function getUserQuest(ctx: TRPCContext) {
     })
   }
 
-  if (!userQuest) throw new Error('User quest does not exist!')
+  if (!userQuest) throw getTRPCErrorFromUnknown(ERROR_CAUSE.ENTITY_NOT_EXIST)
 
   return userQuest
-}
-
-export async function getQuest(ctx: TRPCContext, ident: QuestIdent) {
-  const quest = await ctx.db.quest.findFirst({
-    where: { ident },
-  })
-
-  if (!quest) throw new Error('Quest does not exist!')
-
-  return quest
 }

@@ -156,18 +156,26 @@ export const gameRouter = createTRPCRouter({
         where: { id: loot.id },
       })
 
-      const moneyActual = (ctx.session.user!.money ?? 0) + (loot.money ?? 0)
+      await collectReward({ db: db as any, session: ctx.session }, { money: loot.money })
 
       await db.user.update({
         where: { id: ctx.session.user!.id },
-        data: {
-          loot_id: null,
-          money: moneyActual,
-        },
+        data: { loot_id: null },
       })
     })
   }),
 })
+
+export async function collectReward(ctx: TRPCContext, reward: { money?: number | null }) {
+  const moneyActual = (ctx.session!.user!.money ?? 0) + (reward.money ?? 0)
+
+  await ctx.db.user.update({
+    where: { id: ctx.session!.user!.id },
+    data: {
+      money: moneyActual,
+    },
+  })
+}
 
 async function info(ctx: TRPCContext) {
   if (!ctx.session?.user) throw new Error('User does not exist!')
