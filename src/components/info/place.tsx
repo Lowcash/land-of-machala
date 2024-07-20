@@ -1,5 +1,4 @@
 import React from 'react'
-import * as S from './index.styles'
 import { Button } from '../ui/button'
 import { Text, Link } from '@/styles/text'
 import { List } from '@/styles/common'

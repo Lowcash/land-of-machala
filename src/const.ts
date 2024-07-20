@@ -20,4 +20,10 @@ export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.M
 export const ROUTE = {
   HOME: '/',
   INVENTORY: '/inventory',
+  QUEST: '/quest',
 } as const
+
+export enum ERROR_CAUSE {
+  ENTITY_NOT_EXIST,
+  NOT_AVAILABLE
+}
