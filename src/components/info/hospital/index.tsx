@@ -14,16 +14,16 @@ type Props = {
 }
 
 export function Hospital(p: Props) {
-  const { player, game } = api.useUtils()
+  const { player, game, hospital } = api.useUtils()
   const show = api.hospital.show.useQuery({ hospitalId: p.id })
   const resurect = api.hospital.resurect.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       player.info.invalidate()
       game.info.invalidate()
     },
   })
   const heal = api.hospital.heal.useMutation({
-    onSuccess: () => {
+    onSettled: () => {
       player.info.invalidate()
     },
   })
@@ -32,9 +32,15 @@ export function Hospital(p: Props) {
       player.info.invalidate()
     },
   })
+  const acceptSlainEnemyQuest = api.hospital.acceptSlainEnemyQuest.useMutation({
+    onSettled: () => {
+      hospital.show.invalidate()
+    },
+  })
 
   const handleHeal = React.useCallback(() => heal.mutate({ hospitalId: p.id }), [p.id, heal])
   const handleResurect = React.useCallback(() => resurect.mutate(), [p.id, resurect])
+  const handleSlainEnemyQuest = React.useCallback(() => acceptSlainEnemyQuest.mutate(), [p.id, acceptSlainEnemyQuest])
 
   const handlePotionAction = React.useCallback(
     (potion: PotionItem) => buy.mutate({ hospitalId: p.id, potionId: potion.id }),
@@ -76,6 +82,16 @@ export function Hospital(p: Props) {
               Uzdravení za <b>{show.data?.price ?? 0}</b> zlaťáků{' '}
               <Button variant='destructive' onClick={handleHeal}>
                 To chci!
+              </Button>
+            </Text>
+          )}
+          {acceptSlainEnemyQuest.isSuccess && <Alert>Hezky pěkně, dej se do toho</Alert>}
+          {show.data?.quest && (
+            <Text>
+              Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se
+              ti odměním. Bereš?
+              <Button variant='warning' onClick={handleSlainEnemyQuest}>
+                Beru
               </Button>
             </Text>
           )}
