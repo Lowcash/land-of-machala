@@ -2,18 +2,15 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
+import { usePageContext } from '@/ctx/page-provider'
 import { Direction } from '@/const'
-import { usePathname } from 'next/navigation'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import * as S from './index.styles'
 import { Sidebar } from '../sidebar'
-import Link from 'next/link'
-
-import { ROUTE } from '@/const'
 
 export default function MenuRight() {
-  const pathname = usePathname()
+  const { page, setPage } = usePageContext()
 
   const { player, game } = api.useUtils()
   const { data: info } = api.player.info.useQuery()
@@ -26,12 +23,18 @@ export default function MenuRight() {
 
   const { open } = useSidebar()
 
+  const handleQuestClick = React.useCallback(() => setPage?.(page === 'quest' ? 'game' : 'quest'), [page, setPage])
+  const handleInventoryClick = React.useCallback(
+    () => setPage?.(page === 'inventory' ? 'game' : 'inventory'),
+    [page, setPage],
+  )
+
   const handleMoveDirection = React.useCallback((direction: Direction) => move.mutate(direction), [move])
 
   const hasCombat = Boolean(info?.enemy_instance)
   const hasLoot = Boolean(info?.loot)
-  const hasInventory = pathname === ROUTE.INVENTORY
-  const hasQuest = pathname === ROUTE.QUEST
+  const hasInventory = page === 'inventory'
+  const hasQuest = page === 'quest'
 
   const disableMove = hasCombat || hasLoot || hasInventory || hasQuest || !info?.canMove
   const disableInventory = hasCombat || hasLoot || !info?.canMove
@@ -52,12 +55,8 @@ export default function MenuRight() {
         </S.Container>
 
         <S.Container>
-          <Link href={pathname === ROUTE.QUEST ? ROUTE.HOME : ROUTE.QUEST}>
-            <S.Quest />
-          </Link>
-          <Link href={pathname === ROUTE.INVENTORY ? ROUTE.HOME : ROUTE.INVENTORY}>
-            <S.Inventory disabled={disableInventory} />
-          </Link>
+          <S.Quest onClick={handleQuestClick} />
+          <S.Inventory onClick={handleInventoryClick} disabled={disableInventory} />
         </S.Container>
       </S.Content>
     </Sidebar>
