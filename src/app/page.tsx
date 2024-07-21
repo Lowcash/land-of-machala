@@ -1,21 +1,31 @@
 'use client'
 
 import React from 'react'
+import { api } from '@/trpc/react'
+import { usePageContext } from '@/ctx/page-provider'
+import { useLayoutContext } from '@/ctx/layout-provider'
+
+import { Content } from '@/styles/common'
+import MenuLeft from '@/components/menu-left'
+import MenuRight from '@/components/menu-right'
 import * as S from './styles'
 import Info from '@/components/info'
 import Action from '@/components/action'
 import XP from '@/components/xp'
 
+import Inventory from '@/components/inventory'
+import Quest from '@/components/quest'
+import Create from './(create)'
 import Landing from './(landing)'
-import Game from './(game)'
+
 import User from '@/components/user'
 import { Header, HeaderOptions, Footer, Main } from '@/styles/common'
-import { useLayoutContext } from '@/ctx/layout-provider'
-import { usePageContext } from '@/ctx/page-provider'
 
 export default function () {
-  const { setBackgroundUrl } = useLayoutContext()
+  const { data: info, isLoading } = api.player.info.useQuery()
+
   const { page } = usePageContext()
+  const { setBackgroundUrl } = useLayoutContext()
 
   React.useEffect(() => {
     setBackgroundUrl?.(page === 'landing' ? undefined : '/images/environment/forest.webp')
@@ -28,6 +38,10 @@ export default function () {
       </Main>
     )
 
+  const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
+
+  if (isLoading) return <></>
+
   return (
     <>
       <Header>
@@ -37,14 +51,27 @@ export default function () {
       </Header>
 
       <Main>
-        <Game>
-          <S.TopContainer>
-            <Info />
-            <Action />
-          </S.TopContainer>
+        {!hasCharacter && <Create />}
+        {hasCharacter && (
+          <>
+            <MenuLeft />
+            <Content>
+              <S.TopContainer>
+                {page === 'game' && (
+                  <>
+                    <Info />
+                    <Action />
+                  </>
+                )}
+                {page === 'inventory' && <Inventory />}
+                {page === 'quest' && <Quest />}
+              </S.TopContainer>
 
-          <XP />
-        </Game>
+              <XP />
+            </Content>
+            <MenuRight />
+          </>
+        )}
       </Main>
 
       <Footer>
