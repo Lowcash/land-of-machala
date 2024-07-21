@@ -25,6 +25,12 @@ VALUES
 ('9', 'ice_elemental', 248, 313, 15, 25)
 ON DUPLICATE KEY UPDATE name = VALUES(name), hp_from = VALUES(hp_from), hp_to = VALUES(hp_to), damage_from = VALUES(damage_from), damage_to = VALUES(damage_to);
 
+INSERT IGNORE INTO Quest (ident, money)
+VALUES 
+('SLAIN_ENEMY', 1000),
+('SLAIN_TROLL', 5000)
+ON DUPLICATE KEY UPDATE ident = VALUES(ident), money = VALUES(money);
+
 -- INSERT IGNORE INTO Enemy (id, name, hp_from, hp_to, damage_from, damage_to)
 -- VALUES 
 -- ('1', 'Troll', 234, 284, 10, 20),

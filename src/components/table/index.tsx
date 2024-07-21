@@ -5,20 +5,24 @@ type Cell = { className?: string; content?: React.ReactNode }
 type Props = {
   columns?: Cell[]
   cells?: Cell[][]
+
+  hideHeader?: boolean
 }
 
-export function Table(p: Props) {
+export function Table({ hideHeader = false, ...p }: Props) {
   return (
     <S.Table>
-      <thead>
-        <tr key={`TableHeadRow_${0}`}>
-          {p.columns?.map((cell, idx) => (
-            <th key={`TableHeadCell_${idx}`} className={cell.className}>
-              {cell.content}
-            </th>
-          ))}
-        </tr>
-      </thead>
+      {!hideHeader && (
+        <thead>
+          <tr key={`TableHeadRow_${0}`}>
+            {p.columns?.map((cell, idx) => (
+              <th key={`TableHeadCell_${idx}`} className={cell.className}>
+                {cell.content}
+              </th>
+            ))}
+          </tr>
+        </thead>
+      )}
       <tbody>
         {p.cells?.map((row, rowIdx) => (
           <tr key={`TableBodyRow_${rowIdx}`}>
