@@ -22,14 +22,24 @@ import User from '@/components/user'
 import { Header, HeaderOptions, Footer, Main } from '@/styles/common'
 
 export default function () {
-  const { data: info, isLoading } = api.player.info.useQuery()
+  const { data: info, isLoading, refetch } = api.player.info.useQuery(undefined, { enabled: false })
 
-  const { page } = usePageContext()
+  const { page, setPage } = usePageContext()
   const { setBackgroundUrl } = useLayoutContext()
 
   React.useEffect(() => {
     if (page === 'landing') setBackgroundUrl?.()
-  }, [page, setBackgroundUrl])
+    if (page === 'game') refetch()
+  }, [page, setBackgroundUrl, refetch])
+
+  const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
+
+  React.useEffect(() => {
+    if (isLoading) return
+
+    setPage?.(hasCharacter ? 'game' : 'create')
+  }, [hasCharacter, isLoading, setPage])
+
 
   if (page === 'landing')
     return (
@@ -37,8 +47,6 @@ export default function () {
         <Landing />
       </Main>
     )
-
-  const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
 
   if (isLoading) return <></>
 

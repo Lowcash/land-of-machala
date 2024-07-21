@@ -12,7 +12,7 @@ import { Place } from './place'
 export default function Info() {
   const { setBackgroundUrl } = useLayoutContext()
 
-  const { data: info } = api.game.info.useQuery()
+  const { data: info, isLoading } = api.game.info.useQuery()
 
   const isDefeated = !!info?.defeated
   const hasEnemy = !!info?.enemyInstance?.enemy
@@ -20,8 +20,10 @@ export default function Info() {
   const hasPlace = !!info?.place
 
   React.useEffect(() => {
+    if (isLoading) return
+
     setBackgroundUrl?.(hasPlace ? undefined : '/images/environment/forest.webp')
-  }, [hasPlace, setBackgroundUrl])
+  }, [hasPlace, isLoading, setBackgroundUrl])
 
   if (isDefeated)
     return (
