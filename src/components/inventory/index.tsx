@@ -2,17 +2,22 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
+import { usePageContext } from '@/ctx/page-provider'
 
 import * as S from './index.styles'
 import { Button } from '../ui/button'
-import { H3, Link } from '@/styles/text'
+import { H3 } from '@/styles/text'
 import { Table } from '../table'
 
 import { CheckIcon, ChevronLeftIcon, Cross2Icon, PaperPlaneIcon } from '@radix-ui/react-icons'
 
-import { ROUTE, Wearable } from '@/const'
+import { Wearable } from '@/const'
 
 export default function Inventory() {
+  const { setPage } = usePageContext()
+
+  const handleBackClick = React.useCallback(() => setPage?.('game'), [setPage])
+
   const { player, inventory } = api.useUtils()
   const show = api.inventory.show.useQuery()
   const wear = api.player.wear.useMutation({
@@ -40,17 +45,17 @@ export default function Inventory() {
   const handleUnwear = React.useCallback((type: Wearable, id: string) => unwear.mutate({ type, id }), [unwear])
   const handleUsePotion = React.useCallback((id: string) => drink.mutate({ potionId: id }), [unwear])
 
+  if (show.isLoading) return <></>
+  
   const hasWeapons = (show.data?.weapons?.length ?? 0) > 0
   const hasArmors = (show.data?.armors?.length ?? 0) > 0
   const hasPotions = (show.data?.potions?.length ?? 0) > 0
 
   const BackBtn = (
-    <Link href={ROUTE.HOME}>
-      <Button variant='default'>
-        <ChevronLeftIcon />
-        &nbsp; Zpět do světa
-      </Button>
-    </Link>
+    <Button variant='default' onClick={handleBackClick}>
+      <ChevronLeftIcon />
+      &nbsp; Zpět do světa
+    </Button>
   )
 
   if (!hasWeapons && !hasArmors && !hasPotions)
