@@ -28,7 +28,7 @@ export default function () {
   const { setBackgroundUrl } = useLayoutContext()
 
   React.useEffect(() => {
-    setBackgroundUrl?.(page === 'landing' ? undefined : '/images/environment/forest.webp')
+    if (page === 'landing') setBackgroundUrl?.()
   }, [page, setBackgroundUrl])
 
   if (page === 'landing')
