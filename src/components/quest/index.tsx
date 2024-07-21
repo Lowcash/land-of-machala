@@ -2,17 +2,22 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
+import { usePageContext } from '@/ctx/page-provider'
 
 import * as S from './index.styles'
-import { H3, Link } from '@/styles/text'
+import { H3 } from '@/styles/text'
 import { Table } from '../table'
 import { Button } from '../ui/button'
 import { ChevronLeftIcon, CheckIcon, Cross2Icon } from '@radix-ui/react-icons'
 
-import { ROUTE } from '@/const'
-
 export default function Quest() {
+  const { setPage } = usePageContext()
+
+  const handleBackClick = React.useCallback(() => setPage?.('game'), [setPage])
+
   const show = api.quest.show.useQuery()
+
+  if (show.isLoading) return <></>
 
   const slainEnemyQuest = show.data?.quest_slain_enemy
   const slainTrollQuest = show.data?.quest_slain_troll
@@ -21,12 +26,10 @@ export default function Quest() {
   const hasSlainTrollQuest = slainTrollQuest?.id !== undefined
 
   const BackBtn = (
-    <Link href={ROUTE.HOME}>
-      <Button variant='default'>
-        <ChevronLeftIcon />
-        &nbsp; Zpět do světa
-      </Button>
-    </Link>
+    <Button variant='default' onClick={handleBackClick}>
+      <ChevronLeftIcon />
+      &nbsp; Zpět do světa
+    </Button>
   )
 
   if (!hasSlainEnemyQuest && !hasSlainTrollQuest)
