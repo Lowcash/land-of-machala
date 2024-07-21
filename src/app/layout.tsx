@@ -7,11 +7,8 @@ import { getServerAuthSession } from '@/server/auth'
 import { TRPCReactProvider } from '@/trpc/react'
 import { NextAuthProvider } from '@/ctx/auth-provider'
 import { ThemeProvider } from '@/ctx/theme-provider'
-
-import { Header, Footer, Main } from '@/styles/common'
-import Intro from './(intro)'
-import Game from './(game)'
-import User from '@/components/user'
+import { LayoutProvider } from '@/ctx/layout-provider'
+import { PageProvider } from '@/ctx/page-provider'
 
 const medieval = MedievalSharp({
   weight: '400',
@@ -28,31 +25,18 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const session = await getServerAuthSession()
 
-  const path = '/images/environment/forest.webp'
-
   return (
     <html lang='en' suppressHydrationWarning>
       <body
         className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}
-        style={session ? { backgroundImage: `url(${path})`, backgroundSize: '100% 100%' } : undefined}
+        style={{ backgroundSize: '100% 100%' }}
       >
         <TRPCReactProvider cookies={cookies().toString()}>
           <NextAuthProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              <Header>
-                <div className='w-fit ml-auto space-x-1'>
-                  {session && <User />}
-                </div>
-              </Header>
-
-              <Main>
-                {!session && <Intro />}
-                {session && <Game>{children}</Game>}
-              </Main>
-
-              <Footer>
-                <div className='w-fit ml-auto mr-auto'></div>
-              </Footer>
+              <LayoutProvider>
+                <PageProvider signed={!!session}>{children}</PageProvider>
+              </LayoutProvider>
             </ThemeProvider>
           </NextAuthProvider>
         </TRPCReactProvider>

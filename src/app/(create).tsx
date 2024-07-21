@@ -6,6 +6,7 @@ import { api } from '@/trpc/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Profession, Race } from '@prisma/client'
+import { usePageContext } from '@/ctx/page-provider'
 
 import { Card } from '@/styles/common'
 import { Option } from '@/components/option'
@@ -22,10 +23,11 @@ const SCHEMA = z.object({
 type Values = z.infer<typeof SCHEMA>
 
 export default function () {
-  const { player } = api.useUtils()
+  const { setPage } = usePageContext()
+
   const create = api.player.create.useMutation({
     onSettled: () => {
-      player.info.invalidate()
+      setPage?.('game')
     },
   })
 

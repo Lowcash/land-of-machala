@@ -18,6 +18,13 @@ export const Header = styled('header')`
   ${tw`w-screen z-40`}
 `
 
+export const HeaderOptions = styled('div')`
+  ${tw`
+    w-fit gap-2
+    ml-auto
+  `}
+`
+
 export const Footer = styled('footer')`
   height: 36px;
   background: var(--gold3);
