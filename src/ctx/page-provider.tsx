@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-type Page = 'landing' | 'game' | 'inventory' | 'quest'
+type Page = 'landing' | 'create' | 'game' | 'inventory' | 'quest'
 
 interface PageContextProps {
   page: Page
