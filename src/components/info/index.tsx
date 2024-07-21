@@ -1,6 +1,8 @@
 'use client'
 
+import React from 'react'
 import { api } from '@/trpc/react'
+import { useLayoutContext } from '@/ctx/layout-provider'
 
 import * as S from './index.styles'
 import Image from 'next/image'
@@ -8,9 +10,20 @@ import { Text } from '@/styles/text'
 import { Place } from './place'
 
 export default function Info() {
+  const { setBackgroundUrl } = useLayoutContext()
+
   const { data: info } = api.game.info.useQuery()
 
-  if (!!info?.defeated)
+  const isDefeated = !!info?.defeated
+  const hasEnemy = !!info?.enemyInstance?.enemy
+  const hasLoot = !!info?.loot
+  const hasPlace = !!info?.place
+
+  React.useEffect(() => {
+    setBackgroundUrl?.(hasPlace ? undefined : '/images/environment/forest.webp')
+  }, [hasPlace, setBackgroundUrl])
+
+  if (isDefeated)
     return (
       <>
         <S.Info>
@@ -24,7 +37,7 @@ export default function Info() {
       </>
     )
 
-  if (!!info?.enemyInstance?.enemy) {
+  if (hasEnemy) {
     const name = info.enemyInstance.enemy.name
 
     return (
@@ -44,7 +57,7 @@ export default function Info() {
     )
   }
 
-  if (!!info?.loot) {
+  if (hasLoot) {
     const armors = info?.loot?.armors_loot.map((x: any) => x.armor.name)
     const weapons = info?.loot?.weapons_loot.map((x: any) => x.weapon.name)
 
