@@ -14,9 +14,6 @@ export default function Info() {
 
   const { data: info, isLoading } = api.game.info.useQuery()
 
-  const isDefeated = !!info?.defeated
-  const hasEnemy = !!info?.enemyInstance?.enemy
-  const hasLoot = !!info?.loot
   const hasPlace = !!info?.place
 
   React.useEffect(() => {
@@ -25,7 +22,7 @@ export default function Info() {
     setBackgroundUrl?.(hasPlace ? undefined : '/images/environment/forest.webp')
   }, [hasPlace, isLoading, setBackgroundUrl])
 
-  if (isDefeated)
+  if (!!info?.defeated)
     return (
       <>
         <S.Info>
@@ -39,7 +36,7 @@ export default function Info() {
       </>
     )
 
-  if (hasEnemy) {
+  if (!!info?.enemyInstance?.enemy) {
     const name = info.enemyInstance.enemy.name
 
     return (
@@ -54,12 +51,19 @@ export default function Info() {
           </Text>
         </S.Info>
 
-        <Image src={`/images/enemies/${name}.png`} alt={name} width={500} height={500} className='mt-auto ml-auto mr-auto' />
+        <Image
+          priority
+          src={`/images/enemies/${name}.png`}
+          alt={name}
+          width={500}
+          height={500}
+          className='mt-auto ml-auto mr-auto'
+        />
       </>
     )
   }
 
-  if (hasLoot) {
+  if (!!info?.loot) {
     const armors = info?.loot?.armors_loot.map((x: any) => x.armor.name)
     const weapons = info?.loot?.weapons_loot.map((x: any) => x.weapon.name)
 
