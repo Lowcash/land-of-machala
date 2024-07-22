@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-interface LayoutContextProps {
+type LayoutContextProps = {
   setBackgroundUrl?: (url?: string) => void
 }
 

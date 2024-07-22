@@ -66,79 +66,106 @@ export function Hospital(p: Props) {
   )
 
   if (show.isLoading) return <Loading />
-  if (!show.data) return <></>
 
   const hasBuyPotions = (potions?.length ?? 0) > 0
 
   return (
     <>
-      Nacházíš se v <b>{show.data?.name}</b>
+      <Text>
+        Nacházíš se v <b>{show.data?.name}</b>
+      </Text>
       <br />
       <Text>{show.data?.description}</Text>
-      <br />
-      <br />
+
       {p.defeated && (
-        <Text>
-          Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..
-          <Button variant='destructive' onClick={handleResurect}>
-            Uzdravit!
-          </Button>
-        </Text>
+        <>
+          <br />
+          <br />
+          <Text>
+            Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..
+            <Button variant='destructive' onClick={handleResurect}>
+              Uzdravit!
+            </Button>
+          </Text>
+        </>
       )}
+
       {!p.defeated && (
         <>
+          <br />
+          <br />
           <Text>{show.data?.subdescription}</Text>
-          <br />
-          <br />
+
           {heal.data?.success === undefined && (
-            <Text>
-              Uzdravení za <b>{show.data?.price ?? 0} zl</b> &nbsp;
-              <Button variant='destructive' onClick={handleHeal}>
-                To chci!
-              </Button>
-            </Text>
+            <>
+              <br />
+              <br />
+              <Text>
+                Uzdravení za <b>{show.data?.price ?? 0} zl</b> &nbsp;
+                <Button variant='destructive' onClick={handleHeal}>
+                  To chci!
+                </Button>
+              </Text>
+            </>
           )}
 
-          <br />
-          <br />
-
-          {acceptSlainEnemyQuest.isSuccess && <Alert>Hezky pěkně, dej se do toho</Alert>}
+          {acceptSlainEnemyQuest.isSuccess && (
+            <>
+              <br />
+              <Alert>Hezky pěkně, dej se do toho</Alert>
+            </>
+          )}
 
           {show.data?.slainEnemyQuest.state === 'READY' && (
-            <Text>
-              Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se
-              ti odměním. Bereš? &nbsp;
-              <Button variant='warning' onClick={handleAcceptSlainEnemyQuest}>
-                Beru
-              </Button>
-            </Text>
+            <>
+              <br />
+              <br />
+              <Text>
+                Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě
+                se ti odměním. Bereš? &nbsp;
+                <Button variant='warning' onClick={handleAcceptSlainEnemyQuest}>
+                  Beru
+                </Button>
+              </Text>
+            </>
           )}
 
           {completeSlainEnemyQuest.isSuccess && (
-            <Alert>Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!</Alert>
+            <>
+              <br />
+              <Alert>Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!</Alert>
+            </>
           )}
 
           {show.data?.slainEnemyQuest.state === 'COMPLETE' && (
-            <Text>
-              Tak to je nádhera, zde je tvoje odměna: <b>{show.data.slainEnemyQuest.reward} zl</b>&nbsp;
-              <Button variant='warning' onClick={handleCompleteSlainEnemyQuest}>
-                Odevzdat
-              </Button>
-            </Text>
+            <>
+              <br />
+              <br />
+              <Text>
+                Tak to je nádhera, zde je tvoje odměna: <b>{show.data.slainEnemyQuest.reward} zl</b>&nbsp;
+                <Button variant='warning' onClick={handleCompleteSlainEnemyQuest}>
+                  Odevzdat
+                </Button>
+              </Text>
+            </>
           )}
 
           {heal.data?.success !== undefined && (
-            <Alert>
-              {heal.data?.success
-                ? 'Teď jsi jako rybička (vyléčen)'
-                : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
-            </Alert>
+            <>
+              <br />
+              <Alert>
+                {heal.data?.success
+                  ? 'Teď jsi jako rybička (vyléčen)'
+                  : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
+              </Alert>
+            </>
           )}
           {hasBuyPotions && (
             <>
               <br />
               <br />
               <H3>Koupit Potion</H3>
+              <br />
               <Potions potions={potions!} onAction={handlePotionAction} />
             </>
           )}

@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { ArmorSafe, PotionSafe, WeaponSafe } from './safe'
 import type { Action, ArmorItem, PotionItem, WeaponItem } from './safe'
 
-type Props = {
+interface Props {
   id: string
 }
 
@@ -119,26 +119,33 @@ export function Bank(p: Props) {
       <br />
       <Text>{showBank.data.description}</Text>
       <br />
-      <br />
       <Text>{showBank.data.subdescription}</Text>
-      <br />
-      <br />
+
       {showInfo === 'deposit' && deposit.data?.success !== undefined && (
-        <Alert>{deposit.data.success ? 'Zboží uloženo v bance' : 'Nějak se nám to zkomplikovalo?!'}</Alert>
+        <>
+          <br />
+          <Alert>{deposit.data.success ? 'Zboží uloženo v bance' : 'Nějak se nám to zkomplikovalo?!'}</Alert>
+        </>
       )}
       {showInfo === 'withdraw' && withdraw.data?.success !== undefined && (
-        <Alert>{withdraw.data.success ? 'Zboží vybráno z banky' : 'Nějak se nám to zkomplikovalo?!'}</Alert>
+        <>
+          <br />
+          <Alert>{withdraw.data.success ? 'Zboží vybráno z banky' : 'Nějak se nám to zkomplikovalo?!'}</Alert>
+        </>
       )}
+
       <br />
       <br />
       <div className='flex justify-between space-x-4'>
         <div>
           <H3 className='whitespace-nowrap'>Uloženo peněz</H3>
+          <br />
           <Text>{showAccount.data?.money ?? 0}</Text>
         </div>
         <div className='flex space-x-6'>
           <div>
             <H3>Uložit Peníze</H3>
+            <br />
             <div className='flex space-x-2'>
               <S.Input ref={depositMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
@@ -148,6 +155,7 @@ export function Bank(p: Props) {
           </div>
           <div>
             <H3>Vybrat Peníze</H3>
+            <br />
             <div className='flex space-x-2'>
               <S.Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
@@ -157,11 +165,13 @@ export function Bank(p: Props) {
           </div>
         </div>
       </div>
+
       {hasDepositWeapons && (
         <>
           <br />
           <br />
           <H3>Uložit Zbraň</H3>
+          <br />
           <WeaponSafe
             weapons={depositWeapons!}
             action='deposit'
@@ -169,11 +179,13 @@ export function Bank(p: Props) {
           />
         </>
       )}
+
       {hasDepositArmors && (
         <>
           <br />
           <br />
           <H3>Uložit Zbroj</H3>
+          <br />
           <ArmorSafe
             armors={depositArmors!}
             action='deposit'
@@ -181,11 +193,13 @@ export function Bank(p: Props) {
           />
         </>
       )}
+
       {hasDepositPotions && (
         <>
           <br />
           <br />
           <H3>Uložit Potion</H3>
+          <br />
           <PotionSafe
             potions={depositPotions!}
             action='deposit'
@@ -193,11 +207,13 @@ export function Bank(p: Props) {
           />
         </>
       )}
+
       {hasWithdrawWeapons && (
         <>
           <br />
           <br />
           <H3>Vybrat Zbraň</H3>
+          <br />
           <WeaponSafe
             weapons={withdrawWeapons!}
             action='withdraw'
@@ -205,11 +221,13 @@ export function Bank(p: Props) {
           />
         </>
       )}
+
       {hasWithdrawArmors && (
         <>
           <br />
           <br />
           <H3>Vybrat Zbroj</H3>
+          <br />
           <ArmorSafe
             armors={withdrawArmors!}
             action='withdraw'
@@ -217,11 +235,13 @@ export function Bank(p: Props) {
           />
         </>
       )}
+
       {hasWithdrawPotions && (
         <>
           <br />
           <br />
           <H3>Vybrat Potion</H3>
+          <br />
           <PotionSafe
             potions={withdrawPotions!}
             action='withdraw'

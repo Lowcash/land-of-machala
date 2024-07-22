@@ -40,7 +40,6 @@ export default function () {
     setPage?.(hasCharacter ? 'game' : 'create')
   }, [hasCharacter, isLoading, setPage])
 
-
   if (page === 'landing')
     return (
       <Main>
@@ -82,9 +81,7 @@ export default function () {
         )}
       </Main>
 
-      <Footer>
-        <div className='w-fit ml-auto mr-auto'></div>
-      </Footer>
+      <Footer></Footer>
     </>
   )
 }

@@ -25,12 +25,22 @@ export const HeaderOptions = styled('div')`
   `}
 `
 
-export const Footer = styled('footer')`
+const _FooterOuter = styled('footer')`
   height: 36px;
   background: var(--gold3);
 
   ${tw`w-screen z-40`}
 `
+
+const _FooterInner = styled('div')`
+  ${tw`w-fit ml-auto mr-auto`}
+`
+
+export const Footer = ({ children }: React.PropsWithChildren) => (
+  <_FooterOuter>
+    <_FooterInner>{children}</_FooterInner>
+  </_FooterOuter>
+)
 
 interface ContentProps {
   isLeftSidebarOpened?: boolean
