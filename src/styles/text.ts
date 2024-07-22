@@ -11,7 +11,7 @@ export const H3 = tw.h3`
   text-xl font-bold
 `
 
-interface TextProps {
+type TextProps = {
   bold?: boolean
   light?: boolean
 }

@@ -75,7 +75,6 @@ export function Armory(p: Props) {
   )
 
   if (show.isLoading) return <Loading />
-  if (!show.data) return <></>
 
   const hasBuyWeapons = (buyWeapons?.length ?? 0) > 0
   const hasBuyArmors = (buyArmors?.length ?? 0) > 0
@@ -84,50 +83,61 @@ export function Armory(p: Props) {
 
   return (
     <>
-      Nacházíš se v <b>{show.data.name}</b>
+      <Text>
+        Nacházíš se v <b>{show.data?.name}</b>
+      </Text>
       <br />
-      <Text>{show.data.description}</Text>
+      <Text>{show.data?.description}</Text>
       <br />
-      <br />
-      <Text>{show.data.subdescription}</Text>
-      <br />
-      <br />
+      <Text>{show.data?.subdescription}</Text>
+
       {buy.data?.success !== undefined && (
-        <Alert>
-          {buy.data?.success
-            ? 'Zboží zakoupeno (najdeš jej v inventáři)'
-            : 'Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)'}
-        </Alert>
+        <>
+          <br />
+          <Alert>
+            {buy.data?.success
+              ? 'Zboží zakoupeno (najdeš jej v inventáři)'
+              : 'Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)'}
+          </Alert>
+        </>
       )}
+
       {hasBuyWeapons && (
         <>
           <br />
           <br />
           <H3>Koupit Zbraň</H3>
+          <br />
           <WeaponMarket weapons={buyWeapons!} action='buy' onAction={handleWeaponAction} />
         </>
       )}
+
       {hasSellWeapons && (
         <>
           <br />
           <br />
           <H3>Prodat Zbraň</H3>
+          <br />
           <WeaponMarket weapons={sellWeapons!} action='sell' onAction={handleWeaponAction} />
         </>
       )}
+
       {hasBuyArmors && (
         <>
           <br />
           <br />
           <H3>Koupit Zbroj</H3>
+          <br />
           <ArmorMarket armors={buyArmors!} action='buy' onAction={handleArmorAction} />
         </>
       )}
+
       {hasSellArmors && (
         <>
           <br />
           <br />
           <H3>Prodat Zbroj</H3>
+          <br />
           <ArmorMarket armors={sellArmors!} action='sell' onAction={handleArmorAction} />
         </>
       )}

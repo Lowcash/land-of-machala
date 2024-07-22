@@ -1,15 +1,15 @@
 'use client'
 
 import React from 'react'
-import { BaseDirection } from '@/const'
 import tw from 'twin.macro'
 import styled from '@emotion/styled/macro'
+import type { Direction } from '@/types'
 
 import { H2, H3 } from '@/styles/text'
 
 interface SidebarProps {
   open: boolean
-  position: BaseDirection
+  position: Direction
 }
 
 const _SidebarInner = styled('div')`
