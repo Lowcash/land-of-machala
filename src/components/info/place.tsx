@@ -47,30 +47,40 @@ export function Place(p: Props) {
       </>
     )
 
+  const hasHospital = !!p.hospital
+  const hasArmory = !!p.armory
+  const hasBank = !!p.bank
+
   return (
     <>
-      Nacházíš se v <b>{p.name}</b>
+      <Text>
+        Nacházíš se v <b>{p.name}</b>
+      </Text>
       <br />
       <Text>{p.description}</Text>
-      <br />
-      <br />
-      <List>
-        {p.hospital && (
-          <li>
-            <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital.name}</Link>
-          </li>
-        )}
-        {p.armory && (
-          <li>
-            <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory.name}</Link>
-          </li>
-        )}
-        {p.bank && (
-          <li>
-            <Link onClick={() => handleGoToSubPlace('bank')}>{p.bank.name}</Link>
-          </li>
-        )}
-      </List>
+      {(hasHospital || hasArmory || hasBank) && (
+        <>
+          <br />
+          <br />
+          <List>
+            {hasHospital && (
+              <li>
+                <Link onClick={() => handleGoToSubPlace('hospital')}>{p.hospital!.name}</Link>
+              </li>
+            )}
+            {hasArmory && (
+              <li>
+                <Link onClick={() => handleGoToSubPlace('armory')}>{p.armory!.name}</Link>
+              </li>
+            )}
+            {hasBank && (
+              <li>
+                <Link onClick={() => handleGoToSubPlace('bank')}>{p.bank!.name}</Link>
+              </li>
+            )}
+          </List>
+        </>
+      )}
     </>
   )
 }
