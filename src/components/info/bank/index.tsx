@@ -139,6 +139,7 @@ export function Bank(p: Props) {
       <div className='flex justify-between space-x-4'>
         <div>
           <H3 className='whitespace-nowrap'>Uloženo peněz</H3>
+          <br />
           <Text>{showAccount.data?.money ?? 0}</Text>
         </div>
         <div className='flex space-x-6'>
