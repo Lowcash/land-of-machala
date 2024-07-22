@@ -5,10 +5,10 @@ import * as ProgressPrimitive from '@radix-ui/react-progress'
 
 import * as S from './index.styles'
 
-const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & S.ProgressProps
->(({ className, value, max, children, ...props }, ref) => {
+type Props = React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> & S.ProgressProps
+type Handle = React.ElementRef<typeof ProgressPrimitive.Root>
+
+export default React.forwardRef<Handle, Props>(({ className, value, max, children, ...props }, ref) => {
   const indicatorValue = 100 - ((value ?? 0) / (max ?? 100)) * 100
 
   return (
@@ -22,5 +22,3 @@ const Progress = React.forwardRef<
     </S.ProgressRoot>
   )
 })
-
-export default Progress

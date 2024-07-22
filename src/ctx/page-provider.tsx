@@ -4,14 +4,14 @@ import * as React from 'react'
 
 type Page = 'landing' | 'create' | 'game' | 'inventory' | 'quest'
 
-interface PageContextProps {
+type PageContextProps = {
   page: Page
   setPage?: (page: Page) => void
 }
 
 const PageContext = React.createContext<PageContextProps>({ page: 'landing' })
 
-interface Props {
+type Props = {
   signed: boolean
 }
 

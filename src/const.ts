@@ -1,10 +1,6 @@
 import { Profession, Race } from '@prisma/client'
 
-export const BASE_DIRECTIONS = ['left', 'right'] as const
-export type BaseDirection = (typeof BASE_DIRECTIONS)[number]
-
-export const DIRECTIONS = [...BASE_DIRECTIONS, 'up', 'down'] as const
-export type Direction = (typeof DIRECTIONS)[number]
+export const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
 
 export type Position = {
   x: number
@@ -12,7 +8,6 @@ export type Position = {
 }
 
 export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor', 'potion'] as const
-export type Wearable = (typeof WEARABLES)[number]
 
 export const RACES = [Race.HUMAN, Race.GNOME, Race.DWARF] as const
 export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.MAGE] as const
