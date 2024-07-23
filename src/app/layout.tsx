@@ -8,6 +8,7 @@ import { TRPCReactProvider } from '@/trpc/react'
 import { ThemeProvider } from '@/ctx/theme-provider'
 import { LayoutProvider } from '@/ctx/layout-provider'
 import { PageProvider } from '@/ctx/page-provider'
+import { AuthRequiredError } from '@/lib/exceptions'
 
 const medieval = MedievalSharp({
   weight: '400',
@@ -23,6 +24,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const session = await getServerAuthSession()
+
+  if (!session) throw new AuthRequiredError()
 
   return (
     <html lang='en' suppressHydrationWarning>
