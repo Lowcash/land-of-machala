@@ -22,11 +22,11 @@ import User from '@/components/user'
 import { Header, HeaderOptions, Footer, Main } from '@/styles/common'
 
 export default function () {
-  const { data: info, isLoading, refetch } = api.player.info.useQuery(undefined, { enabled: false })
+  const { data: info, isLoading, refetch } = api.player.info.useQuery(undefined, { enabled: false,  })
 
   const { page, setPage } = usePageContext()
   const { setBackgroundUrl } = useLayoutContext()
-
+  
   React.useEffect(() => {
     if (page === 'landing') setBackgroundUrl?.()
     if (page === 'game') refetch()

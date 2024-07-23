@@ -1,14 +1,17 @@
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import type { TRPCContext } from '@/server/api/trpc'
+import { getUser } from './user'
 
 export const inventoryRoute = createTRPCRouter({
   show: protectedProcedure.query(async ({ ctx }) => {
-    if (!ctx.session?.user?.wearable) throw new Error('No wearable!')
+    const user = await getUser(ctx)
+
+    if (!user.wearable) throw new Error('No wearable!')
 
     const inventory = await getInventory(ctx)
 
     const weapons = inventory.weapons_inventory?.map((x) => {
-      const armed = Object.entries(ctx.session.user!.wearable!).find(([_, v]) => v === x.id)
+      const armed = Object.entries(user.wearable!).find(([_, v]) => v === x.id)
 
       return {
         ...x,
@@ -18,7 +21,7 @@ export const inventoryRoute = createTRPCRouter({
     })
     const armors = inventory.armors_inventory?.map((x) => ({
       ...x,
-      armed: Object.values(ctx.session.user!.wearable!).some((y) => y === x.id),
+      armed: Object.values(user.wearable!).some((y) => y === x.id),
     }))
 
     return {
@@ -30,10 +33,10 @@ export const inventoryRoute = createTRPCRouter({
 })
 
 export async function getInventory(ctx: TRPCContext) {
-  if (!ctx.session?.user) throw new Error('No user!')
+  const user = await getUser(ctx)
 
   let inventory = await ctx.db.inventory.findFirst({
-    where: { id: ctx.session.user.inventory_id ?? '-1' },
+    where: { id: user.inventory_id ?? '-1' },
     include: {
       weapons_inventory: {
         include: { weapon: true },

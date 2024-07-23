@@ -7,6 +7,7 @@ import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { collectReward } from './game'
 
 import { ERROR_CAUSE } from '@/const'
+import { getUser } from './user'
 
 export const hospitalRoute = createTRPCRouter({
   show: protectedProcedure.input(z.object({ hospitalId: z.string() })).query(async ({ ctx, input }) => {
@@ -21,23 +22,26 @@ export const hospitalRoute = createTRPCRouter({
     }
   }),
   resurect: protectedProcedure.mutation(async ({ ctx }) => {
+    const user = await getUser(ctx)
+
     await ctx.db.user.update({
-      where: { id: ctx.session.user!.id },
-      data: { hp_actual: ctx.session.user!.hp_max, defeated: false },
+      where: { id: user.id },
+      data: { hp_actual: user.hp_max, defeated: false },
     })
   }),
   heal: protectedProcedure.input(z.object({ hospitalId: z.string() })).mutation(async ({ ctx, input }) => {
+    const user = await getUser(ctx)
     const hospital = await getHospital(ctx, input.hospitalId)
 
-    const balance = ctx.session.user!.money - (hospital.price ?? 0)
+    const balance = user.money - (hospital.price ?? 0)
 
     if (balance < 0) return { success: false }
 
     await ctx.db.user.update({
-      where: { id: ctx.session.user!.id },
+      where: { id: user.id },
       data: {
         money: balance,
-        hp_actual: ctx.session.user!.hp_max,
+        hp_actual: user.hp_max,
       },
     })
 
@@ -46,6 +50,7 @@ export const hospitalRoute = createTRPCRouter({
   buy: protectedProcedure
     .input(z.object({ hospitalId: z.string(), potionId: z.number() }))
     .mutation(async ({ ctx, input }) => {
+      const user = await getUser(ctx)
       const inventory = await getInventory(ctx)
       const hospital = await getHospital(ctx, input.hospitalId)
 
@@ -53,13 +58,13 @@ export const hospitalRoute = createTRPCRouter({
 
       if (!potion) throw new Error('Potion does not exist!')
 
-      const balance = ctx.session.user!.money - (potion.price ?? 0)
+      const balance = user.money - (potion.price ?? 0)
 
       if (balance < 0) return { success: false }
 
       const success = await ctx.db.$transaction(async (db) => {
         await db.user.update({
-          where: { id: ctx.session.user!.id },
+          where: { id: user.id },
           data: {
             money: balance,
           },

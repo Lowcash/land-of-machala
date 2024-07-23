@@ -3,20 +3,21 @@ import { inspectPosition } from './game'
 import { TRPCContext, createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getInventory } from './inventory'
 import { ArmorType } from '@prisma/client'
+import { getUser } from './user'
 
 import { DIRECTIONS, PROFESSIONS, RACES, WEARABLES } from '@/const'
 
 export const playerRouter = createTRPCRouter({
-  info: protectedProcedure.query(({ ctx }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
+  info: protectedProcedure.query(async ({ ctx }) => {
+    const user = await getUser(ctx)
 
     const canMove =
-      !Boolean(ctx.session.user.enemy_instance) &&
-      !Boolean(ctx.session.user.loot) &&
-      !Boolean(ctx.session.user.defeated)
+      !Boolean(user.enemy_instance) &&
+      !Boolean(user.loot) &&
+      !Boolean(user.defeated)
 
     return {
-      ...ctx.session.user,
+      ...user,
       canMove,
     }
   }),
@@ -43,8 +44,7 @@ export const playerRouter = createTRPCRouter({
       })
     }),
   stats: protectedProcedure.query(async ({ ctx }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
-
+    const user = await getUser(ctx)
     const wearable = await getWearable(ctx)
 
     const strength =
@@ -76,12 +76,12 @@ export const playerRouter = createTRPCRouter({
     const damage_max = (wearable?.left_hand?.weapon?.damage_to ?? 0) + (wearable?.right_hand?.weapon.damage_to ?? 0)
 
     await ctx.db.user.update({
-      where: { id: ctx.session.user.id },
+      where: { id: user.id },
       data: { damage_min, damage_max, strength, agility, intelligence },
     })
 
     return {
-      level: ctx.session.user.level,
+      level: user.level,
       damage_min,
       damage_max,
       strength,
@@ -106,9 +106,8 @@ export const playerRouter = createTRPCRouter({
   wear: protectedProcedure
     .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user) throw new Error('No user!')
-
-      const canWear = !Boolean(ctx.session.user.enemy_instance)
+      const user = await getUser(ctx)
+      const canWear = !Boolean(user.enemy_instance)
 
       if (!canWear) return
 
@@ -244,8 +243,7 @@ export const playerRouter = createTRPCRouter({
       }
     }),
   drink: protectedProcedure.input(z.object({ potionId: z.string() })).mutation(async ({ ctx, input }) => {
-    if (!ctx.session?.user) throw new Error('User does not exist!')
-
+    const user = await getUser(ctx)
     const inventory = await getInventory(ctx)
 
     const potion = inventory.potions_inventory.find((x) => x.id === input.potionId)
@@ -254,9 +252,9 @@ export const playerRouter = createTRPCRouter({
 
     await ctx.db.$transaction(async (db) => {
       await db.user.update({
-        where: { id: ctx.session.user!.id },
+        where: { id: user.id },
         data: {
-          hp_actual: Math.min(ctx.session.user!.hp_actual! + potion.potion.hp_gain, ctx.session.user!.hp_max!),
+          hp_actual: Math.min(user.hp_actual! + potion.potion.hp_gain, user.hp_max!),
         },
       })
 
@@ -268,45 +266,43 @@ export const playerRouter = createTRPCRouter({
     })
   }),
   move: protectedProcedure.input(z.enum(DIRECTIONS)).mutation(async ({ ctx, input }) => {
-    if (!ctx.session?.user) throw new Error('No user!')
+    const user = await getUser(ctx)
 
     const canMove =
-      !Boolean(ctx.session.user.enemy_instance) &&
-      !Boolean(ctx.session.user.loot) &&
-      !Boolean(ctx.session.user.defeated)
+      !Boolean(user.enemy_instance) &&
+      !Boolean(user.loot) &&
+      !Boolean(user.defeated)
 
     if (!canMove)
       return {
-        pos_x: ctx.session.user.pos_x,
-        pos_y: ctx.session.user.pos_y,
+        pos_x: user.pos_x,
+        pos_y: user.pos_y,
       }
 
     const horizontal = input === 'left' ? -1 : input === 'right' ? 1 : 0
     const vertical = input === 'down' ? -1 : input === 'up' ? 1 : 0
 
-    const user = await ctx.db.user.update({
-      where: { id: ctx.session.user.id },
-      data: {
-        pos_x: ctx.session.user.pos_x + horizontal,
-        pos_y: ctx.session.user.pos_y + vertical,
-      },
-    })
-
     await inspectPosition({
       ...ctx,
       session: {
         ...ctx.session,
-        user,
+        user: await ctx.db.user.update({
+          where: { id: user.id },
+          data: {
+            pos_x: user.pos_x + horizontal,
+            pos_y: user.pos_y + vertical,
+          },
+        }),
       },
     })
   }),
 })
 
 export async function getWearable(ctx: TRPCContext) {
-  if (!ctx.session?.user) throw new Error('No user!')
+  const user = await getUser(ctx)
 
   let wearable = await ctx.db.wearable.findFirst({
-    where: { id: ctx.session.user.wearable_id ?? '-1' },
+    where: { id: user.wearable_id ?? '-1' },
     include: {
       left_hand: { include: { weapon: true } },
       right_hand: { include: { weapon: true } },
