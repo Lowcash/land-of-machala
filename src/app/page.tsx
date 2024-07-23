@@ -35,7 +35,7 @@ export default function () {
   const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
 
   React.useEffect(() => {
-    if (isLoading) return
+    if (page === 'landing' || isLoading) return
 
     setPage?.(hasCharacter ? 'game' : 'create')
   }, [hasCharacter, isLoading, setPage])

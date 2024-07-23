@@ -5,7 +5,6 @@ import { MedievalSharp } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { getServerAuthSession } from '@/server/auth'
 import { TRPCReactProvider } from '@/trpc/react'
-import { NextAuthProvider } from '@/ctx/auth-provider'
 import { ThemeProvider } from '@/ctx/theme-provider'
 import { LayoutProvider } from '@/ctx/layout-provider'
 import { PageProvider } from '@/ctx/page-provider'
@@ -36,15 +35,12 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}
         style={{ backgroundSize: '100% 100%' }}
       >
-        {/* <TRPCReactProvider cookies={cookies().toString()}> */}
         <TRPCReactProvider>
-          {/* <NextAuthProvider> */}
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              <LayoutProvider>
-                <PageProvider signed={!!session}>{children}</PageProvider>
-              </LayoutProvider>
-            </ThemeProvider>
-          {/* </NextAuthProvider> */}
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            <LayoutProvider>
+              <PageProvider signed={!!session}>{children}</PageProvider>
+            </LayoutProvider>
+          </ThemeProvider>
         </TRPCReactProvider>
       </body>
     </html>
