@@ -1,15 +1,20 @@
 'use client'
 
 import React from 'react'
-
 import { api } from '@/trpc/react'
+import { AppRouter } from '@/server/api/root'
+import { inferProcedureOutput } from '@trpc/server'
 
-import * as S from './index.styles'
-import { Button } from '../ui/button'
+import * as S from './Action.styles'
+import { Button } from '@/components/ui/button'
 
-export default function Action() {
+interface Props {
+  data: inferProcedureOutput<AppRouter['game']['info']>
+}
+
+export default function Action(p: Props) {
   const { player, game } = api.useUtils()
-  const { data: gameInfo } = api.game.info.useQuery()
+
   const attack = api.game.attack.useMutation({
     onSettled: () => {
       player.info.invalidate()
@@ -37,8 +42,8 @@ export default function Action() {
   const handleRunAway = React.useCallback(() => runAway.mutate(), [runAway])
   const handleLoot = React.useCallback(() => loot.mutate(), [loot])
 
-  const hasEnemy = Boolean(gameInfo?.enemyInstance)
-  const hasLoot = Boolean(gameInfo?.loot)
+  const hasEnemy = Boolean(p.data.enemyInstance)
+  const hasLoot = Boolean(p.data.loot)
 
   if (!hasEnemy && !hasLoot) return <></>
 
