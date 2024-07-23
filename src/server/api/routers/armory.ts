@@ -1,11 +1,13 @@
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
+import { getTRPCErrorFromUnknown } from '@trpc/server'
 import type { TRPCContext } from '@/server/api/trpc'
 import { getInventory } from './inventory'
 import { getWeapons } from './weapon'
 import { getArmors } from './armor'
+import { getUser } from './user'
 
-import { WEARABLES } from '@/const'
+import { ERROR_CAUSE, WEARABLES } from '@/const'
 
 const BUY_MIN_PRICE = 1000
 const BUY_MAX_PRICE = 50000
@@ -36,8 +38,7 @@ export const armoryRoute = createTRPCRouter({
   buy: protectedProcedure
     .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), itemType: z.enum(WEARABLES) }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user) throw new Error('User does not exist!')
-
+      const user = await getUser(ctx)
       const inventory = await getInventory(ctx)
 
       switch (input.itemType) {
@@ -46,16 +47,14 @@ export const armoryRoute = createTRPCRouter({
 
           if (!armoryWeapon) throw new Error('Armory does not have weapon!')
 
-          const balance = ctx.session.user.money - (armoryWeapon?.price ?? 0)
+          const balance = user.money - (armoryWeapon?.price ?? 0)
 
           if (balance < 0) return { success: false }
 
           await ctx.db.$transaction(async (db) => {
             await db.user.update({
-              where: { id: ctx.session.user!.id },
-              data: {
-                money: balance,
-              },
+              where: { id: user.id },
+              data: { money: balance },
             })
 
             await db.weaponInInventory.create({
@@ -75,16 +74,14 @@ export const armoryRoute = createTRPCRouter({
 
             if (!armoryArmor) throw new Error('Armory does not have armor!')
 
-            const balance = ctx.session.user.money - (armoryArmor?.price ?? 0)
+            const balance = user.money - (armoryArmor?.price ?? 0)
 
             if (balance < 0) return { success: false }
 
             await ctx.db.$transaction(async (db) => {
               await db.user.update({
-                where: { id: ctx.session.user!.id },
-                data: {
-                  money: balance,
-                },
+                where: { id: user.id },
+                data: { money: balance },
               })
 
               await db.armorInInventory.create({
@@ -103,21 +100,20 @@ export const armoryRoute = createTRPCRouter({
   sell: protectedProcedure
     .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), itemType: z.enum(WEARABLES) }))
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user) throw new Error('User does not exist!')
-
+      const user = await getUser(ctx)
       const inventory = await getInventory(ctx)
 
       switch (input.itemType) {
         case 'weapon': {
           const armoryWeapon = (await getSellWeapons(ctx)).find((x) => x.id === input.armoryItemId)
-          
+
           if (!armoryWeapon) throw new Error('Armory does not accept this weapon!')
 
-          const balance = ctx.session.user.money + (armoryWeapon?.price ?? 0)
+          const balance = user.money + (armoryWeapon?.price ?? 0)
 
           await ctx.db.$transaction(async (db) => {
             await db.user.update({
-              where: { id: ctx.session.user!.id },
+              where: { id: user.id },
               data: {
                 money: balance,
               },
@@ -130,7 +126,7 @@ export const armoryRoute = createTRPCRouter({
               },
             })
 
-            if (!weaponToDelete) throw new Error('Cannot find weapon in inventory!')
+            if (!weaponToDelete) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
             await db.weaponInInventory.delete({
               where: {
@@ -148,14 +144,12 @@ export const armoryRoute = createTRPCRouter({
 
             if (!armoryArmor) throw new Error('Armory does not accept this armor!')
 
-            const balance = ctx.session.user.money + (armoryArmor?.price ?? 0)
+            const balance = user.money + (armoryArmor?.price ?? 0)
 
             await ctx.db.$transaction(async (db) => {
               await db.user.update({
-                where: { id: ctx.session.user!.id },
-                data: {
-                  money: balance,
-                },
+                where: { id: user.id },
+                data: { money: balance },
               })
 
               const armorToDelete = await db.armorInInventory.findFirst({
@@ -165,12 +159,10 @@ export const armoryRoute = createTRPCRouter({
                 },
               })
 
-              if (!armorToDelete) throw new Error('Cannot find armor in inventory!')
+              if (!armorToDelete) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
               await db.armorInInventory.delete({
-                where: {
-                  id: armorToDelete.id,
-                },
+                where: { id: armorToDelete.id },
               })
 
               return { success: true }
@@ -253,7 +245,7 @@ export async function getArmory(ctx: TRPCContext, id: string) {
     include: { weapons: { include: { weapon: true } }, armors: { include: { armor: true } } },
   })
 
-  if (!armory) throw new Error('Armory does not exist!')
+  if (!armory) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
   return armory
 }

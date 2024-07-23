@@ -3,6 +3,7 @@ import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { enemyEmitter } from './game'
 import type { TRPCContext } from '../trpc'
+import { getUser } from './user'
 
 import { ERROR_CAUSE } from '@/const'
 
@@ -187,10 +188,10 @@ export async function getQuest(ctx: TRPCContext, ident: QuestIdent) {
 }
 
 export async function getUserQuest(ctx: TRPCContext) {
-  if (!ctx.session?.user) throw new Error('User does not exist!')
+  const user = await getUser(ctx)
 
   let userQuest = await ctx.db.userQuest.findFirst({
-    where: { id: ctx.session.user.user_quest_id ?? -1 },
+    where: { id: user.user_quest_id ?? -1 },
     include: {
       quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
       quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },

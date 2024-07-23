@@ -10,6 +10,7 @@ import type {
   WeaponInBank,
   WeaponInInventory,
 } from '@prisma/client'
+import { getUser } from './user'
 
 import { WEARABLES } from '@/const'
 
@@ -31,12 +32,11 @@ export const bankRoute = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user) throw new Error('User does not exist!')
-
+      const user = await getUser(ctx)
       const bankAccount = await getBankAccount(ctx, input.bankId)
 
       if (input.money !== undefined) {
-        const balance = ctx.session.user.money - input.money
+        const balance = user.money - input.money
 
         if (balance < 0) return { success: false }
 
@@ -47,7 +47,7 @@ export const bankRoute = createTRPCRouter({
           })
 
           await db.user.update({
-            where: { id: ctx.session.user!.id },
+            where: { id: user.id },
             data: { money: balance },
           })
 
@@ -134,8 +134,7 @@ export const bankRoute = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (!ctx.session?.user) throw new Error('User does not exist!')
-
+      const user = await getUser(ctx)
       const bankAccount = await getBankAccount(ctx, input.bankId)
 
       if (input.money !== undefined) {
@@ -145,8 +144,8 @@ export const bankRoute = createTRPCRouter({
 
         const success = await ctx.db.$transaction(async (db) => {
           await db.user.update({
-            where: { id: ctx.session.user!.id },
-            data: { money: ctx.session.user!.money + input.money! },
+            where: { id: user.id },
+            data: { money: user.money + input.money! },
           })
 
           await db.bankAccount.update({
