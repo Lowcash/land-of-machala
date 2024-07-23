@@ -3,8 +3,15 @@
 import React from 'react'
 import styled from '@emotion/styled/macro'
 import tw from 'twin.macro'
+import { motion } from 'framer-motion'
 import { useSidebar as useLeftSidebar } from '@/components/menu-left'
 import { useSidebar as useRightSidebar } from '@/components/menu-right'
+
+export const Page = ({ children }: React.PropsWithChildren) => (
+  <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.5 }}>
+    {children}
+  </motion.div>
+)
 
 export const Main = tw.main`
   flex flex-1
