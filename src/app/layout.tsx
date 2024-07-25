@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
     <html lang='en' suppressHydrationWarning>
       <head>
         {process.env.NODE_ENV === 'production' && (
-          <Script defer src='https://cloud.umami.is/script.js' data-website-id='94bf505a-895c-4213-8e6a-0d2513987607' />
+          <script defer src="https://cloud.umami.is/script.js" data-website-id="94bf505a-895c-4213-8e6a-0d2513987607"></script>
         )}
       </head>
       <body
