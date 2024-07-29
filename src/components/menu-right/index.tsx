@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { usePageContext } from '@/ctx/page-provider'
+import { usePageContext } from '@/context/game-provider'
 import { Direction } from '@/types'
 import { signal, useSignalValue } from 'signals-react-safe'
 

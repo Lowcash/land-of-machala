@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { usePageContext } from '@/ctx/page-provider'
+import { usePageContext } from '@/context/game-provider'
 import type { Wearable } from '@/types'
 
 import * as S from './index.styles'
