@@ -1,93 +1,39 @@
-// 'use client'
+import { cookies } from 'next/headers'
+import { getServerAuthSession } from '@/server/auth'
+import { hasCharacter } from './(game)/actions'
 
-// import React from 'react'
-// import { api } from '@/trpc/react'
-// import { usePageContext } from '@/ctx/page-provider'
-// import { useLayoutContext } from '@/ctx/layout-provider'
+import LandingLayout from './landing/layout'
+import CreatePage from './create/page'
+import LandingPage from './landing/page'
+import GameLayout from './(game)/layout'
+import PlayLayout from './(game)/world/layout'
+import PlayPage from './(game)/world/page'
+import QuestPage from './(game)/quest/page'
+import InventoryPage from './(game)/inventory/page'
 
-// import { Content } from '@/styles/common'
-// import MenuLeft from '@/components/menu-left'
-// import MenuRight from '@/components/menu-right'
-// import * as S from './styles'
-// import Info from '@/components/info'
-// import Action from '@/app/_components/action'
-// import XP from '@/components/xp'
+import { ROUTE } from '@/const'
 
-// import Inventory from '@/components/inventory'
-// import Quest from '@/components/quest'
-// import Create from './(create)'
-// import Landing from './(landing)'
+export default async function Page() {
+  const session = await getServerAuthSession()
 
-// import User from '@/components/user'
-// import { Header, HeaderOptions, Footer, Main } from '@/styles/common'
+  if (!session)
+    return (
+      <LandingLayout>
+        <LandingPage />
+      </LandingLayout>
+    )
 
-// export default function (p: React.PropsWithChildren) {
-//   const { data: info, isLoading, refetch } = api.player.info.useQuery(undefined, { enabled: false,  })
+  if (!hasCharacter()) return <CreatePage />
 
-//   const { page, setPage } = usePageContext()
-//   const { setBackgroundUrl } = useLayoutContext()
+  const pathname = cookies().get('page')?.value || ROUTE.WORLD
 
-//   React.useEffect(() => {
-//     if (page === 'landing') setBackgroundUrl?.()
-//     if (page === 'game') refetch()
-//   }, [page, setBackgroundUrl, refetch])
-
-//   const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
-
-//   React.useEffect(() => {
-//     if (page === 'landing' || isLoading) return
-
-//     setPage?.(hasCharacter ? 'game' : 'create')
-//   }, [hasCharacter, isLoading, setPage])
-
-//   if (page === 'landing')
-//     return (
-//       <Main>
-//         <Landing />
-//       </Main>
-//     )
-
-//   if (isLoading) return <></>
-
-//   return (
-//     <>
-//       <Header>
-//         <HeaderOptions>
-//           <User />
-//         </HeaderOptions>
-//       </Header>
-
-//       <Main>
-//         {!hasCharacter && <Create />}
-//         {hasCharacter && (
-//           <>
-//             <MenuLeft />
-//             <Content>
-//               <S.TopContainer>
-//                 {page === 'game' && (
-//                   <>
-//                     <Info />
-//                     {p.children}
-//                   </>
-//                 )}
-//                 {page === 'inventory' && <Inventory />}
-//                 {page === 'quest' && <Quest />}
-//               </S.TopContainer>
-
-//               <XP />
-//             </Content>
-//             <MenuRight />
-//           </>
-//         )}
-//       </Main>
-
-//       <Footer></Footer>
-//     </>
-//   )
-// }
-
-import Action from '@/app/_components/action'
-
-export default function Page({ children }: React.PropsWithChildren) {
-  return <Action />
+  return (
+    <GameLayout>
+      <PlayLayout>
+        {pathname === ROUTE.WORLD && <PlayPage />}
+        {pathname === ROUTE.QUEST && <QuestPage />}
+        {pathname === ROUTE.INVENTORY && <InventoryPage />}
+      </PlayLayout>
+    </GameLayout>
+  )
 }

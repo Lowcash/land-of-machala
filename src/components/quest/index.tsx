@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { usePageContext } from '@/ctx/page-provider'
+import { usePageContext } from '@/context/game-provider'
 
 import * as S from './index.styles'
 import { H3 } from '@/styles/text'

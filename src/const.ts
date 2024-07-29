@@ -16,3 +16,9 @@ export enum ERROR_CAUSE {
   ENTITY_NOT_EXIST,
   NOT_AVAILABLE
 }
+
+export const ROUTE = {
+  WORLD: '/world',
+  QUEST: '/quest',
+  INVENTORY: '/inventory'
+} as const

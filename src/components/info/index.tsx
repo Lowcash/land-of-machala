@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { api } from '@/trpc/react'
-import { useLayoutContext } from '@/ctx/layout-provider'
+import { useLayoutContext } from '@/context/layout-provider'
 
 import * as S from './index.styles'
 import Image from 'next/image'
