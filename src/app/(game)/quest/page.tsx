@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 
 import { ROUTE } from '@/const'
 
-export default async function Page() {
+export default function Page() {
   const navigate = useNavigate()
 
   const handleBackClick = () => navigate(ROUTE.WORLD)

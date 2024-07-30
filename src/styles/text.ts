@@ -3,13 +3,9 @@ import tw from 'twin.macro'
 
 import { Label } from '@radix-ui/react-label'
 
-export const H2 = tw.h2`
-  text-2xl font-bold
-`
+export const H2 = tw.h2`text-2xl font-bold`
 
-export const H3 = tw.h3`
-  text-xl font-bold
-`
+export const H3 = tw.h3`text-xl font-bold`
 
 type TextProps = {
   bold?: boolean

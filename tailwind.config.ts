@@ -19,6 +19,9 @@ const config = {
       },
     },
     extend: {
+      boxShadow: {
+        'side': '0 4px 8px rgba(0, 0, 0, 0.5)'
+      },
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },

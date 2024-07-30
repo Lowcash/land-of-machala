@@ -1,6 +1,5 @@
-import * as React from 'react'
-import { api, HydrateClient } from '@/trpc/server'
+import Action from './_components/Action'
 
 export default async function Page() {
-  return <></>
+  return <Action />
 }

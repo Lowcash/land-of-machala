@@ -19,7 +19,7 @@ const _SidebarInner = styled('div')`
     rounded-lg
   `}
 
-  background: var(--gold2);;
+  background: var(--gold2);
 `
 
 const _SidebarOuter = styled('aside', {

@@ -1,5 +1,5 @@
-import SidebarLeft from '../_components/SidebarLeft'
-import SidebarRight from '../_components/SidebarRight'
+import SidebarLeft from '../_components/Sidebar/Left'
+import SidebarRight from '../_components/Sidebar/Right'
 
 export default function Layout({ children }: React.PropsWithChildren) {
   return (

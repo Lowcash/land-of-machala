@@ -223,7 +223,8 @@ export async function inspectPosition(ctx: TRPCContext) {
 
   if (enemyInstance || place) return
 
-  const hasEnemyAppear = Math.round(Math.random()) === 1
+  // const hasEnemyAppear = Math.round(Math.random()) === 1
+  const hasEnemyAppear = false as boolean
 
   const enemy =
     hasEnemyAppear &&

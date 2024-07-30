@@ -23,13 +23,7 @@ const SCHEMA = z.object({
 type Values = z.infer<typeof SCHEMA>
 
 export default function Create() {
-  const { setPage } = useGame()
-
-  const create = api.player.create.useMutation({
-    onSettled: () => {
-      setPage?.('game')
-    },
-  })
+  const create = api.player.create.useMutation()
 
   const form = useForm<Values>({
     resolver: zodResolver(SCHEMA),
