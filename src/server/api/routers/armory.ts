@@ -201,7 +201,7 @@ async function getSellWeapons(ctx: TRPCContext) {
 
 async function getBuyArmors(ctx: TRPCContext, armoryId: string) {
   const armory = await getArmory(ctx, armoryId)
-  const armors = await getArmors(ctx, { sorted: true })
+  const armors = await getArmors()
 
   const spreadBuyPriceArmors = spreadItemsPrices(armors!, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
 
@@ -213,7 +213,7 @@ async function getBuyArmors(ctx: TRPCContext, armoryId: string) {
 
 async function getSellArmors(ctx: TRPCContext) {
   const inventory = await getInventory(ctx)
-  const armors = await getArmors(ctx, { sorted: true })
+  const armors = await getArmors()
 
   const spreadSellPriceArmors = spreadItemsPrices(armors!, SELL_MIN_PRICE, SELL_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
 

@@ -3,6 +3,7 @@ import { getInventory } from './inventory'
 import TypedEventEmitter from '@/lib/emitter'
 import type { Enemy } from '@prisma/client'
 import { getUser } from './user'
+import { getArmors } from './armor'
 
 type EmitterEnemy = Enemy & { ctx: TRPCContext }
 
@@ -11,6 +12,7 @@ export const enemyEmitter = new TypedEventEmitter<{
 }>()
 
 export const gameRouter = createTRPCRouter({
+  armors: protectedProcedure.query(({ ctx }) => getArmors()),
   info: protectedProcedure.query(async ({ ctx }) => info(ctx)),
   inspectPosition: protectedProcedure.query(async ({ ctx }) => inspectPosition(ctx)),
   attack: protectedProcedure.mutation(async ({ ctx }) => {
