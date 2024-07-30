@@ -5,6 +5,9 @@ import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
 import { TRPCReactProvider } from '@/trpc/react'
 import { ThemeProvider } from '@/context/theme-provider'
+import { initialize } from './inititialize'
+
+initialize()
 
 const medieval = MedievalSharp({
   weight: '400',
@@ -19,6 +22,8 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
+  await initialize()
+
   return (
     <html lang='en' suppressHydrationWarning>
       <head>

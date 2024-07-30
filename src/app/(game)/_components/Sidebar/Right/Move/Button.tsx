@@ -6,7 +6,7 @@ import type { Direction, PropsWithChildrenAndClassName } from '@/types'
 
 import { Button as Button_ } from '@/components/ui/button'
 
-import { QUERY } from '@/const'
+import { QUERY_KEY } from '@/const'
 
 interface Props {
   direction: Direction
@@ -19,13 +19,15 @@ export default function Button({ children, className, ...p }: PropsWithChildrenA
     mutationFn: move,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        predicate: (p) => p.queryKey[0] === QUERY.PLAYER_INFO,
+        predicate: (p) => p.queryKey[0] === QUERY_KEY.PLAYER_INFO,
       })
     },
   })
 
+  const handleButtonClick = () => moveMutation.mutate(p.direction)
+
   return (
-    <Button_ className={className} onClick={() => moveMutation.mutate(p.direction)} variant='warning' size='iconLg'>
+    <Button_ className={className} onClick={handleButtonClick} variant='warning' size='iconLg'>
       {children}
     </Button_>
   )

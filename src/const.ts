@@ -23,6 +23,10 @@ export const ROUTE = {
   INVENTORY: '/inventory'
 } as const
 
-export const QUERY = {
+export const CACHE_KEY = {
+  ARMORS: 'armors'
+} as const
+
+export const QUERY_KEY = {
   PLAYER_INFO: 'player-info'
 } as const
