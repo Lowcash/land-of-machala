@@ -1,7 +1,16 @@
 'use server'
 
-import { redirect as nextRedirect } from 'next/navigation'
+import { api } from '@/trpc/server'
+import { cache } from 'react'
 
-export async function redirect(p: Parameters<typeof nextRedirect>[0]) {
-  nextRedirect(p)
+export const getPlayerInfo = cache(api.player.info)
+
+export async function hasCharacter() {
+  const player = await getPlayerInfo()
+
+  return !!player.race && !!player.profession
+}
+
+export async function move(p: Parameters<typeof api.player.move>[0]) {
+  await api.player.move(p)
 }

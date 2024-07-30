@@ -2,6 +2,7 @@ import * as React from 'react'
 import { api } from '@/trpc/server'
 
 import { Content } from './Content'
+import Sidebar from '..'
 
 const EMPTY = '-'
 
@@ -11,7 +12,7 @@ export default async function SidebarLeft() {
   const wearable = await api.player.wearable()
 
   return (
-    <div>
+    <Sidebar $open={true} $position='left'>
       <Content
         data={[
           {
@@ -68,6 +69,6 @@ export default async function SidebarLeft() {
           },
         ]}
       />
-    </div>
+    </Sidebar>
   )
 }

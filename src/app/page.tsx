@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { getServerAuthSession } from '@/server/auth'
-import { hasCharacter } from './(game)/actions'
+import { hasCharacter } from '@/app/actions'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
@@ -23,7 +23,7 @@ export default async function Page() {
       </LandingLayout>
     )
 
-  if (!hasCharacter()) return <CreatePage />
+  if (!(await hasCharacter())) return <CreatePage />
 
   const pathname = cookies().get('page')?.value || ROUTE.WORLD
 

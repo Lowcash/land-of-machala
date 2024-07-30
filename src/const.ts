@@ -22,3 +22,7 @@ export const ROUTE = {
   QUEST: '/quest',
   INVENTORY: '/inventory'
 } as const
+
+export const QUERY = {
+  PLAYER_INFO: 'player-info'
+} as const
