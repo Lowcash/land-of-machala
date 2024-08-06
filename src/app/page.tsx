@@ -14,15 +14,12 @@ import InventoryPage from './(game)/inventory/page'
 import { ROUTE } from '@/const'
 import ABCD from './ABCD'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { getUser } from '@/server/actions/user'
+import { prefetchGetUserQuery } from '@/data/user/server'
 
 export default async function Page() {
   const queryClient = new QueryClient()
 
-  await queryClient.prefetchQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(),
-  })
+  await prefetchGetUserQuery(queryClient)
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

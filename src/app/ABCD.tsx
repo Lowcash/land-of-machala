@@ -1,13 +1,9 @@
 'use client'
 
-import { getUser } from '@/server/actions/user'
-import { useQuery } from '@tanstack/react-query'
+import { useGetUserQuery } from '@/data/user/client'
 
 export default function ABCD() {
-  const userQuery = useQuery({
-    queryKey: ['user'],
-    queryFn: () => getUser(),
-  })
+  const userQuery = useGetUserQuery()
 
   return <>{userQuery.data?.email}</>
 }
