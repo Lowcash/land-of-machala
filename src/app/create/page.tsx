@@ -5,7 +5,7 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Profession, Race } from '@prisma/client'
-import { useCreatePlayerMutation } from '@/data/player/client'
+import { useCreatePlayerMutation } from '@/data/player'
 
 // import { Card } from '@/styles/common'
 import { Option } from '@/components/option'

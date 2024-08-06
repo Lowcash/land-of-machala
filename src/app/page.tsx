@@ -14,7 +14,7 @@ import InventoryPage from './(game)/inventory/page'
 import { ROUTE } from '@/const'
 import ABCD from './ABCD'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { prefetchGetUserQuery } from '@/data/user/server'
+import { prefetchGetUserQuery } from '@/data/user-server'
 import { getUserSession, hasCharacter } from '@/server/actions/user'
 
 export default async function Page() {

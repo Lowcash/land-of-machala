@@ -3,11 +3,11 @@
 import { getUserSession } from '@/server/actions/user'
 import { useQuery } from '@tanstack/react-query'
 
-import { GET_USER } from '../_key'
+export const GET_USER_KEY = 'get-user-key'
 
 export function useGetUserQuery() {
   return useQuery({
-    queryKey: [GET_USER],
+    queryKey: [GET_USER_KEY],
     queryFn: () => getUserSession(),
   })
 }
