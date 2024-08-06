@@ -1,5 +1,5 @@
 import type { Weapon } from '@prisma/client'
-import type { TRPCContext } from '../trpc'
+import type { TRPCContext } from '../../trpc'
 
 const cache: Map<string, Weapon[]> = new Map()
 

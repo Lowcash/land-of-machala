@@ -1,12 +1,17 @@
 import { withSentryConfig } from '@sentry/nextjs'
-import withTwin from './withTwin.mjs'
+import withLinaria from 'next-with-linaria'
 
 /**
  * @type {import('next').NextConfig}
  */
-// export default config;
+
 export default withSentryConfig(
-  withTwin({
+  withLinaria({
+    logging: {
+      fetches: {
+        fullUrl: true,
+      },
+    },
     reactStrictMode: true,
     eslint: {
       ignoreDuringBuilds: true,

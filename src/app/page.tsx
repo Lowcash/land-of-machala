@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { getServerAuthSession } from '@/server/auth'
-import { hasCharacter } from '@/app/actions'
+// import { hasCharacter } from '@/app/actions'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
@@ -12,28 +12,46 @@ import QuestPage from './(game)/quest/page'
 import InventoryPage from './(game)/inventory/page'
 
 import { ROUTE } from '@/const'
+import ABCD from './ABCD'
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { getUser } from '@/server/actions/user'
 
 export default async function Page() {
-  const session = await getServerAuthSession()
+  const queryClient = new QueryClient()
 
-  if (!session)
-    return (
-      <LandingLayout>
-        <LandingPage />
-      </LandingLayout>
-    )
-
-  if (!(await hasCharacter())) return <CreatePage />
-
-  const pathname = cookies().get('page')?.value || ROUTE.WORLD
+  await queryClient.prefetchQuery({
+    queryKey: ['user'],
+    queryFn: () => getUser(),
+  })
 
   return (
-    <GameLayout>
-      <PlayLayout>
-        {pathname === ROUTE.WORLD && <PlayPage />}
-        {pathname === ROUTE.QUEST && <QuestPage />}
-        {pathname === ROUTE.INVENTORY && <InventoryPage />}
-      </PlayLayout>
-    </GameLayout>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <ABCD />
+    </HydrationBoundary>
   )
+
+  // const user = await getUser()
+
+  // return <>{user.image}</>
+
+  // if (!session)
+  //   return (
+  //     <LandingLayout>
+  //       <LandingPage />
+  //     </LandingLayout>
+  //   )
+
+  // if (!(await hasCharacter())) return <CreatePage />
+
+  // const pathname = cookies().get('page')?.value || ROUTE.WORLD
+
+  // return (
+  //   <GameLayout>
+  //     <PlayLayout>
+  //       {pathname === ROUTE.WORLD && <PlayPage />}
+  //       {pathname === ROUTE.QUEST && <QuestPage />}
+  //       {pathname === ROUTE.INVENTORY && <InventoryPage />}
+  //     </PlayLayout>
+  //   </GameLayout>
+  // )
 }
