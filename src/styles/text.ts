@@ -1,5 +1,6 @@
-import styled from '@emotion/styled/macro'
-import tw from 'twin.macro'
+// import styled from '@emotion/styled/macro'
+// import tw from 'twin.macro'
+import tw from 'tailwind-styled-components'
 
 import { Label } from '@radix-ui/react-label'
 
@@ -12,21 +13,21 @@ type TextProps = {
   light?: boolean
 }
 
-export const Text = styled(Label, {
-  shouldForwardProp: (p) => p !== 'light' && p !== 'bold',
-})<TextProps>`
-  ${({ bold }) => !!bold && tw`font-bold`}
-  ${({ light }) => !!light && tw`text-gray-500`}
-`
+// export const Text = styled(Label, {
+//   shouldForwardProp: (p) => p !== 'light' && p !== 'bold',
+// })<TextProps>`
+//   ${({ bold }) => !!bold && tw`font-bold`}
+//   ${({ light }) => !!light && tw`text-gray-500`}
+// `
 
-export const Link = styled(Text)`
-  ${tw`
-    cursor-pointer
-  `}
+// export const Link = styled(Text)`
+//   ${tw`
+//     cursor-pointer
+//   `}
 
-  &:hover {
-    ${tw`
-      text-gray-600
-    `}
-  }
-`.withComponent('a')
+//   &:hover {
+//     ${tw`
+//       text-gray-600
+//     `}
+//   }
+// `.withComponent('a')
