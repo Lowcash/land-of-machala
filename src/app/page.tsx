@@ -15,33 +15,31 @@ import { ROUTE } from '@/const'
 import ABCD from './ABCD'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { prefetchGetUserQuery } from '@/data/user/server'
+import { getUserSession, hasCharacter } from '@/server/actions/user'
 
 export default async function Page() {
-  const queryClient = new QueryClient()
+  // const queryClient = new QueryClient()
 
-  await prefetchGetUserQuery(queryClient)
+  // await prefetchGetUserQuery(queryClient)
 
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <ABCD />
-    </HydrationBoundary>
-  )
+  // return (
+  //   <HydrationBoundary state={dehydrate(queryClient)}>
+  //     <ABCD />
+  //   </HydrationBoundary>
+  // )
 
-  // const user = await getUser()
+  if (!(await getUserSession()))
+    return (
+      <LandingLayout>
+        <LandingPage />
+      </LandingLayout>
+    )
 
-  // return <>{user.image}</>
+  if (!(await hasCharacter())) return <CreatePage />
 
-  // if (!session)
-  //   return (
-  //     <LandingLayout>
-  //       <LandingPage />
-  //     </LandingLayout>
-  //   )
+  const pathname = cookies().get('page')?.value || ROUTE.WORLD
 
-  // if (!(await hasCharacter())) return <CreatePage />
-
-  // const pathname = cookies().get('page')?.value || ROUTE.WORLD
-
+  return <>{pathname}</>
   // return (
   //   <GameLayout>
   //     <PlayLayout>
