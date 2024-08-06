@@ -1,6 +1,6 @@
 'use client'
 
-import { useGetUserQuery } from '@/data/user/client'
+import { useGetUserQuery } from '@/data/user'
 
 export default function ABCD() {
   const userQuery = useGetUserQuery()
