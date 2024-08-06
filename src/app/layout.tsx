@@ -3,9 +3,11 @@ import type { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
-import { TRPCReactProvider } from '@/trpc/react'
-import { ThemeProvider } from '@/context/theme-provider'
 import { initialize } from './inititialize'
+
+import { ThemeProvider } from '@/context/theme-provider'
+import { QueryProvider } from '@/context/query-provider'
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 
 initialize()
 
@@ -22,8 +24,6 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
-  await initialize()
-
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
@@ -37,11 +37,13 @@ export default async function RootLayout({ children }: Readonly<React.PropsWithC
           medieval.variable,
         )}
       >
-        <TRPCReactProvider>
-          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-            {children}
-          </ThemeProvider>
-        </TRPCReactProvider>
+        <QueryProvider>
+          <AppRouterCacheProvider>
+            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+              {children}
+            </ThemeProvider>
+          </AppRouterCacheProvider>
+        </QueryProvider>
       </body>
     </html>
   )

@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { z } from 'zod'
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Profession, Race } from '@prisma/client'

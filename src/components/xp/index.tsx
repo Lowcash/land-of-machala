@@ -1,6 +1,6 @@
 'use client'
 
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 
 import * as S from './index.styles'
 import Progress from '../progress'

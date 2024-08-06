@@ -1,5 +1,5 @@
 import React from 'react'
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 
 import { H3, Text } from '@/styles/text'
 import { Button } from '../../ui/button'

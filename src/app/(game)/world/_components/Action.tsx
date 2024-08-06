@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 
 import { Card } from '@/styles/common'
 import { Button } from '@/components/ui/button'

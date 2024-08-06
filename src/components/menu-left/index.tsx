@@ -1,6 +1,6 @@
 'use client'
 
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 import { signal, useSignalValue } from 'signals-react-safe'
 
 import Progress from '../progress'

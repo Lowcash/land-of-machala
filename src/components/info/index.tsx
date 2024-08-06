@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { api } from '@/trpc/react'
+import { api } from '@/server/react'
 import { useLayoutContext } from '@/context/layout-provider'
 
 import * as S from './index.styles'

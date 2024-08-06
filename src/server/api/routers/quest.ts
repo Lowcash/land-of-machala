@@ -2,7 +2,7 @@ import { QuestIdent } from '@prisma/client'
 import { createTRPCRouter, protectedProcedure } from '@/server/api/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { enemyEmitter } from './game'
-import type { TRPCContext } from '../trpc'
+import type { TRPCContext } from '../../trpc'
 import { getUser } from './user'
 
 import { ERROR_CAUSE } from '@/const'
