@@ -1,8 +1,10 @@
+'use server'
+
 import type { Armor } from '@prisma/client'
 import { db } from '@/server/db'
 import { unstable_cache as cache } from 'next/cache'
 
-import { CACHE_KEY } from '@/const'
+export const ARMORS_KEY = 'armors-key'
 
 const mapArmor = (x: any): Armor => ({
   id: x.f0,
@@ -16,6 +18,6 @@ const mapArmor = (x: any): Armor => ({
 
 export const getArmors = cache(
   async () => (await db.$queryRaw<any[]>`CALL GetArmorsSortedByStats();`).map(mapArmor),
-  [CACHE_KEY.ARMORS],
-  { tags: [CACHE_KEY.ARMORS] },
+  [ARMORS_KEY],
+  { tags: [ARMORS_KEY] },
 )

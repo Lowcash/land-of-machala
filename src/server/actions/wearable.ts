@@ -6,6 +6,7 @@ import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { getPlayer, isPlayerInCombat } from './player'
+import { getInventory } from './inventory'
 
 import { ArmorType } from '@prisma/client'
 import { ERROR_CAUSE, WEARABLES } from '@/const'
@@ -13,7 +14,6 @@ import { ERROR_CAUSE, WEARABLES } from '@/const'
 export const getWearable = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
-
     const playerWithWearable = await db.user.update({
       where: { id: player.id },
       data: {
@@ -47,7 +47,7 @@ export const getWearable = cache(
 )
 
 export const wear = protectedAction
-  .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
+  .input(z.object({ type: z.enum(WEARABLES), inventoryWearableId: z.string() }))
   .mutation(async ({ input }) => {
     if (await isPlayerInCombat()) throw getTRPCErrorFromUnknown(ERROR_CAUSE.COMBAT)
 
@@ -57,7 +57,7 @@ export const wear = protectedAction
       case 'left_weapon': {
         const wearableWeapons = await db.wearable.update({
           where: { id: wearable.id },
-          data: { left_hand_weapon_id: input.id },
+          data: { left_hand_weapon_id: input.inventoryWearableId },
           select: { left_hand_weapon_id: true, right_hand_weapon_id: true },
         })
 
@@ -73,7 +73,7 @@ export const wear = protectedAction
       case 'right_weapon': {
         const wearableWeapons = await db.wearable.update({
           where: { id: wearable.id },
-          data: { right_hand_weapon_id: input.id },
+          data: { right_hand_weapon_id: input.inventoryWearableId },
           select: { left_hand_weapon_id: true, right_hand_weapon_id: true },
         })
 
@@ -88,7 +88,7 @@ export const wear = protectedAction
       }
       case 'armor': {
         const inventoryArmor = await db.armorInInventory.findFirst({
-          where: { id: input.id },
+          where: { id: input.inventoryWearableId },
           include: { armor: true },
         })
 
@@ -97,22 +97,22 @@ export const wear = protectedAction
         let wearableArmor
         switch (inventoryArmor.armor.type) {
           case ArmorType.HEAD:
-            wearableArmor = { head_armor_id: input.id }
+            wearableArmor = { head_armor_id: input.inventoryWearableId }
             break
           case ArmorType.SHOULDER:
-            wearableArmor = { shoulder_armor_id: input.id }
+            wearableArmor = { shoulder_armor_id: input.inventoryWearableId }
             break
           case ArmorType.CHEST:
-            wearableArmor = { chest_armor_id: input.id }
+            wearableArmor = { chest_armor_id: input.inventoryWearableId }
             break
           case ArmorType.HAND:
-            wearableArmor = { hand_armor_id: input.id }
+            wearableArmor = { hand_armor_id: input.inventoryWearableId }
             break
           case ArmorType.PANTS:
-            wearableArmor = { pants_armor_id: input.id }
+            wearableArmor = { pants_armor_id: input.inventoryWearableId }
             break
           case ArmorType.BOOTS:
-            wearableArmor = { boots_armor_id: input.id }
+            wearableArmor = { boots_armor_id: input.inventoryWearableId }
             break
         }
 
@@ -126,7 +126,7 @@ export const wear = protectedAction
   })
 
 export const unwear = protectedAction
-  .input(z.object({ type: z.enum(WEARABLES), id: z.string() }))
+  .input(z.object({ type: z.enum(WEARABLES), inventoryWearableId: z.string() }))
   .mutation(async ({ input }) => {
     if (await isPlayerInCombat()) throw getTRPCErrorFromUnknown(ERROR_CAUSE.COMBAT)
 
@@ -134,12 +134,12 @@ export const unwear = protectedAction
 
     switch (input.type) {
       case 'weapon': {
-        if (wearable.left_hand_weapon_id === input.id)
+        if (wearable.left_hand_weapon_id === input.inventoryWearableId)
           await db.wearable.update({
             where: { id: wearable.id },
             data: { left_hand_weapon_id: null },
           })
-        if (wearable.right_hand_weapon_id === input.id)
+        if (wearable.right_hand_weapon_id === input.inventoryWearableId)
           await db.wearable.update({
             where: { id: wearable.id },
             data: { right_hand_weapon_id: null },
@@ -148,7 +148,7 @@ export const unwear = protectedAction
       }
       case 'armor': {
         const armor = await db.armorInInventory.findFirst({
-          where: { id: input.id },
+          where: { id: input.inventoryWearableId },
           include: { armor: true },
         })
 
@@ -182,3 +182,25 @@ export const unwear = protectedAction
       }
     }
   })
+
+export const drink = protectedAction.input(z.object({ inventoryPotionId: z.string() })).mutation(async ({ input }) => {
+  const player = await getPlayer()
+  const inventory = await getInventory()
+
+  const inventoryPotion = inventory.potions_inventory.find((x) => x.id === input.inventoryPotionId)
+
+  if (!inventoryPotion) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+  await db.$transaction(async (db) => {
+    await db.user.update({
+      where: { id: player.id },
+      data: {
+        hp_actual: Math.min(player.hp_actual! + inventoryPotion.potion.hp_gain, player.hp_max!),
+      },
+    })
+
+    await db.potionInInventory.delete({
+      where: { id: inventoryPotion.id },
+    })
+  })
+})
