@@ -1,25 +1,14 @@
 'use client'
 
-import { useQuery } from '@tanstack/react-query'
-import { getPlayerInfo } from '@/app/actions'
+import { usePlayerQuery } from '@/data/player'
 
-import { QUERY_KEY } from '@/const'
-
-interface Props {
-  initialData: Awaited<ReturnType<typeof getPlayerInfo>>
-}
-
-export default function Position(p: Props) {
-  const playerInfoQuery = useQuery({
-    queryKey: [QUERY_KEY.PLAYER_INFO],
-    initialData: p.initialData,
-    queryFn: () => getPlayerInfo(),
-  })
+export default function Position() {
+  const player = usePlayerQuery()
 
   return (
     <div>
-      <div>x: {playerInfoQuery.data.pos_x}</div>
-      <div>y: {playerInfoQuery.data.pos_y}</div>
+      <div>x: {player.data?.pos_x}</div>
+      <div>y: {player.data?.pos_y}</div>
     </div>
   )
 }

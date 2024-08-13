@@ -1,4 +1,4 @@
-import { Text } from '@/styles/text'
+import { Text } from '@/styles/text-server'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { ControllerRenderProps } from 'react-hook-form'
 
