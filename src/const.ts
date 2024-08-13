@@ -31,5 +31,7 @@ export const CACHE_KEY = {
 } as const
 
 export const QUERY_KEY = {
-  PLAYER_INFO: 'player-info',
+  PLAYER_SESSION: 'player-session-key',
+  PLAYER: 'player-key',
+  TEST: 'test-key',
 } as const
