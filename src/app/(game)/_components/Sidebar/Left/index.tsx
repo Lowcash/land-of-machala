@@ -1,15 +1,16 @@
-import * as React from 'react'
-import { api } from '@/trpc/server'
+import { getPlayer, getPlayerStats } from '@/server/actions/player'
+import { getWearable } from '@/server/actions/wearable'
 
-import { Content } from './Content'
+import Content from './Content'
 import Sidebar from '..'
+import Progress from '@/components/ui/progress'
 
 const EMPTY = '-'
 
 export default async function SidebarLeft() {
-  const player = await api.player.info()
-  const stats = await api.player.stats()
-  const wearable = await api.player.wearable()
+  const player = await getPlayer()
+  const playerStats = await getPlayerStats()
+  const playerWearable = await getWearable()
 
   return (
     <Sidebar $open={true} $position='left'>
@@ -27,44 +28,44 @@ export default async function SidebarLeft() {
           {
             header: 'HP',
             items: [
-              // {
-              //   value: (
-              //     <Progress value={info?.hp_actual} max={info?.hp_max ?? 0} color='red'>
-              //       {info?.hp_actual ?? 0} / {info?.hp_max ?? 0}
-              //     </Progress>
-              //   ),
-              // },
+              {
+                value: (
+                  <Progress value={player.hp_actual} max={player.hp_max ?? 0} $variant='red'>
+                    {player.hp_actual ?? 0} / {player.hp_max ?? 0}
+                  </Progress>
+                ),
+              },
             ],
           },
           {
             header: 'Zbraně',
             items: [
-              { label: 'Levá ruka:', value: wearable.leftHand?.name ?? EMPTY },
-              { label: 'Pravá ruka:', value: wearable.rightHand?.name ?? EMPTY },
+              { label: 'Levá ruka:', value: playerWearable.left_hand?.weapon.name ?? EMPTY },
+              { label: 'Pravá ruka:', value: playerWearable.right_hand?.weapon.name ?? EMPTY },
             ],
           },
           {
             header: 'Zbroj',
             items: [
-              { label: 'Hlava:', value: wearable.head?.name ?? EMPTY },
-              { label: 'Ramena:', value: wearable.shoulder?.name ?? EMPTY },
-              { label: 'Tělo:', value: wearable.chest?.name ?? EMPTY },
-              { label: 'Ruce:', value: wearable.hand?.name ?? EMPTY },
-              { label: 'Kalhoty:', value: wearable.pants?.name ?? EMPTY },
-              { label: 'Boty:', value: wearable.boots?.name ?? EMPTY },
+              { label: 'Hlava:', value: playerWearable.head?.armor.name ?? EMPTY },
+              { label: 'Ramena:', value: playerWearable.shoulder?.armor.name ?? EMPTY },
+              { label: 'Tělo:', value: playerWearable.chest?.armor.name ?? EMPTY },
+              { label: 'Ruce:', value: playerWearable.hand?.armor.name ?? EMPTY },
+              { label: 'Kalhoty:', value: playerWearable.pants?.armor.name ?? EMPTY },
+              { label: 'Boty:', value: playerWearable.boots?.armor.name ?? EMPTY },
             ],
           },
           {
             header: 'Staty',
             items: [
-              { label: 'Level:', value: `${stats.level}` },
+              { label: 'Level:', value: `${playerStats.level}` },
               {
                 label: 'Poškození:',
-                value: `${stats.damage_min} - ${stats.damage_max}`,
+                value: `${playerStats.damage_min} - ${playerStats.damage_max}`,
               },
-              { label: 'Síla:', value: `${stats.strength}` },
-              { label: 'Obratnost:', value: `${stats.agility}` },
-              { label: 'Inteligence:', value: `${stats.intelligence}` },
+              { label: 'Síla:', value: `${playerStats.strength}` },
+              { label: 'Obratnost:', value: `${playerStats.agility}` },
+              { label: 'Inteligence:', value: `${playerStats.intelligence}` },
             ],
           },
         ]}

@@ -20,7 +20,7 @@ const SidebarSection = tw.div``
 const SidebarSectionHeader = tw(H3)`rounded-lg p-2 text-gray-900`
 const SidebarSectionContent = tw.div`ml-4 flex min-h-8 flex-col justify-center space-y-2 border-l-2 pl-2`
 
-export function Sidebar({ children, ...p }: React.PropsWithChildren<Props>) {
+export default function Sidebar({ children, ...p }: React.PropsWithChildren<Props>) {
   return (
     <SidebarOuter {...p}>
       <SidebarInner>{children}</SidebarInner>

@@ -1,6 +1,7 @@
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+import { prefetchPlayerQuery } from '@/data/player-server'
+import { getPlayerSession, hasPlayerCharacter } from '@/server/actions/player'
 import { cookies } from 'next/headers'
-import { getServerAuthSession } from '@/server/auth'
-// import { hasCharacter } from '@/app/actions'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
@@ -12,34 +13,31 @@ import QuestPage from './(game)/quest/page'
 import InventoryPage from './(game)/inventory/page'
 
 import { ROUTE } from '@/const'
-import ABCD from './ABCD'
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { prefetchGetUserQuery } from '@/data/user-server'
-import { getUserSession, hasCharacter } from '@/server/actions/user'
 
 export default async function Page() {
-  // const queryClient = new QueryClient()
-
-  // await prefetchGetUserQuery(queryClient)
-
-  // return (
-  //   <HydrationBoundary state={dehydrate(queryClient)}>
-  //     <ABCD />
-  //   </HydrationBoundary>
-  // )
-
-  if (!(await getUserSession()))
+  if (!(await getPlayerSession()))
     return (
       <LandingLayout>
         <LandingPage />
       </LandingLayout>
     )
 
-  if (!(await hasCharacter())) return <CreatePage />
+  if (!(await hasPlayerCharacter())) return <CreatePage />
 
-  const pathname = cookies().get('page')?.value || ROUTE.WORLD
+  // // const pathname = cookies().get('page')?.value || ROUTE.WORLD
 
-  return <>{pathname}</>
+  const queryClient = new QueryClient()
+
+  await prefetchPlayerQuery(queryClient)
+
+  return (
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <GameLayout>
+        <PlayLayout>ABCD</PlayLayout>
+      </GameLayout>
+    </HydrationBoundary>
+  )
+
   // return (
   //   <GameLayout>
   //     <PlayLayout>

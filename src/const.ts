@@ -14,19 +14,21 @@ export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.M
 
 export enum ERROR_CAUSE {
   ENTITY_NOT_EXIST,
-  NOT_AVAILABLE
+  NOT_AVAILABLE,
+  CANNOT_MOVE,
+  COMBAT,
 }
 
 export const ROUTE = {
   WORLD: '/world',
   QUEST: '/quest',
-  INVENTORY: '/inventory'
+  INVENTORY: '/inventory',
 } as const
 
 export const CACHE_KEY = {
-  ARMORS: 'armors'
+  ARMORS: 'armors',
 } as const
 
 export const QUERY_KEY = {
-  PLAYER_INFO: 'player-info'
+  PLAYER_INFO: 'player-info',
 } as const

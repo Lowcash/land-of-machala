@@ -1,5 +1,7 @@
 import { isString } from '@/lib/typeguard'
 
+import * as S from './index.styles'
+
 interface Props {
   data: Array<{
     header?: React.ReactNode
@@ -7,17 +9,17 @@ interface Props {
   }>
 }
 
-export function Content({ data }: Props) {
+export default function Content({ data }: Props) {
   return (
     <div>
       {data.map((section, sectionIdx) => (
         <div key={`MenuContentSection_${sectionIdx}`}>
-          {section.header && <div className='rounded-md bg-slate-700 p-2 text-gray-900'>{section.header}</div>}
-          <div className='ml-4 flex flex-col justify-center border-l-2 pl-2'>
+          {section.header && <S.SectionHeader>{section.header}</S.SectionHeader>}
+          <S.SectionItemsWrap>
             {section.items.map((item, itemIdx) => (
               <Item key={`MenuContentItem_${itemIdx}`} {...item} />
             ))}
-          </div>
+          </S.SectionItemsWrap>
         </div>
       ))}
     </div>
@@ -25,15 +27,15 @@ export function Content({ data }: Props) {
 }
 
 interface ItemProps {
-  label?: string
-  value?: string | JSX.Element
+  label?: React.ReactNode
+  value?: React.ReactNode
 }
 
 function Item(p: ItemProps) {
   return (
-    <div className='inline-flex h-6 w-full justify-between gap-1'>
+    <S.ItemWrap>
       <span>{p.label}</span>
       {isString(p.value) ? <span>{p.value}</span> : p.value}
-    </div>
+    </S.ItemWrap>
   )
 }
