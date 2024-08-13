@@ -17,6 +17,7 @@ export enum ERROR_CAUSE {
   NOT_AVAILABLE,
   CANNOT_MOVE,
   COMBAT,
+  INSUFFICIENT_FUNDS
 }
 
 export const ROUTE = {
