@@ -5,6 +5,7 @@ import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
 import { initialize } from './inititialize'
 
+import Hydration from './_hydration'
 import { ThemeProvider } from '@/context/theme-provider'
 import { QueryProvider } from '@/context/query-provider'
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
@@ -40,7 +41,7 @@ export default async function RootLayout({ children }: Readonly<React.PropsWithC
         <QueryProvider>
           <AppRouterCacheProvider>
             <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              {children}
+              <Hydration>{children}</Hydration>
             </ThemeProvider>
           </AppRouterCacheProvider>
         </QueryProvider>

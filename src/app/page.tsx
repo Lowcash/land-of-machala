@@ -1,5 +1,3 @@
-import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { prefetchPlayerQuery } from '@/data/player-server'
 import { getPlayerSession, hasPlayerCharacter } from '@/server/actions/player'
 import { cookies } from 'next/headers'
 
@@ -26,16 +24,10 @@ export default async function Page() {
 
   // // const pathname = cookies().get('page')?.value || ROUTE.WORLD
 
-  const queryClient = new QueryClient()
-
-  await prefetchPlayerQuery(queryClient)
-
   return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-      <GameLayout>
-        <PlayLayout>ABCD</PlayLayout>
-      </GameLayout>
-    </HydrationBoundary>
+    <GameLayout>
+      <PlayLayout>ABCD</PlayLayout>
+    </GameLayout>
   )
 
   // return (
