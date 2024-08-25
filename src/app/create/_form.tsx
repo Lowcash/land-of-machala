@@ -1,11 +1,11 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
-import { MutationInput } from '@/lib/utils'
+import type { MutationInput } from '@/lib/utils'
 import { Profession, Race } from '@prisma/client'
 import { useCreatePlayerMutation } from '@/data/player'
 
-import { Option } from '@/components/option'
+import Option from '@/components/option'
 import { Button } from '@/components/ui/button'
 import { Form as UIForm, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 

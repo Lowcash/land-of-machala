@@ -1,11 +1,9 @@
-import tw from 'twin.macro'
-import styled from '@emotion/styled/macro'
+import tw from 'tailwind-styled-components'
 
-export const Table = styled('table')`
-  ${tw`w-full border-collapse`}
+export const Table = tw.table`
+  w-full border-collapse border
 
-  th, td {
-    border: 2px solid rgba(0, 0, 0, 0.2);
-    padding: 0.5rem;
-  }
+  [&_td, &_th]:border 
+  [&_td, &_th]:border-gray-300 
+  [&_td, &_th]:p-2 
 `

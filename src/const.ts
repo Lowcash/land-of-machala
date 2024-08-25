@@ -17,7 +17,7 @@ export enum ERROR_CAUSE {
   NOT_AVAILABLE,
   CANNOT_MOVE,
   COMBAT,
-  INSUFFICIENT_FUNDS
+  INSUFFICIENT_FUNDS,
 }
 
 export const ROUTE = {
@@ -33,5 +33,7 @@ export const CACHE_KEY = {
 export const QUERY_KEY = {
   PLAYER_SESSION: 'player-session-key',
   PLAYER: 'player-key',
-  TEST: 'test-key',
+  PLAYER_STATS: 'player-stats-key',
+  WEARABLE: 'player-wearable-key',
+  INVENTORY: 'inventory-key',
 } as const

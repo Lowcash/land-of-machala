@@ -2,14 +2,14 @@ import * as S from './index.styles'
 
 type Cell = { className?: string; content?: React.ReactNode }
 
-type Props = {
+interface Props {
   columns?: Cell[]
   cells?: Cell[][]
 
   hideHeader?: boolean
 }
 
-export function Table({ hideHeader = false, ...p }: Props) {
+export default function Table({ hideHeader = false, ...p }: Props) {
   return (
     <S.Table>
       {!hideHeader && (

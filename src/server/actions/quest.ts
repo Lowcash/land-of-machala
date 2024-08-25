@@ -20,7 +20,7 @@ export async function getQuest(ident: QuestIdent) {
   return quest
 }
 
-export async function getUserQuest() {
+export async function getUserQuests() {
   const player = await getPlayer()
 
   let userQuest = await db.userQuest.findFirst({
@@ -56,7 +56,7 @@ export async function getUserQuest() {
 }
 
 async function rules(ident: QuestIdent) {
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   switch (ident) {
     case 'SLAIN_ENEMY':
@@ -68,7 +68,7 @@ async function rules(ident: QuestIdent) {
 
 export async function acceptQuest(ident: QuestIdent) {
   const quest = await getQuest(ident)
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   await db.$transaction(async (db) => {
     const slain = await db.slain.create({ data: { desired_slain: 10 } })
@@ -105,7 +105,7 @@ export async function acceptQuest(ident: QuestIdent) {
 }
 
 export async function completeQuest(ident: QuestIdent) {
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   let questKey: keyof typeof userQuest
   let questDoneKey: keyof typeof userQuest
@@ -153,7 +153,7 @@ export async function completeQuest(ident: QuestIdent) {
 }
 
 export async function checkQuestProgress(ident: QuestIdent): Promise<State> {
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   let questKey: keyof typeof userQuest
   let questDoneKey: keyof typeof userQuest
@@ -187,7 +187,7 @@ export async function checkQuestProgress(ident: QuestIdent): Promise<State> {
 }
 
 enemyEmitter.on('defeated', async (enemy) => {
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   if (!!userQuest.quest_slain_enemy) {
     const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain

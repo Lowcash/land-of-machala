@@ -6,7 +6,7 @@ type Props = {
   options: string[]
 } & Pick<ControllerRenderProps, 'disabled' | 'onChange' | 'value'>
 
-export function Option(p: Props) {
+export default function Option(p: Props) {
   return (
     <div>
       <RadioGroup defaultValue={p.value} onValueChange={p.onChange}>

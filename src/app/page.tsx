@@ -22,21 +22,15 @@ export default async function Page() {
 
   if (!(await hasPlayerCharacter())) return <CreatePage />
 
-  // // const pathname = cookies().get('page')?.value || ROUTE.WORLD
+  const pathname = cookies().get('page')?.value || ROUTE.WORLD
 
   return (
     <GameLayout>
-      <PlayLayout>ABCD</PlayLayout>
+      <PlayLayout>
+        {pathname === ROUTE.WORLD && <PlayPage />}
+        {pathname === ROUTE.QUEST && <QuestPage />}
+        {pathname === ROUTE.INVENTORY && <InventoryPage />}
+      </PlayLayout>
     </GameLayout>
   )
-
-  // return (
-  //   <GameLayout>
-  //     <PlayLayout>
-  //       {pathname === ROUTE.WORLD && <PlayPage />}
-  //       {pathname === ROUTE.QUEST && <QuestPage />}
-  //       {pathname === ROUTE.INVENTORY && <InventoryPage />}
-  //     </PlayLayout>
-  //   </GameLayout>
-  // )
 }

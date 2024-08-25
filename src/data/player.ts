@@ -34,7 +34,7 @@ export function usePlayerMoveMutation() {
     mutationFn: movePlayer,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        predicate: (p) => p.queryKey[0] === QUERY_KEY.PLAYER,
+        predicate: (p) => p.queryKey[0] === QUERY_KEY.PLAYER || p.queryKey[0] === QUERY_KEY.PLAYER_STATS,
       })
     },
   })

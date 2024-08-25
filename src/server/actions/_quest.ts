@@ -1,9 +1,9 @@
 import { db } from '../db'
 import { enemyEmitter } from './_game'
-import { checkQuestProgress, getUserQuest } from './quest'
+import { checkQuestProgress, getUserQuests } from './quest'
 
 enemyEmitter.on('defeated', async (enemy) => {
-  const userQuest = await getUserQuest()
+  const userQuest = await getUserQuests()
 
   if (!!userQuest.quest_slain_enemy) {
     const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain
