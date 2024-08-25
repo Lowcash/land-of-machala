@@ -3,7 +3,7 @@
 import { z } from 'zod'
 import { db } from '../db'
 import { cache } from 'react'
-import { protectedAction } from '@/server/trpc'
+import { serverActionProcedure, protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { getPlace } from './place'
 import { getWearable } from './wearable'
@@ -12,7 +12,7 @@ import { checkForEnemy } from './game'
 import { PROFESSIONS, RACES } from '@/const'
 import { DIRECTIONS, ERROR_CAUSE } from '@/const'
 
-export const getPlayerSession = cache(protectedAction.query(({ ctx }) => ctx.user))
+export const getPlayerSession = cache(serverActionProcedure.query(({ ctx }) => ctx.user))
 
 export const getPlayer = cache(
   protectedAction.query(async ({ ctx }) => {
