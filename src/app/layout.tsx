@@ -8,7 +8,6 @@ import { initialize } from './inititialize'
 import Hydration from './_hydration'
 import { ThemeProvider } from '@/context/theme-provider'
 import { QueryProvider } from '@/context/query-provider'
-import { AppRouterCacheProvider } from '@mui/material-nextjs/v14-appRouter'
 
 initialize()
 
@@ -39,11 +38,9 @@ export default async function RootLayout({ children }: Readonly<React.PropsWithC
         )}
       >
         <QueryProvider>
-          <AppRouterCacheProvider>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              <Hydration>{children}</Hydration>
-            </ThemeProvider>
-          </AppRouterCacheProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            <Hydration>{children}</Hydration>
+          </ThemeProvider>
         </QueryProvider>
       </body>
     </html>

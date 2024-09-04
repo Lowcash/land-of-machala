@@ -12,30 +12,39 @@ import { ERROR_CAUSE } from '@/const'
 export const getInventory = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
-    const playerWithInventory = await db.user.update({
-      where: { id: player.id },
-      data: {
-        inventory: {
-          connectOrCreate: {
-            where: { id: player.inventory_id || undefined },
-            create: {},
-          },
+
+    let inventory
+    if (player.inventory_id)
+      inventory = await db.inventory.findFirst({
+        where: { id: player.inventory_id! },
+        include: {
+          weapons_inventory: { include: { weapon: true } },
+          armors_inventory: { include: { armor: true } },
+          potions_inventory: { include: { potion: true } },
         },
-      },
-      include: {
-        inventory: {
+      })
+    else
+      inventory = await db.$transaction(async (db) => {
+        const inventory = await db.inventory.create({
+          data: {},
           include: {
             weapons_inventory: { include: { weapon: true } },
             armors_inventory: { include: { armor: true } },
             potions_inventory: { include: { potion: true } },
           },
-        },
-      },
-    })
+        })
 
-    if (!playerWithInventory.inventory) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+        await db.user.update({
+          where: { id: player.id },
+          data: { inventory: { connect: { id: inventory.id } } },
+        })
 
-    return playerWithInventory.inventory
+        return inventory
+      })
+
+    if (!inventory) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return inventory
   }),
 )
 

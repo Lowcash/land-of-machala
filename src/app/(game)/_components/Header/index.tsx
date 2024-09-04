@@ -1,5 +1,5 @@
 import User from './User'
-import * as S from './index.styles'
+import * as S from './styles'
 
 export default function Header() {
   return (
