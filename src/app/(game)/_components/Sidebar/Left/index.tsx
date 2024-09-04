@@ -8,9 +8,7 @@ import Progress from '@/components/ui/progress'
 const EMPTY = '-'
 
 export default async function SidebarLeft() {
-  const player = await getPlayer()
-  const playerStats = await getPlayerStats()
-  const playerWearable = await getWearable()
+  const [player, playerStats, playerWearable] = await Promise.all([getPlayer(), getPlayerStats(), getWearable()])
 
   return (
     <Sidebar $open={true} $position='left'>

@@ -1,4 +1,4 @@
-import * as S from './index.styles'
+import * as S from './styles'
 import Button from './Button'
 import { FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 

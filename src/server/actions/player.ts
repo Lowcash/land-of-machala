@@ -14,28 +14,28 @@ import { DIRECTIONS, ERROR_CAUSE } from '@/const'
 
 export const getPlayerSession = cache(serverActionProcedure.query(({ ctx }) => ctx.user))
 
-export const getPlayer = cache(
-  protectedAction.query(async ({ ctx }) => {
-    const player = await db.user.findFirst({
-      where: { id: ctx.user.id },
-      include: {
-        enemy_instance: { include: { enemy: true } },
-        loot: {
-          include: {
-            armors_loot: { include: { armor: true } },
-            weapons_loot: { include: { weapon: true } },
-          },
+export const getPlayer = protectedAction.query(async ({ ctx }) => {
+  const player = await db.user.findFirst({
+    where: { id: ctx.user.id },
+    include: {
+      enemy_instance: { include: { enemy: true } },
+      loot: {
+        include: {
+          armors_loot: { include: { armor: true } },
+          weapons_loot: { include: { weapon: true } },
         },
       },
-    })
+    },
+  })
 
-    if (!player) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!player) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const { damage_min, damage_max, strength, agility, intelligence, ...playerOther } = player
+  const { damage_min, damage_max, strength, agility, intelligence, ...playerOther } = player
 
-    return playerOther
-  }),
-)
+  return playerOther
+})
+
+export const getPlayerCached = cache(getPlayer)
 
 export const getPlayerStats = protectedAction.query(async ({ ctx }) => {
   const playerWearable = await getWearable()
@@ -79,7 +79,7 @@ export const getPlayerStats = protectedAction.query(async ({ ctx }) => {
 
 export const hasPlayerCharacter = cache(
   protectedAction.query(async () => {
-    const player = await getPlayer()
+    const player = await getPlayerCached()
 
     const hasRace = Boolean(player.race)
     const hasProfession = Boolean(player.profession)
@@ -111,7 +111,7 @@ export const createPlayer = protectedAction
 
 export const canPlayerMove = cache(
   protectedAction.query(async () => {
-    const player = await getPlayer()
+    const player = await getPlayerCached()
 
     const hasEnemy = Boolean(player.enemy_instance_id)
     const hasLoot = Boolean(player.loot_id)
@@ -122,7 +122,7 @@ export const canPlayerMove = cache(
 )
 
 export const movePlayer = protectedAction.input(z.enum(DIRECTIONS)).mutation(async ({ input }) => {
-  const player = await getPlayer()
+  const player = await getPlayerCached()
 
   if (!(await canPlayerMove())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.CANNOT_MOVE)
 
@@ -143,26 +143,26 @@ export const movePlayer = protectedAction.input(z.enum(DIRECTIONS)).mutation(asy
 })
 
 export const isPlayerOnPlace = protectedAction.query(async () => {
-  const player = await getPlayer()
+  const player = await getPlayerCached()
   const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
 
   return Boolean(place)
 })
 
 export const isPlayerInCombat = protectedAction.query(async () => {
-  const player = await getPlayer()
+  const player = await getPlayerCached()
 
   return Boolean(player.enemy_instance)
 })
 
 export const isPlayerDefeated = protectedAction.query(async () => {
-  const player = await getPlayer()
+  const player = await getPlayerCached()
 
   return player.defeated
 })
 
 export const hasPlayerLoot = protectedAction.query(async () => {
-  const player = await getPlayer()
+  const player = await getPlayerCached()
 
   return Boolean(player.loot)
 })

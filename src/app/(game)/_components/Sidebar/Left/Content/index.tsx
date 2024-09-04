@@ -1,6 +1,6 @@
 import { isString } from '@/lib/typeguard'
 
-import * as S from './index.styles'
+import * as S from './styles'
 
 interface Props {
   data: Array<{
