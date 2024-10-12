@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import type { MutationInput } from '@/lib/utils'
 import { Profession, Race } from '@prisma/client'
 import { useCreatePlayerMutation } from '@/data/player'
+import useNavigate from '@/hook/useNavigate'
 
 import Option from '@/components/option'
 import { Button } from '@/components/ui/button'
@@ -14,7 +15,13 @@ import { PROFESSIONS, RACES } from '@/const'
 type Values = MutationInput<typeof useCreatePlayerMutation>
 
 export default function Form() {
-  const createPlayerMutation = useCreatePlayerMutation()
+  const navigate = useNavigate()
+
+  const createPlayerMutation = useCreatePlayerMutation({
+    onSuccess: () => {
+      navigate()
+    },
+  })
 
   const form = useForm<Values>({
     defaultValues: {
@@ -27,7 +34,7 @@ export default function Form() {
 
   return (
     <UIForm {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmitForm)} className='gap-8'>
+      <form onSubmit={form.handleSubmit(handleSubmitForm)} className='flex flex-col gap-4'>
         <FormField
           control={form.control}
           name='race'
@@ -64,7 +71,9 @@ export default function Form() {
           )}
         />
 
-        <Button variant='warning'>Vytvořit charakter</Button>
+        <Button className='w-full' variant='warning'>
+          Vytvořit charakter
+        </Button>
       </form>
     </UIForm>
   )

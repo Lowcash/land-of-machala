@@ -95,8 +95,8 @@ export const createPlayer = protectedAction
       profession: z.enum(PROFESSIONS),
     }),
   )
-  .mutation(({ ctx, input }) => {
-    db.user.update({
+  .mutation(async ({ ctx, input }) => {
+    await db.user.update({
       where: { id: ctx.user.id },
       data: {
         race: input.race,
