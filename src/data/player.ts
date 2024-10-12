@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 
 import { getPlayerSession, movePlayer } from '@/server/actions/player'
+import { createMutationHook } from '@/app/api/_api-hooks'
 import { createPlayer, getPlayer } from '@/server/actions/player'
 
 import { QUERY_KEY } from '@/const'
@@ -19,11 +20,7 @@ export function usePlayerQuery() {
   })
 }
 
-export function useCreatePlayerMutation() {
-  return useMutation({
-    mutationFn: createPlayer,
-  })
-}
+export const useCreatePlayerMutation = createMutationHook(createPlayer)
 
 export function usePlayerMoveMutation() {
   const queryClient = useQueryClient()

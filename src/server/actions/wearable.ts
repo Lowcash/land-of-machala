@@ -9,23 +9,32 @@ import { getPlayer, isPlayerInCombat } from './player'
 import { getInventory } from './inventory'
 
 import { ArmorType } from '@prisma/client'
+
 import { ERROR_CAUSE, WEARABLES } from '@/const'
 
 export const getWearable = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
-    const playerWithWearable = await db.user.update({
-      where: { id: player.id },
-      data: {
-        wearable: {
-          connectOrCreate: {
-            where: { id: player.wearable_id || undefined },
-            create: {},
-          },
-        },
-      },
-      include: {
-        wearable: {
+
+    let wearable
+    if (player.wearable_id) {
+      wearable = await db.wearable.findFirst({
+        where: { id: player.wearable_id },
+        include: {
+          left_hand: { include: { weapon: true } },
+          right_hand: { include: { weapon: true } },
+          head: { include: { armor: true } },
+          shoulder: { include: { armor: true } },
+          chest: { include: { armor: true } },
+          hand: { include: { armor: true } },
+          pants: { include: { armor: true } },
+          boots: { include: { armor: true } },
+        }
+      })
+    } else
+      wearable = await db.$transaction(async db => {
+        const wearable = await db.wearable.create({
+          data: {},
           include: {
             left_hand: { include: { weapon: true } },
             right_hand: { include: { weapon: true } },
@@ -35,14 +44,20 @@ export const getWearable = cache(
             hand: { include: { armor: true } },
             pants: { include: { armor: true } },
             boots: { include: { armor: true } },
-          },
-        },
-      },
-    })
+          }
+        })
 
-    if (!playerWithWearable.wearable) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+        await db.user.update({
+          where: { id: player.id },
+          data: { wearable: { connect: { id: wearable.id}}}
+        })
 
-    return playerWithWearable.wearable
+        return wearable
+      })
+
+    if (!wearable) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return wearable
   }),
 )
 
