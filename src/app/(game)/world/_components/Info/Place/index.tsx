@@ -6,6 +6,7 @@ import { useGameInfoQuery } from '@/data/game'
 import { Link, Text } from '@/styles/text-server'
 import { List } from '@/styles/common-server'
 import { Button } from '@/components/ui/button'
+import Hospital from './Hospital'
 
 type SubPlace = 'hospital' | 'armory' | 'bank'
 
@@ -23,7 +24,7 @@ export default function Place() {
         <Button variant='warning' onClick={() => setSubPlace(undefined)}>
           Vrátit se
         </Button>
-        {subPlace === 'hospital' && 'hospital'}
+        {subPlace === 'hospital' && <Hospital />}
         {subPlace === 'armory' && 'armory'}
         {subPlace === 'bank' && 'bank'}
       </div>
