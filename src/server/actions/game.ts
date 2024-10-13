@@ -6,10 +6,11 @@ import { random } from '@/lib/utils'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { getPlayer, hasPlayerLoot, isPlayerInCombat } from './player'
-
-import { ERROR_CAUSE } from '@/const'
 import { getInventory } from './inventory'
 import { enemyEmitter } from './_game'
+import { getPlace } from './place'
+
+import { ERROR_CAUSE } from '@/const'
 
 export const checkForEnemy = protectedAction.mutation(async () => {
   const player = await getPlayer()
@@ -46,9 +47,12 @@ export const checkForEnemy = protectedAction.mutation(async () => {
 export const getGameInfo = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
-
+    
     if (await isPlayerInCombat()) return player.enemy_instance
     if (await hasPlayerLoot()) return player.loot
+
+    const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
+    if (!!place) return { place }
 
     return {}
   }),

@@ -36,4 +36,5 @@ export const QUERY_KEY = {
   PLAYER_STATS: 'player-stats-key',
   WEARABLE: 'player-wearable-key',
   INVENTORY: 'inventory-key',
+  GAME_INFO: 'game-info-key'
 } as const

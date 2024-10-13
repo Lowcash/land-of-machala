@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { attack, loot, runAway } from '@/server/actions/game'
+import { createQueryHook } from '@/app/api/_api-hooks'
+import { attack, getGameInfo, loot, runAway } from '@/server/actions/game'
 
 import { QUERY_KEY } from '@/const'
 
@@ -47,3 +48,5 @@ export function useLootMutation() {
     },
   })
 }
+
+export const useGameInfoQuery = createQueryHook([QUERY_KEY.GAME_INFO], getGameInfo)
