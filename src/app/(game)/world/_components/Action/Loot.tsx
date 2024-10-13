@@ -1,19 +1,25 @@
 'use client'
 
-import { useLootMutation } from '@/data/game'
+import { useGameInfoQuery, useLootMutation } from '@/data/game'
 
+import * as S from './index.styles'
 import { Button } from '@/components/ui/button'
 
 export default function Loot() {
+  const gameInfo = useGameInfoQuery()
+
   const lootMutation = useLootMutation()
 
   const handleLoot = () => lootMutation.mutate()
 
+  // @ts-ignore
+  if (!gameInfo.data?.loot) return <></>
+
   return (
-    <>
+    <S.Action>
       <Button variant='destructive' onClick={handleLoot}>
         Loot
       </Button>
-    </>
+    </S.Action>
   )
 }
