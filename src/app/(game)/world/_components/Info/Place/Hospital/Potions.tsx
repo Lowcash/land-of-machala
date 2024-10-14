@@ -2,8 +2,8 @@
 
 import React from 'react'
 import type { Potion } from '@prisma/client'
-import { useGameInfoQuery } from '@/data/game'
-import { useBuyPotionMutation, useHospitalQuery } from '@/data/hospital'
+import { useGameInfoQuery } from '@/hooks/api/useGame'
+import { useBuyPotionMutation, useHospitalQuery } from '@/hooks/api/useHospital'
 
 import { Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'

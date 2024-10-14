@@ -1,6 +1,6 @@
 'use client'
 
-import { useDrinkMutation } from '@/data/wearable'
+import { useDrinkMutation } from '@/services/hooks/wearable'
 import type { MutationInput } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'

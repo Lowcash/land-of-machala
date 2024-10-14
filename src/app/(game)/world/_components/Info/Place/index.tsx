@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { useGameInfoQuery } from '@/data/game'
+import { useGameInfoQuery } from '@/hooks/api/useGame'
 
 import { Link, Text } from '@/styles/text-server'
 import { List } from '@/styles/common-server'

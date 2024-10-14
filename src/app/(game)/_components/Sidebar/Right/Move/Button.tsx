@@ -1,7 +1,7 @@
 'use client'
 
 import type { Direction, PropsWithChildrenAndClassName } from '@/types'
-import { usePlayerMoveMutation } from '@/data/player'
+import { usePlayerMoveMutation } from '@/hooks/api/usePlayer'
 
 import { Button as Button_ } from '@/components/ui/button'
 
