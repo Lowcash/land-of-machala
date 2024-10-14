@@ -1,39 +1,17 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-
+import { createMutationHook, createQueryHook } from '@/app/api/_api-hooks'
 import { getPlayerSession, movePlayer } from '@/server/actions/player'
-import { createMutationHook } from '@/app/api/_api-hooks'
 import { createPlayer, getPlayer } from '@/server/actions/player'
 
 import { QUERY_KEY } from '@/const'
 
-export function usePlayerSessionQuery() {
-  return useQuery({
-    queryKey: [QUERY_KEY.PLAYER_SESSION],
-    queryFn: () => getPlayerSession(),
-  })
-}
+export const usePlayerSessionQuery = createQueryHook([QUERY_KEY.PLAYER_SESSION], getPlayerSession)
 
-export function usePlayerQuery() {
-  return useQuery({
-    queryKey: [QUERY_KEY.PLAYER],
-    queryFn: () => getPlayer(),
-  })
-}
+export const usePlayerQuery = createQueryHook([QUERY_KEY.PLAYER], getPlayer)
 
 export const useCreatePlayerMutation = createMutationHook(createPlayer)
 
-export function usePlayerMoveMutation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: movePlayer,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (p) =>
-          p.queryKey[0] === QUERY_KEY.PLAYER ||
-          p.queryKey[0] === QUERY_KEY.PLAYER_STATS ||
-          p.queryKey[0] === QUERY_KEY.GAME_INFO,
-      })
-    },
-  })
-}
+export const usePlayerMoveMutation = createMutationHook(movePlayer, [
+  QUERY_KEY.PLAYER,
+  QUERY_KEY.PLAYER_STATS,
+  QUERY_KEY.GAME_INFO,
+])

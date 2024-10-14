@@ -1,11 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
+import { createQueryHook } from '@/app/api/_api-hooks'
 import { showInventory } from '@/server/actions/inventory'
 
 import { QUERY_KEY } from '@/const'
 
-export function useShowInventoryQuery() {
-  return useQuery({
-    queryKey: [QUERY_KEY.INVENTORY],
-    queryFn: () => showInventory(),
-  })
-}
+export const useShowInventoryQuery = createQueryHook([QUERY_KEY.INVENTORY], showInventory)

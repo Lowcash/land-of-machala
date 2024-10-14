@@ -1,43 +1,9 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { createMutationHook } from '@/app/api/_api-hooks'
 import { drink, unwear, wear } from '@/server/actions/wearable'
 
 import { QUERY_KEY } from '@/const'
 
-export function useWearMutation() {
-  const queryClient = useQueryClient()
+export const useWearMutation = createMutationHook(wear, [QUERY_KEY.WEARABLE, QUERY_KEY.INVENTORY])
+export const useUnwearMutation = createMutationHook(unwear, [QUERY_KEY.WEARABLE, QUERY_KEY.INVENTORY])
 
-  return useMutation({
-    mutationFn: wear,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (p) => p.queryKey[0] === QUERY_KEY.WEARABLE || p.queryKey[0] === QUERY_KEY.INVENTORY,
-      })
-    },
-  })
-}
-
-export function useUnwearMutation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: unwear,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (p) => p.queryKey[0] === QUERY_KEY.WEARABLE || p.queryKey[0] === QUERY_KEY.INVENTORY,
-      })
-    },
-  })
-}
-
-export function useDrinkMutation() {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: drink,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        predicate: (p) => p.queryKey[0] === QUERY_KEY.WEARABLE || p.queryKey[0] === QUERY_KEY.INVENTORY,
-      })
-    },
-  })
-}
+export const useDrinkMutation = createMutationHook(drink, [QUERY_KEY.WEARABLE, QUERY_KEY.INVENTORY])
