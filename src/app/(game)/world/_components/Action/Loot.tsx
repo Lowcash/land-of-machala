@@ -1,6 +1,6 @@
 'use client'
 
-import { useGameInfoQuery, useLootMutation } from '@/data/game'
+import { useGameInfoQuery, useLootMutation } from '@/hooks/api/useGame'
 
 import * as S from './index.styles'
 import { Button } from '@/components/ui/button'

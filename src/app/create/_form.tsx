@@ -3,8 +3,8 @@
 import { useForm } from 'react-hook-form'
 import type { MutationInput } from '@/lib/utils'
 import { Profession, Race } from '@prisma/client'
-import { useCreatePlayerMutation } from '@/data/player'
-import useNavigate from '@/hook/useNavigate'
+import { useCreatePlayerMutation } from '@/hooks/api/usePlayer'
+import useNavigate from '@/hooks/useNavigate'
 
 import Option from '@/components/option'
 import { Button } from '@/components/ui/button'

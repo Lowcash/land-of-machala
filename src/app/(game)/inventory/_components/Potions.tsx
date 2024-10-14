@@ -1,6 +1,6 @@
 'use client'
 
-import { useShowInventoryQuery } from '@/data/inventory'
+import { useShowInventoryQuery } from '@/hooks/inventory'
 
 import Table from '@/components/table'
 import Drink from './Drink'

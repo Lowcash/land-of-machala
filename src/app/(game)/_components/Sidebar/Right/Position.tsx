@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlayerQuery } from '@/data/player'
+import { usePlayerQuery } from '@/hooks/api/usePlayer'
 
 export default function Position() {
   const player = usePlayerQuery()

@@ -1,6 +1,6 @@
 'use client'
 
-import { useUnwearMutation } from '@/data/wearable'
+import { useUnwearMutation } from '@/services/hooks/wearable'
 import type { MutationInput } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'

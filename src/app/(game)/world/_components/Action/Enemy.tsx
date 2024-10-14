@@ -1,6 +1,6 @@
 'use client'
 
-import { useAttackMutation, useGameInfoQuery, useRunAwayMutation } from '@/data/game'
+import { useAttackMutation, useGameInfoQuery, useRunAwayMutation } from '@/hooks/api/useGame'
 
 import * as S from './index.styles'
 import { Button } from '@/components/ui/button'

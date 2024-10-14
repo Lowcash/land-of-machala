@@ -7,8 +7,8 @@ import {
   useResurectMutation,
   useAcceptEnemySlainQuestMutation,
   useCompleteEnemySlainQuestMutation,
-} from '@/data/hospital'
-import { useGameInfoQuery } from '@/data/game'
+} from '@/hooks/api/useHospital'
+import { useGameInfoQuery } from '@/hooks/api/useGame'
 
 import { H3, Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
