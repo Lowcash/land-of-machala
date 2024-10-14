@@ -31,11 +31,12 @@ export const CACHE_KEY = {
 } as const
 
 export const QUERY_KEY = {
+  INFO: 'info-key',
   PLAYER_SESSION: 'player-session-key',
   PLAYER: 'player-key',
   PLAYER_STATS: 'player-stats-key',
   WEARABLE: 'player-wearable-key',
   INVENTORY: 'inventory-key',
-  GAME_INFO: 'game-info-key',
   HOSPITAL: 'hospital-key',
+  ARMORY: 'armory-key',
 } as const

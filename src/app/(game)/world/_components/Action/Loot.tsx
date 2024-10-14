@@ -1,12 +1,12 @@
 'use client'
 
-import { useGameInfoQuery, useLootMutation } from '@/hooks/api/useGame'
+import { useInfoQuery, useLootMutation } from '@/hooks/api/useGame'
 
 import * as S from './index.styles'
 import { Button } from '@/components/ui/button'
 
 export default function Loot() {
-  const gameInfo = useGameInfoQuery()
+  const gameInfo = useInfoQuery()
 
   const lootMutation = useLootMutation()
 

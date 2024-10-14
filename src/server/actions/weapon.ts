@@ -4,7 +4,7 @@ import type { Weapon } from '@prisma/client'
 import { db } from '@/server/db'
 import { unstable_cache as cache } from 'next/cache'
 
-export const WEAPONS_KEY = 'weapons-key'
+const WEAPONS_KEY = 'weapons-key'
 
 const mapWeapon = (x: any): Weapon => ({
   id: x.f0,

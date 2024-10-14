@@ -12,7 +12,7 @@ import { QUERY_KEY } from '@/const'
 
 export const useHospitalQuery = createQueryHook([QUERY_KEY.HOSPITAL], getHospital)
 
-export const useHealMutation = createMutationHook(heal, [QUERY_KEY.PLAYER, QUERY_KEY.GAME_INFO])
+export const useHealMutation = createMutationHook(heal, [QUERY_KEY.PLAYER, QUERY_KEY.INFO])
 export const useResurectMutation = createMutationHook(resurect, [QUERY_KEY.PLAYER])
 
 export const useBuyPotionMutation = createMutationHook(buyPotion, [QUERY_KEY.PLAYER])

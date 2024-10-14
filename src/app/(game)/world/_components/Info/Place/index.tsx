@@ -1,19 +1,20 @@
 'use client'
 
 import React from 'react'
-import { useGameInfoQuery } from '@/hooks/api/useGame'
+import { useInfoQuery } from '@/hooks/api/useGame'
 
 import { Link, Text } from '@/styles/text-server'
 import { List } from '@/styles/common-server'
 import { Button } from '@/components/ui/button'
 import Hospital from './Hospital'
+import Armory from './Armory'
 
 type SubPlace = 'hospital' | 'armory' | 'bank'
 
 export default function Place() {
   const [subPlace, setSubPlace] = React.useState<SubPlace | undefined>()
 
-  const gameInfo = useGameInfoQuery()
+  const gameInfo = useInfoQuery()
 
   // @ts-ignore
   if (!gameInfo.data?.place) return <></>
@@ -25,7 +26,7 @@ export default function Place() {
           Vrátit se
         </Button>
         {subPlace === 'hospital' && <Hospital />}
-        {subPlace === 'armory' && 'armory'}
+        {subPlace === 'armory' && <Armory />}
         {subPlace === 'bank' && 'bank'}
       </div>
     )
