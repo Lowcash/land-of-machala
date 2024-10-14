@@ -1,6 +1,6 @@
 import { createMutationHook, createQueryHook } from '@/app/api/_api-hooks'
 import {
-  buy,
+  buyPotion,
   heal,
   resurect,
   getHospital,
@@ -15,7 +15,7 @@ export const useHospitalQuery = createQueryHook([QUERY_KEY.HOSPITAL], getHospita
 export const useHealMutation = createMutationHook(heal, [QUERY_KEY.PLAYER, QUERY_KEY.GAME_INFO])
 export const useResurectMutation = createMutationHook(resurect, [QUERY_KEY.PLAYER])
 
-export const useBuyMutation = createMutationHook(buy, [QUERY_KEY.PLAYER])
+export const useBuyPotionMutation = createMutationHook(buyPotion, [QUERY_KEY.PLAYER])
 
 export const useAcceptEnemySlainQuestMutation = createMutationHook(acceptSlainEnemyQuest, [
   QUERY_KEY.PLAYER,

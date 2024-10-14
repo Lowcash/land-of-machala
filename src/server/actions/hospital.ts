@@ -64,7 +64,7 @@ export const heal = protectedAction.input(z.object({ hospitalId: z.string() })).
   })
 })
 
-export const buy = protectedAction
+export const buyPotion = protectedAction
   .input(z.object({ hospitalId: z.string(), potionId: z.number() }))
   .mutation(async ({ input }) => {
     const hospital = await getHospital({ hospitalId: input.hospitalId })

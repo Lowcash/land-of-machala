@@ -1,6 +1,7 @@
+'use client'
+
 import React from 'react'
 import {
-  useBuyMutation,
   useHealMutation,
   useHospitalQuery,
   useResurectMutation,
@@ -9,9 +10,10 @@ import {
 } from '@/data/hospital'
 import { useGameInfoQuery } from '@/data/game'
 
-import { Text } from '@/styles/text-server'
+import { H3, Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/alert'
+import Potions from './Potions'
 
 export default function Hospital() {
   const gameInfoQuery = useGameInfoQuery()
@@ -20,8 +22,6 @@ export default function Hospital() {
 
   const healMutation = useHealMutation()
   const resurectMutation = useResurectMutation()
-
-  const buyMutation = useBuyMutation()
 
   const acceptEnemySlainQuestMutation = useAcceptEnemySlainQuestMutation()
   const completeEnemySlainQuestMutation = useCompleteEnemySlainQuestMutation()
@@ -106,6 +106,11 @@ export default function Hospital() {
           </Text>
         </>
       )} */}
+
+      <br />
+      <H3>Koupit Potion</H3>
+      <br />
+      <Potions />
     </div>
   )
 }
