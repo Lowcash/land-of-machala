@@ -42,7 +42,7 @@ export const showArmory = cache(
   }),
 )
 
-export const buy = protectedAction
+export const buyItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
   .mutation(async ({ input }) => {
     const player = await getPlayer()
@@ -103,7 +103,7 @@ export const buy = protectedAction
     }
   })
 
-export const sell = protectedAction
+export const sellItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
   .mutation(async ({ input }) => {
     const player = await getPlayer()

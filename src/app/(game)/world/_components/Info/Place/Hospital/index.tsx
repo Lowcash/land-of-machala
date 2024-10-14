@@ -8,7 +8,7 @@ import {
   useAcceptEnemySlainQuestMutation,
   useCompleteEnemySlainQuestMutation,
 } from '@/hooks/api/useHospital'
-import { useGameInfoQuery } from '@/hooks/api/useGame'
+import { useInfoQuery } from '@/hooks/api/useGame'
 
 import { H3, Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
@@ -16,9 +16,11 @@ import Alert from '@/components/alert'
 import Potions from './Potions'
 
 export default function Hospital() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoQuery = useInfoQuery()
+
   // @ts-ignore
-  const hospitalQuery = useHospitalQuery({ hospitalId: gameInfoQuery.data.place.hospital.id })
+  const hospitalId = gameInfoQuery.data.place.hospital.id
+  const hospitalQuery = useHospitalQuery({ hospitalId })
 
   const healMutation = useHealMutation()
   const resurectMutation = useResurectMutation()
@@ -26,10 +28,7 @@ export default function Hospital() {
   const acceptEnemySlainQuestMutation = useAcceptEnemySlainQuestMutation()
   const completeEnemySlainQuestMutation = useCompleteEnemySlainQuestMutation()
 
-  const handleHeal = () => {
-    // @ts-ignore
-    healMutation.mutate({ hospitalId: gameInfoQuery.data.place.hospital.id })
-  }
+  const handleHeal = () => healMutation.mutate({ hospitalId })
 
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()

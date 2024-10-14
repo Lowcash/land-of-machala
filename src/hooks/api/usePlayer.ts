@@ -13,5 +13,5 @@ export const useCreatePlayerMutation = createMutationHook(createPlayer)
 export const usePlayerMoveMutation = createMutationHook(movePlayer, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.PLAYER_STATS,
-  QUERY_KEY.GAME_INFO,
+  QUERY_KEY.INFO,
 ])

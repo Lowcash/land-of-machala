@@ -44,7 +44,7 @@ export const checkForEnemy = protectedAction.mutation(async () => {
   })
 })
 
-export const getGameInfo = cache(
+export const getInfo = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
     
