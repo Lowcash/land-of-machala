@@ -21,3 +21,10 @@ const _Link = tw(Text)`
 `
 
 export const Link = (p: React.ComponentProps<typeof _Link>) => <_Link $as={'a'} {...p} />
+
+export const Input = tw('input')`
+  max-w-28 pl-2
+  border-2 rounded-md
+
+  bg-transparent
+`

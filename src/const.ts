@@ -39,4 +39,6 @@ export const QUERY_KEY = {
   INVENTORY: 'inventory-key',
   HOSPITAL: 'hospital-key',
   ARMORY: 'armory-key',
+  BANK: 'bank-key',
+  BANK_ACCOUNT: 'bank-account-key',
 } as const
