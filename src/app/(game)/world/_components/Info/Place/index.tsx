@@ -8,6 +8,7 @@ import { List } from '@/styles/common-server'
 import { Button } from '@/components/ui/button'
 import Hospital from './Hospital'
 import Armory from './Armory'
+import Bank from './Bank'
 
 type SubPlace = 'hospital' | 'armory' | 'bank'
 
@@ -27,7 +28,7 @@ export default function Place() {
         </Button>
         {subPlace === 'hospital' && <Hospital />}
         {subPlace === 'armory' && <Armory />}
-        {subPlace === 'bank' && 'bank'}
+        {subPlace === 'bank' && <Bank />}
       </div>
     )
 

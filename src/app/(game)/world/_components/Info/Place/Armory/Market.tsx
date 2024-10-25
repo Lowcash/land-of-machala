@@ -1,4 +1,4 @@
-import { Armor, Weapon } from '@prisma/client'
+import type { Armor, Weapon } from '@prisma/client'
 
 import { Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
