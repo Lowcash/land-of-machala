@@ -3,8 +3,8 @@
 import React from 'react'
 import { useArmoryQuery, useBuyItemMutation, useSellItemMutation } from '@/hooks/api/useArmory'
 import { useInfoQuery } from '@/hooks/api/useGame'
-import { WeaponMarket, OnActionParams, ArmorMarket } from './Market'
 
+import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
 import { H3, Text } from '@/styles/text-server'
 import Loading from '@/components/loading'
 import Alert from '@/components/alert'
