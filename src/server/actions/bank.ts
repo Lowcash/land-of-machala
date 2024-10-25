@@ -18,7 +18,7 @@ import {
 
 import { ERROR_CAUSE, WEARABLES } from '@/const'
 
-export const getBank = cache(
+export const showBank = cache(
   protectedAction.input(z.object({ bankId: z.string() })).query(async ({ input }) => {
     const bank = await db.bank.findFirst({
       where: { id: input.bankId },
@@ -30,7 +30,7 @@ export const getBank = cache(
   }),
 )
 
-export const getBankAccount = cache(
+export const showBankAccount = cache(
   protectedAction.input(z.object({ bankId: z.string() })).query(async ({ input, ctx }) => {
     let bankAccount = await db.bankAccount.findFirst({
       where: { bank_id: input.bankId, user_id: ctx.user.id },
@@ -69,17 +69,17 @@ export const getBankAccount = cache(
   }),
 )
 
-export const deposit = protectedAction
+export const depositItem = protectedAction
   .input(
     z.object({
       bankId: z.string(),
-      money: z.number().optional(),
       item: z.object({ id: z.string(), type: z.enum(WEARABLES) }).optional(),
+      money: z.number().optional(),
     }),
   )
   .mutation(async ({ input }) => {
     const player = await getPlayer()
-    const bankAccount = await getBankAccount({ bankId: input.bankId })
+    const bankAccount = await showBankAccount({ bankId: input.bankId })
 
     if (input.money !== undefined) {
       const balance = player.money - input.money
@@ -155,17 +155,17 @@ export const deposit = protectedAction
     }
   })
 
-export const withdraw = protectedAction
+export const withdrawItem = protectedAction
   .input(
     z.object({
       bankId: z.string(),
-      money: z.number().optional(),
       item: z.object({ id: z.string(), type: z.enum(WEARABLES) }).optional(),
+      money: z.number().optional(),
     }),
   )
   .mutation(async ({ input }) => {
     const player = await getPlayer()
-    const bankAccount = await getBankAccount({ bankId: input.bankId })
+    const bankAccount = await showBankAccount({ bankId: input.bankId })
 
     if (input.money !== undefined) {
       const balance = bankAccount.money - input.money
