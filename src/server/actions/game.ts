@@ -51,7 +51,7 @@ export const getInfo = cache(
     if (await hasPlayerLoot()) return { loot: player.loot }
 
     const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
-    if (!!place) return { place }
+    if (!!place) return { place, defeated: player.defeated }
 
     return {}
   }),
