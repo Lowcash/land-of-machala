@@ -1,5 +1,7 @@
-import { getPlayer, getPlayerStats } from '@/server/actions/player'
-import { getWearable } from '@/server/actions/wearable'
+'use client'
+
+import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/usePlayer'
+import { useWearableQuery } from '@/hooks/api/useWearable'
 
 import Content from './Content'
 import Sidebar from '..'
@@ -7,8 +9,12 @@ import Progress from '@/components/ui/progress'
 
 const EMPTY = '-'
 
-export default async function SidebarLeft() {
-  const [player, playerStats, playerWearable] = await Promise.all([getPlayer(), getPlayerStats(), getWearable()])
+export default function SidebarLeft() {
+  const playerQuery = usePlayerQuery()
+  const playerStatsQuery = usePlayerStatsQuery()
+  const playerWearableQuery = useWearableQuery()
+
+  if (playerQuery.isLoading || playerStatsQuery.isLoading || playerWearableQuery.isLoading) return <></>
 
   return (
     <Sidebar $open={true} $position='left'>
@@ -17,19 +23,19 @@ export default async function SidebarLeft() {
           {
             header: 'Postava',
             items: [
-              { label: 'Jméno:', value: player.name ?? '' },
-              { label: 'Rasa:', value: player.race ?? '' },
-              { label: 'Profese:', value: player.profession ?? '' },
+              { label: 'Jméno:', value: playerQuery.data?.name ?? '' },
+              { label: 'Rasa:', value: playerQuery.data?.race ?? '' },
+              { label: 'Profese:', value: playerQuery.data?.profession ?? '' },
             ],
           },
-          { header: 'Peníze', items: [{ value: `${player.money ?? 0} zl` }] },
+          { header: 'Peníze', items: [{ value: `${playerQuery.data?.money ?? 0} zl` }] },
           {
             header: 'HP',
             items: [
               {
                 value: (
-                  <Progress value={player.hp_actual} max={player.hp_max ?? 0} $variant='red'>
-                    {player.hp_actual ?? 0} / {player.hp_max ?? 0}
+                  <Progress value={playerQuery.data?.hp_actual} max={playerQuery.data?.hp_max ?? 0} $variant='red'>
+                    {playerQuery.data?.hp_actual ?? 0} / {playerQuery.data?.hp_max ?? 0}
                   </Progress>
                 ),
               },
@@ -38,32 +44,32 @@ export default async function SidebarLeft() {
           {
             header: 'Zbraně',
             items: [
-              { label: 'Levá ruka:', value: playerWearable.left_hand?.weapon.name ?? EMPTY },
-              { label: 'Pravá ruka:', value: playerWearable.right_hand?.weapon.name ?? EMPTY },
+              { label: 'Levá ruka:', value: playerWearableQuery.data?.left_hand?.weapon.name ?? EMPTY },
+              { label: 'Pravá ruka:', value: playerWearableQuery.data?.right_hand?.weapon.name ?? EMPTY },
             ],
           },
           {
             header: 'Zbroj',
             items: [
-              { label: 'Hlava:', value: playerWearable.head?.armor.name ?? EMPTY },
-              { label: 'Ramena:', value: playerWearable.shoulder?.armor.name ?? EMPTY },
-              { label: 'Tělo:', value: playerWearable.chest?.armor.name ?? EMPTY },
-              { label: 'Ruce:', value: playerWearable.hand?.armor.name ?? EMPTY },
-              { label: 'Kalhoty:', value: playerWearable.pants?.armor.name ?? EMPTY },
-              { label: 'Boty:', value: playerWearable.boots?.armor.name ?? EMPTY },
+              { label: 'Hlava:', value: playerWearableQuery.data?.head?.armor.name ?? EMPTY },
+              { label: 'Ramena:', value: playerWearableQuery.data?.shoulder?.armor.name ?? EMPTY },
+              { label: 'Tělo:', value: playerWearableQuery.data?.chest?.armor.name ?? EMPTY },
+              { label: 'Ruce:', value: playerWearableQuery.data?.hand?.armor.name ?? EMPTY },
+              { label: 'Kalhoty:', value: playerWearableQuery.data?.pants?.armor.name ?? EMPTY },
+              { label: 'Boty:', value: playerWearableQuery.data?.boots?.armor.name ?? EMPTY },
             ],
           },
           {
             header: 'Staty',
             items: [
-              { label: 'Level:', value: `${playerStats.level}` },
+              { label: 'Level:', value: `${playerStatsQuery.data?.level}` },
               {
                 label: 'Poškození:',
-                value: `${playerStats.damage_min} - ${playerStats.damage_max}`,
+                value: `${playerStatsQuery.data?.damage_min} - ${playerStatsQuery.data?.damage_max}`,
               },
-              { label: 'Síla:', value: `${playerStats.strength}` },
-              { label: 'Obratnost:', value: `${playerStats.agility}` },
-              { label: 'Inteligence:', value: `${playerStats.intelligence}` },
+              { label: 'Síla:', value: `${playerStatsQuery.data?.strength}` },
+              { label: 'Obratnost:', value: `${playerStatsQuery.data?.agility}` },
+              { label: 'Inteligence:', value: `${playerStatsQuery.data?.intelligence}` },
             ],
           },
         ]}

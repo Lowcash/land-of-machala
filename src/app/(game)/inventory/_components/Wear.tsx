@@ -1,6 +1,6 @@
 'use client'
 
-import { useWearMutation } from '@/services/hooks/wearable'
+import { useWearMutation } from '@/hooks/api/useWearable'
 import type { MutationInput } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
