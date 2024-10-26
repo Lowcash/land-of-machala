@@ -11,12 +11,12 @@ import Potions from './_components/Potions'
 export default async function Page() {
   const inventory = await showInventory()
 
-  // const hasWeapons = inventory.weapons.length > 0
-  // const hasArmors = inventory.armors.length > 0
-  // const hasPotions = inventory.potions.length > 0
+  const hasWeapons = inventory.weapons.length > 0
+  const hasArmors = inventory.armors.length > 0
+  const hasPotions = inventory.potions.length > 0
 
-  // const hasItems = hasWeapons || hasArmors || hasPotions
-  const hasItems = true
+  const hasItems = hasWeapons || hasArmors || hasPotions
+
   return (
     <Card>
       <Back />
@@ -28,15 +28,15 @@ export default async function Page() {
           <H3>V batohu se nachází:</H3>
           <br />
           <S.Inventory>
-            {/* {hasWeapons && (
+            {hasWeapons && (
               <>
                 <br />
                 <H3>Zbraně</H3>
                 <br />
                 <Weapons />
               </>
-            )} */}
-            {/* {hasArmors && (
+            )}
+            {hasArmors && (
               <>
                 <br />
                 <H3>Zbroje</H3>
@@ -51,7 +51,7 @@ export default async function Page() {
                 <br />
                 <Potions />
               </>
-            )} */}
+            )}
           </S.Inventory>
         </>
       )}

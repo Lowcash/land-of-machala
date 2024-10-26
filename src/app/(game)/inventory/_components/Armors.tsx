@@ -1,6 +1,6 @@
 'use client'
 
-import { useShowInventoryQuery } from '@/hooks/inventory'
+import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import Table from '@/components/table'
 import Wear from './Wear'
