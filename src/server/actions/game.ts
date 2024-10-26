@@ -15,8 +15,7 @@ import { ERROR_CAUSE } from '@/const'
 export const checkForEnemy = protectedAction.mutation(async () => {
   const player = await getPlayer()
 
-  // const hasEnemyAppear = Math.round(Math.random()) === 1
-  const hasEnemyAppear = false as boolean
+  const hasEnemyAppear = Math.round(Math.random()) === 1
 
   if (!hasEnemyAppear) return
 
@@ -47,9 +46,9 @@ export const checkForEnemy = protectedAction.mutation(async () => {
 export const getInfo = cache(
   protectedAction.query(async () => {
     const player = await getPlayer()
-    
-    if (await isPlayerInCombat()) return player.enemy_instance
-    if (await hasPlayerLoot()) return player.loot
+
+    if (await isPlayerInCombat()) return { enemy: player.enemy_instance }
+    if (await hasPlayerLoot()) return { loot: player.loot }
 
     const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
     if (!!place) return { place }
@@ -205,7 +204,8 @@ export const loot = protectedAction.mutation(async () => {
       where: { id: player.loot!.id },
     })
 
-    await collectReward({ money: player.loot?.money })
+    // this is a bug -> it must go through the transaction db instance..if not, after transaction revert, there will be money sum (inconsistent db)
+    // await collectReward({ money: player.loot?.money })
 
     await db.user.update({
       where: { id: player.id },
