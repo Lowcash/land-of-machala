@@ -1,5 +1,5 @@
-import { getPlayerSession, hasPlayerCharacter } from '@/server/actions/player'
 import { cookies } from 'next/headers'
+import { getPlayerSession, hasPlayerCharacter } from '@/server/actions/player'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
@@ -11,6 +11,8 @@ import QuestPage from './(game)/quest/page'
 import InventoryPage from './(game)/inventory/page'
 
 import { ROUTE } from '@/const'
+
+export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   if (!(await getPlayerSession()))

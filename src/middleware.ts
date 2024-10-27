@@ -1,9 +1,18 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { revalidatePath } from 'next/cache'
 
 import { ROUTE } from '@/const'
 
+let initialized = false
+
 export default function middleware(request: NextRequest) {
+  if (!initialized) {
+    console.log('Initializing cache revalidation...')
+    revalidatePath('/', 'layout')
+    initialized = true
+  }
+
   const url = request.nextUrl
 
   const response = NextResponse.redirect(new URL('/', request.url))

@@ -8,6 +8,8 @@ import Weapons from './_components/Weapons'
 import Armors from './_components/Armors'
 import Potions from './_components/Potions'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   const inventory = await showInventory()
 

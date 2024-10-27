@@ -3,14 +3,11 @@ import type { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
-import { initialize } from './inititialize'
 
 import Hydration from './_hydration'
 import { ThemeProvider } from '@/context/theme-provider'
 import { QueryProvider } from '@/context/query-provider'
 import { GameProvider } from '@/context/game-provider'
-
-initialize()
 
 const medieval = MedievalSharp({
   weight: '400',
