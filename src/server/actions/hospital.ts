@@ -105,5 +105,5 @@ export const acceptSlainEnemyQuest = protectedAction.mutation(async () => {
 export const completeSlainEnemyQuest = protectedAction.mutation(async () => {
   if ((await checkQuestProgress('SLAIN_ENEMY')) !== 'COMPLETE') throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  await collectReward({ money: await completeQuest('SLAIN_ENEMY') })
+  await collectReward(db, { money: await completeQuest('SLAIN_ENEMY') })
 })
