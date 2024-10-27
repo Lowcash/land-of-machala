@@ -91,7 +91,7 @@ export default function Hospital() {
             </>
           )}
 
-          {/* {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
+          {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
             <>
               <br />
               <br />
@@ -103,7 +103,7 @@ export default function Hospital() {
                 </Button>
               </Text>
             </>
-          )} */}
+          )}
 
           {completeEnemySlainQuestMutation.isSuccess && (
             <>
@@ -112,18 +112,18 @@ export default function Hospital() {
             </>
           )}
 
-          {/* {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
+          {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
             <>
               <br />
               <br />
               <Text>
-                Tak to je nádhera, zde je tvoje odměna: <b>{show.data.slainEnemyQuest.reward} zl</b>&nbsp;
+                Tak to je nádhera, zde je tvoje odměna: <b>{hospitalQuery.data.slainEnemyQuest.reward} zl</b>&nbsp;
                 <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>
                   Odevzdat
                 </Button>
               </Text>
             </>
-          )} */}
+          )}
 
           <br />
           <H3>Koupit Potion</H3>

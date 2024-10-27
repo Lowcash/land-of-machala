@@ -9,7 +9,7 @@ import Place from './Place'
 
 export default function Info() {
   const infoQuery = useInfoQuery()
-console.log(infoQuery.data)
+
   // @ts-ignore
   const hasEnemy = !!infoQuery.data.enemy
   // @ts-ignore

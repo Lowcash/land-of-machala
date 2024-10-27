@@ -17,10 +17,12 @@ export default function Potions() {
 
   // @ts-ignore
   const hospitalId = gameInfoQuery?.data?.place.hospital.id
+  // @ts-ignore
   const hospitalQuery = useHospitalQuery({ hospitalId })
-
+  
   const buyPotionMutation = useBuyPotionMutation()
-
+  
+  // @ts-ignore
   const handleBuyPotion = (potion: PotionItem) => buyPotionMutation.mutate({ hospitalId, potionId: potion.id })
 
   const potions = React.useMemo(
