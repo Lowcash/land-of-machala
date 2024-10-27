@@ -3,6 +3,7 @@
 import { db } from '../db'
 import { cache } from 'react'
 import { random } from '@/lib/utils'
+import { Prisma } from '@prisma/client'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { getPlayer, hasPlayerLoot, isPlayerInCombat } from './player'
@@ -146,7 +147,7 @@ export const attack = protectedAction.mutation(async () => {
       },
     })
 
-    const xpActual = player.xp_actual ?? 0 + possibleEnemyXpGain
+    const xpActual = (player.xp_actual ?? 0) + possibleEnemyXpGain
     const xpMax = player.xp_max ?? 0
     const hasLevelUp = xpActual > xpMax
 
@@ -204,8 +205,7 @@ export const loot = protectedAction.mutation(async () => {
       where: { id: player.loot!.id },
     })
 
-    // this is a bug -> it must go through the transaction db instance..if not, after transaction revert, there will be money sum (inconsistent db)
-    // await collectReward({ money: player.loot?.money })
+    await collectReward(db, { money: player.loot?.money })
 
     await db.user.update({
       where: { id: player.id },
@@ -214,7 +214,7 @@ export const loot = protectedAction.mutation(async () => {
   })
 })
 
-export async function collectReward(reward: { money?: number | null }) {
+export async function collectReward(db: Prisma.TransactionClient, reward: { money?: number | null }) {
   const player = await getPlayer()
 
   const moneyActual = (player.money ?? 0) + (reward.money ?? 0)
