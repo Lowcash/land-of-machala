@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { useGame } from '@/context/game-provider'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
 import * as S from './index.styles'
@@ -8,6 +9,8 @@ import Image from 'next/image'
 import Place from './Place'
 
 export default function Info() {
+  const { setBackground } = useGame()
+  
   const infoQuery = useInfoQuery()
 
   // @ts-ignore
@@ -18,6 +21,12 @@ export default function Info() {
   const hasLoot = !!infoQuery.data.loot
   // @ts-ignore
   const isDefeated = !!infoQuery.data.defeated
+
+  React.useEffect(() => {
+    if (infoQuery.isLoading) return
+
+    setBackground?.(hasPlace ? undefined : '/images/environment/forest.webp')
+  }, [hasPlace, infoQuery.isLoading, setBackground])
 
   if (isDefeated)
     return (

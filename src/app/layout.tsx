@@ -8,6 +8,7 @@ import { initialize } from './inititialize'
 import Hydration from './_hydration'
 import { ThemeProvider } from '@/context/theme-provider'
 import { QueryProvider } from '@/context/query-provider'
+import { GameProvider } from '@/context/game-provider'
 
 initialize()
 
@@ -39,7 +40,9 @@ export default async function RootLayout({ children }: Readonly<React.PropsWithC
       >
         <QueryProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-            <Hydration>{children}</Hydration>
+            <GameProvider>
+              <Hydration>{children}</Hydration>
+            </GameProvider>
           </ThemeProvider>
         </QueryProvider>
       </body>
