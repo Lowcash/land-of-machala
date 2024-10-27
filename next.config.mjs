@@ -1,12 +1,11 @@
 import { withSentryConfig } from '@sentry/nextjs'
-import withLinaria from 'next-with-linaria'
 
 /**
  * @type {import('next').NextConfig}
  */
 
 export default withSentryConfig(
-  withLinaria({
+  {
     logging: {
       fetches: {
         fullUrl: true,
@@ -16,7 +15,7 @@ export default withSentryConfig(
     eslint: {
       ignoreDuringBuilds: true,
     },
-  }),
+  },
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
