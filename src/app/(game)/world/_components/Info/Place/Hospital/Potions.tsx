@@ -9,6 +9,7 @@ import { Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import Table from '@/components/table'
+import Alert from '@/components/alert'
 
 type PotionItem = Potion & { price: number }
 
@@ -19,14 +20,14 @@ export default function Potions() {
   const hospitalId = gameInfoQuery?.data?.place.hospital.id
   // @ts-ignore
   const hospitalQuery = useHospitalQuery({ hospitalId })
-  
+
   const buyPotionMutation = useBuyPotionMutation()
-  
+
   // @ts-ignore
   const handleBuyPotion = (potion: PotionItem) => buyPotionMutation.mutate({ hospitalId, potionId: potion.id })
 
   const potions = React.useMemo(
-    () => hospitalQuery.data?.potions_hospital.map((x) => ({ ...x.potion, armoryWeaponId: x.id, price: x.price })),
+    () => hospitalQuery.data?.potions_hospital.map((x) => ({ ...x.potion, potionId: x.id, price: x.price })),
     [hospitalQuery.data?.potions_hospital],
   )
 
@@ -35,27 +36,44 @@ export default function Potions() {
   if (!hasBuyPotions) return <></>
 
   return (
-    <Table
-      columns={[{}, { className: 'text-center', content: 'Účinnost' }, { className: 'text-right', content: 'Koupit' }]}
-      cells={potions?.map((x) => [
-        { className: 'text-left', content: x.name },
-        {
-          className: 'text-center',
-          content: `+${x.hp_gain} HP`,
-        },
-        {
-          className: 'text-right',
-          content: (
-            <>
-              <Text>{x.price} zlaťáků</Text>
-              &nbsp;
-              <Button variant='secondary' onClick={() => handleBuyPotion(x)}>
-                <PaperPlaneIcon />
-              </Button>
-            </>
-          ),
-        },
-      ])}
-    />
+    <>
+      {!buyPotionMutation.isIdle && (
+        <>
+          <br />
+          <Alert>
+            {buyPotionMutation.isSuccess
+              ? 'Tady to máš'
+              : 'Přijď, až na to budeš mít (nedostatek peněz)'}
+          </Alert>
+        </>
+      )}
+
+      <Table
+        columns={[
+          {},
+          { className: 'text-center', content: 'Účinnost' },
+          { className: 'text-right', content: 'Koupit' },
+        ]}
+        cells={potions?.map((x) => [
+          { className: 'text-left', content: x.name },
+          {
+            className: 'text-center',
+            content: `+${x.hp_gain} HP`,
+          },
+          {
+            className: 'text-right',
+            content: (
+              <>
+                <Text>{x.price} zlaťáků</Text>
+                &nbsp;
+                <Button variant='secondary' onClick={() => handleBuyPotion(x)}>
+                  <PaperPlaneIcon />
+                </Button>
+              </>
+            ),
+          },
+        ])}
+      />
+    </>
   )
 }
