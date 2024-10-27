@@ -143,7 +143,7 @@ export const movePlayer = protectedAction.input(z.enum(DIRECTIONS)).mutation(asy
 })
 
 export const isPlayerOnPlace = protectedAction.query(async () => {
-  const player = await getPlayerCached()
+  const player = await getPlayer()
   const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
 
   return Boolean(place)
