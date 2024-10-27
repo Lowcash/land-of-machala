@@ -15,6 +15,7 @@ export default function Armory() {
   // @ts-ignore
   const armoryId = infoQuery.data?.place?.armory.id
 
+  // @ts-ignore
   const armoryQuery = useArmoryQuery({ armoryId })
 
   const buyItemMutation = useBuyItemMutation()
@@ -26,9 +27,11 @@ export default function Armory() {
 
       switch (action) {
         case 'buy':
+          // @ts-ignore
           buyItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
           break
         case 'sell':
+          // @ts-ignore
           sellItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
           break
       }

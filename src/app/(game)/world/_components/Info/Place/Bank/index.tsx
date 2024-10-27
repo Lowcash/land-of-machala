@@ -17,7 +17,9 @@ export default function Bank() {
   // @ts-ignore
   const bankId = infoQuery.data?.place?.bank.id
 
+  // @ts-ignore
   const bankQuery = useBankQuery({ bankId })
+  // @ts-ignore
   const bankAccountQuery = useBankAccountQuery({ bankId })
   const showInventoryQuery = useShowInventoryQuery()
 
@@ -33,9 +35,11 @@ export default function Bank() {
 
       switch (action) {
         case 'deposit':
+          // @ts-ignore
           depositItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
           break
         case 'withdraw':
+          // @ts-ignore
           withdrawItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
           break
       }
@@ -49,12 +53,14 @@ export default function Bank() {
         case 'deposit':
           if (!depositMoneyRef.current?.value === undefined) return
 
+          // @ts-ignore
           depositItemMutation.mutate({ bankId, money: Number(depositMoneyRef.current!.value) })
           depositMoneyRef.current!.value = '0'
           break
         case 'withdraw':
           if (!withdrawMoneyRef.current?.value === undefined) return
 
+          // @ts-ignore
           withdrawItemMutation.mutate({ bankId, money: Number(withdrawMoneyRef.current!.value) })
           withdrawMoneyRef.current!.value = '0'
           break
