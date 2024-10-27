@@ -70,7 +70,7 @@ export default function Info() {
 
   if (hasEnemy) {
     // @ts-ignore
-    const name = infoQuery.data.enemy.enemy.name
+    const name = infoQuery.data.enemy.enemy?.name
     // @ts-ignore
     const hpActual = infoQuery.data.enemy.hp_actual
     // @ts-ignore

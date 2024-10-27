@@ -7,6 +7,8 @@ import { H3 } from '@/styles/text-server'
 import Back from './_components/Back'
 import Table from '@/components/table'
 
+export const dynamic = 'force-dynamic'
+
 export default async function Page() {
   const userQuests = await getUserQuests()
 
