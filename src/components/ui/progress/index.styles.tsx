@@ -24,7 +24,8 @@ export const ProgressIndicator = tw(ProgressPrimitive.Indicator)<ProgressIndicat
 `
 
 const _ProgressOuterText = tw(Text)`
-  rounded-sm bg-white/45 px-1 shadow-sm
+  absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform 
+  rounded-sm bg-white/45 px-1 shadow-sm'
 `
 
 const _ProgressInnerText = tw.div`mt-[3px]`
