@@ -1,7 +1,7 @@
 import { getUserQuests } from '@/server/actions/quest'
 
 import * as S from './styles'
-import { FaCheck, FaCross } from 'react-icons/fa'
+import { FaCheck, FaTimes } from 'react-icons/fa'
 import { Card } from '@/styles/common-server'
 import { H3 } from '@/styles/text-server'
 import Back from './_components/Back'
@@ -69,7 +69,7 @@ function buildQuest(name: string, description: React.ReactNode, done: boolean) {
       content: description,
     },
     {
-      content: done ? <FaCheck className='m-auto' /> : <FaCross className='m-auto' />,
+      content: done ? <FaCheck className='m-auto' /> : <FaTimes className='m-auto' />,
     },
   ]
 }
