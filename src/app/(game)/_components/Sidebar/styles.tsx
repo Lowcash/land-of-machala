@@ -14,21 +14,29 @@ export const SectionContent = (p: React.HTMLAttributes<HTMLDivElement>) => (
   <div {...p} className='ml-4 flex min-h-8 flex-col justify-center space-y-2 border-l-2 pl-2' />
 )
 
-export const SidebarInner = (p: React.HTMLAttributes<HTMLDivElement>) => (
-  <div {...p} className='flex h-full flex-col overflow-y-auto rounded-lg px-3 py-4 shadow-side' />
+type Position = 'left' | 'right'
+
+export interface SidebarInnerProps {
+  position: Position
+}
+
+export const SidebarInner = (p: React.HTMLAttributes<HTMLDivElement> & SidebarInnerProps) => (
+  <div
+    {...p}
+    className={cn(
+      'flex h-full flex-col overflow-y-auto bg-custom-gold-1 px-3 py-4 shadow-side',
+      p.position === 'left' ? 'rounded-ee-lg rounded-se-lg' : 'rounded-es-lg rounded-ss-lg',
+    )}
+  />
 )
 
 export interface SidebarOuterProps {
   open: boolean
-  position: 'left' | 'right'
+  position: Position
 }
 
-export const SidebarOuter = ({
-  open,
-  position = 'left',
-  ...p
-}: React.HTMLAttributes<HTMLDivElement> & SidebarOuterProps) => (
-  <div
+export const SidebarOuter = ({ open, position, ...p }: React.HTMLAttributes<HTMLElement> & SidebarOuterProps) => (
+  <aside
     {...p}
     className={cn(
       'fixed top-9 z-50 h-[calc(100vh-72px)]',
@@ -36,12 +44,4 @@ export const SidebarOuter = ({
       position === 'left' ? 'left-0' : 'right-0',
     )}
   />
-)
-
-interface Props extends SidebarOuterProps {}
-
-export const Sidebar = ({ children, ...p }: React.PropsWithChildren<Props>) => (
-  <SidebarOuter {...p}>
-    <SidebarInner>{children}</SidebarInner>
-  </SidebarOuter>
 )

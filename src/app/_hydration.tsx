@@ -1,15 +1,13 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
-import { showInventory } from '@/server/actions/inventory'
 import { getPlayer, getPlayerStats } from '@/server/actions/player'
 import { getWearable } from '@/server/actions/wearable'
 import { getInfo } from '@/server/actions/game'
+import { showInventory } from '@/server/actions/inventory'
 
 import { QUERY_KEY } from '@/const'
 
 export default async function Hydration(p: React.PropsWithChildren) {
   const queryClient = new QueryClient()
-
-  console.log('hydration')
 
   void (await Promise.all([
     queryClient.prefetchQuery({

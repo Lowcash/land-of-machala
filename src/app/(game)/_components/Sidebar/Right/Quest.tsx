@@ -11,7 +11,7 @@ export default function Quest() {
   const navigate = useNavigate()
 
   return (
-    <Button onClick={() => navigate(ROUTE.QUEST)} variant='warning' size='iconLg'>
+    <Button onClick={() => navigate(ROUTE.QUEST)} variant='secondary' size='icon'>
       <FaTasks />
     </Button>
   )

@@ -5,13 +5,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   return (
-    <div className={styles.page}>
+    <section className={styles.page}>
       <Action />
       <Info />
-    </div>
+    </section>
   )
 }
 
 const styles = {
-  page: 'flex h-full flex-col justify-start gap-4 p-4',
+  page: 'mx-[16rem] flex h-full w-full flex-col justify-start gap-4 p-4',
 }

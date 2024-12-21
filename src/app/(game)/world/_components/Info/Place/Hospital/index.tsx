@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { loc } from '@/local'
 import {
   useHealMutation,
   useHospitalQuery,
@@ -10,6 +11,7 @@ import {
 } from '@/hooks/api/useHospital'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
+import * as S from '../styles'
 import { H3, Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/alert'
@@ -18,8 +20,7 @@ import Potions from './Potions'
 export default function Hospital() {
   const gameInfoQuery = useInfoQuery()
 
-  // @ts-ignore
-  const hospitalId = gameInfoQuery.data.place.hospital.id
+  const hospitalId = gameInfoQuery.data?.place?.hospital?.id!
   const hospitalQuery = useHospitalQuery({ hospitalId })
 
   const healMutation = useHealMutation()
@@ -34,103 +35,73 @@ export default function Hospital() {
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
 
-  // @ts-ignore
-  const isDefeated = !!gameInfoQuery.data.defeated
+  const isDefeated = !!gameInfoQuery.data?.defeated
 
   return (
-    <div className='flex flex-col'>
+    <S.Place>
       <Text>
-        {/* @ts-ignore */}
-        Nacházíš se v <b>{hospitalQuery.data?.name}</b>
+        {loc.place.your_are_in} <b>{hospitalQuery.data?.name}</b>
       </Text>
-      <br />
-      {/* @ts-ignore */}
       <Text>{hospitalQuery.data?.description}</Text>
 
       {isDefeated && (
-        <>
-          <br />
-          <br />
-          <Text>
-            Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..
-            <Button variant='destructive' onClick={handleResurect}>
-              Uzdravit!
-            </Button>
-          </Text>
-        </>
+        <Text>
+          {loc.place.hospital.resurrect_description}
+          <Button variant='destructive' onClick={handleResurect}>
+            {loc.place.hospital.resurrect_accept}
+          </Button>
+        </Text>
       )}
 
       {!isDefeated && (
         <>
           {healMutation.isIdle && (
-            <>
-              <br />
-              <Text>
-                Uzdravení za <b>{hospitalQuery.data?.price ?? 0} zl</b> &nbsp;
-                <Button variant='destructive' onClick={handleHeal}>
-                  To chci!
-                </Button>
-              </Text>
-            </>
+            <Text>
+              {loc.place.hospital.heal_for}&nbsp;
+              <b>
+                {hospitalQuery.data?.price ?? 0} {loc.common.currency}
+              </b>
+              &nbsp;
+              <Button variant='destructive' onClick={handleHeal}>
+                {loc.place.hospital.heal_accept}
+              </Button>
+            </Text>
           )}
           {!healMutation.isIdle && (
-            <>
-              <br />
-              <Alert>
-                {healMutation.isSuccess
-                  ? 'Teď jsi jako rybička (vyléčen)'
-                  : 'Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)'}
-              </Alert>
-            </>
+            <Alert>{healMutation.isSuccess ? loc.place.hospital.heal_success : loc.place.hospital.heal_failed}</Alert>
           )}
 
-          {acceptEnemySlainQuestMutation.isSuccess && (
-            <>
-              <br />
-              <Alert>Hezky pěkně, dej se do toho</Alert>
-            </>
-          )}
+          {acceptEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.accepted}</Alert>}
 
           {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
-            <>
-              <br />
-              <br />
-              <Text>
-                Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti
-                odměním. Bereš? &nbsp;
-                <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
-                  Beru
-                </Button>
-              </Text>
-            </>
+            <Text>
+              {loc.quest.enemy_slain.description}&nbsp;
+              <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
+                {loc.quest.enemy_slain.accept}
+              </Button>
+            </Text>
           )}
 
-          {completeEnemySlainQuestMutation.isSuccess && (
-            <>
-              <br />
-              <Alert>Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!</Alert>
-            </>
-          )}
+          {completeEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.completed_looted}</Alert>}
 
           {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
-            <>
-              <br />
-              <br />
-              <Text>
-                Tak to je nádhera, zde je tvoje odměna: <b>{hospitalQuery.data.slainEnemyQuest.reward} zl</b>&nbsp;
-                <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>
-                  Odevzdat
-                </Button>
-              </Text>
-            </>
+            <Text>
+              {loc.quest.enemy_slain.completed}:{' '}
+              <b>
+                {hospitalQuery.data.slainEnemyQuest.reward} {loc.common.currency}
+              </b>
+              &nbsp;
+              <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>
+                {loc.quest.enemy_slain.complete}
+              </Button>
+            </Text>
           )}
 
-          <br />
-          <H3>Koupit Potion</H3>
-          <br />
+          <H3>{loc.potion.buy}</H3>
+
           <Potions />
         </>
       )}
-    </div>
+    </S.Place>
   )
 }

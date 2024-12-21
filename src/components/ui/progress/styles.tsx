@@ -4,10 +4,7 @@ import { Text } from '@/styles/text-server'
 import { Root, Indicator } from '@radix-ui/react-progress'
 
 export const ProgressRoot = (p: React.PropsWithChildren) => (
-  <Root
-    {...p}
-    className='bg- relative h-full w-full overflow-hidden rounded-full border border-black/10 bg-custom-gold-1'
-  />
+  <Root {...p} className='relative h-6 w-full overflow-hidden rounded-full border border-black/10 bg-custom-gold-1' />
 )
 
 const VARIANT = {

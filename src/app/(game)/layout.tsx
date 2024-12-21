@@ -2,11 +2,11 @@ import { Main } from '@/styles/common-server'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
 
-export default async function Layout({ children }: Readonly<React.PropsWithChildren>) {
+export default async function Layout(p: Readonly<React.PropsWithChildren>) {
   return (
     <>
       <Header />
-      <Main>{children}</Main>
+      <Main>{p.children}</Main>
       <Footer />
     </>
   )

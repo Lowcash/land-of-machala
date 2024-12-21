@@ -1,0 +1,77 @@
+{
+  "create": {
+    "submit": "Vytvořit charakter"
+  },
+  "common": {
+    "back": "Vrátit se",
+    "currency": "zl",
+    "sign_in": "",
+    "sign_out": "Odhlásit se",
+    "coord_x": "x",
+    "coord_y": "y"
+  },
+  "player": {
+    "character": "Postava",
+    "name": "Jméno",
+    "race": "Rasa",
+    "profession": "Profese",
+    "money": "Peníze",
+    "hp": "HP",
+    "mana": "Mana"
+  },
+  "stats": {
+    "header": "Staty",
+    "level": "Level",
+    "damage": "Poškození",
+    "strength": "Síla",
+    "agility": "Obratnost",
+    "intelligence": "Inteligence"
+  },
+  "place": {
+    "your_are_in": "Nacházíš se v",
+    "hospital": {
+      "header": "Nemocnice",
+      "heal_for": "Uzdravení za",
+      "heal_accept": "To chci!",
+      "heal_success": "Teď jsi jako rybička (vyléčen)",
+      "heal_failed": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)",
+      "resurrect_description": "Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..",
+      "resurrect_accept": "Uzdravit!"
+    },
+    "armory": {
+      "header": "Zbrojírna"
+    },
+    "bank": {
+      "header": "Banka"
+    }
+  },
+  "weapon": {
+    "header": "Zbraň",
+    "header_multi": "Zbraně",
+    "left_hand": "Levá ruka",
+    "right_hand": "Pravá ruka"
+  },
+  "armor": {
+    "header": "Zbroj",
+    "head": "Hlava",
+    "shoulder": "Ramena",
+    "chest": "Tělo",
+    "hand": "Ruce",
+    "pants": "Kalhoty",
+    "boots": "Boty"
+  },
+  "potion": {
+    "header": "Potion",
+    "buy": "Koupit Potion"
+  },
+  "quest": {
+    "enemy_slain": {
+      "description": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
+      "accept": "Beru",
+      "accepted": "Hezky pěkně, dej se do toho!",
+      "complete": "Odevzdat",
+      "completed": "Tak to je nádhera, zde je tvoje odměna",
+      "completed_looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!"
+    }
+  }
+}

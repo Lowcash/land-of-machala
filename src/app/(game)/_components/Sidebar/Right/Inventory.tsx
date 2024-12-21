@@ -11,7 +11,7 @@ export default function Inventory() {
   const navigate = useNavigate()
 
   return (
-    <Button onClick={() => navigate(ROUTE.INVENTORY)} variant='warning' size='iconLg'>
+    <Button onClick={() => navigate(ROUTE.INVENTORY)} variant='secondary' size='icon'>
       <FaBriefcase />
     </Button>
   )

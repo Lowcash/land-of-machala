@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import { signOut } from 'next-auth/react'
 
 import { PersonIcon } from '@radix-ui/react-icons'
@@ -10,7 +11,7 @@ export default function User() {
     <Button size='icon' onClick={() => signOut()}>
       <PersonIcon className={styles.icon} />
 
-      <span className={styles.signOut}>Sign out</span>
+      <span className={styles.signOut}>{loc.common.sign_out}</span>
     </Button>
   )
 }
