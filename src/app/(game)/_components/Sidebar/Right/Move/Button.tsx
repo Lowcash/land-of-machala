@@ -1,22 +1,25 @@
 'use client'
 
-import type { Direction, PropsWithChildrenAndClassName } from '@/types'
 import { usePlayerMoveMutation } from '@/hooks/api/usePlayer'
 
-import { Button as Button_ } from '@/components/ui/button'
+import { FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import { Button } from '@/components/ui/button'
 
-interface Props {
-  direction: Direction
+import { DIRECTIONS } from '@/const'
+
+interface Props extends Pick<React.ComponentProps<typeof Button>, 'className'> {
+  direction: (typeof DIRECTIONS)[number]
 }
 
-export default function Button({ children, className, ...p }: PropsWithChildrenAndClassName<Props>) {
+export default function Go({ direction, ...p }: Props) {
   const playerMoveMutation = usePlayerMoveMutation()
 
-  const handleButtonClick = () => playerMoveMutation.mutate(p.direction)
-
   return (
-    <Button_ className={className} onClick={handleButtonClick} variant='warning' size='iconLg'>
-      {children}
-    </Button_>
+    <Button {...p} onClick={() => playerMoveMutation.mutate(direction)} variant='warning' size='iconLg'>
+      {direction === 'up' && <FaChevronUp />}
+      {direction === 'down' && <FaChevronDown />}
+      {direction === 'left' && <FaChevronLeft />}
+      {direction === 'right' && <FaChevronRight />}
+    </Button>
   )
 }

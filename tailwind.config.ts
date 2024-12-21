@@ -67,6 +67,10 @@ const config = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        ['custom-yellow-1']: 'hsl(var(--custom-yellow-1))',
+        ['custom-yellow-2']: 'hsl(var(--custom-yellow-2))',
+        ['custom-gold-1']: 'hsla(var(--custom-gold-1))',
+        ['custom-gold-2']: 'hsl(var(--custom-gold-2))',
       },
       borderRadius: {
         lg: 'var(--radius)',

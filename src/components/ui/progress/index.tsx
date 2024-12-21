@@ -1,17 +1,19 @@
-'use client'
+import * as S from './styles'
 
-import React from 'react'
-import * as S from './index.styles'
+const MAX_PERCENT = 100
 
-type Props = React.ComponentPropsWithoutRef<typeof S.ProgressRoot> & React.ComponentProps<typeof S.ProgressIndicator>
+interface Props extends S.IndicatorProps {
+  value: number
+  max: number
+}
 
-export default function Progress({ className, value, max, children, $variant, ...p }: Props) {
-  const indicatorValue = 100 - ((value ?? 0) / (max ?? 100)) * 100
+export default function Progress(p: React.PropsWithChildren<Props>) {
+  const indicatorValue = MAX_PERCENT - (p.value / p.max) * MAX_PERCENT
 
   return (
     <S.ProgressRoot {...p}>
-      <S.ProgressIndicator $variant={$variant} style={{ transform: `translateX(-${indicatorValue}%)` }} />
-      {children && <S.ProgressText>{children}</S.ProgressText>}
+      <S.ProgressIndicator variant={p.variant} style={{ transform: `translateX(-${indicatorValue}%)` }} />
+      {p.children && <S.ProgressText>{p.children}</S.ProgressText>}
     </S.ProgressRoot>
   )
 }

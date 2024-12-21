@@ -28,6 +28,8 @@ export default function Info() {
     setBackground?.(hasPlace ? undefined : '/images/environment/forest.webp')
   }, [hasPlace, infoQuery.isLoading, setBackground])
 
+  return <></>
+
   if (isDefeated)
     return (
       <>

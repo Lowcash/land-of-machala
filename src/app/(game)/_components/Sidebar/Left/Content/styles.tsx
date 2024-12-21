@@ -1,7 +1,11 @@
-import tw from "tailwind-styled-components";
+import { H3 } from '@/styles/text-server'
 
-export const SectionHeader = tw.div`rounded-md bg-slate-700 p-2 text-gray-900`
+export const Content = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='flex flex-col gap-4' />
 
-export const SectionItemsWrap = tw.div`ml-4 flex flex-col justify-center border-l-2 pl-2`
+export const SectionHeader = (p: React.HTMLAttributes<HTMLHeadingElement>) => (
+  <H3 {...p} className='rounded-md bg-black/[0.1] p-2 text-gray-900' />
+)
 
-export const ItemWrap = tw.div`inline-flex h-6 w-full justify-between gap-1`
+export const SectionItemsWrap = (p: React.HTMLAttributes<HTMLDivElement>) => (
+  <div {...p} className='ml-4 flex min-h-8 flex-col justify-center border-l-2 border-black/10 pl-2' />
+)

@@ -2,22 +2,17 @@
 
 import useNavigate from '@/hooks/useNavigate'
 
+import { FaTasks } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
 
 import { ROUTE } from '@/const'
 
-interface Props {
-  className?: string
-}
-
-export default function Quest({ children, ...p }: React.PropsWithChildren<Props>) {
+export default function Quest() {
   const navigate = useNavigate()
 
-  const handleQuestClick = () => navigate(ROUTE.QUEST)
-
   return (
-    <Button className={p.className} onClick={handleQuestClick} variant='warning' size='iconLg'>
-      {children}
+    <Button onClick={() => navigate(ROUTE.QUEST)} variant='warning' size='iconLg'>
+      <FaTasks />
     </Button>
   )
 }
