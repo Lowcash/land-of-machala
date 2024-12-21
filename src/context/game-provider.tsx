@@ -8,7 +8,7 @@ interface GameContext {
 
 const GameContext = React.createContext<GameContext | null>(null)
 
-export function GameProvider({ children, ...p }: React.PropsWithChildren) {
+export function GameProvider({ children }: React.PropsWithChildren) {
   const [background, setBackground] = React.useState<string>()
 
   React.useEffect(() => {

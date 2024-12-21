@@ -5,7 +5,7 @@ interface Props extends S.SidebarOuterProps {}
 export default function Sidebar({ children, ...p }: React.PropsWithChildren<Props>) {
   return (
     <S.SidebarOuter {...p}>
-      <S.SidebarInner>{children}</S.SidebarInner>
+      <S.SidebarInner {...p}>{children}</S.SidebarInner>
     </S.SidebarOuter>
   )
 }

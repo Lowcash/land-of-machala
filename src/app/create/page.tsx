@@ -1,10 +1,10 @@
-import Form from '@/app/create/_form'
+import CreateForm from '@/app/create/_form'
 import { Card } from '@/styles/common-server'
 
 export default function Page() {
   return (
     <Card className={styles.card}>
-      <Form />
+      <CreateForm />
     </Card>
   )
 }

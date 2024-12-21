@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/usePlayer'
 import { useWearableQuery } from '@/hooks/api/useWearable'
 
@@ -21,16 +22,19 @@ export default function SidebarLeft() {
       <Content
         data={[
           {
-            header: 'Postava',
+            header: loc.player.character,
             items: [
-              { label: 'Jméno:', value: playerQuery.data?.name ?? '' },
-              { label: 'Rasa:', value: playerQuery.data?.race ?? '' },
-              { label: 'Profese:', value: playerQuery.data?.profession ?? '' },
+              { label: `${loc.player.name}:`, value: playerQuery.data?.name ?? '' },
+              { label: `${loc.player.race}:`, value: playerQuery.data?.race ?? '' },
+              { label: `${loc.player.profession}:`, value: playerQuery.data?.profession ?? '' },
             ],
           },
-          { header: 'Peníze', items: [{ value: `${playerQuery.data?.money ?? 0} zl` }] },
           {
-            header: 'HP',
+            header: `${loc.player.money}:`,
+            items: [{ value: `${playerQuery.data?.money ?? 0} ${loc.common.currency}` }],
+          },
+          {
+            header: `${loc.player.hp}:`,
             items: [
               {
                 value: (
@@ -42,34 +46,34 @@ export default function SidebarLeft() {
             ],
           },
           {
-            header: 'Zbraně',
+            header: loc.weapon.header_multi,
             items: [
-              { label: 'Levá ruka:', value: playerWearableQuery.data?.left_hand?.weapon.name ?? EMPTY },
-              { label: 'Pravá ruka:', value: playerWearableQuery.data?.right_hand?.weapon.name ?? EMPTY },
+              { label: `${loc.weapon.left_hand}:`, value: playerWearableQuery.data?.left_hand?.weapon.name ?? EMPTY },
+              { label: `${loc.weapon.right_hand}:`, value: playerWearableQuery.data?.right_hand?.weapon.name ?? EMPTY },
             ],
           },
           {
-            header: 'Zbroj',
+            header: loc.armor.header,
             items: [
-              { label: 'Hlava:', value: playerWearableQuery.data?.head?.armor.name ?? EMPTY },
-              { label: 'Ramena:', value: playerWearableQuery.data?.shoulder?.armor.name ?? EMPTY },
-              { label: 'Tělo:', value: playerWearableQuery.data?.chest?.armor.name ?? EMPTY },
-              { label: 'Ruce:', value: playerWearableQuery.data?.hand?.armor.name ?? EMPTY },
-              { label: 'Kalhoty:', value: playerWearableQuery.data?.pants?.armor.name ?? EMPTY },
-              { label: 'Boty:', value: playerWearableQuery.data?.boots?.armor.name ?? EMPTY },
+              { label: `${loc.armor.head}:`, value: playerWearableQuery.data?.head?.armor.name ?? EMPTY },
+              { label: `${loc.armor.shoulder}:`, value: playerWearableQuery.data?.shoulder?.armor.name ?? EMPTY },
+              { label: `${loc.armor.chest}:`, value: playerWearableQuery.data?.chest?.armor.name ?? EMPTY },
+              { label: `${loc.armor.hand}:`, value: playerWearableQuery.data?.hand?.armor.name ?? EMPTY },
+              { label: `${loc.armor.pants}:`, value: playerWearableQuery.data?.pants?.armor.name ?? EMPTY },
+              { label: `${loc.armor.boots}:`, value: playerWearableQuery.data?.boots?.armor.name ?? EMPTY },
             ],
           },
           {
-            header: 'Staty',
+            header: loc.stats.header,
             items: [
-              { label: 'Level:', value: `${playerStatsQuery.data?.level}` },
+              { label: `${loc.stats.level}:`, value: `${playerStatsQuery.data?.level}` },
               {
-                label: 'Poškození:',
+                label: `${loc.stats.damage}:`,
                 value: `${playerStatsQuery.data?.damage_min} - ${playerStatsQuery.data?.damage_max}`,
               },
-              { label: 'Síla:', value: `${playerStatsQuery.data?.strength}` },
-              { label: 'Obratnost:', value: `${playerStatsQuery.data?.agility}` },
-              { label: 'Inteligence:', value: `${playerStatsQuery.data?.intelligence}` },
+              { label: `${loc.stats.strength}:`, value: `${playerStatsQuery.data?.strength}` },
+              { label: `${loc.stats.agility}:`, value: `${playerStatsQuery.data?.agility}` },
+              { label: `${loc.stats.intelligence}:`, value: `${playerStatsQuery.data?.intelligence}` },
             ],
           },
         ]}

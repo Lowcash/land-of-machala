@@ -3,8 +3,8 @@
 import { signIn } from 'next-auth/react'
 
 import * as S from './styles'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 
 export default function Landing() {
   return (

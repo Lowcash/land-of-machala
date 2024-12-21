@@ -1,20 +1,21 @@
 'use client'
 
+import { loc } from '@/local'
+import useNavigate from '@/hooks/useNavigate'
 import { useForm } from 'react-hook-form'
 import type { MutationInput } from '@/lib/utils'
 import { Profession, Race } from '@prisma/client'
 import { useCreatePlayerMutation } from '@/hooks/api/usePlayer'
-import useNavigate from '@/hooks/useNavigate'
 
 import Option from '@/components/option'
 import { Button } from '@/components/ui/button'
-import { Form as UIForm, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel } from '@/components/ui/form'
 
 import { PROFESSIONS, RACES } from '@/const'
 
 type Values = MutationInput<typeof useCreatePlayerMutation>
 
-export default function Form() {
+export default function CreateForm() {
   const navigate = useNavigate()
 
   const createPlayerMutation = useCreatePlayerMutation({
@@ -33,14 +34,14 @@ export default function Form() {
   const handleSubmitForm = (values: Values) => createPlayerMutation.mutate(values)
 
   return (
-    <UIForm {...form}>
+    <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmitForm)} className='flex flex-col gap-4'>
         <FormField
           control={form.control}
           name='race'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Profese</FormLabel>
+              <FormLabel>{loc.player.race}</FormLabel>
               <FormControl>
                 <Option
                   value={field.value}
@@ -58,7 +59,7 @@ export default function Form() {
           name='profession'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Profese</FormLabel>
+              <FormLabel>{loc.player.profession}</FormLabel>
               <FormControl>
                 <Option
                   value={field.value}
@@ -72,9 +73,9 @@ export default function Form() {
         />
 
         <Button className='w-full' variant='warning'>
-          Vytvořit charakter
+          {loc.create.submit}
         </Button>
       </form>
-    </UIForm>
+    </Form>
   )
 }
