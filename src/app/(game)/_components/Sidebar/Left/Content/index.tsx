@@ -1,6 +1,5 @@
-import { isString } from '@/lib/typeguard'
-
 import * as S from './styles'
+import Item from '@/app/(game)/_components/Sidebar/Left/Content/Item'
 
 interface Props {
   data: Array<{
@@ -9,33 +8,27 @@ interface Props {
   }>
 }
 
-export default function Content({ data }: Props) {
+export default function Content(p: Props) {
   return (
-    <div>
-      {data.map((section, sectionIdx) => (
+    <S.Content>
+      {p.data.map((section, sectionIdx) => (
         <div key={`MenuContentSection_${sectionIdx}`}>
           {section.header && <S.SectionHeader>{section.header}</S.SectionHeader>}
           <S.SectionItemsWrap>
             {section.items.map((item, itemIdx) => (
-              <Item key={`MenuContentItem_${itemIdx}`} {...item} />
+              <Item
+                {...item}
+                key={`MenuContentItem_${itemIdx}`}
+                className={itemIdx !== section.items.length - 1 ? styles.undeline : undefined}
+              />
             ))}
           </S.SectionItemsWrap>
         </div>
       ))}
-    </div>
+    </S.Content>
   )
 }
 
-interface ItemProps {
-  label?: React.ReactNode
-  value?: React.ReactNode
-}
-
-function Item(p: ItemProps) {
-  return (
-    <S.ItemWrap>
-      <span>{p.label}</span>
-      {isString(p.value) ? <span>{p.value}</span> : p.value}
-    </S.ItemWrap>
-  )
+const styles = {
+  undeline: 'border-b border-dashed border-black/20',
 }

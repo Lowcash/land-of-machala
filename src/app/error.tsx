@@ -7,10 +7,10 @@ interface Props {
   reset: () => void
 }
 
-export default function Error({ error, reset }: Props) {
+export default function Error(p: Props) {
   return (
     <>
-      Error: {error.message || 'Something went wrong'} <Button onClick={reset}>Try again</Button>
+      Error: {p.error.message || 'Something went wrong'} <Button onClick={p.reset}>Try again</Button>
     </>
   )
 }

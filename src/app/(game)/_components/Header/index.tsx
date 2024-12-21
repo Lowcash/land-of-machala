@@ -1,10 +1,12 @@
-import User from './User'
-import * as S from './styles'
+import * as S from '@/app/(game)/_components/Header/styles'
+import User from '@/app/(game)/_components/Header/User'
 
 export default function Header() {
   return (
-    <S.Header>
-      <User />
-    </S.Header>
+    <S.OuterWrap>
+      <S.InnerWrap>
+        <User />
+      </S.InnerWrap>
+    </S.OuterWrap>
   )
 }

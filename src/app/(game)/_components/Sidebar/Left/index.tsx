@@ -3,9 +3,9 @@
 import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/usePlayer'
 import { useWearableQuery } from '@/hooks/api/useWearable'
 
-import Content from './Content'
-import Sidebar from '..'
-import Progress from '@/components/ui/progress'
+import Sidebar from '@/app/(game)/_components/Sidebar'
+import Content from '@/app/(game)/_components/Sidebar/Left/Content'
+import Progress from '@/components/ui/Progress'
 
 const EMPTY = '-'
 
@@ -17,7 +17,7 @@ export default function SidebarLeft() {
   if (playerQuery.isLoading || playerStatsQuery.isLoading || playerWearableQuery.isLoading) return <></>
 
   return (
-    <Sidebar $open={true} $position='left'>
+    <Sidebar open={true} position='left'>
       <Content
         data={[
           {
@@ -34,7 +34,7 @@ export default function SidebarLeft() {
             items: [
               {
                 value: (
-                  <Progress value={playerQuery.data?.hp_actual} max={playerQuery.data?.hp_max ?? 0} $variant='red'>
+                  <Progress value={playerQuery.data?.hp_actual ?? 0} max={playerQuery.data?.hp_max ?? 0} variant='red'>
                     {playerQuery.data?.hp_actual ?? 0} / {playerQuery.data?.hp_max ?? 0}
                   </Progress>
                 ),

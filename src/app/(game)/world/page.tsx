@@ -5,9 +5,13 @@ export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   return (
-    <div className='flex h-full flex-col justify-start gap-4 p-4'>
+    <div className={styles.page}>
       <Action />
       <Info />
     </div>
   )
+}
+
+const styles = {
+  page: 'flex h-full flex-col justify-start gap-4 p-4',
 }
