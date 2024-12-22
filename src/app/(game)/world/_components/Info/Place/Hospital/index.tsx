@@ -11,8 +11,8 @@ import {
 } from '@/hooks/api/useHospital'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
-import * as S from '../styles'
 import { H3, Text } from '@/styles/text-server'
+import { Card } from '@/styles/common-server'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/alert'
 import Potions from './Potions'
@@ -38,7 +38,7 @@ export default function Hospital() {
   const isDefeated = !!gameInfoQuery.data?.defeated
 
   return (
-    <S.Place>
+    <>
       <Text>
         {loc.place.your_are_in} <b>{hospitalQuery.data?.name}</b>
       </Text>
@@ -75,7 +75,7 @@ export default function Hospital() {
 
           {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
             <Text>
-              {loc.quest.enemy_slain.description}&nbsp;
+              {loc.quest.enemy_slain.description_hospital}&nbsp;
               <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
                 {loc.quest.enemy_slain.accept}
               </Button>
@@ -97,11 +97,12 @@ export default function Hospital() {
             </Text>
           )}
 
-          <H3>{loc.potion.buy}</H3>
-
-          <Potions />
+          <Card.Inner>
+            <H3>{loc.potion.buy}</H3>
+            <Potions />
+          </Card.Inner>
         </>
       )}
-    </S.Place>
+    </>
   )
 }

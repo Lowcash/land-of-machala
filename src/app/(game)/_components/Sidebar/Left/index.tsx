@@ -34,7 +34,7 @@ export default function SidebarLeft() {
             items: [{ value: `${playerQuery.data?.money ?? 0} ${loc.common.currency}` }],
           },
           {
-            header: `${loc.player.hp}:`,
+            header: `${loc.common.hp}:`,
             items: [
               {
                 value: (

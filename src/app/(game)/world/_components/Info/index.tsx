@@ -1,91 +1,86 @@
 'use client'
 
 import React from 'react'
+import { loc } from '@/local'
 import { useGame } from '@/context/game-provider'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
-import * as S from './styles'
+import { Text } from '@/styles/text-server'
+import { Card } from '@/styles/common-server'
 import Image from 'next/image'
 import Place from './Place'
 
 export default function Info() {
   const infoQuery = useInfoQuery()
 
-  // @ts-ignore
-  const hasEnemy = !!infoQuery.data.enemy
-  // @ts-ignore
-  const hasPlace = !!infoQuery.data.place
-  // @ts-ignore
-  const hasLoot = !!infoQuery.data.loot
-  // @ts-ignore
-  const isDefeated = !!infoQuery.data.defeated
+  const hasEnemy = !!infoQuery.data?.enemy
+  const hasPlace = !!infoQuery.data?.place
+  const hasLoot = !!infoQuery.data?.loot
+
+  const isDefeated = !!infoQuery.data?.defeated
 
   useBackground(hasPlace ? 'place' : 'world')
 
   if (isDefeated)
     return (
       <>
-        <S.Info>
-          <S.Text>Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!</S.Text>
-        </S.Info>
+        <Card>
+          <Text>{loc.enemy.player_destroyed}</Text>
+        </Card>
         {hasPlace && (
-          <S.Info>
-            {/* @ts-ignore */}
-            <Place {...infoQuery.data.place} forceSubplace='hospital' defeated />
-          </S.Info>
+          <Card>
+            <Place forceSubplace='hospital' />
+          </Card>
         )}
       </>
     )
 
   if (hasLoot) {
-    // @ts-ignore
-    const armors = infoQuery.data.loot?.armors_loot.map((x: any) => x.armor.name)
-    // @ts-ignore
-    const weapons = infoQuery.data.loot?.weapons_loot.map((x: any) => x.weapon.name)
+    const armors = infoQuery.data?.loot?.armors_loot.map((x: any) => x.armor.name)
+    const weapons = infoQuery.data?.loot?.weapons_loot.map((x: any) => x.weapon.name)
 
     return (
-      <S.Info>
-        V lootu se nachází: <br /> <br />
+      <Card>
+        {loc.loot.found}:
         {armors?.map((x: string, idx: number) => (
-          <S.Text key={`LootArmor_${idx}`}>
+          <Text key={`LootArmor_${idx}`}>
             {x} <br />
-          </S.Text>
+          </Text>
         ))}
         {weapons?.map((x: string, idx: number) => (
-          <S.Text key={`LootWeapon_${idx}`}>
+          <Text key={`LootWeapon_${idx}`}>
             {x} <br />
-          </S.Text>
+          </Text>
         ))}
-        {/* @ts-ignore */}
-        <S.Text>{infoQuery.data.loot.money} zlaťáků</S.Text>
-      </S.Info>
+        <Text>
+          {infoQuery.data?.loot?.money} {loc.common.currency}
+        </Text>
+      </Card>
     )
   }
 
   if (hasEnemy) {
-    // @ts-ignore
-    const name = infoQuery.data.enemy.enemy?.name
-    // @ts-ignore
-    const hpActual = infoQuery.data.enemy.hp_actual
-    // @ts-ignore
-    const hpMax = infoQuery.data.enemy.hp_max
+    const name = infoQuery.data?.enemy?.enemy?.name
+    const hpActual = infoQuery.data?.enemy?.hp_actual
+    const hpMax = infoQuery.data?.enemy?.hp_max
 
     return (
       <>
-        <S.Info>
-          <S.Text>
-            Najednou se před tebou objevil{' '}
+        <Card>
+          <Text>
+            {loc.enemy.appear}&nbsp;
             <b>
               {name} ({hpActual}/{hpMax})
-            </b>{' '}
-            a vyzývá tě na souboj
-          </S.Text>
-        </S.Info>
+            </b>
+            &nbsp;
+            {loc.enemy.challenges}
+          </Text>
+        </Card>
 
         <Image
           priority
           src={`/images/enemies/${name}.png`}
-          alt={name}
+          alt={name ?? loc.enemy.header}
           width={500}
           height={500}
           className='ml-auto mr-auto mt-auto'
@@ -96,13 +91,12 @@ export default function Info() {
 
   if (hasPlace)
     return (
-      <S.Info>
-        {/* @ts-ignore */}
-        <Place {...infoQuery.data.place} />
-      </S.Info>
+      <Card>
+        <Place />
+      </Card>
     )
 
-  return <S.Info>Jsi na průzkumu světa!</S.Info>
+  return <Card>{loc.world.explore}</Card>
 }
 
 function useBackground(location: 'place' | 'world') {

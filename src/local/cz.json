@@ -4,20 +4,32 @@
   },
   "common": {
     "back": "Vrátit se",
-    "currency": "zl",
+    "back_world": "Zpět do světa",
+    "currency": "zlaťáků",
+    "currency_abbr": "zl",
     "sign_in": "",
     "sign_out": "Odhlásit se",
     "coord_x": "x",
-    "coord_y": "y"
+    "coord_y": "y",
+    "buy": "Koupit",
+    "sell": "Prodat",
+    "use": "Použít",
+    "wear": "Obléct",
+    "hp": "HP",
+    "mana": "Mana",
+    "price": "Cena"
+  },
+  "error": {
+    "header": "Chyba",
+    "something_went_wrong": "Něco šlo špatně",
+    "try_again": "Zkusit znovu"
   },
   "player": {
     "character": "Postava",
     "name": "Jméno",
     "race": "Rasa",
     "profession": "Profese",
-    "money": "Peníze",
-    "hp": "HP",
-    "mana": "Mana"
+    "money": "Peníze"
   },
   "stats": {
     "header": "Staty",
@@ -39,20 +51,41 @@
       "resurrect_accept": "Uzdravit!"
     },
     "armory": {
-      "header": "Zbrojírna"
+      "header": "Zbrojírna",
+      "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
+      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)"
     },
     "bank": {
-      "header": "Banka"
+      "header": "Banka",
+      "deposit": "Uložit",
+      "withdraw": "Vybrat",
+      "deposited_money": "Uloženo peněz",
+      "deposit_money": "Uložit Peníze",
+      "withdraw_money": "Vybrat Peníze",
+      "deposit_weapon": "Uložit Zbraň",
+      "withdraw_weapon": "Vybrat Zbraň",
+      "deposit_armor": "Uložit Zbroj",
+      "withdraw_armor": "Vybrat Zbroj",
+      "deposit_potion": "Uložit Potion",
+      "withdraw_potion": "Vybrat Potion",
+      "deposit_success": "Zboží uloženo v bance",
+      "withdraw_success": "Zboží vybráno z banky",
+      "deposit_or_withdraw_failed": "Nějak se nám to zkomplikovalo?!"
     }
   },
   "weapon": {
     "header": "Zbraň",
     "header_multi": "Zbraně",
+    "buy": "Koupit Zbraň",
+    "sell": "Prodat Zbraň",
     "left_hand": "Levá ruka",
     "right_hand": "Pravá ruka"
   },
   "armor": {
     "header": "Zbroj",
+    "header_multi": "Zbroje",
+    "buy": "Koupit Zbroj",
+    "sell": "Prodat Zbroj",
     "head": "Hlava",
     "shoulder": "Ramena",
     "chest": "Tělo",
@@ -62,16 +95,49 @@
   },
   "potion": {
     "header": "Potion",
-    "buy": "Koupit Potion"
+    "header_multi": "Potiony",
+    "buy": "Koupit Potion",
+    "buy_success": "Tady to máš",
+    "buy_failed": "Přijď, až na to budeš mít (nedostatek peněz)",
+    "efficiency": "Účinnost"
+  },
+  "enemy": {
+    "header": "Nepřítel",
+    "appear": "Najednou se před tebou objevil",
+    "attack": "Útok",
+    "run_away": "Utéct",
+    "challenges": "a vyzývá tě na souboj",
+    "player_destroyed": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
+  },
+  "inventory": {
+    "header": "Inventář",
+    "found": "V batohu se nachází",
+    "empty": "V batohu nic nemáš"
+  },
+  "loot": {
+    "header": "Loot",
+    "found": "V lootu se nachází"
+  },
+  "world": {
+    "explore": "Jsi na průzkumu světa!"
   },
   "quest": {
+    "header": "Quest",
+    "header_multi": "Questy",
+    "empty": "Žádný quest nemáš",
     "enemy_slain": {
-      "description": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
+      "description_inventory": "popis slain enemy questu",
+      "description_hospital": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
       "accept": "Beru",
       "accepted": "Hezky pěkně, dej se do toho!",
       "complete": "Odevzdat",
       "completed": "Tak to je nádhera, zde je tvoje odměna",
-      "completed_looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!"
+      "completed_looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!",
+      "slained": "Zabito nepřátel"
+    },
+    "troll_slain": {
+      "description_inventory": "popis slain troll questu",
+      "slained": "Zabito nepřátel"
     }
   }
 }

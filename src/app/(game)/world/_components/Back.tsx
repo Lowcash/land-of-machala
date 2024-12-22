@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import useNavigate from '@/hooks/useNavigate'
 
 import { Button } from '@/components/ui/button'
@@ -14,9 +15,9 @@ export default function Back() {
 
   return (
     <>
-      <Button onClick={handleBackClick}>
+      <Button size={'shrink-sm'} onClick={handleBackClick}>
         <FaChevronLeft />
-        &nbsp; Zpět do světa
+        &nbsp;{loc.common.back_world}
       </Button>
     </>
   )

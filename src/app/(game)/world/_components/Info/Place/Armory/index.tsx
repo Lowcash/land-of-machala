@@ -1,21 +1,20 @@
 'use client'
 
 import React from 'react'
+import { loc } from '@/local'
 import { useArmoryQuery, useBuyItemMutation, useSellItemMutation } from '@/hooks/api/useArmory'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
 import { H3, Text } from '@/styles/text-server'
+import { Card } from '@/styles/common-server'
 import Loading from '@/components/loading'
 import Alert from '@/components/alert'
 
 export default function Armory() {
   const infoQuery = useInfoQuery()
 
-  // @ts-ignore
-  const armoryId = infoQuery.data?.place?.armory.id
-
-  // @ts-ignore
+  const armoryId = infoQuery.data?.place?.armory?.id!
   const armoryQuery = useArmoryQuery({ armoryId })
 
   const buyItemMutation = useBuyItemMutation()
@@ -27,11 +26,9 @@ export default function Armory() {
 
       switch (action) {
         case 'buy':
-          // @ts-ignore
           buyItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
           break
         case 'sell':
-          // @ts-ignore
           sellItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
           break
       }
@@ -66,62 +63,43 @@ export default function Armory() {
   return (
     <>
       <Text>
-        Nacházíš se v <b>{armoryQuery.data?.name}</b>
+        {loc.place.your_are_in} <b>{armoryQuery.data?.name}</b>
       </Text>
-      <br />
+
       <Text>{armoryQuery.data?.description}</Text>
-      <br />
+
       <Text>{armoryQuery.data?.subdescription}</Text>
 
       {!buyItemMutation.isIdle && (
-        <>
-          <br />
-          <Alert>
-            {buyItemMutation.isSuccess
-              ? 'Zboží zakoupeno (najdeš jej v inventáři)'
-              : 'Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)'}
-          </Alert>
-        </>
+        <Alert>{buyItemMutation.isSuccess ? loc.place.armory.buy_success : loc.place.armory.buy_failed}</Alert>
       )}
 
-      {hasBuyWeapons && (
-        <>
-          <br />
-          <br />
-          <H3>Koupit Zbraň</H3>
-          <br />
-          <WeaponMarket items={buyWeapons!} action='buy' onAction={handleAction} />
-        </>
-      )}
-      {hasSellWeapons && (
-        <>
-          <br />
-          <br />
-          <H3>Prodat Zbraň</H3>
-          <br />
-          <WeaponMarket items={sellWeapons!} action='sell' onAction={handleAction} />
-        </>
-      )}
+        {hasBuyWeapons && (
+          <Card.Inner>
+            <H3>{loc.weapon.buy}</H3>
+            <WeaponMarket items={buyWeapons!} action='buy' onAction={handleAction} />
+          </Card.Inner>
+        )}
+        {hasSellWeapons && (
+          <Card.Inner>
+            <H3>{loc.weapon.sell}</H3>
+            <WeaponMarket items={sellWeapons!} action='sell' onAction={handleAction} />
+          </Card.Inner>
+        )}
 
-      {hasBuyArmors && (
-        <>
-          <br />
-          <br />
-          <H3>Koupit Zbroj</H3>
-          <br />
-          <ArmorMarket items={buyArmors!} action='buy' onAction={handleAction} />
-        </>
-      )}
+        {hasBuyArmors && (
+          <Card.Inner>
+            <H3>{loc.armor.buy}</H3>
+            <ArmorMarket items={buyArmors!} action='buy' onAction={handleAction} />
+          </Card.Inner>
+        )}
 
-      {hasSellArmors && (
-        <>
-          <br />
-          <br />
-          <H3>Prodat Zbroj</H3>
-          <br />
-          <ArmorMarket items={sellArmors!} action='sell' onAction={handleAction} />
-        </>
-      )}
+        {hasSellArmors && (
+          <Card.Inner>
+            <H3>{loc.armor.sell}</H3>
+            <ArmorMarket items={sellArmors!} action='sell' onAction={handleAction} />
+          </Card.Inner>
+        )}
     </>
   )
 }

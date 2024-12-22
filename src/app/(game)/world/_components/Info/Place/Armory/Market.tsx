@@ -1,3 +1,4 @@
+import { loc } from '@/local'
 import type { Armor, Weapon } from '@prisma/client'
 
 import { Text } from '@/styles/text-server'
@@ -24,8 +25,9 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: 'Poškození' },
-        { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
+        { className: 'text-center', content: loc.stats.damage },
+        { className: 'text-right', content: loc.common.price },
+        { className: 'text-right', content: loc.common[p.action] },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -40,13 +42,17 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
         {
           className: 'text-right',
           content: (
-            <>
-              <Text>{x.price} zlaťáků</Text>
-              &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'weapon')}>
-                <PaperPlaneIcon />
-              </Button>
-            </>
+            <Text>
+              {x.price} {loc.common.currency}
+            </Text>
+          ),
+        },
+        {
+          className: 'text-right',
+          content: (
+            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'weapon')}>
+              <PaperPlaneIcon />
+            </Button>
           ),
         },
       ])}
@@ -60,11 +66,12 @@ export function ArmorMarket(p: MarketProps<Armor>) {
       columns={[
         {},
         {},
-        { className: 'text-center', content: 'Zbroj' },
-        { className: 'text-center', content: 'Síla' },
-        { className: 'text-center', content: 'Obratnost' },
-        { className: 'text-center', content: 'Inteligence' },
-        { className: 'text-right', content: `${p.action === 'buy' ? 'Koupit' : 'Prodat'} (Cena)` },
+        { className: 'text-center', content: loc.armor.header },
+        { className: 'text-center', content: loc.stats.strength },
+        { className: 'text-center', content: loc.stats.agility },
+        { className: 'text-center', content: loc.stats.intelligence },
+        { className: 'text-right', content: loc.common.price },
+        { className: 'text-right', content: loc.common[p.action] },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -76,13 +83,17 @@ export function ArmorMarket(p: MarketProps<Armor>) {
         {
           className: 'text-right',
           content: (
-            <>
-              <Text>{x.price} zlaťáků</Text>
-              &nbsp;
-              <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'armor')}>
-                <PaperPlaneIcon />
-              </Button>
-            </>
+            <Text>
+              {x.price} {loc.common.currency}
+            </Text>
+          ),
+        },
+        {
+          className: 'text-right',
+          content: (
+            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'armor')}>
+              <PaperPlaneIcon />
+            </Button>
           ),
         },
       ])}

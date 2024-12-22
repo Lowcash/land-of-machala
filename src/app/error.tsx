@@ -1,5 +1,7 @@
 'use client'
 
+import { loc } from '@/local'
+
 import { Button } from '@/components/ui/button'
 
 interface Props {
@@ -10,7 +12,8 @@ interface Props {
 export default function Error(p: Props) {
   return (
     <>
-      Error: {p.error.message || 'Something went wrong'} <Button onClick={p.reset}>Try again</Button>
+      {loc.error.header}: {p.error.message || loc.error.something_went_wrong}{' '}
+      <Button onClick={p.reset}>{loc.error.try_again}</Button>
     </>
   )
 }

@@ -1,3 +1,4 @@
+import React from 'react'
 import { cn } from '@/lib/utils'
 
 import { Label } from '@/components/ui/label'
@@ -28,6 +29,6 @@ export const Link = (p: React.HTMLAttributes<HTMLAnchorElement> & TextProps) => 
   <Text {...p} as='a' className={cn('cursor-pointer hover:text-gray-600', p.className)} />
 )
 
-export const Input = (p: React.HTMLAttributes<HTMLInputElement>) => (
-  <input {...p} className={cn('max-w-28 rounded-md border-2 bg-transparent pl-2', p.className)} />
-)
+export const Input = React.forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>((p, ref) => (
+  <input {...p} ref={ref} className={cn('max-w-28 rounded-md border-2 bg-transparent pl-2', p.className)} />
+))
