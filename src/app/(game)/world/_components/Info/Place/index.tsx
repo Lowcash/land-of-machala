@@ -46,7 +46,7 @@ export default function Place(p: Props) {
       <Text>{gameInfo.data?.place.description}</Text>
       <List>
         {SUBPLACE.map((x) => (
-          <li>
+          <li key={`SubPlace_${x}`}>
             <Link onClick={() => setSubPlace(x)}>{loc.place[x].header}</Link>
           </li>
         ))}

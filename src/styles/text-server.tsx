@@ -15,13 +15,15 @@ interface TextProps {
   light?: boolean
 }
 
-export const Text = <C extends React.ElementType = 'label'>(
-  p: React.HtmlHTMLAttributes<HTMLElement> & TextProps & { as?: C },
-) => {
+export const Text = <C extends React.ElementType = 'label'>({
+  bold,
+  light,
+  ...p
+}: React.HtmlHTMLAttributes<HTMLElement> & TextProps & { as?: C }) => {
   const { as: Component = Label } = p
 
   return (
-    <Component {...p} className={cn('text-base', !!p.bold && 'font-bold', !!p.light && 'text-gray-500', p.className)} />
+    <Component {...p} className={cn('text-base', !!bold && 'font-bold', !!light && 'text-gray-500', p.className)} />
   )
 }
 
