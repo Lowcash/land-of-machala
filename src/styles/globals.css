@@ -4,64 +4,53 @@
  
 @layer base {
   :root {
-    --custom-yellow-1: 42 49% 93%;
-    --custom-yellow-2: 44 67% 88%;
+    --custom-yellow-1: hsl(42 49% 93%);
+    --custom-yellow-2: hsl(44 67% 88%);
 
-    --custom-gold-1: 40, 50%, 88%, 0.933;
-    --custom-gold-2: 41, 96%, 40%;
+    --custom-gold-1: hsla(40, 50%, 88%, 0.933);
+    --custom-gold-2: hsl(41, 96%, 40%);
 
-    /* >>> generated <<< */
     --background: var(--custom-yellow-1);
-    --foreground: 220.91deg 39.29% 10.98%;
+    --foreground: hsla(220.91deg 39.29% 10.98%);
     
-    /* --destructive: 0 62.8% 30.6%; */
-    --destructive: 0 54% 72%;
-    --destructive-foreground: 0 0% 0%;
-    
-    /* --warning: 41 96% 40%; */
-    --warning: 41 69% 73%;
-    --warning-foreground: 0 0% 0%;
+    --scrollbar-thumb: hsl(41, 69%, 73%);
+    --scrollbar-track: hsl(45, 47%, 87%);  
 
-    /* --success: 86 78% 27%; */
-    --success: 86 33% 67%;
-    --success-foreground: 0 0% 0%;
-
-    /* --info: 217 91% 60%; */
-    --info: 217 61% 83%;
-    --info-foreground: 0 0% 0%;
-
-    /* --secondary: 0 0% 67%; */
-    --secondary: 0 0% 86%;
-    --secondary-foreground: 0 0% 0%;
+    --destructive: hsl(0 54% 72%);
+    --destructive-foreground: hsl(0 0% 0%);
     
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
- 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
- 
-    --primary: 0 0% 0%;
-    --primary-foreground: 222.2 47.4% 11.2%;
- 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
- 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --warning: hsl(41 69% 73%);
+    --warning-foreground: hsl(0 0% 0%);
+
+    --success: hsl(86 33% 67%);
+    --success-foreground: hsl(0 0% 0%);
+
+    --info: hsl(217 61% 83%);
+    --info-foreground: hsl(0 0% 0%);
+
+    --secondary: hsl(0 0% 86%);
+    --secondary-foreground: hsl(0 0% 0%);
     
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --card: hsl(222.2 84% 4.9%);
+    --card-foreground: hsl(210 40% 98%);
+ 
+    --popover: hsl(222.2 84% 4.9%);
+    --popover-foreground: hsl(210 40% 98%);
+ 
+    --primary: hsl(0 0% 0%);
+    --primary-foreground: hsl(222.2 47.4% 11.2%);
+ 
+    --muted: hsl(217.2 32.6% 17.5%);
+    --muted-foreground: hsl(215 20.2% 65.1%);
+ 
+    --accent: hsl(217.2 32.6% 17.5%);
+    --accent-foreground: hsl(210 40% 98%);
+    
+    --border: hsl(217.2 32.6% 17.5%);
+    --input: hsl(217.2 32.6% 17.5%);
+    --ring: hsl(212.7 26.8% 83.9%);
 
     --radius: 0.5rem;
-
-    /* >>> custom <<< */
-    --red: rgb(194 65 12);
-    --green: rgb(77 124 15);
-    --blue: rgb(59 130 246);
-    --gold: hsl(41, 96%, 40%);
-    --gold2: hsla(40, 50%, 88%, 0.933);
-    --gold3: #f5e8c7cc;
   }
 }
  
@@ -73,3 +62,11 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {  
+  * {  
+    @apply scrollbar-thin   
+           scrollbar-track-scrollbar-track   
+           scrollbar-thumb-scrollbar;
+  }  
+} 
