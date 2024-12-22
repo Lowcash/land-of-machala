@@ -4,7 +4,6 @@ import React from 'react'
 import { loc } from '@/local'
 import { useInfoQuery } from '@/hooks/api/useGame'
 
-import * as S from './styles'
 import { List } from '@/styles/common-server'
 import { Link, Text } from '@/styles/text-server'
 import { Button } from '@/components/ui/button'
@@ -16,8 +15,12 @@ const SUBPLACE = ['hospital', 'armory', 'bank'] as const
 
 type SubPlace = (typeof SUBPLACE)[number]
 
-export default function Place() {
-  const [subPlace, setSubPlace] = React.useState<SubPlace | undefined>()
+interface Props {
+  forceSubplace?: SubPlace
+}
+
+export default function Place(p: Props) {
+  const [subPlace, setSubPlace] = React.useState<SubPlace | undefined>(p.forceSubplace)
 
   const gameInfo = useInfoQuery()
 
@@ -25,18 +28,18 @@ export default function Place() {
 
   if (!!subPlace)
     return (
-      <S.Place>
+      <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
           {loc.common.back}
         </Button>
         {subPlace === 'hospital' && <Hospital />}
         {subPlace === 'armory' && <Armory />}
         {subPlace === 'bank' && <Bank />}
-      </S.Place>
+      </>
     )
 
   return (
-    <S.Place>
+    <>
       <Text>
         {loc.place.your_are_in} <b>{gameInfo.data?.place.name}</b>
       </Text>
@@ -48,6 +51,6 @@ export default function Place() {
           </li>
         ))}
       </List>
-    </S.Place>
+    </>
   )
 }

@@ -1,4 +1,4 @@
-import * as S from './index.styles'
+import * as S from './styles'
 
 type Cell = { className?: string; content?: React.ReactNode }
 
@@ -13,27 +13,27 @@ export default function Table({ hideHeader = false, ...p }: Props) {
   return (
     <S.Table>
       {!hideHeader && (
-        <thead>
-          <tr key={`TableHeadRow_${0}`}>
+        <S.Table.HeaderSection>
+          <S.Table.Row key={`TableHeaderRow_${0}`}>
             {p.columns?.map((cell, idx) => (
-              <th key={`TableHeadCell_${idx}`} className={cell.className}>
+              <S.Table.HeaderCell key={`TableHeaderCell_${idx}`} className={cell.className}>
                 {cell.content}
-              </th>
+              </S.Table.HeaderCell>
             ))}
-          </tr>
-        </thead>
+          </S.Table.Row>
+        </S.Table.HeaderSection>
       )}
-      <tbody>
+      <S.Table.BodySection>
         {p.cells?.map((row, rowIdx) => (
-          <tr key={`TableBodyRow_${rowIdx}`}>
+          <S.Table.Row key={`TableBodyRow_${rowIdx}`}>
             {row.map((cell, cellIdx) => (
-              <td key={`TableBodyCell_${rowIdx}_${cellIdx}`} className={cell.className}>
+              <S.Table.BodyCell key={`TableBodyCell_${rowIdx}_${cellIdx}`} className={cell.className}>
                 {cell.content}
-              </td>
+              </S.Table.BodyCell>
             ))}
-          </tr>
+          </S.Table.Row>
         ))}
-      </tbody>
+      </S.Table.BodySection>
     </S.Table>
   )
 }

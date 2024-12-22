@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import Table from '@/components/table'
@@ -14,11 +15,11 @@ export default function Armors() {
       columns={[
         {},
         {},
-        { className: 'text-center', content: 'Zbroj' },
-        { className: 'text-center', content: 'Síla' },
-        { className: 'text-center', content: 'Obratnost' },
-        { className: 'text-center', content: 'Inteligence' },
-        { className: 'text-center', content: 'Obléct' },
+        { className: 'text-center', content: loc.armor.header },
+        { className: 'text-center', content: loc.stats.strength },
+        { className: 'text-center', content: loc.stats.agility },
+        { className: 'text-center', content: loc.stats.intelligence },
+        { className: 'text-center', content: loc.common.wear },
       ]}
       cells={showInventory.data?.armors.map((x) => [
         { className: 'text-left', content: x.armor.name },

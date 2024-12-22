@@ -1,6 +1,7 @@
 'use client'
 
 import React from 'react'
+import { loc } from '@/local'
 import type { Potion } from '@prisma/client'
 import { useInfoQuery } from '@/hooks/api/useGame'
 import { useBuyPotionMutation, useHospitalQuery } from '@/hooks/api/useHospital'
@@ -16,14 +17,11 @@ type PotionItem = Potion & { price: number }
 export default function Potions() {
   const gameInfoQuery = useInfoQuery()
 
-  // @ts-ignore
-  const hospitalId = gameInfoQuery?.data?.place.hospital.id
-  // @ts-ignore
+  const hospitalId = gameInfoQuery?.data?.place?.hospital?.id!
   const hospitalQuery = useHospitalQuery({ hospitalId })
 
   const buyPotionMutation = useBuyPotionMutation()
 
-  // @ts-ignore
   const handleBuyPotion = (potion: PotionItem) => buyPotionMutation.mutate({ hospitalId, potionId: potion.id })
 
   const potions = React.useMemo(
@@ -38,38 +36,36 @@ export default function Potions() {
   return (
     <>
       {!buyPotionMutation.isIdle && (
-        <>
-          <br />
-          <Alert>
-            {buyPotionMutation.isSuccess
-              ? 'Tady to máš'
-              : 'Přijď, až na to budeš mít (nedostatek peněz)'}
-          </Alert>
-        </>
+        <Alert>{buyPotionMutation.isSuccess ? loc.potion.buy_success : loc.potion.buy_failed}</Alert>
       )}
 
       <Table
         columns={[
           {},
-          { className: 'text-center', content: 'Účinnost' },
-          { className: 'text-right', content: 'Koupit' },
+          { className: 'text-center', content: loc.potion.efficiency },
+          { className: 'text-right', content: loc.common.price },
+          { className: 'text-right', content: loc.common.buy },
         ]}
         cells={potions?.map((x) => [
           { className: 'text-left', content: x.name },
           {
             className: 'text-center',
-            content: `+${x.hp_gain} HP`,
+            content: `+${x.hp_gain} ${loc.common.hp}`,
           },
           {
             className: 'text-right',
             content: (
-              <>
-                <Text>{x.price} zlaťáků</Text>
-                &nbsp;
-                <Button variant='secondary' onClick={() => handleBuyPotion(x)}>
-                  <PaperPlaneIcon />
-                </Button>
-              </>
+              <Text>
+                {x.price} {loc.common.currency}
+              </Text>
+            ),
+          },
+          {
+            className: 'text-right',
+            content: (
+              <Button variant='secondary' onClick={() => handleBuyPotion(x)}>
+                <PaperPlaneIcon />
+              </Button>
             ),
           },
         ])}

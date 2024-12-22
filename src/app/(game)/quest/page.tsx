@@ -1,11 +1,11 @@
+import { loc } from '@/local'
 import { getUserQuests } from '@/server/actions/quest'
 
-import * as S from './styles'
 import { FaCheck, FaTimes } from 'react-icons/fa'
 import { Card } from '@/styles/common-server'
 import { H3 } from '@/styles/text-server'
-import Back from './_components/Back'
 import Table from '@/components/table'
+import Back from '@/app/(game)/world/_components/Back'
 
 export const dynamic = 'force-dynamic'
 
@@ -22,9 +22,7 @@ export default async function Page() {
     return (
       <Card>
         <Back />
-        <br />
-        <br />
-        <H3>Žádný quest nemáš</H3>
+        <H3>{loc.quest.empty}</H3>
       </Card>
     )
 
@@ -34,44 +32,51 @@ export default async function Page() {
     quests.push(
       buildQuest(
         slainEnemyQuest.ident,
-        <>
-          popis slain enemy questu
-          <br />
-          <br />
-          <b>
-            Zabito nepřátel: {slainEnemyQuest.slain.actual_slain}/{slainEnemyQuest.slain.desired_slain}
-          </b>
-        </>,
+        loc.quest.enemy_slain.description_inventory,
+        <b>
+          {loc.quest.enemy_slain.slained}: {slainEnemyQuest.slain.actual_slain}/{slainEnemyQuest.slain.desired_slain}
+        </b>,
         userQuests.quest_slain_enemy_complete,
       ),
     )
 
   if (hasSlainTrollQuest)
-    quests.push(buildQuest(slainTrollQuest.ident, 'popis slain troll questu', userQuests.quest_slain_troll_complete))
+    quests.push(
+      buildQuest(
+        slainTrollQuest.ident,
+        loc.quest.troll_slain.description_inventory,
+        <b>
+          {loc.quest.enemy_slain.slained}: {slainTrollQuest.slain.actual_slain}/{slainTrollQuest.slain.desired_slain}
+        </b>,
+        userQuests.quest_slain_troll_complete,
+      ),
+    )
 
   return (
     <Card>
       <Back />
-      <br />
-      <br />
-      <H3>Questy:</H3>
-      <br />
-      <S.Quest>
+
+      <Card.Inner>
+        <H3>{loc.quest.header_multi}:</H3>
         <Table hideHeader columns={[{}, {}, {}]} cells={quests} />
-      </S.Quest>
+      </Card.Inner>
     </Card>
   )
 }
 
-function buildQuest(name: string, description: React.ReactNode, done: boolean) {
+function buildQuest(name: string, description: React.ReactNode, progress: React.ReactNode, done: boolean) {
   return [
     { className: 'text-left', content: name },
     {
-      className: 'text-center',
+      className: 'text-right',
       content: description,
     },
     {
-      content: done ? <FaCheck className='m-auto' /> : <FaTimes className='m-auto' />,
+      className: 'text-right',
+      content: progress,
+    },
+    {
+      content: done ? <FaCheck className='m-auto -mt-0.5' /> : <FaTimes className='m-auto -mt-0.5' />,
     },
   ]
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import Table from '@/components/table'
@@ -10,12 +11,16 @@ export default function Potions() {
 
   return (
     <Table
-      columns={[{}, { className: 'text-center', content: 'Účinnost' }, { className: 'text-right', content: 'Použít' }]}
+      columns={[
+        {},
+        { className: 'text-center', content: loc.potion.efficiency },
+        { className: 'text-right', content: loc.common.use },
+      ]}
       cells={showInventory.data?.potions.map((x) => [
         { className: 'text-left', content: x.potion.name },
         {
           className: 'text-center',
-          content: `+${x.potion.hp_gain} HP`,
+          content: `+${x.potion.hp_gain} ${loc.common.hp}`,
         },
         {
           className: 'text-right',

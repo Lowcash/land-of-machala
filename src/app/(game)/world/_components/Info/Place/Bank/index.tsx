@@ -1,12 +1,14 @@
 'use client'
 
 import React from 'react'
+import { loc } from '@/local'
 import { useInfoQuery } from '@/hooks/api/useGame'
 import { useBankQuery, useBankAccountQuery, useDepositItemMutation, useWithdrawItemMutation } from '@/hooks/api/useBank'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import { ArmorSafe, PotionSafe, WeaponSafe, type OnActionParams } from './Safe'
 import { H3, Input, Text } from '@/styles/text-server'
+import { Card } from '@/styles/common-server'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/loading'
 import Alert from '@/components/alert'
@@ -14,12 +16,9 @@ import Alert from '@/components/alert'
 export default function Bank() {
   const infoQuery = useInfoQuery()
 
-  // @ts-ignore
-  const bankId = infoQuery.data?.place?.bank.id
+  const bankId = infoQuery.data?.place?.bank?.id!
 
-  // @ts-ignore
   const bankQuery = useBankQuery({ bankId })
-  // @ts-ignore
   const bankAccountQuery = useBankAccountQuery({ bankId })
   const showInventoryQuery = useShowInventoryQuery()
 
@@ -35,11 +34,9 @@ export default function Bank() {
 
       switch (action) {
         case 'deposit':
-          // @ts-ignore
           depositItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
           break
         case 'withdraw':
-          // @ts-ignore
           withdrawItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
           break
       }
@@ -53,14 +50,12 @@ export default function Bank() {
         case 'deposit':
           if (!depositMoneyRef.current?.value === undefined) return
 
-          // @ts-ignore
           depositItemMutation.mutate({ bankId, money: Number(depositMoneyRef.current!.value) })
           depositMoneyRef.current!.value = '0'
           break
         case 'withdraw':
           if (!withdrawMoneyRef.current?.value === undefined) return
 
-          // @ts-ignore
           withdrawItemMutation.mutate({ bankId, money: Number(withdrawMoneyRef.current!.value) })
           withdrawMoneyRef.current!.value = '0'
           break
@@ -108,51 +103,41 @@ export default function Bank() {
   return (
     <>
       <Text>
-        Nacházíš se v <b>{bankQuery.data?.name}</b>
+        {loc.place.your_are_in} <b>{bankQuery.data?.name}</b>
       </Text>
-      <br />
       <Text>{bankQuery.data?.description}</Text>
-      <br />
       <Text>{bankQuery.data?.subdescription}</Text>
 
       {hasMessage && (
-        <>
-          <br />
-          <Alert>
-            {(depositItemMutation.isError || withdrawItemMutation.isError) && 'Nějak se nám to zkomplikovalo?!'}
+        <Alert>
+          {(depositItemMutation.isError || withdrawItemMutation.isError) && loc.place.bank.deposit_or_withdraw_failed}
 
-            {depositItemMutation.isSuccess && 'Zboží uloženo v bance'}
-            {withdrawItemMutation.isSuccess && 'Zboží vybráno z banky'}
-          </Alert>
-        </>
+          {depositItemMutation.isSuccess && loc.place.bank.deposit_success}
+          {withdrawItemMutation.isSuccess && loc.place.bank.withdraw_success}
+        </Alert>
       )}
 
-      <br />
-      <br />
       <div className='flex justify-between space-x-4'>
         <div>
-          <H3 className='whitespace-nowrap'>Uloženo peněz</H3>
-          <br />
+          <H3 className='whitespace-nowrap'>{loc.place.bank.deposited_money}</H3>
           <Text>{bankAccountQuery.data?.money ?? 0}</Text>
         </div>
         <div className='flex space-x-6'>
           <div>
-            <H3>Uložit Peníze</H3>
-            <br />
+            <H3>{loc.place.bank.deposit_money}</H3>
             <div className='flex space-x-2'>
               <Input ref={depositMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
-                Uložit
+                {loc.place.bank.deposit}
               </Button>
             </div>
           </div>
           <div>
-            <H3>Vybrat Peníze</H3>
-            <br />
+            <H3>{loc.place.bank.withdraw_money}</H3>
             <div className='flex space-x-2'>
               <Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
               <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
-                Vybrat
+                {loc.place.bank.withdraw}
               </Button>
             </div>
           </div>
@@ -160,87 +145,69 @@ export default function Bank() {
       </div>
 
       {hasDepositWeapons && (
-        <>
-          <br />
-          <br />
-          <H3>Uložit Zbraň</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.deposit_weapon}</H3>
           <WeaponSafe
             items={depositWeapons!}
             action='deposit'
             onAction={(action, item) => handleItemAction(action, item, 'weapon')}
           />
-        </>
+        </Card.Inner>
       )}
 
       {hasDepositArmors && (
-        <>
-          <br />
-          <br />
-          <H3>Uložit Zbroj</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.deposit_armor}</H3>
           <ArmorSafe
             items={depositArmors!}
             action='deposit'
             onAction={(action, item) => handleItemAction(action, item, 'armor')}
           />
-        </>
+        </Card.Inner>
       )}
 
       {hasDepositPotions && (
-        <>
-          <br />
-          <br />
-          <H3>Uložit Potion</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.deposit_potion}</H3>
           <PotionSafe
             items={depositPotions!}
             action='deposit'
             onAction={(action, item) => handleItemAction(action, item, 'potion')}
           />
-        </>
+        </Card.Inner>
       )}
 
       {hasWithdrawWeapons && (
-        <>
-          <br />
-          <br />
-          <H3>Vybrat Zbraň</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.withdraw_weapon}</H3>
           <WeaponSafe
             items={withdrawWeapons!}
             action='withdraw'
             onAction={(action, item) => handleItemAction(action, item, 'weapon')}
           />
-        </>
+        </Card.Inner>
       )}
 
       {hasWithdrawArmors && (
-        <>
-          <br />
-          <br />
-          <H3>Vybrat Zbroj</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.withdraw_armor}</H3>
           <ArmorSafe
             items={withdrawArmors!}
             action='withdraw'
             onAction={(action, item) => handleItemAction(action, item, 'armor')}
           />
-        </>
+        </Card.Inner>
       )}
 
       {hasWithdrawPotions && (
-        <>
-          <br />
-          <br />
-          <H3>Vybrat Potion</H3>
-          <br />
+        <Card.Inner>
+          <H3>{loc.place.bank.withdraw_potion}</H3>
           <PotionSafe
             items={withdrawPotions!}
             action='withdraw'
             onAction={(action, item) => handleItemAction(action, item, 'potion')}
           />
-        </>
+        </Card.Inner>
       )}
     </>
   )

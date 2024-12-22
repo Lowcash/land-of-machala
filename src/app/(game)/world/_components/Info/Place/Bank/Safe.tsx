@@ -3,6 +3,7 @@ import type { Armor, Weapon, Potion } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import Table from '@/components/table'
+import { loc } from '@/local'
 
 export type Action = 'deposit' | 'withdraw'
 export type Type = 'weapon' | 'armor' | 'potion'
@@ -22,8 +23,8 @@ export function WeaponSafe(p: SafeProps<Weapon>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: 'Poškození' },
-        { className: 'text-right', content: `${p.action === 'deposit' ? 'Uložit' : 'Vybrat'}` },
+        { className: 'text-center', content: loc.stats.damage },
+        { className: 'text-right', content: loc.place.bank[p.action] },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -54,11 +55,11 @@ export function ArmorSafe(p: SafeProps<Armor>) {
       columns={[
         {},
         {},
-        { className: 'text-center', content: 'Zbroj' },
-        { className: 'text-center', content: 'Síla' },
-        { className: 'text-center', content: 'Obratnost' },
-        { className: 'text-center', content: 'Inteligence' },
-        { className: 'text-right', content: `${p.action === 'deposit' ? 'Uložit' : 'Vybrat'}` },
+        { className: 'text-center', content: loc.armor.header },
+        { className: 'text-center', content: loc.stats.strength },
+        { className: 'text-center', content: loc.stats.agility },
+        { className: 'text-center', content: loc.stats.intelligence },
+        { className: 'text-right', content: loc.place.bank[p.action] },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -85,8 +86,8 @@ export function PotionSafe(p: SafeProps<Potion>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: 'Účinnost' },
-        { className: 'text-right', content: `${p.action === 'deposit' ? 'Uložit' : 'Vybrat'}` },
+        { className: 'text-center', content: loc.potion.efficiency },
+        { className: 'text-right', content: loc.place.bank[p.action] },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },

@@ -1,5 +1,6 @@
 'use client'
 
+import { loc } from '@/local'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import Table from '@/components/table'
@@ -13,9 +14,9 @@ export default function Weapons() {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: 'Poškození' },
-        { className: 'text-center', content: 'Obléct (levá ruka)' },
-        { className: 'text-center', content: 'Obléct (pravá ruka)' },
+        { className: 'text-center', content: loc.stats.damage },
+        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.left_hand})` },
+        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.right_hand})` },
       ]}
       cells={showInventory.data?.weapons.map((x) => [
         { className: 'text-left', content: x.weapon.name },

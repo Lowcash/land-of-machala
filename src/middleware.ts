@@ -7,19 +7,20 @@ import { ROUTE } from '@/const'
 let initialized = false
 
 export default function middleware(request: NextRequest) {
-  if (!initialized) {
-    console.log('Initializing cache revalidation...')
-    revalidatePath('/', 'layout')
-    initialized = true
-  }
-
-  const url = request.nextUrl
-
+  // if (!initialized) {
+  //   console.log('Initializing cache revalidation...')
+  //   revalidatePath('/', 'layout')
+  //   initialized = true
+  // }
+  
   const response = NextResponse.redirect(new URL('/', request.url))
 
-  if (url.pathname.startsWith(ROUTE.WORLD)) response.cookies.set('page', ROUTE.WORLD)
-  if (url.pathname.startsWith(ROUTE.QUEST)) response.cookies.set('page', ROUTE.QUEST)
-  if (url.pathname.startsWith(ROUTE.INVENTORY)) response.cookies.set('page', ROUTE.INVENTORY)
+  if (request.nextUrl.pathname.startsWith(ROUTE.WORLD))
+    response.cookies.set('page', ROUTE.WORLD)
+  if (request.nextUrl.pathname.startsWith(ROUTE.QUEST))
+    response.cookies.set('page', ROUTE.QUEST)
+  if (request.nextUrl.pathname.startsWith(ROUTE.INVENTORY))
+    response.cookies.set('page', ROUTE.INVENTORY)
 
   return response
 }
