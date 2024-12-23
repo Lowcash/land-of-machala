@@ -15,7 +15,7 @@ export default function Go({ direction, ...p }: Props) {
   const playerMoveMutation = usePlayerMoveMutation()
 
   return (
-    <Button {...p} onClick={() => playerMoveMutation.mutate(direction)} variant='warning' size='iconLg'>
+    <Button {...p} onClick={() => playerMoveMutation.mutate(direction)} variant='warning' size='icon-lg'>
       {direction === 'up' && <FaChevronUp />}
       {direction === 'down' && <FaChevronDown />}
       {direction === 'left' && <FaChevronLeft />}
