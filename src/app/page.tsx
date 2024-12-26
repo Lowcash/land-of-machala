@@ -1,87 +1,43 @@
-'use client'
+import { getServerPage } from '@/lib/utls-server'
+import * as PlayerAction from '@/server/actions/player'
 
-import React from 'react'
-import { api } from '@/trpc/react'
-import { usePageContext } from '@/ctx/page-provider'
-import { useLayoutContext } from '@/ctx/layout-provider'
+import LandingLayout from './landing/layout'
+import CreatePage from './create/page'
+import LandingPage from './landing/page'
+import GameLayout from './(game)/layout'
+import WorldLayout from './(game)/world/layout'
+import InventoryLayout from './(game)/inventory/layout'
+import WorldPage from './(game)/world/page'
+import QuestPage from './(game)/quest/page'
+import InventoryPage from './(game)/inventory/page'
 
-import { Content } from '@/styles/common'
-import MenuLeft from '@/components/menu-left'
-import MenuRight from '@/components/menu-right'
-import * as S from './styles'
-import Info from '@/components/info'
-import Action from '@/components/action'
-import XP from '@/components/xp'
+export const dynamic = 'force-dynamic'
 
-import Inventory from '@/components/inventory'
-import Quest from '@/components/quest'
-import Create from './(create)'
-import Landing from './(landing)'
-
-import User from '@/components/user'
-import { Header, HeaderOptions, Footer, Main } from '@/styles/common'
-
-export default function () {
-  const { data: info, isLoading, refetch } = api.player.info.useQuery(undefined, { enabled: false })
-
-  const { page, setPage } = usePageContext()
-  const { setBackgroundUrl } = useLayoutContext()
-
-  React.useEffect(() => {
-    if (page === 'landing') setBackgroundUrl?.()
-    if (page === 'game') refetch()
-  }, [page, setBackgroundUrl, refetch])
-
-  const hasCharacter = Boolean(info?.race) && Boolean(info?.profession)
-
-  React.useEffect(() => {
-    if (isLoading) return
-
-    setPage?.(hasCharacter ? 'game' : 'create')
-  }, [hasCharacter, isLoading, setPage])
-
-  if (page === 'landing')
+export default async function Page() {
+  if (!(await PlayerAction.getSession()))
     return (
-      <Main>
-        <Landing />
-      </Main>
+      <LandingLayout>
+        <LandingPage />
+      </LandingLayout>
     )
 
-  if (isLoading) return <></>
+  if (!(await PlayerAction.get()).hasCharacter) return <CreatePage />
+
+  const page = getServerPage()
 
   return (
-    <>
-      <Header>
-        <HeaderOptions>
-          <User />
-        </HeaderOptions>
-      </Header>
-
-      <Main>
-        {!hasCharacter && <Create />}
-        {hasCharacter && (
-          <>
-            <MenuLeft />
-            <Content>
-              <S.TopContainer>
-                {page === 'game' && (
-                  <>
-                    <Info />
-                    <Action />
-                  </>
-                )}
-                {page === 'inventory' && <Inventory />}
-                {page === 'quest' && <Quest />}
-              </S.TopContainer>
-
-              <XP />
-            </Content>
-            <MenuRight />
-          </>
-        )}
-      </Main>
-
-      <Footer></Footer>
-    </>
+    <GameLayout>
+      {page === 'WORLD' && (
+        <WorldLayout>
+          <WorldPage />
+        </WorldLayout>
+      )}
+      {page === 'QUEST' && <QuestPage />}
+      {page === 'INVENTORY' && (
+        <InventoryLayout>
+          <InventoryPage />
+        </InventoryLayout>
+      )}
+    </GameLayout>
   )
 }

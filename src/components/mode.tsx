@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
-export function ModeToggle() {
+export default function ModeToggle() {
   const { setTheme } = useTheme()
 
   return (
