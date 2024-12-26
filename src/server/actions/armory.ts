@@ -5,7 +5,8 @@ import { db } from '../db'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 
-import * as _Armory from './_armory'
+import * as ArmorAction from './armor'
+import * as WeaponAction from './weapon'
 import * as PlayerAction from './player'
 import * as InventoryAction from './inventory'
 
@@ -29,14 +30,83 @@ export const show = protectedAction.input(z.object({ armoryId: z.string() })).qu
   const armory = await get({ armoryId: input.armoryId })
 
   const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
-    _Armory.getBuyWeapons({ armoryId: armory.id }),
-    _Armory.getBuyArmors({ armoryId: armory.id }),
-    _Armory.getSellWeapons(),
-    _Armory.getSellArmors(),
+    getBuyWeapons({ armoryId: armory.id }),
+    getBuyArmors({ armoryId: armory.id }),
+    getSellWeapons(),
+    getSellArmors(),
   ])
 
   return { ...armory, buyWeapons, buyArmors, sellWeapons, sellArmors }
 })
+
+const BUY_MIN_PRICE = 1000
+const BUY_MAX_PRICE = 50000
+const SELL_MIN_PRICE = 200 // divided by 5
+const SELL_MAX_PRICE = 10000 // divided by 5
+
+const ROUND_PRICE_BY = 100
+
+async function getBuyWeapons(args: { armoryId: string }) {
+  const [armory, weapons] = await Promise.all([get({ armoryId: args.armoryId }), WeaponAction.getAll()])
+
+  const spreadBuyPriceWeapons = spreadItemsPrices(weapons, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
+
+  return armory.weapons.map((x) => ({
+    ...x,
+    price: spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
+  }))
+}
+
+async function getSellWeapons() {
+  const [inventory, weapons] = await Promise.all([InventoryAction.get(), WeaponAction.getAll()])
+
+  const spreadSellPriceWeapons = spreadItemsPrices(weapons!, SELL_MIN_PRICE, SELL_MAX_PRICE, {
+    roundBy: ROUND_PRICE_BY,
+  })
+
+  return inventory.weapons_inventory.map((x) => ({
+    ...x,
+    price: spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
+  }))
+}
+
+async function getBuyArmors(args: { armoryId: string }) {
+  const [armory, armors] = await Promise.all([get({ armoryId: args.armoryId }), ArmorAction.getAll()])
+
+  const spreadBuyPriceArmors = spreadItemsPrices(armors!, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
+
+  return armory.armors.map((x) => ({
+    ...x,
+    price: spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
+  }))
+}
+
+async function getSellArmors() {
+  const [inventory, armors] = await Promise.all([InventoryAction.get(), ArmorAction.getAll()])
+
+  const spreadSellPriceArmors = spreadItemsPrices(armors!, SELL_MIN_PRICE, SELL_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
+
+  return inventory.armors_inventory.map((x) => ({
+    ...x,
+    price: spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
+  }))
+}
+
+function spreadItemsPrices<T extends { id: string | number }>(
+  sortedItemsAsc: T[],
+  minPrice: number,
+  maxPrice: number,
+  opt?: { roundBy?: number },
+) {
+  const roundBy = opt?.roundBy ?? 1
+
+  const priceStep = (maxPrice - minPrice) / (sortedItemsAsc.length ?? 0)
+
+  return sortedItemsAsc.map((x, idx) => ({
+    id: x.id,
+    price: Math.round((minPrice + (idx + 1) * priceStep) / roundBy) * roundBy,
+  }))
+}
 
 export const buyItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
@@ -45,7 +115,7 @@ export const buyItem = protectedAction
 
     switch (input.armoryItemType) {
       case 'weapon': {
-        const armoryWeapon = (await _Armory.getBuyWeapons({ armoryId: input.armoryId })).find(
+        const armoryWeapon = (await getBuyWeapons({ armoryId: input.armoryId })).find(
           (x) => x.id === input.armoryItemId,
         )
 
@@ -72,9 +142,7 @@ export const buyItem = protectedAction
         break
       }
       case 'armor': {
-        const armoryArmor = (await _Armory.getBuyArmors({ armoryId: input.armoryId })).find(
-          (x) => x.id === input.armoryItemId,
-        )
+        const armoryArmor = (await getBuyArmors({ armoryId: input.armoryId })).find((x) => x.id === input.armoryItemId)
 
         if (!armoryArmor) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -108,7 +176,7 @@ export const sellItem = protectedAction
 
     switch (input.armoryItemType) {
       case 'weapon': {
-        const armoryWeapon = (await _Armory.getSellWeapons()).find((x) => x.id === input.armoryItemId)
+        const armoryWeapon = (await getSellWeapons()).find((x) => x.id === input.armoryItemId)
 
         if (!armoryWeapon) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -139,7 +207,7 @@ export const sellItem = protectedAction
         break
       }
       case 'armor': {
-        const armoryArmor = (await _Armory.getSellArmors()).find((x) => x.id === input.armoryItemId)
+        const armoryArmor = (await getSellArmors()).find((x) => x.id === input.armoryItemId)
 
         if (!armoryArmor) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 

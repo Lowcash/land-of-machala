@@ -1,8 +1,9 @@
 'use server'
 
 import { db } from '@/server/db'
-import { getTRPCErrorFromUnknown } from '@trpc/server'
 import { protectedAction } from '@/server/trpc'
+import { getTRPCErrorFromUnknown } from '@trpc/server'
+
 import * as PlayerAction from './player'
 import * as WearableAction from './wearable'
 
