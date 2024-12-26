@@ -1,38 +1,43 @@
-import { cookies } from 'next/headers'
-import { getPlayerSession, hasPlayerCharacter } from '@/server/actions/player'
+import { getServerPage } from '@/lib/utls-server'
+import { getSession, hasCharacter } from '@/server/actions/player'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
 import LandingPage from './landing/page'
 import GameLayout from './(game)/layout'
-import PlayLayout from './(game)/world/layout'
-import PlayPage from './(game)/world/page'
+import WorldLayout from './(game)/world/layout'
+import InventoryLayout from './(game)/inventory/layout'
+import WorldPage from './(game)/world/page'
 import QuestPage from './(game)/quest/page'
 import InventoryPage from './(game)/inventory/page'
-
-import { ROUTE } from '@/const'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  if (!(await getPlayerSession()))
+  if (!(await getSession()))
     return (
       <LandingLayout>
         <LandingPage />
       </LandingLayout>
     )
 
-  if (!(await hasPlayerCharacter())) return <CreatePage />
+  if (!(await hasCharacter())) return <CreatePage />
 
-  const pathname = cookies().get('page')?.value || ROUTE.WORLD
+  const page = getServerPage()
 
   return (
     <GameLayout>
-      <PlayLayout>
-        {pathname === ROUTE.WORLD && <PlayPage />}
-        {pathname === ROUTE.QUEST && <QuestPage />}
-        {pathname === ROUTE.INVENTORY && <InventoryPage />}
-      </PlayLayout>
+      {page === 'WORLD' && (
+        <WorldLayout>
+          <WorldPage />
+        </WorldLayout>
+      )}
+      {page === 'QUEST' && <QuestPage />}
+      {page === 'INVENTORY' && (
+        <InventoryLayout>
+          <InventoryPage />
+        </InventoryLayout>
+      )}
     </GameLayout>
   )
 }

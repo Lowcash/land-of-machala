@@ -13,11 +13,11 @@ export const RACES = [Race.HUMAN, Race.GNOME, Race.DWARF] as const
 export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.MAGE] as const
 
 export enum ERROR_CAUSE {
-  ENTITY_NOT_EXIST,
-  NOT_AVAILABLE,
-  CANNOT_MOVE,
-  COMBAT,
-  INSUFFICIENT_FUNDS,
+  ENTITY_NOT_EXIST = "ENTITY_NOT_EXIST",
+  NOT_AVAILABLE = "NOT_AVAILABLE",
+  CANNOT_MOVE = "CANNOT_MOVE",
+  COMBAT = "COMBAT",
+  INSUFFICIENT_FUNDS = "INSUFFICIENT_FUNDS",
 }
 
 export const ROUTE = {
@@ -26,6 +26,8 @@ export const ROUTE = {
   INVENTORY: '/inventory',
 } as const
 
+export type Route = keyof typeof ROUTE
+
 export const CACHE_KEY = {
   ARMORS: 'armors',
 } as const
@@ -33,12 +35,14 @@ export const CACHE_KEY = {
 export const QUERY_KEY = {
   INFO: 'info-key',
   PLAYER: 'player-key',
-  PLAYER_STATS: 'player-stats-key',
-  PLAYER_SESSION: 'player-session-key',
-  WEARABLE: 'player-wearable-key',
+  STATS: 'stats-key',
+  SESSION: 'session-key',
+  WEARABLE: 'wearable-key',
   INVENTORY: 'inventory-key',
   HOSPITAL: 'hospital-key',
   ARMORY: 'armory-key',
   BANK: 'bank-key',
   BANK_ACCOUNT: 'bank-account-key',
 } as const
+
+export const PAGE_COOKIE_KEY = 'page'

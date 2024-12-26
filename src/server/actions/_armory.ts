@@ -1,7 +1,7 @@
-import { getArmors } from './armor'
-import { getWeapons } from './weapon'
-import { getArmory } from './armory'
-import { getInventory } from './inventory'
+import * as ArmoryAction from './armory'
+import * as ArmorAction from './armor'
+import * as WeaponAction from './weapon'
+import * as InventoryAction from './inventory'
 
 const BUY_MIN_PRICE = 1000
 const BUY_MAX_PRICE = 50000
@@ -11,8 +11,8 @@ const SELL_MAX_PRICE = 10000 // divided by 5
 const ROUND_PRICE_BY = 100
 
 export async function getBuyWeapons(args: { armoryId: string }) {
-  const armory = await getArmory({ armoryId: args.armoryId })
-  const weapons = await getWeapons()
+  const armory = await ArmoryAction.getArmory({ armoryId: args.armoryId })
+  const weapons = await WeaponAction.getAll()
 
   const spreadBuyPriceWeapons = spreadItemsPrices(weapons, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
 
@@ -23,8 +23,8 @@ export async function getBuyWeapons(args: { armoryId: string }) {
 }
 
 export async function getSellWeapons() {
-  const inventory = await getInventory()
-  const weapons = await getWeapons()
+  const inventory = await InventoryAction.get()
+  const weapons = await WeaponAction.getAll()
 
   const spreadSellPriceWeapons = spreadItemsPrices(weapons!, SELL_MIN_PRICE, SELL_MAX_PRICE, {
     roundBy: ROUND_PRICE_BY,
@@ -37,8 +37,8 @@ export async function getSellWeapons() {
 }
 
 export async function getBuyArmors(args: { armoryId: string }) {
-  const armory = await getArmory({ armoryId: args.armoryId })
-  const armors = await getArmors()
+  const armory = await ArmoryAction.getArmory({ armoryId: args.armoryId })
+  const armors = await ArmorAction.getAll()
 
   const spreadBuyPriceArmors = spreadItemsPrices(armors!, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
 
@@ -49,8 +49,8 @@ export async function getBuyArmors(args: { armoryId: string }) {
 }
 
 export async function getSellArmors() {
-  const inventory = await getInventory()
-  const armors = await getArmors()
+  const inventory = await InventoryAction.get()
+  const armors = await ArmorAction.getAll()
 
   const spreadSellPriceArmors = spreadItemsPrices(armors!, SELL_MIN_PRICE, SELL_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
 

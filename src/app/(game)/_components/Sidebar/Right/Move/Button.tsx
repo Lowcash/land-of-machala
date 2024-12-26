@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 
 import { DIRECTIONS } from '@/const'
 
-interface Props extends Pick<React.ComponentProps<typeof Button>, 'className'> {
+interface Props extends Pick<React.ComponentProps<typeof Button>, 'className' | 'disabled'> {
   direction: (typeof DIRECTIONS)[number]
 }
 
@@ -15,7 +15,12 @@ export default function Go({ direction, ...p }: Props) {
   const playerMoveMutation = usePlayerMoveMutation()
 
   return (
-    <Button {...p} onClick={() => playerMoveMutation.mutate(direction)} variant='warning' size='icon-lg'>
+    <Button
+      {...p}
+      variant='warning'
+      size='icon-lg'
+      onClick={() => playerMoveMutation.mutate({ direction })}
+    >
       {direction === 'up' && <FaChevronUp />}
       {direction === 'down' && <FaChevronDown />}
       {direction === 'left' && <FaChevronLeft />}

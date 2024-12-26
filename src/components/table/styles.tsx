@@ -4,7 +4,7 @@ const TableInner = (p: React.HTMLAttributes<HTMLTableElement>) => (
   <table {...p} className='w-full border-collapse border' />
 )
 
-const TableOuter = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='max-h-[300px] overflow-y-auto' />
+const TableOuter = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='max-h-[300px] overflow-auto' />
 
 export const Table = (p: React.PropsWithChildren) => (
   <TableOuter>

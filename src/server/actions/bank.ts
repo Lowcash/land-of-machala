@@ -5,8 +5,8 @@ import { db } from '../db'
 import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { getPlayer } from './player'
-import { getInventory } from './inventory'
+import { get } from './player'
+import * as InventoryAction from './inventory'
 import {
   isArmorInBank,
   isArmorInInventory,
@@ -78,7 +78,7 @@ export const depositItem = protectedAction
     }),
   )
   .mutation(async ({ input }) => {
-    const player = await getPlayer()
+    const player = await get()
     const bankAccount = await showBankAccount({ bankId: input.bankId })
 
     if (input.money !== undefined) {
@@ -111,7 +111,7 @@ export const depositItem = protectedAction
         }
       }
 
-      const inventory = await getInventory()
+      const inventory = await InventoryAction.get()
       const inventoryItem = getInventoryItem()
 
       if (!inventoryItem) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
@@ -164,7 +164,7 @@ export const withdrawItem = protectedAction
     }),
   )
   .mutation(async ({ input }) => {
-    const player = await getPlayer()
+    const player = await get()
     const bankAccount = await showBankAccount({ bankId: input.bankId })
 
     if (input.money !== undefined) {
@@ -197,7 +197,7 @@ export const withdrawItem = protectedAction
         }
       }
 
-      const inventory = await getInventory()
+      const inventory = await InventoryAction.get()
       const bankItem = getBankItem()
 
       if (!bankItem) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)

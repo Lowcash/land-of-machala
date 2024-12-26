@@ -6,15 +6,15 @@ import { random } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { getPlayer, hasPlayerLoot, isPlayerInCombat } from './player'
-import { getInventory } from './inventory'
+import * as PlayerAction from './player'
+import * as PlaceAction from './place'
+import * as InventoryAction from './inventory'
 import { enemyEmitter } from './_game'
-import { getPlace } from './place'
 
 import { ERROR_CAUSE } from '@/const'
 
 export const checkForEnemy = protectedAction.mutation(async () => {
-  const player = await getPlayer()
+  const player = await PlayerAction.get()
 
   const hasEnemyAppear = Math.round(Math.random()) === 1
 
@@ -46,12 +46,12 @@ export const checkForEnemy = protectedAction.mutation(async () => {
 
 export const getInfo = cache(
   protectedAction.query(async () => {
-    const player = await getPlayer()
+    const player = await PlayerAction.get()
 
-    if (await isPlayerInCombat()) return { enemy: player.enemy_instance }
-    if (await hasPlayerLoot()) return { loot: player.loot }
+    if (await PlayerAction.isInCombat()) return { enemy: player.enemy_instance }
+    if (await PlayerAction.hasLoot()) return { loot: player.loot }
 
-    const place = await getPlace({ posX: player.pos_x, posY: player.pos_y })
+    const place = await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y })
     if (!!place) return { place, defeated: player.defeated }
 
     return {}
@@ -59,9 +59,9 @@ export const getInfo = cache(
 )
 
 export const attack = protectedAction.mutation(async () => {
-  if (!(await isPlayerInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!(await PlayerAction.isInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  const player = await getPlayer()
+  const player = await PlayerAction.get()
 
   // const damageFromPlayer = random(player.damage_min, player.damage_max)
   const damageFromPlayer = 1000
@@ -99,7 +99,7 @@ export const attack = protectedAction.mutation(async () => {
   await db.enemyInstance.delete({ where: { id: player.enemy_instance!.id } })
 
   if (playerDefeated) {
-    const inventory = await getInventory()
+    const inventory = await InventoryAction.get()
 
     await db.$transaction(async (db) => {
       await Promise.all([
@@ -165,17 +165,17 @@ export const attack = protectedAction.mutation(async () => {
 })
 
 export const runAway = protectedAction.mutation(async () => {
-  if (!(await isPlayerInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!(await PlayerAction.isInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  await db.enemyInstance.delete({ where: { id: (await getPlayer()).enemy_instance!.id } })
+  await db.enemyInstance.delete({ where: { id: (await PlayerAction.get()).enemy_instance!.id } })
 })
 
 export const loot = protectedAction.mutation(async () => {
-  const player = await getPlayer()
+  const player = await PlayerAction.get()
 
   if (!player.loot) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  const inventory = await getInventory()
+  const inventory = await InventoryAction.get()
 
   await db.$transaction(async (db) => {
     for (const l of player.loot!.weapons_loot) {
@@ -215,7 +215,7 @@ export const loot = protectedAction.mutation(async () => {
 })
 
 export async function collectReward(db: Prisma.TransactionClient, reward: { money?: number | null }) {
-  const player = await getPlayer()
+  const player = await PlayerAction.get()
 
   const moneyActual = (player.money ?? 0) + (reward.money ?? 0)
 

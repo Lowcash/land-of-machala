@@ -117,31 +117,31 @@ export default function Bank() {
         </Alert>
       )}
 
-      <div className='flex justify-between space-x-4'>
-        <div>
+      <div className='flex gap-4 overflow-auto'>
+        <Card.Inner className='justify-between'>
           <H3 className='whitespace-nowrap'>{loc.place.bank.deposited_money}</H3>
           <Text>{bankAccountQuery.data?.money ?? 0}</Text>
-        </div>
-        <div className='flex space-x-6'>
-          <div>
-            <H3>{loc.place.bank.deposit_money}</H3>
-            <div className='flex space-x-2'>
-              <Input ref={depositMoneyRef} type='number' defaultValue={0} />
-              <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
-                {loc.place.bank.deposit}
-              </Button>
-            </div>
+        </Card.Inner>
+
+        <Card.Inner>
+          <H3>{loc.place.bank.deposit_money}</H3>
+          <div className='flex space-x-2'>
+            <Input ref={depositMoneyRef} type='number' defaultValue={0} />
+            <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
+              {loc.place.bank.deposit}
+            </Button>
           </div>
-          <div>
-            <H3>{loc.place.bank.withdraw_money}</H3>
-            <div className='flex space-x-2'>
-              <Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
-              <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
-                {loc.place.bank.withdraw}
-              </Button>
-            </div>
+        </Card.Inner>
+
+        <Card.Inner>
+          <H3>{loc.place.bank.withdraw_money}</H3>
+          <div className='flex space-x-2'>
+            <Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
+            <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
+              {loc.place.bank.withdraw}
+            </Button>
           </div>
-        </div>
+        </Card.Inner>
       </div>
 
       {hasDepositWeapons && (

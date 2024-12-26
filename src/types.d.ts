@@ -1,3 +1,8 @@
+type Coordinates = {
+  x: number
+  y: number
+}
+
 type PropsWithClassName<P = unknown> = P & {
   className?: string;
 }
