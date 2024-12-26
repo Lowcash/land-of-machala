@@ -6,8 +6,8 @@ import { random } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
+import { emitter as enemyEmitter } from '@/server/events/enemy'
 
-import * as _Game from './_game'
 import * as PlayerAction from './player'
 import * as PlaceAction from './place'
 import * as InventoryAction from './inventory'
@@ -126,7 +126,7 @@ export const attack = protectedAction.mutation(async () => {
   }
 
   if (enemyDefeated) {
-    _Game.enemyEmitter.emit('defeated', enemy)
+    enemyEmitter.emit('defeated', enemy)
 
     const weapon = await db.weapon.findFirst({
       skip: random(await db.weapon.count()),

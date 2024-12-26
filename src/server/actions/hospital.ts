@@ -4,10 +4,11 @@ import { z } from 'zod'
 import { db } from '../db'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
+
 import * as PlayerAction from './player'
 import * as InventoryAction from './inventory'
 import * as QuestAction from './quest'
-import { collectReward } from './game'
+import * as GameAction from './game'
 
 import { ERROR_CAUSE } from '@/const'
 
@@ -99,5 +100,5 @@ export const completeSlainEnemyQuest = protectedAction.mutation(async () => {
   if ((await QuestAction.checkProgress('SLAIN_ENEMY')) !== 'COMPLETE')
     throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  await collectReward(db, { money: await QuestAction.complete('SLAIN_ENEMY') })
+  await GameAction.collectReward(db, { money: await QuestAction.complete('SLAIN_ENEMY') })
 })

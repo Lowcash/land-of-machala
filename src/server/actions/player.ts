@@ -3,11 +3,12 @@
 import { z } from 'zod'
 import { cache } from 'react'
 import { db } from '@/server/db'
+import type { User } from '@prisma/client'
 import { serverActionProcedure, protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 
-import * as _Player from './_player'
 import * as GameAction from './game'
+import * as PlaceAction from '@/server/actions/place'
 
 import { PROFESSIONS, RACES } from '@/const'
 import { DIRECTIONS, ERROR_CAUSE } from '@/const'
@@ -33,15 +34,51 @@ export const get = cache(
 
     return {
       ...player,
-      hasCharacter: _Player.hasCharacter(player),
-      isSafe: _Player.isSafe(player),
-      canMove: _Player.canMove(player),
-      isInCombat: _Player.isInCombat(player),
-      isDefeated: _Player.isDefeated(player),
-      hasLoot: _Player.hasLoot(player),
+      hasCharacter: hasCharacter(player),
+      isSafe: isSafe(player),
+      canMove: canMove(player),
+      isInCombat: isInCombat(player),
+      isDefeated: isDefeated(player),
+      hasLoot: hasLoot(player),
     }
   }),
 )
+
+function hasCharacter(player: User) {
+  return hasRace(player) && hasProfession(player)
+}
+
+function hasRace(player: User) {
+  return !!player.race
+}
+
+function hasProfession(player: User) {
+  return !!player.profession
+}
+
+function isSafe(player: User) {
+  return isInPlace({ x: player.pos_x, y: player.pos_y })
+}
+
+function isInPlace(position: Coordinates) {
+  return PlaceAction.get({ posX: position.x, posY: position.y })
+}
+
+function canMove(player: User) {
+  return !isInCombat(player) && !isDefeated(player) && !hasLoot(player)
+}
+
+function isInCombat(player: User) {
+  return !!player.enemy_instance_id
+}
+
+function isDefeated(player: User) {
+  return !!player.defeated
+}
+
+function hasLoot(player: User) {
+  return !!player.loot_id
+}
 
 export const create = protectedAction
   .input(
@@ -69,20 +106,21 @@ export const move = protectedAction
   .mutation(async ({ ctx, input }) => {
     const player = await get()
 
-    if (!_Player.canMove(player)) throw getTRPCErrorFromUnknown(ERROR_CAUSE.CANNOT_MOVE)
+    if (!canMove(player)) throw getTRPCErrorFromUnknown(ERROR_CAUSE.CANNOT_MOVE)
 
     const horizontal = input.direction === 'left' ? -1 : input.direction === 'right' ? 1 : 0
     const vertical = input.direction === 'down' ? -1 : input.direction === 'up' ? 1 : 0
 
-    await db.user.update({
+    const movedPlayer = await db.user.update({
       where: { id: ctx.user.id },
       data: {
         pos_x: player.pos_x + horizontal,
         pos_y: player.pos_y + vertical,
       },
+      include: {},
     })
 
-    if (!(await _Player.isSafe(player))) {
+    if (!(await isSafe(movedPlayer))) {
       await GameAction.checkForEnemy()
     }
   })

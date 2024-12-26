@@ -1,9 +1,9 @@
 import { db } from '@/server/db'
+import { emitter } from './enemy'
 
-import * as _Game from './_game'
-import * as QuestAction from './quest'
+import * as QuestAction from '../actions/quest'
 
-_Game.enemyEmitter.on('defeated', async (enemy) => {
+emitter.on('defeated', async (enemy) => {
   const userQuest = await QuestAction.getAssignedQuests()
 
   if (!!userQuest.quest_slain_enemy) {
