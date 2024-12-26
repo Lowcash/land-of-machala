@@ -5,7 +5,7 @@ export const Main = (p: React.HTMLAttributes<HTMLElement>) => (
 )
 
 export const Content = (p: React.HTMLAttributes<HTMLElement>) => (
-  <section {...p} className={cn('mx-[16rem] flex h-full w-full flex-col justify-start gap-4 p-4', p.className)} />
+  <section {...p} className={cn('flex h-full w-[calc(100vw-32rem)] flex-col justify-start gap-4 p-4', p.className)} />
 )
 
 export const List = (p: React.HTMLAttributes<HTMLUListElement>) => (
@@ -22,4 +22,6 @@ export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
   />
 )
 
-Card.Inner = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='flex flex-col gap-1 overflow-hidden' />
+Card.Inner = (p: React.HTMLAttributes<HTMLDivElement>) => (
+  <div {...p} className={cn('flex flex-col gap-1', p.className)} />
+)

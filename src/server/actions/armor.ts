@@ -16,7 +16,7 @@ const mapArmor = (x: any): Armor => ({
   intelligency: x.f6,
 })
 
-export const getArmors = cache(
+export const getAll = cache(
   async () => (await db.$queryRaw<any[]>`CALL GetArmorsSortedByStats();`).map(mapArmor),
   [ARMORS_KEY],
   { tags: [ARMORS_KEY] },

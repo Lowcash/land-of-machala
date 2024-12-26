@@ -13,7 +13,7 @@ const mapWeapon = (x: any): Weapon => ({
   damage_to: x.f3,
 })
 
-export const getWeapons = cache(
+export const getAll = cache(
   async () => (await db.$queryRaw<any[]>`CALL GetWeaponsSortedByStats();`).map(mapWeapon),
   [WEAPONS_KEY],
   { tags: [WEAPONS_KEY] },

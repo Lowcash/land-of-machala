@@ -5,8 +5,8 @@ import { db } from '../db'
 import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { getPlayer } from './player'
-import { getInventory } from './inventory'
+import { get } from './player'
+import * as InventoryAction from './inventory'
 import { acceptQuest, checkQuestProgress, completeQuest, getQuest } from './quest'
 import { collectReward } from './game'
 
@@ -42,7 +42,7 @@ export const showHospital = cache(
 )
 
 export const resurect = protectedAction.mutation(async () => {
-  const player = await getPlayer()
+  const player = await get()
 
   await db.user.update({
     where: { id: player.id },
@@ -51,7 +51,7 @@ export const resurect = protectedAction.mutation(async () => {
 })
 
 export const heal = protectedAction.input(z.object({ hospitalId: z.string() })).mutation(async ({ input }) => {
-  const player = await getPlayer()
+  const player = await get()
   const hospital = await getHospital({ hospitalId: input.hospitalId })
 
   const balance = player.money - (hospital.price ?? 0)
@@ -73,7 +73,7 @@ export const buyPotion = protectedAction
 
     if (!hospitalPotion) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const player = await getPlayer()
+    const player = await get()
 
     const balance = player.money - (hospitalPotion.price ?? 0)
 
@@ -90,7 +90,7 @@ export const buyPotion = protectedAction
       await db.potionInInventory.create({
         data: {
           potion_id: hospitalPotion.potion.id,
-          inventory_id: (await getInventory()).id,
+          inventory_id: (await InventoryAction.get()).id,
         },
       })
     })

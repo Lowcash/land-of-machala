@@ -4,10 +4,8 @@ import { cn } from '@/lib/utils'
 import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
 
-import Hydration from './_hydration'
 import { ThemeProvider } from '@/context/theme-provider'
 import { QueryProvider } from '@/context/query-provider'
-import { GameProvider } from '@/context/game-provider'
 
 const medieval = MedievalSharp({
   weight: '400',
@@ -37,9 +35,7 @@ export default async function RootLayout({ children }: Readonly<React.PropsWithC
       >
         <QueryProvider>
           <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-            <GameProvider>
-              <Hydration>{children}</Hydration>
-            </GameProvider>
+            {children}
           </ThemeProvider>
         </QueryProvider>
       </body>

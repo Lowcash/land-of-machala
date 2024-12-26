@@ -22,6 +22,7 @@ export default async function Page() {
     return (
       <Card>
         <Back />
+
         <H3>{loc.quest.empty}</H3>
       </Card>
     )
@@ -68,11 +69,11 @@ function buildQuest(name: string, description: React.ReactNode, progress: React.
   return [
     { className: 'text-left', content: name },
     {
-      className: 'text-right',
+      className: 'text-center',
       content: description,
     },
     {
-      className: 'text-right',
+      className: 'text-center',
       content: progress,
     },
     {

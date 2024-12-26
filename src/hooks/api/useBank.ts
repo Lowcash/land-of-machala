@@ -8,7 +8,7 @@ export const useBankAccountQuery = createQueryHook([QUERY_KEY.BANK_ACCOUNT], sho
 
 export const useDepositItemMutation = createMutationHook(depositItem, [
   QUERY_KEY.PLAYER,
-  QUERY_KEY.PLAYER_STATS,
+  QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,
   QUERY_KEY.BANK_ACCOUNT,
   QUERY_KEY.INVENTORY,

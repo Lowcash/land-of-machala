@@ -5,8 +5,8 @@ import { db } from '../db'
 import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { getPlayer } from './player'
-import { getInventory } from './inventory'
+import * as PlayerAction from './player'
+import * as InventoryAction from './inventory'
 import { getBuyArmors, getBuyWeapons, getSellArmors, getSellWeapons } from './_armory'
 
 import { ERROR_CAUSE, WEARABLES } from '@/const'
@@ -45,7 +45,7 @@ export const showArmory = cache(
 export const buyItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
   .mutation(async ({ input }) => {
-    const player = await getPlayer()
+    const player = await PlayerAction.get()
 
     switch (input.armoryItemType) {
       case 'weapon': {
@@ -68,7 +68,7 @@ export const buyItem = protectedAction
           await db.weaponInInventory.create({
             data: {
               weapon_id: armoryWeapon.weapon_id,
-              inventory_id: (await getInventory()).id,
+              inventory_id: (await InventoryAction.get()).id,
             },
           })
         })
@@ -93,7 +93,7 @@ export const buyItem = protectedAction
           await db.armorInInventory.create({
             data: {
               armor_id: armoryArmor.armor_id,
-              inventory_id: (await getInventory()).id,
+              inventory_id: (await InventoryAction.get()).id,
             },
           })
         })
@@ -106,7 +106,7 @@ export const buyItem = protectedAction
 export const sellItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
   .mutation(async ({ input }) => {
-    const player = await getPlayer()
+    const player = await PlayerAction.get()
 
     switch (input.armoryItemType) {
       case 'weapon': {
@@ -119,7 +119,7 @@ export const sellItem = protectedAction
         await db.$transaction(async (db) => {
           const weaponToDelete = await db.weaponInInventory.findFirst({
             where: {
-              inventory_id: (await getInventory()).id,
+              inventory_id: (await InventoryAction.get()).id,
               weapon_id: armoryWeapon.weapon_id,
             },
           })
@@ -150,7 +150,7 @@ export const sellItem = protectedAction
         await db.$transaction(async (db) => {
           const armorToDelete = await db.armorInInventory.findFirst({
             where: {
-              inventory_id: (await getInventory()).id,
+              inventory_id: (await InventoryAction.get()).id,
               armor_id: armoryArmor.armor_id,
             },
           })

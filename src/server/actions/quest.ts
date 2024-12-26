@@ -5,7 +5,7 @@ import { getTRPCErrorFromUnknown } from '@trpc/server'
 
 import { ERROR_CAUSE } from '@/const'
 import { QuestIdent } from '@prisma/client'
-import { getPlayer } from './player'
+import { get } from './player'
 import { enemyEmitter } from './_game'
 
 type State = 'WAITING' | 'READY' | 'PROGRESS' | 'COMPLETE' | 'DONE'
@@ -21,7 +21,7 @@ export async function getQuest(ident: QuestIdent) {
 }
 
 export async function getUserQuests() {
-  const player = await getPlayer()
+  const player = await get()
 
   let userQuest = await db.userQuest.findFirst({
     where: { id: player.user_quest_id ?? -1 },

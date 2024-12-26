@@ -69,7 +69,7 @@ export default function SidebarLeft() {
               { label: `${loc.stats.level}:`, value: `${playerStatsQuery.data?.level}` },
               {
                 label: `${loc.stats.damage}:`,
-                value: `${playerStatsQuery.data?.damage_min} - ${playerStatsQuery.data?.damage_max}`,
+                value: `${playerStatsQuery.data?.damage.min} - ${playerStatsQuery.data?.damage.max}`,
               },
               { label: `${loc.stats.strength}:`, value: `${playerStatsQuery.data?.strength}` },
               { label: `${loc.stats.agility}:`, value: `${playerStatsQuery.data?.agility}` },
