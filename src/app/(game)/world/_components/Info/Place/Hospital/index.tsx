@@ -9,7 +9,7 @@ import {
   useAcceptEnemySlainQuestMutation,
   useCompleteEnemySlainQuestMutation,
 } from '@/hooks/api/useHospital'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 
 import { H3, Text } from '@/styles/text-server'
 import { Card } from '@/styles/common-server'
@@ -18,7 +18,7 @@ import Alert from '@/components/alert'
 import Potions from './Potions'
 
 export default function Hospital() {
-  const gameInfoQuery = useInfoQuery()
+  const gameInfoQuery = useShowInfoQuery()
 
   const hospitalId = gameInfoQuery.data?.place?.hospital?.id!
   const hospitalQuery = useHospitalQuery({ hospitalId })

@@ -3,7 +3,7 @@
 import React from 'react'
 import { loc } from '@/localization'
 import type { Potion } from '@prisma/client'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 import { useBuyPotionMutation, useHospitalQuery } from '@/hooks/api/useHospital'
 
 import { Text } from '@/styles/text-server'
@@ -15,7 +15,7 @@ import Alert from '@/components/alert'
 type PotionItem = Potion & { price: number }
 
 export default function Potions() {
-  const gameInfoQuery = useInfoQuery()
+  const gameInfoQuery = useShowInfoQuery()
 
   const hospitalId = gameInfoQuery?.data?.place?.hospital?.id!
   const hospitalQuery = useHospitalQuery({ hospitalId })

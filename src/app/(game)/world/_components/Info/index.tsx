@@ -3,7 +3,7 @@
 import React from 'react'
 import { loc } from '@/localization'
 import { useGame } from '@/context/game-provider'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 
 import { Text } from '@/styles/text-server'
 import { Card } from '@/styles/common-server'
@@ -11,7 +11,7 @@ import Image from 'next/image'
 import Place from './Place'
 
 export default function Info() {
-  const infoQuery = useInfoQuery()
+  const infoQuery = useShowInfoQuery()
 
   const hasEnemy = !!infoQuery.data?.enemy
   const hasPlace = !!infoQuery.data?.place

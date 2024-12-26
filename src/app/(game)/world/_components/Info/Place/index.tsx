@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { loc } from '@/localization'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 
 import { List } from '@/styles/common-server'
 import { Link, Text } from '@/styles/text-server'
@@ -22,7 +22,7 @@ interface Props {
 export default function Place(p: Props) {
   const [subPlace, setSubPlace] = React.useState<SubPlace | undefined>(p.forceSubplace)
 
-  const gameInfo = useInfoQuery()
+  const gameInfo = useShowInfoQuery()
 
   if (!gameInfo.data?.place) return <></>
 

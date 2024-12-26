@@ -1,22 +1,23 @@
 import { createMutationHook, createQueryHook } from '@/app/api/_api-hooks'
-import { attack, getInfo, loot, runAway } from '@/server/actions/game'
+
+import * as GameAction from '@/server/actions/game'
 
 import { QUERY_KEY } from '@/const'
 
-export const useInfoQuery = createQueryHook([QUERY_KEY.INFO], getInfo)
+export const useShowInfoQuery = createQueryHook([QUERY_KEY.INFO], GameAction.showInfo)
 
-export const useAttackMutation = createMutationHook(attack, [
+export const useAttackMutation = createMutationHook(GameAction.attack, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,
   QUERY_KEY.INFO,
 ])
 
-export const useRunAwayMutation = createMutationHook(runAway, [
+export const useRunAwayMutation = createMutationHook(GameAction.runAway, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,
   QUERY_KEY.INFO,
 ])
 
-export const useLootMutation = createMutationHook(loot, [QUERY_KEY.PLAYER, QUERY_KEY.INFO])
+export const useLootMutation = createMutationHook(GameAction.loot, [QUERY_KEY.PLAYER, QUERY_KEY.INFO])

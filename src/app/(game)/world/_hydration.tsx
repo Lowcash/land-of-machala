@@ -9,7 +9,7 @@ export default async function Hydration(p: React.PropsWithChildren) {
   void (await Promise.all([
     queryClient.prefetchQuery({
       queryKey: [QUERY_KEY.INFO],
-      queryFn: () => GameAction.getInfo(),
+      queryFn: () => GameAction.showInfo(),
     }),
   ]))
 
