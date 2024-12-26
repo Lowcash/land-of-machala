@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import type { Potion } from '@prisma/client'
 import { useInfoQuery } from '@/hooks/api/useGame'
 import { useBuyPotionMutation, useHospitalQuery } from '@/hooks/api/useHospital'

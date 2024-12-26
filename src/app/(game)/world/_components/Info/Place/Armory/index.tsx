@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { useArmoryQuery, useBuyItemMutation, useSellItemMutation } from '@/hooks/api/useArmory'
 import { useInfoQuery } from '@/hooks/api/useGame'
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/usePlayer'
 import { useWearableQuery } from '@/hooks/api/useWearable'
 

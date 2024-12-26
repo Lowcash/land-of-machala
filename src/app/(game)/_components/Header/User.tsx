@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { signOut } from 'next-auth/react'
 
 import { PersonIcon } from '@radix-ui/react-icons'

@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import useNavigate from '@/hooks/useNavigate'
 import { useForm } from 'react-hook-form'
 import type { MutationInput } from '@/lib/utils'

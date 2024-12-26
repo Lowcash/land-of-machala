@@ -1,4 +1,4 @@
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { show } from '@/server/actions/inventory'
 
 import { Card } from '@/styles/common-server'

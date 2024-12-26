@@ -3,7 +3,7 @@ import type { Armor, Weapon, Potion } from '@prisma/client'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import Table from '@/components/table'
-import { loc } from '@/local'
+import { loc } from '@/localization'
 
 export type Action = 'deposit' | 'withdraw'
 export type Type = 'weapon' | 'armor' | 'potion'

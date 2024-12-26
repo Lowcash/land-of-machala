@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { useAttackMutation, useInfoQuery, useRunAwayMutation } from '@/hooks/api/useGame'
 
 import * as S from './styles'

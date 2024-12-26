@@ -1,4 +1,4 @@
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import type { Armor, Weapon } from '@prisma/client'
 
 import { Text } from '@/styles/text-server'

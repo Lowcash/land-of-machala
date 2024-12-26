@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { useGame } from '@/context/game-provider'
 import { useInfoQuery } from '@/hooks/api/useGame'
 

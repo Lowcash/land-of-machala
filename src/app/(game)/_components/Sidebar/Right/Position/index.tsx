@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { usePlayerQuery } from '@/hooks/api/usePlayer'
 
 import * as S from './styles'
