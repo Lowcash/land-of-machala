@@ -1,13 +1,13 @@
 'use client'
 
 import { loc } from '@/localization'
-import { useAttackMutation, useInfoQuery, useRunAwayMutation } from '@/hooks/api/useGame'
+import { useAttackMutation, useShowInfoQuery, useRunAwayMutation } from '@/hooks/api/useGame'
 
 import * as S from './styles'
 import { Button } from '@/components/ui/button'
 
 export default function Enemy() {
-  const gameInfo = useInfoQuery()
+  const gameInfo = useShowInfoQuery()
 
   const attackMutation = useAttackMutation()
   const runAwayMutation = useRunAwayMutation()

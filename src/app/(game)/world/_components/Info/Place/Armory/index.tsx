@@ -3,7 +3,7 @@
 import React from 'react'
 import { loc } from '@/localization'
 import { useArmoryQuery, useBuyItemMutation, useSellItemMutation } from '@/hooks/api/useArmory'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
 import { H3, Text } from '@/styles/text-server'
@@ -12,7 +12,7 @@ import Loading from '@/components/loading'
 import Alert from '@/components/alert'
 
 export default function Armory() {
-  const infoQuery = useInfoQuery()
+  const infoQuery = useShowInfoQuery()
 
   const armoryId = infoQuery.data?.place?.armory?.id!
   const armoryQuery = useArmoryQuery({ armoryId })

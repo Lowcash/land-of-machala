@@ -1,6 +1,6 @@
 'use server'
 
-import { db } from '../db'
+import { db } from '@/server/db'
 import { cache } from 'react'
 import { random } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
@@ -14,7 +14,7 @@ import * as InventoryAction from './inventory'
 
 import { ERROR_CAUSE } from '@/const'
 
-export const getInfo = cache(
+export const showInfo = cache(
   protectedAction.query(async () => {
     const player = await PlayerAction.get()
 

@@ -1,23 +1,18 @@
 import { Profession, Race } from '@prisma/client'
 
-export const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
-
-export type Position = {
-  x: number
-  y: number
-}
-
-export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor', 'potion'] as const
-
 export const RACES = [Race.HUMAN, Race.GNOME, Race.DWARF] as const
 export const PROFESSIONS = [Profession.WARRIOR, Profession.SAMURAI, Profession.MAGE] as const
 
+export const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
+
+export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor', 'potion'] as const
+
 export enum ERROR_CAUSE {
-  ENTITY_NOT_EXIST = "ENTITY_NOT_EXIST",
-  NOT_AVAILABLE = "NOT_AVAILABLE",
-  CANNOT_MOVE = "CANNOT_MOVE",
-  COMBAT = "COMBAT",
-  INSUFFICIENT_FUNDS = "INSUFFICIENT_FUNDS",
+  ENTITY_NOT_EXIST = 'ENTITY_NOT_EXIST',
+  NOT_AVAILABLE = 'NOT_AVAILABLE',
+  CANNOT_MOVE = 'CANNOT_MOVE',
+  COMBAT = 'COMBAT',
+  INSUFFICIENT_FUNDS = 'INSUFFICIENT_FUNDS',
 }
 
 export const ROUTE = {

@@ -346,7 +346,6 @@ model PotionInBank {
 // -----------------------------
 // Wearables
 // -----------------------------
-
 model Wearable {
     id String @id @default(uuid())
 
@@ -536,7 +535,6 @@ model PotionInInventory {
 // -----------------------------
 // Quest
 // -----------------------------
-
 enum QuestIdent {
     SLAIN_ENEMY
     SLAIN_TROLL

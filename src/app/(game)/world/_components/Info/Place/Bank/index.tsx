@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { loc } from '@/localization'
-import { useInfoQuery } from '@/hooks/api/useGame'
+import { useShowInfoQuery } from '@/hooks/api/useGame'
 import { useBankQuery, useBankAccountQuery, useDepositItemMutation, useWithdrawItemMutation } from '@/hooks/api/useBank'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
@@ -14,7 +14,7 @@ import Loading from '@/components/loading'
 import Alert from '@/components/alert'
 
 export default function Bank() {
-  const infoQuery = useInfoQuery()
+  const infoQuery = useShowInfoQuery()
 
   const bankId = infoQuery.data?.place?.bank?.id!
 

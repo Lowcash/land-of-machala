@@ -1,7 +1,7 @@
 'use server'
 
 import { z } from 'zod'
-import { db } from '../db'
+import { db } from '@/server/db'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
 
