@@ -1,4 +1,4 @@
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { getAssignedQuests } from '@/server/actions/quest'
 
 import { FaCheck, FaTimes } from 'react-icons/fa'

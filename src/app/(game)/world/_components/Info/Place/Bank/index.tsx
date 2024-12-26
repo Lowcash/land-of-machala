@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { useInfoQuery } from '@/hooks/api/useGame'
 import { useBankQuery, useBankAccountQuery, useDepositItemMutation, useWithdrawItemMutation } from '@/hooks/api/useBank'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'

@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import Table from '@/components/table'

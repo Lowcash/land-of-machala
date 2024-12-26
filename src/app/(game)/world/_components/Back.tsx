@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/local'
+import { loc } from '@/localization'
 import useNavigate from '@/hooks/useNavigate'
 
 import { Button } from '@/components/ui/button'
