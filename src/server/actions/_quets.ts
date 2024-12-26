@@ -1,9 +1,10 @@
-import { db } from '../db'
-import { enemyEmitter } from './_game'
-import { checkQuestProgress, getUserQuests } from './quest'
+import { db } from '@/server/db'
 
-enemyEmitter.on('defeated', async (enemy) => {
-  const userQuest = await getUserQuests()
+import * as _Game from './_game'
+import * as QuestAction from './quest'
+
+_Game.enemyEmitter.on('defeated', async (enemy) => {
+  const userQuest = await QuestAction.getAssignedQuests()
 
   if (!!userQuest.quest_slain_enemy) {
     const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain
@@ -16,7 +17,7 @@ enemyEmitter.on('defeated', async (enemy) => {
       data: { actual_slain: actualSlain + 1 },
     })
 
-    await checkQuestProgress('SLAIN_ENEMY')
+    await QuestAction.checkProgress('SLAIN_ENEMY')
   }
   if (!!userQuest.quest_slain_troll) {
     if (enemy.name !== 'troll') return
@@ -31,6 +32,6 @@ enemyEmitter.on('defeated', async (enemy) => {
       data: { actual_slain: actualSlain + 1 },
     })
 
-    await checkQuestProgress('SLAIN_TROLL')
+    await QuestAction.checkProgress('SLAIN_TROLL')
   }
 })

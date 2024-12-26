@@ -1,5 +1,5 @@
 import { getServerPage } from '@/lib/utls-server'
-import { getSession, hasCharacter } from '@/server/actions/player'
+import * as PlayerAction from '@/server/actions/player'
 
 import LandingLayout from './landing/layout'
 import CreatePage from './create/page'
@@ -14,14 +14,14 @@ import InventoryPage from './(game)/inventory/page'
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  if (!(await getSession()))
+  if (!(await PlayerAction.getSession()))
     return (
       <LandingLayout>
         <LandingPage />
       </LandingLayout>
     )
 
-  if (!(await hasCharacter())) return <CreatePage />
+  if (!(await PlayerAction.get()).hasCharacter) return <CreatePage />
 
   const page = getServerPage()
 

@@ -3,7 +3,7 @@ import { cn } from '@/lib/utils'
 import { Text } from '@/styles/text-server'
 import { Root, Indicator } from '@radix-ui/react-progress'
 
-export const ProgressRoot = (p: React.PropsWithChildren) => (
+export const ProgressRoot = (p: React.PropsWithChildren & Pick<React.ComponentProps<typeof Root>, 'value' | 'max'>) => (
   <Root {...p} className='relative h-6 w-full overflow-hidden rounded-full border border-black/10 bg-custom-gold-1' />
 )
 

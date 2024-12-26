@@ -10,3 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 export function random(to: number, from: number = 0) {
   return Math.floor(Math.random() * (to - from)) + from
 }
+
+export function clamp(value: number, min: number = 0, max: number = 100): number {  
+  return Math.min(Math.max(value, min), max)  
+}  

@@ -1,8 +1,8 @@
 'use server'
 
 import { z } from 'zod'
+import { db } from '@/server/db'
 import { protectedAction } from '@/server/trpc'
-import * as Place from './_place'
 
 export const get = protectedAction
   .input(
@@ -11,4 +11,13 @@ export const get = protectedAction
       posY: z.number(),
     }),
   )
-  .query(async ({ input }) => Place.get({ x: input.posX, y: input.posY }))
+  .query(async ({ input }) =>
+    db.place.findFirst({
+      where: { pos_x: input.posX, pos_y: input.posY },
+      include: {
+        hospital: true,
+        armory: true,
+        bank: true,
+      },
+    }),
+  )

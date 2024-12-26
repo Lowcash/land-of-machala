@@ -1,5 +1,5 @@
 import { loc } from '@/local'
-import { getUserQuests } from '@/server/actions/quest'
+import { getAssignedQuests } from '@/server/actions/quest'
 
 import { FaCheck, FaTimes } from 'react-icons/fa'
 import { Card } from '@/styles/common-server'
@@ -10,7 +10,7 @@ import Back from '@/app/(game)/world/_components/Back'
 export const dynamic = 'force-dynamic'
 
 export default async function Page() {
-  const userQuests = await getUserQuests()
+  const userQuests = await getAssignedQuests()
 
   const slainEnemyQuest = userQuests.quest_slain_enemy
   const slainTrollQuest = userQuests.quest_slain_troll

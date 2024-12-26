@@ -6,12 +6,28 @@ import { random } from '@/lib/utils'
 import { Prisma } from '@prisma/client'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
+
+import * as _Game from './_game'
 import * as PlayerAction from './player'
 import * as PlaceAction from './place'
 import * as InventoryAction from './inventory'
-import { enemyEmitter } from './_game'
 
 import { ERROR_CAUSE } from '@/const'
+
+export const getInfo = cache(
+  protectedAction.query(async () => {
+    const player = await PlayerAction.get()
+
+    if (player.isInCombat) return { enemy: player.enemy_instance }
+    if (player.hasLoot) return { loot: player.loot }
+
+    const place = await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y })
+
+    if (!!place) return { place, defeated: player.defeated }
+
+    return {}
+  }),
+)
 
 export const checkForEnemy = protectedAction.mutation(async () => {
   const player = await PlayerAction.get()
@@ -44,24 +60,10 @@ export const checkForEnemy = protectedAction.mutation(async () => {
   })
 })
 
-export const getInfo = cache(
-  protectedAction.query(async () => {
-    const player = await PlayerAction.get()
-
-    if (await PlayerAction.isInCombat()) return { enemy: player.enemy_instance }
-    if (await PlayerAction.hasLoot()) return { loot: player.loot }
-
-    const place = await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y })
-    if (!!place) return { place, defeated: player.defeated }
-
-    return {}
-  }),
-)
-
 export const attack = protectedAction.mutation(async () => {
-  if (!(await PlayerAction.isInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
-
   const player = await PlayerAction.get()
+
+  if (!player.isInCombat) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
   // const damageFromPlayer = random(player.damage_min, player.damage_max)
   const damageFromPlayer = 1000
@@ -124,7 +126,7 @@ export const attack = protectedAction.mutation(async () => {
   }
 
   if (enemyDefeated) {
-    enemyEmitter.emit('defeated', enemy)
+    _Game.enemyEmitter.emit('defeated', enemy)
 
     const weapon = await db.weapon.findFirst({
       skip: random(await db.weapon.count()),
@@ -165,15 +167,17 @@ export const attack = protectedAction.mutation(async () => {
 })
 
 export const runAway = protectedAction.mutation(async () => {
-  if (!(await PlayerAction.isInCombat())) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  const player = await PlayerAction.get()
 
-  await db.enemyInstance.delete({ where: { id: (await PlayerAction.get()).enemy_instance!.id } })
+  if (!player.isInCombat) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+
+  await db.enemyInstance.delete({ where: { id: player.enemy_instance!.id } })
 })
 
 export const loot = protectedAction.mutation(async () => {
   const player = await PlayerAction.get()
 
-  if (!player.loot) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!player.hasLoot) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
   const inventory = await InventoryAction.get()
 

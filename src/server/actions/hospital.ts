@@ -2,47 +2,42 @@
 
 import { z } from 'zod'
 import { db } from '../db'
-import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { get } from './player'
+import * as PlayerAction from './player'
 import * as InventoryAction from './inventory'
-import { acceptQuest, checkQuestProgress, completeQuest, getQuest } from './quest'
+import * as QuestAction from './quest'
 import { collectReward } from './game'
 
 import { ERROR_CAUSE } from '@/const'
 
-export const getHospital = cache(
-  protectedAction.input(z.object({ hospitalId: z.string() })).query(async ({ input }) => {
-    const hospital = await db.hospital.findFirst({
-      where: { id: input.hospitalId },
-      include: {
-        potions_hospital: { include: { potion: true } },
-      },
-    })
+export const get = protectedAction.input(z.object({ hospitalId: z.string() })).query(async ({ input }) => {
+  const hospital = await db.hospital.findFirst({
+    where: { id: input.hospitalId },
+    include: {
+      potions_hospital: { include: { potion: true } },
+    },
+  })
 
-    if (!hospital) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!hospital) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return hospital
-  }),
-)
+  return hospital
+})
 
-export const showHospital = cache(
-  protectedAction.input(z.object({ hospitalId: z.string() })).query(async ({ input }) => {
-    const hospital = await getHospital({ hospitalId: input.hospitalId })
+export const show = protectedAction.input(z.object({ hospitalId: z.string() })).query(async ({ input }) => {
+  const hospital = await get({ hospitalId: input.hospitalId })
 
-    return {
-      ...hospital,
-      slainEnemyQuest: {
-        state: await checkQuestProgress('SLAIN_ENEMY'),
-        reward: (await getQuest('SLAIN_ENEMY')).money,
-      },
-    }
-  }),
-)
+  return {
+    ...hospital,
+    slainEnemyQuest: {
+      state: await QuestAction.checkProgress('SLAIN_ENEMY'),
+      reward: (await QuestAction.get('SLAIN_ENEMY')).money,
+    },
+  }
+})
 
 export const resurect = protectedAction.mutation(async () => {
-  const player = await get()
+  const player = await PlayerAction.get()
 
   await db.user.update({
     where: { id: player.id },
@@ -51,8 +46,7 @@ export const resurect = protectedAction.mutation(async () => {
 })
 
 export const heal = protectedAction.input(z.object({ hospitalId: z.string() })).mutation(async ({ input }) => {
-  const player = await get()
-  const hospital = await getHospital({ hospitalId: input.hospitalId })
+  const [player, hospital] = await Promise.all([PlayerAction.get(), get({ hospitalId: input.hospitalId })])
 
   const balance = player.money - (hospital.price ?? 0)
 
@@ -67,13 +61,11 @@ export const heal = protectedAction.input(z.object({ hospitalId: z.string() })).
 export const buyPotion = protectedAction
   .input(z.object({ hospitalId: z.string(), potionId: z.number() }))
   .mutation(async ({ input }) => {
-    const hospital = await getHospital({ hospitalId: input.hospitalId })
+    const [player, hospital] = await Promise.all([PlayerAction.get(), get({ hospitalId: input.hospitalId })])
 
     const hospitalPotion = hospital.potions_hospital.find((x) => x.potion_id === input.potionId)
 
     if (!hospitalPotion) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
-
-    const player = await get()
 
     const balance = player.money - (hospitalPotion.price ?? 0)
 
@@ -97,13 +89,15 @@ export const buyPotion = protectedAction
   })
 
 export const acceptSlainEnemyQuest = protectedAction.mutation(async () => {
-  if ((await checkQuestProgress('SLAIN_ENEMY')) !== 'READY') throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if ((await QuestAction.checkProgress('SLAIN_ENEMY')) !== 'READY')
+    throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  await acceptQuest('SLAIN_ENEMY')
+  await QuestAction.accept('SLAIN_ENEMY')
 })
 
 export const completeSlainEnemyQuest = protectedAction.mutation(async () => {
-  if ((await checkQuestProgress('SLAIN_ENEMY')) !== 'COMPLETE') throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if ((await QuestAction.checkProgress('SLAIN_ENEMY')) !== 'COMPLETE')
+    throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  await collectReward(db, { money: await completeQuest('SLAIN_ENEMY') })
+  await collectReward(db, { money: await QuestAction.complete('SLAIN_ENEMY') })
 })
