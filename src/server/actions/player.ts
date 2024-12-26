@@ -2,35 +2,46 @@
 
 import { z } from 'zod'
 import { cache } from 'react'
+import { db } from '@/server/db'
 import { serverActionProcedure, protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
-import { checkForEnemy } from './game'
-import * as Player from '@/server/actions/_player'
+
+import * as _Player from './_player'
+import * as GameAction from './game'
 
 import { PROFESSIONS, RACES } from '@/const'
 import { DIRECTIONS, ERROR_CAUSE } from '@/const'
 
 export const getSession = cache(serverActionProcedure.query(({ ctx }) => ctx.user))
 
-export const get = protectedAction.query(async ({ ctx }) => {
-  const player = await Player.get(ctx.user.id)
+export const get = cache(
+  protectedAction.query(async ({ ctx }) => {
+    const player = await db.user.findFirst({
+      where: { id: ctx.user.id },
+      include: {
+        enemy_instance: { include: { enemy: true } },
+        loot: {
+          include: {
+            armors_loot: { include: { armor: true } },
+            weapons_loot: { include: { weapon: true } },
+          },
+        },
+      },
+    })
 
-  if (!player) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+    if (!player) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-  return { ...player, canMove: await Player.canMove(player) }
-})
-
-export const hasCharacter = protectedAction.query(async () => {
-  return Player.hasCharacter(await get())
-})
-
-export const hasLoot = protectedAction.query(async () => {
-  return Player.hasLoot(await get())
-})
-
-export const isInCombat = protectedAction.query(async () => {
-  return Player.isInCombat(await get())
-})
+    return {
+      ...player,
+      hasCharacter: _Player.hasCharacter(player),
+      isSafe: _Player.isSafe(player),
+      canMove: _Player.canMove(player),
+      isInCombat: _Player.isInCombat(player),
+      isDefeated: _Player.isDefeated(player),
+      hasLoot: _Player.hasLoot(player),
+    }
+  }),
+)
 
 export const create = protectedAction
   .input(
@@ -39,18 +50,39 @@ export const create = protectedAction
       profession: z.enum(PROFESSIONS),
     }),
   )
-  .mutation(({ ctx, input }) => Player.create(ctx.user.id, { race: input.race, profession: input.profession }))
+  .mutation(({ ctx, input }) =>
+    db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        race: input.race,
+        profession: input.profession,
+        hp_actual: 100,
+        hp_max: 100,
+        xp_actual: 0,
+        xp_max: 100,
+      },
+    }),
+  )
 
 export const move = protectedAction
   .input(z.object({ direction: z.enum(DIRECTIONS) }))
   .mutation(async ({ ctx, input }) => {
     const player = await get()
 
-    if (!Player.canMove(player)) throw getTRPCErrorFromUnknown(ERROR_CAUSE.CANNOT_MOVE)
+    if (!_Player.canMove(player)) throw getTRPCErrorFromUnknown(ERROR_CAUSE.CANNOT_MOVE)
 
-    await Player.move(ctx.user.id, { x: player.pos_x, y: player.pos_y }, input.direction)
+    const horizontal = input.direction === 'left' ? -1 : input.direction === 'right' ? 1 : 0
+    const vertical = input.direction === 'down' ? -1 : input.direction === 'up' ? 1 : 0
 
-    if (!(await Player.isSafe(player))) {
-      await checkForEnemy()
+    await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        pos_x: player.pos_x + horizontal,
+        pos_y: player.pos_y + vertical,
+      },
+    })
+
+    if (!(await _Player.isSafe(player))) {
+      await GameAction.checkForEnemy()
     }
   })

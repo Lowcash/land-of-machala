@@ -2,45 +2,41 @@
 
 import { z } from 'zod'
 import { db } from '../db'
-import { cache } from 'react'
 import { protectedAction } from '@/server/trpc'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
+
+import * as _Armory from './_armory'
 import * as PlayerAction from './player'
 import * as InventoryAction from './inventory'
-import { getBuyArmors, getBuyWeapons, getSellArmors, getSellWeapons } from './_armory'
 
 import { ERROR_CAUSE, WEARABLES } from '@/const'
 
-export const getArmory = cache(
-  protectedAction.input(z.object({ armoryId: z.string() })).query(async ({ input }) => {
-    const armory = await db.armory.findFirst({
-      where: { id: input.armoryId },
-      include: {
-        weapons: { include: { weapon: true } },
-        armors: { include: { armor: true } },
-      },
-    })
+export const get = protectedAction.input(z.object({ armoryId: z.string() })).query(async ({ input }) => {
+  const armory = await db.armory.findFirst({
+    where: { id: input.armoryId },
+    include: {
+      weapons: { include: { weapon: true } },
+      armors: { include: { armor: true } },
+    },
+  })
 
-    if (!armory) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!armory) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return armory
-  }),
-)
+  return armory
+})
 
-export const showArmory = cache(
-  protectedAction.input(z.object({ armoryId: z.string() })).query(async ({ input }) => {
-    const armory = await getArmory({ armoryId: input.armoryId })
+export const show = protectedAction.input(z.object({ armoryId: z.string() })).query(async ({ input }) => {
+  const armory = await get({ armoryId: input.armoryId })
 
-    const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
-      getBuyWeapons({ armoryId: armory.id }),
-      getBuyArmors({ armoryId: armory.id }),
-      getSellWeapons(),
-      getSellArmors(),
-    ])
+  const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
+    _Armory.getBuyWeapons({ armoryId: armory.id }),
+    _Armory.getBuyArmors({ armoryId: armory.id }),
+    _Armory.getSellWeapons(),
+    _Armory.getSellArmors(),
+  ])
 
-    return { ...armory, buyWeapons, buyArmors, sellWeapons, sellArmors }
-  }),
-)
+  return { ...armory, buyWeapons, buyArmors, sellWeapons, sellArmors }
+})
 
 export const buyItem = protectedAction
   .input(z.object({ armoryId: z.string(), armoryItemId: z.string(), armoryItemType: z.enum(WEARABLES) }))
@@ -49,7 +45,7 @@ export const buyItem = protectedAction
 
     switch (input.armoryItemType) {
       case 'weapon': {
-        const armoryWeapon = (await getBuyWeapons({ armoryId: input.armoryId })).find(
+        const armoryWeapon = (await _Armory.getBuyWeapons({ armoryId: input.armoryId })).find(
           (x) => x.id === input.armoryItemId,
         )
 
@@ -76,7 +72,9 @@ export const buyItem = protectedAction
         break
       }
       case 'armor': {
-        const armoryArmor = (await getBuyArmors({ armoryId: input.armoryId })).find((x) => x.id === input.armoryItemId)
+        const armoryArmor = (await _Armory.getBuyArmors({ armoryId: input.armoryId })).find(
+          (x) => x.id === input.armoryItemId,
+        )
 
         if (!armoryArmor) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -110,7 +108,7 @@ export const sellItem = protectedAction
 
     switch (input.armoryItemType) {
       case 'weapon': {
-        const armoryWeapon = (await getSellWeapons()).find((x) => x.id === input.armoryItemId)
+        const armoryWeapon = (await _Armory.getSellWeapons()).find((x) => x.id === input.armoryItemId)
 
         if (!armoryWeapon) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -141,7 +139,7 @@ export const sellItem = protectedAction
         break
       }
       case 'armor': {
-        const armoryArmor = (await getSellArmors()).find((x) => x.id === input.armoryItemId)
+        const armoryArmor = (await _Armory.getSellArmors()).find((x) => x.id === input.armoryItemId)
 
         if (!armoryArmor) throw getTRPCErrorFromUnknown(ERROR_CAUSE.NOT_AVAILABLE)
 

@@ -1,16 +1,17 @@
 'use server'
 
-import { db } from '../db'
+import { db } from '@/server/db'
 import { getTRPCErrorFromUnknown } from '@trpc/server'
+import type { QuestIdent } from '@prisma/client'
+
+import * as _Quest from './_quets'
+import * as PlayerAction from './player'
 
 import { ERROR_CAUSE } from '@/const'
-import { QuestIdent } from '@prisma/client'
-import { get } from './player'
-import { enemyEmitter } from './_game'
 
 type State = 'WAITING' | 'READY' | 'PROGRESS' | 'COMPLETE' | 'DONE'
 
-export async function getQuest(ident: QuestIdent) {
+export async function get(ident: QuestIdent) {
   const quest = await db.quest.findFirst({
     where: { ident },
   })
@@ -20,8 +21,19 @@ export async function getQuest(ident: QuestIdent) {
   return quest
 }
 
-export async function getUserQuests() {
-  const player = await get()
+async function getRules(ident: QuestIdent) {
+  const userQuest = await getAssignedQuests()
+
+  switch (ident) {
+    case 'SLAIN_ENEMY':
+      return userQuest.quest_slain_enemy!.slain.actual_slain >= userQuest.quest_slain_enemy!.slain.desired_slain
+    case 'SLAIN_TROLL':
+      return userQuest.quest_slain_troll!.slain.actual_slain >= userQuest.quest_slain_troll!.slain.desired_slain
+  }
+}
+
+export async function getAssignedQuests() {
+  const player = await PlayerAction.get()
 
   let userQuest = await db.userQuest.findFirst({
     where: { id: player.user_quest_id ?? -1 },
@@ -55,20 +67,8 @@ export async function getUserQuests() {
   return userQuest
 }
 
-async function rules(ident: QuestIdent) {
-  const userQuest = await getUserQuests()
-
-  switch (ident) {
-    case 'SLAIN_ENEMY':
-      return userQuest.quest_slain_enemy!.slain.actual_slain >= userQuest.quest_slain_enemy!.slain.desired_slain
-    case 'SLAIN_TROLL':
-      return userQuest.quest_slain_troll!.slain.actual_slain >= userQuest.quest_slain_troll!.slain.desired_slain
-  }
-}
-
-export async function acceptQuest(ident: QuestIdent) {
-  const quest = await getQuest(ident)
-  const userQuest = await getUserQuests()
+export async function accept(ident: QuestIdent) {
+  const [quest, assignedQuests] = await Promise.all([get(ident), getAssignedQuests()])
 
   await db.$transaction(async (db) => {
     const slain = await db.slain.create({ data: { desired_slain: 10 } })
@@ -78,7 +78,7 @@ export async function acceptQuest(ident: QuestIdent) {
         const questSlainEnemy = await db.questSlainEnemy.create({ data: { quest_id: quest.id, slain_id: slain.id } })
 
         await db.userQuest.update({
-          where: { id: userQuest.id },
+          where: { id: assignedQuests.id },
           data: {
             quest_slain_enemy_id: questSlainEnemy.id,
             quest_slain_enemy_complete: false,
@@ -91,7 +91,7 @@ export async function acceptQuest(ident: QuestIdent) {
         const questSlainTroll = await db.questSlainTroll.create({ data: { quest_id: quest.id, slain_id: slain.id } })
 
         await db.userQuest.update({
-          where: { id: userQuest.id },
+          where: { id: assignedQuests.id },
           data: {
             quest_slain_enemy_id: questSlainTroll.id,
             quest_slain_troll_complete: false,
@@ -104,8 +104,8 @@ export async function acceptQuest(ident: QuestIdent) {
   })
 }
 
-export async function completeQuest(ident: QuestIdent) {
-  const userQuest = await getUserQuests()
+export async function complete(ident: QuestIdent) {
+  const userQuest = await getAssignedQuests()
 
   let questKey: keyof typeof userQuest
   let questDoneKey: keyof typeof userQuest
@@ -152,8 +152,8 @@ export async function completeQuest(ident: QuestIdent) {
   })
 }
 
-export async function checkQuestProgress(ident: QuestIdent): Promise<State> {
-  const userQuest = await getUserQuests()
+export async function checkProgress(ident: QuestIdent): Promise<State> {
+  const userQuest = await getAssignedQuests()
 
   let questKey: keyof typeof userQuest
   let questDoneKey: keyof typeof userQuest
@@ -174,7 +174,7 @@ export async function checkQuestProgress(ident: QuestIdent): Promise<State> {
   if (!userQuest[questKey]) return 'READY'
   if (userQuest[questDoneKey]) return 'DONE'
 
-  const isComplete = await rules(ident)
+  const isComplete = await getRules(ident)
 
   if (isComplete) {
     await db.userQuest.update({
@@ -185,36 +185,3 @@ export async function checkQuestProgress(ident: QuestIdent): Promise<State> {
 
   return isComplete ? 'COMPLETE' : 'PROGRESS'
 }
-
-enemyEmitter.on('defeated', async (enemy) => {
-  const userQuest = await getUserQuests()
-
-  if (!!userQuest.quest_slain_enemy) {
-    const actualSlain = userQuest.quest_slain_enemy.slain.actual_slain
-    const desiredSlain = userQuest.quest_slain_enemy.slain.desired_slain
-
-    if (actualSlain >= desiredSlain) return
-
-    await db.slain.update({
-      where: { id: userQuest.quest_slain_enemy.slain.id },
-      data: { actual_slain: actualSlain + 1 },
-    })
-
-    await checkQuestProgress('SLAIN_ENEMY')
-  }
-  if (!!userQuest.quest_slain_troll) {
-    if (enemy.name !== 'troll') return
-
-    const actualSlain = userQuest.quest_slain_troll.slain.actual_slain
-    const desiredSlain = userQuest.quest_slain_troll.slain.desired_slain
-
-    if (actualSlain >= desiredSlain) return
-
-    await db.slain.update({
-      where: { id: userQuest.quest_slain_troll.slain.id },
-      data: { actual_slain: actualSlain + 1 },
-    })
-
-    await checkQuestProgress('SLAIN_TROLL')
-  }
-})

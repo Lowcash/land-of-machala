@@ -1,10 +1,10 @@
 import { createMutationHook, createQueryHook } from '@/app/api/_api-hooks'
-import { depositItem, withdrawItem, showBank, showBankAccount } from '@/server/actions/bank'
+import { depositItem, withdrawItem, show, showAccount } from '@/server/actions/bank'
 
 import { QUERY_KEY } from '@/const'
 
-export const useBankQuery = createQueryHook([QUERY_KEY.BANK], showBank)
-export const useBankAccountQuery = createQueryHook([QUERY_KEY.BANK_ACCOUNT], showBankAccount)
+export const useBankQuery = createQueryHook([QUERY_KEY.BANK], show)
+export const useBankAccountQuery = createQueryHook([QUERY_KEY.BANK_ACCOUNT], showAccount)
 
 export const useDepositItemMutation = createMutationHook(depositItem, [
   QUERY_KEY.PLAYER,

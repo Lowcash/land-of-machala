@@ -11,7 +11,7 @@ const SELL_MAX_PRICE = 10000 // divided by 5
 const ROUND_PRICE_BY = 100
 
 export async function getBuyWeapons(args: { armoryId: string }) {
-  const armory = await ArmoryAction.getArmory({ armoryId: args.armoryId })
+  const armory = await ArmoryAction.get({ armoryId: args.armoryId })
   const weapons = await WeaponAction.getAll()
 
   const spreadBuyPriceWeapons = spreadItemsPrices(weapons, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
@@ -37,7 +37,7 @@ export async function getSellWeapons() {
 }
 
 export async function getBuyArmors(args: { armoryId: string }) {
-  const armory = await ArmoryAction.getArmory({ armoryId: args.armoryId })
+  const armory = await ArmoryAction.get({ armoryId: args.armoryId })
   const armors = await ArmorAction.getAll()
 
   const spreadBuyPriceArmors = spreadItemsPrices(armors!, BUY_MIN_PRICE, BUY_MAX_PRICE, { roundBy: ROUND_PRICE_BY })
