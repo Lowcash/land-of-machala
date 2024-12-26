@@ -1,15 +1,11 @@
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
+import { cn } from '@/lib/utils'
 import Script from 'next/script'
 import { MedievalSharp } from 'next/font/google'
-import { cn } from '@/lib/utils'
-import { cookies } from 'next/headers'
-import { getServerAuthSession } from '@/server/auth'
-import { TRPCReactProvider } from '@/trpc/react'
-import { NextAuthProvider } from '@/ctx/auth-provider'
-import { ThemeProvider } from '@/ctx/theme-provider'
-import { LayoutProvider } from '@/ctx/layout-provider'
-import { PageProvider } from '@/ctx/page-provider'
+
+import { ThemeProvider } from '@/context/theme-provider'
+import { QueryProvider } from '@/context/query-provider'
 
 const medieval = MedievalSharp({
   weight: '400',
@@ -23,9 +19,7 @@ export const metadata: Metadata = {
   icons: [{ rel: 'icon', url: './favicon.ico' }],
 }
 
-export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const session = await getServerAuthSession()
-
+export default async function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang='en' suppressHydrationWarning>
       <head>
@@ -34,18 +28,16 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
         )}
       </head>
       <body
-        className={cn('flex flex-col h-screen w-screen bg-background font-sans antialiased', medieval.variable)}
-        style={{ backgroundSize: '100% 100%' }}
+        className={cn(
+          'flex h-screen w-screen flex-col bg-background bg-cover font-sans antialiased',
+          medieval.variable,
+        )}
       >
-        <TRPCReactProvider cookies={cookies().toString()}>
-          <NextAuthProvider>
-            <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
-              <LayoutProvider>
-                <PageProvider signed={!!session}>{children}</PageProvider>
-              </LayoutProvider>
-            </ThemeProvider>
-          </NextAuthProvider>
-        </TRPCReactProvider>
+        <QueryProvider>
+          <ThemeProvider attribute='class' defaultTheme='system' enableSystem disableTransitionOnChange>
+            {children}
+          </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   )

@@ -1,95 +1,27 @@
-'use client'
+import { cn } from '@/lib/utils'
 
-import React from 'react'
-import styled from '@emotion/styled/macro'
-import tw from 'twin.macro'
-import { useSidebar as useLeftSidebar } from '@/components/menu-left'
-import { useSidebar as useRightSidebar } from '@/components/menu-right'
-
-export const Main = tw.main`
-  flex flex-1
-  justify-center items-center
-`
-
-export const Header = styled('header')`
-  height: 36px;
-  background: var(--gold3);
-
-  ${tw`w-screen z-40`}
-`
-
-export const HeaderOptions = styled('div')`
-  ${tw`
-    w-fit gap-2
-    ml-auto
-  `}
-`
-
-const _FooterOuter = styled('footer')`
-  height: 36px;
-  background: var(--gold3);
-
-  ${tw`w-screen z-40`}
-`
-
-const _FooterInner = styled('div')`
-  ${tw`w-fit ml-auto mr-auto`}
-`
-
-export const Footer = ({ children }: React.PropsWithChildren) => (
-  <_FooterOuter>
-    <_FooterInner>{children}</_FooterInner>
-  </_FooterOuter>
+export const Main = (p: React.HTMLAttributes<HTMLElement>) => (
+  <main {...p} className={cn('flex flex-1 items-center justify-center overflow-hidden', p.className)} />
 )
 
-interface ContentProps {
-  isLeftSidebarOpened?: boolean
-  isRightSidebarOpened?: boolean
-}
+export const Content = (p: React.HTMLAttributes<HTMLElement>) => (
+  <section {...p} className={cn('flex h-full w-[calc(100vw-32rem)] flex-col justify-start gap-4 p-4', p.className)} />
+)
 
-const _Content = styled('section')<ContentProps>`
-  height: calc(100vh - 72px);
-  top: 36px;
+export const List = (p: React.HTMLAttributes<HTMLUListElement>) => (
+  <ul {...p} className={cn('list-disc pl-4', p.className)} />
+)
 
-  ${tw`
-    flex flex-col justify-between
-    fixed
-    p-5
-    overflow-auto
-  `}
+export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
+  <div
+    {...p}
+    className={cn(
+      'flex flex-col gap-4 overflow-hidden rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
+      p.className,
+    )}
+  />
+)
 
-  ${({ isLeftSidebarOpened, isRightSidebarOpened }) => {
-    if (isLeftSidebarOpened && isRightSidebarOpened) return tw`w-[calc(100vw - 32rem)]`
-    if (isLeftSidebarOpened || isRightSidebarOpened) return tw`w-[calc(100vw - 16rem)]`
-
-    return tw`w-screen`
-  }}
-  
-  ${({ isLeftSidebarOpened }) => isLeftSidebarOpened && tw`ml-64`}
-  ${({ isRightSidebarOpened }) => isRightSidebarOpened && tw`mr-64`}
-`
-
-export const Content = ({ children }: React.PropsWithChildren) => {
-  const { open: isLeftSidebarOpened } = useLeftSidebar()
-  const { open: isRightSidebarOpened } = useRightSidebar()
-
-  return (
-    <_Content isLeftSidebarOpened={isLeftSidebarOpened} isRightSidebarOpened={isRightSidebarOpened}>
-      {children}
-    </_Content>
-  )
-}
-
-export const List = styled('ul')`
-  ${tw`
-    list-disc pl-4 
-  `}
-`
-
-export const Card = styled('div')`
-  background: var(--gold3);
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 0.5rem;
-  padding: 1rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-`
+Card.Inner = (p: React.HTMLAttributes<HTMLDivElement>) => (
+  <div {...p} className={cn('flex flex-col gap-1', p.className)} />
+)

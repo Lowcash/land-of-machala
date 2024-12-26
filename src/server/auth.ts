@@ -1,13 +1,11 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import {
-  getServerSession,
-  type DefaultSession,
-  type NextAuthOptions,
-} from "next-auth";
-import DiscordProvider from "next-auth/providers/discord";
+import { PrismaAdapter } from '@auth/prisma-adapter'
+import { getServerSession, type DefaultSession, type NextAuthOptions } from 'next-auth'
+import { type Adapter } from 'next-auth/adapters'
+import DiscordProvider from 'next-auth/providers/discord'
 
 import { env } from '@/env'
 import { db } from '@/server/db'
+
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
  * object and keep type safety.
@@ -16,8 +14,17 @@ import { db } from '@/server/db'
  */
 declare module 'next-auth' {
   interface Session extends DefaultSession {
-    user: DefaultSession['user'] & any
+    user: {
+      id: string
+      // ...other properties
+      // role: UserRole;
+    } & DefaultSession['user']
   }
+
+  // interface User {
+  //   // ...other properties
+  //   // role: UserRole;
+  // }
 }
 
 /**
@@ -35,7 +42,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   },
-  adapter: PrismaAdapter(db),
+  adapter: PrismaAdapter(db) as Adapter,
   providers: [
     DiscordProvider({
       clientId: env.DISCORD_CLIENT_ID,
@@ -51,11 +58,11 @@ export const authOptions: NextAuthOptions = {
      * @see https://next-auth.js.org/providers/github
      */
   ],
-};
+}
 
 /**
  * Wrapper for `getServerSession` so that you don't need to import the `authOptions` in every file.
  *
  * @see https://next-auth.js.org/configuration/nextjs
  */
-export const getServerAuthSession = () => getServerSession(authOptions);
+export const getServerAuthSession = () => getServerSession(authOptions)
