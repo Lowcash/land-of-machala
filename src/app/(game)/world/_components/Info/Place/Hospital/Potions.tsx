@@ -6,7 +6,7 @@ import type { Potion } from '@prisma/client'
 import { useShowInfoQuery } from '@/hooks/api/useGame'
 import { useBuyPotionMutation, useHospitalQuery } from '@/hooks/api/useHospital'
 
-import { Text } from '@/styles/text-server'
+import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import Table from '@/components/table'

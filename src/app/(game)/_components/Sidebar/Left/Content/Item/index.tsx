@@ -1,7 +1,7 @@
 import { isString } from '@/lib/typeguard'
 
 import * as S from './styles'
-import { Text } from '@/styles/text-server'
+import { Text } from '@/styles/typography'
 
 interface Props {
   label?: React.ReactNode

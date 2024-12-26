@@ -11,8 +11,8 @@ import {
 } from '@/hooks/api/useHospital'
 import { useShowInfoQuery } from '@/hooks/api/useGame'
 
-import { H3, Text } from '@/styles/text-server'
-import { Card } from '@/styles/common-server'
+import { H3, Text } from '@/styles/typography'
+import { Card } from '@/styles/common'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/alert'
 import Potions from './Potions'

@@ -4,7 +4,7 @@ import { loc } from '@/localization'
 import { usePlayerQuery } from '@/hooks/api/usePlayer'
 
 import * as S from './styles'
-import { Text } from '@/styles/text-server'
+import { Text } from '@/styles/typography'
 
 export default function Position() {
   const player = usePlayerQuery()

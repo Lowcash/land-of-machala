@@ -1,4 +1,4 @@
-import { H3 } from '@/styles/text-server'
+import { H3 } from '@/styles/typography'
 
 export const Content = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='flex flex-col gap-4' />
 

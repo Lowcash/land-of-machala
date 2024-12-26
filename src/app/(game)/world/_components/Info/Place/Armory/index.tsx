@@ -6,8 +6,8 @@ import { useArmoryQuery, useBuyItemMutation, useSellItemMutation } from '@/hooks
 import { useShowInfoQuery } from '@/hooks/api/useGame'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
-import { H3, Text } from '@/styles/text-server'
-import { Card } from '@/styles/common-server'
+import { H3, Text } from '@/styles/typography'
+import { Card } from '@/styles/common'
 import Loading from '@/components/loading'
 import Alert from '@/components/alert'
 

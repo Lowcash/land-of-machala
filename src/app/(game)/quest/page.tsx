@@ -2,8 +2,8 @@ import { loc } from '@/localization'
 import { getAssignedQuests } from '@/server/actions/quest'
 
 import { FaCheck, FaTimes } from 'react-icons/fa'
-import { Card } from '@/styles/common-server'
-import { H3 } from '@/styles/text-server'
+import { Card } from '@/styles/common'
+import { H3 } from '@/styles/typography'
 import Table from '@/components/table'
 import Back from '@/app/(game)/world/_components/Back'
 

@@ -1,7 +1,7 @@
 import { loc } from '@/localization'
 import type { Armor, Weapon } from '@prisma/client'
 
-import { Text } from '@/styles/text-server'
+import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
 import Table from '@/components/table'
