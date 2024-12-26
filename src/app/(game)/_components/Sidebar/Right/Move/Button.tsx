@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlayerMoveMutation } from '@/hooks/api/usePlayer'
+import { usePlayerMoveMutation, usePlayerQuery } from '@/hooks/api/usePlayer'
 
 import { FaChevronUp, FaChevronDown, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { Button } from '@/components/ui/button'
@@ -12,6 +12,7 @@ interface Props extends Pick<React.ComponentProps<typeof Button>, 'className' | 
 }
 
 export default function Go({ direction, ...p }: Props) {
+  const playerQuery = usePlayerQuery()
   const playerMoveMutation = usePlayerMoveMutation()
 
   return (
@@ -19,6 +20,7 @@ export default function Go({ direction, ...p }: Props) {
       {...p}
       variant='warning'
       size='icon-lg'
+      disabled={p.disabled || !playerQuery.data?.canMove}
       onClick={() => playerMoveMutation.mutate({ direction })}
     >
       {direction === 'up' && <FaChevronUp />}
