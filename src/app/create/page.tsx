@@ -1,5 +1,5 @@
 import CreateForm from '@/app/create/_form'
-import { Card } from '@/styles/common-server'
+import { Card } from '@/styles/common'
 
 export default function Page() {
   return (

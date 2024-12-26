@@ -1,4 +1,4 @@
-import { Card } from '@/styles/common-server'
+import { Card } from '@/styles/common'
 
 const InnerAction = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='flex justify-between' />
 

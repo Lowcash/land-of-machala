@@ -1,6 +1,6 @@
 import Hydration from '@/app/(game)/_hydration'
 import { GameProvider } from '@/context/game-provider'
-import { Content, Main } from '@/styles/common-server'
+import { Content, Main } from '@/styles/common'
 import Footer from '@/app/(game)/_components/Footer'
 import Header from '@/app/(game)/_components/Header'
 import SidebarLeft from '@/app/(game)/_components/Sidebar/Left'

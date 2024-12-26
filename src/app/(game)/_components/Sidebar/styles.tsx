@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-import { H3 } from '@/styles/text-server'
+import { H3 } from '@/styles/typography'
 
 export const Header = (p: React.HTMLAttributes<HTMLDivElement>) => <div {...p} className='mb-4' />
 

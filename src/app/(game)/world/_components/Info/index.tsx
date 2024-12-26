@@ -5,8 +5,8 @@ import { loc } from '@/localization'
 import { useGame } from '@/context/game-provider'
 import { useShowInfoQuery } from '@/hooks/api/useGame'
 
-import { Text } from '@/styles/text-server'
-import { Card } from '@/styles/common-server'
+import { Text } from '@/styles/typography'
+import { Card } from '@/styles/common'
 import Image from 'next/image'
 import Place from './Place'
 

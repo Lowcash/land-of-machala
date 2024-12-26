@@ -7,8 +7,8 @@ import { useBankQuery, useBankAccountQuery, useDepositItemMutation, useWithdrawI
 import { useShowInventoryQuery } from '@/hooks/api/useInventory'
 
 import { ArmorSafe, PotionSafe, WeaponSafe, type OnActionParams } from './Safe'
-import { H3, Input, Text } from '@/styles/text-server'
-import { Card } from '@/styles/common-server'
+import { H3, Input, Text } from '@/styles/typography'
+import { Card } from '@/styles/common'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/loading'
 import Alert from '@/components/alert'

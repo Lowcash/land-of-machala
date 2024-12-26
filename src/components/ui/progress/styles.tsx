@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils'
 
-import { Text } from '@/styles/text-server'
+import { Text } from '@/styles/typography'
 import { Root, Indicator } from '@radix-ui/react-progress'
 
 export const ProgressRoot = (p: React.PropsWithChildren & Pick<React.ComponentProps<typeof Root>, 'value' | 'max'>) => (

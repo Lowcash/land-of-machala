@@ -1,8 +1,8 @@
 import { loc } from '@/localization'
 import { show } from '@/server/actions/inventory'
 
-import { Card } from '@/styles/common-server'
-import { H3 } from '@/styles/text-server'
+import { Card } from '@/styles/common'
+import { H3 } from '@/styles/typography'
 import Back from '@/app/(game)/world/_components/Back'
 import Weapons from './_components/Weapons'
 import Armors from './_components/Armors'
