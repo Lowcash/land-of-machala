@@ -1,4 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+
 import * as GameAction from '@/server/actions/game'
 
 import { QUERY_KEY } from '@/const'
