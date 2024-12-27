@@ -1,5 +1,6 @@
 import { loc } from '@/localization'
-import { show } from '@/server/actions/inventory'
+
+import * as InventoryAction from '@/server/actions/inventory'
 
 import { Card } from '@/styles/common'
 import { H3 } from '@/styles/typography'
@@ -13,7 +14,7 @@ export const dynamic = 'force-dynamic'
 
 export default async function Page() {
   try {
-    const inventory = await show()
+    const inventory = await InventoryAction.show()
 
     const hasWeapons = inventory.weapons.length > 0
     const hasArmors = inventory.armors.length > 0

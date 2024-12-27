@@ -1,4 +1,4 @@
-import { createQueryHook } from '@/app/api/_api-hooks'
+import { createQueryHook } from '@/hooks/api/_api-hooks'
 
 import * as InvetoryAction from '@/server/actions/inventory'
 
