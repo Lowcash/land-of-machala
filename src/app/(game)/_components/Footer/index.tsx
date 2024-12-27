@@ -3,7 +3,7 @@
 import { usePlayerQuery } from '@/hooks/api/usePlayer'
 
 import * as S from './styles'
-import Progress from '@/components/ui/Progress'
+import Progress from '@/components/ui/progress'
 
 export default function Footer() {
   const playerQuery = usePlayerQuery()
