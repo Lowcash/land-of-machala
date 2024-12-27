@@ -6,7 +6,7 @@ import { useWearableQuery } from '@/hooks/api/useWearable'
 
 import Sidebar from '@/app/(game)/_components/Sidebar'
 import Content from '@/app/(game)/_components/Sidebar/Left/Content'
-import Progress from '@/components/ui/Progress'
+import Progress from '@/components/ui/progress'
 
 const EMPTY = '-'
 
