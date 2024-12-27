@@ -1,4 +1,5 @@
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
+
 import * as InventoryAction from '@/server/actions/inventory'
 
 import { QUERY_KEY } from '@/const'

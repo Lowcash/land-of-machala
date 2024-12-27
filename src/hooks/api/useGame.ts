@@ -1,4 +1,4 @@
-import { createMutationHook, createQueryHook } from '@/app/api/_api-hooks'
+import { createMutationHook, createQueryHook } from '@/hooks/api/_api-hooks'
 
 import * as GameAction from '@/server/actions/game'
 
