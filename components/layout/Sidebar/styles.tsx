@@ -39,7 +39,7 @@ export const SidebarOuter = ({ open, position, ...p }: React.HTMLAttributes<HTML
   <aside
     {...p}
     className={cn(
-      'fixed top-9 z-50 h-[calc(100vh-72px)]',
+      'fixed top-9 z-40 h-[calc(100vh-72px)]',
       open ? 'w-64' : 'hidden',
       position === 'left' ? 'left-0' : 'right-0',
     )}

@@ -35,10 +35,14 @@ export default function Armory({ armoryId }: Props) {
 
   const buyWeapons = armoryShowQuery.data?.buyWeapons?.map((x) => ({ ...x.weapon, marketItemId: x.id, price: x.price }))
   const buyArmors = armoryShowQuery.data?.buyArmors?.map((x) => ({ ...x.armor, marketItemId: x.id, price: x.price }))
-  const sellWeapons = armoryShowQuery.data?.sellWeapons?.map((x) => ({ ...x.weapon, marketItemId: x.id, price: x.price }))
+  const sellWeapons = armoryShowQuery.data?.sellWeapons?.map((x) => ({
+    ...x.weapon,
+    marketItemId: x.id,
+    price: x.price,
+  }))
   const sellArmors = armoryShowQuery.data?.sellArmors?.map((x) => ({ ...x.armor, marketItemId: x.id, price: x.price }))
 
-  if (armoryShowQuery.isLoading) return <Loading />
+  if (armoryShowQuery.isLoading) return <Loading position='local' />
 
   const hasBuyWeapons = (buyWeapons?.length ?? 0) > 0
   const hasBuyArmors = (buyArmors?.length ?? 0) > 0
@@ -47,7 +51,7 @@ export default function Armory({ armoryId }: Props) {
 
   return (
     <>
-      {/* <Text>
+      <Text>
         {loc.place.your_are_in} <b>{armoryShowQuery.data?.name}</b>
       </Text>
 
@@ -57,9 +61,9 @@ export default function Armory({ armoryId }: Props) {
 
       {!armoryBuyItemMutation.isIdle && (
         <Alert>{armoryBuyItemMutation.isSuccess ? loc.place.armory.buy_success : loc.place.armory.buy_failed}</Alert>
-      )} */}
+      )}
 
-      {/* {hasBuyWeapons && (
+      {hasBuyWeapons && (
         <Card.Inner>
           <H3>{loc.weapon.buy}</H3>
           <WeaponMarket items={buyWeapons!} action='buy' onAction={handleAction} />
@@ -84,7 +88,7 @@ export default function Armory({ armoryId }: Props) {
           <H3>{loc.armor.sell}</H3>
           <ArmorMarket items={sellArmors!} action='sell' onAction={handleAction} />
         </Card.Inner>
-      )} */}
+      )}
     </>
   )
 }
