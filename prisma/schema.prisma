@@ -1,5 +1,6 @@
 generator client {
     provider = "prisma-client-js"
+    output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -60,12 +61,13 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+    password      String?
+
+    role Role @default(USER)
+
     accounts      Account[]
     sessions      Session[]
-    role          Role      @default(USER)
-
-    race       Race?
-    profession Profession?
+    bank_accounts BankAccount[]
 
     hp_actual   Int?
     hp_max      Int?
@@ -86,6 +88,13 @@ model User {
     pos_x Int @default(0)
     pos_y Int @default(0)
 
+    defeated Boolean @default(false)
+
+    race     Race?  @relation(fields: [race_id], references: [id])
+    race_id  Int?
+    class    Class? @relation(fields: [class_id], references: [id])
+    class_id Int?
+
     enemy_instance    EnemyInstance? @relation(fields: [enemy_instance_id], references: [id])
     enemy_instance_id String?
 
@@ -101,27 +110,35 @@ model User {
     user_quest    UserQuest? @relation(fields: [user_quest_id], references: [id])
     user_quest_id Int?
 
-    defeated Boolean @default(false)
-
-    bank_accounts BankAccount[]
-
+    @@index([race_id])
+    @@index([class_id])
+    @@index([enemy_instance_id])
     @@index([loot_id])
     @@index([inventory_id])
     @@index([wearable_id])
     @@index([user_quest_id])
-    @@index([enemy_instance_id])
 }
 
-enum Race {
-    HUMAN
-    DWARF
-    GNOME
+model Race {
+    id   Int    @id @default(autoincrement())
+    name String
+
+    strength     Int
+    agility      Int
+    intelligence Int
+
+    User User[]
 }
 
-enum Profession {
-    WARRIOR
-    SAMURAI
-    MAGE
+model Class {
+    id   Int    @id @default(autoincrement())
+    name String
+
+    strength     Int
+    agility      Int
+    intelligence Int
+
+    User User[]
 }
 
 model UserQuest {
@@ -346,7 +363,6 @@ model PotionInBank {
 // -----------------------------
 // Wearables
 // -----------------------------
-
 model Wearable {
     id String @id @default(uuid())
 
@@ -536,7 +552,6 @@ model PotionInInventory {
 // -----------------------------
 // Quest
 // -----------------------------
-
 enum QuestIdent {
     SLAIN_ENEMY
     SLAIN_TROLL
