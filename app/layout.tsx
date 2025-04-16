@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import { MedievalSharp } from 'next/font/google'
@@ -29,6 +30,8 @@ export default function RootLayout({ children }: Readonly<React.PropsWithChildre
           medieval.variable
         )}
       >
+        <SpeedInsights />
+        
         <QueryProvider>
           <ThemeProvider
             attribute='class'
