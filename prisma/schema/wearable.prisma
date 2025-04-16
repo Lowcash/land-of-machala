@@ -1,0 +1,73 @@
+model Wearable {
+  id String @id @default(uuid())
+
+  users User[]
+
+  left_hand  WeaponInInventory? @relation("LeftHandWeapon", fields: [left_hand_weapon_id], references: [id])
+  right_hand WeaponInInventory? @relation("RightHandWeapon", fields: [right_hand_weapon_id], references: [id])
+
+  head     ArmorInInventory? @relation("HeadArmor", fields: [head_armor_id], references: [id])
+  shoulder ArmorInInventory? @relation("ShoulderArmor", fields: [shoulder_armor_id], references: [id])
+  chest    ArmorInInventory? @relation("ChestArmor", fields: [chest_armor_id], references: [id])
+  hand     ArmorInInventory? @relation("HandArmor", fields: [hand_armor_id], references: [id])
+  pants    ArmorInInventory? @relation("PantsArmor", fields: [pants_armor_id], references: [id])
+  boots    ArmorInInventory? @relation("BootsArmor", fields: [boots_armor_id], references: [id])
+
+  left_hand_weapon_id  String?
+  right_hand_weapon_id String?
+
+  head_armor_id     String?
+  shoulder_armor_id String?
+  chest_armor_id    String?
+  hand_armor_id     String?
+  pants_armor_id    String?
+  boots_armor_id    String?
+
+  @@index([left_hand_weapon_id])
+  @@index([right_hand_weapon_id])
+  @@index([head_armor_id])
+  @@index([shoulder_armor_id])
+  @@index([chest_armor_id])
+  @@index([hand_armor_id])
+  @@index([pants_armor_id])
+  @@index([boots_armor_id])
+}
+
+model Weapon {
+  id   String @id @default(uuid())
+  name String
+
+  damage_from Int
+  damage_to   Int
+
+  weapons_loot      WeaponInLoot[]
+  weapons_armory    WeaponInArmory[]
+  weapons_inventory WeaponInInventory[]
+  weapons_bank      WeaponInBank[]
+}
+
+model Armor {
+  id   String @id @default(uuid())
+  name String
+
+  type ArmorType
+
+  armor        Int
+  strength     Int
+  agility      Int
+  intelligency Int
+
+  armors_loot      ArmorInLoot[]
+  armors_armory    ArmorInArmory[]
+  armors_inventory ArmorInInventory[]
+  armors_bank      ArmorInBank[]
+}
+
+enum ArmorType {
+  HEAD
+  SHOULDER
+  CHEST
+  HAND
+  PANTS
+  BOOTS
+}

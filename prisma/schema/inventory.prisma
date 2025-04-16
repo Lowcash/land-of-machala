@@ -1,0 +1,55 @@
+model Inventory {
+  id String @id @default(uuid())
+
+  user User[]
+
+  weapons_inventory WeaponInInventory[]
+  armors_inventory  ArmorInInventory[]
+  potions_inventory PotionInInventory[]
+}
+
+model WeaponInInventory {
+  id String @id @default(uuid())
+
+  weapon       Weapon    @relation(fields: [weapon_id], references: [id])
+  weapon_id    String
+  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory_id String
+
+  left_hand_weapons  Wearable[] @relation("LeftHandWeapon")
+  right_hand_weapons Wearable[] @relation("RightHandWeapon")
+
+  @@index([weapon_id])
+  @@index([inventory_id])
+}
+
+model ArmorInInventory {
+  id String @id @default(uuid())
+
+  armor        Armor     @relation(fields: [armor_id], references: [id])
+  armor_id     String
+  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory_id String
+
+  head_armors     Wearable[] @relation("HeadArmor")
+  shoulder_armors Wearable[] @relation("ShoulderArmor")
+  chest_armors    Wearable[] @relation("ChestArmor")
+  hand_armors     Wearable[] @relation("HandArmor")
+  pants_armors    Wearable[] @relation("PantsArmor")
+  boots_armors    Wearable[] @relation("BootsArmor")
+
+  @@index([armor_id])
+  @@index([inventory_id])
+}
+
+model PotionInInventory {
+  id String @id @default(uuid())
+
+  potion       Potion    @relation(fields: [potion_id], references: [id])
+  potion_id    Int
+  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory_id String
+
+  @@index([potion_id])
+  @@index([inventory_id])
+}

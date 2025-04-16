@@ -1,0 +1,25 @@
+model Hospital {
+  id             String  @id @default(uuid())
+  name           String
+  description    String?
+  subdescription String?
+
+  price Int?
+
+  places           Place[]
+  potions_hospital PotionInHospital[]
+}
+
+model PotionInHospital {
+  id String @id @default(uuid())
+
+  price Int
+
+  potion      Potion   @relation(fields: [potion_id], references: [id])
+  potion_id   Int
+  hospital    Hospital @relation(fields: [hospital_id], references: [id])
+  hospital_id String
+
+  @@index([potion_id])
+  @@index([hospital_id])
+}
