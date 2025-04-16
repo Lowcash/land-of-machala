@@ -1,30 +1,16 @@
 import type { Config } from 'tailwindcss'
-const { fontFamily } = require('tailwindcss/defaultTheme')
-const plugin = require('tailwindcss/plugin')
+import { fontFamily } from 'tailwindcss/defaultTheme'
 
-const config = {
+export default {
   darkMode: ['class'],
-  content: ['./pages/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './app/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
-  prefix: '',
+  content: [  
+    './components/**/*.{js,ts,jsx,tsx,mdx}',  
+    './styles/**/*.{js,ts,jsx,tsx,mdx}',  
+    './app/**/*.{js,ts,jsx,tsx,mdx}',  
+  ],  
   theme: {
-    container: {
-      center: true,
-      padding: '2rem',
-      screens: {
-        '2xl': '1400px',
-      },
-    },
     extend: {
-      boxShadow: {
-        side: '0 4px 8px rgba(0, 0, 0, 0.5)',
-      },
-      fontFamily: {
-        sans: ['var(--font-sans)', ...fontFamily.sans],
-      },
       colors: {
-        border: 'var(--border)',
-        input: 'var(--input)',
-        ring: 'var(--ring)',
         background: 'var(--background)',
         foreground: 'var(--foreground)',
         scrollbar: {
@@ -75,11 +61,27 @@ const config = {
         ['custom-yellow-2']: 'var(--custom-yellow-2)',
         ['custom-gold-1']: 'var(--custom-gold-1)',
         ['custom-gold-2']: 'var(--custom-gold-2)',
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        chart: {
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
+      },
+      boxShadow: {
+        side: '0 4px 8px rgba(0, 0, 0, 0.5)',
+      },
+      fontFamily: {
+        sans: ['var(--font-sans)', ...fontFamily.sans],
       },
       keyframes: {
         'accordion-down': {
@@ -99,5 +101,3 @@ const config = {
   },
   plugins: [require('tailwindcss-animate'), require('tailwind-scrollbar')],
 } satisfies Config
-
-export default config

@@ -1,0 +1,1 @@
+export const CACHE: Record<string, any> = {}
