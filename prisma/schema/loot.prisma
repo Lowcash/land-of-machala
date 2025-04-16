@@ -1,0 +1,34 @@
+model Loot {
+  id String @id @default(uuid())
+
+  user User[]
+
+  weapons_loot WeaponInLoot[]
+  armors_loot  ArmorInLoot[]
+
+  money Int
+}
+
+model WeaponInLoot {
+  id Int @id @default(autoincrement())
+
+  weapon    Weapon @relation(fields: [weapon_id], references: [id])
+  weapon_id String
+  loot      Loot   @relation(fields: [loot_id], references: [id])
+  loot_id   String
+
+  @@index([loot_id])
+  @@index([weapon_id])
+}
+
+model ArmorInLoot {
+  id Int @id @default(autoincrement())
+
+  armor    Armor  @relation(fields: [armor_id], references: [id])
+  armor_id String
+  loot     Loot   @relation(fields: [loot_id], references: [id])
+  loot_id  String
+
+  @@index([armor_id])
+  @@index([loot_id])
+}

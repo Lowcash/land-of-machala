@@ -1,0 +1,10 @@
+model Potion {
+  id   Int     @id @default(autoincrement())
+  name String?
+
+  hp_gain Int
+
+  potions_bank      PotionInBank[]
+  potions_hospital  PotionInHospital[]
+  potions_inventory PotionInInventory[]
+}

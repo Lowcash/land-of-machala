@@ -1,0 +1,19 @@
+model Place {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+
+  pos_x Int
+  pos_y Int
+
+  hospital    Hospital? @relation(fields: [hospital_id], references: [id])
+  hospital_id String?
+  armory      Armory?   @relation(fields: [armory_id], references: [id])
+  armory_id   String?
+  bank        Bank?     @relation(fields: [bank_id], references: [id])
+  bank_id     String?
+
+  @@index([hospital_id])
+  @@index([armory_id])
+  @@index([bank_id])
+}
