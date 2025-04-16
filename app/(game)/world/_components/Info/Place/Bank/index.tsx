@@ -69,7 +69,7 @@ export default function Bank({ bankId }: Props) {
   const withdrawArmors = bankAccountQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
   const withdrawPotions = bankAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
 
-  if (bankQuery.isLoading) return <Loading />
+  if (bankQuery.isLoading) return <Loading position='local' />
 
   const hasDepositWeapons = (depositWeapons?.length ?? 0) > 0
   const hasDepositArmors = (depositArmors?.length ?? 0) > 0
