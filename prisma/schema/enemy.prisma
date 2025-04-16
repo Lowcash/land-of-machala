@@ -1,0 +1,33 @@
+model Enemy {
+  id   String @id @default(uuid())
+  name String
+
+  hp_from Int
+  hp_to   Int
+
+  damage_from Int
+  damage_to   Int
+
+  xp_from Int?
+  xp_to   Int?
+
+  money_from Int?
+  money_to   Int?
+
+  enemy_instances EnemyInstance[]
+  slain           Slain[]
+}
+
+model EnemyInstance {
+  id String @id @default(cuid())
+
+  hp_actual Int
+  hp_max    Int
+
+  enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+  enemy_id String
+
+  users User[]
+
+  @@index([enemy_id])
+}
