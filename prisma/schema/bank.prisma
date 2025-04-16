@@ -1,0 +1,63 @@
+model Bank {
+  id             String  @id @default(uuid())
+  name           String
+  description    String?
+  subdescription String?
+
+  accounts BankAccount[]
+  places   Place[]
+}
+
+model BankAccount {
+  id String @id @default(uuid())
+
+  bank    Bank   @relation(fields: [bank_id], references: [id])
+  bank_id String
+  user    User   @relation(fields: [user_id], references: [id])
+  user_id String
+
+  money Int @default(0)
+
+  weapons WeaponInBank[]
+  armors  ArmorInBank[]
+  potions PotionInBank[]
+
+  @@index([bank_id])
+  @@index([user_id])
+}
+
+model WeaponInBank {
+  id String @id @default(uuid())
+
+  weapon          Weapon      @relation(fields: [weapon_id], references: [id])
+  weapon_id       String
+  bank_account    BankAccount @relation(fields: [bank_account_id], references: [id])
+  bank_account_id String
+
+  @@index([weapon_id])
+  @@index([bank_account_id])
+}
+
+model ArmorInBank {
+  id String @id @default(uuid())
+
+  armor           Armor       @relation(fields: [armor_id], references: [id])
+  armor_id        String
+  bank_acount     BankAccount @relation(fields: [bank_account_id], references: [id])
+  bank_account_id String
+
+  @@index([armor_id])
+  @@index([bank_account_id])
+}
+
+model PotionInBank {
+  id String @id @default(uuid())
+
+  potion          Potion      @relation(fields: [potion_id], references: [id])
+  potion_id       Int
+  bank_acount     BankAccount @relation(fields: [bank_account_id], references: [id])
+  bank_account_id String
+
+  @@index([potion_id])
+  @@index([bank_account_id])
+}

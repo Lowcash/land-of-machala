@@ -16,6 +16,7 @@ import { Card } from '@/styles/common'
 import { Button } from '@/components/ui/button'
 import Alert from '@/components/Alert'
 import Potions from './Potions'
+import Loading from '@/components/Loading'
 
 interface Props {
   hospitalId: string
@@ -36,6 +37,8 @@ export default function Hospital({ hospitalId }: Props) {
 
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
+
+  if (gameInfoQuery.isLoading || hospitalQuery.isLoading) return <Loading position='local' />
 
   const isDefeated = !!gameInfoQuery.data?.defeated
 

@@ -1,0 +1,90 @@
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+
+  role Role @default(USER)
+
+  accounts      Account[]
+  sessions      Session[]
+  bank_accounts BankAccount[]
+
+  hp_actual   Int?
+  hp_max      Int?
+  mana_actual Int?
+  mana_max    Int?
+  xp_actual   Int?
+  xp_max      Int?
+
+  money Int @default(0)
+
+  level        Int @default(1)
+  damage_min   Int @default(0)
+  damage_max   Int @default(0)
+  strength     Int @default(0)
+  agility      Int @default(0)
+  intelligence Int @default(0)
+
+  pos_x Int @default(0)
+  pos_y Int @default(0)
+
+  defeated Boolean @default(false)
+
+  race     Race?  @relation(fields: [race_id], references: [id])
+  race_id  Int?
+  class    Class? @relation(fields: [class_id], references: [id])
+  class_id Int?
+
+  enemy_instance    EnemyInstance? @relation(fields: [enemy_instance_id], references: [id])
+  enemy_instance_id String?
+
+  loot    Loot?   @relation(fields: [loot_id], references: [id])
+  loot_id String?
+
+  inventory    Inventory? @relation(fields: [inventory_id], references: [id])
+  inventory_id String?
+
+  wearable    Wearable? @relation(fields: [wearable_id], references: [id])
+  wearable_id String?
+
+  user_quest    UserQuest? @relation(fields: [user_quest_id], references: [id])
+  user_quest_id Int?
+
+  @@index([race_id])
+  @@index([class_id])
+  @@index([enemy_instance_id])
+  @@index([loot_id])
+  @@index([inventory_id])
+  @@index([wearable_id])
+  @@index([user_quest_id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Race {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  strength     Int
+  agility      Int
+  intelligence Int
+
+  User User[]
+}
+
+model Class {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  strength     Int
+  agility      Int
+  intelligence Int
+
+  User User[]
+}
