@@ -1,16 +1,16 @@
--- INSERT IGNORE INTO User (id, race, profession, hp_actual, hp_max, xp_actual, xp_max)
--- VALUES ('clxxohayg000c141wxuz8p4hv' /* id by database id*/, 'DWARF', 'SAMURAI', 100, 100, 0, 100)
--- ON DUPLICATE KEY UPDATE
--- race = VALUES(race),
--- profession = VALUES(profession),
--- hp_actual = VALUES(hp_actual),
--- hp_max = VALUES(hp_max),
--- xp_actual = VALUES(xp_actual),
--- xp_max = VALUES(xp_max);
+INSERT IGNORE INTO Race (name, strength, agility, intelligence)
+VALUES 
+('human', 10, 10, 10),
+('dwarf', 12, 10, 8),
+('gnome', 8, 10, 12)
+ON DUPLICATE KEY UPDATE name = VALUES(name), strength = VALUES(strength), agility = VALUES(agility), intelligence = VALUES(intelligence);
 
--- UPDATE `User`
--- SET role = 'ADMIN'
--- WHERE id = 'clxxohayg000c141wxuz8p4hv'  /* id by database id*/;
+INSERT IGNORE INTO Class (name, strength, agility, intelligence)
+VALUES 
+('warrior', 14, 10, 6),
+('samurai', 10, 14, 6),
+('mage', 8, 6, 16)
+ON DUPLICATE KEY UPDATE name = VALUES(name), strength = VALUES(strength), agility = VALUES(agility), intelligence = VALUES(intelligence);
 
 INSERT IGNORE INTO Enemy (id, name, hp_from, hp_to, damage_from, damage_to)
 VALUES 
@@ -24,12 +24,6 @@ VALUES
 ('8', 'fire_elemental', 172, 247, 20, 35),
 ('9', 'ice_elemental', 248, 313, 15, 25)
 ON DUPLICATE KEY UPDATE name = VALUES(name), hp_from = VALUES(hp_from), hp_to = VALUES(hp_to), damage_from = VALUES(damage_from), damage_to = VALUES(damage_to);
-
-INSERT IGNORE INTO Quest (ident, money)
-VALUES 
-('SLAIN_ENEMY', 1000),
-('SLAIN_TROLL', 5000)
-ON DUPLICATE KEY UPDATE ident = VALUES(ident), money = VALUES(money);
 
 -- INSERT IGNORE INTO Enemy (id, name, hp_from, hp_to, damage_from, damage_to)
 -- VALUES 
@@ -314,6 +308,12 @@ VALUES
 (58, 'BOOTS', 'Kotníkové Boty', 5, 7, 3, 4),
 (59, 'BOOTS', 'Kožené Boty Lovce', 6, 5, 4, 8),
 (60, 'BOOTS', 'Plátové Boty Ochránce', 7, 8, 3, 5);
+
+INSERT IGNORE INTO Quest (ident, money)
+VALUES 
+('SLAIN_ENEMY', 1000),
+('SLAIN_TROLL', 5000)
+ON DUPLICATE KEY UPDATE ident = VALUES(ident), money = VALUES(money);
 
 DROP PROCEDURE IF EXISTS GetWeaponsSortedByStats;
 CREATE PROCEDURE GetWeaponsSortedByStats()
