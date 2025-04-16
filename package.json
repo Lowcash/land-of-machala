@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "prisma:update": "npx prisma db push --schema prisma/schema",
-    "prisma:reset": "npx prisma db push --schema prisma/schema --force-reset ",
+    "prisma:reset": "npx prisma db push --schema prisma/schema --force-reset",
     "prisma:generate": "npx prisma generate --schema prisma/schema"
   },
   "dependencies": {
