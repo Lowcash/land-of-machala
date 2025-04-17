@@ -5,7 +5,7 @@ import { authActionClient } from '@/lib/safe-action'
 import { type Weapon } from '@prisma/client'
 
 import { CACHE } from '@/lib/cache'
-import { CACHE_KEY } from '@/config/cache-keys'
+import { CACHE_KEY } from '@/config'
 
 export const getAll = authActionClient
   .metadata({ actionName: 'weapon_getAll' })

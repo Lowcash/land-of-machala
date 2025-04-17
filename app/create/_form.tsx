@@ -7,14 +7,14 @@ import { useNavigate } from '@/hooks/use-navigate'
 
 import { type PlayerCreateSchema, playerCreateSchema } from '@/zod-schema/player'
 import { create as userCreate } from '@/app/actions/user'
-import { useRaceAllQuery } from '@/hooks/api/use-race'
-import { useClassAllQuery } from '@/hooks/api/use-class'
+import { useRaceShowQuery } from '@/hooks/api/use-race'
+import { useClassShowQuery } from '@/hooks/api/use-class'
 
 import Form, { Handle as FormHandle } from '@/components/Form'
 
 export default function CreateForm() {
-  const raceAllQuery = useRaceAllQuery()
-  const classAllQuery = useClassAllQuery()
+  const raceShowQuery = useRaceShowQuery()
+  const classAllQuery = useClassShowQuery()
 
   const formRef = React.useRef<FormHandle>(null)
 
@@ -34,7 +34,7 @@ export default function CreateForm() {
     navigate()
   }
 
-  if (!raceAllQuery.data || !classAllQuery.data) return <></>
+  if (!raceShowQuery.data || !classAllQuery.data) return <></>
 
   return (
     <Form
@@ -49,12 +49,12 @@ export default function CreateForm() {
         <Form.Option<PlayerCreateSchema>
           id='raceId'
           label={i18next.t('player.race')}
-          options={Object.fromEntries(raceAllQuery.data?.map((x) => [x.id, x.i18n_key]))}
+          options={Object.fromEntries(raceShowQuery.data?.map((x) => [x.id, x.name]))}
         />
         <Form.Option<PlayerCreateSchema>
           id='classId'
           label={i18next.t('player.character')}
-          options={Object.fromEntries(classAllQuery.data?.map((x) => [x.id, x.i18n_key]))}
+          options={Object.fromEntries(classAllQuery.data?.map((x) => [x.id, x.name]))}
         />
       </div>
 
