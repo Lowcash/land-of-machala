@@ -1,32 +1,11 @@
 model Quest {
-  id    Int        @id @default(autoincrement())
-  ident QuestIdent @unique
+  id       String @id
+  i18n_key String
 
-  money Int?
+  reward_money Int?
 
   quest_slain_enemy QuestSlainEnemy[]
   quest_slain_troll QuestSlainTroll[]
-}
-
-model UserQuest {
-  id Int @id @default(autoincrement())
-
-  quest_slain_enemy QuestSlainEnemy? @relation(fields: [quest_slain_enemy_id], references: [id])
-  quest_slain_troll QuestSlainTroll? @relation(fields: [quest_slain_troll_id], references: [id])
-
-  quest_slain_enemy_id Int?
-  quest_slain_troll_id Int?
-
-  quest_slain_enemy_complete Boolean @default(false)
-  quest_slain_troll_complete Boolean @default(false)
-
-  quest_slain_enemy_done Boolean @default(false)
-  quest_slain_troll_done Boolean @default(false)
-
-  User User[]
-
-  @@index([quest_slain_enemy_id])
-  @@index([quest_slain_troll_id])
 }
 
 enum QuestIdent {
@@ -35,14 +14,13 @@ enum QuestIdent {
 }
 
 model QuestSlainEnemy {
-  id    Int        @id @default(autoincrement())
+  id    String     @id @default(uuid())
   ident QuestIdent @default(SLAIN_ENEMY)
 
-  quest Quest @relation(fields: [quest_id], references: [id])
-  slain Slain @relation(fields: [slain_id], references: [id])
-
-  quest_id Int
-  slain_id Int
+  quest    Quest  @relation(fields: [quest_id], references: [id])
+  quest_id String
+  slain    Slain  @relation(fields: [slain_id], references: [id])
+  slain_id String
 
   user_quest UserQuest[]
 
@@ -51,14 +29,13 @@ model QuestSlainEnemy {
 }
 
 model QuestSlainTroll {
-  id    Int        @id @default(autoincrement())
+  id    String     @id @default(uuid())
   ident QuestIdent @default(SLAIN_TROLL)
 
-  quest Quest @relation(fields: [quest_id], references: [id])
-  slain Slain @relation(fields: [slain_id], references: [id])
-
-  quest_id Int
-  slain_id Int
+  quest    Quest  @relation(fields: [quest_id], references: [id])
+  quest_id String
+  slain    Slain  @relation(fields: [slain_id], references: [id])
+  slain_id String
 
   user_quest UserQuest[]
 
@@ -67,16 +44,36 @@ model QuestSlainTroll {
 }
 
 model Slain {
-  id Int @id @default(autoincrement())
+  id String @id @default(uuid())
 
-  enemy         Enemy? @relation(fields: [enemy_id], references: [id])
-  actual_slain  Int    @default(0)
+  actual_slain  Int @default(0)
   desired_slain Int
 
+  enemy    Enemy?  @relation(fields: [enemy_id], references: [id])
   enemy_id String?
 
   quest_slain_enemy QuestSlainEnemy[]
   quest_slain_troll QuestSlainTroll[]
 
   @@index([enemy_id])
+}
+
+model UserQuest {
+  id String @id @default(uuid())
+
+  quest_slain_enemy_complete Boolean @default(false)
+  quest_slain_troll_complete Boolean @default(false)
+
+  quest_slain_enemy_done Boolean @default(false)
+  quest_slain_troll_done Boolean @default(false)
+
+  quest_slain_enemy    QuestSlainEnemy? @relation(fields: [quest_slain_enemy_id], references: [id])
+  quest_slain_enemy_id String?
+  quest_slain_troll    QuestSlainTroll? @relation(fields: [quest_slain_troll_id], references: [id])
+  quest_slain_troll_id String?
+
+  User User[]
+
+  @@index([quest_slain_enemy_id])
+  @@index([quest_slain_troll_id])
 }
