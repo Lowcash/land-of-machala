@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/table'
@@ -14,12 +14,12 @@ export default function Weapons() {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.stats.damage },
-        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.left_hand})` },
-        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.right_hand})` },
+        { className: 'text-center', content: i18next.t('stats.damage') },
+        { className: 'text-center', content: `${i18next.t('common.wear')} (${i18next.t('weapon.left_hand')})` },
+        { className: 'text-center', content: `${i18next.t('common.wear')} (${i18next.t('weapon.right_hand')})` },
       ]}
       cells={showInventory.data?.weapons.map((x) => [
-        { className: 'text-left', content: x.weapon.name },
+        { className: 'text-left', content: x.weapon.i18n_key },
         {
           className: 'text-center',
           content: (

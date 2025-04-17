@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { toast } from '@/hooks/use-toast'
 import { useNavigate } from '@/hooks/use-navigate'
 
@@ -25,12 +25,12 @@ export default function CreateForm() {
   }
 
   const handleSubmitActionSuccess = async () => {
-    toast({ description: loc.sign.create_character_success })
+    toast({ description: i18next.t('sign.create_character_success') })
     navigate()
   }
 
   const handleSubmitActionError = async () => {
-    toast({ description: loc.sign.create_character_error, variant: 'destructive' })
+    toast({ description: i18next.t('sign.create_character_error'), variant: 'destructive' })
     navigate()
   }
 
@@ -45,22 +45,22 @@ export default function CreateForm() {
       onAction={{ onSuccess: handleSubmitActionSuccess, onError: handleSubmitActionError }}
     >
       <div className='flex flex-col gap-4'>
-        <Form.Input<PlayerCreateSchema> id='name' label={loc.player.name} />
+        <Form.Input<PlayerCreateSchema> id='name' label={i18next.t('player.name')} />
         <Form.Option<PlayerCreateSchema>
           id='raceId'
-          label={loc.player.race}
-          options={Object.fromEntries(raceAllQuery.data?.map((x) => [x.id, x.name]))}
+          label={i18next.t('player.race')}
+          options={Object.fromEntries(raceAllQuery.data?.map((x) => [x.id, x.i18n_key]))}
         />
         <Form.Option<PlayerCreateSchema>
           id='classId'
-          label={loc.player.character}
-          options={Object.fromEntries(classAllQuery.data?.map((x) => [x.id, x.name]))}
+          label={i18next.t('player.character')}
+          options={Object.fromEntries(classAllQuery.data?.map((x) => [x.id, x.i18n_key]))}
         />
       </div>
 
       <hr />
 
-      <Form.Button onClick={handleSubmitAction}>{loc.sign.create_character}</Form.Button>
+      <Form.Button onClick={handleSubmitAction}>{i18next.t('sign.create_character')}</Form.Button>
     </Form>
   )
 }

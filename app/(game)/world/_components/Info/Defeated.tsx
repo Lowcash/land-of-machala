@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 
 import { Text } from '@/styles/typography'
@@ -12,14 +12,16 @@ export default function Defeated() {
 
   const hasPlace = !!gameInfoQuery.data?.place
 
-  return <>
-    <Card>
-      <Text>{loc.enemy.player_destroyed}</Text>
-    </Card>
-    {hasPlace && (
+  return (
+    <>
       <Card>
-        <Place forceSubplace='hospital' />
+        <Text>{i18next.t('enemy.player_destroyed')}</Text>
       </Card>
-    )}
-  </>
+      {hasPlace && (
+        <Card>
+          <Place forceSubplace='hospital' />
+        </Card>
+      )}
+    </>
+  )
 }

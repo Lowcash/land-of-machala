@@ -1,19 +1,19 @@
 import { z } from 'zod'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 
 import { DIRECTIONS } from '@/config'
 
 export const playerSignSchema = z.object({
-  email: z.string({ required_error: loc.sign.email_required }),
-  password: z.string({ required_error: loc.sign.password_required }),
+  email: z.string({ required_error: i18next.t('sign.email_required') }),
+  password: z.string({ required_error: i18next.t('sign.password_required') }),
 })
 
 export type PlayerSignSchema = z.infer<typeof playerSignSchema>
 
 export const playerCreateSchema = z.object({
-  name: z.string({ required_error: loc.sign.name_required }),
-  raceId: z.union([z.string(), z.number()], { required_error: loc.sign.race_required }),
-  classId: z.union([z.string(), z.number()], { required_error: loc.sign.class_required }),
+  name: z.string({ required_error: i18next.t('sign.name_required') }),
+  raceId: z.string({ required_error: i18next.t('sign.race_required') }),
+  classId: z.string({ required_error: i18next.t('sign.class_required') }),
 })
 
 export type PlayerCreateSchema = z.infer<typeof playerCreateSchema>

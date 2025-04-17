@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useBackground } from '@/context/game-provider'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
@@ -26,27 +26,27 @@ export default function Page() {
     <Card>
       <Back />
 
-      {!hasItems && <H3>{loc.inventory.empty}</H3>}
+      {!hasItems && <H3>{i18next.t('inventory.empty')}</H3>}
 
       {hasItems && (
         <>
-          <H3>{loc.inventory.found}:</H3>
+          <H3>{i18next.t('inventory.found')}:</H3>
 
           {hasWeapons && (
             <Card.Inner>
-              <H3>{loc.weapon.header_multi}</H3>
+              <H3>{i18next.t('weapon.header_multi')}</H3>
               <Weapons />
             </Card.Inner>
           )}
           {hasArmors && (
             <Card.Inner>
-              <H3>{loc.armor.header_multi}</H3>
+              <H3>{i18next.t('armor.header_multi')}</H3>
               <Armors />
             </Card.Inner>
           )}
           {hasPotions && (
             <Card.Inner>
-              <H3>{loc.potion.header_multi}</H3>
+              <H3>{i18next.t('consumable.header_multi')}</H3>
               <Potions />
             </Card.Inner>
           )}

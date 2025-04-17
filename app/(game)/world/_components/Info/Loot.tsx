@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useGameInfoQuery } from "@/hooks/api/use-game"
 
 import { Text } from '@/styles/typography'
@@ -14,7 +14,7 @@ export default function Loot() {
 
   return (
     <Card>
-      {loc.loot.found}:
+      {i18next.t('loot.found')}:
 
       {armors?.map((x: string, idx: number) => (
         <Text key={`LootArmor_${idx}`}>
@@ -28,7 +28,7 @@ export default function Loot() {
       ))}
 
       <Text>
-        {gameInfoQuery.data?.loot?.money} {loc.common.currency}
+        {gameInfoQuery.data?.loot?.money} {i18next.t('common.currency')}
       </Text>
     </Card>
   )

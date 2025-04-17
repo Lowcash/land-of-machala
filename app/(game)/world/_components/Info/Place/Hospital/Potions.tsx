@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import type { Potion } from '@prisma/client'
 import { useHospitalBuyPotionMutation, useHospitalQuery } from '@/hooks/api/use-hospital'
 
@@ -33,27 +33,29 @@ export default function Potions({ hospitalId }: Props) {
   return (
     <>
       {!buyPotionMutation.isIdle && (
-        <Alert>{buyPotionMutation.isSuccess ? loc.potion.buy_success : loc.potion.buy_failed}</Alert>
+        <Alert>
+          {buyPotionMutation.isSuccess ? i18next.t('consumable.buy_success') : i18next.t('consumable.buy_failed')}
+        </Alert>
       )}
 
       <Table
         columns={[
           {},
-          { className: 'text-center', content: loc.potion.efficiency },
-          { className: 'text-right', content: loc.common.price },
-          { className: 'text-right', content: loc.common.buy },
+          { className: 'text-center', content: i18next.t('consumable.efficiency') },
+          { className: 'text-right', content: i18next.t('common.price') },
+          { className: 'text-right', content: i18next.t('common.buy') },
         ]}
         cells={potions?.map((x) => [
-          { className: 'text-left', content: x.name },
+          { className: 'text-left', content: x.i18n_key },
           {
             className: 'text-center',
-            content: `+${x.hp_gain} ${loc.common.hp}`,
+            content: `+${x.hp_gain} ${i18next.t('common.hp')}`,
           },
           {
             className: 'text-right',
             content: (
               <Text>
-                {x.price} {loc.common.currency}
+                {x.price} {i18next.t('common.currency')}
               </Text>
             ),
           },

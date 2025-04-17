@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useGameAttackMutation, useGameRunAwayMutation } from '@/hooks/api/use-game'
 
 import * as S from './styles'
@@ -16,10 +16,10 @@ export default function Enemy() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleAttack}>
-        {loc.enemy.attack}
+        {i18next.t('enemy.attack')}
       </Button>
       <Button variant='secondary' onClick={handleRunAway}>
-        {loc.enemy.run_away}
+        {i18next.t('enemy.run_away')}
       </Button>
     </S.Action>
   )

@@ -64,6 +64,6 @@ export const show = authActionClient.metadata({ actionName: 'inventory_show' }).
       ...x,
       armed: Object.values(wearable).some((y) => y === x.id),
     })),
-    potions: inventory.potions_inventory.sort((a, b) => a.potion.hp_gain - b.potion.hp_gain),
+    potions: inventory.potions_inventory.sort((a, b) => (a.potion.hp_gain ?? 0) - (b.potion.hp_gain ?? 0)),
   }
 })

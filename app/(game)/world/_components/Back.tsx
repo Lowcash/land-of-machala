@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useNavigate } from '@/hooks/use-navigate'
 
 import { Button } from '@/components/ui/button'
@@ -17,7 +17,7 @@ export default function Back() {
     <>
       <Button size={'shrink-sm'} onClick={handleBackClick}>
         <RxChevronLeft />
-        &nbsp;{loc.common.back_world}
+        &nbsp;{i18next.t('common.back_world')}
       </Button>
     </>
   )

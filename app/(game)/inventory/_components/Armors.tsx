@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/table'
@@ -15,19 +15,19 @@ export default function Armors() {
       columns={[
         {},
         {},
-        { className: 'text-center', content: loc.armor.header },
-        { className: 'text-center', content: loc.stats.strength },
-        { className: 'text-center', content: loc.stats.agility },
-        { className: 'text-center', content: loc.stats.intelligence },
-        { className: 'text-center', content: loc.common.wear },
+        { className: 'text-center', content: i18next.t('armor.header') },
+        { className: 'text-center', content: i18next.t('stats.strength') },
+        { className: 'text-center', content: i18next.t('stats.agility') },
+        { className: 'text-center', content: i18next.t('stats.intelligence') },
+        { className: 'text-center', content: i18next.t('common.wear') },
       ]}
       cells={showInventory.data?.armors.map((x) => [
-        { className: 'text-left', content: x.armor.name },
+        { className: 'text-left', content: x.armor.i18n_key },
         { className: 'text-center', content: x.armor.type },
         { className: 'text-center', content: x.armor.armor },
         { className: 'text-center', content: x.armor.strength },
         { className: 'text-center', content: x.armor.agility },
-        { className: 'text-center', content: x.armor.intelligency },
+        { className: 'text-center', content: x.armor.intelligence },
         {
           className: 'text-center',
           content: (

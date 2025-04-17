@@ -196,7 +196,7 @@ export const drink = authActionClient
       await db.user.update({
         where: { id: ctx.user.id },
         data: {
-          hp_actual: Math.min(ctx.user.hp_actual! + inventoryPotion.potion.hp_gain, ctx.user.hp_max!),
+          hp_actual: Math.min(ctx.user.hp_actual! + (inventoryPotion.potion.hp_gain ?? 0), ctx.user.hp_max!),
         },
       })
 
