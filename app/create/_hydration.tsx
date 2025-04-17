@@ -10,11 +10,11 @@ export default async function Hydration(p: React.PropsWithChildren) {
   const queryClient = await createSafeQueryClient().prefetch([
     {
       queryKey: [QUERY_KEY.CLASS],
-      action: ClassAction.getAll,
+      action: ClassAction.show,
     },
     {
       queryKey: [QUERY_KEY.RACE],
-      action: RaceAction.getAll,
+      action: RaceAction.show,
     },
   ])
 

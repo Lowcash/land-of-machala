@@ -15,30 +15,11 @@ import { Text } from '@/styles/typography'
 
 import { ERROR_CAUSE } from '@/config'
 
-export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
-
-export const get = authActionClient
-  .metadata({ actionName: 'armory_get' })
+export const show = authActionClient
+  .metadata({ actionName: 'armory_show' })
   .schema(armorySchema, {
     handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors,
   })
-  .action(async ({ parsedInput }) => {
-    const armory = await db.armory.findFirst({
-      where: { id: parsedInput.armoryId },
-      include: {
-        weapons: { include: { weapon: true } },
-        armors: { include: { armor: true } },
-      },
-    })
-
-    if (!armory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return armory
-  })
-
-export const show = authActionClient
-  .metadata({ actionName: 'armory_show' })
-  .schema(armorySchema)
   .action(async ({ parsedInput }) => {
     const [armory, inventory, weaponsAll, armorsAll] = await Promise.all([
       get({ armoryId: parsedInput.armoryId }).then((x) => x?.data),
@@ -65,6 +46,25 @@ export const show = authActionClient
       sellWeapons: getSellWeapons({ weaponsAll, inventory }),
       sellArmors: getSellArmors({ armorsAll, inventory }),
     }
+  })
+
+export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
+
+const get = authActionClient
+  .metadata({ actionName: 'armory_get' })
+  .schema(armorySchema)
+  .action(async ({ parsedInput }) => {
+    const armory = await db.armory.findFirst({
+      where: { id: parsedInput.armoryId },
+      include: {
+        weapons: { include: { weapon: true } },
+        armors: { include: { armor: true } },
+      },
+    })
+
+    if (!armory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return armory
   })
 
 const BUY_MIN_PRICE = 1000
