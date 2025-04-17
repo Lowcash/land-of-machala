@@ -5,12 +5,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
-
-  role Role @default(USER)
-
-  accounts      Account[]
-  sessions      Session[]
-  bank_accounts BankAccount[]
+  role          Role      @default(USER)
 
   hp_actual   Int?
   hp_max      Int?
@@ -33,25 +28,25 @@ model User {
 
   defeated Boolean @default(false)
 
-  race     Race?  @relation(fields: [race_id], references: [id])
-  race_id  Int?
-  class    Class? @relation(fields: [class_id], references: [id])
-  class_id Int?
+  race     Race?   @relation(fields: [race_id], references: [id])
+  race_id  String?
+  class    Class?  @relation(fields: [class_id], references: [id])
+  class_id String?
 
   enemy_instance    EnemyInstance? @relation(fields: [enemy_instance_id], references: [id])
   enemy_instance_id String?
+  loot              Loot?          @relation(fields: [loot_id], references: [id])
+  loot_id           String?
+  inventory         Inventory?     @relation(fields: [inventory_id], references: [id])
+  inventory_id      String?
+  wearable          Wearable?      @relation(fields: [wearable_id], references: [id])
+  wearable_id       String?
+  user_quest        UserQuest?     @relation(fields: [user_quest_id], references: [id])
+  user_quest_id     String?
 
-  loot    Loot?   @relation(fields: [loot_id], references: [id])
-  loot_id String?
-
-  inventory    Inventory? @relation(fields: [inventory_id], references: [id])
-  inventory_id String?
-
-  wearable    Wearable? @relation(fields: [wearable_id], references: [id])
-  wearable_id String?
-
-  user_quest    UserQuest? @relation(fields: [user_quest_id], references: [id])
-  user_quest_id Int?
+  accounts      Account[]
+  sessions      Session[]
+  bank_accounts BankAccount[]
 
   @@index([race_id])
   @@index([class_id])
@@ -68,8 +63,8 @@ enum Role {
 }
 
 model Race {
-  id   Int    @id @default(autoincrement())
-  name String
+  id       String @id
+  i18n_key String
 
   strength     Int
   agility      Int
@@ -79,8 +74,8 @@ model Race {
 }
 
 model Class {
-  id   Int    @id @default(autoincrement())
-  name String
+  id       String @id
+  i18n_key String
 
   strength     Int
   agility      Int
