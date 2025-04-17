@@ -1,5 +1,6 @@
 'use server'
 
+import i18next from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { flattenValidationErrors, type InferSafeActionFnResult } from 'next-safe-action'
@@ -10,7 +11,11 @@ import * as ArmorAction from './armor'
 import * as WeaponAction from './weapon'
 import * as InventoryAction from './inventory'
 
+import { Text } from '@/styles/typography'
+
 import { ERROR_CAUSE } from '@/config'
+
+export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
 
 export const get = authActionClient
   .metadata({ actionName: 'armory_get' })
@@ -31,8 +36,6 @@ export const get = authActionClient
     return armory
   })
 
-export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
-
 export const show = authActionClient
   .metadata({ actionName: 'armory_show' })
   .schema(armorySchema)
@@ -46,15 +49,23 @@ export const show = authActionClient
 
     if (!armory || !inventory || !weaponsAll || !armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
-      getBuyWeapons({ weaponsAll, armory }),
-      getBuyArmors({ armorsAll, armory }),
-      getSellWeapons({ weaponsAll, inventory }),
-      getSellArmors({ armorsAll, inventory }),
-    ])
-
-    return { ...armory, buyWeapons, buyArmors, sellWeapons, sellArmors }
-  }, {})
+    return {
+      __ui__: {
+        header: (
+          <Text>
+            {i18next.t('place.your_are_in')} <b>{i18next.t(`${armory.i18n_key}.header` as any)}</b>
+          </Text>
+        ),
+        description: <Text>{i18next.t(`${armory.i18n_key}.description` as any)}</Text>,
+        buySuccess: i18next.t(`${armory.i18n_key}.buy_success` as any),
+        buyFailed: i18next.t(`${armory.i18n_key}.buy_failed` as any),
+      },
+      buyWeapons: getBuyWeapons({ weaponsAll, armory }),
+      buyArmors: getBuyArmors({ armorsAll, armory }),
+      sellWeapons: getSellWeapons({ weaponsAll, inventory }),
+      sellArmors: getSellArmors({ armorsAll, inventory }),
+    }
+  })
 
 const BUY_MIN_PRICE = 1000
 const BUY_MAX_PRICE = 50000
@@ -63,7 +74,7 @@ const SELL_MAX_PRICE = 10000 // divided by 5
 
 const ROUND_PRICE_BY = 100
 
-async function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResult }) {
+function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResult }) {
   const spreadBuyPriceWeapons = spreadItemsPrices(
     args.weaponsAll,
     { min: BUY_MIN_PRICE, max: BUY_MAX_PRICE },
@@ -71,12 +82,16 @@ async function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResu
   )
 
   return args.armory?.weapons.map((x) => ({
-    ...x,
+    itemId: x.id,
+    weapon_id: x.weapon_id,
+    name: x.weapon.i18n_key,
+    damage_from: x.weapon.damage_from,
+    damage_to: x.weapon.damage_to,
     price: spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
   }))
 }
 
-async function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction.InventoryGetResult }) {
+function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction.InventoryGetResult }) {
   const spreadSellPriceWeapons = spreadItemsPrices(
     args.weaponsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },
@@ -84,12 +99,16 @@ async function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: Inventory
   )
 
   return args.inventory?.weapons_inventory.map((x) => ({
-    ...x,
+    itemId: x.id,
+    weapon_id: x.weapon_id,
+    name: x.weapon.i18n_key,
+    damage_from: x.weapon.damage_from,
+    damage_to: x.weapon.damage_to,
     price: spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
   }))
 }
 
-async function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
+function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
   const spreadBuyPriceArmors = spreadItemsPrices(
     args.armorsAll,
     { min: BUY_MIN_PRICE, max: BUY_MAX_PRICE },
@@ -97,12 +116,19 @@ async function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult 
   )
 
   return args.armory?.armors.map((x) => ({
-    ...x,
+    itemId: x.id,
+    armor_id: x.armor_id,
+    name: x.armor.i18n_key,
+    type: x.armor.type,
+    armor: x.armor.armor,
+    strength: x.armor.strength,
+    agility: x.armor.agility,
+    intelligence: x.armor.intelligence,
     price: spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
   }))
 }
 
-async function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.InventoryGetResult }) {
+function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.InventoryGetResult }) {
   const spreadSellPriceArmors = spreadItemsPrices(
     args.armorsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },
@@ -110,7 +136,14 @@ async function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAct
   )
 
   return args.inventory?.armors_inventory.map((x) => ({
-    ...x,
+    itemId: x.id,
+    armor_id: x.armor_id,
+    name: x.armor.i18n_key,
+    type: x.armor.type,
+    armor: x.armor.armor,
+    strength: x.armor.strength,
+    agility: x.armor.agility,
+    intelligence: x.armor.intelligence,
     price: spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
   }))
 }
@@ -148,7 +181,7 @@ export const buyItem = authActionClient
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armoryBuyWeapon = (await getBuyWeapons({ weaponsAll, armory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armoryBuyWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
@@ -178,7 +211,9 @@ export const buyItem = authActionClient
 
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armoryArmor = (await getBuyArmors({ armorsAll, armory }))?.find((x) => x.id === parsedInput.armoryItemId)
+        const armoryArmor = (await getBuyArmors({ armorsAll, armory }))?.find(
+          (x) => x.itemId === parsedInput.armoryItemId,
+        )
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -220,7 +255,7 @@ export const sellItem = authActionClient
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armorySellWeapon = (await getSellWeapons({ weaponsAll, inventory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armorySellWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
@@ -257,7 +292,7 @@ export const sellItem = authActionClient
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armoryArmor = (await getSellArmors({ armorsAll, inventory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)

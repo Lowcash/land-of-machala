@@ -76,7 +76,7 @@ cells:
     languageId: sql
     value: >-
       INSERT IGNORE INTO Armor (id, i18n_key, type, armor, strength, agility,
-      intelligency)
+      intelligence)
          VALUES
                 -- Head items  
                 ('head_helmet_defender', 'armor.head_helmet_defender', 'HEAD', 9, 8, 3, 1),
@@ -227,11 +227,13 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |-
-      INSERT IGNORE INTO Quest (id, i18n_key, reward_money)
-         VALUES ('slain_enemy', 'quest.slain_enemy', 1000),
-                ('slain_troll', 'quest.slain_troll', 5000) ON DUPLICATE KEY
-         UPDATE i18n_key =
+    value: >-
+      INSERT IGNORE INTO Quest (id, ident, i18n_key, reward_money)
+         VALUES ('slain_enemy', 'SLAIN_ENEMY', 'quest.slain_enemy', 1000),
+                ('slain_troll', 'SLAIN_TROLL', 'quest.slain_troll', 5000) ON DUPLICATE KEY
+         UPDATE ident =
+         VALUES (ident),
+                i18n_key =
          VALUES (i18n_key),
                 reward_money =
          VALUES (reward_money);
@@ -263,7 +265,7 @@ cells:
       CREATE PROCEDURE GetArmorsSortedByStats () BEGIN CREATE TEMPORARY TABLE
       ArmorTemp AS
          SELECT *,
-                (armor + strength + agility + intelligency) AS stats_sum
+                (armor + strength + agility + intelligence) AS stats_sum
            FROM Armor;
 
          SELECT *

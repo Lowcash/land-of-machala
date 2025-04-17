@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 
 import { Card } from '@/styles/common'
@@ -30,5 +30,5 @@ export default function Info() {
       </Card>
     )
 
-  return <Card>{loc.world.explore}</Card>
+  return <Card>{i18next.t('world.explore')}</Card>
 }

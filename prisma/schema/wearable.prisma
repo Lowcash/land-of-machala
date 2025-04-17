@@ -39,7 +39,7 @@ model Armor {
   armor        Int
   strength     Int
   agility      Int
-  intelligency Int
+  intelligence Int
 
   armors_loot      ArmorInLoot[]
   armors_armory    ArmorInArmory[]

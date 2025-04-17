@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import {
   useHospitalQuery,
   useHospitalHealMutation,
@@ -45,15 +45,15 @@ export default function Hospital({ hospitalId }: Props) {
   return (
     <>
       <Text>
-        {loc.place.your_are_in} <b>{hospitalQuery.data?.name}</b>
+        {i18next.t('place.your_are_in')} <b>{hospitalQuery.data?.i18n_key}</b>
       </Text>
-      <Text>{hospitalQuery.data?.description}</Text>
+      {/* <Text>{hospitalQuery.data?.description}</Text> */}
 
       {isDefeated && (
         <Text>
-          {loc.place.hospital.resurrect_description}
+          {i18next.t('place.main_city_hospital.resurrect_description')}
           <Button variant='destructive' onClick={handleResurect}>
-            {loc.place.hospital.resurrect_accept}
+            {i18next.t('place.main_city_hospital.resurrect_accept')}
           </Button>
         </Text>
       )}
@@ -62,48 +62,54 @@ export default function Hospital({ hospitalId }: Props) {
         <>
           {healMutation.isIdle && (
             <Text>
-              {loc.place.hospital.heal_for}&nbsp;
+              {i18next.t('place.main_city_hospital.heal_for')}&nbsp;
               <b>
-                {hospitalQuery?.data?.price ?? 0} {loc.common.currency}
+                {hospitalQuery?.data?.healing_price ?? 0} {i18next.t('common.currency')}
               </b>
               &nbsp;
               <Button variant='destructive' onClick={handleHeal}>
-                {loc.place.hospital.heal_accept}
+                {i18next.t('place.main_city_hospital.heal_accept')}
               </Button>
             </Text>
           )}
           {!healMutation.isIdle && (
-            <Alert>{healMutation.isSuccess ? loc.place.hospital.heal_success : loc.place.hospital.heal_failed}</Alert>
+            <Alert>
+              {healMutation.isSuccess
+                ? i18next.t('place.main_city_hospital.heal_success')
+                : i18next.t('place.main_city_hospital.heal_failed')}
+            </Alert>
           )}
 
-          {acceptEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.accepted}</Alert>}
+          {acceptEnemySlainQuestMutation.isSuccess && <Alert>{i18next.t('quest.slain_enemy.accepted')}</Alert>}
 
           {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
             <Text>
-              {loc.quest.enemy_slain.description_hospital}&nbsp;
+              {i18next.t('quest.slain_enemy.description_hospital')}&nbsp;
               <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
-                {loc.quest.enemy_slain.accept}
+                {i18next.t('quest.slain_enemy.accept')}
               </Button>
             </Text>
           )}
 
-          {completeEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.completed_looted}</Alert>}
+          {completeEnemySlainQuestMutation.isSuccess && (
+            <Alert>{i18next.t('quest.slain_enemy.completed_looted')}</Alert>
+          )}
 
           {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
             <Text>
-              {loc.quest.enemy_slain.completed}:{' '}
+              {i18next.t('quest.slain_enemy.completed')}:{' '}
               <b>
-                {hospitalQuery.data?.slainEnemyQuest.reward} {loc.common.currency}
+                {hospitalQuery.data?.slainEnemyQuest.reward} {i18next.t('common.currency')}
               </b>
               &nbsp;
               <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>
-                {loc.quest.enemy_slain.complete}
+                {i18next.t('quest.slain_enemy.complete')}
               </Button>
             </Text>
           )}
 
           <Card.Inner>
-            <H3>{loc.potion.buy}</H3>
+            <H3>{i18next.t('consumable.buy')}</H3>
             <Potions hospitalId={hospitalId} />
           </Card.Inner>
         </>

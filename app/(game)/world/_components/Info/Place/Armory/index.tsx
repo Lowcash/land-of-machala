@@ -1,11 +1,11 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useArmoryShowQuery, useArmoryBuyItemMutation, useArmorySellItemMutation } from '@/hooks/api/use-armory'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
-import { H3, Text } from '@/styles/typography'
+import { H3 } from '@/styles/typography'
 import { Card } from '@/styles/common'
 import Loading from '@/components/Loading'
 import Alert from '@/components/Alert'
@@ -25,68 +25,58 @@ export default function Armory({ armoryId }: Props) {
 
     switch (action) {
       case 'buy':
-        armoryBuyItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
+        armoryBuyItemMutation.mutate({ armoryId, armoryItemId: item.itemId, armoryItemType: type })
         break
       case 'sell':
-        armorySellItemMutation.mutate({ armoryId, armoryItemId: item.marketItemId, armoryItemType: type })
+        armorySellItemMutation.mutate({ armoryId, armoryItemId: item.itemId, armoryItemType: type })
         break
     }
   }
 
-  const buyWeapons = armoryShowQuery.data?.buyWeapons?.map((x) => ({ ...x.weapon, marketItemId: x.id, price: x.price }))
-  const buyArmors = armoryShowQuery.data?.buyArmors?.map((x) => ({ ...x.armor, marketItemId: x.id, price: x.price }))
-  const sellWeapons = armoryShowQuery.data?.sellWeapons?.map((x) => ({
-    ...x.weapon,
-    marketItemId: x.id,
-    price: x.price,
-  }))
-  const sellArmors = armoryShowQuery.data?.sellArmors?.map((x) => ({ ...x.armor, marketItemId: x.id, price: x.price }))
-
   if (armoryShowQuery.isLoading) return <Loading position='local' />
 
-  const hasBuyWeapons = (buyWeapons?.length ?? 0) > 0
-  const hasBuyArmors = (buyArmors?.length ?? 0) > 0
-  const hasSellWeapons = (sellWeapons?.length ?? 0) > 0
-  const hasSellArmors = (sellArmors?.length ?? 0) > 0
+  const hasBuyWeapons = (armoryShowQuery.data?.buyWeapons?.length ?? 0) > 0
+  const hasBuyArmors = (armoryShowQuery.data?.buyArmors?.length ?? 0) > 0
+  const hasSellWeapons = (armoryShowQuery.data?.sellWeapons?.length ?? 0) > 0
+  const hasSellArmors = (armoryShowQuery.data?.sellArmors?.length ?? 0) > 0
 
   return (
     <>
-      <Text>
-        {loc.place.your_are_in} <b>{armoryShowQuery.data?.name}</b>
-      </Text>
-
-      <Text>{armoryShowQuery.data?.description}</Text>
-
-      <Text>{armoryShowQuery.data?.subdescription}</Text>
+      {armoryShowQuery.data?.__ui__.header}
+      {armoryShowQuery.data?.__ui__.description}
 
       {!armoryBuyItemMutation.isIdle && (
-        <Alert>{armoryBuyItemMutation.isSuccess ? loc.place.armory.buy_success : loc.place.armory.buy_failed}</Alert>
+        <Alert>
+          {armoryBuyItemMutation.isSuccess
+            ? armoryShowQuery.data?.__ui__.buySuccess
+            : armoryShowQuery.data?.__ui__.buyFailed}
+        </Alert>
       )}
 
       {hasBuyWeapons && (
         <Card.Inner>
-          <H3>{loc.weapon.buy}</H3>
-          <WeaponMarket items={buyWeapons!} action='buy' onAction={handleAction} />
+          <H3>{i18next.t('weapon.buy')}</H3>
+          <WeaponMarket items={armoryShowQuery.data?.buyWeapons!} action='buy' onAction={handleAction} />
         </Card.Inner>
       )}
       {hasSellWeapons && (
         <Card.Inner>
-          <H3>{loc.weapon.sell}</H3>
-          <WeaponMarket items={sellWeapons!} action='sell' onAction={handleAction} />
+          <H3>{i18next.t('weapon.sell')}</H3>
+          <WeaponMarket items={armoryShowQuery.data?.sellWeapons!} action='sell' onAction={handleAction} />
         </Card.Inner>
       )}
 
       {hasBuyArmors && (
         <Card.Inner>
-          <H3>{loc.armor.buy}</H3>
-          <ArmorMarket items={buyArmors!} action='buy' onAction={handleAction} />
+          <H3>{i18next.t('armor.buy')}</H3>
+          <ArmorMarket items={armoryShowQuery.data?.buyArmors!} action='buy' onAction={handleAction} />
         </Card.Inner>
       )}
 
       {hasSellArmors && (
         <Card.Inner>
-          <H3>{loc.armor.sell}</H3>
-          <ArmorMarket items={sellArmors!} action='sell' onAction={handleAction} />
+          <H3>{i18next.t('armor.sell')}</H3>
+          <ArmorMarket items={armoryShowQuery.data?.sellArmors!} action='sell' onAction={handleAction} />
         </Card.Inner>
       )}
     </>

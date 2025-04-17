@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/use-player'
 import { useWearableQuery } from '@/hooks/api/use-wearable'
 
@@ -22,19 +22,19 @@ export default function SidebarLeft() {
       <Content
         data={[
           {
-            header: loc.player.character,
+            header: i18next.t('player.character'),
             items: [
-              { label: `${loc.player.name}:`, value: playerQuery.data?.name ?? '' },
-              { label: `${loc.player.race}:`, value: playerQuery.data?.race?.name ?? '' },
-              { label: `${loc.player.class}:`, value: playerQuery.data?.class?.name ?? '' },
+              { label: `${i18next.t('player.name')}:`, value: playerQuery.data?.name ?? '' },
+              { label: `${i18next.t('player.race')}:`, value: playerQuery.data?.race?.i18n_key ?? '' },
+              { label: `${i18next.t('player.class')}:`, value: playerQuery.data?.class?.i18n_key ?? '' },
             ],
           },
           {
-            header: `${loc.player.money}:`,
-            items: [{ value: `${playerQuery.data?.money ?? 0} ${loc.common.currency}` }],
+            header: `${i18next.t('player.money')}:`,
+            items: [{ value: `${playerQuery.data?.money ?? 0} ${i18next.t('common.currency')}` }],
           },
           {
-            header: `${loc.common.hp}:`,
+            header: `${i18next.t('common.hp')}:`,
             items: [
               {
                 value: (
@@ -46,40 +46,52 @@ export default function SidebarLeft() {
             ],
           },
           {
-            header: loc.weapon.header_multi,
+            header: i18next.t('weapon.header_multi'),
             items: [
               {
-                label: `${loc.weapon.left_hand}:`,
-                value: playerWearableQuery.data?.left_hand?.weapon.name ?? EMPTY,
+                label: `${i18next.t('weapon.left_hand')}:`,
+                value: playerWearableQuery.data?.left_hand?.weapon.i18n_key ?? EMPTY,
               },
               {
-                label: `${loc.weapon.right_hand}:`,
-                value: playerWearableQuery.data?.right_hand?.weapon.name ?? EMPTY,
+                label: `${i18next.t('weapon.right_hand')}:`,
+                value: playerWearableQuery.data?.right_hand?.weapon.i18n_key ?? EMPTY,
               },
             ],
           },
           {
-            header: loc.armor.header,
+            header: i18next.t('armor.header'),
             items: [
-              { label: `${loc.armor.head}:`, value: playerWearableQuery.data?.head?.armor.name ?? EMPTY },
-              { label: `${loc.armor.shoulder}:`, value: playerWearableQuery.data?.shoulder?.armor.name ?? EMPTY },
-              { label: `${loc.armor.chest}:`, value: playerWearableQuery.data?.chest?.armor.name ?? EMPTY },
-              { label: `${loc.armor.hand}:`, value: playerWearableQuery.data?.hand?.armor.name ?? EMPTY },
-              { label: `${loc.armor.pants}:`, value: playerWearableQuery.data?.pants?.armor.name ?? EMPTY },
-              { label: `${loc.armor.boots}:`, value: playerWearableQuery.data?.boots?.armor.name ?? EMPTY },
+              { label: `${i18next.t('armor.head')}:`, value: playerWearableQuery.data?.head?.armor.i18n_key ?? EMPTY },
+              {
+                label: `${i18next.t('armor.shoulder')}:`,
+                value: playerWearableQuery.data?.shoulder?.armor.i18n_key ?? EMPTY,
+              },
+              {
+                label: `${i18next.t('armor.chest')}:`,
+                value: playerWearableQuery.data?.chest?.armor.i18n_key ?? EMPTY,
+              },
+              { label: `${i18next.t('armor.hand')}:`, value: playerWearableQuery.data?.hand?.armor.i18n_key ?? EMPTY },
+              {
+                label: `${i18next.t('armor.pants')}:`,
+                value: playerWearableQuery.data?.pants?.armor.i18n_key ?? EMPTY,
+              },
+              {
+                label: `${i18next.t('armor.boots')}:`,
+                value: playerWearableQuery.data?.boots?.armor.i18n_key ?? EMPTY,
+              },
             ],
           },
           {
-            header: loc.stats.header,
+            header: i18next.t('stats.header'),
             items: [
-              { label: `${loc.stats.level}:`, value: `${playerStatsQuery.data?.level}` },
+              { label: `${i18next.t('stats.level')}:`, value: `${playerStatsQuery.data?.level}` },
               {
-                label: `${loc.stats.damage}:`,
+                label: `${i18next.t('stats.damage')}:`,
                 value: `${playerStatsQuery.data?.damage.min} - ${playerStatsQuery.data?.damage.max}`,
               },
-              { label: `${loc.stats.strength}:`, value: `${playerStatsQuery.data?.strength}` },
-              { label: `${loc.stats.agility}:`, value: `${playerStatsQuery.data?.agility}` },
-              { label: `${loc.stats.intelligence}:`, value: `${playerStatsQuery.data?.intelligence}` },
+              { label: `${i18next.t('stats.strength')}:`, value: `${playerStatsQuery.data?.strength}` },
+              { label: `${i18next.t('stats.agility')}:`, value: `${playerStatsQuery.data?.agility}` },
+              { label: `${i18next.t('stats.intelligence')}:`, value: `${playerStatsQuery.data?.intelligence}` },
             ],
           },
         ]}

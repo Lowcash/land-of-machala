@@ -31,8 +31,8 @@ export const create = authActionClient
   })
   .action(async ({ ctx, parsedInput }) => {
     const [race, class_] = await Promise.all([
-      db.race.findFirst({ where: { id: Number(parsedInput.raceId) } }),
-      db.class.findFirst({ where: { id: Number(parsedInput.classId) } }),
+      db.race.findFirst({ where: { id: parsedInput.raceId } }),
+      db.class.findFirst({ where: { id: parsedInput.classId } }),
     ])
 
     if (!race || !class_) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)

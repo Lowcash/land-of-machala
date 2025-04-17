@@ -1,4 +1,4 @@
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import type { Armor, Weapon, Potion } from '@prisma/client'
 
 import { Button } from '@/components/ui/button'
@@ -23,11 +23,11 @@ export function WeaponSafe(p: SafeProps<Weapon>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.stats.damage },
-        { className: 'text-right', content: loc.place.bank[p.action] },
+        { className: 'text-center', content: i18next.t('stats.damage') },
+        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
+        { className: 'text-left', content: x.i18n_key },
         {
           className: 'text-center',
           content: (
@@ -55,19 +55,19 @@ export function ArmorSafe(p: SafeProps<Armor>) {
       columns={[
         {},
         {},
-        { className: 'text-center', content: loc.armor.header },
-        { className: 'text-center', content: loc.stats.strength },
-        { className: 'text-center', content: loc.stats.agility },
-        { className: 'text-center', content: loc.stats.intelligence },
-        { className: 'text-right', content: loc.place.bank[p.action] },
+        { className: 'text-center', content: i18next.t('armor.header') },
+        { className: 'text-center', content: i18next.t('stats.strength') },
+        { className: 'text-center', content: i18next.t('stats.agility') },
+        { className: 'text-center', content: i18next.t('stats.intelligence') },
+        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
+        { className: 'text-left', content: x.i18n_key },
         { className: 'text-center', content: x.type },
         { className: 'text-center', content: x.armor },
         { className: 'text-center', content: x.strength },
         { className: 'text-center', content: x.agility },
-        { className: 'text-center', content: x.intelligency },
+        { className: 'text-center', content: x.intelligence },
         {
           className: 'text-right',
           content: (
@@ -86,11 +86,11 @@ export function PotionSafe(p: SafeProps<Potion>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.potion.efficiency },
-        { className: 'text-right', content: loc.place.bank[p.action] },
+        { className: 'text-center', content: i18next.t('consumable.efficiency') },
+        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
+        { className: 'text-left', content: x.i18n_key },
         {
           className: 'text-center',
           content: `+${x.hp_gain} HP`,

@@ -1,4 +1,4 @@
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import type { Armor, Weapon } from '@prisma/client'
 
 import { Text } from '@/styles/typography'
@@ -9,7 +9,7 @@ import Table from '@/components/table'
 export type Action = 'buy' | 'sell'
 export type Type = 'weapon' | 'armor'
 
-export type MarketItem<T> = T & { marketItemId: string; price: number }
+type MarketItem<T> = T & { itemId: string; name: string; price: number }
 
 interface MarketProps<T> {
   items: MarketItem<T>[]
@@ -20,14 +20,14 @@ interface MarketProps<T> {
 
 export type OnActionParams<T> = Parameters<NonNullable<MarketProps<T>['onAction']>>
 
-export function WeaponMarket(p: MarketProps<Weapon>) {
+export function WeaponMarket(p: MarketProps<Omit<Weapon, 'id' | 'i18n_key'>>) {
   return (
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.stats.damage },
-        { className: 'text-right', content: loc.common.price },
-        { className: 'text-right', content: loc.common[p.action] },
+        { className: 'text-center', content: i18next.t('stats.damage') },
+        { className: 'text-right', content: i18next.t('common.price') },
+        { className: 'text-right', content: i18next.t(`common.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -43,7 +43,7 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
           className: 'text-right',
           content: (
             <Text>
-              {x.price} {loc.common.currency}
+              {x.price} {i18next.t('common.currency')}
             </Text>
           ),
         },
@@ -60,18 +60,18 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
   )
 }
 
-export function ArmorMarket(p: MarketProps<Armor>) {
+export function ArmorMarket(p: MarketProps<Omit<Armor, 'id' | 'i18n_key'>>) {
   return (
     <Table
       columns={[
         {},
         {},
-        { className: 'text-center', content: loc.armor.header },
-        { className: 'text-center', content: loc.stats.strength },
-        { className: 'text-center', content: loc.stats.agility },
-        { className: 'text-center', content: loc.stats.intelligence },
-        { className: 'text-right', content: loc.common.price },
-        { className: 'text-right', content: loc.common[p.action] },
+        { className: 'text-center', content: i18next.t('armor.header') },
+        { className: 'text-center', content: i18next.t('stats.strength') },
+        { className: 'text-center', content: i18next.t('stats.agility') },
+        { className: 'text-center', content: i18next.t('stats.intelligence') },
+        { className: 'text-right', content: i18next.t('common.price') },
+        { className: 'text-right', content: i18next.t(`common.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -79,12 +79,12 @@ export function ArmorMarket(p: MarketProps<Armor>) {
         { className: 'text-center', content: x.armor },
         { className: 'text-center', content: x.strength },
         { className: 'text-center', content: x.agility },
-        { className: 'text-center', content: x.intelligency },
+        { className: 'text-center', content: x.intelligence },
         {
           className: 'text-right',
           content: (
             <Text>
-              {x.price} {loc.common.currency}
+              {x.price} {i18next.t('common.currency')}
             </Text>
           ),
         },

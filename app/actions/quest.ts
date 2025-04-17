@@ -33,32 +33,30 @@ async function getRules({ ident }: QuestSchema) {
 }
 
 export const getAssigned = authActionClient.metadata({ actionName: 'quest_getAssigned' }).action(async ({ ctx }) => {
-  let userQuest = await db.userQuest.findFirst({
-    where: { id: ctx.user.user_quest_id ?? -1 },
-    include: {
-      quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
-      quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
-    },
-  })
-
-  if (!userQuest) {
-    userQuest = await db.$transaction(async (db) => {
-      const userQuest = await db.userQuest.create({
-        data: {},
+  const userQuest = ctx.user.user_quest_id
+    ? await db.userQuest.findFirst({
+        where: { id: ctx.user.user_quest_id },
         include: {
           quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
           quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
         },
       })
+    : await db.$transaction(async (db) => {
+        const userQuest = await db.userQuest.create({
+          data: {},
+          include: {
+            quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
+            quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
+          },
+        })
 
-      await db.user.update({
-        where: { id: ctx.user.id },
-        data: { user_quest: { connect: { id: userQuest.id } } },
+        await db.user.update({
+          where: { id: ctx.user.id },
+          data: { user_quest: { connect: { id: userQuest.id } } },
+        })
+
+        return userQuest
       })
-
-      return userQuest
-    })
-  }
 
   if (!userQuest) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
 
@@ -139,7 +137,7 @@ export const complete = authActionClient
     if (!userQuest[questKey]) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
 
     return await db.$transaction(async (db) => {
-      const reward = userQuest[questKey]!.quest.money
+      const reward = userQuest[questKey]!.quest.reward_money
 
       switch (parsedInput.ident) {
         case 'SLAIN_ENEMY':

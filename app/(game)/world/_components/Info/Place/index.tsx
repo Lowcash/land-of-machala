@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { type Location } from '@/config'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 import { useBackground } from '@/context/game-provider'
@@ -31,7 +31,7 @@ export default function Place(p: Props) {
     return (
       <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
-          {loc.common.back}
+          {i18next.t('common.back')}
         </Button>
 
         {subPlace === 'hospital' && hospitalId && <Hospital hospitalId={hospitalId} />}
@@ -43,14 +43,14 @@ export default function Place(p: Props) {
   return (
     <>
       <Text>
-        {loc.place.your_are_in} <b>{gameInfoQuery.data?.place?.name}</b>
+        {i18next.t('place.your_are_in')} <b>{gameInfoQuery.data?.place?.i18n_key}</b>
       </Text>
-      <Text>{gameInfoQuery.data?.place?.description}</Text>
+      <Text>{'gameInfoQuery.data?.place?.description'}</Text>
 
       <List>
         {SUBPLACES.map((x) => (
           <li key={`SubPlace_${x}`}>
-            <Link onClick={() => setSubPlace(x)}>{loc.place[x].header}</Link>
+            {/* <Link onClick={() => setSubPlace(x)}>{i18next.t(`${place[x]}.header`)}</Link> */}
           </li>
         ))}
       </List>

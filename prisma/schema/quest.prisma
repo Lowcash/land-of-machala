@@ -1,5 +1,6 @@
 model Quest {
-  id       String @id
+  id       String     @id
+  ident    QuestIdent
   i18n_key String
 
   reward_money Int?
@@ -14,8 +15,7 @@ enum QuestIdent {
 }
 
 model QuestSlainEnemy {
-  id    String     @id @default(uuid())
-  ident QuestIdent @default(SLAIN_ENEMY)
+  id String @id @default(uuid())
 
   quest    Quest  @relation(fields: [quest_id], references: [id])
   quest_id String
@@ -29,8 +29,7 @@ model QuestSlainEnemy {
 }
 
 model QuestSlainTroll {
-  id    String     @id @default(uuid())
-  ident QuestIdent @default(SLAIN_TROLL)
+  id String @id @default(uuid())
 
   quest    Quest  @relation(fields: [quest_id], references: [id])
   quest_id String

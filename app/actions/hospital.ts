@@ -42,7 +42,7 @@ export const show = authActionClient
       ...hospital,
       slainEnemyQuest: {
         state: slainEnemyQuestState,
-        reward: slainEnemyQuestReward.money,
+        reward: slainEnemyQuestReward.reward_money,
       },
     }
   })
@@ -65,7 +65,7 @@ export const heal = authActionClient
 
     if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const balance = ctx.user.money - (hospital.price ?? 0)
+    const balance = ctx.user.money - (hospital.healing_price ?? 0)
 
     if (balance < 0) throw new Error(ERROR_CAUSE.INSUFFICIENT_FUNDS)
 

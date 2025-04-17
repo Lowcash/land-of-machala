@@ -9,7 +9,7 @@ export const get = authActionClient
   .schema(placeSchema)
   .action(async ({ parsedInput }) =>
     db.place.findFirst({
-      where: { pos_x: parsedInput.posX, pos_y: parsedInput.posY },
+      where: { x_min: parsedInput.posX, y_min: parsedInput.posY },
       include: {
         hospital: true,
         armory: true,

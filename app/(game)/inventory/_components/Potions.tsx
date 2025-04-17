@@ -1,6 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
+import i18next from '@/lib/i18n'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/table'
@@ -13,14 +13,14 @@ export default function Potions() {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.potion.efficiency },
-        { className: 'text-right', content: loc.common.use },
+        { className: 'text-center', content: i18next.t('consumable.efficiency') },
+        { className: 'text-right', content: i18next.t('common.use') },
       ]}
       cells={showInventory.data?.potions.map((x) => [
-        { className: 'text-left', content: x.potion.name },
+        { className: 'text-left', content: x.potion.i18n_key },
         {
           className: 'text-center',
-          content: `+${x.potion.hp_gain} ${loc.common.hp}`,
+          content: `+${x.potion.hp_gain} ${i18next.t('common.hp')}`,
         },
         {
           className: 'text-right',

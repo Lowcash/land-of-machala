@@ -100,12 +100,12 @@ function getIntelligence({ character, armors }: ArmorStatsContributor) {
     character.level +
     (character.race?.intelligence ?? 0) +
     (character.class?.intelligence ?? 0) +
-    (armors.head?.intelligency ?? 0) +
-    (armors.shoulder?.intelligency ?? 0) +
-    (armors.chest?.intelligency ?? 0) +
-    (armors.hand?.intelligency ?? 0) +
-    (armors.pants?.intelligency ?? 0) +
-    (armors.boots?.intelligency ?? 0)
+    (armors.head?.intelligence ?? 0) +
+    (armors.shoulder?.intelligence ?? 0) +
+    (armors.chest?.intelligence ?? 0) +
+    (armors.hand?.intelligence ?? 0) +
+    (armors.pants?.intelligence ?? 0) +
+    (armors.boots?.intelligence ?? 0)
   )
 }
 
