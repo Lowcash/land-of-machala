@@ -1,4 +1,638 @@
 {
+  "player": {
+    "email": "Email",
+    "password": "Heslo",
+    "character": "Postava",
+    "name": "Jméno",
+    "race": "Rasa",
+    "class": "Třída",
+    "money": "Peníze"
+  },
+  "stats": {
+    "header": "Staty",
+    "level": "Level",
+    "damage": "Poškození",
+    "strength": "Síla",
+    "agility": "Obratnost",
+    "intelligence": "Inteligence"
+  },
+  "race": {
+    "header": "Rasa",
+    "human": {
+      "header": "Člověk",
+      "description": "Člověk je nejrozšířenější rasa v celém království. Jejich síla a vytrvalost je obdivuhodná. Mají schopnost se rychle učit a přizpůsobovat se různým situacím."
+    },
+    "dwarf": {
+      "header": "Trpaslík",
+      "description": "Trpaslíci jsou známí svou silou a houževnatostí. Jsou to skvělí kováři a řemeslníci, kteří dokážou vyrobit nejlepší zbraně a zbroje. Jejich schopnost přežít v drsných podmínkách je obdivuhodná."
+    },
+    "gnome": {
+      "header": "Gnom",
+      "description": "Gnomové jsou malí, ale velmi inteligentní bytosti. Jsou to mistři v technologiích a magii. Jejich schopnost vytvářet složité stroje a kouzla je obdivuhodná."
+    }
+  },
+  "class": {
+    "warrior": {
+      "header": "Válečník",
+      "description": "Silný a odvážný bojovník, který se nebojí čelit nebezpečným protivníkům."
+    },
+    "samurai": {
+      "header": "Samuraj",
+      "description": "Mistři meče, kteří ctí tradice a bojují s neochvějnou odvahou."
+    },
+    "mage": {
+      "header": "Mág",
+      "description": "Ovládá mocné kouzla a používá je k ochraně svých přátel a zničení nepřátel."
+    }
+  },
+  "enemy": {
+    "header": "Nepřítel",
+    "appear": "Najednou se před tebou objevil",
+    "attack": "Útok",
+    "run_away": "Utéct",
+    "challenges": "a vyzývá tě na souboj",
+    "player_destroyed": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!",
+    "troll": {
+      "header": "Troll",
+      "description": "Obrovský a silný tvor, známý svou houževnatostí a brutalitou."
+    },
+    "orc": {
+      "header": "Ork",
+      "description": "Divoký válečník, často ve skupinách útočí na své nepřátele."
+    },
+    "elf": {
+      "header": "Elf",
+      "description": "Obratný a chytrý tvor s magickými schopnostmi."
+    },
+    "barbarian": {
+      "header": "Barbar",
+      "description": "Divoký bojovník s obrovskou silou a odolností."
+    },
+    "thief": {
+      "header": "Zloděj",
+      "description": "Rychlý a nenápadný, využívá lstivost a útoky ze zálohy."
+    },
+    "goblin": {
+      "header": "Goblin",
+      "description": "Malý, rychlý a nebezpečný tvor s loveckými schopnostmi."
+    },
+    "demon": {
+      "header": "Démon",
+      "description": "Temná bytost s ničivou magií a nebezpečnými útoky."
+    },
+    "fire_elemental": {
+      "header": "Ohňový Elementál",
+      "description": "Tvořený plameny, útočí s ohnivou zuřivostí."
+    },
+    "ice_elemental": {
+      "header": "Ledový Elementál",
+      "description": "Mrazivý tvor, zpomaluje a zmrazuje své nepřátele."
+    }
+  },
+  "armor": {
+    "header": "Zbroj",
+    "header_multi": "Zbroje",
+    "buy": "Koupit Zbroj",
+    "sell": "Prodat Zbroj",
+    "head": "Hlava",
+    "shoulder": "Ramena",
+    "chest": "Tělo",
+    "hand": "Ruce",
+    "pants": "Kalhoty",
+    "boots": "Boty",
+    "head_helmet_defender": {
+      "header": "Helma Obránce",
+      "description": "Zbroj, která poskytuje vynikající ochranu a sílu."
+    },
+    "head_cap_seer": {
+      "header": "Čapka Věštce",
+      "description": "Zbroj, která zvyšuje magické schopnosti a inteligenci."
+    },
+    "head_helmet_knight": {
+      "header": "Přilba Rytíře",
+      "description": "Robustní přilba vhodná pro boj na blízko."
+    },
+    "head_hood_shadow": {
+      "header": "Kukla Stínu",
+      "description": "Lehká kukla pro tiché a nenápadné pohyby."
+    },
+    "head_crown_archmage": {
+      "header": "Koruna Arcimága",
+      "description": "Symbol moci a nejvyšší magické schopnosti."
+    },
+    "head_headband_strength": {
+      "header": "Čelenka Síl",
+      "description": "Zvyšuje sílu a výdrž bojovníka."
+    },
+    "head_mask_mystery": {
+      "header": "Maska Záhad",
+      "description": "Zahaluje tvář a skrývá pravé úmysly."
+    },
+    "head_cowl_hunter": {
+      "header": "Kapuce Lovce",
+      "description": "Ideální pro lovce v divočině."
+    },
+    "head_helmet_protector": {
+      "header": "Helmice Ochránce",
+      "description": "Poskytuje spolehlivou ochranu na bitevním poli."
+    },
+    "head_helmet_gladiator": {
+      "header": "Přilbice Gladiátora",
+      "description": "Zbroj vhodná pro arénu a tvrdé boje."
+    },
+    "shoulder_pauldrons_crusher": {
+      "header": "Ramena Drtitele",
+      "description": "Silná ramena dodávající zdrcující sílu."
+    },
+    "shoulder_pauldrons_mystic": {
+      "header": "Ramena Mystika",
+      "description": "Ramena podporující magickou energii."
+    },
+    "shoulder_pauldrons_sprinter": {
+      "header": "Ramena Sprintera",
+      "description": "Lehká ramena pro rychlost a obratnost."
+    },
+    "shoulder_pauldrons_stealth": {
+      "header": "Ramena Tichého Stínu",
+      "description": "Pomáhá být nenápadný a tichý."
+    },
+    "shoulder_pauldrons_wizard": {
+      "header": "Ramena Čaroděje",
+      "description": "Ramena posilující magickou moc."
+    },
+    "shoulder_epaulets_courage": {
+      "header": "Náplečníky Odvahy",
+      "description": "Dodávají odvahu v boji."
+    },
+    "shoulder_epaulets_agility": {
+      "header": "Nárameníky Hbitosti",
+      "description": "Zvyšují obratnost a rychlost."
+    },
+    "shoulder_shoulders_fortress": {
+      "header": "Lopatky Pevnosti",
+      "description": "Poskytují pevnost a stabilitu."
+    },
+    "shoulder_shoulders_wisdom": {
+      "header": "Ramenní Křídla Moudrosti",
+      "description": "Symbol moudrosti a ochrany."
+    },
+    "shoulder_plate_shoulders_ranger": {
+      "header": "Plátové Ramena Hraničáře",
+      "description": "Ramena pro hraničáře, poskytující obranu."
+    },
+    "chest_armor_hero": {
+      "header": "Brnění Hrdiny",
+      "description": "Silné brnění pro hrdiny."
+    },
+    "chest_cloak_mystery": {
+      "header": "Plášť Záhad",
+      "description": "Plášť zahalující nositele tajemstvím."
+    },
+    "chest_chainmail_hunter": {
+      "header": "Kroužková Zbroj Lovce",
+      "description": "Zbroj zajišťující ochranu a mobilitu."
+    },
+    "chest_leather_armor": {
+      "header": "Kožená Tělesná Zbroj",
+      "description": "Lehká a pružná kožená zbroj."
+    },
+    "chest_magic_cloak": {
+      "header": "Magický Plášť",
+      "description": "Plášť podporující čarodějné schopnosti."
+    },
+    "chest_warrior_breastplate": {
+      "header": "Hrudní Plát Válečníka",
+      "description": "Silný plát chránící hrudník."
+    },
+    "chest_reinforced_vest": {
+      "header": "Vyztužená Vesta",
+      "description": "Ochranná vesta s výztuží."
+    },
+    "chest_protective_tunic": {
+      "header": "Ochranná Tunika",
+      "description": "Lehká tunika poskytující základní ochranu."
+    },
+    "chest_flaming_tunic": {
+      "header": "Ohnivá Tunika",
+      "description": "Tunika s magickou ohnivou ochranou."
+    },
+    "chest_dragon_armor": {
+      "header": "Dračí Brnění",
+      "description": "Brnění inspirované dračí silou."
+    },
+    "hand_gloves_strength": {
+      "header": "Rukavice Síly",
+      "description": "Rukavice zvyšující fyzickou sílu."
+    },
+    "hand_gloves_mystic": {
+      "header": "Rukavice Mystika",
+      "description": "Rukavice pro magické ruce."
+    },
+    "hand_gloves_sprinter": {
+      "header": "Rukavice Sprintera",
+      "description": "Lehké rukavice pro rychlé pohyby."
+    },
+    "hand_gloves_shadow_master": {
+      "header": "Rukavice Stínového Mistra",
+      "description": "Rukavice pro mistry stínu."
+    },
+    "hand_gloves_wizard": {
+      "header": "Rukavice Čaroděje",
+      "description": "Rukavice posilující magii."
+    },
+    "hand_bracers_endurance": {
+      "header": "Nátepníky Vytrvalosti",
+      "description": "Nátepníky zvyšující vytrvalost."
+    },
+    "hand_rings_agility": {
+      "header": "Prsteníky Hbitosti",
+      "description": "Prsteny pro rychlost a zručnost."
+    },
+    "hand_armguards_fortress": {
+      "header": "Pažníky Pevnosti",
+      "description": "Ochranné pažníky poskytující pevnost."
+    },
+    "hand_chainmail_gloves": {
+      "header": "Kroužkové Rukavice",
+      "description": "Rukavice z kroužkové zbroje."
+    },
+    "hand_leather_gloves": {
+      "header": "Kožené Rukavice",
+      "description": "Pružné kožené rukavice."
+    },
+    "pants_pants_strength": {
+      "header": "Kalhoty Síly",
+      "description": "Kalhoty zvyšující sílu nohou."
+    },
+    "pants_pants_mystic": {
+      "header": "Kalhoty Mystika",
+      "description": "Kalhoty pro magickou obratnost."
+    },
+    "pants_pants_sprinter": {
+      "header": "Kalhoty Sprintera",
+      "description": "Lehké kalhoty pro rychlé nohy."
+    },
+    "pants_pants_stealth": {
+      "header": "Kalhoty Tichého Stínu",
+      "description": "Kalhoty pro tichý pohyb."
+    },
+    "pants_pants_wizard": {
+      "header": "Kalhoty Čaroděje",
+      "description": "Kalhoty posilující magii."
+    },
+    "pants_gaiters_courage": {
+      "header": "Kráčedla Odvahy",
+      "description": "Kráčedla zvyšující odvahu."
+    },
+    "pants_trousers_agility": {
+      "header": "Nohavice Hbitosti",
+      "description": "Nohavice pro lepší obratnost."
+    },
+    "pants_trousers_fortress": {
+      "header": "Nohavice Pevnosti",
+      "description": "Nohavice zajišťující ochranu."
+    },
+    "pants_leather_pants_hunter": {
+      "header": "Kožené Kalhoty Lovce",
+      "description": "Kožené kalhoty pro lovce."
+    },
+    "pants_plate_trousers_warrior": {
+      "header": "Plátové Nohavice Válečníka",
+      "description": "Plátové nohavice pro bojovníky."
+    },
+    "boots_boots_strength": {
+      "header": "Boty Síly",
+      "description": "Boty zvyšující sílu kroků."
+    },
+    "boots_boots_mystic": {
+      "header": "Boty Mystika",
+      "description": "Boty pro magickou rovnováhu."
+    },
+    "boots_boots_speed": {
+      "header": "Boty Rychlosti",
+      "description": "Boty pro rychlý pohyb."
+    },
+    "boots_boots_stealth": {
+      "header": "Boty Stealthu",
+      "description": "Boty umožňující tichý pohyb."
+    },
+    "boots_boots_wizard": {
+      "header": "Boty Čaroděje",
+      "description": "Magické boty pro čaroděje."
+    },
+    "boots_shoes_endurance": {
+      "header": "Střevíce Vytrvalosti",
+      "description": "Boty zvyšující vytrvalost."
+    },
+    "boots_sandals_agility": {
+      "header": "Sandály Hbitosti",
+      "description": "Lehké sandály pro rychlost."
+    },
+    "boots_ankle_boots": {
+      "header": "Kotníkové Boty",
+      "description": "Boty pro podporu kotníků."
+    },
+    "boots_leather_boots_hunter": {
+      "header": "Kožené Boty Lovce",
+      "description": "Kožené boty pro lovce."
+    },
+    "boots_plate_boots_protector": {
+      "header": "Plátové Boty Ochránce",
+      "description": "Silné plátové boty na ochranu."
+    }
+  },
+  "weapon": {
+    "header": "Zbraň",
+    "header_multi": "Zbraně",
+    "buy": "Koupit Zbraň",
+    "sell": "Prodat Zbraň",
+    "left_hand": "Levá ruka",
+    "right_hand": "Pravá ruka",
+    "dagger": {
+      "header": "Dýka",
+      "description": "Lehká a rychlá zbraň pro blízký boj."
+    },
+    "sword": {
+      "header": "Meč",
+      "description": "Klasická zbraň pro vyvážený boj na blízko."
+    },
+    "arrow": {
+      "header": "Šíp",
+      "description": "Letící projektil pro tiché a přesné zásahy."
+    },
+    "bow": {
+      "header": "Luk",
+      "description": "Zbraň pro dlouhé vzdálenosti a přesné výstřely."
+    },
+    "hammer": {
+      "header": "Kladivo",
+      "description": "Těžká zbraň pro drtivé údery."
+    },
+    "spear": {
+      "header": "Kopí",
+      "description": "Dlouhá zbraň vhodná pro průbojné útoky."
+    },
+    "axe": {
+      "header": "Sekera",
+      "description": "Zbraň se silným sečným efektem."
+    },
+    "mace": {
+      "header": "Palcát",
+      "description": "Těžká zbraň pro údery na obrněné cíle."
+    },
+    "club": {
+      "header": "Kyj",
+      "description": "Jednoduchá zbraň s drtivými údery."
+    },
+    "mace_2": {
+      "header": "Mace",
+      "description": "Další varianta těžkého palcátu."
+    },
+    "crossbow": {
+      "header": "Kuše",
+      "description": "Mechanická střelná zbraň pro přesné výstřely."
+    },
+    "kama": {
+      "header": "Kama",
+      "description": "Malá zbraň s ostrými čepeli."
+    },
+    "katar": {
+      "header": "Katar",
+      "description": "Indická bodná zbraň s dvojitou čepelí."
+    },
+    "krakolej": {
+      "header": "Krakolej",
+      "description": "Těžká zbraň s vysokou destruktivní silou."
+    },
+    "kusatko": {
+      "header": "Kůsátko",
+      "description": "Lehká zbraň pro rychlé útoky."
+    },
+    "club_2": {
+      "header": "Obušek",
+      "description": "Zbraň na blízko s drtivými údery."
+    },
+    "axe_2": {
+      "header": "Sekyra",
+      "description": "Silná sekera pro mohutné seky."
+    },
+    "sabre": {
+      "header": "Šavle",
+      "description": "Lehká sečná zbraň pro rychlé útoky."
+    },
+    "thrash": {
+      "header": "Trhač",
+      "description": "Zbraň s roztrhávající silou."
+    },
+    "weapon_generic": {
+      "header": "Zbraň",
+      "description": "Obecná zbraň bez specializace."
+    },
+    "rapier": {
+      "header": "Rapír",
+      "description": "Tenká a rychlá bodná zbraň."
+    },
+    "wanderer": {
+      "header": "Tuláč",
+      "description": "Neznámá zbraň pro různé situace."
+    },
+    "hanging_wedge": {
+      "header": "Závěsná klínka",
+      "description": "Malý klínkový nástroj pro boj."
+    },
+    "club_3": {
+      "header": "Klub",
+      "description": "Těžká zbraň pro drtivé údery."
+    },
+    "mace_3": {
+      "header": "Palice",
+      "description": "Masivní zbraň pro silné údery."
+    },
+    "krut": {
+      "header": "Krut",
+      "description": "Speciální zbraň s neznámými vlastnostmi."
+    },
+    "scissors": {
+      "header": "Nožnice",
+      "description": "Netradiční zbraň s ostrými čelistmi."
+    },
+    "bayonet": {
+      "header": "Bodák",
+      "description": "Připevněná bodná zbraň pro pušky."
+    },
+    "jatagan": {
+      "header": "Jatagan",
+      "description": "Zakřivená šavle pro rychlé údery."
+    },
+    "cloth": {
+      "header": "Látka",
+      "description": "Nestandardní zbraň nebo předmět."
+    },
+    "fist_weapon": {
+      "header": "Pěstní zbraň",
+      "description": "Malá zbraň pro údery pěstí."
+    },
+    "blade": {
+      "header": "Čepel",
+      "description": "Ostrá a smrtící část zbraně."
+    },
+    "shingle": {
+      "header": "Šindle",
+      "description": "Těžká zbraň s plochou úderovou částí."
+    },
+    "piercing_weapon": {
+      "header": "Bodná zbraň",
+      "description": "Zbraň určená k bodání a průrazu."
+    },
+    "tupilka": {
+      "header": "Tupilka",
+      "description": "Zbraň vhodná pro tupé údery."
+    },
+    "shooting_weapon": {
+      "header": "Střelecká zbraň",
+      "description": "Zbraň používající střelivo."
+    },
+    "attack_weapon": {
+      "header": "Zbraň k útoku",
+      "description": "Univerzální útočná zbraň."
+    },
+    "parat": {
+      "header": "Parát",
+      "description": "Zbraň s neznámým efektem."
+    },
+    "flajska": {
+      "header": "Flajška",
+      "description": "Malá a lehká zbraň."
+    },
+    "sodna_lahve": {
+      "header": "Sodná láhev",
+      "description": "Nestandardní zbraň nebo předmět."
+    },
+    "slap": {
+      "header": "Facka",
+      "description": "Ruce jako zbraň pro údery."
+    },
+    "combat_dagger": {
+      "header": "Dýka k boji",
+      "description": "Speciální dýka určená pro boj."
+    },
+    "combat_sword": {
+      "header": "Meč k boji",
+      "description": "Meč vyrobený pro bojové situace."
+    },
+    "mace_weapon": {
+      "header": "Palicová zbraň",
+      "description": "Těžká palicová zbraň."
+    },
+    "trailing": {
+      "header": "Vlečka",
+      "description": "Zbraň se zadní částí pro drtivý úder."
+    },
+    "six": {
+      "header": "Šestka",
+      "description": "Zbraň s označením šest."
+    },
+    "fight_weapons": {
+      "header": "Zbraně k potyčce",
+      "description": "Různé zbraně určené pro potyčky."
+    },
+    "shooting_weapon_2": {
+      "header": "Zbraň k výstřelu",
+      "description": "Druhá varianta střelecké zbraně."
+    },
+    "anchor": {
+      "header": "Kotva",
+      "description": "Těžká zbraň inspirovaná kotvou."
+    },
+    "javelin": {
+      "header": "Oštěp",
+      "description": "Dlouhý vrhací oštěp."
+    },
+    "caliber": {
+      "header": "Ráže",
+      "description": "Hodnota pro sílu střelné zbraně."
+    }
+  },
+  "consumable": {
+    "potion_weak": {
+      "header": "Slabý lék"
+    },
+    "potion_medium_strength": {
+      "header": "Středně silný lék"
+    },
+    "potion_strong": {
+      "header": "Silný lék"
+    },
+    "header": "Potion",
+    "header_multi": "Potiony",
+    "buy": "Koupit Potion",
+    "buy_success": "Tady to máš",
+    "buy_failed": "Přijď, až na to budeš mít (nedostatek peněz)",
+    "efficiency": "Účinnost"
+  },
+  "place": {
+    "your_are_in": "Nacházíš se v",
+    "main_city": {
+      "header": "Královský palác",
+      "description": "Elegantní palác s rozlehlými zahradami a bohatou historií"
+    },
+    "main_city_hospital": {
+      "header": "Nemocnice Sv. Lukáše",
+      "description": "Oprava rozbitých kosti a rozbité srdcovky",
+      "greeting": "Buď zdráv, dobrodruhu! U nás společně s dobrým pivem poléčíme všechny tvoje starosti!",
+      "heal_for": "Uzdravení za",
+      "heal_accept": "To chci!",
+      "heal_success": "Teď jsi jako rybička (vyléčen)",
+      "heal_failed": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)",
+      "resurrect_description": "Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..",
+      "resurrect_accept": "Uzdravit!"
+    },
+    "main_city_armory": {
+      "header": "Kovárna Dračí hřebíky",
+      "description": "Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly",
+      "greeting": "Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?",
+      "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
+      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)"
+    },
+    "main_city_bank": {
+      "header": "Banka U dvou přátel",
+      "description": "Místo, kde jsou tvoje cennosti v bezpečí",
+      "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?",
+      "deposit": "Uložit",
+      "withdraw": "Vybrat",
+      "deposited_money": "Uloženo peněz",
+      "deposit_money": "Uložit Peníze",
+      "withdraw_money": "Vybrat Peníze",
+      "deposit_weapon": "Uložit Zbraň",
+      "withdraw_weapon": "Vybrat Zbraň",
+      "deposit_armor": "Uložit Zbroj",
+      "withdraw_armor": "Vybrat Zbroj",
+      "deposit_potion": "Uložit Potion",
+      "withdraw_potion": "Vybrat Potion",
+      "deposit_success": "Zboží uloženo v bance",
+      "withdraw_success": "Zboží vybráno z banky",
+      "deposit_or_withdraw_failed": "Nějak se nám to zkomplikovalo?!"
+    }
+  },
+  "quest": {
+    "header": "Quest",
+    "header_multi": "Questy",
+    "empty": "Žádný quest nemáš",
+    "slain_enemy": {
+      "description_inventory": "popis slain enemy questu",
+      "description_hospital": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
+      "accept": "Beru",
+      "accepted": "Hezky pěkně, dej se do toho!",
+      "complete": "Odevzdat",
+      "completed": "Tak to je nádhera, zde je tvoje odměna",
+      "completed_looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!",
+      "slained": "Zabito nepřátel"
+    },
+    "slain_troll": {
+      "description_inventory": "popis slain troll questu",
+      "slained": "Zabito nepřátel"
+    }
+  },
   "sign": {
     "in": "Přihlásit se",
     "in_success": "Úspěšně přihlášen",
@@ -38,93 +672,6 @@
     "something_went_wrong": "Něco šlo špatně",
     "try_again": "Zkusit znovu"
   },
-  "player": {
-    "email": "Email",
-    "password": "Heslo",
-    "character": "Postava",
-    "name": "Jméno",
-    "race": "Rasa",
-    "class": "Třída",
-    "money": "Peníze"
-  },
-  "stats": {
-    "header": "Staty",
-    "level": "Level",
-    "damage": "Poškození",
-    "strength": "Síla",
-    "agility": "Obratnost",
-    "intelligence": "Inteligence"
-  },
-  "place": {
-    "your_are_in": "Nacházíš se v",
-    "hospital": {
-      "header": "Nemocnice",
-      "heal_for": "Uzdravení za",
-      "heal_accept": "To chci!",
-      "heal_success": "Teď jsi jako rybička (vyléčen)",
-      "heal_failed": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)",
-      "resurrect_description": "Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění..",
-      "resurrect_accept": "Uzdravit!"
-    },
-    "armory": {
-      "header": "Zbrojírna",
-      "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
-      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)"
-    },
-    "bank": {
-      "header": "Banka",
-      "deposit": "Uložit",
-      "withdraw": "Vybrat",
-      "deposited_money": "Uloženo peněz",
-      "deposit_money": "Uložit Peníze",
-      "withdraw_money": "Vybrat Peníze",
-      "deposit_weapon": "Uložit Zbraň",
-      "withdraw_weapon": "Vybrat Zbraň",
-      "deposit_armor": "Uložit Zbroj",
-      "withdraw_armor": "Vybrat Zbroj",
-      "deposit_potion": "Uložit Potion",
-      "withdraw_potion": "Vybrat Potion",
-      "deposit_success": "Zboží uloženo v bance",
-      "withdraw_success": "Zboží vybráno z banky",
-      "deposit_or_withdraw_failed": "Nějak se nám to zkomplikovalo?!"
-    }
-  },
-  "weapon": {
-    "header": "Zbraň",
-    "header_multi": "Zbraně",
-    "buy": "Koupit Zbraň",
-    "sell": "Prodat Zbraň",
-    "left_hand": "Levá ruka",
-    "right_hand": "Pravá ruka"
-  },
-  "armor": {
-    "header": "Zbroj",
-    "header_multi": "Zbroje",
-    "buy": "Koupit Zbroj",
-    "sell": "Prodat Zbroj",
-    "head": "Hlava",
-    "shoulder": "Ramena",
-    "chest": "Tělo",
-    "hand": "Ruce",
-    "pants": "Kalhoty",
-    "boots": "Boty"
-  },
-  "potion": {
-    "header": "Potion",
-    "header_multi": "Potiony",
-    "buy": "Koupit Potion",
-    "buy_success": "Tady to máš",
-    "buy_failed": "Přijď, až na to budeš mít (nedostatek peněz)",
-    "efficiency": "Účinnost"
-  },
-  "enemy": {
-    "header": "Nepřítel",
-    "appear": "Najednou se před tebou objevil",
-    "attack": "Útok",
-    "run_away": "Utéct",
-    "challenges": "a vyzývá tě na souboj",
-    "player_destroyed": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
-  },
   "inventory": {
     "header": "Inventář",
     "found": "V batohu se nachází",
@@ -136,24 +683,5 @@
   },
   "world": {
     "explore": "Jsi na průzkumu světa!"
-  },
-  "quest": {
-    "header": "Quest",
-    "header_multi": "Questy",
-    "empty": "Žádný quest nemáš",
-    "enemy_slain": {
-      "description_inventory": "popis slain enemy questu",
-      "description_hospital": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
-      "accept": "Beru",
-      "accepted": "Hezky pěkně, dej se do toho!",
-      "complete": "Odevzdat",
-      "completed": "Tak to je nádhera, zde je tvoje odměna",
-      "completed_looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!",
-      "slained": "Zabito nepřátel"
-    },
-    "troll_slain": {
-      "description_inventory": "popis slain troll questu",
-      "slained": "Zabito nepřátel"
-    }
   }
 }
