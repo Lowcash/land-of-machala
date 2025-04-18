@@ -1,4 +1,4 @@
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import type { Armor, Weapon, Potion } from '@prisma/client'
 
 import { Button } from '@/components/ui/button'
@@ -23,8 +23,8 @@ export function WeaponSafe(p: SafeProps<Weapon>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: i18next.t('stats.damage') },
-        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
+        { className: 'text-center', content: i18n.t('stats.damage') },
+        { className: 'text-right', content: i18n.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.i18n_key },
@@ -55,11 +55,11 @@ export function ArmorSafe(p: SafeProps<Armor>) {
       columns={[
         {},
         {},
-        { className: 'text-center', content: i18next.t('armor.header') },
-        { className: 'text-center', content: i18next.t('stats.strength') },
-        { className: 'text-center', content: i18next.t('stats.agility') },
-        { className: 'text-center', content: i18next.t('stats.intelligence') },
-        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
+        { className: 'text-center', content: i18n.t('armor.header') },
+        { className: 'text-center', content: i18n.t('stats.strength') },
+        { className: 'text-center', content: i18n.t('stats.agility') },
+        { className: 'text-center', content: i18n.t('stats.intelligence') },
+        { className: 'text-right', content: i18n.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.i18n_key },
@@ -86,8 +86,8 @@ export function PotionSafe(p: SafeProps<Potion>) {
     <Table
       columns={[
         {},
-        { className: 'text-center', content: i18next.t('consumable.efficiency') },
-        { className: 'text-right', content: i18next.t(`place.main_city_bank.${p.action}`) },
+        { className: 'text-center', content: i18n.t('consumable.efficiency') },
+        { className: 'text-right', content: i18n.t(`place.main_city_bank.${p.action}`) },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.i18n_key },

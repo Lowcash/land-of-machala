@@ -1,7 +1,7 @@
 'use server'
 
 import { db } from '@/lib/db'
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { actionClient } from '@/lib/safe-action'
 import { type Race } from '@prisma/client'
 
@@ -15,7 +15,7 @@ export const show = actionClient.metadata({ actionName: 'race_show' }).action(as
 
   return races.map(({ i18n_key, ...x }) => ({
     ...x,
-    name: i18next.t(`${i18n_key}.header` as any),
+    name: i18n.t(`${i18n_key}.header` as any),
   }))
 })
 

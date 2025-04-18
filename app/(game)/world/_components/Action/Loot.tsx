@@ -1,6 +1,6 @@
 'use client'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { useGameLootMutation } from '@/hooks/api/use-game'
 
 import * as S from './styles'
@@ -14,7 +14,7 @@ export default function Loot() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleLoot}>
-        {i18next.t('loot.header')}
+        {i18n.t('loot.header')}
       </Button>
     </S.Action>
   )

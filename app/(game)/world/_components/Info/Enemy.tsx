@@ -1,6 +1,6 @@
 'use client'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 
 import Image from 'next/image'
@@ -17,12 +17,12 @@ export default function Enemy() {
   return <>
     <Card>
       <Text>
-        {i18next.t('enemy.appear')}&nbsp;
+        {i18n.t('enemy.appear')}&nbsp;
         <b>
           {name} ({hpActual}/{hpMax})
         </b>
         &nbsp;
-        {i18next.t('enemy.challenges')}
+        {i18n.t('enemy.challenges')}
       </Text>
     </Card>
 

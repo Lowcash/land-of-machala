@@ -1,6 +1,6 @@
 'use client'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 
 import { Text } from '@/styles/typography'
@@ -15,7 +15,7 @@ export default function Defeated() {
   return (
     <>
       <Card>
-        <Text>{i18next.t('enemy.player_destroyed')}</Text>
+        <Text>{i18n.t('enemy.player_destroyed')}</Text>
       </Card>
       {hasPlace && (
         <Card>

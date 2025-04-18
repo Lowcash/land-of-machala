@@ -1,4 +1,4 @@
-import i18next from 'i18next'
+import i18n from 'i18next'
 
 import csTranslation from '@/locales/cs.json'
 
@@ -8,7 +8,7 @@ export const resources = {
   },
 } as const
 
-i18next.init({
+i18n.init({
   lng: 'cs',
   // fallbackLng: 'en',
   resources,
@@ -17,4 +17,4 @@ i18next.init({
   },
 })
 
-export default i18next
+export default i18n
