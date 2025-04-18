@@ -1,6 +1,6 @@
 'use server'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { flattenValidationErrors, type InferSafeActionFnResult } from 'next-safe-action'
@@ -34,12 +34,12 @@ export const show = authActionClient
       __ui__: {
         header: (
           <Text>
-            {i18next.t('place.your_are_in')} <b>{i18next.t(`${armory.i18n_key}.header` as any)}</b>
+            {i18n.t('place.your_are_in')} <b>{i18n.t(`${armory.i18n_key}.header` as any)}</b>
           </Text>
         ),
-        description: <Text>{i18next.t(`${armory.i18n_key}.description` as any)}</Text>,
-        buySuccess: i18next.t(`${armory.i18n_key}.buy_success` as any),
-        buyFailed: i18next.t(`${armory.i18n_key}.buy_failed` as any),
+        description: <Text>{i18n.t(`${armory.i18n_key}.description` as any)}</Text>,
+        buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
+        buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
       },
       buyWeapons: getBuyWeapons({ weaponsAll, armory }),
       buyArmors: getBuyArmors({ armorsAll, armory }),
@@ -50,7 +50,7 @@ export const show = authActionClient
 
 export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
 
-const get = authActionClient
+export const get = authActionClient
   .metadata({ actionName: 'armory_get' })
   .schema(armorySchema)
   .action(async ({ parsedInput }) => {

@@ -1,6 +1,6 @@
 'use client'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { usePlayerQuery } from '@/hooks/api/use-player'
 
 import * as S from './styles'
@@ -12,10 +12,10 @@ export default function Position() {
   return (
     <S.Position>
       <span>
-        <Text>{i18next.t('common.coord_x')}:</Text> <Text light>{player.data?.pos_x}</Text>
+        <Text>{i18n.t('common.coord_x')}:</Text> <Text light>{player.data?.pos_x}</Text>
       </span>
       <span>
-        <Text>{i18next.t('common.coord_y')}:</Text> <Text light>{player.data?.pos_y}</Text>
+        <Text>{i18n.t('common.coord_y')}:</Text> <Text light>{player.data?.pos_y}</Text>
       </span>
     </S.Position>
   )

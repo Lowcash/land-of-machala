@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { type Location } from '@/config'
 import { useGameInfoQuery } from '@/hooks/api/use-game'
 import { useBackground } from '@/context/game-provider'
@@ -24,14 +24,14 @@ export default function Place(p: Props) {
   const armoryId = gameInfoQuery.data?.place?.armory?.id
   const bankId = gameInfoQuery.data?.place?.bank?.id
   const hospitalId = gameInfoQuery.data?.place?.hospital?.id
-
+console.log(armoryId)
   const { subPlace, setSubPlace } = useSetSubplace(p.forceSubplace)
 
   if (!!subPlace)
     return (
       <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
-          {i18next.t('common.back')}
+          {i18n.t('common.back')}
         </Button>
 
         {subPlace === 'hospital' && hospitalId && <Hospital hospitalId={hospitalId} />}
@@ -43,14 +43,14 @@ export default function Place(p: Props) {
   return (
     <>
       <Text>
-        {i18next.t('place.your_are_in')} <b>{gameInfoQuery.data?.place?.i18n_key}</b>
+        {i18n.t('place.your_are_in')} <b>{gameInfoQuery.data?.place?.i18n_key}</b>
       </Text>
-      <Text>{'gameInfoQuery.data?.place?.description'}</Text>
+      {/* <Text>{'gameInfoQuery.data?.place?.description'}</Text> */}
 
       <List>
         {SUBPLACES.map((x) => (
           <li key={`SubPlace_${x}`}>
-            {/* <Link onClick={() => setSubPlace(x)}>{i18next.t(`${place[x]}.header`)}</Link> */}
+            <Link onClick={() => setSubPlace(x)}>{x}</Link>
           </li>
         ))}
       </List>

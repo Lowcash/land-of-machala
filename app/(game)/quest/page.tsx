@@ -1,6 +1,6 @@
 'use client'
 
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { useBackground } from '@/context/game-provider'
 import { useQuestAssignedQuery } from '@/hooks/api/use-quest'
 
@@ -26,7 +26,7 @@ export default function Page() {
       <Card>
         <Back />
 
-        <H3>{i18next.t('quest.empty')}</H3>
+        <H3>{i18n.t('quest.empty')}</H3>
       </Card>
     )
 
@@ -36,9 +36,9 @@ export default function Page() {
     quests.push(
       buildQuest(
         slainEnemyQuest.id,
-        i18next.t('quest.slain_enemy.description_inventory'),
+        i18n.t('quest.slain_enemy.description_inventory'),
         <b>
-          {i18next.t('quest.slain_enemy.slained')}: {slainEnemyQuest.slain.actual_slain}/
+          {i18n.t('quest.slain_enemy.slained')}: {slainEnemyQuest.slain.actual_slain}/
           {slainEnemyQuest.slain.desired_slain}
         </b>,
         !!questAssignedQuery.data?.quest_slain_enemy_complete,
@@ -49,9 +49,9 @@ export default function Page() {
     quests.push(
       buildQuest(
         slainTrollQuest.id,
-        i18next.t('quest.slain_troll.description_inventory'),
+        i18n.t('quest.slain_troll.description_inventory'),
         <b>
-          {i18next.t('quest.slain_troll.slained')}: {slainTrollQuest.slain.actual_slain}/
+          {i18n.t('quest.slain_troll.slained')}: {slainTrollQuest.slain.actual_slain}/
           {slainTrollQuest.slain.desired_slain}
         </b>,
         !!questAssignedQuery.data?.quest_slain_troll_complete,
@@ -63,7 +63,7 @@ export default function Page() {
       <Back />
 
       <Card.Inner>
-        <H3>{i18next.t('quest.header_multi')}:</H3>
+        <H3>{i18n.t('quest.header_multi')}:</H3>
         <Table hideHeader columns={[{}, {}, {}]} cells={quests} />
       </Card.Inner>
     </Card>

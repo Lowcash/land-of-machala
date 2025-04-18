@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { toast } from '@/hooks/use-toast'
 import { signIn as userSignIn } from 'next-auth/react'
 import { signUp as userSignUp } from '@/app/actions/user'
@@ -29,10 +29,10 @@ export default function LoginForm() {
     })
 
     if (!!result?.ok) {
-      toast({ description: i18next.t('sign.in_success') })
+      toast({ description: i18n.t('sign.in_success') })
       navigate()
     } else {
-      toast({ description: i18next.t('sign.in_error'), variant: 'destructive' })
+      toast({ description: i18n.t('sign.in_error'), variant: 'destructive' })
     }
   }
 
@@ -41,13 +41,13 @@ export default function LoginForm() {
   }
 
   const handleSignUpSuccess = async () => {
-    toast({ description: i18next.t('sign.up_success') })
+    toast({ description: i18n.t('sign.up_success') })
     formRef.current?.reset?.()
     navigate()
   }
 
   const handleSignUpError = async () => {
-    toast({ description: i18next.t('sign.up_error'), variant: 'destructive' })
+    toast({ description: i18n.t('sign.up_error'), variant: 'destructive' })
     navigate()
   }
 
@@ -61,11 +61,11 @@ export default function LoginForm() {
       onAction={{ onSuccess: handleSignUpSuccess, onError: handleSignUpError }}
     >
       <div>
-        <Form.Input<PlayerSignSchema> id='email' type='email' label={i18next.t('player.email')} autoComplete='email' />
+        <Form.Input<PlayerSignSchema> id='email' type='email' label={i18n.t('player.email')} autoComplete='email' />
         <Form.Input<PlayerSignSchema>
           id='password'
           type='password'
-          label={i18next.t('player.password')}
+          label={i18n.t('player.password')}
           autoComplete='current-password'
         />
       </div>
@@ -74,9 +74,9 @@ export default function LoginForm() {
 
       <div className='flex flex-col gap-4'>
         <Form.Button variant='secondary' onClick={handleSignIn}>
-          {i18next.t('sign.in')}
+          {i18n.t('sign.in')}
         </Form.Button>
-        <Form.Button onClick={handleSignUp}>{i18next.t('sign.up')}</Form.Button>
+        <Form.Button onClick={handleSignUp}>{i18n.t('sign.up')}</Form.Button>
       </div>
     </Form>
   )

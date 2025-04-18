@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import { useArmoryShowQuery, useArmoryBuyItemMutation, useArmorySellItemMutation } from '@/hooks/api/use-armory'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
@@ -55,27 +55,27 @@ export default function Armory({ armoryId }: Props) {
 
       {hasBuyWeapons && (
         <Card.Inner>
-          <H3>{i18next.t('weapon.buy')}</H3>
+          <H3>{i18n.t('weapon.buy')}</H3>
           <WeaponMarket items={armoryShowQuery.data?.buyWeapons!} action='buy' onAction={handleAction} />
         </Card.Inner>
       )}
       {hasSellWeapons && (
         <Card.Inner>
-          <H3>{i18next.t('weapon.sell')}</H3>
+          <H3>{i18n.t('weapon.sell')}</H3>
           <WeaponMarket items={armoryShowQuery.data?.sellWeapons!} action='sell' onAction={handleAction} />
         </Card.Inner>
       )}
 
       {hasBuyArmors && (
         <Card.Inner>
-          <H3>{i18next.t('armor.buy')}</H3>
+          <H3>{i18n.t('armor.buy')}</H3>
           <ArmorMarket items={armoryShowQuery.data?.buyArmors!} action='buy' onAction={handleAction} />
         </Card.Inner>
       )}
 
       {hasSellArmors && (
         <Card.Inner>
-          <H3>{i18next.t('armor.sell')}</H3>
+          <H3>{i18n.t('armor.sell')}</H3>
           <ArmorMarket items={armoryShowQuery.data?.sellArmors!} action='sell' onAction={handleAction} />
         </Card.Inner>
       )}

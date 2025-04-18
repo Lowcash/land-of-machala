@@ -1,7 +1,7 @@
 'use client'
 
 import React from 'react'
-import i18next from '@/lib/i18n'
+import i18n from '@/lib/i18n'
 import {
   useBankQuery,
   useBankAccountQuery,
@@ -83,42 +83,42 @@ export default function Bank({ bankId }: Props) {
   return (
     <>
       <Text>
-        {i18next.t('place.your_are_in')} <b>{bankQuery.data?.i18n_key}</b>
+        {i18n.t('place.your_are_in')} <b>{bankQuery.data?.i18n_key}</b>
       </Text>
       {/* <Text>{bankQuery.data?.description}</Text> */}
 
       {hasMessage && (
         <Alert>
           {(depositItemMutation.isError || withdrawItemMutation.isError) &&
-            i18next.t('place.main_city_bank.deposit_or_withdraw_failed')}
+            i18n.t('place.main_city_bank.deposit_or_withdraw_failed')}
 
-          {depositItemMutation.isSuccess && i18next.t('place.main_city_bank.deposit_success')}
-          {withdrawItemMutation.isSuccess && i18next.t('place.main_city_bank.withdraw_success')}
+          {depositItemMutation.isSuccess && i18n.t('place.main_city_bank.deposit_success')}
+          {withdrawItemMutation.isSuccess && i18n.t('place.main_city_bank.withdraw_success')}
         </Alert>
       )}
 
       <div className='flex gap-4 overflow-auto'>
         <Card.Inner className='justify-between'>
-          <H3 className='whitespace-nowrap'>{i18next.t('place.main_city_bank.deposited_money')}</H3>
+          <H3 className='whitespace-nowrap'>{i18n.t('place.main_city_bank.deposited_money')}</H3>
           <Text>{bankAccountQuery.data?.money ?? 0}</Text>
         </Card.Inner>
 
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.deposit_money')}</H3>
+          <H3>{i18n.t('place.main_city_bank.deposit_money')}</H3>
           <div className='flex space-x-2'>
             <Input ref={depositMoneyRef} type='number' defaultValue={0} />
             <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
-              {i18next.t('place.main_city_bank.deposit')}
+              {i18n.t('place.main_city_bank.deposit')}
             </Button>
           </div>
         </Card.Inner>
 
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.withdraw_money')}</H3>
+          <H3>{i18n.t('place.main_city_bank.withdraw_money')}</H3>
           <div className='flex space-x-2'>
             <Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
             <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
-              {i18next.t('place.main_city_bank.withdraw')}
+              {i18n.t('place.main_city_bank.withdraw')}
             </Button>
           </div>
         </Card.Inner>
@@ -126,7 +126,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositWeapons && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.deposit_weapon')}</H3>
+          <H3>{i18n.t('place.main_city_bank.deposit_weapon')}</H3>
           <WeaponSafe
             items={depositWeapons!}
             action='deposit'
@@ -137,7 +137,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositArmors && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.deposit_armor')}</H3>
+          <H3>{i18n.t('place.main_city_bank.deposit_armor')}</H3>
           <ArmorSafe
             items={depositArmors!}
             action='deposit'
@@ -148,7 +148,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositPotions && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.deposit_potion')}</H3>
+          <H3>{i18n.t('place.main_city_bank.deposit_potion')}</H3>
           <PotionSafe
             items={depositPotions!}
             action='deposit'
@@ -159,7 +159,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawWeapons && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.withdraw_weapon')}</H3>
+          <H3>{i18n.t('place.main_city_bank.withdraw_weapon')}</H3>
           <WeaponSafe
             items={withdrawWeapons!}
             action='withdraw'
@@ -170,7 +170,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawArmors && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.withdraw_armor')}</H3>
+          <H3>{i18n.t('place.main_city_bank.withdraw_armor')}</H3>
           <ArmorSafe
             items={withdrawArmors!}
             action='withdraw'
@@ -181,7 +181,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawPotions && (
         <Card.Inner>
-          <H3>{i18next.t('place.main_city_bank.withdraw_potion')}</H3>
+          <H3>{i18n.t('place.main_city_bank.withdraw_potion')}</H3>
           <PotionSafe
             items={withdrawPotions!}
             action='withdraw'
