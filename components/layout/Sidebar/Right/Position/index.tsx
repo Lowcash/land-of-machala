@@ -1,21 +1,24 @@
 'use client'
 
-import i18n from '@/lib/i18n'
 import { usePlayerShowQuery } from '@/hooks/api/use-player'
 
 import * as S from './styles'
 import { Text } from '@/styles/typography'
 
+import { EMPTY } from '@/config'
+
 export default function Position() {
-  const player = usePlayerShowQuery()
+  const playerShowQuery = usePlayerShowQuery()
 
   return (
     <S.Position>
       <span>
-        <Text>{i18n.t('common.coord_x')}:</Text> <Text light>{player.data?.pos_x}</Text>
+        <Text>{playerShowQuery.data?.text.pos_x ?? 'pos_x'}:</Text>{' '}
+        <Text light>{playerShowQuery.data?.pos_x ?? EMPTY}</Text>
       </span>
       <span>
-        <Text>{i18n.t('common.coord_y')}:</Text> <Text light>{player.data?.pos_y}</Text>
+        <Text>{playerShowQuery.data?.text.pos_y ?? 'pos_y'}:</Text>{' '}
+        <Text light>{playerShowQuery.data?.pos_y ?? EMPTY}</Text>
       </span>
     </S.Position>
   )

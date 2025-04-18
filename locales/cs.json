@@ -17,11 +17,6 @@
       "header": "Rád Tě poznávám udatný dobrodruhu <b>(registrace)</b>",
       "success": "Úspěšně registrován",
       "failure": "Nepodařilo se registrovat"
-    },
-    "create": {
-      "header": "Vytvořit postavu",
-      "success": "Postava úspěšně vytvořena",
-      "failure": "Postavu se nepodařilo vytvořit"
     }
   },
   "character": {
@@ -30,9 +25,16 @@
       "header": "Jméno",
       "required": "Vyplňte jméno"
     },
+    "create": {
+      "header": "Vytvořit postavu",
+      "success": "Postava úspěšně vytvořena",
+      "failure": "Postavu se nepodařilo vytvořit"
+    },
     "money": "Peníze",
     "currency": "zlaťáků",
-    "hp": "HP"
+    "hp": "HP",
+    "pos_x": "x",
+    "pos_y": "y"
   },
   "stats": {
     "header": "Staty",

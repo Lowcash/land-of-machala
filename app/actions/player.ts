@@ -25,6 +25,8 @@ export const show = authActionClient.metadata({ actionName: 'player_show' }).act
       money: i18n.t('character.money'),
       currency: i18n.t('character.currency'),
       hp: i18n.t('character.hp'),
+      pos_x: i18n.t('character.pos_x'),
+      pos_y: i18n.t('character.pos_y'),
     },
   }
 })
