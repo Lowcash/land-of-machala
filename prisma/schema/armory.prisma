@@ -12,10 +12,10 @@ model WeaponInArmory {
 
   price Int
 
-  weapon    Weapon  @relation(fields: [weapon_id], references: [id])
+  weapon    Weapon @relation(fields: [weapon_id], references: [id])
   weapon_id String
-  armory    Armory? @relation(fields: [armory_id], references: [id])
-  armory_id String?
+  armory    Armory @relation(fields: [armory_id], references: [id])
+  armory_id String
 
   @@index([weapon_id])
   @@index([armory_id])
@@ -26,10 +26,10 @@ model ArmorInArmory {
 
   price Int
 
-  armor     Armor   @relation(fields: [armor_id], references: [id])
+  armor     Armor  @relation(fields: [armor_id], references: [id])
   armor_id  String
-  armory    Armory? @relation(fields: [armory_id], references: [id])
-  armory_id String?
+  armory    Armory @relation(fields: [armory_id], references: [id])
+  armory_id String
 
   @@index([armor_id])
   @@index([armory_id])

@@ -5,39 +5,29 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: "INSERT IGNORE INTO Race (id, i18n_key, strength, agility, intelligence)
-
-      \   VALUES ('human', 'race.human', 10, 10, 10),
-
-      \          ('dwarf', 'race.dwarf', 12, 10, 8),
-
-      \          ('gnome', 'race.gnome', 8, 10, 12) ON DUPLICATE KEY
-
-      \   UPDATE i18n_key =
-
-      \   VALUES (i18n_key),
-
-      \          strength =
-
-      \   VALUES (strength),
-
-      \          agility =
-
-      \   VALUES (agility),
-
-      \          intelligence =
-
-      \   VALUES (intelligence);
-
-      \   "
+    value: >-
+      INSERT IGNORE INTO Race (id, i18n_key, order_index, strength, agility,
+      intelligence)
+         VALUES ('human', 'race.human', 1, 10, 10, 10),
+                ('dwarf', 'race.dwarf', 2, 12, 10, 8),
+                ('gnome', 'race.gnome', 3, 8, 10, 12) ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key),
+                strength =
+         VALUES (strength),
+                agility =
+         VALUES (agility),
+                intelligence =
+         VALUES (intelligence);
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |-
-      INSERT IGNORE INTO Class (id, i18n_key, strength, agility, intelligence)
-         VALUES ('warrior', 'class.warrior', 14, 10, 6),
-                ('samurai', 'class.samurai', 10, 14, 6),
-                ('mage', 'class.mage', 8, 6, 16) ON DUPLICATE KEY
+    value: >-
+      INSERT IGNORE INTO Class (id, i18n_key, order_index, strength, agility,
+      intelligence)
+         VALUES ('warrior', 'class.warrior', 1, 14, 10, 6),
+                ('samurai', 'class.samurai', 2, 10, 14, 6),
+                ('mage', 'class.mage', 3, 8, 6, 16) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 strength =
@@ -143,7 +133,81 @@ cells:
                 ('boots_sandals_agility', 'armor.boots_sandals_agility', 'BOOTS', 8, 2, 10, 1),
                 ('boots_ankle_boots', 'armor.boots_ankle_boots', 'BOOTS', 5, 7, 3, 4),
                 ('boots_leather_boots_hunter', 'armor.boots_leather_boots_hunter', 'BOOTS', 6, 5, 4, 8),
-                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5);
+                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5) ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key),
+                type =
+         VALUES (type),
+                armor =
+         VALUES (armor),
+                agility =
+         VALUES (agility),
+                strength =
+         VALUES (strength),
+                intelligence =
+         VALUES (intelligence);
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: |-
+      INSERT IGNORE INTO Weapon (id, i18n_key, damage_from, damage_to)
+         VALUES ('dagger', 'weapon.dagger', 5, 10),
+                ('sword', 'weapon.sword', 10, 20),
+                ('arrow', 'weapon.arrow', 7, 15),
+                ('bow', 'weapon.bow', 15, 25),
+                ('hammer', 'weapon.hammer', 12, 22),
+                ('spear', 'weapon.spear', 14, 28),
+                ('axe', 'weapon.axe', 18, 30),
+                ('mace', 'weapon.mace', 20, 35),
+                ('club', 'weapon.club', 25, 40),
+                ('mace_2', 'weapon.mace_2', 22, 38),
+                ('crossbow', 'weapon.crossbow', 30, 50),
+                ('kama', 'weapon.kama', 8, 16),
+                ('katar', 'weapon.katar', 6, 12),
+                ('krakolej', 'weapon.krakolej', 35, 60),
+                ('kusatko', 'weapon.kusatko', 3, 8),
+                ('club_2', 'weapon.club_2', 15, 28),
+                ('axe_2', 'weapon.axe_2', 24, 42),
+                ('sabre', 'weapon.sabre', 16, 32),
+                ('thrash', 'weapon.thrash', 28, 48),
+                ('weapon_generic', 'weapon.weapon_generic', 10, 18),
+                ('rapier', 'weapon.rapier', 14, 26),
+                ('wanderer', 'weapon.wanderer', 5, 15),
+                ('hanging_wedge', 'weapon.hanging_wedge', 12, 24),
+                ('club_3', 'weapon.club_3', 18, 34),
+                ('mace_3', 'weapon.mace_3', 20, 36),
+                ('krut', 'weapon.krut', 22, 40),
+                ('scissors', 'weapon.scissors', 9, 18),
+                ('bayonet', 'weapon.bayonet', 7, 14),
+                ('jatagan', 'weapon.jatagan', 32, 55),
+                ('cloth', 'weapon.cloth', 4, 12),
+                ('fist_weapon', 'weapon.fist_weapon', 15, 30),
+                ('blade', 'weapon.blade', 19, 38),
+                ('shingle', 'weapon.shingle', 17, 34),
+                ('piercing_weapon', 'weapon.piercing_weapon', 26, 45),
+                ('tupilka', 'weapon.tupilka', 11, 22),
+                ('shooting_weapon', 'weapon.shooting_weapon', 20, 40),
+                ('attack_weapon', 'weapon.attack_weapon', 13, 26),
+                ('parat', 'weapon.parat', 21, 42),
+                ('flajska', 'weapon.flajska', 8, 16),
+                ('sodna_lahve', 'weapon.sodna_lahve', 6, 12),
+                ('slap', 'weapon.slap', 14, 28),
+                ('combat_dagger', 'weapon.combat_dagger', 24, 48),
+                ('combat_sword', 'weapon.combat_sword', 28, 56),
+                ('mace_weapon', 'weapon.mace_weapon', 32, 64),
+                ('trailing', 'weapon.trailing', 30, 60),
+                ('six', 'weapon.six', 19, 38),
+                ('fight_weapons', 'weapon.fight_weapons', 27, 54),
+                ('shooting_weapon_2', 'weapon.shooting_weapon_2', 22, 44),
+                ('anchor', 'weapon.anchor', 23, 46),
+                ('javelin', 'weapon.javelin', 18, 36),
+                ('caliber', 'weapon.caliber', 25, 50) ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key),
+                damage_from =
+         VALUES (damage_from),
+                damage_to =
+         VALUES (damage_to);
     metadata: {}
   - kind: 2
     languageId: sql
@@ -151,14 +215,18 @@ cells:
       INSERT IGNORE INTO Potion (id, i18n_key, hp_gain)
          VALUES ('potion_weak', 'consumable.potion_weak', 50),
                 ('potion_medium_strength', 'consumable.potion_medium_strength', 100),
-                ('potion_strong', 'consumable.potion_strong', 200);
+                ('potion_strong', 'consumable.potion_strong', 200) ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key),
+                hp_gain =
+         VALUES (hp_gain);
     metadata: {}
   - kind: 2
     languageId: sql
     value: >-
       INSERT IGNORE INTO Place (id, i18n_key, place_type, x_min, x_max, y_min,
       y_max, hospital_id, armory_id, bank_id)
-         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', NULL, NULL) ON DUPLICATE KEY
+         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank') ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 place_type =
@@ -180,50 +248,76 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |-
+    value: >-
       INSERT IGNORE INTO Hospital (id, i18n_key, healing_price)
-         VALUES ('main_city_hospital', 'place.main_city_hospital', 250);
+         VALUES ('main_city_hospital', 'place.main_city_hospital', 250) ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key),
+                healing_price =
+         VALUES (healing_price);
 
-      INSERT IGNORE INTO PotionInHospital (price, potion_id, hospital_id)
-         VALUES (100, 'potion_weak', 'main_city_hospital'),
-                (250, 'potion_medium_strength', 'main_city_hospital'),
-                (500, 'potion_strong', 'main_city_hospital');
+      INSERT IGNORE INTO PotionInHospital (id, price, potion_id, hospital_id)
+         VALUES (UUID(), 100, 'potion_weak', 'main_city_hospital'),
+                (UUID(), 250, 'potion_medium_strength', 'main_city_hospital'),
+                (UUID(), 500, 'potion_strong', 'main_city_hospital') ON DUPLICATE KEY
+         UPDATE price =
+         VALUES (price),
+                potion_id =
+         VALUES (potion_id),
+                hospital_id =
+         VALUES (hospital_id);
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |-
+    value: >-
       INSERT IGNORE INTO Armory (id, i18n_key)
-         VALUES ('main_city_armory', 'place.main_city_armory');
+         VALUES ('main_city_armory', 'place.main_city_armory') ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key);
 
-      INSERT IGNORE INTO WeaponInArmory (price, weapon_id, armory_id)
-         VALUES (2200, 7, 'main_city_armory'),
-                (2500, 42, 'main_city_armory'),
-                (2900, 19, 'main_city_armory'),
-                (1700, 31, 'main_city_armory'),
-                (1500, 5, 'main_city_armory'),
-                (9500, 14, 'main_city_armory'),
-                (2100, 25, 'main_city_armory'),
-                (2100, 38, 'main_city_armory'),
-                (2300, 10, 'main_city_armory'),
-                (1000, 3, 'main_city_armory');
+      INSERT IGNORE INTO WeaponInArmory (id, price, weapon_id, armory_id)
+         VALUES (UUID(), 2200, 'axe', 'main_city_armory'),
+                (UUID(), 2500, 'combat_dagger', 'main_city_armory'),
+                (UUID(), 2900, 'thrash', 'main_city_armory'),
+                (UUID(), 1700, 'fist_weapon', 'main_city_armory'),
+                (UUID(), 1500, 'hammer', 'main_city_armory'),
+                (UUID(), 9500, 'krakolej', 'main_city_armory'),
+                (UUID(), 2100, 'mace_3', 'main_city_armory'),
+                (UUID(), 2100, 'parat', 'main_city_armory'),
+                (UUID(), 2300, 'mace_2', 'main_city_armory'),
+                (UUID(), 1000, 'arrow', 'main_city_armory') ON DUPLICATE KEY
+         UPDATE price =
+         VALUES (price),
+                weapon_id =
+         VALUES (weapon_id),
+                armory_id =
+         VALUES (armory_id);
 
-      INSERT IGNORE INTO ArmorInArmory (price, armor_id, armory_id)
-         VALUES (10500, 30, 'main_city_armory'),
-                (9000, 8, 'main_city_armory'),
-                (8800, 15, 'main_city_armory'),
-                (8600, 36, 'main_city_armory'),
-                (8800, 41, 'main_city_armory'),
-                (7000, 34, 'main_city_armory'),
-                (8800, 24, 'main_city_armory'),
-                (9800, 45, 'main_city_armory'),
-                (9000, 18, 'main_city_armory'),
-                (7300, 4, 'main_city_armory');
+      INSERT IGNORE INTO ArmorInArmory (id, price, armor_id, armory_id)
+         VALUES (UUID(), 10500, 'chest_flaming_tunic', 'main_city_armory'),
+                (UUID(), 9000, 'head_mask_mystery', 'main_city_armory'),
+                (UUID(), 8800, 'shoulder_pauldrons_stealth', 'main_city_armory'),
+                (UUID(), 8600, 'hand_gloves_wizard', 'main_city_armory'),
+                (UUID(), 8800, 'hand_leather_gloves', 'main_city_armory'),
+                (UUID(), 7000, 'hand_gloves_sprinter', 'main_city_armory'),
+                (UUID(), 8800, 'chest_chainmail_hunter', 'main_city_armory'),
+                (UUID(), 9800, 'pants_pants_stealth', 'main_city_armory'),
+                (UUID(), 9000, 'shoulder_epaulets_agility', 'main_city_armory'),
+                (UUID(), 7300, 'head_helmet_knight', 'main_city_armory') ON DUPLICATE KEY
+         UPDATE price =
+         VALUES (price),
+                armor_id =
+         VALUES (armor_id),
+                armory_id =
+         VALUES (armory_id);
     metadata: {}
   - kind: 2
     languageId: sql
     value: |-
       INSERT IGNORE INTO Bank (id, i18n_key)
-         VALUES ('main_city_bank', 'place.main_city_bank');
+         VALUES ('main_city_bank', 'place.main_city_bank') ON DUPLICATE KEY
+         UPDATE i18n_key =
+         VALUES (i18n_key);
     metadata: {}
   - kind: 2
     languageId: sql

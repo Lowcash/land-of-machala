@@ -31,7 +31,7 @@ model Wearable {
 }
 
 model Armor {
-  id       String @id @default(uuid())
+  id       String @id
   i18n_key String
 
   type ArmorType
