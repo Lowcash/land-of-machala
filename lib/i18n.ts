@@ -1,10 +1,10 @@
 import i18n from 'i18next'
 
-import csTranslation from '@/locales/cs.json'
+import cs from '@/locales/cs.json'
 
 export const resources = {
   cs: {
-    translation: csTranslation,
+    translation: cs,
   },
 } as const
 

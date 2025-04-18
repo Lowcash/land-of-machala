@@ -6,6 +6,8 @@ export const QUERY_KEY = {
   GAME_INFO: 'game-info-key',
   HOSPITAL: 'hospital-key',
   INVENTORY: 'inventory-key',
+  LANDING: 'landing-key',
+  CREATE: 'create-key',
   PLAYER: 'player-key',
   QUEST_ASSIGNED: 'quest-assigned-key',
   RACE: 'race-key',

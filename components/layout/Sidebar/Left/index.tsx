@@ -1,46 +1,47 @@
 'use client'
 
-import i18n from '@/lib/i18n'
-import { usePlayerShowQuery, usePlayerStatsShowQuery } from '@/hooks/api/use-player'
-import { useWearableQuery } from '@/hooks/api/use-wearable'
+import { usePlayerShowQuery, useStatsShowQuery } from '@/hooks/api/use-player'
+import { useWearableShowQuery } from '@/hooks/api/use-wearable'
 
 import Sidebar from '@/components/layout/Sidebar'
 import Content from '@/components/layout/Sidebar/Left/Content'
 import Progress from '@/components/ui/progress'
+import Loading from '@/components/Loading'
 
 import { EMPTY } from '@/config'
 
 export default function SidebarLeft() {
   const playerShowQuery = usePlayerShowQuery()
-  const playerStatsShowQuery = usePlayerStatsShowQuery()
-  const playerWearableQuery = useWearableQuery()
+  const wearableShowQuery = useWearableShowQuery()
+  const statsShowQuery = useStatsShowQuery()
 
-  if (playerShowQuery.isLoading || playerStatsShowQuery.isLoading || playerWearableQuery.isLoading) return <></>
+  if (playerShowQuery.isLoading || wearableShowQuery.isLoading || statsShowQuery.isLoading)
+    return <Loading position='local' />
 
   return (
     <Sidebar open={true} position='left'>
       <Content
         data={[
           {
-            header: i18n.t('player.character'),
+            header: playerShowQuery.data?.text.character ?? 'character',
             items: [
-              { label: `${i18n.t('player.name')}:`, value: playerShowQuery.data?.name },
+              { label: `${playerShowQuery.data?.text.character ?? 'character'}:`, value: playerShowQuery.data?.name },
               {
-                label: `${i18n.t('player.race')}:`,
-                value: i18n.t(`${playerShowQuery.data?.race?.i18n_key}.header` as any),
+                label: `${playerShowQuery.data?.text.race ?? 'race'}:`,
+                value: playerShowQuery.data?.race?.name,
               },
               {
-                label: `${i18n.t('player.class')}:`,
-                value: i18n.t(`${playerShowQuery.data?.class?.i18n_key}.header` as any),
+                label: `${playerShowQuery.data?.text.class ?? 'class'}:`,
+                value: playerShowQuery.data?.class?.name,
               },
             ],
           },
           {
-            header: `${i18n.t('player.money')}:`,
-            items: [{ value: `${playerShowQuery.data?.money ?? 0} ${i18n.t('common.currency')}` }],
+            header: `${playerShowQuery.data?.text.money ?? 'money'}:`,
+            items: [{ value: `${playerShowQuery.data?.money ?? 0} ${playerShowQuery.data?.text.currency}` }],
           },
           {
-            header: `${i18n.t('common.hp')}:`,
+            header: `${playerShowQuery.data?.text.hp ?? 'HP'}:`,
             items: [
               {
                 value: (
@@ -56,52 +57,70 @@ export default function SidebarLeft() {
             ],
           },
           {
-            header: i18n.t('weapon.header_multi'),
+            header: wearableShowQuery.data?.text.weapon_multi ?? 'weapon_multi',
             items: [
               {
-                label: `${i18n.t('weapon.left_hand')}:`,
-                value: playerWearableQuery.data?.left_hand?.weapon.i18n_key ?? EMPTY,
+                label: `${wearableShowQuery.data?.text.left_hand ?? 'left_hand'}:`,
+                value: wearableShowQuery.data?.left_hand?.weapon?.name ?? EMPTY,
               },
               {
-                label: `${i18n.t('weapon.right_hand')}:`,
-                value: playerWearableQuery.data?.right_hand?.weapon.i18n_key ?? EMPTY,
+                label: `${wearableShowQuery.data?.text.right_hand ?? 'right_hand'}:`,
+                value: wearableShowQuery.data?.right_hand?.weapon?.name ?? EMPTY,
               },
             ],
           },
           {
-            header: i18n.t('armor.header'),
+            header: wearableShowQuery.data?.text.armor_multi ?? 'armor_multi',
             items: [
-              { label: `${i18n.t('armor.head')}:`, value: playerWearableQuery.data?.head?.armor.i18n_key ?? EMPTY },
               {
-                label: `${i18n.t('armor.shoulder')}:`,
-                value: playerWearableQuery.data?.shoulder?.armor.i18n_key ?? EMPTY,
+                label: `${wearableShowQuery.data?.text.head ?? 'head'}:`,
+                value: wearableShowQuery.data?.head?.armor?.name ?? EMPTY,
               },
               {
-                label: `${i18n.t('armor.chest')}:`,
-                value: playerWearableQuery.data?.chest?.armor.i18n_key ?? EMPTY,
-              },
-              { label: `${i18n.t('armor.hand')}:`, value: playerWearableQuery.data?.hand?.armor.i18n_key ?? EMPTY },
-              {
-                label: `${i18n.t('armor.pants')}:`,
-                value: playerWearableQuery.data?.pants?.armor.i18n_key ?? EMPTY,
+                label: `${wearableShowQuery.data?.text.shoulder ?? 'shoulder'}:`,
+                value: wearableShowQuery.data?.shoulder?.armor?.name ?? EMPTY,
               },
               {
-                label: `${i18n.t('armor.boots')}:`,
-                value: playerWearableQuery.data?.boots?.armor.i18n_key ?? EMPTY,
+                label: `${wearableShowQuery.data?.text.chest ?? 'chest'}:`,
+                value: wearableShowQuery.data?.chest?.armor?.name ?? EMPTY,
+              },
+              {
+                label: `${wearableShowQuery.data?.text.hand ?? 'hand'}:`,
+                value: wearableShowQuery.data?.hand?.armor?.name ?? EMPTY,
+              },
+              {
+                label: `${wearableShowQuery.data?.text.pants ?? 'pants'}:`,
+                value: wearableShowQuery.data?.pants?.armor?.name ?? EMPTY,
+              },
+              {
+                label: `${wearableShowQuery.data?.text.boots ?? 'boots'}:`,
+                value: wearableShowQuery.data?.boots?.armor?.name ?? EMPTY,
               },
             ],
           },
           {
-            header: i18n.t('stats.header'),
+            header: statsShowQuery.data?.text.header ?? 'stats',
             items: [
-              { label: `${i18n.t('stats.level')}:`, value: `${playerStatsShowQuery.data?.level}` },
               {
-                label: `${i18n.t('stats.damage')}:`,
-                value: `${playerStatsShowQuery.data?.damage.min} - ${playerStatsShowQuery.data?.damage.max}`,
+                label: `${statsShowQuery.data?.text.level ?? 'level'}:`,
+                value: `${statsShowQuery.data?.level ?? EMPTY}`,
               },
-              { label: `${i18n.t('stats.strength')}:`, value: `${playerStatsShowQuery.data?.strength}` },
-              { label: `${i18n.t('stats.agility')}:`, value: `${playerStatsShowQuery.data?.agility}` },
-              { label: `${i18n.t('stats.intelligence')}:`, value: `${playerStatsShowQuery.data?.intelligence}` },
+              {
+                label: `${statsShowQuery.data?.text.damage ?? 'damage'}:`,
+                value: `${statsShowQuery.data?.damage?.min ?? EMPTY} - ${statsShowQuery.data?.damage?.max ?? EMPTY}`,
+              },
+              {
+                label: `${statsShowQuery.data?.text.strength ?? 'strength'}:`,
+                value: `${statsShowQuery.data?.strength ?? EMPTY}`,
+              },
+              {
+                label: `${statsShowQuery.data?.text.agility ?? 'agility'}:`,
+                value: `${statsShowQuery.data?.agility ?? EMPTY}`,
+              },
+              {
+                label: `${statsShowQuery.data?.text.intelligence ?? 'intelligence'}:`,
+                value: `${statsShowQuery.data?.intelligence ?? EMPTY}`,
+              },
             ],
           },
         ]}

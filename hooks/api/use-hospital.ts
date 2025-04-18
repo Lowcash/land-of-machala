@@ -7,7 +7,7 @@ import { QUERY_KEY } from '@/config'
 export const useHospitalShowQuery = createQueryHook([QUERY_KEY.HOSPITAL], HospitalAction.show)
 
 export const useHospitalHealMutation = createMutationHook(HospitalAction.heal, [QUERY_KEY.PLAYER, QUERY_KEY.GAME_INFO])
-export const useHospitalResurectMutation = createMutationHook(HospitalAction.resurect, [
+export const useHospitalResurectMutation = createMutationHook(HospitalAction.resurrect, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.GAME_INFO,
   QUERY_KEY.HOSPITAL,

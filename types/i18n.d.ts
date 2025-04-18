@@ -1,5 +1,5 @@
 import 'i18next'
-import { resources, defaultNS } from '@/lib/i18n'
+import { resources } from '@/lib/i18n'
 
 declare module 'i18next' {
   interface CustomTypeOptions {
