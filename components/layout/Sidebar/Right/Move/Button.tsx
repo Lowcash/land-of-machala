@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlayerMoveMutation, usePlayerQuery } from '@/hooks/api/use-player'
+import { usePlayerMoveMutation, usePlayerShowQuery } from '@/hooks/api/use-player'
 
 import { RxChevronUp, RxChevronDown, RxChevronLeft, RxChevronRight } from 'react-icons/rx'
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,7 @@ interface Props extends Pick<React.ComponentProps<typeof Button>, 'className' | 
 }
 
 export default function Go({ direction, ...p }: Props) {
-  const playerQuery = usePlayerQuery()
+  const playerQuery = usePlayerShowQuery()
   const playerMoveMutation = usePlayerMoveMutation()
 
   return (

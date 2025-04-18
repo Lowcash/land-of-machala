@@ -1,13 +1,13 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { useGameInfoQuery } from "@/hooks/api/use-game"
+import { useGameInfoShowQuery } from "@/hooks/api/use-game"
 
 import { Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
 
 export default function Loot() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoQuery = useGameInfoShowQuery()
 
   const armors = gameInfoQuery.data?.loot?.armors_loot.map((x: any) => x.armor.name)
   const weapons = gameInfoQuery.data?.loot?.weapons_loot.map((x: any) => x.weapon.name)

@@ -5,7 +5,7 @@ import i18n from '@/lib/i18n'
 import { useArmoryShowQuery, useArmoryBuyItemMutation, useArmorySellItemMutation } from '@/hooks/api/use-armory'
 
 import { WeaponMarket, ArmorMarket, type OnActionParams } from './Market'
-import { H3 } from '@/styles/typography'
+import { Text, H3 } from '@/styles/typography'
 import { Card } from '@/styles/common'
 import Loading from '@/components/Loading'
 import Alert from '@/components/Alert'
@@ -42,14 +42,14 @@ export default function Armory({ armoryId }: Props) {
 
   return (
     <>
-      {armoryShowQuery.data?.__ui__.header}
-      {armoryShowQuery.data?.__ui__.description}
+      <Text dangerouslySetInnerHTML={{ __html: armoryShowQuery.data?.text.header ?? '' }} />
+      <Text dangerouslySetInnerHTML={{ __html: armoryShowQuery.data?.text.description ?? '' }} />
 
       {!armoryBuyItemMutation.isIdle && (
         <Alert>
           {armoryBuyItemMutation.isSuccess
-            ? armoryShowQuery.data?.__ui__.buySuccess
-            : armoryShowQuery.data?.__ui__.buyFailed}
+            ? armoryShowQuery.data?.text.buySuccess
+            : armoryShowQuery.data?.text.buyFailed}
         </Alert>
       )}
 

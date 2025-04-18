@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlayerQuery } from '@/hooks/api/use-player'
+import { usePlayerShowQuery } from '@/hooks/api/use-player'
 import { useWearableUnwearMutation } from '@/hooks/api/use-wearable'
 import type { MutationInput } from '@/lib/utils'
 
@@ -10,7 +10,7 @@ import { RxCross1 } from 'react-icons/rx'
 interface Props extends MutationInput<typeof useWearableUnwearMutation> {}
 
 export default function Unwear(p: Props) {
-  const playerQuery = usePlayerQuery()
+  const playerQuery = usePlayerShowQuery()
   const unwearMutation = useWearableUnwearMutation()
 
   return (

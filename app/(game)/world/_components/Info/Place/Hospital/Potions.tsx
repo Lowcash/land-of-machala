@@ -3,7 +3,7 @@
 import React from 'react'
 import i18n from '@/lib/i18n'
 import type { Potion } from '@prisma/client'
-import { useHospitalBuyPotionMutation, useHospitalQuery } from '@/hooks/api/use-hospital'
+import { useHospitalBuyPotionMutation, useHospitalShowQuery } from '@/hooks/api/use-hospital'
 
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
@@ -18,7 +18,7 @@ interface Props {
 }
 
 export default function Potions({ hospitalId }: Props) {
-  const hospitalQuery = useHospitalQuery({ hospitalId })
+  const hospitalQuery = useHospitalShowQuery({ hospitalId })
 
   const buyPotionMutation = useHospitalBuyPotionMutation()
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { usePlayerQuery } from '@/hooks/api/use-player'
+import { usePlayerShowQuery } from '@/hooks/api/use-player'
 import { useWearableWearMutation } from '@/hooks/api/use-wearable'
 import type { MutationInput } from '@/lib/utils'
 
@@ -10,7 +10,7 @@ import { RxCheck } from 'react-icons/rx'
 interface Props extends MutationInput<typeof useWearableWearMutation> {}
 
 export default function Wear(p: Props) {
-  const playerQuery = usePlayerQuery()
+  const playerQuery = usePlayerShowQuery()
   const wearMutation = useWearableWearMutation()
 
   return (

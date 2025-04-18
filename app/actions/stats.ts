@@ -15,6 +15,10 @@ import {
 } from '@/config'
 import { ERROR_CAUSE } from '@/config'
 
+export const show = authActionClient.metadata({ actionName: 'stats_show' }).action(async () => {
+  return get().then((x) => x?.data)
+})
+
 export const get = authActionClient.metadata({ actionName: 'stats_get' }).action(async ({ ctx }) => {
   const [player, wearable] = await Promise.all([
     PlayerAction.get().then((x) => x?.data),

@@ -12,6 +12,33 @@ import * as PlaceAction from './place'
 
 import { ERROR_CAUSE } from '@/config'
 
+export const show = authActionClient.metadata({ actionName: 'player_show' }).action(async () => {
+  return get().then((x) => x?.data)
+})
+
+export const move = authActionClient
+  .metadata({ actionName: 'player_move' })
+  .schema(playerMoveSchema)
+  .action(async ({ ctx, parsedInput }) => {
+    if (!canMove(ctx.user)) throw new Error(ERROR_CAUSE.CANNOT_MOVE)
+
+    const horizontal = parsedInput.direction === 'left' ? -1 : parsedInput.direction === 'right' ? 1 : 0
+    const vertical = parsedInput.direction === 'down' ? -1 : parsedInput.direction === 'up' ? 1 : 0
+
+    const movedPlayer = await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        pos_x: ctx.user.pos_x + horizontal,
+        pos_y: ctx.user.pos_y + vertical,
+      },
+      include: {},
+    })
+
+    if (!(await isSafe(movedPlayer))?.data) {
+      await GameAction.checkForEnemy()
+    }
+  })
+
 export const get = cache(
   authActionClient.metadata({ actionName: 'player_get' }).action(async ({ ctx }) => {
     const player = await db.user.findFirst({
@@ -69,26 +96,3 @@ function isDefeated(player: User) {
 function hasLoot(player: User) {
   return !!player.loot_id
 }
-
-export const move = authActionClient
-  .metadata({ actionName: 'player_move' })
-  .schema(playerMoveSchema)
-  .action(async ({ ctx, parsedInput }) => {
-    if (!canMove(ctx.user)) throw new Error(ERROR_CAUSE.CANNOT_MOVE)
-
-    const horizontal = parsedInput.direction === 'left' ? -1 : parsedInput.direction === 'right' ? 1 : 0
-    const vertical = parsedInput.direction === 'down' ? -1 : parsedInput.direction === 'up' ? 1 : 0
-
-    const movedPlayer = await db.user.update({
-      where: { id: ctx.user.id },
-      data: {
-        pos_x: ctx.user.pos_x + horizontal,
-        pos_y: ctx.user.pos_y + vertical,
-      },
-      include: {},
-    })
-
-    if (!(await isSafe(movedPlayer))?.data) {
-      await GameAction.checkForEnemy()
-    }
-  })

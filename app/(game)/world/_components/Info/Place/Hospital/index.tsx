@@ -3,13 +3,13 @@
 import React from 'react'
 import i18n from '@/lib/i18n'
 import {
-  useHospitalQuery,
+  useHospitalShowQuery,
   useHospitalHealMutation,
   useHospitalResurectMutation,
   useHospitalAcceptEnemySlainQuestMutation,
   useHospitalCompleteEnemySlainQuestMutation,
 } from '@/hooks/api/use-hospital'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { H3, Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
@@ -23,8 +23,8 @@ interface Props {
 }
 
 export default function Hospital({ hospitalId }: Props) {
-  const gameInfoQuery = useGameInfoQuery()
-  const hospitalQuery = useHospitalQuery({ hospitalId })
+  const gameInfoShowQuery = useGameInfoShowQuery()
+  const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
   const healMutation = useHospitalHealMutation()
   const resurectMutation = useHospitalResurectMutation()
@@ -38,16 +38,14 @@ export default function Hospital({ hospitalId }: Props) {
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
 
-  if (gameInfoQuery.isLoading || hospitalQuery.isLoading) return <Loading position='local' />
+  if (gameInfoShowQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
-  const isDefeated = !!gameInfoQuery.data?.defeated
+  const isDefeated = !!gameInfoShowQuery.data?.defeated
 
   return (
     <>
-      <Text>
-        {i18n.t('place.your_are_in')} <b>{hospitalQuery.data?.i18n_key}</b>
-      </Text>
-      {/* <Text>{hospitalQuery.data?.description}</Text> */}
+      <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? '' }} />
+      <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? '' }} />
 
       {isDefeated && (
         <Text>
@@ -64,7 +62,7 @@ export default function Hospital({ hospitalId }: Props) {
             <Text>
               {i18n.t('place.main_city_hospital.heal_for')}&nbsp;
               <b>
-                {hospitalQuery?.data?.healing_price ?? 0} {i18n.t('common.currency')}
+                {hospitalShowQuery?.data?.healing_price ?? 0} {i18n.t('common.currency')}
               </b>
               &nbsp;
               <Button variant='destructive' onClick={handleHeal}>
@@ -82,7 +80,7 @@ export default function Hospital({ hospitalId }: Props) {
 
           {acceptEnemySlainQuestMutation.isSuccess && <Alert>{i18n.t('quest.slain_enemy.accepted')}</Alert>}
 
-          {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
+          {hospitalShowQuery.data?.slainEnemyQuest.state === 'READY' && (
             <Text>
               {i18n.t('quest.slain_enemy.description_hospital')}&nbsp;
               <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
@@ -91,15 +89,13 @@ export default function Hospital({ hospitalId }: Props) {
             </Text>
           )}
 
-          {completeEnemySlainQuestMutation.isSuccess && (
-            <Alert>{i18n.t('quest.slain_enemy.completed_looted')}</Alert>
-          )}
+          {completeEnemySlainQuestMutation.isSuccess && <Alert>{i18n.t('quest.slain_enemy.completed_looted')}</Alert>}
 
-          {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
+          {hospitalShowQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
             <Text>
               {i18n.t('quest.slain_enemy.completed')}:{' '}
               <b>
-                {hospitalQuery.data?.slainEnemyQuest.reward} {i18n.t('common.currency')}
+                {hospitalShowQuery.data?.slainEnemyQuest.reward} {i18n.t('common.currency')}
               </b>
               &nbsp;
               <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>

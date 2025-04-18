@@ -1,14 +1,14 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import Image from 'next/image'
 import { Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
 
 export default function Enemy() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoQuery = useGameInfoShowQuery()
 
   const name = gameInfoQuery.data?.enemy?.enemy?.id
   const hpActual = gameInfoQuery.data?.enemy?.hp_actual

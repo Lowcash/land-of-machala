@@ -11,8 +11,6 @@ import * as ArmorAction from './armor'
 import * as WeaponAction from './weapon'
 import * as InventoryAction from './inventory'
 
-import { Text } from '@/styles/typography'
-
 import { ERROR_CAUSE } from '@/config'
 
 export const show = authActionClient
@@ -29,20 +27,16 @@ export const show = authActionClient
     if (!armory || !inventory || !weaponsAll || !armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
     return {
-      __ui__: {
-        header: (
-          <Text>
-            {i18n.t('place.your_are_in')} <b>{i18n.t(`${armory.i18n_key}.header` as any)}</b>
-          </Text>
-        ),
-        description: <Text>{i18n.t(`${armory.i18n_key}.description` as any)}</Text>,
-        buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
-        buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
-      },
       buyWeapons: getBuyWeapons({ weaponsAll, armory }),
       buyArmors: getBuyArmors({ armorsAll, armory }),
       sellWeapons: getSellWeapons({ weaponsAll, inventory }),
       sellArmors: getSellArmors({ armorsAll, inventory }),
+      text: {
+        header: `${i18n.t('place.your_are_in')} <b>${armory.name}</b>`,
+        description: armory.description,
+        buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
+        buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
+      },
     }
   })
 
@@ -62,7 +56,11 @@ export const get = authActionClient
 
     if (!armory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return armory
+    return {
+      ...armory,
+      name: i18n.t(`${armory.i18n_key}.header` as any),
+      description: i18n.t(`${armory.i18n_key}.description` as any),
+    }
   })
 
 const BUY_MIN_PRICE = 1000

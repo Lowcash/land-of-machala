@@ -1,7 +1,7 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { Card } from '@/styles/common'
 import Defeated from '@/app/(game)/world/_components/Info/Defeated'
@@ -10,7 +10,7 @@ import Enemy from '@/app/(game)/world/_components/Info/Enemy'
 import Place from '@/app/(game)/world/_components/Info/Place'
 
 export default function Info() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoQuery = useGameInfoShowQuery()
 
   const hasEnemy = !!gameInfoQuery.data?.enemy
   const hasPlace = !!gameInfoQuery.data?.place
