@@ -3,11 +3,11 @@
 import React from 'react'
 import i18n from '@/lib/i18n'
 import { type Location } from '@/config'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 import { useBackground } from '@/context/game-provider'
 
 import { List } from '@/styles/common'
-import { Link, Text } from '@/styles/typography'
+import { Text, Link } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 
 import Hospital from '@/app/(game)/world/_components/Info/Place/Hospital'
@@ -19,38 +19,37 @@ interface Props {
 }
 
 export default function Place(p: Props) {
-  const gameInfoQuery = useGameInfoQuery()
-
-  const armoryId = gameInfoQuery.data?.place?.armory?.id
-  const bankId = gameInfoQuery.data?.place?.bank?.id
-  const hospitalId = gameInfoQuery.data?.place?.hospital?.id
+  const gameInfoQuery = useGameInfoShowQuery()
 
   const { subPlace, setSubPlace } = useSetSubplace(p.forceSubplace)
 
-  if (!!subPlace)
+  if (!!subPlace) {
+    const hospital = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
+    const armory = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
+    const bank = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
+
     return (
       <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
           {i18n.t('common.back')}
         </Button>
 
-        {subPlace === 'hospital' && hospitalId && <Hospital hospitalId={hospitalId} />}
-        {subPlace === 'armory' && armoryId && <Armory armoryId={armoryId} />}
-        {subPlace === 'bank' && bankId && <Bank bankId={bankId} />}
+        {subPlace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
+        {subPlace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
+        {subPlace === 'bank' && !!bank && <Bank bankId={bank.id} />}
       </>
     )
+  }
 
   return (
     <>
-      <Text>
-        {i18n.t('place.your_are_in')} <b>{gameInfoQuery.data?.place?.i18n_key}</b>
-      </Text>
-      {/* <Text>{'gameInfoQuery.data?.place?.description'}</Text> */}
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoQuery.data?.place?.text?.header ?? '' }} />
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoQuery.data?.place?.text?.description ?? '' }} />
 
       <List>
-        {SUBPLACES.map((x) => (
-          <li key={`SubPlace_${x}`}>
-            <Link onClick={() => setSubPlace(x)}>{x}</Link>
+        {gameInfoQuery.data?.place?.subplaces?.map((x) => (
+          <li key={`SubPlace_${x.type}`}>
+            <Link onClick={() => setSubPlace(x.type as Location)}>{i18n.t(`${x.place?.i18n_key}.header` as any)}</Link>
           </li>
         ))}
       </List>
@@ -67,5 +66,3 @@ function useSetSubplace(forceSubplace?: Location) {
 
   return { subPlace, setSubPlace }
 }
-
-const SUBPLACES = ['hospital', 'armory', 'bank'] satisfies Location[]

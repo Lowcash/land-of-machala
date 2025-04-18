@@ -1,21 +1,21 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { usePlayerQuery, usePlayerStatsQuery } from '@/hooks/api/use-player'
+import { usePlayerShowQuery, usePlayerStatsShowQuery } from '@/hooks/api/use-player'
 import { useWearableQuery } from '@/hooks/api/use-wearable'
 
 import Sidebar from '@/components/layout/Sidebar'
 import Content from '@/components/layout/Sidebar/Left/Content'
 import Progress from '@/components/ui/progress'
 
-const EMPTY = '-'
+import { EMPTY } from '@/config'
 
 export default function SidebarLeft() {
-  const playerQuery = usePlayerQuery()
-  const playerStatsQuery = usePlayerStatsQuery()
+  const playerShowQuery = usePlayerShowQuery()
+  const playerStatsShowQuery = usePlayerStatsShowQuery()
   const playerWearableQuery = useWearableQuery()
 
-  if (playerQuery.isLoading || playerStatsQuery.isLoading || playerWearableQuery.isLoading) return <></>
+  if (playerShowQuery.isLoading || playerStatsShowQuery.isLoading || playerWearableQuery.isLoading) return <></>
 
   return (
     <Sidebar open={true} position='left'>
@@ -24,22 +24,32 @@ export default function SidebarLeft() {
           {
             header: i18n.t('player.character'),
             items: [
-              { label: `${i18n.t('player.name')}:`, value: playerQuery.data?.name ?? '' },
-              { label: `${i18n.t('player.race')}:`, value: playerQuery.data?.race?.i18n_key ?? '' },
-              { label: `${i18n.t('player.class')}:`, value: playerQuery.data?.class?.i18n_key ?? '' },
+              { label: `${i18n.t('player.name')}:`, value: playerShowQuery.data?.name },
+              {
+                label: `${i18n.t('player.race')}:`,
+                value: i18n.t(`${playerShowQuery.data?.race?.i18n_key}.header` as any),
+              },
+              {
+                label: `${i18n.t('player.class')}:`,
+                value: i18n.t(`${playerShowQuery.data?.class?.i18n_key}.header` as any),
+              },
             ],
           },
           {
             header: `${i18n.t('player.money')}:`,
-            items: [{ value: `${playerQuery.data?.money ?? 0} ${i18n.t('common.currency')}` }],
+            items: [{ value: `${playerShowQuery.data?.money ?? 0} ${i18n.t('common.currency')}` }],
           },
           {
             header: `${i18n.t('common.hp')}:`,
             items: [
               {
                 value: (
-                  <Progress value={playerQuery.data?.hp_actual ?? 0} max={playerQuery.data?.hp_max ?? 0} variant='red'>
-                    {playerQuery.data?.hp_actual ?? 0} / {playerQuery.data?.hp_max ?? 0}
+                  <Progress
+                    value={playerShowQuery.data?.hp_actual ?? 0}
+                    max={playerShowQuery.data?.hp_max ?? 0}
+                    variant='red'
+                  >
+                    {playerShowQuery.data?.hp_actual ?? 0} / {playerShowQuery.data?.hp_max ?? 0}
                   </Progress>
                 ),
               },
@@ -84,14 +94,14 @@ export default function SidebarLeft() {
           {
             header: i18n.t('stats.header'),
             items: [
-              { label: `${i18n.t('stats.level')}:`, value: `${playerStatsQuery.data?.level}` },
+              { label: `${i18n.t('stats.level')}:`, value: `${playerStatsShowQuery.data?.level}` },
               {
                 label: `${i18n.t('stats.damage')}:`,
-                value: `${playerStatsQuery.data?.damage.min} - ${playerStatsQuery.data?.damage.max}`,
+                value: `${playerStatsShowQuery.data?.damage.min} - ${playerStatsShowQuery.data?.damage.max}`,
               },
-              { label: `${i18n.t('stats.strength')}:`, value: `${playerStatsQuery.data?.strength}` },
-              { label: `${i18n.t('stats.agility')}:`, value: `${playerStatsQuery.data?.agility}` },
-              { label: `${i18n.t('stats.intelligence')}:`, value: `${playerStatsQuery.data?.intelligence}` },
+              { label: `${i18n.t('stats.strength')}:`, value: `${playerStatsShowQuery.data?.strength}` },
+              { label: `${i18n.t('stats.agility')}:`, value: `${playerStatsShowQuery.data?.agility}` },
+              { label: `${i18n.t('stats.intelligence')}:`, value: `${playerStatsShowQuery.data?.intelligence}` },
             ],
           },
         ]}

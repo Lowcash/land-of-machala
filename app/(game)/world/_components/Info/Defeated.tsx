@@ -1,14 +1,14 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
 import Place from '@/app/(game)/world/_components/Info/Place'
 
 export default function Defeated() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoQuery = useGameInfoShowQuery()
 
   const hasPlace = !!gameInfoQuery.data?.place
 

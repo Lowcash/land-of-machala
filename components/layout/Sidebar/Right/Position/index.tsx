@@ -1,13 +1,13 @@
 'use client'
 
 import i18n from '@/lib/i18n'
-import { usePlayerQuery } from '@/hooks/api/use-player'
+import { usePlayerShowQuery } from '@/hooks/api/use-player'
 
 import * as S from './styles'
 import { Text } from '@/styles/typography'
 
 export default function Position() {
-  const player = usePlayerQuery()
+  const player = usePlayerShowQuery()
 
   return (
     <S.Position>

@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { hospitalItemActionSchema, hospitalSchema } from '@/zod-schema/hospital'
@@ -9,22 +10,6 @@ import * as QuestAction from './quest'
 import * as GameAction from './game'
 
 import { ERROR_CAUSE } from '@/config'
-
-export const get = authActionClient
-  .metadata({ actionName: 'hospital_get' })
-  .schema(hospitalSchema)
-  .action(async ({ parsedInput }) => {
-    const hospital = await db.hospital.findFirst({
-      where: { id: parsedInput.hospitalId },
-      include: {
-        potions_hospital: { include: { potion: true } },
-      },
-    })
-
-    if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return hospital
-  })
 
 export const show = authActionClient
   .metadata({ actionName: 'hospital_show' })
@@ -44,6 +29,30 @@ export const show = authActionClient
         state: slainEnemyQuestState,
         reward: slainEnemyQuestReward.reward_money,
       },
+      text: {
+        header: `${i18n.t('place.your_are_in')} <b>${hospital.name}</b>`,
+        description: hospital.description,
+      },
+    }
+  })
+
+export const get = authActionClient
+  .metadata({ actionName: 'hospital_get' })
+  .schema(hospitalSchema)
+  .action(async ({ parsedInput }) => {
+    const hospital = await db.hospital.findFirst({
+      where: { id: parsedInput.hospitalId },
+      include: {
+        potions_hospital: { include: { potion: true } },
+      },
+    })
+
+    if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return {
+      ...hospital,
+      name: i18n.t(`${hospital.i18n_key}.header` as any),
+      description: i18n.t(`${hospital.i18n_key}.description` as any),
     }
   })
 

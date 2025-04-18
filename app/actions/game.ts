@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { cache } from 'react'
 import { random } from '@/lib/utils'
@@ -13,18 +14,32 @@ import * as InventoryAction from './inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const info = cache(
-  authActionClient.metadata({ actionName: 'game_info' }).action(async ({ ctx }) => {
-    const player = (await PlayerAction.get())?.data
+export const infoShow = cache(
+  authActionClient.metadata({ actionName: 'game_info_show' }).action(async () => {
+    const player = await PlayerAction.get()?.then((x) => x?.data)
 
     if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
     if (player.isInCombat) return { enemy: player.enemy_instance }
     if (player.hasLoot) return { loot: player.loot }
 
-    const place = (await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y }))?.data
+    const place = await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y }).then((x) => x?.data)
 
-    if (!!place) return { place, defeated: player.defeated }
+    if (!!place)
+      return {
+        defeated: player.defeated,
+        place: {
+          subplaces: [
+            { place: place.hospital, type: 'hospital' },
+            { place: place.armory, type: 'armory' },
+            { place: place.bank, type: 'bank' },
+          ],
+          text: {
+            header: `${i18n.t('place.your_are_in')} <b>${place?.name}</b>`,
+            description: place.description,
+          },
+        },
+      }
 
     return {}
   }),
