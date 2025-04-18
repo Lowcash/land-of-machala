@@ -32,9 +32,9 @@ export const showCreate = actionClient.metadata({ actionName: 'user_show_create'
       name: i18n.t('character.name.header'),
       race: i18n.t('race.header'),
       class: i18n.t('class.header'),
-      create: i18n.t('user.create.header'),
-      createSuccess: i18n.t('user.create.success'),
-      createFailure: i18n.t('user.create.failure'),
+      create: i18n.t('character.create.header'),
+      createSuccess: i18n.t('character.create.success'),
+      createFailure: i18n.t('character.create.failure'),
     },
   }
 })

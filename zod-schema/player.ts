@@ -11,7 +11,7 @@ export const playerSignSchema = z.object({
 export type PlayerSignSchema = z.infer<typeof playerSignSchema>
 
 export const playerCreateSchema = z.object({
-  name: z.string({ required_error: i18n.t('user.name.required') }),
+  name: z.string({ required_error: i18n.t('character.name.required') }),
   raceId: z.string({ required_error: i18n.t('race.required') }),
   classId: z.string({ required_error: i18n.t('class.required') }),
 })
