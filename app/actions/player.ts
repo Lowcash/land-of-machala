@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { cache } from 'react'
 import { db } from '@/lib/db'
 import type { User } from '@prisma/client'
@@ -13,7 +14,19 @@ import * as PlaceAction from './place'
 import { ERROR_CAUSE } from '@/config'
 
 export const show = authActionClient.metadata({ actionName: 'player_show' }).action(async () => {
-  return get().then((x) => x?.data)
+  const player = await get().then((x) => x?.data)
+
+  return {
+    ...player,
+    text: {
+      character: i18n.t('character.header'),
+      race: i18n.t('race.header'),
+      class: i18n.t('class.header'),
+      money: i18n.t('character.money'),
+      currency: i18n.t('character.currency'),
+      hp: i18n.t('character.hp'),
+    },
+  }
 })
 
 export const move = authActionClient
@@ -58,17 +71,24 @@ export const get = cache(
 
     if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const hasRace = !!player.race
-    const hasClass = !!player.class
+    if (!player.race || !player.class) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
     return {
       ...player,
-      hasCharacter: hasRace && hasClass,
-      isSafe: isSafe(player),
+      race: {
+        ...player.race,
+        name: i18n.t(`${player.race.i18n_key}.header` as any),
+      },
+      class: {
+        ...player.class,
+        name: i18n.t(`${player.class.i18n_key}.header` as any),
+      },
+      hasCharacter: hasCharacter(player),
+      hasLoot: hasLoot(player),
       canMove: canMove(player),
+      isSafe: isSafe(player),
       isInCombat: isInCombat(player),
       isDefeated: isDefeated(player),
-      hasLoot: hasLoot(player),
     }
   }),
 )
@@ -91,6 +111,10 @@ function isInCombat(player: User) {
 
 function isDefeated(player: User) {
   return !!player.defeated
+}
+
+function hasCharacter(player: User) {
+  return !!player.race_id && !!player.class_id
 }
 
 function hasLoot(player: User) {

@@ -32,6 +32,14 @@ export const show = authActionClient
       text: {
         header: `${i18n.t('place.your_are_in')} <b>${hospital.name}</b>`,
         description: hospital.description,
+        resurrect: '',
+        healing: {
+          header: `${i18n.t('place.main_city_hospital.heal_for')}&nbsp;
+                   <b>
+                    ${hospital.healing_price ?? 0} ${i18n.t('common.currency')}
+                   </b>`,
+          button: i18n.t('place.main_city_hospital.heal_accept'),
+        },
       },
     }
   })
@@ -56,8 +64,8 @@ export const get = authActionClient
     }
   })
 
-export const resurect = authActionClient
-  .metadata({ actionName: 'hospital_resurect' })
+export const resurrect = authActionClient
+  .metadata({ actionName: 'hospital_resurrect' })
   .schema(hospitalSchema)
   .action(async ({ ctx }) => {
     await db.user.update({

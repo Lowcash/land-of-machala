@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { ArmorType, type Wearable } from '@prisma/client'
 import { authActionClient } from '@/lib/safe-action'
@@ -10,47 +11,26 @@ import * as InventoryAction from './inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const get = authActionClient.metadata({ actionName: 'wearable_get' }).action(async ({ ctx }) => {
-  const wearable = ctx.user.wearable_id
-    ? await db.wearable.findFirst({
-        where: { id: ctx.user.wearable_id },
-        include: {
-          left_hand: { include: { weapon: true } },
-          right_hand: { include: { weapon: true } },
-          head: { include: { armor: true } },
-          shoulder: { include: { armor: true } },
-          chest: { include: { armor: true } },
-          hand: { include: { armor: true } },
-          pants: { include: { armor: true } },
-          boots: { include: { armor: true } },
-        },
-      })
-    : await db.$transaction(async (db) => {
-        const wearable = await db.wearable.create({
-          data: {},
-          include: {
-            left_hand: { include: { weapon: true } },
-            right_hand: { include: { weapon: true } },
-            head: { include: { armor: true } },
-            shoulder: { include: { armor: true } },
-            chest: { include: { armor: true } },
-            hand: { include: { armor: true } },
-            pants: { include: { armor: true } },
-            boots: { include: { armor: true } },
-          },
-        })
+export const show = authActionClient.metadata({ actionName: 'wearable_show' }).action(async () => {
+  const wearable = await get().then((x) => x?.data)
 
-        await db.user.update({
-          where: { id: ctx.user.id },
-          data: { wearable: { connect: { id: wearable.id } } },
-        })
-
-        return wearable
-      })
-
-  if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-  return wearable
+  return {
+    ...wearable,
+    text: {
+      weapon: i18n.t('weapon.header'),
+      weapon_multi: i18n.t('weapon.header_multi'),
+      left_hand: i18n.t('weapon.left_hand'),
+      right_hand: i18n.t('weapon.right_hand'),
+      armor: i18n.t('armor.header'),
+      armor_multi: i18n.t('armor.header_multi'),
+      head: i18n.t('armor.head'),
+      shoulder: i18n.t('armor.shoulder'),
+      chest: i18n.t('armor.chest'),
+      hand: i18n.t('armor.hand'),
+      pants: i18n.t('armor.pants'),
+      boots: i18n.t('armor.boots'),
+    },
+  }
 })
 
 export const wear = authActionClient
@@ -205,3 +185,120 @@ export const drink = authActionClient
       })
     })
   })
+
+export const get = authActionClient.metadata({ actionName: 'wearable_get' }).action(async ({ ctx }) => {
+  const wearable = ctx.user.wearable_id
+    ? await db.wearable.findFirst({
+        where: { id: ctx.user.wearable_id },
+        include: {
+          left_hand: { include: { weapon: true } },
+          right_hand: { include: { weapon: true } },
+          head: { include: { armor: true } },
+          shoulder: { include: { armor: true } },
+          chest: { include: { armor: true } },
+          hand: { include: { armor: true } },
+          pants: { include: { armor: true } },
+          boots: { include: { armor: true } },
+        },
+      })
+    : await db.$transaction(async (db) => {
+        const wearable = await db.wearable.create({
+          data: {},
+          include: {
+            left_hand: { include: { weapon: true } },
+            right_hand: { include: { weapon: true } },
+            head: { include: { armor: true } },
+            shoulder: { include: { armor: true } },
+            chest: { include: { armor: true } },
+            hand: { include: { armor: true } },
+            pants: { include: { armor: true } },
+            boots: { include: { armor: true } },
+          },
+        })
+
+        await db.user.update({
+          where: { id: ctx.user.id },
+          data: { wearable: { connect: { id: wearable.id } } },
+        })
+
+        return wearable
+      })
+
+  if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+  return {
+    ...wearable,
+    left_hand: {
+      ...wearable.left_hand,
+      weapon: wearable.left_hand?.weapon
+        ? {
+            ...wearable.left_hand.weapon,
+            name: i18n.t(`${wearable.left_hand.weapon.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    right_hand: {
+      ...wearable.right_hand,
+      weapon: wearable.right_hand?.weapon
+        ? {
+            ...wearable.right_hand.weapon,
+            name: i18n.t(`${wearable.right_hand.weapon.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    head: {
+      ...wearable.head,
+      armor: wearable.head?.armor
+        ? {
+            ...wearable.head.armor,
+            name: i18n.t(`${wearable.head.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    shoulder: {
+      ...wearable.shoulder,
+      armor: wearable.shoulder?.armor
+        ? {
+            ...wearable.shoulder.armor,
+            name: i18n.t(`${wearable.shoulder.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    chest: {
+      ...wearable.chest,
+      armor: wearable.chest?.armor
+        ? {
+            ...wearable.chest.armor,
+            name: i18n.t(`${wearable.chest.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    hand: {
+      ...wearable.hand,
+      armor: wearable.hand?.armor
+        ? {
+            ...wearable.hand.armor,
+            name: i18n.t(`${wearable.hand.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    pants: {
+      ...wearable.pants,
+      armor: wearable.pants?.armor
+        ? {
+            ...wearable.pants?.armor,
+            name: i18n.t(`${wearable.pants.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+    boots: {
+      ...wearable.boots,
+      armor: wearable.boots?.armor
+        ? {
+            ...wearable.boots.armor,
+            name: i18n.t(`${wearable.boots.armor.i18n_key}.header` as any),
+          }
+        : undefined,
+    },
+  }
+})

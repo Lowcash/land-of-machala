@@ -40,35 +40,29 @@ export default function Hospital({ hospitalId }: Props) {
 
   if (gameInfoShowQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
-  const isDefeated = !!gameInfoShowQuery.data?.defeated
-
   return (
     <>
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? '' }} />
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? '' }} />
 
-      {isDefeated && (
+      {!!gameInfoShowQuery.data?.defeated ? (
+        // player defaeted scenario
         <Text>
-          {i18n.t('place.main_city_hospital.resurrect_description')}
           <Button variant='destructive' onClick={handleResurect}>
             {i18n.t('place.main_city_hospital.resurrect_accept')}
           </Button>
         </Text>
-      )}
-
-      {!isDefeated && (
+      ) : (
+        // player common scenario
         <>
           {healMutation.isIdle && (
-            <Text>
-              {i18n.t('place.main_city_hospital.heal_for')}&nbsp;
-              <b>
-                {hospitalShowQuery?.data?.healing_price ?? 0} {i18n.t('common.currency')}
-              </b>
+            <div className='flex items-center'>
+              <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.healing?.header ?? '' }} />
               &nbsp;
               <Button variant='destructive' onClick={handleHeal}>
-                {i18n.t('place.main_city_hospital.heal_accept')}
+                {hospitalShowQuery.data?.text?.healing?.button}
               </Button>
-            </Text>
+            </div>
           )}
           {!healMutation.isIdle && (
             <Alert>
