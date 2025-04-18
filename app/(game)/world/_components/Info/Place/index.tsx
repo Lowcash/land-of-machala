@@ -24,7 +24,7 @@ export default function Place(p: Props) {
   const armoryId = gameInfoQuery.data?.place?.armory?.id
   const bankId = gameInfoQuery.data?.place?.bank?.id
   const hospitalId = gameInfoQuery.data?.place?.hospital?.id
-console.log(armoryId)
+
   const { subPlace, setSubPlace } = useSetSubplace(p.forceSubplace)
 
   if (!!subPlace)

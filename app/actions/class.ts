@@ -21,4 +21,6 @@ export const show = actionClient.metadata({ actionName: 'class_show' }).action(a
 
 export const getAll = actionClient
   .metadata({ actionName: 'class_getAll' })
-  .action(async () => (CACHE[CACHE_KEY.CLASSES] ??= await db.class.findMany()) as Class[])
+  .action(
+    async () => (CACHE[CACHE_KEY.CLASSES] ??= await db.class.findMany({ orderBy: { order_index: 'asc' } })) as Class[],
+  )

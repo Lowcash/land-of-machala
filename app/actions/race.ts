@@ -21,4 +21,6 @@ export const show = actionClient.metadata({ actionName: 'race_show' }).action(as
 
 export const getAll = actionClient
   .metadata({ actionName: 'race_getAll' })
-  .action(async () => (CACHE[CACHE_KEY.RACES] ??= await db.race.findMany()) as Race[])
+  .action(
+    async () => (CACHE[CACHE_KEY.RACES] ??= await db.race.findMany({ orderBy: { order_index: 'asc' } })) as Race[],
+  )

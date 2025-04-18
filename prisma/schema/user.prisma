@@ -63,8 +63,9 @@ enum Role {
 }
 
 model Race {
-  id       String @id
-  i18n_key String
+  id          String @id
+  i18n_key    String
+  order_index Int
 
   strength     Int
   agility      Int
@@ -74,8 +75,9 @@ model Race {
 }
 
 model Class {
-  id       String @id
-  i18n_key String
+  id          String @id
+  i18n_key    String
+  order_index Int
 
   strength     Int
   agility      Int
