@@ -1,7 +1,7 @@
 import 'server-only'
 import { z } from 'zod'
 import { db } from '@/lib/db'
-import { createSafeActionClient } from 'next-safe-action'
+import { createSafeActionClient, flattenValidationErrors } from 'next-safe-action'
 import { getServerSession } from 'next-auth/next'
 import { type User } from '@prisma/client'
 
@@ -40,3 +40,5 @@ export const authActionClient = actionClient.use(async ({ next, metadata }) => {
 
   return next({ ctx: { user } })
 })
+
+export const handleValidationErrorsShape = async (ve: any) => flattenValidationErrors(ve).fieldErrors

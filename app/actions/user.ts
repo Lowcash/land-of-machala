@@ -5,11 +5,10 @@ import { db } from '@/lib/db'
 import bcrypt from 'bcrypt'
 import { getServerSession } from 'next-auth/next'
 
-import { flattenValidationErrors } from 'next-safe-action'
-import { actionClient, authActionClient } from '@/lib/safe-action'
+import { actionClient, authActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
 import { playerCreateSchema, playerSignSchema } from '@/zod-schema/player'
 
-import { ERROR_CAUSE } from '@/config'
+import { BASE_HP_ACTUAL, BASE_HP_MAX, BASE_XP_ACTUAL, BASE_XP_MAX, ERROR_CAUSE } from '@/config'
 
 export const signUp = actionClient
   .metadata({ actionName: 'user_signUp' })
@@ -26,9 +25,7 @@ export const signUp = actionClient
 
 export const create = authActionClient
   .metadata({ actionName: 'user_create' })
-  .schema(playerCreateSchema, {
-    handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors,
-  })
+  .schema(playerCreateSchema, { handleValidationErrorsShape })
   .action(async ({ ctx, parsedInput }) => {
     const [race, class_] = await Promise.all([
       db.race.findFirst({ where: { id: parsedInput.raceId } }),
@@ -43,10 +40,10 @@ export const create = authActionClient
         name: parsedInput.name,
         race: { connect: { id: race.id } },
         class: { connect: { id: class_.id } },
-        hp_actual: 100,
-        hp_max: 100,
-        xp_actual: 0,
-        xp_max: 100,
+        hp_actual: BASE_HP_ACTUAL,
+        hp_max: BASE_HP_MAX,
+        xp_actual: BASE_XP_ACTUAL,
+        xp_max: BASE_XP_MAX,
       },
     })
   })

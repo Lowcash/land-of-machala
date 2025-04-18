@@ -2,8 +2,8 @@
 
 import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
-import { authActionClient } from '@/lib/safe-action'
-import { flattenValidationErrors, type InferSafeActionFnResult } from 'next-safe-action'
+import { authActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
+import { type InferSafeActionFnResult } from 'next-safe-action'
 import { armoryItemActionSchema, armorySchema } from '@/zod-schema/armory'
 import type { Armor, Weapon } from '@prisma/client'
 
@@ -17,9 +17,7 @@ import { ERROR_CAUSE } from '@/config'
 
 export const show = authActionClient
   .metadata({ actionName: 'armory_show' })
-  .schema(armorySchema, {
-    handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors,
-  })
+  .schema(armorySchema, { handleValidationErrorsShape })
   .action(async ({ parsedInput }) => {
     const [armory, inventory, weaponsAll, armorsAll] = await Promise.all([
       get({ armoryId: parsedInput.armoryId }).then((x) => x?.data),
