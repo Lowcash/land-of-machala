@@ -1,6 +1,6 @@
 model Enemy {
-  id   String @id @default(uuid())
-  name String
+  id       String @id
+  i18n_key String
 
   hp_from Int
   hp_to   Int
@@ -19,7 +19,7 @@ model Enemy {
 }
 
 model EnemyInstance {
-  id String @id @default(cuid())
+  id String @id @default(uuid())
 
   hp_actual Int
   hp_max    Int

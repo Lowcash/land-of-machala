@@ -1,20 +1,23 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
 import { toast } from '@/hooks/use-toast'
 import { useNavigate } from '@/hooks/use-navigate'
 
 import { type PlayerCreateSchema, playerCreateSchema } from '@/zod-schema/player'
-import { create as userCreate } from '@/app/actions/user'
-import { useRaceAllQuery } from '@/hooks/api/use-race'
-import { useClassAllQuery } from '@/hooks/api/use-class'
+import { create as userCreateAction } from '@/app/actions/user'
+import { useRaceShowQuery } from '@/hooks/api/use-race'
+import { useClassShowQuery } from '@/hooks/api/use-class'
+import { useShowCreateQuery } from '@/hooks/api/use-player'
 
 import Form, { Handle as FormHandle } from '@/components/Form'
+import { Text } from '@/styles/typography'
+import Loading from '@/components/Loading'
 
 export default function CreateForm() {
-  const raceAllQuery = useRaceAllQuery()
-  const classAllQuery = useClassAllQuery()
+  const showCreateQuery = useShowCreateQuery()
+  const raceShowQuery = useRaceShowQuery()
+  const classShowQuery = useClassShowQuery()
 
   const formRef = React.useRef<FormHandle>(null)
 
@@ -25,42 +28,47 @@ export default function CreateForm() {
   }
 
   const handleSubmitActionSuccess = async () => {
-    toast({ description: loc.sign.create_character_success })
+    toast({ description: showCreateQuery.data?.text.createSuccess ?? 'create_success' })
     navigate()
   }
 
   const handleSubmitActionError = async () => {
-    toast({ description: loc.sign.create_character_error, variant: 'destructive' })
+    toast({ description: showCreateQuery.data?.text.createFailure ?? 'create_failure', variant: 'destructive' })
     navigate()
   }
 
-  if (!raceAllQuery.data || !classAllQuery.data) return <></>
+  if (!showCreateQuery.data || !raceShowQuery.data || !classShowQuery.data) return <Loading />
 
   return (
     <Form
       ref={formRef}
       className='gap-6'
       schema={playerCreateSchema}
-      action={userCreate}
+      action={userCreateAction}
       onAction={{ onSuccess: handleSubmitActionSuccess, onError: handleSubmitActionError }}
     >
       <div className='flex flex-col gap-4'>
-        <Form.Input<PlayerCreateSchema> id='name' label={loc.player.name} />
+        <Form.Input<PlayerCreateSchema>
+          id='name'
+          label={<Text dangerouslySetInnerHTML={{ __html: showCreateQuery.data?.text?.name ?? 'name' }} />}
+        />
         <Form.Option<PlayerCreateSchema>
           id='raceId'
-          label={loc.player.race}
-          options={Object.fromEntries(raceAllQuery.data?.map((x) => [x.id, x.name]))}
+          label={<Text dangerouslySetInnerHTML={{ __html: showCreateQuery.data?.text?.race ?? 'race' }} />}
+          options={Object.fromEntries(raceShowQuery.data?.map((x) => [x.id, x.name]))}
         />
         <Form.Option<PlayerCreateSchema>
           id='classId'
-          label={loc.player.character}
-          options={Object.fromEntries(classAllQuery.data?.map((x) => [x.id, x.name]))}
+          label={<Text dangerouslySetInnerHTML={{ __html: showCreateQuery.data?.text?.class ?? 'class' }} />}
+          options={Object.fromEntries(classShowQuery.data?.map((x) => [x.id, x.name]))}
         />
       </div>
 
       <hr />
 
-      <Form.Button onClick={handleSubmitAction}>{loc.sign.create_character}</Form.Button>
+      <Form.Button onClick={handleSubmitAction}>
+        <span dangerouslySetInnerHTML={{ __html: showCreateQuery.data?.text.create ?? 'create' }} />
+      </Form.Button>
     </Form>
   )
 }

@@ -4,7 +4,7 @@ import * as GameAction from '@/app/actions/game'
 
 import { QUERY_KEY } from '@/config'
 
-export const useGameInfoQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.info)
+export const useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.infoShow)
 
 export const useGameAttackMutation = createMutationHook(GameAction.attack, [
   QUERY_KEY.PLAYER,

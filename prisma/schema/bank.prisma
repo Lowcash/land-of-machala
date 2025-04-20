@@ -1,8 +1,6 @@
 model Bank {
-  id             String  @id @default(uuid())
-  name           String
-  description    String?
-  subdescription String?
+  id       String @id
+  i18n_key String
 
   accounts BankAccount[]
   places   Place[]
@@ -11,12 +9,12 @@ model Bank {
 model BankAccount {
   id String @id @default(uuid())
 
+  money Int @default(0)
+
   bank    Bank   @relation(fields: [bank_id], references: [id])
   bank_id String
   user    User   @relation(fields: [user_id], references: [id])
   user_id String
-
-  money Int @default(0)
 
   weapons WeaponInBank[]
   armors  ArmorInBank[]
@@ -54,7 +52,7 @@ model PotionInBank {
   id String @id @default(uuid())
 
   potion          Potion      @relation(fields: [potion_id], references: [id])
-  potion_id       Int
+  potion_id       String
   bank_acount     BankAccount @relation(fields: [bank_account_id], references: [id])
   bank_account_id String
 

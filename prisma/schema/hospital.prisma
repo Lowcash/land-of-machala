@@ -1,10 +1,8 @@
 model Hospital {
-  id             String  @id @default(uuid())
-  name           String
-  description    String?
-  subdescription String?
+  id       String @id
+  i18n_key String
 
-  price Int?
+  healing_price Int
 
   places           Place[]
   potions_hospital PotionInHospital[]
@@ -16,7 +14,7 @@ model PotionInHospital {
   price Int
 
   potion      Potion   @relation(fields: [potion_id], references: [id])
-  potion_id   Int
+  potion_id   String
   hospital    Hospital @relation(fields: [hospital_id], references: [id])
   hospital_id String
 
