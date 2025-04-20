@@ -25,7 +25,7 @@ emitter.on('defeated', async (enemy) => {
     await QuestAction.checkProgress({ ident: 'SLAIN_ENEMY' })
   }
   if (!!userQuest.quest_slain_troll) {
-    if (enemy.name !== 'troll') return
+    if (enemy.id !== 'troll') return
 
     const actualSlain = userQuest.quest_slain_troll.slain.actual_slain
     const desiredSlain = userQuest.quest_slain_troll.slain.desired_slain
