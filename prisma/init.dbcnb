@@ -391,7 +391,7 @@ cells:
     metadata: {}
 metadata:
   conn:
-    id: s1l3IAg_achCTBSQbK9BF
-    name: LoM - Beta
-  database: land-of-machala
+    id: 1h7R6UxPZaGH67mPXze8t
+    name: LoM - Local
+  database: mydatabase
   schema: ""
