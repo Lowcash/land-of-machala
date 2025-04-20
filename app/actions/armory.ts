@@ -1,8 +1,9 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
-import { authActionClient } from '@/lib/safe-action'
-import { flattenValidationErrors, type InferSafeActionFnResult } from 'next-safe-action'
+import { authActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
+import { type InferSafeActionFnResult } from 'next-safe-action'
 import { armoryItemActionSchema, armorySchema } from '@/zod-schema/armory'
 import type { Armor, Weapon } from '@prisma/client'
 
@@ -12,11 +13,42 @@ import * as InventoryAction from './inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
+export const show = authActionClient
+  .metadata({ actionName: 'armory_show' })
+  .schema(armorySchema, { handleValidationErrorsShape })
+  .action(async ({ parsedInput }) => {
+    const [armory, inventory, weaponsAll, armorsAll] = await Promise.all([
+      get({ armoryId: parsedInput.armoryId }).then((x) => x?.data),
+      InventoryAction.get().then((x) => x?.data),
+      WeaponAction.getAll().then((x) => x?.data),
+      ArmorAction.getAll().then((x) => x?.data),
+    ])
+
+    if (!armory || !inventory || !weaponsAll || !armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return {
+      buyWeapons: getBuyWeapons({ weaponsAll, armory }),
+      buyArmors: getBuyArmors({ armorsAll, armory }),
+      sellWeapons: getSellWeapons({ weaponsAll, inventory }),
+      sellArmors: getSellArmors({ armorsAll, inventory }),
+      text: {
+        header: i18n.t('place.your_are_in', { place: armory.name }),
+        description: armory.description,
+        armorBuy: i18n.t('armor.buy'),
+        armorSell: i18n.t('armor.sell'),
+        weaponBuy: i18n.t('weapon.buy'),
+        weaponSell: i18n.t('weapon.sell'),
+        buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
+        buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
+      },
+    }
+  })
+
+export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
+
 export const get = authActionClient
   .metadata({ actionName: 'armory_get' })
-  .schema(armorySchema, {
-    handleValidationErrorsShape: async (ve) => flattenValidationErrors(ve).fieldErrors,
-  })
+  .schema(armorySchema)
   .action(async ({ parsedInput }) => {
     const armory = await db.armory.findFirst({
       where: { id: parsedInput.armoryId },
@@ -28,33 +60,20 @@ export const get = authActionClient
 
     if (!armory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return armory
+    return {
+      ...armory,
+      name: i18n.t(`${armory.i18n_key}.header` as any),
+      description: i18n.t(`${armory.i18n_key}.description` as any),
+      armors: armory.armors.map((x) => ({
+        ...x,
+        armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
+      })),
+      weapons: armory.weapons.map((x) => ({
+        ...x,
+        weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
+      })),
+    }
   })
-
-export type ArmoryGetResult = InferSafeActionFnResult<typeof get>['data']
-
-export const show = authActionClient
-  .metadata({ actionName: 'armory_show' })
-  .schema(armorySchema)
-  .action(async ({ parsedInput }) => {
-    const [armory, inventory, weaponsAll, armorsAll] = await Promise.all([
-      get({ armoryId: parsedInput.armoryId }).then((x) => x?.data),
-      InventoryAction.get().then((x) => x?.data),
-      WeaponAction.getAll().then((x) => x?.data),
-      ArmorAction.getAll().then((x) => x?.data),
-    ])
-
-    if (!armory || !inventory || !weaponsAll || !armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    const [buyWeapons, buyArmors, sellWeapons, sellArmors] = await Promise.all([
-      getBuyWeapons({ weaponsAll, armory }),
-      getBuyArmors({ armorsAll, armory }),
-      getSellWeapons({ weaponsAll, inventory }),
-      getSellArmors({ armorsAll, inventory }),
-    ])
-
-    return { ...armory, buyWeapons, buyArmors, sellWeapons, sellArmors }
-  }, {})
 
 const BUY_MIN_PRICE = 1000
 const BUY_MAX_PRICE = 50000
@@ -63,56 +82,106 @@ const SELL_MAX_PRICE = 10000 // divided by 5
 
 const ROUND_PRICE_BY = 100
 
-async function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResult }) {
+function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResult }) {
   const spreadBuyPriceWeapons = spreadItemsPrices(
     args.weaponsAll,
     { min: BUY_MIN_PRICE, max: BUY_MAX_PRICE },
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.armory?.weapons.map((x) => ({
-    ...x,
-    price: spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
-  }))
+  return args.armory?.weapons.map((x) => {
+    const price = spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      weapon_id: x.weapon_id,
+      name: x.weapon.name,
+      damage_from: x.weapon.damage_from,
+      damage_to: x.weapon.damage_to,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
-async function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction.InventoryGetResult }) {
+function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction.InventoryGetResult }) {
   const spreadSellPriceWeapons = spreadItemsPrices(
     args.weaponsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.inventory?.weapons_inventory.map((x) => ({
-    ...x,
-    price: spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
-  }))
+  return args.inventory?.weapons_inventory.map((x) => {
+    const price = spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      weapon_id: x.weapon_id,
+      name: x.weapon.name,
+      damage_from: x.weapon.damage_from,
+      damage_to: x.weapon.damage_to,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
-async function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
+function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
   const spreadBuyPriceArmors = spreadItemsPrices(
     args.armorsAll,
     { min: BUY_MIN_PRICE, max: BUY_MAX_PRICE },
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.armory?.armors.map((x) => ({
-    ...x,
-    price: spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
-  }))
+  return args.armory?.armors.map((x) => {
+    const price = spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      armor_id: x.armor_id,
+      name: x.armor.name,
+      type: x.armor.type,
+      armor: x.armor.armor,
+      strength: x.armor.strength,
+      agility: x.armor.agility,
+      intelligence: x.armor.intelligence,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
-async function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.InventoryGetResult }) {
+function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.InventoryGetResult }) {
   const spreadSellPriceArmors = spreadItemsPrices(
     args.armorsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.inventory?.armors_inventory.map((x) => ({
-    ...x,
-    price: spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
-  }))
+  return args.inventory?.armors_inventory.map((x) => {
+    const price = spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      armor_id: x.armor_id,
+      name: x.armor.name,
+      type: x.armor.type,
+      armor: x.armor.armor,
+      strength: x.armor.strength,
+      agility: x.armor.agility,
+      intelligence: x.armor.intelligence,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
 function spreadItemsPrices<T extends { id: string | number }>(
@@ -148,7 +217,7 @@ export const buyItem = authActionClient
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armoryBuyWeapon = (await getBuyWeapons({ weaponsAll, armory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armoryBuyWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
@@ -178,7 +247,9 @@ export const buyItem = authActionClient
 
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armoryArmor = (await getBuyArmors({ armorsAll, armory }))?.find((x) => x.id === parsedInput.armoryItemId)
+        const armoryArmor = (await getBuyArmors({ armorsAll, armory }))?.find(
+          (x) => x.itemId === parsedInput.armoryItemId,
+        )
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -220,7 +291,7 @@ export const sellItem = authActionClient
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armorySellWeapon = (await getSellWeapons({ weaponsAll, inventory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armorySellWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
@@ -257,7 +328,7 @@ export const sellItem = authActionClient
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
         const armoryArmor = (await getSellArmors({ armorsAll, inventory }))?.find(
-          (x) => x.id === parsedInput.armoryItemId,
+          (x) => x.itemId === parsedInput.armoryItemId,
         )
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)

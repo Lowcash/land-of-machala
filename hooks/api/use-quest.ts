@@ -4,4 +4,4 @@ import * as QuestAction from '@/app/actions/quest'
 
 import { QUERY_KEY } from '@/config'
 
-export const useQuestAssignedQuery = createQueryHook([QUERY_KEY.QUEST_ASSIGNED], QuestAction.getAssigned)
+export const useQuestShowAssignedQuery = createQueryHook([QUERY_KEY.QUEST_ASSIGNED], QuestAction.showAssigned)

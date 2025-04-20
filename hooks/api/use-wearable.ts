@@ -4,7 +4,7 @@ import * as WearableAction from '@/app/actions/wearable'
 
 import { QUERY_KEY } from '@/config'
 
-export const useWearableQuery = createQueryHook([QUERY_KEY.WEARABLE], WearableAction.get)
+export const useWearableShowQuery = createQueryHook([QUERY_KEY.WEARABLE], WearableAction.show)
 
 export const useWearableWearMutation = createMutationHook(WearableAction.wear, [
   QUERY_KEY.STATS,
