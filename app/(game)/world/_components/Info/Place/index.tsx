@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import i18n from '@/lib/i18n'
 import { type Location } from '@/config'
 import { useGameInfoShowQuery } from '@/hooks/api/use-game'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useBackground } from '@/context/game-provider'
 
 import { List } from '@/styles/common'
@@ -19,19 +19,20 @@ interface Props {
 }
 
 export default function Place(p: Props) {
-  const gameInfoQuery = useGameInfoShowQuery()
+  const commonShowQuery = useCommonShowQuery()
+  const gameInfoShowQuery = useGameInfoShowQuery()
 
   const { subPlace, setSubPlace } = useSetSubplace(p.forceSubplace)
 
   if (!!subPlace) {
-    const hospital = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
-    const armory = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
-    const bank = gameInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
+    const hospital = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
+    const armory = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
+    const bank = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
 
     return (
       <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
-          {i18n.t('common.back')}
+          {commonShowQuery.data?.text.cityBack ?? 'city_back'}
         </Button>
 
         {subPlace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
@@ -43,13 +44,13 @@ export default function Place(p: Props) {
 
   return (
     <>
-      <Text dangerouslySetInnerHTML={{ __html: gameInfoQuery.data?.place?.text?.header ?? '' }} />
-      <Text dangerouslySetInnerHTML={{ __html: gameInfoQuery.data?.place?.text?.description ?? '' }} />
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.header ?? 'place_header' }} />
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.description ?? 'place_description' }} />
 
       <List>
-        {gameInfoQuery.data?.place?.subplaces?.map((x) => (
+        {gameInfoShowQuery.data?.place?.subplaces?.map((x) => (
           <li key={`SubPlace_${x.type}`}>
-            <Link onClick={() => setSubPlace(x.type as Location)}>{i18n.t(`${x.place?.i18n_key}.header` as any)}</Link>
+            <Link onClick={() => setSubPlace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
           </li>
         ))}
       </List>

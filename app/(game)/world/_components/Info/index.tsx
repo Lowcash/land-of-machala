@@ -1,6 +1,5 @@
 'use client'
 
-import i18n from '@/lib/i18n'
 import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { Card } from '@/styles/common'
@@ -10,13 +9,13 @@ import Enemy from '@/app/(game)/world/_components/Info/Enemy'
 import Place from '@/app/(game)/world/_components/Info/Place'
 
 export default function Info() {
-  const gameInfoQuery = useGameInfoShowQuery()
+  const gameInfoShowQuery = useGameInfoShowQuery()
 
-  const hasEnemy = !!gameInfoQuery.data?.enemy
-  const hasPlace = !!gameInfoQuery.data?.place
-  const hasLoot = !!gameInfoQuery.data?.loot
+  const hasEnemy = !!gameInfoShowQuery.data?.enemy
+  const hasPlace = !!gameInfoShowQuery.data?.place
+  const hasLoot = !!gameInfoShowQuery.data?.loot
 
-  const isDefeated = !!gameInfoQuery.data?.defeated
+  const isDefeated = !!gameInfoShowQuery.data?.defeated
 
   if (isDefeated) return <Defeated />
 
@@ -30,5 +29,5 @@ export default function Info() {
       </Card>
     )
 
-  return <Card>{i18n.t('world.explore')}</Card>
+  return <Card>{gameInfoShowQuery.data?.text?.worldExplore ?? 'game_world_eplore'}</Card>
 }

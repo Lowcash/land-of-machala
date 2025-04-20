@@ -10,11 +10,13 @@ import { RxCheck } from 'react-icons/rx'
 interface Props extends MutationInput<typeof useWearableWearMutation> {}
 
 export default function Wear(p: Props) {
-  const playerQuery = usePlayerShowQuery()
-  const wearMutation = useWearableWearMutation()
+  const playerShowQuery = usePlayerShowQuery()
+  const wearableWearMutation = useWearableWearMutation()
+
+  const handleWear = () => wearableWearMutation.mutate(p)
 
   return (
-    <Button variant='secondary' disabled={playerQuery.data?.isInCombat} onClick={() => wearMutation.mutate(p)}>
+    <Button variant='secondary' disabled={playerShowQuery.data?.isInCombat} onClick={handleWear}>
       <RxCheck />
     </Button>
   )

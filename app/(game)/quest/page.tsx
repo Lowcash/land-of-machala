@@ -1,8 +1,8 @@
 'use client'
 
-import i18n from '@/lib/i18n'
 import { useBackground } from '@/context/game-provider'
-import { useQuestAssignedQuery } from '@/hooks/api/use-quest'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
+import { useQuestShowAssignedQuery } from '@/hooks/api/use-quest'
 
 import { RxCheck, RxCross1 } from 'react-icons/rx'
 import { Card } from '@/styles/common'
@@ -13,10 +13,11 @@ import Back from '@/app/(game)/world/_components/Back'
 export default function Page() {
   useBackground('quest')
 
-  const questAssignedQuery = useQuestAssignedQuery()
+  const commonShowQuery = useCommonShowQuery()
+  const questShowAssignedQuery = useQuestShowAssignedQuery()
 
-  const slainEnemyQuest = questAssignedQuery.data?.quest_slain_enemy
-  const slainTrollQuest = questAssignedQuery.data?.quest_slain_troll
+  const slainEnemyQuest = questShowAssignedQuery.data?.quest_slain_enemy
+  const slainTrollQuest = questShowAssignedQuery.data?.quest_slain_troll
 
   const hasSlainEnemyQuest = slainEnemyQuest?.id !== undefined
   const hasSlainTrollQuest = slainTrollQuest?.id !== undefined
@@ -26,7 +27,7 @@ export default function Page() {
       <Card>
         <Back />
 
-        <H3>{i18n.t('quest.empty')}</H3>
+        <H3>{commonShowQuery.data?.text.questEmpty ?? 'quest_empty'}</H3>
       </Card>
     )
 
@@ -35,26 +36,26 @@ export default function Page() {
   if (hasSlainEnemyQuest)
     quests.push(
       buildQuest(
-        slainEnemyQuest.id,
-        i18n.t('quest.slain_enemy.description_inventory'),
+        slainEnemyQuest.quest.name ?? 'quest_slain_enemy',
+        questShowAssignedQuery.data?.quest_slain_enemy?.text.description ?? 'quest_slain_enemy_description',
         <b>
-          {i18n.t('quest.slain_enemy.slained')}: {slainEnemyQuest.slain.actual_slain}/
-          {slainEnemyQuest.slain.desired_slain}
+          {questShowAssignedQuery.data?.quest_slain_enemy?.text.slained ?? 'quest_slain_enemy_slained'}:{' '}
+          {slainEnemyQuest.slain.actual_slain}/{slainEnemyQuest.slain.desired_slain}
         </b>,
-        !!questAssignedQuery.data?.quest_slain_enemy_complete,
+        !!questShowAssignedQuery.data?.quest_slain_enemy_complete,
       ),
     )
 
   if (hasSlainTrollQuest)
     quests.push(
       buildQuest(
-        slainTrollQuest.id,
-        i18n.t('quest.slain_troll.description_inventory'),
+        slainTrollQuest.quest.name ?? 'quest_slain_troll',
+        questShowAssignedQuery.data?.quest_slain_enemy?.text.description ?? 'quest_slain_troll_description',
         <b>
-          {i18n.t('quest.slain_troll.slained')}: {slainTrollQuest.slain.actual_slain}/
-          {slainTrollQuest.slain.desired_slain}
+          {questShowAssignedQuery.data?.quest_slain_enemy?.text.slained ?? 'quest_slain_troll_slained'}:{' '}
+          {slainTrollQuest.slain.actual_slain}/{slainTrollQuest.slain.desired_slain}
         </b>,
-        !!questAssignedQuery.data?.quest_slain_troll_complete,
+        !!questShowAssignedQuery.data?.quest_slain_enemy_complete,
       ),
     )
 
@@ -63,7 +64,7 @@ export default function Page() {
       <Back />
 
       <Card.Inner>
-        <H3>{i18n.t('quest.header_multi')}:</H3>
+        <H3>{commonShowQuery.data?.text.questHeader ?? 'quest_header'}:</H3>
         <Table hideHeader columns={[{}, {}, {}]} cells={quests} />
       </Card.Inner>
     </Card>

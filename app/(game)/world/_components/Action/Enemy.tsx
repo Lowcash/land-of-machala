@@ -1,12 +1,13 @@
 'use client'
 
-import i18n from '@/lib/i18n'
-import { useGameAttackMutation, useGameRunAwayMutation } from '@/hooks/api/use-game'
+import { useGameAttackMutation, useGameInfoShowQuery, useGameRunAwayMutation } from '@/hooks/api/use-game'
 
 import * as S from './styles'
 import { Button } from '@/components/ui/button'
 
 export default function Enemy() {
+  const gameInfoShowQuery = useGameInfoShowQuery()
+
   const attackMutation = useGameAttackMutation()
   const runAwayMutation = useGameRunAwayMutation()
 
@@ -16,10 +17,10 @@ export default function Enemy() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleAttack}>
-        {i18n.t('enemy.attack')}
+        {gameInfoShowQuery.data?.text?.attack ?? 'game_attack'}
       </Button>
       <Button variant='secondary' onClick={handleRunAway}>
-        {i18n.t('enemy.run_away')}
+        {gameInfoShowQuery.data?.text?.runAway ?? 'game_run_away'}
       </Button>
     </S.Action>
   )

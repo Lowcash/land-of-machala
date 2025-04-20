@@ -572,6 +572,22 @@
   },
   "place": {
     "your_are_in": "Nacházíš se v",
+    "bank": {
+      "deposit": "Uložit",
+      "withdraw": "Vybrat",
+      "deposited_money": "Uloženo peněz",
+      "deposit_money": "Uložit Peníze",
+      "withdraw_money": "Vybrat Peníze",
+      "deposit_weapon": "Uložit Zbraň",
+      "withdraw_weapon": "Vybrat Zbraň",
+      "deposit_armor": "Uložit Zbroj",
+      "withdraw_armor": "Vybrat Zbroj",
+      "deposit_potion": "Uložit Potion",
+      "withdraw_potion": "Vybrat Potion",
+      "deposit_success": "Zboží uloženo v bance",
+      "withdraw_success": "Zboží vybráno z banky",
+      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?!"
+    },
     "main_city": {
       "header": "Královský palác",
       "description": "Elegantní palác s rozlehlými zahradami a bohatou historií"
@@ -597,21 +613,7 @@
     "main_city_bank": {
       "header": "Banka U dvou přátel",
       "description": "Místo, kde jsou tvoje cennosti v bezpečí",
-      "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?",
-      "deposit": "Uložit",
-      "withdraw": "Vybrat",
-      "deposited_money": "Uloženo peněz",
-      "deposit_money": "Uložit Peníze",
-      "withdraw_money": "Vybrat Peníze",
-      "deposit_weapon": "Uložit Zbraň",
-      "withdraw_weapon": "Vybrat Zbraň",
-      "deposit_armor": "Uložit Zbroj",
-      "withdraw_armor": "Vybrat Zbroj",
-      "deposit_potion": "Uložit Potion",
-      "withdraw_potion": "Vybrat Potion",
-      "deposit_success": "Zboží uloženo v bance",
-      "withdraw_success": "Zboží vybráno z banky",
-      "deposit_or_withdraw_failed": "Nějak se nám to zkomplikovalo?!"
+      "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?"
     }
   },
   "quest": {
@@ -619,6 +621,7 @@
     "header_multi": "Questy",
     "empty": "Žádný quest nemáš",
     "slain_enemy": {
+      "header": "Zabij nepřátele",
       "description_inventory": "popis slain enemy questu",
       "description_hospital": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
       "accept": "Beru",
@@ -629,6 +632,7 @@
       "slained": "Zabito nepřátel"
     },
     "slain_troll": {
+      "header": "Zabij trolly",
       "description_inventory": "popis slain troll questu",
       "slained": "Zabito nepřátel"
     }

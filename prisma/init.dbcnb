@@ -211,11 +211,11 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: >-
+    value: |-
       INSERT IGNORE INTO Potion (id, i18n_key, hp_gain)
-         VALUES ('potion_weak', 'consumable.potion_weak', 50),
-                ('potion_medium_strength', 'consumable.potion_medium_strength', 100),
-                ('potion_strong', 'consumable.potion_strong', 200) ON DUPLICATE KEY
+         VALUES ('potion_weak', 'potion_weak', 50),
+                ('potion_medium_strength', 'potion_medium_strength', 100),
+                ('potion_strong', 'potion_strong', 200) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 hp_gain =

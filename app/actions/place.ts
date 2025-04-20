@@ -24,6 +24,18 @@ export const get = authActionClient
 
     return {
       ...place,
+      hospital: place.hospital ? {
+        ...place.hospital,
+        name: i18n.t(`${place.hospital.i18n_key}.header` as any)
+      } : undefined,
+      armory: place.armory ? {
+        ...place.armory,
+        name: i18n.t(`${place.armory.i18n_key}.header` as any)
+      } : undefined,
+      bank: place.bank ? {
+        ...place.bank,
+        name: i18n.t(`${place.bank.i18n_key}.header` as any)
+      } : undefined,
       name: i18n.t(`${place.i18n_key}.header` as any),
       description: i18n.t(`${place.i18n_key}.description` as any),
     }

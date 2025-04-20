@@ -18,8 +18,10 @@ export const useHospitalBuyPotionMutation = createMutationHook(HospitalAction.bu
 export const useHospitalAcceptEnemySlainQuestMutation = createMutationHook(HospitalAction.acceptSlainEnemyQuest, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.HOSPITAL,
+  QUERY_KEY.QUEST_ASSIGNED,
 ])
 export const useHospitalCompleteEnemySlainQuestMutation = createMutationHook(HospitalAction.completeSlainEnemyQuest, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.HOSPITAL,
+  QUERY_KEY.QUEST_ASSIGNED,
 ])

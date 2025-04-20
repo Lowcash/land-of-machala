@@ -30,11 +30,9 @@
       "success": "Postava úspěšně vytvořena",
       "failure": "Postavu se nepodařilo vytvořit"
     },
-    "money": "Peníze",
-    "currency": "zlaťáků",
-    "hp": "HP",
-    "pos_x": "x",
-    "pos_y": "y"
+    "state": {
+      "destroyed_long": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
+    }
   },
   "stats": {
     "header": "Staty",
@@ -331,6 +329,8 @@
   "weapon": {
     "header": "Zbraň",
     "header_multi": "Zbraně",
+    "buy": "Koupit Zbraň",
+    "sell": "Prodat Zbraň",
     "left_hand": "Levá ruka",
     "right_hand": "Pravá ruka",
     "dagger": {
@@ -537,5 +537,162 @@
       "header": "Ráže",
       "description": "Hodnota pro sílu střelné zbraně."
     }
+  },
+  "potion": {
+    "header": "Potion",
+    "header_multi": "Potiony",
+    "buy": "Koupit Potion",
+    "buy_success": "Tady to máš",
+    "buy_failure": "Přijď, až na to budeš mít (nedostatek peněz)",
+    "efficiency": "Účinnost",
+    "potion_weak": {
+      "header": "Slabý lék"
+    },
+    "potion_medium_strength": {
+      "header": "Středně silný lék"
+    },
+    "potion_strong": {
+      "header": "Silný lék"
+    }
+  },
+  "action": {
+    "buy": "Koupit",
+    "sell": "Prodat",
+    "wear": "Obléct",
+    "use": "Použít",
+    "attack": "Zaútočit",
+    "run_away": "Utéct",
+    "loot": {
+      "header": "Loot",
+      "found": "V lootu se nachází"
+    }
+  },
+  "place": {
+    "your_are_in": "Nacházíš se v <b>{{ place }}</b>",
+    "hospital": {
+      "heal": {
+        "header": "Uzdravení za {{ price }}&nbsp;<b></b>",
+        "action": "To chci!",
+        "success": "Teď jsi jako rybička (vyléčen)",
+        "failure": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)"
+      },
+      "resurrect": {
+        "action": "Uzdravit!",
+        "description": "Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění.."
+      }
+    },
+    "bank": {
+      "deposit": "Uložit",
+      "withdraw": "Vybrat",
+      "deposited_money": "Uloženo peněz",
+      "deposit_money": "Uložit Peníze",
+      "withdraw_money": "Vybrat Peníze",
+      "deposit_weapon": "Uložit Zbraň",
+      "withdraw_weapon": "Vybrat Zbraň",
+      "deposit_armor": "Uložit Zbroj",
+      "withdraw_armor": "Vybrat Zbroj",
+      "deposit_potion": "Uložit Potion",
+      "withdraw_potion": "Vybrat Potion",
+      "deposit_success": "Zboží uloženo v bance",
+      "withdraw_success": "Zboží vybráno z banky",
+      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?!"
+    },
+    "main_city": {
+      "header": "Královský palác",
+      "description": "Elegantní palác s rozlehlými zahradami a bohatou historií"
+    },
+    "main_city_hospital": {
+      "header": "Nemocnice Sv. Lukáše",
+      "description": "Oprava rozbitých kosti a rozbité srdcovky",
+      "greeting": "Buď zdráv, dobrodruhu! U nás společně s dobrým pivem poléčíme všechny tvoje starosti!"
+    },
+    "main_city_armory": {
+      "header": "Kovárna Dračí hřebíky",
+      "description": "Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly",
+      "greeting": "Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?",
+      "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
+      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)"
+    },
+    "main_city_bank": {
+      "header": "Banka U dvou přátel",
+      "description": "Místo, kde jsou tvoje cennosti v bezpečí",
+      "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?"
+    }
+  },
+  "enemy": {
+    "appear": "Najednou se před tebou objevil <b>{{ enemy }}</b>&nbsp;a vyzývá tě na souboj",
+    "troll": {
+      "header": "Troll",
+      "description": "Obrovský a silný tvor, známý svou houževnatostí a brutalitou."
+    },
+    "orc": {
+      "header": "Ork",
+      "description": "Divoký válečník, často ve skupinách útočí na své nepřátele."
+    },
+    "elf": {
+      "header": "Elf",
+      "description": "Obratný a chytrý tvor s magickými schopnostmi."
+    },
+    "barbarian": {
+      "header": "Barbar",
+      "description": "Divoký bojovník s obrovskou silou a odolností."
+    },
+    "thief": {
+      "header": "Zloděj",
+      "description": "Rychlý a nenápadný, využívá lstivost a útoky ze zálohy."
+    },
+    "goblin": {
+      "header": "Goblin",
+      "description": "Malý, rychlý a nebezpečný tvor s loveckými schopnostmi."
+    },
+    "demon": {
+      "header": "Démon",
+      "description": "Temná bytost s ničivou magií a nebezpečnými útoky."
+    },
+    "fire_elemental": {
+      "header": "Ohňový Elementál",
+      "description": "Tvořený plameny, útočí s ohnivou zuřivostí."
+    },
+    "ice_elemental": {
+      "header": "Ledový Elementál",
+      "description": "Mrazivý tvor, zpomaluje a zmrazuje své nepřátele."
+    }
+  },
+  "inventory": {
+    "header": "Inventář",
+    "content": "V batohu se nachází",
+    "empty": "V batohu nic nemáš"
+  },
+  "quest": {
+    "header": "Quest",
+    "header_multi": "Questy",
+    "empty": "Žádný quest nemáš",
+    "slained": "Zabito nepřátel",
+    "slain_enemy": {
+      "header": "Zabij nepřátele",
+      "description": "Měl bych tu pro tebe úkol. Před bránama města se přemnožili nepřátelé, je třeba jich 10 zničit. Bohatě se ti odměním. Bereš?",
+      "description_short": "popis slain enemy questu",
+      "accept": "Beru",
+      "accepted": "Hezky pěkně, dej se do toho!",
+      "complete": "Odevzdat",
+      "completed": "Tak to je nádhera, zde je tvoje odměna <b>{{ reward }}</b>",
+      "looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!"
+    },
+    "slain_troll": {
+      "header": "Zabij trolly",
+      "description_short": "popis slain troll questu"
+    }
+  },
+  "common": {
+    "city_back": "Zpět do města",
+    "world_back": "Zpět do světa",
+    "world_explore": "Jsi na průzkumu světa!",
+    "price": "Cena",
+    "money": "Peníze",
+    "currency": "zlaťáků",
+    "hp": "HP",
+    "mana": "Mana",
+    "pos_x": "x",
+    "pos_y": "y"
   }
 }

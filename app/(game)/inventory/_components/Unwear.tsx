@@ -10,15 +10,13 @@ import { RxCross1 } from 'react-icons/rx'
 interface Props extends MutationInput<typeof useWearableUnwearMutation> {}
 
 export default function Unwear(p: Props) {
-  const playerQuery = usePlayerShowQuery()
-  const unwearMutation = useWearableUnwearMutation()
+  const playerShowQuery = usePlayerShowQuery()
+  const wearableUnwearMutation = useWearableUnwearMutation()
+
+  const handleUnwear = () => wearableUnwearMutation.mutate(p)
 
   return (
-    <Button
-      variant='destructive'
-      disabled={playerQuery.data?.isInCombat}
-      onClick={() => unwearMutation.mutate(p)}
-    >
+    <Button variant='destructive' disabled={playerShowQuery.data?.isInCombat} onClick={handleUnwear}>
       <RxCross1 />
     </Button>
   )

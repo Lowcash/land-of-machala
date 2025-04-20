@@ -30,15 +30,35 @@ export const show = authActionClient
         reward: slainEnemyQuestReward.reward_money,
       },
       text: {
-        header: `${i18n.t('place.your_are_in')} <b>${hospital.name}</b>`,
+        header: i18n.t('place.your_are_in', { place: hospital.name }),
         description: hospital.description,
-        resurrect: '',
-        healing: {
-          header: `${i18n.t('place.main_city_hospital.heal_for')}&nbsp;
-                   <b>
-                    ${hospital.healing_price ?? 0} ${i18n.t('common.currency')}
-                   </b>`,
-          button: i18n.t('place.main_city_hospital.heal_accept'),
+        heal: {
+          header: i18n.t('place.hospital.heal.header', {
+            price: `${hospital.healing_price ?? 0} ${i18n.t('common.currency')}`,
+          }),
+          action: i18n.t('place.hospital.heal.action'),
+          success: i18n.t('place.hospital.heal.success'),
+          failure: i18n.t('place.hospital.heal.failure'),
+        },
+        resurrect: {
+          action: i18n.t('place.hospital.resurrect.action'),
+        },
+        quest: {
+          enemySlain: {
+            description: i18n.t('quest.slain_enemy.description'),
+            accept: i18n.t('quest.slain_enemy.accept'),
+            complete: i18n.t('quest.slain_enemy.complete'),
+            accepted: i18n.t('quest.slain_enemy.accepted'),
+            completed: i18n.t('quest.slain_enemy.completed', {
+              reward: `${slainEnemyQuestReward.reward_money} ${i18n.t('common.currency')}`,
+            }),
+            looted: i18n.t('quest.slain_enemy.looted'),
+          },
+        },
+        potion: {
+          buy: i18n.t('potion.buy'),
+          buy_success: i18n.t('potion.buy_success'),
+          buy_failure: i18n.t('potion.buy_failure'),
         },
       },
     }
@@ -61,6 +81,7 @@ export const get = authActionClient
       ...hospital,
       name: i18n.t(`${hospital.i18n_key}.header` as any),
       description: i18n.t(`${hospital.i18n_key}.description` as any),
+      potions_hospital: hospital.potions_hospital.map((x) => ({ ...x, potion: { ...x.potion, name: '' } })),
     }
   })
 
