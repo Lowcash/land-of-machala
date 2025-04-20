@@ -4,4 +4,4 @@ import * as RaceAction from '@/app/actions/race'
 
 import { QUERY_KEY } from '@/config'
 
-export const useRaceAllQuery = createQueryHook([QUERY_KEY.RACE], RaceAction.getAll)
+export const useRaceShowQuery = createQueryHook([QUERY_KEY.RACE], RaceAction.show)

@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import type { Armor, Class, Race, Weapon } from '@prisma/client'
 import { authActionClient } from '@/lib/safe-action'
 
@@ -7,13 +8,29 @@ import * as PlayerAction from './player'
 import * as WearableAction from './wearable'
 
 import {
+  ERROR_CAUSE,
   AGILITY_DAMAGE_CONTRIBUTOR_MULTIPLIER,
   BASE_MAX_DAMAGE,
   BASE_MIN_DAMAGE,
   INTELLIGENCE_DAMAGE_CONTRIBUTOR_MULTIPLIER,
   STRENGTH_DAMAGE_CONTRIBUTOR_MULTIPLIER,
 } from '@/config'
-import { ERROR_CAUSE } from '@/config'
+
+export const show = authActionClient.metadata({ actionName: 'stats_show' }).action(async () => {
+  const stats = await get().then((x) => x?.data)
+
+  return {
+    ...stats,
+    text: {
+      header: i18n.t('stats.header'),
+      level: i18n.t('stats.level'),
+      damage: i18n.t('stats.damage'),
+      strength: i18n.t('stats.strength'),
+      agility: i18n.t('stats.agility'),
+      intelligence: i18n.t('stats.intelligence'),
+    },
+  }
+})
 
 export const get = authActionClient.metadata({ actionName: 'stats_get' }).action(async ({ ctx }) => {
   const [player, wearable] = await Promise.all([
@@ -21,7 +38,7 @@ export const get = authActionClient.metadata({ actionName: 'stats_get' }).action
     WearableAction.get().then((x) => x?.data),
   ])
 
-  if (!player || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!player || !player.race || !player.class || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
   const character: Character = {
     level: ctx.user.level,
@@ -29,7 +46,7 @@ export const get = authActionClient.metadata({ actionName: 'stats_get' }).action
     race: player.race,
   }
   const weapons: PlayerWeapons = {
-    leftHand: wearable.left_hand?.weapon,
+    leftHand: wearable.left_hand.weapon,
     rightHand: wearable.right_hand?.weapon,
   }
   const armors: PlayerArmors = {
@@ -47,15 +64,24 @@ export const get = authActionClient.metadata({ actionName: 'stats_get' }).action
 
   const damage = getDamage({ strength, agility, intelligence, weapons })
 
-  return { level: character.level, damage, strength, agility, intelligence }
+  return {
+    level: character.level,
+    damage,
+    strength,
+    agility,
+    intelligence,
+  }
 })
 
-type ArmorStatsContributor = { character: Character; armors: PlayerArmors }
+type ArmorStatsContributor = {
+  character: Character
+  armors: PlayerArmors
+}
 
 type Character = {
   level: number
-  race: Nullish<Race>
-  class: Nullish<Class>
+  race: Race
+  class: Class
 }
 
 type PlayerArmors = {
@@ -100,16 +126,21 @@ function getIntelligence({ character, armors }: ArmorStatsContributor) {
     character.level +
     (character.race?.intelligence ?? 0) +
     (character.class?.intelligence ?? 0) +
-    (armors.head?.intelligency ?? 0) +
-    (armors.shoulder?.intelligency ?? 0) +
-    (armors.chest?.intelligency ?? 0) +
-    (armors.hand?.intelligency ?? 0) +
-    (armors.pants?.intelligency ?? 0) +
-    (armors.boots?.intelligency ?? 0)
+    (armors.head?.intelligence ?? 0) +
+    (armors.shoulder?.intelligence ?? 0) +
+    (armors.chest?.intelligence ?? 0) +
+    (armors.hand?.intelligence ?? 0) +
+    (armors.pants?.intelligence ?? 0) +
+    (armors.boots?.intelligence ?? 0)
   )
 }
 
-type WeaponStatsContributor = { strength: number; agility: number; intelligence: number; weapons: PlayerWeapons }
+type WeaponStatsContributor = {
+  strength: number
+  agility: number
+  intelligence: number
+  weapons: PlayerWeapons
+}
 
 type PlayerWeapons = {
   leftHand?: Weapon

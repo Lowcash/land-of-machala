@@ -1,9 +1,10 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import i18n from '@/lib/i18n'
 import type { Potion } from '@prisma/client'
-import { useHospitalBuyPotionMutation, useHospitalQuery } from '@/hooks/api/use-hospital'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
+import { useHospitalBuyPotionMutation, useHospitalShowQuery } from '@/hooks/api/use-hospital'
 
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
@@ -18,13 +19,18 @@ interface Props {
 }
 
 export default function Potions({ hospitalId }: Props) {
-  const hospitalQuery = useHospitalQuery({ hospitalId })
+  const commonShowQuery = useCommonShowQuery()
+  const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
   const buyPotionMutation = useHospitalBuyPotionMutation()
 
   const handleBuyPotion = (potion: PotionItem) => buyPotionMutation.mutate({ hospitalId, potionId: potion.id })
 
-  const potions = hospitalQuery?.data?.potions_hospital.map((x) => ({ ...x.potion, potionId: x.id, price: x.price }))
+  const potions = hospitalShowQuery?.data?.potions_hospital.map((x) => ({
+    ...x.potion,
+    potionId: x.id,
+    price: x.price,
+  }))
 
   const hasBuyPotions = (potions?.length ?? 0) > 0
 
@@ -33,27 +39,31 @@ export default function Potions({ hospitalId }: Props) {
   return (
     <>
       {!buyPotionMutation.isIdle && (
-        <Alert>{buyPotionMutation.isSuccess ? loc.potion.buy_success : loc.potion.buy_failed}</Alert>
+        <Alert>
+          {buyPotionMutation.isSuccess
+            ? (hospitalShowQuery.data?.text.potion.buy_success ?? 'potion_buy_success')
+            : (hospitalShowQuery.data?.text.potion.buy_failure ?? 'buy_failure')}
+        </Alert>
       )}
 
       <Table
         columns={[
           {},
-          { className: 'text-center', content: loc.potion.efficiency },
-          { className: 'text-right', content: loc.common.price },
-          { className: 'text-right', content: loc.common.buy },
+          { className: 'text-center', content: commonShowQuery.data?.text.efficiency ?? 'potion_efficiency' },
+          { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'potion_price' },
+          { className: 'text-right', content: commonShowQuery.data?.text.buy ?? 'potion_buy' },
         ]}
         cells={potions?.map((x) => [
           { className: 'text-left', content: x.name },
           {
             className: 'text-center',
-            content: `+${x.hp_gain} ${loc.common.hp}`,
+            content: `+${x.hp_gain} ${i18n.t('common.hp')}`,
           },
           {
             className: 'text-right',
             content: (
               <Text>
-                {x.price} {loc.common.currency}
+                {x.price} {i18n.t('common.currency')}
               </Text>
             ),
           },

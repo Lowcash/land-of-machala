@@ -1,7 +1,6 @@
 'use client'
 
-import { loc } from '@/lib/localization'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { Card } from '@/styles/common'
 import Defeated from '@/app/(game)/world/_components/Info/Defeated'
@@ -10,13 +9,13 @@ import Enemy from '@/app/(game)/world/_components/Info/Enemy'
 import Place from '@/app/(game)/world/_components/Info/Place'
 
 export default function Info() {
-  const gameInfoQuery = useGameInfoQuery()
+  const gameInfoShowQuery = useGameInfoShowQuery()
 
-  const hasEnemy = !!gameInfoQuery.data?.enemy
-  const hasPlace = !!gameInfoQuery.data?.place
-  const hasLoot = !!gameInfoQuery.data?.loot
+  const hasEnemy = !!gameInfoShowQuery.data?.enemy
+  const hasPlace = !!gameInfoShowQuery.data?.place
+  const hasLoot = !!gameInfoShowQuery.data?.loot
 
-  const isDefeated = !!gameInfoQuery.data?.defeated
+  const isDefeated = !!gameInfoShowQuery.data?.defeated
 
   if (isDefeated) return <Defeated />
 
@@ -30,5 +29,5 @@ export default function Info() {
       </Card>
     )
 
-  return <Card>{loc.world.explore}</Card>
+  return <Card>{gameInfoShowQuery.data?.text?.worldExplore ?? 'game_world_eplore'}</Card>
 }

@@ -1,5 +1,5 @@
-import { loc } from '@/lib/localization'
 import type { Armor, Weapon } from '@prisma/client'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
 
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
@@ -9,7 +9,7 @@ import Table from '@/components/table'
 export type Action = 'buy' | 'sell'
 export type Type = 'weapon' | 'armor'
 
-export type MarketItem<T> = T & { marketItemId: string; price: number }
+type MarketItem<T> = T & { itemId: string; name: string; price: number; text: any }
 
 interface MarketProps<T> {
   items: MarketItem<T>[]
@@ -20,14 +20,16 @@ interface MarketProps<T> {
 
 export type OnActionParams<T> = Parameters<NonNullable<MarketProps<T>['onAction']>>
 
-export function WeaponMarket(p: MarketProps<Weapon>) {
+export function WeaponMarket(p: MarketProps<Omit<Weapon, 'id' | 'i18n_key'>>) {
+  const commonShowQuery = useCommonShowQuery()
+
   return (
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.stats.damage },
-        { className: 'text-right', content: loc.common.price },
-        { className: 'text-right', content: loc.common[p.action] },
+        { className: 'text-center', content: commonShowQuery.data?.text.damage ?? 'weapon_market_damage' },
+        { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'weapon_market_price' },
+        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_market_action' },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -41,11 +43,7 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
         },
         {
           className: 'text-right',
-          content: (
-            <Text>
-              {x.price} {loc.common.currency}
-            </Text>
-          ),
+          content: <Text>{x.text.price}</Text>,
         },
         {
           className: 'text-right',
@@ -60,18 +58,20 @@ export function WeaponMarket(p: MarketProps<Weapon>) {
   )
 }
 
-export function ArmorMarket(p: MarketProps<Armor>) {
+export function ArmorMarket(p: MarketProps<Omit<Armor, 'id' | 'i18n_key'>>) {
+  const commonShowQuery = useCommonShowQuery()
+
   return (
     <Table
       columns={[
         {},
         {},
-        { className: 'text-center', content: loc.armor.header },
-        { className: 'text-center', content: loc.stats.strength },
-        { className: 'text-center', content: loc.stats.agility },
-        { className: 'text-center', content: loc.stats.intelligence },
-        { className: 'text-right', content: loc.common.price },
-        { className: 'text-right', content: loc.common[p.action] },
+        { className: 'text-center', content: commonShowQuery.data?.text.armor ?? 'armor_market_armor' },
+        { className: 'text-center', content: commonShowQuery.data?.text.stregth ?? 'armor_market_stregth' },
+        { className: 'text-center', content: commonShowQuery.data?.text.agility ?? 'armor_market_agility' },
+        { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'armor_market_intelligence' },
+        { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'armor_market_price' },
+        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'armor_market_action' },
       ]}
       cells={p.items.map((x) => [
         { className: 'text-left', content: x.name },
@@ -79,14 +79,10 @@ export function ArmorMarket(p: MarketProps<Armor>) {
         { className: 'text-center', content: x.armor },
         { className: 'text-center', content: x.strength },
         { className: 'text-center', content: x.agility },
-        { className: 'text-center', content: x.intelligency },
+        { className: 'text-center', content: x.intelligence },
         {
           className: 'text-right',
-          content: (
-            <Text>
-              {x.price} {loc.common.currency}
-            </Text>
-          ),
+          content: <Text>{x.text.price}</Text>,
         },
         {
           className: 'text-right',

@@ -4,4 +4,4 @@ import * as ClassAction from '@/app/actions/class'
 
 import { QUERY_KEY } from '@/config'
 
-export const useClassAllQuery = createQueryHook([QUERY_KEY.CLASS], ClassAction.getAll)
+export const useClassShowQuery = createQueryHook([QUERY_KEY.CLASS], ClassAction.show)

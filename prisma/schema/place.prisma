@@ -1,10 +1,13 @@
 model Place {
-  id          String  @id @default(uuid())
-  name        String
-  description String?
+  id       String @id
+  i18n_key String
 
-  pos_x Int
-  pos_y Int
+  place_type PlaceType
+
+  x_min Int
+  x_max Int
+  y_min Int
+  y_max Int
 
   hospital    Hospital? @relation(fields: [hospital_id], references: [id])
   hospital_id String?
@@ -16,4 +19,11 @@ model Place {
   @@index([hospital_id])
   @@index([armory_id])
   @@index([bank_id])
+}
+
+enum PlaceType {
+  SAFEHOUSE
+  FOREST
+  DESERT
+  MOUNTAIN
 }

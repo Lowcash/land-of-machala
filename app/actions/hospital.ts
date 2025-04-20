@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { hospitalItemActionSchema, hospitalSchema } from '@/zod-schema/hospital'
@@ -9,22 +10,6 @@ import * as QuestAction from './quest'
 import * as GameAction from './game'
 
 import { ERROR_CAUSE } from '@/config'
-
-export const get = authActionClient
-  .metadata({ actionName: 'hospital_get' })
-  .schema(hospitalSchema)
-  .action(async ({ parsedInput }) => {
-    const hospital = await db.hospital.findFirst({
-      where: { id: parsedInput.hospitalId },
-      include: {
-        potions_hospital: { include: { potion: true } },
-      },
-    })
-
-    if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return hospital
-  })
 
 export const show = authActionClient
   .metadata({ actionName: 'hospital_show' })
@@ -42,13 +27,66 @@ export const show = authActionClient
       ...hospital,
       slainEnemyQuest: {
         state: slainEnemyQuestState,
-        reward: slainEnemyQuestReward.money,
+        reward: slainEnemyQuestReward.reward_money,
+      },
+      text: {
+        header: i18n.t('place.your_are_in', { place: hospital.name }),
+        description: hospital.description,
+        heal: {
+          header: i18n.t('place.hospital.heal.header', {
+            price: `${hospital.healing_price ?? 0} ${i18n.t('common.currency')}`,
+          }),
+          action: i18n.t('place.hospital.heal.action'),
+          success: i18n.t('place.hospital.heal.success'),
+          failure: i18n.t('place.hospital.heal.failure'),
+        },
+        resurrect: {
+          action: i18n.t('place.hospital.resurrect.action'),
+        },
+        quest: {
+          enemySlain: {
+            description: i18n.t('quest.slain_enemy.description'),
+            accept: i18n.t('quest.slain_enemy.accept'),
+            complete: i18n.t('quest.slain_enemy.complete'),
+            accepted: i18n.t('quest.slain_enemy.accepted'),
+            completed: i18n.t('quest.slain_enemy.completed', {
+              reward: `${slainEnemyQuestReward.reward_money} ${i18n.t('common.currency')}`,
+            }),
+            looted: i18n.t('quest.slain_enemy.looted'),
+          },
+        },
+        potion: {
+          buy: i18n.t('potion.buy'),
+          buy_success: i18n.t('potion.buy_success'),
+          buy_failure: i18n.t('potion.buy_failure'),
+        },
       },
     }
   })
 
-export const resurect = authActionClient
-  .metadata({ actionName: 'hospital_resurect' })
+export const get = authActionClient
+  .metadata({ actionName: 'hospital_get' })
+  .schema(hospitalSchema)
+  .action(async ({ parsedInput }) => {
+    const hospital = await db.hospital.findFirst({
+      where: { id: parsedInput.hospitalId },
+      include: {
+        potions_hospital: { include: { potion: true } },
+      },
+    })
+
+    if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return {
+      ...hospital,
+      name: i18n.t(`${hospital.i18n_key}.header` as any),
+      description: i18n.t(`${hospital.i18n_key}.description` as any),
+      potions_hospital: hospital.potions_hospital.map((x) => ({ ...x, potion: { ...x.potion, name: '' } })),
+    }
+  })
+
+export const resurrect = authActionClient
+  .metadata({ actionName: 'hospital_resurrect' })
   .schema(hospitalSchema)
   .action(async ({ ctx }) => {
     await db.user.update({
@@ -65,7 +103,7 @@ export const heal = authActionClient
 
     if (!hospital) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    const balance = ctx.user.money - (hospital.price ?? 0)
+    const balance = ctx.user.money - (hospital.healing_price ?? 0)
 
     if (balance < 0) throw new Error(ERROR_CAUSE.INSUFFICIENT_FUNDS)
 
