@@ -1,13 +1,13 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
 import { type Location } from '@/config'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useBackground } from '@/context/game-provider'
 
 import { List } from '@/styles/common'
-import { Link, Text } from '@/styles/typography'
+import { Text, Link } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 
 import Hospital from '@/app/(game)/world/_components/Info/Place/Hospital'
@@ -19,38 +19,38 @@ interface Props {
 }
 
 export default function Place(p: Props) {
-  const gameInfoQuery = useGameInfoQuery()
-
-  const armoryId = gameInfoQuery.data?.place?.armory?.id
-  const bankId = gameInfoQuery.data?.place?.bank?.id
-  const hospitalId = gameInfoQuery.data?.place?.hospital?.id
+  const commonShowQuery = useCommonShowQuery()
+  const gameInfoShowQuery = useGameInfoShowQuery()
 
   const { subPlace, setSubPlace } = useSetSubplace(p.forceSubplace)
 
-  if (!!subPlace)
+  if (!!subPlace) {
+    const hospital = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
+    const armory = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
+    const bank = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
+
     return (
       <>
         <Button variant='warning' size={'shrink-sm'} onClick={() => setSubPlace(undefined)}>
-          {loc.common.back}
+          {commonShowQuery.data?.text.cityBack ?? 'city_back'}
         </Button>
 
-        {subPlace === 'hospital' && hospitalId && <Hospital hospitalId={hospitalId} />}
-        {subPlace === 'armory' && armoryId && <Armory armoryId={armoryId} />}
-        {subPlace === 'bank' && bankId && <Bank bankId={bankId} />}
+        {subPlace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
+        {subPlace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
+        {subPlace === 'bank' && !!bank && <Bank bankId={bank.id} />}
       </>
     )
+  }
 
   return (
     <>
-      <Text>
-        {loc.place.your_are_in} <b>{gameInfoQuery.data?.place?.name}</b>
-      </Text>
-      <Text>{gameInfoQuery.data?.place?.description}</Text>
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.header ?? 'place_header' }} />
+      <Text dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.description ?? 'place_description' }} />
 
       <List>
-        {SUBPLACES.map((x) => (
-          <li key={`SubPlace_${x}`}>
-            <Link onClick={() => setSubPlace(x)}>{loc.place[x].header}</Link>
+        {gameInfoShowQuery.data?.place?.subplaces?.map((x) => (
+          <li key={`SubPlace_${x.type}`}>
+            <Link onClick={() => setSubPlace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
           </li>
         ))}
       </List>
@@ -67,5 +67,3 @@ function useSetSubplace(forceSubplace?: Location) {
 
   return { subPlace, setSubPlace }
 }
-
-const SUBPLACES = ['hospital', 'armory', 'bank'] satisfies Location[]

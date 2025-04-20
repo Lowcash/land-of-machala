@@ -1,8 +1,6 @@
 model Armory {
-  id             String  @id @default(uuid())
-  name           String
-  description    String?
-  subdescription String?
+  id       String @id
+  i18n_key String
 
   weapons WeaponInArmory[]
   armors  ArmorInArmory[]
@@ -12,12 +10,12 @@ model Armory {
 model WeaponInArmory {
   id String @id @default(uuid())
 
-  weapon    Weapon  @relation(fields: [weapon_id], references: [id])
-  weapon_id String
-  armory    Armory? @relation(fields: [armory_id], references: [id])
-  armory_id String?
-
   price Int
+
+  weapon    Weapon @relation(fields: [weapon_id], references: [id])
+  weapon_id String
+  armory    Armory @relation(fields: [armory_id], references: [id])
+  armory_id String
 
   @@index([weapon_id])
   @@index([armory_id])
@@ -26,12 +24,12 @@ model WeaponInArmory {
 model ArmorInArmory {
   id String @id @default(uuid())
 
-  armor     Armor   @relation(fields: [armor_id], references: [id])
-  armor_id  String
-  armory    Armory? @relation(fields: [armory_id], references: [id])
-  armory_id String?
-
   price Int
+
+  armor     Armor  @relation(fields: [armor_id], references: [id])
+  armor_id  String
+  armory    Armory @relation(fields: [armory_id], references: [id])
+  armory_id String
 
   @@index([armor_id])
   @@index([armory_id])

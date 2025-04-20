@@ -1,10 +1,19 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { type QuestSchema, questSchema } from '@/zod-schema/quest'
 
 import { ERROR_CAUSE } from '@/config'
+
+export const showAssigned = authActionClient.metadata({ actionName: 'quest_show_assigned' }).action(async () => {
+  const assignedQuests = await getAssigned().then((x) => x?.data)
+
+  if (!assignedQuests) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
+
+  return assignedQuests
+})
 
 export const get = authActionClient
   .metadata({ actionName: 'quest_get' })
@@ -20,49 +29,75 @@ export const get = authActionClient
   })
 
 async function getRules({ ident }: QuestSchema) {
-  const userQuest = (await getAssigned())?.data
+  const assignedQuest = await getAssigned().then((x) => x?.data)
 
-  if (!userQuest) return
+  if (!assignedQuest) return
 
   switch (ident) {
     case 'SLAIN_ENEMY':
-      return userQuest.quest_slain_enemy!.slain.actual_slain >= userQuest.quest_slain_enemy!.slain.desired_slain
+      return assignedQuest.quest_slain_enemy!.slain.actual_slain >= assignedQuest.quest_slain_enemy!.slain.desired_slain
     case 'SLAIN_TROLL':
-      return userQuest.quest_slain_troll!.slain.actual_slain >= userQuest.quest_slain_troll!.slain.desired_slain
+      return assignedQuest.quest_slain_troll!.slain.actual_slain >= assignedQuest.quest_slain_troll!.slain.desired_slain
   }
 }
 
-export const getAssigned = authActionClient.metadata({ actionName: 'quest_getAssigned' }).action(async ({ ctx }) => {
-  let userQuest = await db.userQuest.findFirst({
-    where: { id: ctx.user.user_quest_id ?? -1 },
-    include: {
-      quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
-      quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
-    },
-  })
-
-  if (!userQuest) {
-    userQuest = await db.$transaction(async (db) => {
-      const userQuest = await db.userQuest.create({
-        data: {},
+export const getAssigned = authActionClient.metadata({ actionName: 'quest_get_assigned' }).action(async ({ ctx }) => {
+  const userQuest = ctx.user.user_quest_id
+    ? await db.userQuest.findFirst({
+        where: { id: ctx.user.user_quest_id },
         include: {
           quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
           quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
         },
       })
+    : await db.$transaction(async (db) => {
+        const userQuest = await db.userQuest.create({
+          data: {},
+          include: {
+            quest_slain_enemy: { include: { quest: true, slain: { include: { enemy: true } } } },
+            quest_slain_troll: { include: { quest: true, slain: { include: { enemy: true } } } },
+          },
+        })
 
-      await db.user.update({
-        where: { id: ctx.user.id },
-        data: { user_quest: { connect: { id: userQuest.id } } },
+        await db.user.update({
+          where: { id: ctx.user.id },
+          data: { user_quest: { connect: { id: userQuest.id } } },
+        })
+
+        return userQuest
       })
-
-      return userQuest
-    })
-  }
 
   if (!userQuest) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
 
-  return userQuest
+  return {
+    ...userQuest,
+    quest_slain_enemy: userQuest.quest_slain_enemy
+      ? {
+          ...userQuest.quest_slain_enemy,
+          text: {
+            description: i18n.t('quest.slain_enemy.description_short'),
+            slained: i18n.t('quest.slained'),
+          },
+          quest: {
+            ...userQuest.quest_slain_enemy.quest,
+            name: i18n.t('quest.slain_enemy.header'),
+          },
+        }
+      : undefined,
+    quest_slain_troll: userQuest.quest_slain_troll
+      ? {
+          ...userQuest.quest_slain_troll,
+          text: {
+            description: i18n.t('quest.slain_troll.description_short'),
+            slained: i18n.t('quest.slained'),
+          },
+          quest: {
+            ...userQuest.quest_slain_troll.quest,
+            name: i18n.t('quest.slain_troll.header'),
+          },
+        }
+      : undefined,
+  }
 })
 
 export const accept = authActionClient
@@ -139,7 +174,7 @@ export const complete = authActionClient
     if (!userQuest[questKey]) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
 
     return await db.$transaction(async (db) => {
-      const reward = userQuest[questKey]!.quest.money
+      const reward = userQuest[questKey]!.quest.reward_money
 
       switch (parsedInput.ident) {
         case 'SLAIN_ENEMY':
@@ -168,7 +203,7 @@ export const complete = authActionClient
   })
 
 export const checkProgress = authActionClient
-  .metadata({ actionName: 'quest_checkProgress' })
+  .metadata({ actionName: 'quest_check_progress' })
   .schema(questSchema)
   .action(async ({ parsedInput }) => {
     const userQuest = (await getAssigned())?.data
