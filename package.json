@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "postinstall": "npm run prisma:generate",
-    "build": "next build",
+    "build": "npm run prisma:generate && next build",
     "start": "next start",
     "lint": "next lint",
     "prisma:update": "npx prisma db push --schema prisma/schema",
