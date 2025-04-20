@@ -1,9 +1,9 @@
 'use client'
 
 import React from 'react'
-import { loc } from '@/lib/localization'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
 import {
-  useBankQuery,
+  useBankShowQuery,
   useBankAccountQuery,
   useBankDepositItemMutation,
   useBankWithdrawItemMutation,
@@ -22,15 +22,16 @@ interface Props {
 }
 
 export default function Bank({ bankId }: Props) {
-  const bankQuery = useBankQuery({ bankId })
+  const commonShowQuery = useCommonShowQuery()
+  const bankShowQuery = useBankShowQuery({ bankId })
   const bankAccountQuery = useBankAccountQuery({ bankId })
   const showInventoryQuery = useInventoryShowQuery()
 
   const depositItemMutation = useBankDepositItemMutation()
   const withdrawItemMutation = useBankWithdrawItemMutation()
 
-  const depositMoneyRef = React.useRef<React.ElementRef<'input'>>(null)
-  const withdrawMoneyRef = React.useRef<React.ElementRef<'input'>>(null)
+  const depositMoneyRef = React.useRef<React.ComponentRef<'input'>>(null)
+  const withdrawMoneyRef = React.useRef<React.ComponentRef<'input'>>(null)
 
   const handleItemAction = <T extends any>(...onActionArgs: OnActionParams<T>) => {
     const [action, item, type] = onActionArgs
@@ -69,7 +70,7 @@ export default function Bank({ bankId }: Props) {
   const withdrawArmors = bankAccountQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
   const withdrawPotions = bankAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
 
-  if (bankQuery.isLoading) return <Loading position='local' />
+  if (bankShowQuery.isLoading) return <Loading position='local' />
 
   const hasDepositWeapons = (depositWeapons?.length ?? 0) > 0
   const hasDepositArmors = (depositArmors?.length ?? 0) > 0
@@ -82,43 +83,42 @@ export default function Bank({ bankId }: Props) {
 
   return (
     <>
-      <Text>
-        {loc.place.your_are_in} <b>{bankQuery.data?.name}</b>
-      </Text>
-      <Text>{bankQuery.data?.description}</Text>
-      <Text>{bankQuery.data?.subdescription}</Text>
+      <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.header ?? 'bank_header' }} />
+      <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.description ?? 'bank_description' }} />
 
       {hasMessage && (
         <Alert>
-          {(depositItemMutation.isError || withdrawItemMutation.isError) && loc.place.bank.deposit_or_withdraw_failed}
+          {((depositItemMutation.isError || withdrawItemMutation.isError) &&
+            bankShowQuery.data?.text.depositOrWithdrawFailure) ??
+            'bank_deposit_or_witdraw_failure'}
 
-          {depositItemMutation.isSuccess && loc.place.bank.deposit_success}
-          {withdrawItemMutation.isSuccess && loc.place.bank.withdraw_success}
+          {depositItemMutation.isSuccess && (bankShowQuery.data?.text.depositSuccess ?? 'bank_deposit_success')}
+          {withdrawItemMutation.isSuccess && (bankShowQuery.data?.text.withdrawSuccess ?? 'bank_withdraw_success')}
         </Alert>
       )}
 
       <div className='flex gap-4 overflow-auto'>
         <Card.Inner className='justify-between'>
-          <H3 className='whitespace-nowrap'>{loc.place.bank.deposited_money}</H3>
+          <H3 className='whitespace-nowrap'>{bankShowQuery.data?.text.depositedMoney ?? 'bank_deposited_money'}</H3>
           <Text>{bankAccountQuery.data?.money ?? 0}</Text>
         </Card.Inner>
 
         <Card.Inner>
-          <H3>{loc.place.bank.deposit_money}</H3>
+          <H3>{bankShowQuery.data?.text.depositMoney ?? 'bank_deposit_money'}</H3>
           <div className='flex space-x-2'>
             <Input ref={depositMoneyRef} type='number' defaultValue={0} />
             <Button variant='destructive' onClick={() => handleMoneyAction('deposit')}>
-              {loc.place.bank.deposit}
+              {commonShowQuery.data?.text.deposit ?? 'bank_deposit'}
             </Button>
           </div>
         </Card.Inner>
 
         <Card.Inner>
-          <H3>{loc.place.bank.withdraw_money}</H3>
+          <H3>{bankShowQuery.data?.text.withdrawMoney ?? 'bank_withdraw_money'}</H3>
           <div className='flex space-x-2'>
             <Input ref={withdrawMoneyRef} type='number' defaultValue={0} />
             <Button variant='destructive' onClick={() => handleMoneyAction('withdraw')}>
-              {loc.place.bank.withdraw}
+              {commonShowQuery.data?.text.withdraw ?? 'bank_withdraw'}
             </Button>
           </div>
         </Card.Inner>
@@ -126,7 +126,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositWeapons && (
         <Card.Inner>
-          <H3>{loc.place.bank.deposit_weapon}</H3>
+          <H3>{bankShowQuery.data?.text.depositWeapon ?? 'bank_deposit_weapon'}</H3>
           <WeaponSafe
             items={depositWeapons!}
             action='deposit'
@@ -137,7 +137,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositArmors && (
         <Card.Inner>
-          <H3>{loc.place.bank.deposit_armor}</H3>
+          <H3>{bankShowQuery.data?.text.depositArmor ?? 'bank_deposit_armor'}</H3>
           <ArmorSafe
             items={depositArmors!}
             action='deposit'
@@ -148,7 +148,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasDepositPotions && (
         <Card.Inner>
-          <H3>{loc.place.bank.deposit_potion}</H3>
+          <H3>{bankShowQuery.data?.text.depositPotion ?? 'bank_deposit_potion'}</H3>
           <PotionSafe
             items={depositPotions!}
             action='deposit'
@@ -159,7 +159,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawWeapons && (
         <Card.Inner>
-          <H3>{loc.place.bank.withdraw_weapon}</H3>
+          <H3>{bankShowQuery.data?.text.withdrawWeapon ?? 'bank_withdraw_weapon'}</H3>
           <WeaponSafe
             items={withdrawWeapons!}
             action='withdraw'
@@ -170,7 +170,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawArmors && (
         <Card.Inner>
-          <H3>{loc.place.bank.withdraw_armor}</H3>
+          <H3>{bankShowQuery.data?.text.withdrawArmor ?? 'bank_withdraw_armor'}</H3>
           <ArmorSafe
             items={withdrawArmors!}
             action='withdraw'
@@ -181,7 +181,7 @@ export default function Bank({ bankId }: Props) {
 
       {hasWithdrawPotions && (
         <Card.Inner>
-          <H3>{loc.place.bank.withdraw_potion}</H3>
+          <H3>{bankShowQuery.data?.text.withdrawPotion ?? 'bank_withdraw_potion'}</H3>
           <PotionSafe
             items={withdrawPotions!}
             action='withdraw'

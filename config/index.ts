@@ -38,6 +38,12 @@ export type Route = keyof typeof ROUTE
 
 export * from './routes'
 export * from './query-keys'
+export * from './cache-keys'
+
+export const BASE_HP_ACTUAL = 100
+export const BASE_HP_MAX = 100
+export const BASE_XP_ACTUAL = 0
+export const BASE_XP_MAX = 100
 
 export const BASE_MIN_DAMAGE = 0
 export const BASE_MAX_DAMAGE = 1
@@ -45,3 +51,5 @@ export const BASE_MAX_DAMAGE = 1
 export const STRENGTH_DAMAGE_CONTRIBUTOR_MULTIPLIER = 0.25
 export const AGILITY_DAMAGE_CONTRIBUTOR_MULTIPLIER = 0.1
 export const INTELLIGENCE_DAMAGE_CONTRIBUTOR_MULTIPLIER = 0.1
+
+export const EMPTY = '-'

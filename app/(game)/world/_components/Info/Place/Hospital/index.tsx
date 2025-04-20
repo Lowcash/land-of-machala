@@ -1,15 +1,13 @@
 'use client'
 
-import React from 'react'
-import { loc } from '@/lib/localization'
 import {
-  useHospitalQuery,
+  useHospitalShowQuery,
   useHospitalHealMutation,
   useHospitalResurectMutation,
   useHospitalAcceptEnemySlainQuestMutation,
   useHospitalCompleteEnemySlainQuestMutation,
 } from '@/hooks/api/use-hospital'
-import { useGameInfoQuery } from '@/hooks/api/use-game'
+import { useGameInfoShowQuery } from '@/hooks/api/use-game'
 
 import { H3, Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
@@ -23,8 +21,8 @@ interface Props {
 }
 
 export default function Hospital({ hospitalId }: Props) {
-  const gameInfoQuery = useGameInfoQuery()
-  const hospitalQuery = useHospitalQuery({ hospitalId })
+  const gameInfoShowQuery = useGameInfoShowQuery()
+  const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
   const healMutation = useHospitalHealMutation()
   const resurectMutation = useHospitalResurectMutation()
@@ -38,72 +36,72 @@ export default function Hospital({ hospitalId }: Props) {
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
 
-  if (gameInfoQuery.isLoading || hospitalQuery.isLoading) return <Loading position='local' />
-
-  const isDefeated = !!gameInfoQuery.data?.defeated
+  if (gameInfoShowQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
   return (
     <>
-      <Text>
-        {loc.place.your_are_in} <b>{hospitalQuery.data?.name}</b>
-      </Text>
-      <Text>{hospitalQuery.data?.description}</Text>
+      <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? 'hospital_header' }} />
+      <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? 'hospital_description' }} />
 
-      {isDefeated && (
+      {!!gameInfoShowQuery.data?.defeated ? (
+        // player defaeted scenario
         <Text>
-          {loc.place.hospital.resurrect_description}
           <Button variant='destructive' onClick={handleResurect}>
-            {loc.place.hospital.resurrect_accept}
+            {hospitalShowQuery.data?.text?.resurrect.action ?? 'hospital_resurrect_action'}
           </Button>
         </Text>
-      )}
-
-      {!isDefeated && (
+      ) : (
+        // player common scenario
         <>
           {healMutation.isIdle && (
-            <Text>
-              {loc.place.hospital.heal_for}&nbsp;
-              <b>
-                {hospitalQuery?.data?.price ?? 0} {loc.common.currency}
-              </b>
+            <div className='flex items-center'>
+              <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.heal?.header ?? '' }} />
               &nbsp;
               <Button variant='destructive' onClick={handleHeal}>
-                {loc.place.hospital.heal_accept}
+                {hospitalShowQuery.data?.text?.heal?.action ?? 'hospital_heal_action'}
               </Button>
-            </Text>
+            </div>
           )}
           {!healMutation.isIdle && (
-            <Alert>{healMutation.isSuccess ? loc.place.hospital.heal_success : loc.place.hospital.heal_failed}</Alert>
+            <Alert>
+              {healMutation.isSuccess
+                ? (hospitalShowQuery.data?.text?.heal.success ?? 'hospital_heal_success')
+                : (hospitalShowQuery.data?.text?.heal.failure ?? 'hospital_heal_failure')}
+            </Alert>
           )}
 
-          {acceptEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.accepted}</Alert>}
+          {acceptEnemySlainQuestMutation.isSuccess && (
+            <Alert>{hospitalShowQuery.data?.text.quest.enemySlain.accepted ?? 'hospital_quest_accepted'}</Alert>
+          )}
 
-          {hospitalQuery.data?.slainEnemyQuest.state === 'READY' && (
+          {hospitalShowQuery.data?.slainEnemyQuest.state === 'READY' && (
             <Text>
-              {loc.quest.enemy_slain.description_hospital}&nbsp;
+              {hospitalShowQuery.data?.text.quest.enemySlain.description ?? 'hospital_quest_description'}&nbsp;
               <Button variant='warning' onClick={handleAcceptEnemySlainQuest}>
-                {loc.quest.enemy_slain.accept}
+                {hospitalShowQuery.data?.text.quest.enemySlain.accept ?? 'hospital_quest_accept'}
               </Button>
             </Text>
           )}
 
-          {completeEnemySlainQuestMutation.isSuccess && <Alert>{loc.quest.enemy_slain.completed_looted}</Alert>}
+          {completeEnemySlainQuestMutation.isSuccess && (
+            <Alert>{hospitalShowQuery.data?.text.quest.enemySlain.looted ?? 'hospital_quest_looted'}</Alert>
+          )}
 
-          {hospitalQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
-            <Text>
-              {loc.quest.enemy_slain.completed}:{' '}
-              <b>
-                {hospitalQuery.data?.slainEnemyQuest.reward} {loc.common.currency}
-              </b>
-              &nbsp;
+          {hospitalShowQuery.data?.slainEnemyQuest.state === 'COMPLETE' && (
+            <div className='flex items-center'>
+              <Text
+                dangerouslySetInnerHTML={{
+                  __html: hospitalShowQuery.data?.text.quest.enemySlain.completed ?? 'hospital_quest_completed',
+                }}
+              />
               <Button variant='warning' onClick={handleCompleteEnemySlainQuest}>
-                {loc.quest.enemy_slain.complete}
+                {hospitalShowQuery.data?.text.quest.enemySlain.complete ?? 'hospital_quest_complete_action'}
               </Button>
-            </Text>
+            </div>
           )}
 
           <Card.Inner>
-            <H3>{loc.potion.buy}</H3>
+            <H3>{hospitalShowQuery.data?.text.potion.buy ?? 'hospital_potion_buy'}</H3>
             <Potions hospitalId={hospitalId} />
           </Card.Inner>
         </>

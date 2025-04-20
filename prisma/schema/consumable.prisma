@@ -1,8 +1,8 @@
 model Potion {
-  id   Int     @id @default(autoincrement())
-  name String?
+  id       String @id
+  i18n_key String
 
-  hp_gain Int
+  hp_gain Int?
 
   potions_bank      PotionInBank[]
   potions_hospital  PotionInHospital[]
