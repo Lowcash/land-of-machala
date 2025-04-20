@@ -1,26 +1,25 @@
 'use client'
 
-import i18n from '@/lib/i18n'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/table'
-import Drink from './Drink'
+import Drink from '@/app/(game)/inventory/_components/Drink'
 
 export default function Potions() {
-  const showInventory = useInventoryShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
 
   return (
     <Table
       columns={[
         {},
-        { className: 'text-center', content: i18n.t('consumable.efficiency') },
-        { className: 'text-right', content: i18n.t('common.use') },
+        { className: 'text-center', content: inventoryShowQuery.data?.text.efficiency ?? 'potion_efficiency' },
+        { className: 'text-right', content: inventoryShowQuery.data?.text.use ?? 'potion_use' },
       ]}
-      cells={showInventory.data?.potions.map((x) => [
-        { className: 'text-left', content: x.potion.i18n_key },
+      cells={inventoryShowQuery.data?.potions.map((x) => [
+        { className: 'text-left', content: x.potion.name },
         {
           className: 'text-center',
-          content: `+${x.potion.hp_gain} ${i18n.t('common.hp')}`,
+          content: x.text.gain ?? 'potion_gain',
         },
         {
           className: 'text-right',

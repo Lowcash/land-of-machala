@@ -1,6 +1,5 @@
 'use client'
 
-import i18n from '@/lib/i18n'
 import { useBackground } from '@/context/game-provider'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
@@ -26,27 +25,27 @@ export default function Page() {
     <Card>
       <Back />
 
-      {!hasItems && <H3>{i18n.t('inventory.empty')}</H3>}
-
-      {hasItems && (
+      {!hasItems ? (
+        <H3>{inventoryShowQuery.data?.text.empty ?? 'inventory_empty'}</H3>
+      ) : (
         <>
-          <H3>{i18n.t('inventory.found')}:</H3>
+          <H3>{inventoryShowQuery.data?.text.content ?? 'inventory_content'}:</H3>
 
           {hasWeapons && (
             <Card.Inner>
-              <H3>{i18n.t('weapon.header_multi')}</H3>
+              <H3>{inventoryShowQuery.data?.text.weapon_multi ?? 'inventory_weapon_multi'}</H3>
               <Weapons />
             </Card.Inner>
           )}
           {hasArmors && (
             <Card.Inner>
-              <H3>{i18n.t('armor.header_multi')}</H3>
+              <H3>{inventoryShowQuery.data?.text.armor_multi ?? 'inventory_armor_multi'}</H3>
               <Armors />
             </Card.Inner>
           )}
           {hasPotions && (
             <Card.Inner>
-              <H3>{i18n.t('consumable.header_multi')}</H3>
+              <H3>{inventoryShowQuery.data?.text.potion_multi ?? 'inventory_potion_multi'}</H3>
               <Potions />
             </Card.Inner>
           )}

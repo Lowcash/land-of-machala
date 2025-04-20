@@ -22,11 +22,11 @@ export const show = authActionClient.metadata({ actionName: 'player_show' }).act
       character: i18n.t('character.header'),
       race: i18n.t('race.header'),
       class: i18n.t('class.header'),
-      money: i18n.t('character.money'),
-      currency: i18n.t('character.currency'),
-      hp: i18n.t('character.hp'),
-      pos_x: i18n.t('character.pos_x'),
-      pos_y: i18n.t('character.pos_y'),
+      money: i18n.t('common.money'),
+      currency: i18n.t('common.currency'),
+      hp: i18n.t('common.hp'),
+      pos_x: i18n.t('common.pos_x'),
+      pos_y: i18n.t('common.pos_y'),
     },
   }
 })

@@ -3,6 +3,7 @@ export const QUERY_KEY = {
   BANK: 'bank-key',
   BANK_ACCOUNT: 'bank-account-key',
   CLASS: 'class-key',
+  COMMON: 'common-key',
   GAME_INFO: 'game-info-key',
   HOSPITAL: 'hospital-key',
   INVENTORY: 'inventory-key',

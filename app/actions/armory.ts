@@ -32,8 +32,12 @@ export const show = authActionClient
       sellWeapons: getSellWeapons({ weaponsAll, inventory }),
       sellArmors: getSellArmors({ armorsAll, inventory }),
       text: {
-        header: `${i18n.t('place.your_are_in')} <b>${armory.name}</b>`,
+        header: i18n.t('place.your_are_in', { place: armory.name }),
         description: armory.description,
+        armorBuy: i18n.t('armor.buy'),
+        armorSell: i18n.t('armor.sell'),
+        weaponBuy: i18n.t('weapon.buy'),
+        weaponSell: i18n.t('weapon.sell'),
         buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
         buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
       },
@@ -60,6 +64,14 @@ export const get = authActionClient
       ...armory,
       name: i18n.t(`${armory.i18n_key}.header` as any),
       description: i18n.t(`${armory.i18n_key}.description` as any),
+      armors: armory.armors.map((x) => ({
+        ...x,
+        armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
+      })),
+      weapons: armory.weapons.map((x) => ({
+        ...x,
+        weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
+      })),
     }
   })
 
@@ -77,14 +89,21 @@ function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: ArmoryGetResult }) 
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.armory?.weapons.map((x) => ({
-    itemId: x.id,
-    weapon_id: x.weapon_id,
-    name: x.weapon.i18n_key,
-    damage_from: x.weapon.damage_from,
-    damage_to: x.weapon.damage_to,
-    price: spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
-  }))
+  return args.armory?.weapons.map((x) => {
+    const price = spreadBuyPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      weapon_id: x.weapon_id,
+      name: x.weapon.name,
+      damage_from: x.weapon.damage_from,
+      damage_to: x.weapon.damage_to,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
 function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction.InventoryGetResult }) {
@@ -94,14 +113,21 @@ function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryAction
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.inventory?.weapons_inventory.map((x) => ({
-    itemId: x.id,
-    weapon_id: x.weapon_id,
-    name: x.weapon.i18n_key,
-    damage_from: x.weapon.damage_from,
-    damage_to: x.weapon.damage_to,
-    price: spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0,
-  }))
+  return args.inventory?.weapons_inventory.map((x) => {
+    const price = spreadSellPriceWeapons.find((y) => y.id === x.weapon_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      weapon_id: x.weapon_id,
+      name: x.weapon.name,
+      damage_from: x.weapon.damage_from,
+      damage_to: x.weapon.damage_to,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
 function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
@@ -111,17 +137,24 @@ function getBuyArmors(args: { armorsAll: Armor[]; armory: ArmoryGetResult }) {
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.armory?.armors.map((x) => ({
-    itemId: x.id,
-    armor_id: x.armor_id,
-    name: x.armor.i18n_key,
-    type: x.armor.type,
-    armor: x.armor.armor,
-    strength: x.armor.strength,
-    agility: x.armor.agility,
-    intelligence: x.armor.intelligence,
-    price: spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
-  }))
+  return args.armory?.armors.map((x) => {
+    const price = spreadBuyPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      armor_id: x.armor_id,
+      name: x.armor.name,
+      type: x.armor.type,
+      armor: x.armor.armor,
+      strength: x.armor.strength,
+      agility: x.armor.agility,
+      intelligence: x.armor.intelligence,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
 function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.InventoryGetResult }) {
@@ -131,17 +164,24 @@ function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryAction.In
     { roundBy: ROUND_PRICE_BY },
   )
 
-  return args.inventory?.armors_inventory.map((x) => ({
-    itemId: x.id,
-    armor_id: x.armor_id,
-    name: x.armor.i18n_key,
-    type: x.armor.type,
-    armor: x.armor.armor,
-    strength: x.armor.strength,
-    agility: x.armor.agility,
-    intelligence: x.armor.intelligence,
-    price: spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0,
-  }))
+  return args.inventory?.armors_inventory.map((x) => {
+    const price = spreadSellPriceArmors.find((y) => y.id === x.armor_id)?.price ?? 0
+
+    return {
+      itemId: x.id,
+      armor_id: x.armor_id,
+      name: x.armor.name,
+      type: x.armor.type,
+      armor: x.armor.armor,
+      strength: x.armor.strength,
+      agility: x.armor.agility,
+      intelligence: x.armor.intelligence,
+      price,
+      text: {
+        price: `${price} ${i18n.t('common.currency')}`,
+      },
+    }
+  })
 }
 
 function spreadItemsPrices<T extends { id: string | number }>(

@@ -4,7 +4,7 @@ import { usePlayerShowQuery, useStatsShowQuery } from '@/hooks/api/use-player'
 import { useWearableShowQuery } from '@/hooks/api/use-wearable'
 
 import Sidebar from '@/components/layout/Sidebar'
-import Content from '@/components/layout/Sidebar/Left/Content'
+import SidebarLeftContent from '@/components/layout/Sidebar/Left/Content'
 import Progress from '@/components/ui/progress'
 import Loading from '@/components/Loading'
 
@@ -20,7 +20,7 @@ export default function SidebarLeft() {
 
   return (
     <Sidebar open={true} position='left'>
-      <Content
+      <SidebarLeftContent
         data={[
           {
             header: playerShowQuery.data?.text.character ?? 'character',
