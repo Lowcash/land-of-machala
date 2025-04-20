@@ -1,24 +1,29 @@
 'use client'
 
-import { loc } from '@/lib/localization'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/table'
-import Wear from './Wear'
-import Unwear from './Unwear'
+import Wear from '@/app/(game)/inventory/_components/Wear'
+import Unwear from '@/app/(game)/inventory/_components/Unwear'
 
 export default function Weapons() {
-  const showInventory = useInventoryShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
 
   return (
     <Table
       columns={[
         {},
-        { className: 'text-center', content: loc.stats.damage },
-        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.left_hand})` },
-        { className: 'text-center', content: `${loc.common.wear} (${loc.weapon.right_hand})` },
+        { className: 'text-center', content: inventoryShowQuery.data?.text.damage ?? 'inventory_damage' },
+        {
+          className: 'text-center',
+          content: `${inventoryShowQuery.data?.text.wear ?? 'inventory_wear'} (${inventoryShowQuery.data?.text.left_hand ?? 'inventory_left_hand'})`,
+        },
+        {
+          className: 'text-center',
+          content: `${inventoryShowQuery.data?.text.wear ?? 'inventory_wear'} (${inventoryShowQuery.data?.text.right_hand ?? 'inventory_right_hand'}})`,
+        },
       ]}
-      cells={showInventory.data?.weapons.map((x) => [
+      cells={inventoryShowQuery.data?.weapons.map((x) => [
         { className: 'text-left', content: x.weapon.name },
         {
           className: 'text-center',

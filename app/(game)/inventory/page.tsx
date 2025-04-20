@@ -1,6 +1,5 @@
 'use client'
 
-import { loc } from '@/lib/localization'
 import { useBackground } from '@/context/game-provider'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
@@ -26,27 +25,27 @@ export default function Page() {
     <Card>
       <Back />
 
-      {!hasItems && <H3>{loc.inventory.empty}</H3>}
-
-      {hasItems && (
+      {!hasItems ? (
+        <H3>{inventoryShowQuery.data?.text.empty ?? 'inventory_empty'}</H3>
+      ) : (
         <>
-          <H3>{loc.inventory.found}:</H3>
+          <H3>{inventoryShowQuery.data?.text.content ?? 'inventory_content'}:</H3>
 
           {hasWeapons && (
             <Card.Inner>
-              <H3>{loc.weapon.header_multi}</H3>
+              <H3>{inventoryShowQuery.data?.text.weapon_multi ?? 'inventory_weapon_multi'}</H3>
               <Weapons />
             </Card.Inner>
           )}
           {hasArmors && (
             <Card.Inner>
-              <H3>{loc.armor.header_multi}</H3>
+              <H3>{inventoryShowQuery.data?.text.armor_multi ?? 'inventory_armor_multi'}</H3>
               <Armors />
             </Card.Inner>
           )}
           {hasPotions && (
             <Card.Inner>
-              <H3>{loc.potion.header_multi}</H3>
+              <H3>{inventoryShowQuery.data?.text.potion_multi ?? 'inventory_potion_multi'}</H3>
               <Potions />
             </Card.Inner>
           )}

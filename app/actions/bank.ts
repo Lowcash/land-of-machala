@@ -1,5 +1,6 @@
 'use server'
 
+import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { authActionClient } from '@/lib/safe-action'
 import { bankActionSchema, bankSchema } from '@/zod-schema/bank'
@@ -12,13 +13,46 @@ export const show = authActionClient
   .metadata({ actionName: 'bank_show' })
   .schema(bankSchema)
   .action(async ({ parsedInput }) => {
+    const bank = await get({ bankId: parsedInput.bankId }).then((x) => x?.data)
+
+    if (!bank) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    return {
+      ...bank,
+      text: {
+        header: i18n.t('place.your_are_in', { place: bank.name }),
+        description: bank.description,
+        depositMoney: i18n.t('place.bank.deposit_money'),
+        depositWeapon: i18n.t('place.bank.deposit_weapon'),
+        depositArmor: i18n.t('place.bank.deposit_armor'),
+        depositPotion: i18n.t('place.bank.deposit_potion'),
+        withdrawMoney: i18n.t('place.bank.withdraw_money'),
+        withdrawWeapon: i18n.t('place.bank.withdraw_weapon'),
+        withdrawArmor: i18n.t('place.bank.withdraw_armor'),
+        withdrawPotion: i18n.t('place.bank.withdraw_potion'),
+        depositSuccess: i18n.t('place.bank.deposit_success'),
+        withdrawSuccess: i18n.t('place.bank.withdraw_success'),
+        depositOrWithdrawFailure: i18n.t('place.bank.deposit_or_withdraw_failure'),
+        depositedMoney: i18n.t('place.bank.deposited_money'),
+      },
+    }
+  })
+
+export const get = authActionClient
+  .metadata({ actionName: 'bank_get' })
+  .schema(bankSchema)
+  .action(async ({ parsedInput }) => {
     const bank = await db.bank.findFirst({
       where: { id: parsedInput.bankId },
     })
 
     if (!bank) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return bank
+    return {
+      ...bank,
+      name: i18n.t(`${bank?.i18n_key}.header` as any),
+      description: i18n.t(`${bank?.i18n_key}.description` as any),
+    }
   })
 
 export const showAccount = authActionClient
@@ -58,7 +92,21 @@ export const showAccount = authActionClient
 
     if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    return bankAccount
+    return {
+      ...bankAccount,
+      weapons: bankAccount.weapons.map((x) => ({
+        ...x,
+        weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
+      })),
+      armors: bankAccount.armors.map((x) => ({
+        ...x,
+        armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
+      })),
+      potions: bankAccount.potions.map((x) => ({
+        ...x,
+        potion: { ...x.potion, name: i18n.t(`${x.potion.i18n_key}.header` as any) },
+      })),
+    }
   })
 
 export const depositItem = authActionClient
