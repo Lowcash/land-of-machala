@@ -20,7 +20,7 @@ export default function Info() {
   const gameInfoShowQuery = useGameInfoShowQuery()
 
   const { selectedSubplace, setSelectedSubplace } = useSetPlace(
-    gameInfoShowQuery.data?.place?.id,
+    gameInfoShowQuery.data?.place?.id ?? 'road',
     gameInfoShowQuery.derived.hasDefeated ? 'hospital' : undefined,
   )
 
