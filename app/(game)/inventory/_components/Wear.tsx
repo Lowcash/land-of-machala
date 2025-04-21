@@ -16,7 +16,7 @@ export default function Wear(p: Props) {
   const handleWear = () => wearableWearMutation.mutate(p)
 
   return (
-    <Button variant='secondary' disabled={playerShowQuery.data?.isInCombat} onClick={handleWear}>
+    <Button variant='secondary' disabled={playerShowQuery.data?.hasCombat} onClick={handleWear}>
       <RxCheck />
     </Button>
   )

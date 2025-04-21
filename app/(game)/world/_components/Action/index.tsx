@@ -6,13 +6,10 @@ import Enemy from '@/app/(game)/world/_components/Action/Enemy'
 import Loot from '@/app/(game)/world/_components/Action/Loot'
 
 export default function Action() {
-  const gameInfoQuery = useGameInfoShowQuery()
+  const gameInfoShowQuery = useGameInfoShowQuery()
 
-  const hasEnemy = !!gameInfoQuery.data?.enemy
-  const hasLoot = !!gameInfoQuery.data?.loot
-
-  if (hasEnemy) return <Enemy />
-  if (hasLoot) return <Loot />
+  if (gameInfoShowQuery.derived.hasCombat) return <Enemy />
+  if (gameInfoShowQuery.derived.hasLoot) return <Loot />
 
   return <></>
 }
