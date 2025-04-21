@@ -1,7 +1,6 @@
 'use client'
 
 import React from 'react'
-import i18n from '@/lib/i18n'
 import type { Potion } from '@prisma/client'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useHospitalBuyPotionMutation, useHospitalShowQuery } from '@/hooks/api/use-hospital'
@@ -57,15 +56,11 @@ export default function Potions({ hospitalId }: Props) {
           { className: 'text-left', content: x.name },
           {
             className: 'text-center',
-            content: `+${x.hp_gain} ${i18n.t('common.hp')}`,
+            content: x.text.efficiency ?? 'potion_efficiency',
           },
           {
             className: 'text-right',
-            content: (
-              <Text>
-                {x.price} {i18n.t('common.currency')}
-              </Text>
-            ),
+            content: <Text>{x.text.price ?? 'potion_price'}</Text>,
           },
           {
             className: 'text-right',
