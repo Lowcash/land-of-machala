@@ -1,6 +1,5 @@
 'use client'
 
-import React from 'react'
 import type { Potion } from '@prisma/client'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useHospitalBuyPotionMutation, useHospitalShowQuery } from '@/hooks/api/use-hospital'
