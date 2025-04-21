@@ -1,6 +1,6 @@
 'use client'
 
-import { useBackground } from '@/context/game-provider'
+import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import { Card } from '@/styles/common'
@@ -11,9 +11,9 @@ import Armors from './_components/Armors'
 import Potions from './_components/Potions'
 
 export default function Page() {
-  useBackground('inventory')
-
   const inventoryShowQuery = useInventoryShowQuery()
+
+  useSetLocationBackgroundEffect('inventory')
 
   const hasWeapons = (inventoryShowQuery.data?.weapons.length ?? 0) > 0
   const hasArmors = (inventoryShowQuery.data?.armors.length ?? 0) > 0
