@@ -617,6 +617,10 @@
       "header": "Banka U dvou přátel",
       "description": "Místo, kde jsou tvoje cennosti v bezpečí",
       "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?"
+    },
+    "forest_clearing": {
+      "header": "Lesní mýtina",
+      "description": "Klidné místo uprostřed lesa, kde se často zastavují poutníci."
     }
   },
   "enemy": {

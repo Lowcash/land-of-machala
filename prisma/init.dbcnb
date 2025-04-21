@@ -226,7 +226,8 @@ cells:
     value: >-
       INSERT IGNORE INTO Place (id, i18n_key, place_type, x_min, x_max, y_min,
       y_max, hospital_id, armory_id, bank_id)
-         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank') ON DUPLICATE KEY
+         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
+                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 10, NULL, NULL, NULL) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 place_type =
