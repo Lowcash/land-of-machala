@@ -3,13 +3,13 @@
 import i18n from '@/lib/i18n'
 import { cache } from 'react'
 import { db } from '@/lib/db'
-import type { User } from '@prisma/client'
+import { PlaceType, type User } from '@prisma/client'
 
 import { authActionClient } from '@/lib/safe-action'
 import { playerMoveSchema } from '@/zod-schema/player'
 
 import * as GameAction from './game'
-import * as PlaceAction from './place'
+import Place from '@/entity/place'
 
 import { ERROR_CAUSE } from '@/config'
 
@@ -49,7 +49,7 @@ export const move = authActionClient
       include: {},
     })
 
-    if (!(await isSafe(movedPlayer))?.data) {
+    if (!(await hasSafe(movedPlayer))) {
       await GameAction.checkForEnemy()
     }
   })
@@ -85,33 +85,29 @@ export const get = cache(
         ...player.class,
         name: i18n.t(`${player.class.i18n_key}.header` as any),
       },
+      canMove: canMove(player),
       hasCharacter: hasCharacter(player),
       hasLoot: hasLoot(player),
-      canMove: canMove(player),
-      isSafe: isSafe(player),
-      isInCombat: isInCombat(player),
-      isDefeated: isDefeated(player),
+      hasSafe: hasSafe(player),
+      hasCombat: hasCombat(player),
+      hasDefeated: hasDefeated(player),
     }
   }),
 )
 
-function isSafe(player: User) {
-  return isInPlace({ x: player.pos_x, y: player.pos_y })
-}
-
-function isInPlace(position: Coordinates) {
-  return PlaceAction.get({ posX: position.x, posY: position.y })
+async function hasSafe(player: User) {
+  return (await Place({ posX: player.pos_x, posY: player.pos_y }))?.place_type == PlaceType.SAFEHOUSE
 }
 
 function canMove(player: User) {
-  return !isInCombat(player) && !isDefeated(player) && !hasLoot(player)
+  return !hasCombat(player) && !hasDefeated(player) && !hasLoot(player)
 }
 
-function isInCombat(player: User) {
+function hasCombat(player: User) {
   return !!player.enemy_instance_id
 }
 
-function isDefeated(player: User) {
+function hasDefeated(player: User) {
   return !!player.defeated
 }
 

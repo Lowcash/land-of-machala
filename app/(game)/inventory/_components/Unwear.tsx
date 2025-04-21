@@ -16,7 +16,7 @@ export default function Unwear(p: Props) {
   const handleUnwear = () => wearableUnwearMutation.mutate(p)
 
   return (
-    <Button variant='destructive' disabled={playerShowQuery.data?.isInCombat} onClick={handleUnwear}>
+    <Button variant='destructive' disabled={playerShowQuery.data?.hasCombat} onClick={handleUnwear}>
       <RxCross1 />
     </Button>
   )

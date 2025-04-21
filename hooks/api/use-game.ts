@@ -4,7 +4,22 @@ import * as GameAction from '@/app/actions/game'
 
 import { QUERY_KEY } from '@/config'
 
-export const useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.infoShow)
+const _useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.infoShow)
+
+export function useGameInfoShowQuery() {
+  const gameInfoShowQuery = _useGameInfoShowQuery()
+
+  return {
+    ...gameInfoShowQuery,
+    derived: {
+      hasPlace: !!gameInfoShowQuery.data?.place,
+      hasSubplace: (gameInfoShowQuery.data?.place?.subplaces.length ?? 0) > 0,
+      hasCombat: !!gameInfoShowQuery.data?.combat,
+      hasDefeated: !!gameInfoShowQuery.data?.combat?.defeated,
+      hasLoot: !!gameInfoShowQuery.data?.loot,
+    },
+  }
+}
 
 export const useGameAttackMutation = createMutationHook(GameAction.attack, [
   QUERY_KEY.PLAYER,
