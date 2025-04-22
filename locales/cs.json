@@ -31,7 +31,7 @@
       "failure": "Postavu se nepodařilo vytvořit"
     },
     "state": {
-      "destroyed_long": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
+      "defeated_long": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
     }
   },
   "stats": {
@@ -617,6 +617,10 @@
       "header": "Banka U dvou přátel",
       "description": "Místo, kde jsou tvoje cennosti v bezpečí",
       "greeting": "Vítej v naší bance! Co si přeješ, dobrý příteli? Uložit své cennosti nebo si vybrat nějaké zlaté mince?"
+    },
+    "forest_clearing": {
+      "header": "Lesní mýtina",
+      "description": "Klidné místo uprostřed lesa, kde se často zastavují poutníci."
     }
   },
   "enemy": {

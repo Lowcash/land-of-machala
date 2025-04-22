@@ -17,10 +17,10 @@ export default function Enemy() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleAttack}>
-        {gameInfoShowQuery.data?.text?.attack ?? 'game_attack'}
+        {gameInfoShowQuery.data?.combat?.text?.attack ?? 'game_attack'}
       </Button>
       <Button variant='secondary' onClick={handleRunAway}>
-        {gameInfoShowQuery.data?.text?.runAway ?? 'game_run_away'}
+        {gameInfoShowQuery.data?.combat?.text?.runAway ?? 'game_run_away'}
       </Button>
     </S.Action>
   )

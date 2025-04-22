@@ -58,7 +58,7 @@ export const wear = authActionClient
 
     if (!player || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    if (player.isInCombat) throw new Error(ERROR_CAUSE.COMBAT)
+    if (player.hasCombat) throw new Error(ERROR_CAUSE.COMBAT)
 
     if (parsedInput.type === 'armor') {
       const inventoryArmor = await db.armorInInventory.findFirst({
@@ -126,7 +126,7 @@ export const unwear = authActionClient
 
     if (!player || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    if (player.isInCombat) throw new Error(ERROR_CAUSE.COMBAT)
+    if (player.hasCombat) throw new Error(ERROR_CAUSE.COMBAT)
 
     if (parsedInput.type === 'armor') {
       const inventoryArmor = await db.armorInInventory.findFirst({
