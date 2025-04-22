@@ -20,7 +20,7 @@ export default function Info() {
   const gameInfoShowQuery = useGameInfoShowQuery()
 
   const { selectedSubplace, setSelectedSubplace } = useSetPlace(
-    gameInfoShowQuery.data?.place?.id,
+    gameInfoShowQuery.data?.place?.id ?? 'road',
     gameInfoShowQuery.derived.hasDefeated ? 'hospital' : undefined,
   )
 
@@ -70,7 +70,7 @@ export default function Info() {
       return (
         <Card>
           {gameInfoShowQuery.derived.hasDefeated ? (
-            <Text>{gameInfoShowQuery.data?.combat?.text?.playerDestroyed ?? 'game_player_destroyed'}</Text>
+            <Text>{gameInfoShowQuery.data?.player?.text?.defeated ?? 'game_player_defeated'}</Text>
           ) : (
             <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedSubplace(undefined)}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
@@ -115,6 +115,8 @@ function useSetPlace(place?: Location, forceSubplace?: Location) {
   const [selectedSubplace, setSelectedSubplace] = React.useState<Location | undefined>(forceSubplace)
 
   useSetLocationBackgroundEffect(selectedSubplace ?? place)
+
+  React.useEffect(() => forceSubplace && setSelectedSubplace(forceSubplace), [forceSubplace])
 
   return { selectedSubplace, setSelectedSubplace }
 }

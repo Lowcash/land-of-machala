@@ -50,7 +50,7 @@ export const move = authActionClient
     })
 
     if (!(await hasSafe(movedPlayer))) {
-      await GameAction.checkForEnemy()
+      await GameAction.checkEnemyAppeared()
     }
   })
 
