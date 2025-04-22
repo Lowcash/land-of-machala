@@ -1,12 +1,13 @@
 'use client'
 
 import React from 'react'
-import { type Location } from '@/config'
+import type { Location } from '@/types'
 
 import { LOCATION } from '@/config'
 
 interface GameContext {
   setBackground: (path?: string) => void
+  setLocationBackground: (location?: Location) => void
 }
 
 const GameContext = React.createContext<GameContext | null>(null)
@@ -16,9 +17,19 @@ export function GameProvider({ children }: React.PropsWithChildren) {
 
   React.useEffect(() => {
     document.body.style.backgroundImage = background ? `url(${background})` : 'unset'
+    document.body.style.backgroundPosition = 'center'
   }, [background])
 
-  return <GameContext.Provider value={{ setBackground }}>{children}</GameContext.Provider>
+  return (
+    <GameContext.Provider
+      value={{
+        setBackground,
+        setLocationBackground: (location?: Location) => setBackground(location && LOCATION[location]),
+      }}
+    >
+      {children}
+    </GameContext.Provider>
+  )
 }
 
 export function useGame() {
@@ -29,10 +40,13 @@ export function useGame() {
   return context
 }
 
-export function useBackground(location?: Location) {
-  const { setBackground } = useGame()
+export function useSetLocationBackgroundEffect(location?: Location) {
+  const setLocationBackground = useGame().setLocationBackground
 
-  React.useEffect(() => location && setBackground(LOCATION[location]), [setBackground, location])
+  React.useEffect(() => {
+    setLocationBackground(location)
 
-  return { setLocation: (location: Location) => setBackground(LOCATION[location]) }
+    // TODO potencial bug and can cause screen blinking
+    return () => setLocationBackground()
+  }, [location])
 }

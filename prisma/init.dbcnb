@@ -61,6 +61,19 @@ cells:
          VALUES (damage_from),
                 damage_to =
          VALUES (damage_to);
+
+      INSERT IGNORE INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
+         VALUES (UUID (), 'troll', 'forest_clearing', 0.15),
+                (UUID (), 'orc', 'forest_clearing', 0.20),
+                (UUID (), 'goblin', 'forest_clearing', 0.30),
+                (UUID (), 'elf', 'forest_clearing', 0.25),
+                (UUID (), 'thief', 'forest_clearing', 0.10) ON DUPLICATE KEY
+         UPDATE enemy_id =
+         VALUES (enemy_id),
+                place_id =
+         VALUES (place_id),
+                spawn_rate =
+         VALUES (spawn_rate);
     metadata: {}
   - kind: 2
     languageId: sql
@@ -226,7 +239,8 @@ cells:
     value: >-
       INSERT IGNORE INTO Place (id, i18n_key, place_type, x_min, x_max, y_min,
       y_max, hospital_id, armory_id, bank_id)
-         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank') ON DUPLICATE KEY
+         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
+                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 10, NULL, NULL, NULL) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 place_type =
@@ -391,7 +405,7 @@ cells:
     metadata: {}
 metadata:
   conn:
-    id: s1l3IAg_achCTBSQbK9BF
-    name: LoM - Beta
-  database: land-of-machala
+    id: 1h7R6UxPZaGH67mPXze8t
+    name: LoM - Local
+  database: mydatabase
   schema: ""

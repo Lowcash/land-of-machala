@@ -15,7 +15,7 @@ export default function Loot() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleLoot}>
-        {gameInfoShowQuery.data?.text?.loot ?? 'game_loot'}
+        {gameInfoShowQuery.data?.loot?.text?.loot ?? 'game_loot'}
       </Button>
     </S.Action>
   )
