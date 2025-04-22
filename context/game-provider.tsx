@@ -17,6 +17,7 @@ export function GameProvider({ children }: React.PropsWithChildren) {
 
   React.useEffect(() => {
     document.body.style.backgroundImage = background ? `url(${background})` : 'unset'
+    document.body.style.backgroundPosition = 'center'
   }, [background])
 
   return (
