@@ -42,15 +42,36 @@ cells:
     value: >-
       INSERT IGNORE INTO Enemy (id, i18n_key, hp_from, hp_to, damage_from,
       damage_to)
-         VALUES ('troll', 'enemy.troll', 234, 284, 10, 20),
-                ('orc', 'enemy.orc', 162, 233, 15, 25),
-                ('elf', 'enemy.elf', 54, 125, 5, 15),
-                ('barbarian', 'enemy.barbarian', 235, 305, 20, 30),
-                ('thief', 'enemy.thief', 197, 265, 12, 22),
-                ('goblin', 'enemy.goblin', 131, 201, 8, 18),
-                ('demon', 'enemy.demon', 282, 342, 30, 40),
-                ('fire_elemental', 'enemy.fire_elemental', 172, 247, 20, 35),
-                ('ice_elemental', 'enemy.ice_elemental', 248, 313, 15, 25) ON DUPLICATE KEY
+         VALUES
+                -- FOREST
+                ('goblin', 'enemy.goblin', 60, 90, 6, 12),
+                ('wolf', 'enemy.wolf', 80, 120, 8, 16),
+                ('bandit', 'enemy.bandit', 100, 140, 10, 18),
+                -- CEMETERY
+                ('zombie', 'enemy.zombie', 120, 180, 12, 20),
+                ('skeleton', 'enemy.skeleton', 90, 130, 10, 16),
+                ('ghoul', 'enemy.ghoul', 160, 220, 16, 26),
+                -- DESERT
+                ('scorpion', 'enemy.scorpion', 110, 160, 14, 22),
+                ('sand_worm', 'enemy.sand_worm', 180, 250, 18, 28),
+                ('desert_bandit', 'enemy.desert_bandit', 130, 180, 15, 24),
+                -- FARM
+                ('wild_boar', 'enemy.wild_boar', 70, 110, 8, 14),
+                ('angry_farmer', 'enemy.angry_farmer', 90, 130, 10, 16),
+                -- SUBURB
+                ('thief', 'enemy.thief', 80, 120, 8, 15),
+                ('drunkard', 'enemy.drunkard', 60, 90, 5, 10),
+                -- HILLS
+                ('hill_troll', 'enemy.hill_troll', 200, 260, 20, 32),
+                ('mountain_goat', 'enemy.mountain_goat', 90, 130, 10, 16),
+                -- SWAMP
+                ('swamp_lizard', 'enemy.swamp_lizard', 120, 170, 14, 22),
+                ('giant_leech', 'enemy.giant_leech', 140, 200, 16, 24),
+                ('swamp_ghost', 'enemy.swamp_ghost', 160, 220, 18, 28),
+                -- LAKE
+                ('water_sprite', 'enemy.water_sprite', 100, 150, 12, 20),
+                ('giant_frog', 'enemy.giant_frog', 120, 180, 14, 22),
+                ('drowned', 'enemy.drowned', 140, 200, 16, 26) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 hp_from =
@@ -63,11 +84,36 @@ cells:
          VALUES (damage_to);
 
       INSERT IGNORE INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
-         VALUES (UUID (), 'troll', 'forest_clearing', 0.15),
-                (UUID (), 'orc', 'forest_clearing', 0.20),
-                (UUID (), 'goblin', 'forest_clearing', 0.30),
-                (UUID (), 'elf', 'forest_clearing', 0.25),
-                (UUID (), 'thief', 'forest_clearing', 0.10) ON DUPLICATE KEY
+         VALUES
+                -- FOREST
+                (UUID (), 'goblin', 'forest_clearing', 0.35),
+                (UUID (), 'wolf', 'forest_clearing', 0.35),
+                (UUID (), 'bandit', 'forest_clearing', 0.30),
+                -- CEMETERY
+                (UUID (), 'zombie', 'cemetery', 0.40),
+                (UUID (), 'skeleton', 'cemetery', 0.35),
+                (UUID (), 'ghoul', 'cemetery', 0.25),
+                -- DESERT
+                (UUID (), 'scorpion', 'desert', 0.40),
+                (UUID (), 'sand_worm', 'desert', 0.30),
+                (UUID (), 'desert_bandit', 'desert', 0.30),
+                -- FARM
+                (UUID (), 'wild_boar', 'farmstead', 0.60),
+                (UUID (), 'angry_farmer', 'farmstead', 0.40),
+                -- SUBURB
+                (UUID (), 'thief', 'castle_suburb', 0.60),
+                (UUID (), 'drunkard', 'castle_suburb', 0.40),
+                -- HILLS
+                (UUID (), 'hill_troll', 'hills', 0.40),
+                (UUID (), 'mountain_goat', 'hills', 0.60),
+                -- SWAMP
+                (UUID (), 'swamp_lizard', 'swamp', 0.40),
+                (UUID (), 'giant_leech', 'swamp', 0.30),
+                (UUID (), 'swamp_ghost', 'swamp', 0.30),
+                -- LAKE
+                (UUID (), 'water_sprite', 'lake', 0.40),
+                (UUID (), 'giant_frog', 'lake', 0.35),
+                (UUID (), 'drowned', 'lake', 0.25) ON DUPLICATE KEY
          UPDATE enemy_id =
          VALUES (enemy_id),
                 place_id =
@@ -240,7 +286,14 @@ cells:
       INSERT IGNORE INTO Place (id, i18n_key, place_type, x_min, x_max, y_min,
       y_max, hospital_id, armory_id, bank_id)
          VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
-                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 10, NULL, NULL, NULL) ON DUPLICATE KEY
+                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 9, NULL, NULL, NULL),
+                ('cemetery', 'place.cemetery', 'CEMETERY', 20, 25, 5, 10, NULL, NULL, NULL),
+                ('desert', 'place.desert', 'DESERT', 40, 45, -10, -5, NULL, NULL, NULL),
+                ('farmstead', 'place.farmstead', 'FARM', -20, -15, 10, 15, NULL, NULL, NULL),
+                ('castle_suburb', 'place.castle_suburb', 'SUBURB', 5, 10, 10, 15, NULL, NULL, NULL),
+                ('hills', 'place.hills', 'HILLS', -30, -20, 20, 30, NULL, NULL, NULL),
+                ('swamp', 'place.swamp', 'SWAMP', 50, 60, -20, -10, NULL, NULL, NULL),
+                ('lake', 'place.lake', 'LAKE', 15, 25, -25, -15, NULL, NULL, NULL) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
                 place_type =

@@ -18,9 +18,12 @@ export const LOCATION = {
   'forest_clearing': '/images/environment/forest_clearing/0.jpg', 
   'cemetery': '/images/environment/cemetery/0.jpg',
   'desert': '/images/environment/desert/0.jpg',
-  'farm': '/images/environment/farm/0.jpg',
+  'farmstead': '/images/environment/farmstead/0.jpg',
   'hills': '/images/environment/hills/0.jpg',
   'road': '/images/environment/road/2.jpg',
+  'castle_suburb': '/images/environment/castle_suburb/1.jpg',
+  'lake': '/images/environment/lake/0.jpg',
+  'swamp': '/images/environment/swamp/0.jpg',
 } as const
 
 export enum ERROR_CAUSE {

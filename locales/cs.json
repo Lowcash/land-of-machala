@@ -621,45 +621,121 @@
     "forest_clearing": {
       "header": "Lesní mýtina",
       "description": "Klidné místo uprostřed lesa, kde se často zastavují poutníci."
+    },
+    "cemetery": {
+      "header": "Hřbitov",
+      "description": "Ponuré místo plné mlhy a dávných tajemství, kde odpočívají duše mrtvých."
+    },
+    "desert": {
+      "header": "Poušť",
+      "description": "Rozlehlá a nehostinná krajina, kde přežijí jen ti nejsilnější."
+    },
+    "farmstead": {
+      "header": "Statek",
+      "description": "Poklidné hospodářství, kde se pěstují plodiny a chovají zvířata."
+    },
+    "castle_suburb": {
+      "header": "Předměstí hradu",
+      "description": "Rušná čtvrť pod hradbami, kde žijí obchodníci a řemeslníci."
+    },
+    "hills": {
+      "header": "Kopce",
+      "description": "Zelené pahorky s výhledem do krajiny, domov mnoha tvorů."
+    },
+    "swamp": {
+      "header": "Bažina",
+      "description": "Tajemné a nebezpečné místo plné mlhy, vody a skrytých nástrah."
+    },
+    "lake": {
+      "header": "Jezero",
+      "description": "Křišťálově čisté jezero obklopené lesy, domov vodních bytostí."
     }
   },
   "enemy": {
     "appear": "Najednou se před tebou objevil <b>{{ enemy }}</b>&nbsp;a vyzývá tě na souboj",
-    "troll": {
-      "header": "Troll",
-      "description": "Obrovský a silný tvor, známý svou houževnatostí a brutalitou."
+    "goblin": {
+      "header": "Goblin",
+      "description": "Malý, rychlý a nebezpečný tvor s loveckými schopnostmi."
     },
-    "orc": {
-      "header": "Ork",
-      "description": "Divoký válečník, často ve skupinách útočí na své nepřátele."
+    "wolf": {
+      "header": "Vlk",
+      "description": "Ostražitý šelma, která útočí ve smečce a nikdy se nevzdává."
     },
-    "elf": {
-      "header": "Elf",
-      "description": "Obratný a chytrý tvor s magickými schopnostmi."
+    "bandit": {
+      "header": "Bandita",
+      "description": "Záludný zločinec, který přepadává pocestné v lesích."
     },
-    "barbarian": {
-      "header": "Barbar",
-      "description": "Divoký bojovník s obrovskou silou a odolností."
+    "zombie": {
+      "header": "Zombie",
+      "description": "Pomalu se pohybující mrtvola, která touží po mase živých."
+    },
+    "skeleton": {
+      "header": "Kostlivec",
+      "description": "Oživlé kosti, které chrastí a útočí bez slitování."
+    },
+    "ghoul": {
+      "header": "Ghúl",
+      "description": "Temný tvor hřbitovů, živící se mrtvolami a šířící strach."
+    },
+    "scorpion": {
+      "header": "Škorpion",
+      "description": "Nebezpečný pouštní predátor s jedovatým ocasem."
+    },
+    "sand_worm": {
+      "header": "Písečný červ",
+      "description": "Obří tvor žijící pod pískem, který útočí ze zálohy."
+    },
+    "desert_bandit": {
+      "header": "Pouštní bandita",
+      "description": "Zkušený lupič, který zná každý kout pouště."
+    },
+    "wild_boar": {
+      "header": "Divoké prase",
+      "description": "Silné a agresivní zvíře, které brání své území."
+    },
+    "angry_farmer": {
+      "header": "Nazlobený farmář",
+      "description": "Farmář, kterému došla trpělivost a brání svou půdu."
     },
     "thief": {
       "header": "Zloděj",
       "description": "Rychlý a nenápadný, využívá lstivost a útoky ze zálohy."
     },
-    "goblin": {
-      "header": "Goblin",
-      "description": "Malý, rychlý a nebezpečný tvor s loveckými schopnostmi."
+    "drunkard": {
+      "header": "Opilec",
+      "description": "Zmatený a nevyzpytatelný, ale někdy překvapivě nebezpečný."
     },
-    "demon": {
-      "header": "Démon",
-      "description": "Temná bytost s ničivou magií a nebezpečnými útoky."
+    "hill_troll": {
+      "header": "Horský troll",
+      "description": "Obrovský a silný tvor, který chrání kopce před vetřelci."
     },
-    "fire_elemental": {
-      "header": "Ohňový Elementál",
-      "description": "Tvořený plameny, útočí s ohnivou zuřivostí."
+    "mountain_goat": {
+      "header": "Horská koza",
+      "description": "Obratné zvíře, které se nebojí bránit své stádo."
     },
-    "ice_elemental": {
-      "header": "Ledový Elementál",
-      "description": "Mrazivý tvor, zpomaluje a zmrazuje své nepřátele."
+    "swamp_lizard": {
+      "header": "Bažinná ještěrka",
+      "description": "Rychlý a kluzký tvor, který útočí ze zálohy v bažinách."
+    },
+    "giant_leech": {
+      "header": "Obří pijavice",
+      "description": "Nebezpečný parazit, který vysává životní sílu svých obětí."
+    },
+    "swamp_ghost": {
+      "header": "Bažinný duch",
+      "description": "Tajemná bytost, která bloudí mlhou a děsí kolemjdoucí."
+    },
+    "water_sprite": {
+      "header": "Vodní víla",
+      "description": "Kouzelná bytost jezera, která chrání své území před narušiteli."
+    },
+    "giant_frog": {
+      "header": "Obří žába",
+      "description": "Velká žába s lepkavým jazykem a silným skokem."
+    },
+    "drowned": {
+      "header": "Utopenec",
+      "description": "Duše, která našla smrt ve vodě a teď hledá společnost."
     }
   },
   "inventory": {
