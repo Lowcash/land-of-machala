@@ -39,9 +39,10 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: >-
-      INSERT IGNORE INTO Enemy (id, i18n_key, hp_from, hp_to, damage_from,
-      damage_to)
+    value: >2-
+       TRUNCATE TABLE Enemy;
+
+         INSERT INTO Enemy (id, i18n_key, hp_from, hp_to, damage_from, damage_to)
          VALUES
                 -- FOREST
                 ('goblin', 'enemy.goblin', 60, 90, 6, 12),
@@ -71,19 +72,11 @@ cells:
                 -- LAKE
                 ('water_sprite', 'enemy.water_sprite', 100, 150, 12, 20),
                 ('giant_frog', 'enemy.giant_frog', 120, 180, 14, 22),
-                ('drowned', 'enemy.drowned', 140, 200, 16, 26) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                hp_from =
-         VALUES (hp_from),
-                hp_to =
-         VALUES (hp_to),
-                damage_from =
-         VALUES (damage_from),
-                damage_to =
-         VALUES (damage_to);
+                ('drowned', 'enemy.drowned', 140, 200, 16, 26);
 
-      INSERT IGNORE INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
+       TRUNCATE TABLE EnemyInPlace;
+
+         INSERT INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
          VALUES
                 -- FOREST
                 (UUID (), 'goblin', 'forest_clearing', 0.35),
@@ -113,19 +106,14 @@ cells:
                 -- LAKE
                 (UUID (), 'water_sprite', 'lake', 0.40),
                 (UUID (), 'giant_frog', 'lake', 0.35),
-                (UUID (), 'drowned', 'lake', 0.25) ON DUPLICATE KEY
-         UPDATE enemy_id =
-         VALUES (enemy_id),
-                place_id =
-         VALUES (place_id),
-                spawn_rate =
-         VALUES (spawn_rate);
+                (UUID (), 'drowned', 'lake', 0.25);
     metadata: {}
   - kind: 2
     languageId: sql
-    value: >-
-      INSERT IGNORE INTO Armor (id, i18n_key, type, armor, strength, agility,
-      intelligence)
+    value: >2-
+       TRUNCATE TABLE Armor;
+
+         INSERT INTO Armor (id, i18n_key, type, armor, strength, agility, intelligence)
          VALUES
                 -- Head items  
                 ('head_helmet_defender', 'armor.head_helmet_defender', 'HEAD', 9, 8, 3, 1),
@@ -192,81 +180,94 @@ cells:
                 ('boots_sandals_agility', 'armor.boots_sandals_agility', 'BOOTS', 8, 2, 10, 1),
                 ('boots_ankle_boots', 'armor.boots_ankle_boots', 'BOOTS', 5, 7, 3, 4),
                 ('boots_leather_boots_hunter', 'armor.boots_leather_boots_hunter', 'BOOTS', 6, 5, 4, 8),
-                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                type =
-         VALUES (type),
-                armor =
-         VALUES (armor),
-                agility =
-         VALUES (agility),
-                strength =
-         VALUES (strength),
-                intelligence =
-         VALUES (intelligence);
+                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5),
+                -- SWAMP
+                ('head_swamp_helm', 'armor.head_swamp_helm', 'HEAD', 6, 2, 6, 7),
+                ('chest_swamp_shell', 'armor.chest_swamp_shell', 'CHEST', 8, 3, 5, 8),
+                ('boots_swamp_reed', 'armor.boots_swamp_reed', 'BOOTS', 4, 2, 10, 5),
+                -- LAKE
+                ('head_lake_sprite', 'armor.head_lake_sprite', 'HEAD', 5, 1, 8, 9),
+                ('chest_lake_froth', 'armor.chest_lake_froth', 'CHEST', 7, 2, 7, 8),
+                ('boots_lake_lily', 'armor.boots_lake_lily', 'BOOTS', 3, 1, 12, 6),
+                -- HILLS
+                ('head_hill_troll', 'armor.head_hill_troll', 'HEAD', 10, 8, 2, 1),
+                ('chest_hill_stone', 'armor.chest_hill_stone', 'CHEST', 11, 7, 2, 2),
+                ('boots_hill_goat', 'armor.boots_hill_goat', 'BOOTS', 5, 8, 7, 2),
+                -- DESERT
+                ('head_desert_turban', 'armor.head_desert_turban', 'HEAD', 4, 2, 7, 8),
+                ('chest_desert_shroud', 'armor.chest_desert_shroud', 'CHEST', 6, 3, 10, 5),
+                ('boots_desert_snake', 'armor.boots_desert_snake', 'BOOTS', 4, 2, 11, 3),
+                -- FARM
+                ('head_farm_hat', 'armor.head_farm_hat', 'HEAD', 3, 1, 8, 5),
+                ('chest_farm_vest', 'armor.chest_farm_vest', 'CHEST', 5, 2, 9, 3),
+                ('boots_farm_boots', 'armor.boots_farm_boots', 'BOOTS', 4, 2, 8, 2),
+                -- SUBURB
+                ('head_suburb_cap', 'armor.head_suburb_cap', 'HEAD', 4, 2, 7, 6),
+                ('chest_suburb_vest', 'armor.chest_suburb_vest', 'CHEST', 6, 2, 8, 4),
+                ('boots_suburb_shoes', 'armor.boots_suburb_shoes', 'BOOTS', 3, 1, 10, 3);
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |-
-      INSERT IGNORE INTO Weapon (id, i18n_key, damage_from, damage_to)
-         VALUES ('dagger', 'weapon.dagger', 5, 10),
-                ('sword', 'weapon.sword', 10, 20),
+    value: |2-
+       TRUNCATE TABLE Weapon;
+
+         INSERT INTO Weapon (id, i18n_key, damage_from, damage_to)
+         VALUES
+                -- light
+                ('dagger', 'weapon.dagger', 4, 10),
+                ('kama', 'weapon.kama', 5, 12),
+                ('kusatko', 'weapon.kusatko', 3, 8),
+                ('scissors', 'weapon.scissors', 5, 11),
+                ('fang', 'weapon.fang', 6, 12),
+                ('claw', 'weapon.claw', 6, 13),
+                -- medium
+                ('sword', 'weapon.sword', 12, 22),
+                ('club_2', 'weapon.club_2', 12, 22),
+                ('rapier', 'weapon.rapier', 10, 18),
+                ('sabre', 'weapon.sabre', 13, 24),
+                ('hammer', 'weapon.hammer', 14, 24),
+                ('axe', 'weapon.axe', 15, 26),
+                ('tupilka', 'weapon.tupilka', 10, 18),
+                ('pitchfork', 'weapon.pitchfork', 10, 18),
+                ('bone_club', 'weapon.bone_club', 12, 20),
+                -- heavy
+                ('club', 'weapon.club', 18, 32),
+                ('krakolej', 'weapon.krakolej', 28, 48),
+                ('thrash', 'weapon.thrash', 22, 40),
+                ('anchor', 'weapon.anchor', 20, 38),
+                ('mace_weapon', 'weapon.mace_weapon', 24, 44),
+                -- magical/special
+                ('wand', 'weapon.wand', 10, 20),
+                ('sodna_lahve', 'weapon.sodna_lahve', 8, 16),
+                ('bottle', 'weapon.bottle', 6, 12),
+                -- other
                 ('arrow', 'weapon.arrow', 7, 15),
                 ('bow', 'weapon.bow', 15, 25),
-                ('hammer', 'weapon.hammer', 12, 22),
-                ('spear', 'weapon.spear', 14, 28),
-                ('axe', 'weapon.axe', 18, 30),
-                ('mace', 'weapon.mace', 20, 35),
-                ('club', 'weapon.club', 25, 40),
-                ('mace_2', 'weapon.mace_2', 22, 38),
-                ('crossbow', 'weapon.crossbow', 30, 50),
-                ('kama', 'weapon.kama', 8, 16),
-                ('katar', 'weapon.katar', 6, 12),
-                ('krakolej', 'weapon.krakolej', 35, 60),
-                ('kusatko', 'weapon.kusatko', 3, 8),
-                ('club_2', 'weapon.club_2', 15, 28),
-                ('axe_2', 'weapon.axe_2', 24, 42),
-                ('sabre', 'weapon.sabre', 16, 32),
-                ('thrash', 'weapon.thrash', 28, 48),
-                ('weapon_generic', 'weapon.weapon_generic', 10, 18),
-                ('rapier', 'weapon.rapier', 14, 26),
-                ('wanderer', 'weapon.wanderer', 5, 15),
-                ('hanging_wedge', 'weapon.hanging_wedge', 12, 24),
-                ('club_3', 'weapon.club_3', 18, 34),
-                ('mace_3', 'weapon.mace_3', 20, 36),
-                ('krut', 'weapon.krut', 22, 40),
-                ('scissors', 'weapon.scissors', 9, 18),
-                ('bayonet', 'weapon.bayonet', 7, 14),
-                ('jatagan', 'weapon.jatagan', 32, 55),
-                ('cloth', 'weapon.cloth', 4, 12),
-                ('fist_weapon', 'weapon.fist_weapon', 15, 30),
-                ('blade', 'weapon.blade', 19, 38),
-                ('shingle', 'weapon.shingle', 17, 34),
-                ('piercing_weapon', 'weapon.piercing_weapon', 26, 45),
-                ('tupilka', 'weapon.tupilka', 11, 22),
-                ('shooting_weapon', 'weapon.shooting_weapon', 20, 40),
-                ('attack_weapon', 'weapon.attack_weapon', 13, 26),
-                ('parat', 'weapon.parat', 21, 42),
-                ('flajska', 'weapon.flajska', 8, 16),
-                ('sodna_lahve', 'weapon.sodna_lahve', 6, 12),
-                ('slap', 'weapon.slap', 14, 28),
-                ('combat_dagger', 'weapon.combat_dagger', 24, 48),
-                ('combat_sword', 'weapon.combat_sword', 28, 56),
-                ('mace_weapon', 'weapon.mace_weapon', 32, 64),
-                ('trailing', 'weapon.trailing', 30, 60),
-                ('six', 'weapon.six', 19, 38),
-                ('fight_weapons', 'weapon.fight_weapons', 27, 54),
-                ('shooting_weapon_2', 'weapon.shooting_weapon_2', 22, 44),
-                ('anchor', 'weapon.anchor', 23, 46),
-                ('javelin', 'weapon.javelin', 18, 36),
-                ('caliber', 'weapon.caliber', 25, 50) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                damage_from =
-         VALUES (damage_from),
-                damage_to =
-         VALUES (damage_to);
+                ('mace', 'weapon.mace', 16, 28),
+                ('mace_2', 'weapon.mace_2', 18, 32),
+                ('crossbow', 'weapon.crossbow', 18, 32),
+                ('katar', 'weapon.katar', 7, 14),
+                ('axe_2', 'weapon.axe_2', 18, 32),
+                ('club_3', 'weapon.club_3', 16, 28),
+                ('mace_3', 'weapon.mace_3', 18, 32),
+                ('cloth', 'weapon.cloth', 4, 10),
+                ('fist_weapon', 'weapon.fist_weapon', 10, 18),
+                ('blade', 'weapon.blade', 14, 26),
+                ('shingle', 'weapon.shingle', 12, 22),
+                ('piercing_weapon', 'weapon.piercing_weapon', 16, 28),
+                ('shooting_weapon', 'weapon.shooting_weapon', 14, 26),
+                ('attack_weapon', 'weapon.attack_weapon', 10, 18),
+                ('parat', 'weapon.parat', 14, 26),
+                ('flajska', 'weapon.flajska', 6, 12),
+                ('slap', 'weapon.slap', 8, 16),
+                ('combat_dagger', 'weapon.combat_dagger', 12, 22),
+                ('combat_sword', 'weapon.combat_sword', 18, 32),
+                ('trailing', 'weapon.trailing', 18, 32),
+                ('six', 'weapon.six', 12, 22),
+                ('fight_weapons', 'weapon.fight_weapons', 16, 28),
+                ('shooting_weapon_2', 'weapon.shooting_weapon_2', 14, 26),
+                ('javelin', 'weapon.javelin', 12, 22),
+                ('caliber', 'weapon.caliber', 18, 32);
     metadata: {}
   - kind: 2
     languageId: sql
@@ -336,47 +337,41 @@ cells:
     metadata: {}
   - kind: 2
     languageId: sql
-    value: >-
-      INSERT IGNORE INTO Armory (id, i18n_key)
-         VALUES ('main_city_armory', 'place.main_city_armory') ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key);
+    value: >2-
+       TRUNCATE TABLE Armory;
 
-      INSERT IGNORE INTO WeaponInArmory (id, price, weapon_id, armory_id)
-         VALUES (UUID(), 2200, 'axe', 'main_city_armory'),
-                (UUID(), 2500, 'combat_dagger', 'main_city_armory'),
-                (UUID(), 2900, 'thrash', 'main_city_armory'),
-                (UUID(), 1700, 'fist_weapon', 'main_city_armory'),
-                (UUID(), 1500, 'hammer', 'main_city_armory'),
-                (UUID(), 9500, 'krakolej', 'main_city_armory'),
-                (UUID(), 2100, 'mace_3', 'main_city_armory'),
-                (UUID(), 2100, 'parat', 'main_city_armory'),
-                (UUID(), 2300, 'mace_2', 'main_city_armory'),
-                (UUID(), 1000, 'arrow', 'main_city_armory') ON DUPLICATE KEY
-         UPDATE price =
-         VALUES (price),
-                weapon_id =
-         VALUES (weapon_id),
-                armory_id =
-         VALUES (armory_id);
+         INSERT INTO Armory (id, i18n_key)
+         VALUES ('main_city_armory', 'place.main_city_armory');
+
+       TRUNCATE TABLE WeaponInArmory;
+
+         INSERT INTO WeaponInArmory (id, price, weapon_id, armory_id)
+         VALUES (UUID (), 600, 'dagger', 'main_city_armory'),
+                (UUID (), 800, 'kama', 'main_city_armory'),
+                (UUID (), 950, 'sword', 'main_city_armory'),
+                (UUID (), 1200, 'club_2', 'main_city_armory'),
+                (UUID (), 1400, 'rapier', 'main_city_armory'),
+                (UUID (), 1600, 'hammer', 'main_city_armory'),
+                (UUID (), 1800, 'axe', 'main_city_armory'),
+                (UUID (), 2000, 'mace', 'main_city_armory'),
+                (UUID (), 2200, 'bow', 'main_city_armory'),
+                (UUID (), 2500, 'crossbow', 'main_city_armory');
+
+       TRUNCATE TABLE ArmorInArmory;
 
       INSERT IGNORE INTO ArmorInArmory (id, price, armor_id, armory_id)
-         VALUES (UUID(), 10500, 'chest_flaming_tunic', 'main_city_armory'),
-                (UUID(), 9000, 'head_mask_mystery', 'main_city_armory'),
-                (UUID(), 8800, 'shoulder_pauldrons_stealth', 'main_city_armory'),
-                (UUID(), 8600, 'hand_gloves_wizard', 'main_city_armory'),
-                (UUID(), 8800, 'hand_leather_gloves', 'main_city_armory'),
-                (UUID(), 7000, 'hand_gloves_sprinter', 'main_city_armory'),
-                (UUID(), 8800, 'chest_chainmail_hunter', 'main_city_armory'),
-                (UUID(), 9800, 'pants_pants_stealth', 'main_city_armory'),
-                (UUID(), 9000, 'shoulder_epaulets_agility', 'main_city_armory'),
-                (UUID(), 7300, 'head_helmet_knight', 'main_city_armory') ON DUPLICATE KEY
-         UPDATE price =
-         VALUES (price),
-                armor_id =
-         VALUES (armor_id),
-                armory_id =
-         VALUES (armory_id);
+         VALUES (UUID (), 900, 'head_helmet_defender', 'main_city_armory'),
+                (UUID (), 950, 'head_helmet_knight', 'main_city_armory'),
+                (UUID (), 800, 'shoulder_pauldrons_crusher', 'main_city_armory'),
+                (UUID (), 850, 'shoulder_epaulets_courage', 'main_city_armory'),
+                (UUID (), 1200, 'chest_armor_hero', 'main_city_armory'),
+                (UUID (), 1300, 'chest_leather_armor', 'main_city_armory'),
+                (UUID (), 700, 'hand_gloves_strength', 'main_city_armory'),
+                (UUID (), 750, 'hand_leather_gloves', 'main_city_armory'),
+                (UUID (), 1000, 'pants_pants_strength', 'main_city_armory'),
+                (UUID (), 1100, 'pants_plate_trousers_warrior', 'main_city_armory'),
+                (UUID (), 600, 'boots_boots_strength', 'main_city_armory'),
+                (UUID (), 650, 'boots_plate_boots_protector', 'main_city_armory');
     metadata: {}
   - kind: 2
     languageId: sql
