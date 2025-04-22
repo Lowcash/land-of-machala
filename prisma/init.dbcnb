@@ -61,6 +61,19 @@ cells:
          VALUES (damage_from),
                 damage_to =
          VALUES (damage_to);
+
+      INSERT IGNORE INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
+         VALUES (UUID (), 'troll', 'forest_clearing', 0.15),
+                (UUID (), 'orc', 'forest_clearing', 0.20),
+                (UUID (), 'goblin', 'forest_clearing', 0.30),
+                (UUID (), 'elf', 'forest_clearing', 0.25),
+                (UUID (), 'thief', 'forest_clearing', 0.10) ON DUPLICATE KEY
+         UPDATE enemy_id =
+         VALUES (enemy_id),
+                place_id =
+         VALUES (place_id),
+                spawn_rate =
+         VALUES (spawn_rate);
     metadata: {}
   - kind: 2
     languageId: sql

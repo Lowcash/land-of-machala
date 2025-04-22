@@ -78,34 +78,41 @@ export const infoShow = cache(
   }),
 )
 
-export const checkForEnemy = authActionClient.metadata({ actionName: 'game_checkForEnemy' }).action(async ({ ctx }) => {
-  const hasEnemyAppear = Math.round(Math.random()) === 1
+export const checkEnemyAppeared = authActionClient
+  .metadata({ actionName: 'game_check_enemy_appeared' })
+  .action(async ({ ctx }) => {
+    const place = await Place({ posX: ctx.user.pos_x, posY: ctx.user.pos_y })
 
-  if (!hasEnemyAppear) return
+    if (!place || place.place_type === 'SAFEHOUSE') return
 
-  const enemy = await db.enemy.findFirst({
-    skip: random(await db.enemy.count()),
-    take: 1,
-  })
+    const enemies = await db.enemyInPlace.findMany({
+      where: { place_id: place.id },
+      include: { enemy: true },
+    })
 
-  if (!enemy) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+    if (!enemies.length) return
 
-  const hp = random(enemy.hp_to, enemy.hp_from)
+    const possiblePlaceEnemies = enemies.filter((e) => Number(e.spawn_rate) >= Math.random())
 
-  return await db.user.update({
-    where: { id: ctx.user.id },
-    data: {
-      enemy_instance: {
-        create: {
-          enemy: { connect: enemy },
-          hp_actual: hp,
-          hp_max: hp,
+    if (!possiblePlaceEnemies.length) return
+
+    const selectedPlaceEnemy = possiblePlaceEnemies[random(possiblePlaceEnemies.length)]
+
+    const hp = random(selectedPlaceEnemy.enemy.hp_to, selectedPlaceEnemy.enemy.hp_from)
+
+    return await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        enemy_instance: {
+          create: {
+            enemy_id: selectedPlaceEnemy.enemy.id,
+            hp_actual: hp,
+            hp_max: hp,
+          },
         },
       },
-    },
-    include: { enemy_instance: { include: { enemy: true } } },
+    })
   })
-})
 
 export const attack = authActionClient.metadata({ actionName: 'game_attack' }).action(async () => {
   const player = (await PlayerAction.get())?.data
