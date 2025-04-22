@@ -16,6 +16,7 @@ model Enemy {
 
   enemy_instances EnemyInstance[]
   slain           Slain[]
+  enemy_place     EnemyInPlace[]
 }
 
 model EnemyInstance {
@@ -30,4 +31,19 @@ model EnemyInstance {
   users User[]
 
   @@index([enemy_id])
+}
+
+model EnemyInPlace {
+  id String @id @default(uuid())
+
+  spawn_rate Decimal
+
+  enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+  enemy_id String
+  place    Place  @relation(fields: [place_id], references: [id])
+  place_id String
+
+  @@unique([enemy_id, place_id])
+  @@index([enemy_id])
+  @@index([place_id])
 }

@@ -1,15 +1,17 @@
 'use server'
 
 import i18n from '@/lib/i18n'
+import type { Route } from '@/types'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { actionClient } from '@/lib/safe-action'
 
-import { PAGE_COOKIE_KEY, type Route } from '@/config'
+import { PAGE_COOKIE_KEY } from '@/config'
 
 export const show = actionClient.metadata({ actionName: 'common_show' }).action(async () => {
   return {
     text: {
+      worldExplore: i18n.t('common.world_explore'),
       worldBack: i18n.t('common.world_back'),
       cityBack: i18n.t('common.city_back'),
       buy: i18n.t('action.buy'),

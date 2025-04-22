@@ -43,7 +43,7 @@ export default function Hospital({ hospitalId }: Props) {
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? 'hospital_header' }} />
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? 'hospital_description' }} />
 
-      {!!gameInfoShowQuery.data?.defeated ? (
+      {!!gameInfoShowQuery.derived.hasDefeated ? (
         // player defaeted scenario
         <Text>
           <Button variant='destructive' onClick={handleResurect}>

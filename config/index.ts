@@ -1,7 +1,5 @@
 import { QuestIdent } from '@prisma/client'
 
-import { ROUTE } from './routes'
-
 export const DIRECTIONS = ['left', 'right', 'up', 'down'] as const
 
 export const WEARABLES = ['left_weapon', 'right_weapon', 'weapon', 'armor', 'potion'] as const
@@ -10,16 +8,20 @@ export const QUESTS = [QuestIdent.SLAIN_ENEMY, QuestIdent.SLAIN_TROLL] as const
 export const QUEST_STATE = ['waiting', 'ready', 'progress', 'complete', 'done'] as const
 
 export const LOCATION = {
-  'forest': '/images/environment/forest.webp',
-  'inventory': '/images/environment/inventory.jpeg',
-  'quest': '/images/environment/quest.jpeg',
-  'city': '/images/environment/city.avif',
-  'hospital': '/images/environment/hospital.webp',
+  'inventory': '/images/environment/inventory.jpg',
+  'quest': '/images/environment/quest.jpg',
+  'main_city': '/images/environment/city.jpg',
+  'hospital': '/images/environment/hospital.jpg',
   'armory': '/images/environment/armory.jpg',
-  'bank': '/images/environment/bank.webp',
+  'bank': '/images/environment/bank.jpg',
+  'forest': '/images/environment/forest/2.jpg',
+  'forest_clearing': '/images/environment/forest_clearing/0.jpg', 
+  'cemetery': '/images/environment/cemetery/0.jpg',
+  'desert': '/images/environment/desert/0.jpg',
+  'farm': '/images/environment/farm/0.jpg',
+  'hills': '/images/environment/hills/0.jpg',
+  'road': '/images/environment/road/2.jpg',
 } as const
-
-export type Location = Array<keyof typeof LOCATION>[number]
 
 export enum ERROR_CAUSE {
   ALREADY_EXISTS = 'ALREADY_EXISTS',
@@ -33,8 +35,6 @@ export enum ERROR_CAUSE {
 }
 
 export const PAGE_COOKIE_KEY = 'page'
-
-export type Route = keyof typeof ROUTE
 
 export * from './routes'
 export * from './query-keys'

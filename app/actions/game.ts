@@ -1,6 +1,7 @@
 'use server'
 
 import i18n from '@/lib/i18n'
+import type { Location } from '@/types'
 import { db } from '@/lib/db'
 import { cache } from 'react'
 import { random } from '@/lib/utils'
@@ -9,7 +10,7 @@ import { authActionClient } from '@/lib/safe-action'
 import { emitter as enemyEmitter } from '@/lib/events/enemy'
 
 import * as PlayerAction from './player'
-import * as PlaceAction from './place'
+import Place from '@/entity/place'
 import * as InventoryAction from './inventory'
 
 import { ERROR_CAUSE } from '@/config'
@@ -20,103 +21,110 @@ export const infoShow = cache(
 
     if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    if (player.isInCombat)
-      return {
-        enemy: player.enemy_instance,
-        text: {
-          attack: i18n.t('action.attack'),
-          runAway: i18n.t('action.run_away'),
-          enemyAppear: i18n.t('enemy.appear', {
-            enemy: `${i18n.t(`${player.enemy_instance?.enemy.i18n_key}.header` as any)} ${player.enemy_instance?.hp_actual}/${player.enemy_instance?.hp_max}`,
-          }),
-          playerDestroyed: i18n.t('character.state.destroyed_long'),
-        },
-      }
-    if (player.hasLoot)
-      return {
-        loot: {
-          ...player.loot,
-          armors_loot: player.loot?.armors_loot
-            ? player.loot?.armors_loot.map((x) => ({
-                ...x,
-                armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
-              }))
-            : undefined,
-          weapons_loot: player.loot?.weapons_loot
-            ? player.loot?.weapons_loot.map((x) => ({
-                ...x,
-                weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
-              }))
-            : undefined,
-        },
-        text: {
-          loot: i18n.t('action.loot.header'),
-          loot_found: i18n.t('action.loot.found'),
-          reward: `${player.loot!.money} ${i18n.t('common.currency')}`,
-        },
-      }
-
-    const place = await PlaceAction.get({ posX: player.pos_x, posY: player.pos_y }).then((x) => x?.data)
-
-    if (!!place)
-      return {
-        defeated: player.defeated,
-        place: {
-          subplaces: [
-            { place: place.hospital, type: 'hospital' },
-            { place: place.armory, type: 'armory' },
-            { place: place.bank, type: 'bank' },
-          ],
-          text: {
-            header: i18n.t('place.your_are_in', { place: place?.name}),
-            description: place.description,
-          },
-        },
-      }
+    const place = await Place({ posX: player.pos_x, posY: player.pos_y })
 
     return {
-      text: {
-        worldExplore: i18n.t('common.world_explore'),
+      player: {
+        hasDefeated: player.hasDefeated,
+        text: {
+          defeated: i18n.t('character.state.defeated_long'),
+        }
       },
+      place: !!place
+        ? {
+            id: place.id as Location,
+            subplaces: [
+              place.hospital && { place: place.hospital, type: 'hospital' },
+              place.armory && { place: place.armory, type: 'armory' },
+              place.bank && { place: place.bank, type: 'bank' },
+            ].filter((x) => !!x),
+            text: {
+              header: i18n.t('place.your_are_in', { place: place?.name }),
+              description: place.description,
+            },
+          }
+        : undefined,
+      combat: player.hasCombat
+        ? {
+            enemyInstance: player.enemy_instance,
+            text: {
+              attack: i18n.t('action.attack'),
+              runAway: i18n.t('action.run_away'),
+              enemyAppear: i18n.t('enemy.appear', {
+                enemy: `${i18n.t(`${player.enemy_instance?.enemy.i18n_key}.header` as any)} ${player.enemy_instance?.hp_actual}/${player.enemy_instance?.hp_max}`,
+              }),
+              
+            },
+          }
+        : undefined,
+      loot: player.hasLoot
+        ? {
+            ...player.loot,
+            armors_loot: player.loot?.armors_loot
+              ? player.loot?.armors_loot.map((x) => ({
+                  ...x,
+                  armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
+                }))
+              : undefined,
+            weapons_loot: player.loot?.weapons_loot
+              ? player.loot?.weapons_loot.map((x) => ({
+                  ...x,
+                  weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
+                }))
+              : undefined,
+            text: {
+              loot: i18n.t('action.loot.header'),
+              loot_found: i18n.t('action.loot.found'),
+              reward: `${player.loot!.money} ${i18n.t('common.currency')}`,
+            },
+          }
+        : undefined,
     }
   }),
 )
 
-export const checkForEnemy = authActionClient.metadata({ actionName: 'game_checkForEnemy' }).action(async ({ ctx }) => {
-  const hasEnemyAppear = Math.round(Math.random()) === 1
+export const checkEnemyAppeared = authActionClient
+  .metadata({ actionName: 'game_check_enemy_appeared' })
+  .action(async ({ ctx }) => {
+    const place = await Place({ posX: ctx.user.pos_x, posY: ctx.user.pos_y })
 
-  if (!hasEnemyAppear) return
+    if (!place || place.place_type === 'SAFEHOUSE') return
 
-  const enemy = await db.enemy.findFirst({
-    skip: random(await db.enemy.count()),
-    take: 1,
-  })
+    const enemies = await db.enemyInPlace.findMany({
+      where: { place_id: place.id },
+      include: { enemy: true },
+    })
 
-  if (!enemy) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+    if (!enemies.length) return
 
-  const hp = random(enemy.hp_to, enemy.hp_from)
+    const possiblePlaceEnemies = enemies.filter((e) => Number(e.spawn_rate) >= Math.random())
 
-  return await db.user.update({
-    where: { id: ctx.user.id },
-    data: {
-      enemy_instance: {
-        create: {
-          enemy: { connect: enemy },
-          hp_actual: hp,
-          hp_max: hp,
+    if (!possiblePlaceEnemies.length) return
+
+    const selectedPlaceEnemy = possiblePlaceEnemies[random(possiblePlaceEnemies.length)]
+
+    const hp = random(selectedPlaceEnemy.enemy.hp_to, selectedPlaceEnemy.enemy.hp_from)
+
+    return await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        enemy_instance: {
+          create: {
+            enemy_id: selectedPlaceEnemy.enemy.id,
+            hp_actual: hp,
+            hp_max: hp,
+          },
         },
       },
-    },
-    include: { enemy_instance: { include: { enemy: true } } },
+    })
   })
-})
 
 export const attack = authActionClient.metadata({ actionName: 'game_attack' }).action(async () => {
   const player = (await PlayerAction.get())?.data
 
   if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-  if (!player.isInCombat) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!player.hasCombat) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
   // const damageFromPlayer = random(player.damage_min, player.damage_max)
   const damageFromPlayer = 1000
@@ -224,7 +232,7 @@ export const attack = authActionClient.metadata({ actionName: 'game_attack' }).a
 export const runAway = authActionClient.metadata({ actionName: 'game_runAway' }).action(async () => {
   const player = (await PlayerAction.get())?.data
 
-  if (!player?.isInCombat) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+  if (!player?.hasCombat) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
   await db.enemyInstance.delete({ where: { id: player.enemy_instance!.id } })
 })
