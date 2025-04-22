@@ -16,6 +16,8 @@ model Place {
   bank        Bank?     @relation(fields: [bank_id], references: [id])
   bank_id     String?
 
+  enemy_place EnemyInPlace[]
+
   @@index([hospital_id])
   @@index([armory_id])
   @@index([bank_id])

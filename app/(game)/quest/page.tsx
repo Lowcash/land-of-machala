@@ -1,6 +1,6 @@
 'use client'
 
-import { useBackground } from '@/context/game-provider'
+import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useQuestShowAssignedQuery } from '@/hooks/api/use-quest'
 
@@ -11,11 +11,11 @@ import Table from '@/components/table'
 import Back from '@/app/(game)/world/_components/Back'
 
 export default function Page() {
-  useBackground('quest')
-
   const commonShowQuery = useCommonShowQuery()
   const questShowAssignedQuery = useQuestShowAssignedQuery()
 
+  useSetLocationBackgroundEffect('quest')
+  
   const slainEnemyQuest = questShowAssignedQuery.data?.quest_slain_enemy
   const slainTrollQuest = questShowAssignedQuery.data?.quest_slain_troll
 

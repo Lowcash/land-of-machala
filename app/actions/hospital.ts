@@ -81,7 +81,17 @@ export const get = authActionClient
       ...hospital,
       name: i18n.t(`${hospital.i18n_key}.header` as any),
       description: i18n.t(`${hospital.i18n_key}.description` as any),
-      potions_hospital: hospital.potions_hospital.map((x) => ({ ...x, potion: { ...x.potion, name: '' } })),
+      potions_hospital: hospital.potions_hospital.map((x) => ({
+        ...x,
+        potion: {
+          ...x.potion,
+          name: '',
+          text: {
+            efficiency: `+${x.potion.hp_gain} ${i18n.t('common.hp')}`,
+            price: `${x.price} ${i18n.t('common.currency')}`,
+          },
+        },
+      })),
     }
   })
 
