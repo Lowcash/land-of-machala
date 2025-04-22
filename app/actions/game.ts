@@ -24,6 +24,12 @@ export const infoShow = cache(
     const place = await Place({ posX: player.pos_x, posY: player.pos_y })
 
     return {
+      player: {
+        hasDefeated: player.hasDefeated,
+        text: {
+          defeated: i18n.t('character.state.defeated_long'),
+        }
+      },
       place: !!place
         ? {
             id: place.id as Location,
@@ -40,7 +46,6 @@ export const infoShow = cache(
         : undefined,
       combat: player.hasCombat
         ? {
-            defeated: player.defeated,
             enemyInstance: player.enemy_instance,
             text: {
               attack: i18n.t('action.attack'),
@@ -48,7 +53,7 @@ export const infoShow = cache(
               enemyAppear: i18n.t('enemy.appear', {
                 enemy: `${i18n.t(`${player.enemy_instance?.enemy.i18n_key}.header` as any)} ${player.enemy_instance?.hp_actual}/${player.enemy_instance?.hp_max}`,
               }),
-              playerDestroyed: i18n.t('character.state.destroyed_long'),
+              
             },
           }
         : undefined,
