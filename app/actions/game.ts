@@ -75,8 +75,8 @@ export const attack = playerActionClient.metadata({ actionName: 'game_attack' })
   const actualPlayerHP = ctx.player.hp_actual - damageFromEnemy
   const actualEnemyHP = ctx.player.enemy_instance.hp_actual - damageFromPlayer
 
-  console.debug(`⚔️ [player: ${damageFromPlayer}; enemy: ${damageFromEnemy}]`)
-  console.debug(`❤️ [player: ${actualPlayerHP}; enemy: ${actualEnemyHP}]`)
+  console.debug(`⚔️ [player: ${damageFromPlayer}; ${ctx.player.enemy_instance.enemy.id}: ${damageFromEnemy}]`)
+  console.debug(`❤️ [player: ${actualPlayerHP}; ${ctx.player.enemy_instance.enemy.id}: ${actualEnemyHP}]`)
 
   await db.user.update({
     where: { id: ctx.player.id },
