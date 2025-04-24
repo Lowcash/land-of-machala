@@ -3,43 +3,28 @@ cells:
     languageId: markdown
     value: ""
     metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Race (id, i18n_key, order_index, strength, agility,
-      intelligence)
-         VALUES ('human', 'race.human', 1, 10, 10, 10),
-                ('dwarf', 'race.dwarf', 2, 12, 10, 8),
-                ('gnome', 'race.gnome', 3, 8, 10, 12) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                strength =
-         VALUES (strength),
-                agility =
-         VALUES (agility),
-                intelligence =
-         VALUES (intelligence);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Class (id, i18n_key, order_index, strength, agility,
-      intelligence)
-         VALUES ('warrior', 'class.warrior', 1, 14, 10, 6),
-                ('samurai', 'class.samurai', 2, 10, 14, 6),
-                ('mage', 'class.mage', 3, 8, 6, 16) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                strength =
-         VALUES (strength),
-                agility =
-         VALUES (agility),
-                intelligence =
-         VALUES (intelligence);
+  - kind: 1
+    languageId: markdown
+    value: |
+      # Init base structures
     metadata: {}
   - kind: 2
     languageId: sql
     value: >2-
+       TRUNCATE TABLE Race;
+
+         INSERT INTO Race (id, i18n_key, order_index, strength, agility, intelligence)
+         VALUES ('human', 'race.human', 1, 10, 10, 10),
+                ('dwarf', 'race.dwarf', 2, 12, 10, 8),
+                ('gnome', 'race.gnome', 3, 8, 10, 12);
+
+       TRUNCATE TABLE Class;
+
+         INSERT INTO Class (id, i18n_key, order_index, strength, agility, intelligence)
+         VALUES ('warrior', 'class.warrior', 1, 14, 10, 6),
+                ('samurai', 'class.samurai', 2, 10, 14, 6),
+                ('mage', 'class.mage', 3, 8, 6, 16);
+
        TRUNCATE TABLE Enemy;
 
          INSERT INTO Enemy (id, i18n_key, hp_from, hp_to, damage_from, damage_to)
@@ -74,6 +59,210 @@ cells:
                 ('GIANT_FROG', 'enemy.giant_frog', 120, 180, 14, 22),
                 ('DROWNED', 'enemy.drowned', 140, 200, 16, 26);
 
+       TRUNCATE TABLE Armor;
+
+         INSERT INTO Armor (id, i18n_key, type, armor, strength, agility, intelligence)
+         VALUES
+                -- Head items  
+                ('head_helmet_defender', 'armor.head_helmet_defender', 'HEAD', 9, 8, 3, 1),
+                ('head_cap_seer', 'armor.head_cap_seer', 'HEAD', 4, 2, 5, 10),
+                ('head_helmet_knight', 'armor.head_helmet_knight', 'HEAD', 10, 9, 2, 1),
+                ('head_hood_shadow', 'armor.head_hood_shadow', 'HEAD', 6, 3, 8, 4),
+                ('head_crown_archmage', 'armor.head_crown_archmage', 'HEAD', 7, 1, 3, 10),
+                ('head_headband_strength', 'armor.head_headband_strength', 'HEAD', 5, 8, 4, 2),
+                ('head_mask_mystery', 'armor.head_mask_mystery', 'HEAD', 4, 2, 7, 8),
+                ('head_cowl_hunter', 'armor.head_cowl_hunter', 'HEAD', 8, 5, 9, 3),
+                ('head_helmet_protector', 'armor.head_helmet_protector', 'HEAD', 9, 7, 3, 2),
+                ('head_helmet_gladiator', 'armor.head_helmet_gladiator', 'HEAD', 8, 10, 2, 1),
+                -- Shoulder items  
+                ('shoulder_pauldrons_crusher', 'armor.shoulder_pauldrons_crusher', 'SHOULDER', 7, 9, 6, 1),
+                ('shoulder_pauldrons_mystic', 'armor.shoulder_pauldrons_mystic', 'SHOULDER', 5, 2, 4, 9),
+                ('shoulder_pauldrons_sprinter', 'armor.shoulder_pauldrons_sprinter', 'SHOULDER', 6, 3, 10, 2),
+                ('shoulder_pauldrons_stealth', 'armor.shoulder_pauldrons_stealth', 'SHOULDER', 4, 1, 9, 5),
+                ('shoulder_pauldrons_wizard', 'armor.shoulder_pauldrons_wizard', 'SHOULDER', 8, 1, 5, 10),
+                ('shoulder_epaulets_courage', 'armor.shoulder_epaulets_courage', 'SHOULDER', 9, 7, 3, 2),
+                ('shoulder_epaulets_agility', 'armor.shoulder_epaulets_agility', 'SHOULDER', 7, 3, 10, 1),
+                ('shoulder_shoulders_fortress', 'armor.shoulder_shoulders_fortress', 'SHOULDER', 8, 8, 2, 3),
+                ('shoulder_shoulders_wisdom', 'armor.shoulder_shoulders_wisdom', 'SHOULDER', 5, 2, 4, 9),
+                ('shoulder_plate_shoulders_ranger', 'armor.shoulder_plate_shoulders_ranger', 'SHOULDER', 6, 6, 8, 2),
+                -- Chest items  
+                ('chest_armor_hero', 'armor.chest_armor_hero', 'CHEST', 9, 10, 3, 1),
+                ('chest_cloak_mystery', 'armor.chest_cloak_mystery', 'CHEST', 6, 2, 5, 10),
+                ('chest_chainmail_hunter', 'armor.chest_chainmail_hunter', 'CHEST', 8, 7, 10, 3),
+                ('chest_leather_armor', 'armor.chest_leather_armor', 'CHEST', 7, 5, 9, 2),
+                ('chest_magic_cloak', 'armor.chest_magic_cloak', 'CHEST', 10, 1, 4, 10),
+                ('chest_warrior_breastplate', 'armor.chest_warrior_breastplate', 'CHEST', 9, 9, 3, 1),
+                ('chest_reinforced_vest', 'armor.chest_reinforced_vest', 'CHEST', 5, 6, 7, 3),
+                ('chest_protective_tunic', 'armor.chest_protective_tunic', 'CHEST', 8, 4, 6, 8),
+                ('chest_flaming_tunic', 'armor.chest_flaming_tunic', 'CHEST', 7, 5, 8, 4),
+                ('chest_dragon_armor', 'armor.chest_dragon_armor', 'CHEST', 10, 8, 4, 7),
+                -- Hand items  
+                ('hand_gloves_strength', 'armor.hand_gloves_strength', 'HANDS', 4, 10, 7, 1),
+                ('hand_gloves_mystic', 'armor.hand_gloves_mystic', 'HANDS', 3, 2, 5, 9),
+                ('hand_gloves_sprinter', 'armor.hand_gloves_sprinter', 'HANDS', 5, 3, 10, 2),
+                ('hand_gloves_shadow_master', 'armor.hand_gloves_shadow_master', 'HANDS', 2, 1, 9, 6),
+                ('hand_gloves_wizard', 'armor.hand_gloves_wizard', 'HANDS', 6, 1, 4, 10),
+                ('hand_bracers_endurance', 'armor.hand_bracers_endurance', 'HANDS', 7, 8, 6, 3),
+                ('hand_rings_agility', 'armor.hand_rings_agility', 'HANDS', 8, 2, 10, 1),
+                ('hand_armguards_fortress', 'armor.hand_armguards_fortress', 'HANDS', 5, 7, 4, 6),
+                ('hand_chainmail_gloves', 'armor.hand_chainmail_gloves', 'HANDS', 6, 5, 3, 8),
+                ('hand_leather_gloves', 'armor.hand_leather_gloves', 'HANDS', 7, 6, 4, 7),
+                -- Pants items  
+                ('pants_pants_strength', 'armor.pants_pants_strength', 'PANTS', 7, 10, 6, 2),
+                ('pants_pants_mystic', 'armor.pants_pants_mystic', 'PANTS', 4, 2, 5, 9),
+                ('pants_pants_sprinter', 'armor.pants_pants_sprinter', 'PANTS', 6, 3, 10, 2),
+                ('pants_pants_stealth', 'armor.pants_pants_stealth', 'PANTS', 5, 1, 9, 5),
+                ('pants_pants_wizard', 'armor.pants_pants_wizard', 'PANTS', 8, 1, 4, 10),
+                ('pants_gaiters_courage', 'armor.pants_gaiters_courage', 'PANTS', 9, 9, 6, 3),
+                ('pants_trousers_agility', 'armor.pants_trousers_agility', 'PANTS', 7, 2, 10, 1),
+                ('pants_trousers_fortress', 'armor.pants_trousers_fortress', 'PANTS', 6, 8, 3, 4),
+                ('pants_leather_pants_hunter', 'armor.pants_leather_pants_hunter', 'PANTS', 5, 6, 4, 7),
+                ('pants_plate_trousers_warrior', 'armor.pants_plate_trousers_warrior', 'PANTS', 8, 10, 2, 3),
+                -- Boots items  
+                ('boots_boots_strength', 'armor.boots_boots_strength', 'BOOTS', 3, 10, 7, 2),
+                ('boots_boots_mystic', 'armor.boots_boots_mystic', 'BOOTS', 4, 2, 5, 10),
+                ('boots_boots_speed', 'armor.boots_boots_speed', 'BOOTS', 5, 3, 10, 2),
+                ('boots_boots_stealth', 'armor.boots_boots_stealth', 'BOOTS', 2, 1, 9, 6),
+                ('boots_boots_wizard', 'armor.boots_boots_wizard', 'BOOTS', 6, 1, 4, 10),
+                ('boots_shoes_endurance', 'armor.boots_shoes_endurance', 'BOOTS', 7, 9, 6, 3),
+                ('boots_sandals_agility', 'armor.boots_sandals_agility', 'BOOTS', 8, 2, 10, 1),
+                ('boots_ankle_boots', 'armor.boots_ankle_boots', 'BOOTS', 5, 7, 3, 4),
+                ('boots_leather_boots_hunter', 'armor.boots_leather_boots_hunter', 'BOOTS', 6, 5, 4, 8),
+                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5),
+                -- SWAMP
+                ('head_swamp_helm', 'armor.head_swamp_helm', 'HEAD', 6, 2, 6, 7),
+                ('chest_swamp_shell', 'armor.chest_swamp_shell', 'CHEST', 8, 3, 5, 8),
+                ('boots_swamp_reed', 'armor.boots_swamp_reed', 'BOOTS', 4, 2, 10, 5),
+                -- LAKE
+                ('head_lake_sprite', 'armor.head_lake_sprite', 'HEAD', 5, 1, 8, 9),
+                ('chest_lake_froth', 'armor.chest_lake_froth', 'CHEST', 7, 2, 7, 8),
+                ('boots_lake_lily', 'armor.boots_lake_lily', 'BOOTS', 3, 1, 12, 6),
+                -- HILLS
+                ('head_hill_troll', 'armor.head_hill_troll', 'HEAD', 10, 8, 2, 1),
+                ('chest_hill_stone', 'armor.chest_hill_stone', 'CHEST', 11, 7, 2, 2),
+                ('boots_hill_goat', 'armor.boots_hill_goat', 'BOOTS', 5, 8, 7, 2),
+                -- DESERT
+                ('head_desert_turban', 'armor.head_desert_turban', 'HEAD', 4, 2, 7, 8),
+                ('chest_desert_shroud', 'armor.chest_desert_shroud', 'CHEST', 6, 3, 10, 5),
+                ('boots_desert_snake', 'armor.boots_desert_snake', 'BOOTS', 4, 2, 11, 3),
+                -- FARM
+                ('head_farm_hat', 'armor.head_farm_hat', 'HEAD', 3, 1, 8, 5),
+                ('chest_farm_vest', 'armor.chest_farm_vest', 'CHEST', 5, 2, 9, 3),
+                ('boots_farm_boots', 'armor.boots_farm_boots', 'BOOTS', 4, 2, 8, 2),
+                -- SUBURB
+                ('head_suburb_cap', 'armor.head_suburb_cap', 'HEAD', 4, 2, 7, 6),
+                ('chest_suburb_vest', 'armor.chest_suburb_vest', 'CHEST', 6, 2, 8, 4),
+                ('boots_suburb_shoes', 'armor.boots_suburb_shoes', 'BOOTS', 3, 1, 10, 3);
+
+       TRUNCATE TABLE Weapon;
+
+         INSERT INTO Weapon (id, i18n_key, damage_from, damage_to)
+         VALUES
+                -- light
+                ('dagger', 'weapon.dagger', 4, 10),
+                ('kama', 'weapon.kama', 5, 12),
+                ('kusatko', 'weapon.kusatko', 3, 8),
+                ('scissors', 'weapon.scissors', 5, 11),
+                ('fang', 'weapon.fang', 6, 12),
+                ('claw', 'weapon.claw', 6, 13),
+                -- medium
+                ('sword', 'weapon.sword', 12, 22),
+                ('club_2', 'weapon.club_2', 12, 22),
+                ('rapier', 'weapon.rapier', 10, 18),
+                ('sabre', 'weapon.sabre', 13, 24),
+                ('hammer', 'weapon.hammer', 14, 24),
+                ('axe', 'weapon.axe', 15, 26),
+                ('tupilka', 'weapon.tupilka', 10, 18),
+                ('pitchfork', 'weapon.pitchfork', 10, 18),
+                ('bone_club', 'weapon.bone_club', 12, 20),
+                -- heavy
+                ('club', 'weapon.club', 18, 32),
+                ('krakolej', 'weapon.krakolej', 28, 48),
+                ('thrash', 'weapon.thrash', 22, 40),
+                ('anchor', 'weapon.anchor', 20, 38),
+                ('mace_weapon', 'weapon.mace_weapon', 24, 44),
+                -- magical/special
+                ('wand', 'weapon.wand', 10, 20),
+                ('sodna_lahve', 'weapon.sodna_lahve', 8, 16),
+                ('bottle', 'weapon.bottle', 6, 12),
+                -- other
+                ('arrow', 'weapon.arrow', 7, 15),
+                ('bow', 'weapon.bow', 15, 25),
+                ('mace', 'weapon.mace', 16, 28),
+                ('mace_2', 'weapon.mace_2', 18, 32),
+                ('crossbow', 'weapon.crossbow', 18, 32),
+                ('katar', 'weapon.katar', 7, 14),
+                ('axe_2', 'weapon.axe_2', 18, 32),
+                ('club_3', 'weapon.club_3', 16, 28),
+                ('mace_3', 'weapon.mace_3', 18, 32),
+                ('cloth', 'weapon.cloth', 4, 10),
+                ('fist_weapon', 'weapon.fist_weapon', 10, 18),
+                ('blade', 'weapon.blade', 14, 26),
+                ('shingle', 'weapon.shingle', 12, 22),
+                ('piercing_weapon', 'weapon.piercing_weapon', 16, 28),
+                ('shooting_weapon', 'weapon.shooting_weapon', 14, 26),
+                ('attack_weapon', 'weapon.attack_weapon', 10, 18),
+                ('parat', 'weapon.parat', 14, 26),
+                ('flajska', 'weapon.flajska', 6, 12),
+                ('slap', 'weapon.slap', 8, 16),
+                ('combat_dagger', 'weapon.combat_dagger', 12, 22),
+                ('combat_sword', 'weapon.combat_sword', 18, 32),
+                ('trailing', 'weapon.trailing', 18, 32),
+                ('six', 'weapon.six', 12, 22),
+                ('fight_weapons', 'weapon.fight_weapons', 16, 28),
+                ('shooting_weapon_2', 'weapon.shooting_weapon_2', 14, 26),
+                ('javelin', 'weapon.javelin', 12, 22),
+                ('caliber', 'weapon.caliber', 18, 32);
+
+       TRUNCATE TABLE Potion;
+
+         INSERT INTO Potion (id, i18n_key, hp_gain)
+         VALUES ('potion_weak', 'potion.potion_weak', 50),
+                ('potion_medium_strength', 'potion.potion_medium_strength', 100),
+                ('potion_strong', 'potion.potion_strong', 200);
+
+       TRUNCATE TABLE Place;
+
+         INSERT INTO Place (id, i18n_key, type, x_min, x_max, y_min, y_max, hospital_id, armory_id, bank_id)
+         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
+                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 9, NULL, NULL, NULL),
+                ('cemetery', 'place.cemetery', 'CEMETERY', 20, 25, 5, 10, NULL, NULL, NULL),
+                ('desert', 'place.desert', 'DESERT', 40, 45, -10, -5, NULL, NULL, NULL),
+                ('farmstead', 'place.farmstead', 'FARM', -20, -15, 10, 15, NULL, NULL, NULL),
+                ('castle_suburb', 'place.castle_suburb', 'SUBURB', 5, 10, 10, 15, NULL, NULL, NULL),
+                ('hills', 'place.hills', 'HILLS', -30, -20, 20, 30, NULL, NULL, NULL),
+                ('swamp', 'place.swamp', 'SWAMP', 50, 60, -20, -10, NULL, NULL, NULL),
+                ('lake', 'place.lake', 'LAKE', 15, 25, -25, -15, NULL, NULL, NULL);
+
+       TRUNCATE TABLE Hospital;
+
+         INSERT INTO Hospital (id, i18n_key, healing_price)
+         VALUES ('main_city_hospital', 'place.main_city_hospital', 250);
+
+       TRUNCATE TABLE Armory;
+
+         INSERT INTO Armory (id, i18n_key)
+         VALUES ('main_city_armory', 'place.main_city_armory');
+
+       TRUNCATE TABLE Bank;
+
+         INSERT INTO Bank (id, i18n_key)
+         VALUES ('main_city_bank', 'place.main_city_bank');
+
+       TRUNCATE TABLE Quest;
+
+         INSERT INTO Quest (id, ident, i18n_key, reward_money)
+         VALUES ('slain_enemy', 'SLAIN_ENEMY', 'quest.slain_enemy', 1000),
+                ('slain_troll', 'SLAIN_TROLL', 'quest.slain_troll', 5000);
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: |
+      # Init adittional structures
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: >2-
        TRUNCATE TABLE EnemyInPlace;
 
          INSERT INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
@@ -107,6 +296,43 @@ cells:
                 (UUID (), 'WATER_SPRITE', 'lake', 0.40),
                 (UUID (), 'GIANT_FROG', 'lake', 0.35),
                 (UUID (), 'DROWNED', 'lake', 0.25);
+
+       TRUNCATE TABLE PotionInHospital;
+
+         INSERT INTO PotionInHospital (id, price, potion_id, hospital_id)
+         VALUES (UUID (), 100, 'potion_weak', 'main_city_hospital'),
+                (UUID (), 250, 'potion_medium_strength', 'main_city_hospital'),
+                (UUID (), 500, 'potion_strong', 'main_city_hospital');
+
+       TRUNCATE TABLE WeaponInArmory;
+
+         INSERT INTO WeaponInArmory (id, price, weapon_id, armory_id)
+         VALUES (UUID (), 600, 'dagger', 'main_city_armory'),
+                (UUID (), 800, 'kama', 'main_city_armory'),
+                (UUID (), 950, 'sword', 'main_city_armory'),
+                (UUID (), 1200, 'club_2', 'main_city_armory'),
+                (UUID (), 1400, 'rapier', 'main_city_armory'),
+                (UUID (), 1600, 'hammer', 'main_city_armory'),
+                (UUID (), 1800, 'axe', 'main_city_armory'),
+                (UUID (), 2000, 'mace', 'main_city_armory'),
+                (UUID (), 2200, 'bow', 'main_city_armory'),
+                (UUID (), 2500, 'crossbow', 'main_city_armory');
+
+       TRUNCATE TABLE ArmorInArmory;
+
+         INSERT INTO ArmorInArmory (id, price, armor_id, armory_id)
+         VALUES (UUID (), 900, 'head_helmet_defender', 'main_city_armory'),
+                (UUID (), 950, 'head_helmet_knight', 'main_city_armory'),
+                (UUID (), 800, 'shoulder_pauldrons_crusher', 'main_city_armory'),
+                (UUID (), 850, 'shoulder_epaulets_courage', 'main_city_armory'),
+                (UUID (), 1200, 'chest_armor_hero', 'main_city_armory'),
+                (UUID (), 1300, 'chest_leather_armor', 'main_city_armory'),
+                (UUID (), 700, 'hand_gloves_strength', 'main_city_armory'),
+                (UUID (), 750, 'hand_leather_gloves', 'main_city_armory'),
+                (UUID (), 1000, 'pants_pants_strength', 'main_city_armory'),
+                (UUID (), 1100, 'pants_plate_trousers_warrior', 'main_city_armory'),
+                (UUID (), 600, 'boots_boots_strength', 'main_city_armory'),
+                (UUID (), 650, 'boots_plate_boots_protector', 'main_city_armory');
 
        TRUNCATE TABLE EnemyLoot;
 
@@ -205,104 +431,38 @@ cells:
                 (UUID (), 'DROWNED', NULL, 'chest_lake_froth', 0.10),
                 (UUID (), 'DROWNED', NULL, 'hand_gloves_wizard', 0.08);
     metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: "# Calculate missing cells"
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: >-
+      -- Enemy's reward (xp, money) by its stats
+
+      CREATE TEMPORARY TABLE TempMaxScore AS
+         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
+           FROM Enemy;
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
+                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
+                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
+
+           DROP TEMPORARY TABLE TempMaxScore;
+    metadata: {}
+  - kind: 1
+    languageId: markdown
+    value: "# Add procedure"
+    metadata: {}
   - kind: 2
     languageId: sql
     value: >2-
-       TRUNCATE TABLE Armor;
-
-         INSERT INTO Armor (id, i18n_key, type, armor, strength, agility, intelligence)
-         VALUES
-                -- Head items  
-                ('head_helmet_defender', 'armor.head_helmet_defender', 'HEAD', 9, 8, 3, 1),
-                ('head_cap_seer', 'armor.head_cap_seer', 'HEAD', 4, 2, 5, 10),
-                ('head_helmet_knight', 'armor.head_helmet_knight', 'HEAD', 10, 9, 2, 1),
-                ('head_hood_shadow', 'armor.head_hood_shadow', 'HEAD', 6, 3, 8, 4),
-                ('head_crown_archmage', 'armor.head_crown_archmage', 'HEAD', 7, 1, 3, 10),
-                ('head_headband_strength', 'armor.head_headband_strength', 'HEAD', 5, 8, 4, 2),
-                ('head_mask_mystery', 'armor.head_mask_mystery', 'HEAD', 4, 2, 7, 8),
-                ('head_cowl_hunter', 'armor.head_cowl_hunter', 'HEAD', 8, 5, 9, 3),
-                ('head_helmet_protector', 'armor.head_helmet_protector', 'HEAD', 9, 7, 3, 2),
-                ('head_helmet_gladiator', 'armor.head_helmet_gladiator', 'HEAD', 8, 10, 2, 1),
-                -- Shoulder items  
-                ('shoulder_pauldrons_crusher', 'armor.shoulder_pauldrons_crusher', 'SHOULDER', 7, 9, 6, 1),
-                ('shoulder_pauldrons_mystic', 'armor.shoulder_pauldrons_mystic', 'SHOULDER', 5, 2, 4, 9),
-                ('shoulder_pauldrons_sprinter', 'armor.shoulder_pauldrons_sprinter', 'SHOULDER', 6, 3, 10, 2),
-                ('shoulder_pauldrons_stealth', 'armor.shoulder_pauldrons_stealth', 'SHOULDER', 4, 1, 9, 5),
-                ('shoulder_pauldrons_wizard', 'armor.shoulder_pauldrons_wizard', 'SHOULDER', 8, 1, 5, 10),
-                ('shoulder_epaulets_courage', 'armor.shoulder_epaulets_courage', 'SHOULDER', 9, 7, 3, 2),
-                ('shoulder_epaulets_agility', 'armor.shoulder_epaulets_agility', 'SHOULDER', 7, 3, 10, 1),
-                ('shoulder_shoulders_fortress', 'armor.shoulder_shoulders_fortress', 'SHOULDER', 8, 8, 2, 3),
-                ('shoulder_shoulders_wisdom', 'armor.shoulder_shoulders_wisdom', 'SHOULDER', 5, 2, 4, 9),
-                ('shoulder_plate_shoulders_ranger', 'armor.shoulder_plate_shoulders_ranger', 'SHOULDER', 6, 6, 8, 2),
-                -- Chest items  
-                ('chest_armor_hero', 'armor.chest_armor_hero', 'CHEST', 9, 10, 3, 1),
-                ('chest_cloak_mystery', 'armor.chest_cloak_mystery', 'CHEST', 6, 2, 5, 10),
-                ('chest_chainmail_hunter', 'armor.chest_chainmail_hunter', 'CHEST', 8, 7, 10, 3),
-                ('chest_leather_armor', 'armor.chest_leather_armor', 'CHEST', 7, 5, 9, 2),
-                ('chest_magic_cloak', 'armor.chest_magic_cloak', 'CHEST', 10, 1, 4, 10),
-                ('chest_warrior_breastplate', 'armor.chest_warrior_breastplate', 'CHEST', 9, 9, 3, 1),
-                ('chest_reinforced_vest', 'armor.chest_reinforced_vest', 'CHEST', 5, 6, 7, 3),
-                ('chest_protective_tunic', 'armor.chest_protective_tunic', 'CHEST', 8, 4, 6, 8),
-                ('chest_flaming_tunic', 'armor.chest_flaming_tunic', 'CHEST', 7, 5, 8, 4),
-                ('chest_dragon_armor', 'armor.chest_dragon_armor', 'CHEST', 10, 8, 4, 7),
-                -- Hand items  
-                ('hand_gloves_strength', 'armor.hand_gloves_strength', 'HANDS', 4, 10, 7, 1),
-                ('hand_gloves_mystic', 'armor.hand_gloves_mystic', 'HANDS', 3, 2, 5, 9),
-                ('hand_gloves_sprinter', 'armor.hand_gloves_sprinter', 'HANDS', 5, 3, 10, 2),
-                ('hand_gloves_shadow_master', 'armor.hand_gloves_shadow_master', 'HANDS', 2, 1, 9, 6),
-                ('hand_gloves_wizard', 'armor.hand_gloves_wizard', 'HANDS', 6, 1, 4, 10),
-                ('hand_bracers_endurance', 'armor.hand_bracers_endurance', 'HANDS', 7, 8, 6, 3),
-                ('hand_rings_agility', 'armor.hand_rings_agility', 'HANDS', 8, 2, 10, 1),
-                ('hand_armguards_fortress', 'armor.hand_armguards_fortress', 'HANDS', 5, 7, 4, 6),
-                ('hand_chainmail_gloves', 'armor.hand_chainmail_gloves', 'HANDS', 6, 5, 3, 8),
-                ('hand_leather_gloves', 'armor.hand_leather_gloves', 'HANDS', 7, 6, 4, 7),
-                -- Pants items  
-                ('pants_pants_strength', 'armor.pants_pants_strength', 'PANTS', 7, 10, 6, 2),
-                ('pants_pants_mystic', 'armor.pants_pants_mystic', 'PANTS', 4, 2, 5, 9),
-                ('pants_pants_sprinter', 'armor.pants_pants_sprinter', 'PANTS', 6, 3, 10, 2),
-                ('pants_pants_stealth', 'armor.pants_pants_stealth', 'PANTS', 5, 1, 9, 5),
-                ('pants_pants_wizard', 'armor.pants_pants_wizard', 'PANTS', 8, 1, 4, 10),
-                ('pants_gaiters_courage', 'armor.pants_gaiters_courage', 'PANTS', 9, 9, 6, 3),
-                ('pants_trousers_agility', 'armor.pants_trousers_agility', 'PANTS', 7, 2, 10, 1),
-                ('pants_trousers_fortress', 'armor.pants_trousers_fortress', 'PANTS', 6, 8, 3, 4),
-                ('pants_leather_pants_hunter', 'armor.pants_leather_pants_hunter', 'PANTS', 5, 6, 4, 7),
-                ('pants_plate_trousers_warrior', 'armor.pants_plate_trousers_warrior', 'PANTS', 8, 10, 2, 3),
-                -- Boots items  
-                ('boots_boots_strength', 'armor.boots_boots_strength', 'BOOTS', 3, 10, 7, 2),
-                ('boots_boots_mystic', 'armor.boots_boots_mystic', 'BOOTS', 4, 2, 5, 10),
-                ('boots_boots_speed', 'armor.boots_boots_speed', 'BOOTS', 5, 3, 10, 2),
-                ('boots_boots_stealth', 'armor.boots_boots_stealth', 'BOOTS', 2, 1, 9, 6),
-                ('boots_boots_wizard', 'armor.boots_boots_wizard', 'BOOTS', 6, 1, 4, 10),
-                ('boots_shoes_endurance', 'armor.boots_shoes_endurance', 'BOOTS', 7, 9, 6, 3),
-                ('boots_sandals_agility', 'armor.boots_sandals_agility', 'BOOTS', 8, 2, 10, 1),
-                ('boots_ankle_boots', 'armor.boots_ankle_boots', 'BOOTS', 5, 7, 3, 4),
-                ('boots_leather_boots_hunter', 'armor.boots_leather_boots_hunter', 'BOOTS', 6, 5, 4, 8),
-                ('boots_plate_boots_protector', 'armor.boots_plate_boots_protector', 'BOOTS', 7, 8, 3, 5),
-                -- SWAMP
-                ('head_swamp_helm', 'armor.head_swamp_helm', 'HEAD', 6, 2, 6, 7),
-                ('chest_swamp_shell', 'armor.chest_swamp_shell', 'CHEST', 8, 3, 5, 8),
-                ('boots_swamp_reed', 'armor.boots_swamp_reed', 'BOOTS', 4, 2, 10, 5),
-                -- LAKE
-                ('head_lake_sprite', 'armor.head_lake_sprite', 'HEAD', 5, 1, 8, 9),
-                ('chest_lake_froth', 'armor.chest_lake_froth', 'CHEST', 7, 2, 7, 8),
-                ('boots_lake_lily', 'armor.boots_lake_lily', 'BOOTS', 3, 1, 12, 6),
-                -- HILLS
-                ('head_hill_troll', 'armor.head_hill_troll', 'HEAD', 10, 8, 2, 1),
-                ('chest_hill_stone', 'armor.chest_hill_stone', 'CHEST', 11, 7, 2, 2),
-                ('boots_hill_goat', 'armor.boots_hill_goat', 'BOOTS', 5, 8, 7, 2),
-                -- DESERT
-                ('head_desert_turban', 'armor.head_desert_turban', 'HEAD', 4, 2, 7, 8),
-                ('chest_desert_shroud', 'armor.chest_desert_shroud', 'CHEST', 6, 3, 10, 5),
-                ('boots_desert_snake', 'armor.boots_desert_snake', 'BOOTS', 4, 2, 11, 3),
-                -- FARM
-                ('head_farm_hat', 'armor.head_farm_hat', 'HEAD', 3, 1, 8, 5),
-                ('chest_farm_vest', 'armor.chest_farm_vest', 'CHEST', 5, 2, 9, 3),
-                ('boots_farm_boots', 'armor.boots_farm_boots', 'BOOTS', 4, 2, 8, 2),
-                -- SUBURB
-                ('head_suburb_cap', 'armor.head_suburb_cap', 'HEAD', 4, 2, 7, 6),
-                ('chest_suburb_vest', 'armor.chest_suburb_vest', 'CHEST', 6, 2, 8, 4),
-                ('boots_suburb_shoes', 'armor.boots_suburb_shoes', 'BOOTS', 3, 1, 10, 3);
-
            DROP PROCEDURE IF EXISTS GetArmorsSortedByStats;
 
       CREATE PROCEDURE GetArmorsSortedByStats () BEGIN CREATE TEMPORARY TABLE
@@ -318,69 +478,6 @@ cells:
            DROP TEMPORARY TABLE IF EXISTS ArmorTemp;
 
       END;
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >2-
-       TRUNCATE TABLE Weapon;
-
-         INSERT INTO Weapon (id, i18n_key, damage_from, damage_to)
-         VALUES
-                -- light
-                ('dagger', 'weapon.dagger', 4, 10),
-                ('kama', 'weapon.kama', 5, 12),
-                ('kusatko', 'weapon.kusatko', 3, 8),
-                ('scissors', 'weapon.scissors', 5, 11),
-                ('fang', 'weapon.fang', 6, 12),
-                ('claw', 'weapon.claw', 6, 13),
-                -- medium
-                ('sword', 'weapon.sword', 12, 22),
-                ('club_2', 'weapon.club_2', 12, 22),
-                ('rapier', 'weapon.rapier', 10, 18),
-                ('sabre', 'weapon.sabre', 13, 24),
-                ('hammer', 'weapon.hammer', 14, 24),
-                ('axe', 'weapon.axe', 15, 26),
-                ('tupilka', 'weapon.tupilka', 10, 18),
-                ('pitchfork', 'weapon.pitchfork', 10, 18),
-                ('bone_club', 'weapon.bone_club', 12, 20),
-                -- heavy
-                ('club', 'weapon.club', 18, 32),
-                ('krakolej', 'weapon.krakolej', 28, 48),
-                ('thrash', 'weapon.thrash', 22, 40),
-                ('anchor', 'weapon.anchor', 20, 38),
-                ('mace_weapon', 'weapon.mace_weapon', 24, 44),
-                -- magical/special
-                ('wand', 'weapon.wand', 10, 20),
-                ('sodna_lahve', 'weapon.sodna_lahve', 8, 16),
-                ('bottle', 'weapon.bottle', 6, 12),
-                -- other
-                ('arrow', 'weapon.arrow', 7, 15),
-                ('bow', 'weapon.bow', 15, 25),
-                ('mace', 'weapon.mace', 16, 28),
-                ('mace_2', 'weapon.mace_2', 18, 32),
-                ('crossbow', 'weapon.crossbow', 18, 32),
-                ('katar', 'weapon.katar', 7, 14),
-                ('axe_2', 'weapon.axe_2', 18, 32),
-                ('club_3', 'weapon.club_3', 16, 28),
-                ('mace_3', 'weapon.mace_3', 18, 32),
-                ('cloth', 'weapon.cloth', 4, 10),
-                ('fist_weapon', 'weapon.fist_weapon', 10, 18),
-                ('blade', 'weapon.blade', 14, 26),
-                ('shingle', 'weapon.shingle', 12, 22),
-                ('piercing_weapon', 'weapon.piercing_weapon', 16, 28),
-                ('shooting_weapon', 'weapon.shooting_weapon', 14, 26),
-                ('attack_weapon', 'weapon.attack_weapon', 10, 18),
-                ('parat', 'weapon.parat', 14, 26),
-                ('flajska', 'weapon.flajska', 6, 12),
-                ('slap', 'weapon.slap', 8, 16),
-                ('combat_dagger', 'weapon.combat_dagger', 12, 22),
-                ('combat_sword', 'weapon.combat_sword', 18, 32),
-                ('trailing', 'weapon.trailing', 18, 32),
-                ('six', 'weapon.six', 12, 22),
-                ('fight_weapons', 'weapon.fight_weapons', 16, 28),
-                ('shooting_weapon_2', 'weapon.shooting_weapon_2', 14, 26),
-                ('javelin', 'weapon.javelin', 12, 22),
-                ('caliber', 'weapon.caliber', 18, 32);
 
            DROP PROCEDURE IF EXISTS GetWeaponsSortedByStats;
 
@@ -397,168 +494,6 @@ cells:
            DROP TEMPORARY TABLE IF EXISTS WeaponTemp;
 
       END;
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Potion (id, i18n_key, hp_gain)
-         VALUES ('potion_weak', 'potion.potion_weak', 50),
-                ('potion_medium_strength', 'potion.potion_medium_strength', 100),
-                ('potion_strong', 'potion.potion_strong', 200) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                hp_gain =
-         VALUES (hp_gain);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Place (id, i18n_key, type, x_min, x_max, y_min, y_max,
-      hospital_id, armory_id, bank_id)
-         VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
-                ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 9, NULL, NULL, NULL),
-                ('cemetery', 'place.cemetery', 'CEMETERY', 20, 25, 5, 10, NULL, NULL, NULL),
-                ('desert', 'place.desert', 'DESERT', 40, 45, -10, -5, NULL, NULL, NULL),
-                ('farmstead', 'place.farmstead', 'FARM', -20, -15, 10, 15, NULL, NULL, NULL),
-                ('castle_suburb', 'place.castle_suburb', 'SUBURB', 5, 10, 10, 15, NULL, NULL, NULL),
-                ('hills', 'place.hills', 'HILLS', -30, -20, 20, 30, NULL, NULL, NULL),
-                ('swamp', 'place.swamp', 'SWAMP', 50, 60, -20, -10, NULL, NULL, NULL),
-                ('lake', 'place.lake', 'LAKE', 15, 25, -25, -15, NULL, NULL, NULL) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                type =
-         VALUES (type),
-                x_min =
-         VALUES (x_min),
-                x_max =
-         VALUES (x_max),
-                y_min =
-         VALUES (y_min),
-                y_max =
-         VALUES (y_max),
-                hospital_id =
-         VALUES (hospital_id),
-                armory_id =
-         VALUES (armory_id),
-                bank_id =
-         VALUES (bank_id);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Hospital (id, i18n_key, healing_price)
-         VALUES ('main_city_hospital', 'place.main_city_hospital', 250) ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key),
-                healing_price =
-         VALUES (healing_price);
-
-      INSERT IGNORE INTO PotionInHospital (id, price, potion_id, hospital_id)
-         VALUES (UUID(), 100, 'potion_weak', 'main_city_hospital'),
-                (UUID(), 250, 'potion_medium_strength', 'main_city_hospital'),
-                (UUID(), 500, 'potion_strong', 'main_city_hospital') ON DUPLICATE KEY
-         UPDATE price =
-         VALUES (price),
-                potion_id =
-         VALUES (potion_id),
-                hospital_id =
-         VALUES (hospital_id);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >2-
-       TRUNCATE TABLE Armory;
-
-         INSERT INTO Armory (id, i18n_key)
-         VALUES ('main_city_armory', 'place.main_city_armory');
-
-       TRUNCATE TABLE WeaponInArmory;
-
-         INSERT INTO WeaponInArmory (id, price, weapon_id, armory_id)
-         VALUES (UUID (), 600, 'dagger', 'main_city_armory'),
-                (UUID (), 800, 'kama', 'main_city_armory'),
-                (UUID (), 950, 'sword', 'main_city_armory'),
-                (UUID (), 1200, 'club_2', 'main_city_armory'),
-                (UUID (), 1400, 'rapier', 'main_city_armory'),
-                (UUID (), 1600, 'hammer', 'main_city_armory'),
-                (UUID (), 1800, 'axe', 'main_city_armory'),
-                (UUID (), 2000, 'mace', 'main_city_armory'),
-                (UUID (), 2200, 'bow', 'main_city_armory'),
-                (UUID (), 2500, 'crossbow', 'main_city_armory');
-
-       TRUNCATE TABLE ArmorInArmory;
-
-      INSERT IGNORE INTO ArmorInArmory (id, price, armor_id, armory_id)
-         VALUES (UUID (), 900, 'head_helmet_defender', 'main_city_armory'),
-                (UUID (), 950, 'head_helmet_knight', 'main_city_armory'),
-                (UUID (), 800, 'shoulder_pauldrons_crusher', 'main_city_armory'),
-                (UUID (), 850, 'shoulder_epaulets_courage', 'main_city_armory'),
-                (UUID (), 1200, 'chest_armor_hero', 'main_city_armory'),
-                (UUID (), 1300, 'chest_leather_armor', 'main_city_armory'),
-                (UUID (), 700, 'hand_gloves_strength', 'main_city_armory'),
-                (UUID (), 750, 'hand_leather_gloves', 'main_city_armory'),
-                (UUID (), 1000, 'pants_pants_strength', 'main_city_armory'),
-                (UUID (), 1100, 'pants_plate_trousers_warrior', 'main_city_armory'),
-                (UUID (), 600, 'boots_boots_strength', 'main_city_armory'),
-                (UUID (), 650, 'boots_plate_boots_protector', 'main_city_armory');
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: |-
-      INSERT IGNORE INTO Bank (id, i18n_key)
-         VALUES ('main_city_bank', 'place.main_city_bank') ON DUPLICATE KEY
-         UPDATE i18n_key =
-         VALUES (i18n_key);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      INSERT IGNORE INTO Quest (id, ident, i18n_key, reward_money)
-         VALUES ('slain_enemy', 'SLAIN_ENEMY', 'quest.slain_enemy', 1000),
-                ('slain_troll', 'SLAIN_TROLL', 'quest.slain_troll', 5000) ON DUPLICATE KEY
-         UPDATE ident =
-         VALUES (ident),
-                i18n_key =
-         VALUES (i18n_key),
-                reward_money =
-         VALUES (reward_money);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      CREATE TEMPORARY TABLE TempMaxScore AS
-         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
-           FROM Enemy;
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
-                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
-                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
-
-           DROP TEMPORARY TABLE TempMaxScore;
-
-      -- Po INSERTu všech Enemy:
-
-      CREATE TEMPORARY TABLE TempMaxScore AS
-         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
-           FROM Enemy;
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
-                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
-                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
-
-           DROP TEMPORARY TABLE TempMaxScore;
     metadata: {}
 metadata:
   conn:
