@@ -56,7 +56,10 @@ export default function Info() {
           {armors?.map((x: string, idx: number) => <Text key={`LootArmor_${idx}`}>{x}</Text>)}
           {weapons?.map((x: string, idx: number) => <Text key={`LootWeapon_${idx}`}>{x}</Text>)}
         </div>
-        <Text>{gameShowInfoQuery.data?.loot?.text?.reward ?? 'game_loot_reward'}</Text>
+        <div className='flex flex-col'>
+          <Text>{gameShowInfoQuery.data?.loot?.text?.reward_money ?? 'game_reward_money'}</Text>
+          <Text>{gameShowInfoQuery.data?.loot?.text?.reward_xp ?? 'game_reward_xp'}</Text>
+        </div>
       </Card>
     )
   }

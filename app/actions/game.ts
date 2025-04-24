@@ -58,7 +58,8 @@ export const showInfo = cache(
             text: {
               loot: i18n.t('action.loot.header'),
               loot_found: i18n.t('action.loot.found'),
-              reward: `${ctx.player.loot.money} ${i18n.t('common.currency')}`,
+              reward_money: `${ctx.player.loot.money} ${i18n.t('common.currency')}`,
+              reward_xp: `+ ${ctx.player.loot.xp} ${i18n.t('common.XP')}`,
             },
           }
         : undefined,
