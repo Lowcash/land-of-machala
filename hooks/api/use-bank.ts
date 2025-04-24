@@ -5,7 +5,7 @@ import * as BankAction from '@/app/actions/bank'
 import { QUERY_KEY } from '@/config'
 
 export const useBankShowQuery = createQueryHook([QUERY_KEY.BANK], BankAction.show)
-export const useBankAccountQuery = createQueryHook([QUERY_KEY.BANK_ACCOUNT], BankAction.showAccount)
+export const useBankShowAccountQuery = createQueryHook([QUERY_KEY.BANK_ACCOUNT], BankAction.showAccount)
 
 export const useBankDepositItemMutation = createMutationHook(BankAction.depositItem, [
   QUERY_KEY.PLAYER,

@@ -5,7 +5,9 @@ import { db } from '@/lib/db'
 import { type Place } from '@prisma/client'
 import { type PlaceSchema } from '@/zod-schema/place'
 
-export default async function get(p: PlaceSchema) {
+export type PlaceEntity = NonNullable<Awaited<ReturnType<typeof get>>>
+
+export async function get(p: PlaceSchema) {
   const place = await db.place.findFirst({
     where: {
       x_min: { lte: p.posX },
@@ -46,9 +48,9 @@ export default async function get(p: PlaceSchema) {
   }
 }
 
-export function getI18n(place: Place) {
+export function getI18n(entity: Place) {
   return {
-    name: i18n.t(`${place.i18n_key}.header` as any),
-    description: i18n.t(`${place.i18n_key}.description` as any),
+    name: i18n.t(`${entity.i18n_key}.header` as any),
+    description: i18n.t(`${entity.i18n_key}.description` as any),
   }
 }

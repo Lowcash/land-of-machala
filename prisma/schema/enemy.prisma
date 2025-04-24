@@ -8,15 +8,16 @@ model Enemy {
   damage_from Int
   damage_to   Int
 
-  xp_from Int?
-  xp_to   Int?
+  xp_from Int @default(0)
+  xp_to   Int @default(0)
 
-  money_from Int?
-  money_to   Int?
+  money_from Int @default(0)
+  money_to   Int @default(0)
 
   enemy_instances EnemyInstance[]
-  slain           Slain[]
   enemy_place     EnemyInPlace[]
+  enemy_loot      EnemyLoot[]
+  slain           Slain[]
 }
 
 model EnemyInstance {
@@ -25,7 +26,7 @@ model EnemyInstance {
   hp_actual Int
   hp_max    Int
 
-  enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+  enemy    Enemy  @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
   enemy_id String
 
   users User[]
@@ -36,14 +37,32 @@ model EnemyInstance {
 model EnemyInPlace {
   id String @id @default(uuid())
 
-  spawn_rate Decimal
+  spawn_rate Float
 
-  enemy    Enemy  @relation(fields: [enemy_id], references: [id])
+  enemy    Enemy  @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
   enemy_id String
-  place    Place  @relation(fields: [place_id], references: [id])
+  place    Place  @relation(fields: [place_id], references: [id], onDelete: Cascade)
   place_id String
 
   @@unique([enemy_id, place_id])
   @@index([enemy_id])
   @@index([place_id])
+}
+
+model EnemyLoot {
+  id String @id @default(uuid())
+
+  drop_chance Float
+
+  enemy     Enemy   @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
+  enemy_id  String
+  armor     Armor?  @relation(fields: [armor_id], references: [id], onDelete: Cascade)
+  armor_id  String?
+  weapon    Weapon? @relation(fields: [weapon_id], references: [id], onDelete: Cascade)
+  weapon_id String?
+
+  @@unique([enemy_id, weapon_id, armor_id])
+  @@index([enemy_id])
+  @@index([armor_id])
+  @@index([weapon_id])
 }

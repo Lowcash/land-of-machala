@@ -1,4 +1,4 @@
-import { resolveActionResult, type SafeActionResultData } from '@/lib/safe-action-utils'
+import { resolveActionResult, type SafeActionResultData } from '@/lib/safe-action-client-utils'
 import {
   useMutation,
   useQuery,

@@ -4,9 +4,9 @@ import * as GameAction from '@/app/actions/game'
 
 import { QUERY_KEY } from '@/config'
 
-const _useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.infoShow)
+const _useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.showInfo)
 
-export function useGameInfoShowQuery() {
+export function useGameShowInfoQuery() {
   const gameInfoShowQuery = _useGameInfoShowQuery()
 
   return {
@@ -15,7 +15,7 @@ export function useGameInfoShowQuery() {
       hasPlace: !!gameInfoShowQuery.data?.place,
       hasSubplace: (gameInfoShowQuery.data?.place?.subplaces.length ?? 0) > 0,
       hasCombat: !!gameInfoShowQuery.data?.combat,
-      hasDefeated: !!gameInfoShowQuery.data?.player.hasDefeated,
+      hasDefeated: !!gameInfoShowQuery.data?.player.defeated,
       hasLoot: !!gameInfoShowQuery.data?.loot,
     },
   }

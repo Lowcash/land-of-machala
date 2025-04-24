@@ -67,12 +67,41 @@ cells:
                 ('mountain_goat', 'enemy.mountain_goat', 90, 130, 10, 16),
                 -- SWAMP
                 ('swamp_lizard', 'enemy.swamp_lizard', 120, 170, 14, 22),
-                ('giant_leech', 'enemy.giant_leech', 140, 200, 16, 24),
+                -- ('giant_leech', 'enemy.giant_leech', 140, 200, 16, 24),
                 ('swamp_ghost', 'enemy.swamp_ghost', 160, 220, 18, 28),
                 -- LAKE
                 ('water_sprite', 'enemy.water_sprite', 100, 150, 12, 20),
                 ('giant_frog', 'enemy.giant_frog', 120, 180, 14, 22),
                 ('drowned', 'enemy.drowned', 140, 200, 16, 26);
+
+      -- Create a temporary table to store the maximum score among all enemies.
+
+      CREATE TEMPORARY TABLE TempMaxScore AS
+         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
+           FROM Enemy;
+
+      -- Update the `xp_from` and `xp_to` columns in the `Enemy` table.
+
+      -- These values are calculated as a percentage of the maximum score,
+      scaled by factors (0.8 and 1.2).
+
+      -- The `LEAST` function ensures the values do not exceed 100.
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
+                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
+
+      -- Update the `money_from` and `money_to` columns in the `Enemy` table.
+
+      -- These values are also calculated as a percentage of the maximum score,
+      scaled by factors (0.25 and 0.5).
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
+                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
+
+      -- Drop the temporary table as it is no longer needed.
+           DROP TEMPORARY TABLE TempMaxScore;
 
        TRUNCATE TABLE EnemyInPlace;
 
@@ -107,6 +136,103 @@ cells:
                 (UUID (), 'water_sprite', 'lake', 0.40),
                 (UUID (), 'giant_frog', 'lake', 0.35),
                 (UUID (), 'drowned', 'lake', 0.25);
+
+       TRUNCATE TABLE EnemyLoot;
+
+         INSERT INTO EnemyLoot (id, enemy_id, weapon_id, armor_id, drop_chance)
+         VALUES
+                -- FOREST
+                (UUID (), 'goblin', 'dagger', NULL, 0.25),
+                (UUID (), 'goblin', 'cloth', NULL, 0.18),
+                (UUID (), 'goblin', NULL, 'head_hood_shadow', 0.10),
+                (UUID (), 'goblin', NULL, 'hand_gloves_strength', 0.08),
+                (UUID (), 'wolf', 'fang', NULL, 0.28),
+                (UUID (), 'wolf', 'claw', NULL, 0.15),
+                (UUID (), 'wolf', NULL, 'boots_leather_boots_hunter', 0.12),
+                (UUID (), 'wolf', NULL, 'shoulder_pauldrons_crusher', 0.08),
+                (UUID (), 'bandit', 'sword', NULL, 0.18),
+                (UUID (), 'bandit', 'dagger', NULL, 0.14),
+                (UUID (), 'bandit', NULL, 'chest_leather_armor', 0.12),
+                (UUID (), 'bandit', NULL, 'pants_pants_strength', 0.09),
+                -- CEMETERY
+                (UUID (), 'zombie', 'club', NULL, 0.14),
+                (UUID (), 'zombie', 'bottle', NULL, 0.10),
+                (UUID (), 'zombie', NULL, 'pants_pants_strength', 0.08),
+                (UUID (), 'zombie', NULL, 'boots_boots_strength', 0.07),
+                (UUID (), 'skeleton', 'bone_club', NULL, 0.20),
+                (UUID (), 'skeleton', 'dagger', NULL, 0.10),
+                (UUID (), 'skeleton', NULL, 'head_mask_mystery', 0.10),
+                (UUID (), 'skeleton', NULL, 'hand_chainmail_gloves', 0.07),
+                (UUID (), 'ghoul', 'mace', NULL, 0.12),
+                (UUID (), 'ghoul', 'mace_2', NULL, 0.08),
+                (UUID (), 'ghoul', NULL, 'chest_cloak_mystery', 0.10),
+                (UUID (), 'ghoul', NULL, 'shoulder_pauldrons_mystic', 0.07),
+                -- DESERT
+                (UUID (), 'scorpion', 'claw', NULL, 0.25),
+                (UUID (), 'scorpion', 'fang', NULL, 0.15),
+                (UUID (), 'scorpion', NULL, 'boots_desert_snake', 0.10),
+                (UUID (), 'scorpion', NULL, 'hand_gloves_sprinter', 0.08),
+                (UUID (), 'sand_worm', 'fang', NULL, 0.16),
+                (UUID (), 'sand_worm', 'kama', NULL, 0.10),
+                (UUID (), 'sand_worm', NULL, 'chest_desert_shroud', 0.10),
+                (UUID (), 'sand_worm', NULL, 'pants_pants_sprinter', 0.07),
+                (UUID (), 'desert_bandit', 'kama', NULL, 0.20),
+                (UUID (), 'desert_bandit', 'kusatko', NULL, 0.12),
+                (UUID (), 'desert_bandit', NULL, 'head_desert_turban', 0.10),
+                (UUID (), 'desert_bandit', NULL, 'shoulder_pauldrons_stealth', 0.08),
+                -- FARM
+                (UUID (), 'wild_boar', 'fang', NULL, 0.18),
+                (UUID (), 'wild_boar', 'club', NULL, 0.10),
+                (UUID (), 'wild_boar', NULL, 'boots_farm_boots', 0.10),
+                (UUID (), 'wild_boar', NULL, 'hand_leather_gloves', 0.07),
+                (UUID (), 'angry_farmer', 'pitchfork', NULL, 0.18),
+                (UUID (), 'angry_farmer', 'club', NULL, 0.12),
+                (UUID (), 'angry_farmer', NULL, 'head_farm_hat', 0.10),
+                (UUID (), 'angry_farmer', NULL, 'chest_farm_vest', 0.08),
+                -- SUBURB
+                (UUID (), 'thief', 'dagger', NULL, 0.20),
+                (UUID (), 'thief', 'kama', NULL, 0.12),
+                (UUID (), 'thief', NULL, 'boots_suburb_shoes', 0.10),
+                (UUID (), 'thief', NULL, 'shoulder_epaulets_agility', 0.08),
+                (UUID (), 'drunkard', 'bottle', NULL, 0.22),
+                (UUID (), 'drunkard', 'club', NULL, 0.10),
+                (UUID (), 'drunkard', NULL, 'head_suburb_cap', 0.10),
+                (UUID (), 'drunkard', NULL, 'pants_trousers_agility', 0.07),
+                -- HILLS
+                (UUID (), 'hill_troll', 'club_2', NULL, 0.10),
+                (UUID (), 'hill_troll', 'club', NULL, 0.08),
+                (UUID (), 'hill_troll', NULL, 'head_hill_troll', 0.12),
+                (UUID (), 'hill_troll', NULL, 'chest_hill_stone', 0.09),
+                (UUID (), 'mountain_goat', 'fang', NULL, 0.15),
+                (UUID (), 'mountain_goat', 'claw', NULL, 0.10),
+                (UUID (), 'mountain_goat', NULL, 'boots_hill_goat', 0.10),
+                (UUID (), 'mountain_goat', NULL, 'pants_plate_trousers_warrior', 0.07),
+                -- SWAMP
+                (UUID (), 'swamp_lizard', 'claw', NULL, 0.18),
+                (UUID (), 'swamp_lizard', 'fang', NULL, 0.12),
+                (UUID (), 'swamp_lizard', NULL, 'boots_swamp_reed', 0.10),
+                (UUID (), 'swamp_lizard', NULL, 'chest_swamp_shell', 0.08),
+                (UUID (), 'giant_leech', 'fang', NULL, 0.16),
+                (UUID (), 'giant_leech', 'bottle', NULL, 0.10),
+                (UUID (), 'giant_leech', NULL, 'head_swamp_helm', 0.10),
+                (UUID (), 'giant_leech', NULL, 'hand_gloves_mystic', 0.07),
+                (UUID (), 'swamp_ghost', 'wand', NULL, 0.14),
+                (UUID (), 'swamp_ghost', 'cloth', NULL, 0.10),
+                (UUID (), 'swamp_ghost', NULL, 'chest_swamp_shell', 0.10),
+                (UUID (), 'swamp_ghost', NULL, 'shoulder_pauldrons_wizard', 0.08),
+                -- LAKE
+                (UUID (), 'water_sprite', 'wand', NULL, 0.15),
+                (UUID (), 'water_sprite', 'bottle', NULL, 0.12),
+                (UUID (), 'water_sprite', NULL, 'head_lake_sprite', 0.10),
+                (UUID (), 'water_sprite', NULL, 'boots_lake_lily', 0.08),
+                (UUID (), 'giant_frog', 'fang', NULL, 0.18),
+                (UUID (), 'giant_frog', 'claw', NULL, 0.12),
+                (UUID (), 'giant_frog', NULL, 'boots_lake_lily', 0.10),
+                (UUID (), 'giant_frog', NULL, 'pants_pants_mystic', 0.07),
+                (UUID (), 'drowned', 'club', NULL, 0.14),
+                (UUID (), 'drowned', 'dagger', NULL, 0.10),
+                (UUID (), 'drowned', NULL, 'chest_lake_froth', 0.10),
+                (UUID (), 'drowned', NULL, 'hand_gloves_wizard', 0.08);
     metadata: {}
   - kind: 2
     languageId: sql
@@ -149,16 +275,16 @@ cells:
                 ('chest_flaming_tunic', 'armor.chest_flaming_tunic', 'CHEST', 7, 5, 8, 4),
                 ('chest_dragon_armor', 'armor.chest_dragon_armor', 'CHEST', 10, 8, 4, 7),
                 -- Hand items  
-                ('hand_gloves_strength', 'armor.hand_gloves_strength', 'HAND', 4, 10, 7, 1),
-                ('hand_gloves_mystic', 'armor.hand_gloves_mystic', 'HAND', 3, 2, 5, 9),
-                ('hand_gloves_sprinter', 'armor.hand_gloves_sprinter', 'HAND', 5, 3, 10, 2),
-                ('hand_gloves_shadow_master', 'armor.hand_gloves_shadow_master', 'HAND', 2, 1, 9, 6),
-                ('hand_gloves_wizard', 'armor.hand_gloves_wizard', 'HAND', 6, 1, 4, 10),
-                ('hand_bracers_endurance', 'armor.hand_bracers_endurance', 'HAND', 7, 8, 6, 3),
-                ('hand_rings_agility', 'armor.hand_rings_agility', 'HAND', 8, 2, 10, 1),
-                ('hand_armguards_fortress', 'armor.hand_armguards_fortress', 'HAND', 5, 7, 4, 6),
-                ('hand_chainmail_gloves', 'armor.hand_chainmail_gloves', 'HAND', 6, 5, 3, 8),
-                ('hand_leather_gloves', 'armor.hand_leather_gloves', 'HAND', 7, 6, 4, 7),
+                ('hand_gloves_strength', 'armor.hand_gloves_strength', 'HANDS', 4, 10, 7, 1),
+                ('hand_gloves_mystic', 'armor.hand_gloves_mystic', 'HANDS', 3, 2, 5, 9),
+                ('hand_gloves_sprinter', 'armor.hand_gloves_sprinter', 'HANDS', 5, 3, 10, 2),
+                ('hand_gloves_shadow_master', 'armor.hand_gloves_shadow_master', 'HANDS', 2, 1, 9, 6),
+                ('hand_gloves_wizard', 'armor.hand_gloves_wizard', 'HANDS', 6, 1, 4, 10),
+                ('hand_bracers_endurance', 'armor.hand_bracers_endurance', 'HANDS', 7, 8, 6, 3),
+                ('hand_rings_agility', 'armor.hand_rings_agility', 'HANDS', 8, 2, 10, 1),
+                ('hand_armguards_fortress', 'armor.hand_armguards_fortress', 'HANDS', 5, 7, 4, 6),
+                ('hand_chainmail_gloves', 'armor.hand_chainmail_gloves', 'HANDS', 6, 5, 3, 8),
+                ('hand_leather_gloves', 'armor.hand_leather_gloves', 'HANDS', 7, 6, 4, 7),
                 -- Pants items  
                 ('pants_pants_strength', 'armor.pants_pants_strength', 'PANTS', 7, 10, 6, 2),
                 ('pants_pants_mystic', 'armor.pants_pants_mystic', 'PANTS', 4, 2, 5, 9),
@@ -205,10 +331,26 @@ cells:
                 ('head_suburb_cap', 'armor.head_suburb_cap', 'HEAD', 4, 2, 7, 6),
                 ('chest_suburb_vest', 'armor.chest_suburb_vest', 'CHEST', 6, 2, 8, 4),
                 ('boots_suburb_shoes', 'armor.boots_suburb_shoes', 'BOOTS', 3, 1, 10, 3);
+
+           DROP PROCEDURE IF EXISTS GetArmorsSortedByStats;
+
+      CREATE PROCEDURE GetArmorsSortedByStats () BEGIN CREATE TEMPORARY TABLE
+      ArmorTemp AS
+         SELECT *,
+                (armor + strength + agility + intelligence) AS stats_sum
+           FROM Armor;
+
+         SELECT *
+           FROM ArmorTemp
+       ORDER BY stats_sum ASC;
+
+           DROP TEMPORARY TABLE IF EXISTS ArmorTemp;
+
+      END;
     metadata: {}
   - kind: 2
     languageId: sql
-    value: |2-
+    value: >2-
        TRUNCATE TABLE Weapon;
 
          INSERT INTO Weapon (id, i18n_key, damage_from, damage_to)
@@ -268,6 +410,22 @@ cells:
                 ('shooting_weapon_2', 'weapon.shooting_weapon_2', 14, 26),
                 ('javelin', 'weapon.javelin', 12, 22),
                 ('caliber', 'weapon.caliber', 18, 32);
+
+           DROP PROCEDURE IF EXISTS GetWeaponsSortedByStats;
+
+      CREATE PROCEDURE GetWeaponsSortedByStats () BEGIN CREATE TEMPORARY TABLE
+      WeaponTemp AS
+         SELECT *,
+                (damage_from + damage_to) AS stats_sum
+           FROM Weapon;
+
+         SELECT *
+           FROM WeaponTemp
+       ORDER BY stats_sum ASC;
+
+           DROP TEMPORARY TABLE IF EXISTS WeaponTemp;
+
+      END;
     metadata: {}
   - kind: 2
     languageId: sql
@@ -284,8 +442,8 @@ cells:
   - kind: 2
     languageId: sql
     value: >-
-      INSERT IGNORE INTO Place (id, i18n_key, place_type, x_min, x_max, y_min,
-      y_max, hospital_id, armory_id, bank_id)
+      INSERT IGNORE INTO Place (id, i18n_key, type, x_min, x_max, y_min, y_max,
+      hospital_id, armory_id, bank_id)
          VALUES ('main_city', 'place.main_city', 'SAFEHOUSE', 0, 0, 0, 0, 'main_city_hospital', 'main_city_armory', 'main_city_bank'),
                 ('forest_clearing', 'place.forest_clearing', 'FOREST', -10, 15, 3, 9, NULL, NULL, NULL),
                 ('cemetery', 'place.cemetery', 'CEMETERY', 20, 25, 5, 10, NULL, NULL, NULL),
@@ -297,8 +455,8 @@ cells:
                 ('lake', 'place.lake', 'LAKE', 15, 25, -25, -15, NULL, NULL, NULL) ON DUPLICATE KEY
          UPDATE i18n_key =
          VALUES (i18n_key),
-                place_type =
-         VALUES (place_type),
+                type =
+         VALUES (type),
                 x_min =
          VALUES (x_min),
                 x_max =
@@ -393,63 +551,6 @@ cells:
          VALUES (i18n_key),
                 reward_money =
          VALUES (reward_money);
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >2-
-           DROP PROCEDURE IF EXISTS GetWeaponsSortedByStats;
-
-      CREATE PROCEDURE GetWeaponsSortedByStats () BEGIN CREATE TEMPORARY TABLE
-      WeaponTemp AS
-         SELECT *,
-                (damage_from + damage_to) AS stats_sum
-           FROM Weapon;
-
-         SELECT *
-           FROM WeaponTemp
-       ORDER BY stats_sum ASC;
-
-           DROP TEMPORARY TABLE IF EXISTS WeaponTemp;
-
-      END;
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >2-
-       DROP PROCEDURE IF EXISTS GetArmorsSortedByStats;
-
-      CREATE PROCEDURE GetArmorsSortedByStats () BEGIN CREATE TEMPORARY TABLE
-      ArmorTemp AS
-         SELECT *,
-                (armor + strength + agility + intelligence) AS stats_sum
-           FROM Armor;
-
-         SELECT *
-           FROM ArmorTemp
-       ORDER BY stats_sum ASC;
-
-           DROP TEMPORARY TABLE IF EXISTS ArmorTemp;
-
-      END;
-    metadata: {}
-  - kind: 2
-    languageId: sql
-    value: >-
-      CREATE TEMPORARY TABLE TempMaxScore AS
-         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
-           FROM Enemy;
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
-                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
-
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
-                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
-
-           DROP TEMPORARY TABLE TempMaxScore;
     metadata: {}
 metadata:
   conn:

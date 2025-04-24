@@ -1,6 +1,7 @@
 'use client'
 
-import { usePlayerShowQuery, useStatsShowQuery } from '@/hooks/api/use-player'
+import { usePlayerShowQuery } from '@/hooks/api/use-player'
+import { useStatsShowQuery } from '@/hooks/api/use-stats'
 import { useWearableShowQuery } from '@/hooks/api/use-wearable'
 
 import Sidebar from '@/components/layout/Sidebar'
@@ -102,8 +103,8 @@ export default function SidebarLeft() {
             header: statsShowQuery.data?.text.header ?? 'stats',
             items: [
               {
-                label: `${statsShowQuery.data?.text.level ?? 'level'}:`,
-                value: `${statsShowQuery.data?.level ?? EMPTY}`,
+                label: `${playerShowQuery.data?.text.level ?? 'level'}:`,
+                value: `${playerShowQuery.data?.level ?? EMPTY}`,
               },
               {
                 label: `${statsShowQuery.data?.text.damage ?? 'damage'}:`,

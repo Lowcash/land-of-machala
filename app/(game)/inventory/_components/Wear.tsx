@@ -11,6 +11,7 @@ interface Props extends MutationInput<typeof useWearableWearMutation> {}
 
 export default function Wear(p: Props) {
   const playerShowQuery = usePlayerShowQuery()
+
   const wearableWearMutation = useWearableWearMutation()
 
   const handleWear = () => wearableWearMutation.mutate(p)
