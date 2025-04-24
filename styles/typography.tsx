@@ -13,17 +13,30 @@ export const H3 = (p: React.HTMLAttributes<HTMLHeadingElement>) => (
 interface TextProps {
   bold?: boolean
   light?: boolean
+  small?: boolean
+  italic?: boolean
 }
 
 export const Text = <C extends React.ElementType = 'label'>({
   bold,
   light,
+  small,
+  italic,
   ...p
 }: React.HtmlHTMLAttributes<HTMLElement> & TextProps & { as?: C }) => {
   const { as: Component = Label } = p
 
   return (
-    <Component {...p} className={cn('text-base', !!bold && 'font-bold', !!light && 'text-gray-500', p.className)} />
+    <Component
+      {...p}
+      className={cn(
+        small ? 'text-sm' : 'text-base',
+        !!bold && 'font-bold',
+        !!light && 'text-gray-500',
+        !!italic && 'italic',
+        p.className,
+      )}
+    />
   )
 }
 

@@ -1,18 +1,17 @@
 'use server'
 
 import i18n from '@/lib/i18n'
-import { db } from '@/lib/db'
-import { authActionClient } from '@/lib/safe-action'
-import { type InferSafeActionFnResult } from 'next-safe-action'
+import { playerActionClient } from '@/lib/safe-action'
 
-import * as WearableAction from './wearable'
+import * as InventoryEntity from '@/entity/inventory'
+import * as WearableEntity from '@/entity/wearable'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = authActionClient.metadata({ actionName: 'inventory_show' }).action(async () => {
+export const show = playerActionClient.metadata({ actionName: 'inventory_show' }).action(async ({ ctx }) => {
   const [inventory, wearable] = await Promise.all([
-    get().then((x) => x?.data),
-    WearableAction.get().then((x) => x?.data),
+    InventoryEntity.get(ctx.player.id, ctx.player.inventory_id),
+    WearableEntity.get(ctx.player, ctx.player.wearable_id),
   ])
   if (!inventory || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -55,63 +54,5 @@ export const show = authActionClient.metadata({ actionName: 'inventory_show' }).
       use: i18n.t('action.use'),
       efficiency: i18n.t('potion.efficiency'),
     },
-  }
-})
-
-export type InventoryGetResult = InferSafeActionFnResult<typeof get>['data']
-
-export const get = authActionClient.metadata({ actionName: 'inventory_get' }).action(async ({ ctx }) => {
-  const inventory = ctx.user.inventory_id
-    ? await db.inventory.findFirst({
-        where: { id: ctx.user.inventory_id },
-        include: {
-          weapons_inventory: { include: { weapon: true } },
-          armors_inventory: { include: { armor: true } },
-          potions_inventory: { include: { potion: true } },
-        },
-      })
-    : await db.$transaction(async (db) => {
-        const inventory = await db.inventory.create({
-          data: {},
-          include: {
-            weapons_inventory: { include: { weapon: true } },
-            armors_inventory: { include: { armor: true } },
-            potions_inventory: { include: { potion: true } },
-          },
-        })
-
-        await db.user.update({
-          where: { id: ctx.user.id },
-          data: { inventory: { connect: { id: inventory.id } } },
-        })
-
-        return inventory
-      })
-
-  if (!inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-  return {
-    ...inventory,
-    armors_inventory: inventory.armors_inventory.map((x) => ({
-      ...x,
-      armor: {
-        ...x.armor,
-        name: i18n.t(`${x.armor.i18n_key}.header` as any),
-      },
-    })),
-    weapons_inventory: inventory.weapons_inventory.map((x) => ({
-      ...x,
-      weapon: {
-        ...x.weapon,
-        name: i18n.t(`${x.weapon.i18n_key}.header` as any),
-      },
-    })),
-    potions_inventory: inventory.potions_inventory.map((x) => ({
-      ...x,
-      potion: {
-        ...x.potion,
-        name: i18n.t(`${x.potion.i18n_key}.header` as any),
-      },
-    })),
   }
 })

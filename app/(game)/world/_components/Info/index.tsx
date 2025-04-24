@@ -3,7 +3,7 @@
 import React from 'react'
 import type { Location } from '@/types'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
-import { useGameInfoShowQuery } from '@/hooks/api/use-game'
+import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 
 import Image from 'next/image'
@@ -17,27 +17,27 @@ import Bank from '@/app/(game)/world/_components/Info/Place/Bank'
 
 export default function Info() {
   const commonShowQuery = useCommonShowQuery()
-  const gameInfoShowQuery = useGameInfoShowQuery()
+  const gameShowInfoQuery = useGameShowInfoQuery()
 
   const { selectedSubplace, setSelectedSubplace } = useSetPlace(
-    gameInfoShowQuery.data?.place?.id ?? 'road',
-    gameInfoShowQuery.derived.hasDefeated ? 'hospital' : undefined,
+    gameShowInfoQuery.data?.place?.id ?? 'road',
+    gameShowInfoQuery.derived.hasDefeated ? 'hospital' : undefined,
   )
 
-  if (gameInfoShowQuery.derived.hasCombat)
+  if (gameShowInfoQuery.derived.hasCombat)
     return (
       <>
         <Card>
           <Text
             dangerouslySetInnerHTML={{
-              __html: gameInfoShowQuery.data?.combat?.text?.enemyAppear ?? 'game_enemy_appear',
+              __html: gameShowInfoQuery.data?.combat?.text?.enemyAppear ?? 'game_enemy_appear',
             }}
           />
         </Card>
         <Image
           priority
-          src={`/images/enemies/${gameInfoShowQuery.data?.combat?.enemyInstance?.enemy.id}.png`}
-          alt={gameInfoShowQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
+          src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id}.png`}
+          alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
           width={500}
           height={500}
           className='ml-auto mr-auto mt-auto'
@@ -45,32 +45,43 @@ export default function Info() {
       </>
     )
 
-  if (gameInfoShowQuery.derived.hasLoot) {
-    const armors = gameInfoShowQuery.data?.loot?.armors_loot?.map((x) => x.armor.name)
-    const weapons = gameInfoShowQuery.data?.loot?.weapons_loot?.map((x) => x.weapon.name)
+  if (gameShowInfoQuery.derived.hasLoot) {
+    const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x) => x.text.reward)
+    const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x) => x.text.reward)
 
     return (
       <Card>
-        <Text>{gameInfoShowQuery.data?.loot?.text?.loot_found ?? 'game_loot_found'}:</Text>
+        <Text
+          dangerouslySetInnerHTML={{
+            __html: `${gameShowInfoQuery.data?.loot?.text?.loot_found ?? 'game_loot_found'}:`,
+          }}
+        />
         <div className='flex flex-col'>
           {armors?.map((x: string, idx: number) => <Text key={`LootArmor_${idx}`}>{x}</Text>)}
           {weapons?.map((x: string, idx: number) => <Text key={`LootWeapon_${idx}`}>{x}</Text>)}
         </div>
-        <Text>{gameInfoShowQuery.data?.loot?.text?.reward ?? 'game_loot_reward'}</Text>
+        <div className='flex flex-col'>
+          <Text>{gameShowInfoQuery.data?.loot?.text?.reward_money ?? 'game_reward_money'}</Text>
+          <Text>{gameShowInfoQuery.data?.loot?.text?.reward_xp ?? 'game_reward_xp'}</Text>
+        </div>
       </Card>
     )
   }
 
-  if (gameInfoShowQuery.derived.hasPlace) {
+  if (gameShowInfoQuery.derived.hasPlace) {
     if (!!selectedSubplace) {
-      const hospital = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
-      const armory = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
-      const bank = gameInfoShowQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
+      const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
+      const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
+      const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
 
       return (
         <Card>
-          {gameInfoShowQuery.derived.hasDefeated ? (
-            <Text>{gameInfoShowQuery.data?.player?.text?.defeated ?? 'game_player_defeated'}</Text>
+          {gameShowInfoQuery.derived.hasDefeated ? (
+            <Text
+              dangerouslySetInnerHTML={{
+                __html: gameShowInfoQuery.data?.player?.text?.defeated ?? 'game_player_defeated',
+              }}
+            />
           ) : (
             <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedSubplace(undefined)}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
@@ -86,14 +97,20 @@ export default function Info() {
 
     return (
       <Card>
-        <Text dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.header ?? 'place_header' }} />
-        <Text
-          dangerouslySetInnerHTML={{ __html: gameInfoShowQuery.data?.place?.text?.description ?? 'place_description' }}
-        />
+        <div className='flex flex-col'>
+          <Text dangerouslySetInnerHTML={{ __html: gameShowInfoQuery.data?.place?.text?.header ?? 'place_header' }} />
+          <Text
+            dangerouslySetInnerHTML={{
+              __html: gameShowInfoQuery.data?.place?.text?.description ?? 'place_description',
+            }}
+            small
+            italic
+          />
+        </div>
 
-        {gameInfoShowQuery.derived.hasSubplace && (
+        {gameShowInfoQuery.derived.hasSubplace && (
           <List>
-            {gameInfoShowQuery.data?.place?.subplaces?.map((x) => (
+            {gameShowInfoQuery.data?.place?.subplaces?.map((x) => (
               <li key={`SubPlace_${x.type}`}>
                 <Link onClick={() => setSelectedSubplace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
               </li>

@@ -1,12 +1,10 @@
-import { getPage } from '@/app/actions/common'
+import * as CommonAction from '@/app/actions/common'
 
 import * as S from './styles'
 import Button from '@/components/layout/Sidebar/Right/Move/Button'
 
 export default async function Move() {
-  const page = await getPage()
-
-  const disabled = page !== 'WORLD'
+  const disabled = (await CommonAction.getPage()) !== 'WORLD'
 
   return (
     <S.Move>

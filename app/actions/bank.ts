@@ -2,18 +2,20 @@
 
 import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
-import { authActionClient } from '@/lib/safe-action'
+import { playerActionClient } from '@/lib/safe-action'
 import { bankActionSchema, bankSchema } from '@/zod-schema/bank'
 
-import * as InventoryAction from './inventory'
+import * as BankEntity from '@/entity/bank'
+import * as BankAccountEntity from '@/entity/bank-account'
+import * as InventoryEntity from '@/entity/inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = authActionClient
+export const show = playerActionClient
   .metadata({ actionName: 'bank_show' })
   .schema(bankSchema)
   .action(async ({ parsedInput }) => {
-    const bank = await get({ bankId: parsedInput.bankId }).then((x) => x?.data)
+    const bank = await BankEntity.get(parsedInput.bankId)
 
     if (!bank) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -38,82 +40,16 @@ export const show = authActionClient
     }
   })
 
-export const get = authActionClient
-  .metadata({ actionName: 'bank_get' })
+export const showAccount = playerActionClient
+  .metadata({ actionName: 'bank_show_account' })
   .schema(bankSchema)
-  .action(async ({ parsedInput }) => {
-    const bank = await db.bank.findFirst({
-      where: { id: parsedInput.bankId },
-    })
+  .action(async ({ parsedInput, ctx }) => BankAccountEntity.get(parsedInput.bankId, ctx.player.id))
 
-    if (!bank) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return {
-      ...bank,
-      name: i18n.t(`${bank?.i18n_key}.header` as any),
-      description: i18n.t(`${bank?.i18n_key}.description` as any),
-    }
-  })
-
-export const showAccount = authActionClient
-  .metadata({ actionName: 'bank_showAccount' })
-  .schema(bankSchema)
-  .action(async ({ parsedInput, ctx }) => {
-    let bankAccount = await db.bankAccount.findFirst({
-      where: { bank_id: parsedInput.bankId, user_id: ctx.user.id },
-      include: {
-        weapons: { include: { weapon: true } },
-        armors: { include: { armor: true } },
-        potions: { include: { potion: true } },
-      },
-    })
-
-    if (!bankAccount) {
-      bankAccount = await db.$transaction(async (db) => {
-        const bankAccount = await db.bankAccount.create({
-          data: { bank_id: parsedInput.bankId, user_id: ctx.user.id },
-          include: {
-            weapons: { include: { weapon: true } },
-            armors: { include: { armor: true } },
-            potions: { include: { potion: true } },
-          },
-        })
-
-        await db.bank.update({
-          where: { id: parsedInput.bankId },
-          data: {
-            accounts: { connect: { id: bankAccount.id } },
-          },
-        })
-
-        return bankAccount
-      })
-    }
-
-    if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return {
-      ...bankAccount,
-      weapons: bankAccount.weapons.map((x) => ({
-        ...x,
-        weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
-      })),
-      armors: bankAccount.armors.map((x) => ({
-        ...x,
-        armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
-      })),
-      potions: bankAccount.potions.map((x) => ({
-        ...x,
-        potion: { ...x.potion, name: i18n.t(`${x.potion.i18n_key}.header` as any) },
-      })),
-    }
-  })
-
-export const depositItem = authActionClient
-  .metadata({ actionName: 'bank_depositItem' })
+export const depositItem = playerActionClient
+  .metadata({ actionName: 'bank_deposit_item' })
   .schema(bankActionSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const bankAccount = (await showAccount({ bankId: parsedInput.bankId }))?.data
+    const bankAccount = await BankAccountEntity.get(parsedInput.bankId, ctx.player.id)
 
     if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -136,11 +72,28 @@ export const depositItem = authActionClient
     }
 
     if (!!parsedInput.item) {
-      const inventory = (await InventoryAction.get())?.data
+      const inventory = await InventoryEntity.get(ctx.player.id, ctx.player.inventory_id)
 
       if (!inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
       switch (parsedInput.item.type) {
+        case 'armor': {
+          const inventoryItem = inventory.armors_inventory.find((x) => x.id === parsedInput.item!.id)
+
+          if (!inventoryItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+          await db.$transaction(async (db) => {
+            await db.bankAccount.update({
+              where: { id: bankAccount.id },
+              data: { armors: { create: [{ armor_id: inventoryItem.armor_id }] } },
+            })
+
+            await db.armorInInventory.delete({
+              where: { id: inventoryItem.id },
+            })
+          })
+          break
+        }
         case 'weapon': {
           const inventoryItem = inventory.weapons_inventory.find((x) => x.id === parsedInput.item!.id)
 
@@ -157,23 +110,6 @@ export const depositItem = authActionClient
             })
           })
 
-          break
-        }
-        case 'armor': {
-          const inventoryItem = inventory.armors_inventory.find((x) => x.id === parsedInput.item!.id)
-
-          if (!inventoryItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.bankAccount.update({
-              where: { id: bankAccount.id },
-              data: { armors: { create: [{ armor_id: inventoryItem.armor_id }] } },
-            })
-
-            await db.armorInInventory.delete({
-              where: { id: inventoryItem.id },
-            })
-          })
           break
         }
         case 'potion': {
@@ -198,11 +134,11 @@ export const depositItem = authActionClient
     }
   })
 
-export const withdrawItem = authActionClient
-  .metadata({ actionName: 'bank_withdrawItem' })
+export const withdrawItem = playerActionClient
+  .metadata({ actionName: 'bank_withdraw_item' })
   .schema(bankActionSchema)
   .action(async ({ parsedInput, ctx }) => {
-    const bankAccount = (await showAccount({ bankId: parsedInput.bankId }))?.data
+    const bankAccount = await BankAccountEntity.get(parsedInput.bankId, ctx.player.id)
 
     if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -225,29 +161,11 @@ export const withdrawItem = authActionClient
     }
 
     if (!!parsedInput.item) {
-      const inventory = (await InventoryAction.get())?.data!
+      const inventory = await InventoryEntity.get(ctx.player.id, ctx.player.inventory_id)
 
       if (!inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
       switch (parsedInput.item.type) {
-        case 'weapon': {
-          const bankItem = bankAccount.weapons.find((x) => x.id === parsedInput.item!.id)
-
-          if (!bankItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.inventory.update({
-              where: { id: inventory.id },
-              data: { weapons_inventory: { create: [{ weapon_id: bankItem.weapon_id }] } },
-            })
-
-            await db.weaponInBank.delete({
-              where: { id: bankItem.id },
-            })
-          })
-
-          break
-        }
         case 'armor': {
           const bankItem = bankAccount.armors.find((x) => x.id === parsedInput.item!.id)
 
@@ -260,6 +178,24 @@ export const withdrawItem = authActionClient
             })
 
             await db.armorInBank.delete({
+              where: { id: bankItem.id },
+            })
+          })
+
+          break
+        }
+        case 'weapon': {
+          const bankItem = bankAccount.weapons.find((x) => x.id === parsedInput.item!.id)
+
+          if (!bankItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+          await db.$transaction(async (db) => {
+            await db.inventory.update({
+              where: { id: inventory.id },
+              data: { weapons_inventory: { create: [{ weapon_id: bankItem.weapon_id }] } },
+            })
+
+            await db.weaponInBank.delete({
               where: { id: bankItem.id },
             })
           })

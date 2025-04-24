@@ -17,9 +17,9 @@ enum QuestIdent {
 model QuestSlainEnemy {
   id String @id @default(uuid())
 
-  quest    Quest  @relation(fields: [quest_id], references: [id])
+  quest    Quest  @relation(fields: [quest_id], references: [id], onDelete: Cascade)
   quest_id String
-  slain    Slain  @relation(fields: [slain_id], references: [id])
+  slain    Slain  @relation(fields: [slain_id], references: [id], onDelete: Cascade)
   slain_id String
 
   user_quest UserQuest[]
@@ -31,9 +31,9 @@ model QuestSlainEnemy {
 model QuestSlainTroll {
   id String @id @default(uuid())
 
-  quest    Quest  @relation(fields: [quest_id], references: [id])
+  quest    Quest  @relation(fields: [quest_id], references: [id], onDelete: Cascade)
   quest_id String
-  slain    Slain  @relation(fields: [slain_id], references: [id])
+  slain    Slain  @relation(fields: [slain_id], references: [id], onDelete: Cascade)
   slain_id String
 
   user_quest UserQuest[]
@@ -48,8 +48,8 @@ model Slain {
   actual_slain  Int @default(0)
   desired_slain Int
 
-  enemy    Enemy?  @relation(fields: [enemy_id], references: [id])
-  enemy_id String?
+  enemy    Enemy?      @relation(fields: [enemy_id], references: [id])
+  enemy_id EnemyIdent?
 
   quest_slain_enemy QuestSlainEnemy[]
   quest_slain_troll QuestSlainTroll[]
