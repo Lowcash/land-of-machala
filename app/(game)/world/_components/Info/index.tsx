@@ -36,7 +36,7 @@ export default function Info() {
         </Card>
         <Image
           priority
-          src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id}.png`}
+          src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id.toLowerCase()}.png`}
           alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
           width={500}
           height={500}
