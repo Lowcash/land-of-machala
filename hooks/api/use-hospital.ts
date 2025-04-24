@@ -4,7 +4,20 @@ import * as HospitalAction from '@/app/actions/hospital'
 
 import { QUERY_KEY } from '@/config'
 
-export const useHospitalShowQuery = createQueryHook([QUERY_KEY.HOSPITAL], HospitalAction.show)
+const _useHospitalShowQuery = createQueryHook([QUERY_KEY.HOSPITAL], HospitalAction.show)
+
+export type HospitalPotion = NonNullable<ReturnType<typeof _useHospitalShowQuery>['data']>['potions_hospital'][0]
+
+export function useHospitalShowQuery(...p: Parameters<typeof _useHospitalShowQuery>) {
+  const hospitalShowQuery = _useHospitalShowQuery(...p)
+
+  return {
+    ...hospitalShowQuery,
+    derived: {
+      hasBuyPotions: !!hospitalShowQuery.data?.potions_hospital,
+    },
+  }
+}
 
 export const useHospitalResurectMutation = createMutationHook(HospitalAction.resurrect, [
   QUERY_KEY.PLAYER,

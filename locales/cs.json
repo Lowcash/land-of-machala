@@ -31,7 +31,7 @@
       "failure": "Postavu se nepodařilo vytvořit"
     },
     "state": {
-      "defeated_long": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
+      "defeated_long": "<b>Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!</b>"
     }
   },
   "stats": {
@@ -623,7 +623,7 @@
     "header_multi": "Potiony",
     "buy": "Koupit Potion",
     "buy_success": "Tady to máš",
-    "buy_failure": "Přijď, až na to budeš mít (nedostatek peněz)",
+    "buy_failure": "Přijď, až na to budeš mít <b>(nedostatek peněz)</b>",
     "efficiency": "Účinnost",
     "potion_weak": {
       "header": "Slabý lék"
@@ -653,12 +653,13 @@
       "heal": {
         "header": "Uzdravení za {{ price }}&nbsp;<b></b>",
         "action": "To chci!",
-        "success": "Teď jsi jako rybička (vyléčen)",
-        "failure": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)"
+        "success": "Teď jsi jako rybička <b>(vyléčen)</b>",
+        "failure": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme <b>(nedostatek peněz)</b>"
       },
       "resurrect": {
+        "description": "Teda kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění.. <b>(zničen)</b>",
         "action": "Uzdravit!",
-        "description": "Kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění.."
+        "success": "Vítej zpět <b>(vyléčen)</b>"
       }
     },
     "bank": {

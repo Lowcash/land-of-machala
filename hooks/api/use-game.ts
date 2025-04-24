@@ -13,7 +13,7 @@ export function useGameShowInfoQuery() {
     ...gameInfoShowQuery,
     derived: {
       hasPlace: !!gameInfoShowQuery.data?.place,
-      hasSubplace: (gameInfoShowQuery.data?.place?.subplaces.length ?? 0) > 0,
+      hasSubplace: !!gameInfoShowQuery.data?.place?.subplaces.length,
       hasCombat: !!gameInfoShowQuery.data?.combat,
       hasDefeated: !!gameInfoShowQuery.data?.player.defeated,
       hasLoot: !!gameInfoShowQuery.data?.loot,
