@@ -18,8 +18,6 @@ export default function Potions({ hospitalId, ...p }: Props) {
   const commonShowQuery = useCommonShowQuery()
   const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
-  if (!hospitalShowQuery.derived.hasBuyPotions) return <></>
-
   return (
     <Table
       columns={[
