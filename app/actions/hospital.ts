@@ -61,7 +61,9 @@ export const show = playerActionClient
           failure: i18n.t('place.hospital.heal.failure'),
         },
         resurrect: {
+          description: i18n.t('place.hospital.resurrect.description'),
           action: i18n.t('place.hospital.resurrect.action'),
+          success: i18n.t('place.hospital.resurrect.success'),
         },
         quest: {
           enemySlain: {

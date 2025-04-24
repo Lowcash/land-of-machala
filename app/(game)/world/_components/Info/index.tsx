@@ -73,7 +73,11 @@ export default function Info() {
       return (
         <Card>
           {gameShowInfoQuery.derived.hasDefeated ? (
-            <Text>{gameShowInfoQuery.data?.player?.text?.defeated ?? 'game_player_defeated'}</Text>
+            <Text
+              dangerouslySetInnerHTML={{
+                __html: gameShowInfoQuery.data?.player?.text?.defeated ?? 'game_player_defeated',
+              }}
+            />
           ) : (
             <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedSubplace(undefined)}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
