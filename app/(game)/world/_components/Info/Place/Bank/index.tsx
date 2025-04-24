@@ -10,39 +10,55 @@ import {
 } from '@/hooks/api/use-bank'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
-import { ArmorSafe, PotionSafe, WeaponSafe, type OnActionParams } from './Safe'
+import { ArmorSafe, PotionSafe, WeaponSafe } from './Safe'
 import { H3, Input, Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
 import { Button } from '@/components/ui/button'
 import Loading from '@/components/Loading'
 import Alert from '@/components/Alert'
 
+type ArmorSafeOnAction = React.ComponentProps<typeof ArmorSafe>['onAction']
+type WeaponSafeOnAction = React.ComponentProps<typeof WeaponSafe>['onAction']
+type PotionSafeOnAction = React.ComponentProps<typeof PotionSafe>['onAction']
+
 interface Props {
   bankId: string
 }
 
 export default function Bank({ bankId }: Props) {
+  const [message, setMessage] = React.useState<string>()
+
   const commonShowQuery = useCommonShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
   const bankShowQuery = useBankShowQuery({ bankId })
   const bankShowAccountQuery = useBankShowAccountQuery({ bankId })
-  const inventoryShowQuery = useInventoryShowQuery()
 
-  const depositItemMutation = useBankDepositItemMutation()
-  const withdrawItemMutation = useBankWithdrawItemMutation()
+  const depositItemMutation = useBankDepositItemMutation({
+    onSuccess: () => setMessage(bankShowQuery.data?.text.depositSuccess ?? 'bank_deposit_success'),
+    onError: () => setMessage(bankShowQuery.data?.text.depositOrWithdrawFailure ?? 'bank_deposit_or_witdraw_failure'),
+  })
+  const withdrawItemMutation = useBankWithdrawItemMutation({
+    onSuccess: () => setMessage(bankShowQuery.data?.text.withdrawSuccess ?? 'bank_withdraw_success'),
+    onError: () => setMessage(bankShowQuery.data?.text.depositOrWithdrawFailure ?? 'bank_deposit_or_witdraw_failure'),
+  })
 
   const depositMoneyRef = React.useRef<React.ComponentRef<'input'>>(null)
   const withdrawMoneyRef = React.useRef<React.ComponentRef<'input'>>(null)
 
-  const handleItemAction = <T extends any>(...onActionArgs: OnActionParams<T>) => {
-    const [action, item, type] = onActionArgs
+  if (bankShowQuery.isLoading) return <Loading position='local' />
 
-    switch (action) {
-      case 'deposit':
-        depositItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
-        break
-      case 'withdraw':
-        withdrawItemMutation.mutate({ bankId, item: { id: item.safeItemId, type } })
-        break
+  const handleAction: (
+    type: 'armor' | 'weapon' | 'potion',
+  ) => ArmorSafeOnAction | WeaponSafeOnAction | PotionSafeOnAction = (type) => {
+    return (item, action) => {
+      switch (action) {
+        case 'deposit':
+          depositItemMutation.mutate({ bankId, item: { id: item.id, type } })
+          break
+        case 'withdraw':
+          withdrawItemMutation.mutate({ bankId, item: { id: item.id, type } })
+          break
+      }
     }
   }
 
@@ -63,37 +79,20 @@ export default function Bank({ bankId }: Props) {
     }
   }
 
-  const depositWeapons = inventoryShowQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
-  const depositArmors = inventoryShowQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
-  const depositPotions = bankShowAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
-  const withdrawWeapons = bankShowAccountQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
-  const withdrawArmors = bankShowAccountQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
-  const withdrawPotions = bankShowAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
-
-  if (bankShowQuery.isLoading) return <Loading position='local' />
-
-  const hasDepositWeapons = (depositWeapons?.length ?? 0) > 0
-  const hasDepositArmors = (depositArmors?.length ?? 0) > 0
-  const hasDepositPotions = (depositPotions?.length ?? 0) > 0
-  const hasWithdrawWeapons = (withdrawWeapons?.length ?? 0) > 0
-  const hasWithdrawArmors = (withdrawArmors?.length ?? 0) > 0
-  const hasWithdrawPotions = (withdrawPotions?.length ?? 0) > 0
-
-  const hasMessage = !depositItemMutation.isIdle || !withdrawItemMutation.isIdle
-
   return (
     <>
-      <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.header ?? 'bank_header' }} />
-      <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.description ?? 'bank_description' }} />
+      <div className='flex flex-col'>
+        <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.header ?? 'bank_header' }} />
+        <Text
+          dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.description ?? 'bank_description' }}
+          small
+          italic
+        />
+      </div>
 
-      {hasMessage && (
+      {message && (
         <Alert>
-          {((depositItemMutation.isError || withdrawItemMutation.isError) &&
-            bankShowQuery.data?.text.depositOrWithdrawFailure) ??
-            'bank_deposit_or_witdraw_failure'}
-
-          {depositItemMutation.isSuccess && (bankShowQuery.data?.text.depositSuccess ?? 'bank_deposit_success')}
-          {withdrawItemMutation.isSuccess && (bankShowQuery.data?.text.withdrawSuccess ?? 'bank_withdraw_success')}
+          <div dangerouslySetInnerHTML={{ __html: message }} />
         </Alert>
       )}
 
@@ -124,71 +123,35 @@ export default function Bank({ bankId }: Props) {
         </Card.Inner>
       </div>
 
-      {hasDepositWeapons && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.depositWeapon ?? 'bank_deposit_weapon'}</H3>
-          <WeaponSafe
-            items={depositWeapons!}
-            action='deposit'
-            onAction={(action, item) => handleItemAction(action, item, 'weapon')}
-          />
-        </Card.Inner>
-      )}
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.depositWeapon ?? 'bank_deposit_weapon'}</H3>
+        <WeaponSafe bankId={bankId} action='deposit' onAction={handleAction('weapon')} />
+      </Card.Inner>
 
-      {hasDepositArmors && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.depositArmor ?? 'bank_deposit_armor'}</H3>
-          <ArmorSafe
-            items={depositArmors!}
-            action='deposit'
-            onAction={(action, item) => handleItemAction(action, item, 'armor')}
-          />
-        </Card.Inner>
-      )}
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.depositArmor ?? 'bank_deposit_armor'}</H3>
+        <ArmorSafe bankId={bankId} action='deposit' onAction={handleAction('armor')} />
+      </Card.Inner>
 
-      {hasDepositPotions && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.depositPotion ?? 'bank_deposit_potion'}</H3>
-          <PotionSafe
-            items={depositPotions!}
-            action='deposit'
-            onAction={(action, item) => handleItemAction(action, item, 'potion')}
-          />
-        </Card.Inner>
-      )}
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.depositPotion ?? 'bank_deposit_potion'}</H3>
+        <PotionSafe bankId={bankId} action='deposit' onAction={handleAction('potion')} />
+      </Card.Inner>
 
-      {hasWithdrawWeapons && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.withdrawWeapon ?? 'bank_withdraw_weapon'}</H3>
-          <WeaponSafe
-            items={withdrawWeapons!}
-            action='withdraw'
-            onAction={(action, item) => handleItemAction(action, item, 'weapon')}
-          />
-        </Card.Inner>
-      )}
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.withdrawWeapon ?? 'bank_withdraw_weapon'}</H3>
+        <WeaponSafe bankId={bankId} action='withdraw' onAction={handleAction('weapon')} />
+      </Card.Inner>
 
-      {hasWithdrawArmors && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.withdrawArmor ?? 'bank_withdraw_armor'}</H3>
-          <ArmorSafe
-            items={withdrawArmors!}
-            action='withdraw'
-            onAction={(action, item) => handleItemAction(action, item, 'armor')}
-          />
-        </Card.Inner>
-      )}
-
-      {hasWithdrawPotions && (
-        <Card.Inner>
-          <H3>{bankShowQuery.data?.text.withdrawPotion ?? 'bank_withdraw_potion'}</H3>
-          <PotionSafe
-            items={withdrawPotions!}
-            action='withdraw'
-            onAction={(action, item) => handleItemAction(action, item, 'potion')}
-          />
-        </Card.Inner>
-      )}
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.withdrawArmor ?? 'bank_withdraw_armor'}</H3>
+        <ArmorSafe bankId={bankId} action='withdraw' onAction={handleAction('armor')} />
+      </Card.Inner>
+      
+      <Card.Inner>
+        <H3>{bankShowQuery.data?.text.withdrawPotion ?? 'bank_withdraw_potion'}</H3>
+        <PotionSafe bankId={bankId} action='withdraw' onAction={handleAction('potion')} />
+      </Card.Inner>
     </>
   )
 }
