@@ -1,12 +1,12 @@
 'use client'
 
-import { useGameAttackMutation, useGameInfoShowQuery, useGameRunAwayMutation } from '@/hooks/api/use-game'
+import { useGameAttackMutation, useGameShowInfoQuery, useGameRunAwayMutation } from '@/hooks/api/use-game'
 
 import * as S from './styles'
 import { Button } from '@/components/ui/button'
 
 export default function Enemy() {
-  const gameInfoShowQuery = useGameInfoShowQuery()
+  const gameShowInfoQuery = useGameShowInfoQuery()
 
   const attackMutation = useGameAttackMutation()
   const runAwayMutation = useGameRunAwayMutation()
@@ -17,10 +17,10 @@ export default function Enemy() {
   return (
     <S.Action>
       <Button variant='destructive' onClick={handleAttack}>
-        {gameInfoShowQuery.data?.combat?.text?.attack ?? 'game_attack'}
+        {gameShowInfoQuery.data?.combat?.text?.attack ?? 'game_attack'}
       </Button>
       <Button variant='secondary' onClick={handleRunAway}>
-        {gameInfoShowQuery.data?.combat?.text?.runAway ?? 'game_run_away'}
+        {gameShowInfoQuery.data?.combat?.text?.runAway ?? 'game_run_away'}
       </Button>
     </S.Action>
   )

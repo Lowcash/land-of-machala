@@ -6,10 +6,10 @@ import * as S from './styles'
 import Progress from '@/components/ui/progress'
 
 export default function Footer() {
-  const playerQuery = usePlayerShowQuery()
+  const playerShowQuery = usePlayerShowQuery()
 
-  const xpActual = playerQuery.data?.xp_actual ?? 0
-  const xpMax = playerQuery.data?.xp_max ?? 100
+  const xpActual = playerShowQuery.data?.xp_actual ?? 0
+  const xpMax = playerShowQuery.data?.xp_max ?? 100
 
   return (
     <S.Footer>

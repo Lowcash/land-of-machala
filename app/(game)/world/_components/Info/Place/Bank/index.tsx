@@ -4,7 +4,7 @@ import React from 'react'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import {
   useBankShowQuery,
-  useBankAccountQuery,
+  useBankShowAccountQuery,
   useBankDepositItemMutation,
   useBankWithdrawItemMutation,
 } from '@/hooks/api/use-bank'
@@ -24,8 +24,8 @@ interface Props {
 export default function Bank({ bankId }: Props) {
   const commonShowQuery = useCommonShowQuery()
   const bankShowQuery = useBankShowQuery({ bankId })
-  const bankAccountQuery = useBankAccountQuery({ bankId })
-  const showInventoryQuery = useInventoryShowQuery()
+  const bankShowAccountQuery = useBankShowAccountQuery({ bankId })
+  const inventoryShowQuery = useInventoryShowQuery()
 
   const depositItemMutation = useBankDepositItemMutation()
   const withdrawItemMutation = useBankWithdrawItemMutation()
@@ -63,12 +63,12 @@ export default function Bank({ bankId }: Props) {
     }
   }
 
-  const depositWeapons = showInventoryQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
-  const depositArmors = showInventoryQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
-  const depositPotions = bankAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
-  const withdrawWeapons = bankAccountQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
-  const withdrawArmors = bankAccountQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
-  const withdrawPotions = bankAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
+  const depositWeapons = inventoryShowQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
+  const depositArmors = inventoryShowQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
+  const depositPotions = bankShowAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
+  const withdrawWeapons = bankShowAccountQuery.data?.weapons?.map((x) => ({ ...x.weapon, safeItemId: x.id }))
+  const withdrawArmors = bankShowAccountQuery.data?.armors?.map((x) => ({ ...x.armor, safeItemId: x.id }))
+  const withdrawPotions = bankShowAccountQuery.data?.potions?.map((x) => ({ ...x.potion, safeItemId: x.id }))
 
   if (bankShowQuery.isLoading) return <Loading position='local' />
 
@@ -100,7 +100,7 @@ export default function Bank({ bankId }: Props) {
       <div className='flex gap-4 overflow-auto'>
         <Card.Inner className='justify-between'>
           <H3 className='whitespace-nowrap'>{bankShowQuery.data?.text.depositedMoney ?? 'bank_deposited_money'}</H3>
-          <Text>{bankAccountQuery.data?.money ?? 0}</Text>
+          <Text>{bankShowAccountQuery.data?.money ?? 0}</Text>
         </Card.Inner>
 
         <Card.Inner>

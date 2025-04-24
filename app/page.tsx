@@ -21,7 +21,7 @@ export default async function Home() {
       </LandingLayout>
     )
 
-  if (!(await PlayerAction.get())?.data?.hasCharacter)
+  if (!(await PlayerAction.show())?.data)
     return (
       <CreateLayout>
         <CreatePage />

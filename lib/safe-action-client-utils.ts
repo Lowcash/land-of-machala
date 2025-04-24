@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import type { InferSafeActionFnResult, SafeActionResult } from 'next-safe-action'
 
-export const isActionSuccessful = <T extends z.ZodType>(
+const isActionSuccessful = <T extends z.ZodType>(
   action?: SafeActionResult<string, T, readonly [], any, any>,
 ): action is { data: T; serverError: undefined; validationError: undefined } => {
   if (!action) return false

@@ -13,9 +13,9 @@ model PotionInHospital {
 
   price Int
 
-  potion      Potion   @relation(fields: [potion_id], references: [id])
+  potion      Potion   @relation(fields: [potion_id], references: [id], onDelete: Cascade)
   potion_id   String
-  hospital    Hospital @relation(fields: [hospital_id], references: [id])
+  hospital    Hospital @relation(fields: [hospital_id], references: [id], onDelete: Cascade)
   hospital_id String
 
   @@index([potion_id])

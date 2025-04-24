@@ -1,21 +1,21 @@
 model Wearable {
   id String @id @default(uuid())
 
-  head                 ArmorInInventory?  @relation("HeadArmor", fields: [head_armor_id], references: [id])
+  head                 ArmorInInventory?  @relation("head_armor", fields: [head_armor_id], references: [id])
   head_armor_id        String?
-  shoulder             ArmorInInventory?  @relation("ShoulderArmor", fields: [shoulder_armor_id], references: [id])
+  shoulder             ArmorInInventory?  @relation("shoulder_armor", fields: [shoulder_armor_id], references: [id])
   shoulder_armor_id    String?
-  chest                ArmorInInventory?  @relation("ChestArmor", fields: [chest_armor_id], references: [id])
+  chest                ArmorInInventory?  @relation("chest_armor", fields: [chest_armor_id], references: [id])
   chest_armor_id       String?
-  hand                 ArmorInInventory?  @relation("HandArmor", fields: [hand_armor_id], references: [id])
-  hand_armor_id        String?
-  pants                ArmorInInventory?  @relation("PantsArmor", fields: [pants_armor_id], references: [id])
+  hands                ArmorInInventory?  @relation("hands_armor", fields: [hands_armor_id], references: [id])
+  hands_armor_id       String?
+  pants                ArmorInInventory?  @relation("pants_armor", fields: [pants_armor_id], references: [id])
   pants_armor_id       String?
-  boots                ArmorInInventory?  @relation("BootsArmor", fields: [boots_armor_id], references: [id])
+  boots                ArmorInInventory?  @relation("boots_armor", fields: [boots_armor_id], references: [id])
   boots_armor_id       String?
-  left_hand            WeaponInInventory? @relation("LeftHandWeapon", fields: [left_hand_weapon_id], references: [id])
+  left_hand            WeaponInInventory? @relation("left_hand_weapon", fields: [left_hand_weapon_id], references: [id])
   left_hand_weapon_id  String?
-  right_hand           WeaponInInventory? @relation("RightHandWeapon", fields: [right_hand_weapon_id], references: [id])
+  right_hand           WeaponInInventory? @relation("right_hand_weapon", fields: [right_hand_weapon_id], references: [id])
   right_hand_weapon_id String?
 
   users User[]
@@ -23,7 +23,7 @@ model Wearable {
   @@index([head_armor_id])
   @@index([shoulder_armor_id])
   @@index([chest_armor_id])
-  @@index([hand_armor_id])
+  @@index([hands_armor_id])
   @@index([pants_armor_id])
   @@index([boots_armor_id])
   @@index([left_hand_weapon_id])
@@ -45,13 +45,14 @@ model Armor {
   armors_armory    ArmorInArmory[]
   armors_inventory ArmorInInventory[]
   armors_bank      ArmorInBank[]
+  enemy_loot       EnemyLoot[]
 }
 
 enum ArmorType {
   HEAD
   SHOULDER
   CHEST
-  HAND
+  HANDS
   PANTS
   BOOTS
 }
@@ -67,4 +68,5 @@ model Weapon {
   weapons_armory    WeaponInArmory[]
   weapons_inventory WeaponInInventory[]
   weapons_bank      WeaponInBank[]
+  enemy_loot        EnemyLoot[]
 }

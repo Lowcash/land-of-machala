@@ -7,7 +7,7 @@ import {
   useHospitalAcceptEnemySlainQuestMutation,
   useHospitalCompleteEnemySlainQuestMutation,
 } from '@/hooks/api/use-hospital'
-import { useGameInfoShowQuery } from '@/hooks/api/use-game'
+import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
 import { H3, Text } from '@/styles/typography'
 import { Card } from '@/styles/common'
@@ -21,7 +21,7 @@ interface Props {
 }
 
 export default function Hospital({ hospitalId }: Props) {
-  const gameInfoShowQuery = useGameInfoShowQuery()
+  const gameShowInfoQuery = useGameShowInfoQuery()
   const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
   const healMutation = useHospitalHealMutation()
@@ -36,14 +36,14 @@ export default function Hospital({ hospitalId }: Props) {
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
 
-  if (gameInfoShowQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
+  if (gameShowInfoQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
   return (
     <>
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? 'hospital_header' }} />
       <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? 'hospital_description' }} />
 
-      {!!gameInfoShowQuery.derived.hasDefeated ? (
+      {!!gameShowInfoQuery.derived.hasDefeated ? (
         // player defaeted scenario
         <Text>
           <Button variant='destructive' onClick={handleResurect}>

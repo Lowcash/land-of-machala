@@ -1,120 +1,87 @@
 'use server'
 
 import i18n from '@/lib/i18n'
-import { cache } from 'react'
 import { db } from '@/lib/db'
-import { PlaceType, type User } from '@prisma/client'
+import { playerCreateSchema, playerMoveSchema } from '@/zod-schema/player'
+import { actionClient, authActionClient, playerActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
 
-import { authActionClient } from '@/lib/safe-action'
-import { playerMoveSchema } from '@/zod-schema/player'
+import * as GameManager from '@/lib/manager/game'
 
-import * as GameAction from './game'
-import Place from '@/entity/place'
+import { BASE_HP_ACTUAL, BASE_HP_MAX, BASE_XP_ACTUAL, BASE_XP_MAX, ERROR_CAUSE } from '@/config'
 
-import { ERROR_CAUSE } from '@/config'
+export const show = playerActionClient.metadata({ actionName: 'player_show' }).action(async ({ ctx }) => ({
+  ...ctx.player,
+  text: {
+    character: i18n.t('character.header'),
+    race: i18n.t('race.header'),
+    class: i18n.t('class.header'),
+    level: i18n.t('stats.level'),
+    money: i18n.t('common.money'),
+    currency: i18n.t('common.currency'),
+    hp: i18n.t('common.hp'),
+    pos_x: i18n.t('common.pos_x'),
+    pos_y: i18n.t('common.pos_y'),
+  },
+}))
 
-export const show = authActionClient.metadata({ actionName: 'player_show' }).action(async () => {
-  const player = await get().then((x) => x?.data)
-
+export const showCreate = actionClient.metadata({ actionName: 'user_show_create' }).action(async () => {
   return {
-    ...player,
     text: {
-      character: i18n.t('character.header'),
+      name: i18n.t('character.name.header'),
       race: i18n.t('race.header'),
       class: i18n.t('class.header'),
-      money: i18n.t('common.money'),
-      currency: i18n.t('common.currency'),
-      hp: i18n.t('common.hp'),
-      pos_x: i18n.t('common.pos_x'),
-      pos_y: i18n.t('common.pos_y'),
+      create: i18n.t('character.create.header'),
+      createSuccess: i18n.t('character.create.success'),
+      createFailure: i18n.t('character.create.failure'),
     },
   }
 })
 
-export const move = authActionClient
+export const create = authActionClient
+  .metadata({ actionName: 'player_create' })
+  .schema(playerCreateSchema, { handleValidationErrorsShape })
+  .action(async ({ ctx, parsedInput }) => {
+    const [race, class_] = await Promise.all([
+      db.race.findFirst({ where: { id: parsedInput.raceId } }),
+      db.class.findFirst({ where: { id: parsedInput.classId } }),
+    ])
+
+    if (!race || !class_) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        name: parsedInput.name,
+        race: { connect: { id: race.id } },
+        class: { connect: { id: class_.id } },
+        hp_actual: BASE_HP_ACTUAL,
+        hp_max: BASE_HP_MAX,
+        xp_actual: BASE_XP_ACTUAL,
+        xp_max: BASE_XP_MAX,
+      },
+    })
+  })
+
+export const move = playerActionClient
   .metadata({ actionName: 'player_move' })
   .schema(playerMoveSchema)
   .action(async ({ ctx, parsedInput }) => {
-    if (!canMove(ctx.user)) throw new Error(ERROR_CAUSE.CANNOT_MOVE)
+    if (!ctx.player.canMove) throw new Error(ERROR_CAUSE.CANNOT_MOVE)
 
     const horizontal = parsedInput.direction === 'left' ? -1 : parsedInput.direction === 'right' ? 1 : 0
     const vertical = parsedInput.direction === 'down' ? -1 : parsedInput.direction === 'up' ? 1 : 0
 
-    const movedPlayer = await db.user.update({
-      where: { id: ctx.user.id },
+    const newPosX = ctx.player.pos_x + horizontal
+    const newPosY = ctx.player.pos_y + vertical
+
+    await db.user.update({
+      where: { id: ctx.player.id },
       data: {
-        pos_x: ctx.user.pos_x + horizontal,
-        pos_y: ctx.user.pos_y + vertical,
+        pos_x: newPosX,
+        pos_y: newPosY,
       },
-      include: {},
     })
 
-    if (!(await hasSafe(movedPlayer))) {
-      await GameAction.checkEnemyAppeared()
-    }
+    if (!ctx.player.hasSafePlace)
+      await GameManager.spawnEnemyIfPossible(db, { ...ctx.player, pos_x: newPosX, pos_y: newPosY })
   })
-
-export const get = cache(
-  authActionClient.metadata({ actionName: 'player_get' }).action(async ({ ctx }) => {
-    const player = await db.user.findFirst({
-      where: { id: ctx.user.id },
-      include: {
-        race: true,
-        class: true,
-        enemy_instance: { include: { enemy: true } },
-        loot: {
-          include: {
-            armors_loot: { include: { armor: true } },
-            weapons_loot: { include: { weapon: true } },
-          },
-        },
-      },
-    })
-
-    if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    if (!player.race || !player.class) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    return {
-      ...player,
-      race: {
-        ...player.race,
-        name: i18n.t(`${player.race.i18n_key}.header` as any),
-      },
-      class: {
-        ...player.class,
-        name: i18n.t(`${player.class.i18n_key}.header` as any),
-      },
-      canMove: canMove(player),
-      hasCharacter: hasCharacter(player),
-      hasLoot: hasLoot(player),
-      hasSafe: hasSafe(player),
-      hasCombat: hasCombat(player),
-      hasDefeated: hasDefeated(player),
-    }
-  }),
-)
-
-async function hasSafe(player: User) {
-  return (await Place({ posX: player.pos_x, posY: player.pos_y }))?.place_type == PlaceType.SAFEHOUSE
-}
-
-function canMove(player: User) {
-  return !hasCombat(player) && !hasDefeated(player) && !hasLoot(player)
-}
-
-function hasCombat(player: User) {
-  return !!player.enemy_instance_id
-}
-
-function hasDefeated(player: User) {
-  return !!player.defeated
-}
-
-function hasCharacter(player: User) {
-  return !!player.race_id && !!player.class_id
-}
-
-function hasLoot(player: User) {
-  return !!player.loot_id
-}
