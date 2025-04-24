@@ -1,7 +1,8 @@
 import 'server-only'
 
-import { type Enemy, QuestIdent, type Prisma, PrismaClient } from '@prisma/client'
+import { type Enemy, EnemyIdent, QuestIdent, type Prisma, PrismaClient } from '@prisma/client'
 
+import * as EnemyEntity from '@/entity/enemy'
 import * as QuestEntity from '@/entity/quest'
 import * as PlayerEntity from '@/entity/player'
 
@@ -10,10 +11,10 @@ export async function accept(
   selectedQuest: QuestEntity.QuestEntity,
   assignedQuests: QuestEntity.QuestAssignedEntity,
 ) {
-  const slain = await dbTransaction.slain.create({ data: { desired_slain: 10, enemy: {} } }) // TODO slain enemy
-
   switch (selectedQuest.ident) {
-    case QuestIdent.SLAIN_ENEMY:
+    case QuestIdent.SLAIN_ENEMY: {
+      const slain = await dbTransaction.slain.create({ data: { desired_slain: 10 } })
+
       const questSlainEnemy = await dbTransaction.questSlainEnemy.create({
         data: { quest_id: selectedQuest.id, slain_id: slain.id },
       })
@@ -28,7 +29,14 @@ export async function accept(
       })
 
       break
-    case QuestIdent.SLAIN_TROLL:
+    }
+    case QuestIdent.SLAIN_TROLL: {
+      const troll = await EnemyEntity.get(EnemyIdent.HILL_TROLL)
+
+      if (!troll) return
+
+      const slain = await dbTransaction.slain.create({ data: { desired_slain: 10, enemy_id: troll.id } })
+
       const questSlainTroll = await dbTransaction.questSlainTroll.create({
         data: { quest_id: selectedQuest.id, slain_id: slain.id },
       })
@@ -43,6 +51,7 @@ export async function accept(
       })
 
       break
+    }
   }
 }
 
@@ -171,7 +180,7 @@ export async function updateState(
     await getUpdatedProgress(dbOrDbTransaction, quest, userQuest)
   }
   if (!!userQuest.quest_slain_troll) {
-    if (data.slainedEnemy?.id !== 'troll') return
+    if (data.slainedEnemy?.id !== EnemyIdent.HILL_TROLL) return
 
     const quest = await QuestEntity.get(QuestIdent.SLAIN_TROLL)
 

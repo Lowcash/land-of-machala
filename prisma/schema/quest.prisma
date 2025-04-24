@@ -48,8 +48,8 @@ model Slain {
   actual_slain  Int @default(0)
   desired_slain Int
 
-  enemy    Enemy  @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
-  enemy_id String
+  enemy    Enemy?      @relation(fields: [enemy_id], references: [id])
+  enemy_id EnemyIdent?
 
   quest_slain_enemy QuestSlainEnemy[]
   quest_slain_troll QuestSlainTroll[]

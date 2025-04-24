@@ -11,7 +11,7 @@ import { ERROR_CAUSE } from '@/config'
 export const show = playerActionClient.metadata({ actionName: 'inventory_show' }).action(async ({ ctx }) => {
   const [inventory, wearable] = await Promise.all([
     InventoryEntity.get(ctx.player.id, ctx.player.inventory_id),
-    WearableEntity.get(ctx.player.id, ctx.player.wearable_id),
+    WearableEntity.get(ctx.player, ctx.player.wearable_id),
   ])
   if (!inventory || !wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
