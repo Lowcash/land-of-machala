@@ -11,7 +11,7 @@ import Table from '@/components/table'
 interface Props {
   hospitalId: string
 
-  onBuyPotion?: (potion: HospitalPotion) => void
+  onBuyPotion: (potion: HospitalPotion) => void
 }
 
 export default function Potions({ hospitalId, ...p }: Props) {

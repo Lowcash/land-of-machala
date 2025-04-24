@@ -416,7 +416,7 @@
     "sell": "Prodat Zbraň",
     "left_hand": "Levá ruka",
     "right_hand": "Pravá ruka",
-    
+
     "dagger": {
       "header": "Dýka",
       "description": "Krátká a ostrá zbraň vhodná pro rychlé útoky."
@@ -674,9 +674,9 @@
       "withdraw_armor": "Vybrat Zbroj",
       "deposit_potion": "Uložit Potion",
       "withdraw_potion": "Vybrat Potion",
-      "deposit_success": "Zboží uloženo v bance",
-      "withdraw_success": "Zboží vybráno z banky",
-      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?!"
+      "deposit_success": "Ale překrásně.. my to tady pro tebe schováme na později <b>(✔️ úspěšně uloženo v bance)</b>",
+      "withdraw_success": "Tak tedy tady máte pane <b>(✔️ úspěšně vybráno z banky)</b>",
+      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?! <b>(❌ výběr se nezdařil)</b>"
     },
     "main_city": {
       "header": "Královský palác",
@@ -692,7 +692,9 @@
       "description": "Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly",
       "greeting": "Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?",
       "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
-      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)"
+      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? <b>(nedostatek peněz)</b>",
+      "sell_success": "Nejlepší..to se mi hodilo <b>(✔️ úspěšně prodáno)</b>",
+      "sell_failure": "No..nějak se mi to nezdá <b>(❌ prodej se nezdařil)</b>"
     },
     "main_city_bank": {
       "header": "Banka U dvou přátel",

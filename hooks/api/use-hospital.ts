@@ -14,7 +14,7 @@ export function useHospitalShowQuery(...p: Parameters<typeof _useHospitalShowQue
   return {
     ...hospitalShowQuery,
     derived: {
-      hasBuyPotions: !!hospitalShowQuery.data?.potions_hospital,
+      hasBuyPotions: !!hospitalShowQuery.data?.potions_hospital.length,
     },
   }
 }

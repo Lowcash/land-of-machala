@@ -1,59 +1,26 @@
-import type { Armor, Weapon, Potion } from '@prisma/client'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
+import { useBankShowAccountQuery, type BankAccountItem } from '@/hooks/api/use-bank'
+import { useInventoryShowQuery, type InventoryItem } from '@/hooks/api/use-inventory'
 
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
 import Table from '@/components/table'
 
-export type Action = 'deposit' | 'withdraw'
-export type Type = 'weapon' | 'armor' | 'potion'
+type Action = 'deposit' | 'withdraw'
 
-type SafeItem<T> = T & { safeItemId: string; name: string }
+interface Props {
+  bankId: string
 
-interface SafeProps<T> {
-  items: SafeItem<T>[]
   action: Action
-
-  onAction?: (action: Action, item: SafeItem<T>, type: Type) => void
+  onAction?: (item: BankAccountItem | InventoryItem, action: Action) => void
 }
 
-export type OnActionParams<T> = Parameters<NonNullable<SafeProps<T>['onAction']>>
-
-export function WeaponSafe(p: SafeProps<Weapon>) {
+export function ArmorSafe({ bankId, ...p }: Props) {
   const commonShowQuery = useCommonShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
+  const bankAccountShowQuery = useBankShowAccountQuery({ bankId })
 
-  return (
-    <Table
-      columns={[
-        {},
-        { className: 'text-center', content: commonShowQuery.data?.text.damage ?? 'weapon_safe_damage' },
-        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_safe_action' },
-      ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
-        {
-          className: 'text-center',
-          content: (
-            <>
-              {x.damage_from}-{x.damage_to}
-            </>
-          ),
-        },
-        {
-          className: 'text-right',
-          content: (
-            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'weapon')}>
-              <RxPaperPlane />
-            </Button>
-          ),
-        },
-      ])}
-    />
-  )
-}
-
-export function ArmorSafe(p: SafeProps<Armor>) {
-  const commonShowQuery = useCommonShowQuery()
+  const items = p.action === 'deposit' ? inventoryShowQuery.data?.armors : bankAccountShowQuery.data?.armors
 
   return (
     <Table
@@ -66,17 +33,17 @@ export function ArmorSafe(p: SafeProps<Armor>) {
         { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'armor_safe_intelligene' },
         { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'armor_safe_action' },
       ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
-        { className: 'text-center', content: x.type },
-        { className: 'text-center', content: x.armor },
-        { className: 'text-center', content: x.strength },
-        { className: 'text-center', content: x.agility },
-        { className: 'text-center', content: x.intelligence },
+      cells={items?.map((x) => [
+        { className: 'text-left', content: x.armor.name },
+        { className: 'text-center', content: x.armor.type },
+        { className: 'text-center', content: x.armor.armor },
+        { className: 'text-center', content: x.armor.strength },
+        { className: 'text-center', content: x.armor.agility },
+        { className: 'text-center', content: x.armor.intelligence },
         {
           className: 'text-right',
           content: (
-            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'armor')}>
+            <Button variant='secondary' onClick={() => p.onAction?.(x, p.action)}>
               <RxPaperPlane />
             </Button>
           ),
@@ -86,8 +53,49 @@ export function ArmorSafe(p: SafeProps<Armor>) {
   )
 }
 
-export function PotionSafe(p: SafeProps<Potion>) {
+export function WeaponSafe({ bankId, ...p }: Props) {
   const commonShowQuery = useCommonShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
+  const bankAccountShowQuery = useBankShowAccountQuery({ bankId })
+
+  const items = p.action === 'deposit' ? inventoryShowQuery.data?.weapons : bankAccountShowQuery.data?.weapons
+
+  return (
+    <Table
+      columns={[
+        {},
+        { className: 'text-center', content: commonShowQuery.data?.text.damage ?? 'weapon_safe_damage' },
+        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_safe_action' },
+      ]}
+      cells={items?.map((x) => [
+        { className: 'text-left', content: x.weapon.name },
+        {
+          className: 'text-center',
+          content: (
+            <>
+              {x.weapon.damage_from}-{x.weapon.damage_to}
+            </>
+          ),
+        },
+        {
+          className: 'text-right',
+          content: (
+            <Button variant='secondary' onClick={() => p.onAction?.(x, p.action)}>
+              <RxPaperPlane />
+            </Button>
+          ),
+        },
+      ])}
+    />
+  )
+}
+
+export function PotionSafe({ bankId, ...p }: Props) {
+  const commonShowQuery = useCommonShowQuery()
+  const inventoryShowQuery = useInventoryShowQuery()
+  const bankAccountShowQuery = useBankShowAccountQuery({ bankId })
+
+  const items = p.action === 'deposit' ? inventoryShowQuery.data?.potions : bankAccountShowQuery.data?.potions
 
   return (
     <Table
@@ -96,16 +104,16 @@ export function PotionSafe(p: SafeProps<Potion>) {
         { className: 'text-center', content: commonShowQuery.data?.text.efficiency ?? 'potion_safe_efficiency' },
         { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'potion_safe_action' },
       ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
+      cells={items?.map((x) => [
+        { className: 'text-left', content: x.potion.name },
         {
           className: 'text-center',
-          content: `+${x.hp_gain} HP`,
+          content: `+${x.potion.hp_gain} HP`,
         },
         {
           className: 'text-right',
           content: (
-            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'potion')}>
+            <Button variant='secondary' onClick={() => p.onAction?.(x, p.action)}>
               <RxPaperPlane />
             </Button>
           ),

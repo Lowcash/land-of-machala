@@ -28,7 +28,7 @@ export default function Hospital({ hospitalId }: Props) {
 
   const gameShowInfoQuery = useGameShowInfoQuery()
   const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
-  hospitalShowQuery.data?.potions_hospital[0]
+
   const healMutation = useHospitalHealMutation({
     onSuccess: () => setMessage(hospitalShowQuery.data?.text?.heal.success ?? 'hospital_heal_success'),
     onError: () => setMessage(hospitalShowQuery.data?.text?.heal.failure ?? 'hospital_heal_failure'),
@@ -129,12 +129,10 @@ export default function Hospital({ hospitalId }: Props) {
             </div>
           )}
 
-          {hospitalShowQuery.derived.hasBuyPotions && (
-            <Card.Inner>
-              <H3>{hospitalShowQuery.data?.text.potion.buy ?? 'hospital_potion_buy'}</H3>
-              <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} />
-            </Card.Inner>
-          )}
+          <Card.Inner>
+            <H3>{hospitalShowQuery.data?.text.potion.buy ?? 'hospital_potion_buy'}</H3>
+            <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} />
+          </Card.Inner>
         </>
       )}
     </>

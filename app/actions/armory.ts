@@ -29,6 +29,8 @@ export const show = playerActionClient
         weaponSell: i18n.t('weapon.sell'),
         buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
         buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
+        sellSuccess: i18n.t(`${armory.i18n_key}.sell_success` as any),
+        sellFailed: i18n.t(`${armory.i18n_key}.sell_failed` as any),
       },
     }
   })
