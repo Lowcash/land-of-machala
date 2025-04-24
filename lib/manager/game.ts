@@ -4,6 +4,7 @@ import { random } from '@/lib/utils'
 import { PlaceType, type EnemyInstance, type Prisma, type PrismaClient } from '@prisma/client'
 
 import * as InventoryEntity from '@/entity/inventory'
+import * as EnemyEntity from '@/entity/enemy'
 import * as PlaceEntity from '@/entity/place'
 import * as PlayerEntity from '@/entity/player'
 import * as RewardManager from '@/lib/manager/reward'
@@ -106,27 +107,35 @@ export async function defeateEnemy(
 
   if (!!optional?.noReward) return
 
-  const enemy = await dbTransaction.enemy.findFirst({ where: { id: enemyInstance.enemy_id } })
+  const enemy = await EnemyEntity.get(enemyInstance.enemy_id)
 
   if (!enemy) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-  const armor = await dbTransaction.armor.findFirst({
-    skip: random(await dbTransaction.armor.count()),
-    take: 1,
-  })
-  const weapon = await dbTransaction.weapon.findFirst({
-    skip: random(await dbTransaction.weapon.count()),
-    take: 1,
+  const allPosibleItemRewards = await dbTransaction.enemyLoot.findMany({
+    where: { enemy_id: enemy.id },
+    include: {
+      armor: true,
+      weapon: true,
+    },
   })
 
-  return {
-    reward: await RewardManager.prepareReward(dbTransaction, {
-      money: random(enemy.money_from, enemy.money_to),
-      xp: random(enemy.xp_from, enemy.xp_to),
-      armors: [armor].filter((x) => !!x),
-      weapons: [weapon].filter((x) => !!x),
-    }),
-  }
+  const allPosibleItemRewardsShuffled = allPosibleItemRewards.toSorted(() => 0.5 - Math.random())
+
+  const pickedItemRewards = allPosibleItemRewardsShuffled.slice(0, 2)
+
+  const armors = pickedItemRewards
+    .filter((x) => !!x.armor)
+    .map((x) => x.armor)
+    .filter((x) => !!x)
+  const weapons = pickedItemRewards
+    .filter((x) => !!x.weapon)
+    .map((x) => x.weapon)
+    .filter((x) => !!x)
+
+  const money = random(enemy.money_from, enemy.money_to)
+  const xp = random(enemy.xp_from, enemy.xp_to)
+
+  return { reward: await RewardManager.prepareReward(dbTransaction, { money, xp, armors, weapons }) }
 }
 
 export async function respawnPlayer(
