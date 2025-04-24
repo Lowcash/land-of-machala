@@ -5,6 +5,11 @@ import { db } from '@/lib/db'
 import { playerCreateSchema, playerMoveSchema } from '@/zod-schema/player'
 import { actionClient, authActionClient, playerActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
 
+import * as ClassEntity from '@/entity/class'
+import * as PlayerEntity from '@/entity/player'
+import * as RaceEntity from '@/entity/race'
+import * as StatsEntity from '@/entity/stats'
+import * as WearableEntity from '@/entity/wearable'
 import * as GameManager from '@/lib/manager/game'
 
 import { BASE_HP_ACTUAL, BASE_HP_MAX, BASE_XP_ACTUAL, BASE_XP_MAX, ERROR_CAUSE } from '@/config'
@@ -41,12 +46,17 @@ export const create = authActionClient
   .metadata({ actionName: 'player_create' })
   .schema(playerCreateSchema, { handleValidationErrorsShape })
   .action(async ({ ctx, parsedInput }) => {
-    const [race, class_] = await Promise.all([
-      db.race.findFirst({ where: { id: parsedInput.raceId } }),
-      db.class.findFirst({ where: { id: parsedInput.classId } }),
-    ])
+    const [race, class_] = await Promise.all([RaceEntity.get(parsedInput.raceId), ClassEntity.get(parsedInput.classId)])
 
     if (!race || !class_) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+    
+    const player = { ...ctx.user, race, class: class_ } as PlayerEntity.PlayerEntity
+
+    const wearable = await WearableEntity.get(player, player.wearable_id)
+
+    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+    
+    const stats = await StatsEntity.get(player, wearable)
 
     await db.user.update({
       where: { id: ctx.user.id },
@@ -58,6 +68,11 @@ export const create = authActionClient
         hp_max: BASE_HP_MAX,
         xp_actual: BASE_XP_ACTUAL,
         xp_max: BASE_XP_MAX,
+        strength: stats.strength,
+        agility: stats.agility,
+        intelligence: stats.intelligence,
+        damage_min: stats.damage.min,
+        damage_max: stats.damage.max,
       },
     })
   })

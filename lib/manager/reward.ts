@@ -66,8 +66,8 @@ export async function collectReward(
         update: {
           where: { id: player.inventory_id! }, // TODO potencial bug, will be fixed when refactored
           data: {
-            armors_inventory: { create: armors_loot },
-            weapons_inventory: { create: weapons_loot },
+            armors_inventory: { create: armors_loot.map((x) => ({ armor: { connect: { id: x.armor_id } } })) },
+            weapons_inventory: { create: weapons_loot.map((x) => ({ weapon: { connect: { id: x.weapon_id } } })) },
           },
         },
       },

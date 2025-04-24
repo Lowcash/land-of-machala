@@ -8,12 +8,13 @@ import { consumableActionSchema, wearableActionSchema } from '@/zod-schema/weara
 
 import * as InventoryEntity from '@/entity/inventory'
 import * as PlayerEntity from '@/entity/player'
+import * as StatsEntity from '@/entity/stats'
 import * as WearableEntity from '@/entity/wearable'
 
 import { ERROR_CAUSE } from '@/config'
 
 export const show = playerActionClient.metadata({ actionName: 'wearable_show' }).action(async ({ ctx }) => {
-  const wearable = await WearableEntity.get(ctx.player.id, ctx.player.wearable_id)
+  const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
   return {
     ...wearable,
@@ -55,7 +56,7 @@ export const wear = playerActionClient
       }
     }
 
-    const wearable = await WearableEntity.get(ctx.player.id, ctx.player.wearable_id)
+    let wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
     if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -100,6 +101,23 @@ export const wear = playerActionClient
           },
         })
     }
+
+    wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+
+    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    const stats = await StatsEntity.get(ctx.player, wearable)
+
+    await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        strength: stats.strength,
+        agility: stats.agility,
+        intelligence: stats.intelligence,
+        damage_min: stats.damage.min,
+        damage_max: stats.damage.max,
+      },
+    })
   })
 
 export const unwear = playerActionClient
@@ -123,7 +141,7 @@ export const unwear = playerActionClient
       }
     }
 
-    const wearable = await WearableEntity.get(ctx.player.id, ctx.player.wearable_id)
+    let wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
     if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -159,6 +177,23 @@ export const unwear = playerActionClient
         },
       })
     }
+
+    wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+
+    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+    const stats = await StatsEntity.get(ctx.player, wearable)
+
+    await db.user.update({
+      where: { id: ctx.user.id },
+      data: {
+        strength: stats.strength,
+        agility: stats.agility,
+        intelligence: stats.intelligence,
+        damage_min: stats.damage.min,
+        damage_max: stats.damage.max,
+      },
+    })
   })
 
 export const drink = playerActionClient

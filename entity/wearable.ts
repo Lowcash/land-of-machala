@@ -3,11 +3,12 @@ import 'server-only'
 import { db } from '@/lib/db'
 
 import * as ArmorEntity from '@/entity/armor'
+import * as PlayerEntity from '@/entity/player'
 import * as WeaponEntity from '@/entity/weapon'
 
 export type WearableEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
-export async function get(playerId: string, wearableId: Nullish<string>) {
+export async function get(player: PlayerEntity.CharacterEntity, wearableId: Nullish<string>) {
   const wearable = wearableId
     ? await db.wearable.findFirst({
         where: { id: wearableId },
@@ -38,7 +39,7 @@ export async function get(playerId: string, wearableId: Nullish<string>) {
         })
 
         await db.user.update({
-          where: { id: playerId },
+          where: { id: player.id },
           data: { wearable: { connect: { id: wearable.id } } },
         })
 

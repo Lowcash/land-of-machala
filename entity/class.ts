@@ -7,7 +7,18 @@ import type { Class } from '@prisma/client'
 import { CACHE } from '@/lib/cache'
 import { CACHE_KEY } from '@/config'
 
-export type ClassEntity = Class & ReturnType<typeof getI18n>
+export type ClassEntity = NonNullable<Awaited<ReturnType<typeof get>>>
+
+export async function get(id: string) {
+  const class_ = await db.class.findFirst({ where: { id } })
+
+  if (!class_) return undefined
+
+  return {
+    ...class_,
+    ...getI18n(class_),
+  }
+}
 
 export async function getAll() {
   return (CACHE[CACHE_KEY.CLASSES] ??= (await db.class.findMany({ orderBy: { order_index: 'asc' } })).map((x) => ({
