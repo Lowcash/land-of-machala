@@ -26,6 +26,7 @@ export const useGameAttackMutation = createMutationHook(GameAction.attack, [
   QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,
   QUERY_KEY.GAME_INFO,
+  QUERY_KEY.QUEST_ASSIGNED,
 ])
 
 export const useGameRunAwayMutation = createMutationHook(GameAction.runAway, [
