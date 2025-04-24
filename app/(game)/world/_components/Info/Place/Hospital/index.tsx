@@ -129,10 +129,12 @@ export default function Hospital({ hospitalId }: Props) {
             </div>
           )}
 
-          <Card.Inner>
-            <H3>{hospitalShowQuery.data?.text.potion.buy ?? 'hospital_potion_buy'}</H3>
-            <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} />
-          </Card.Inner>
+          {hospitalShowQuery.derived.hasBuyPotions && (
+            <Card.Inner>
+              <H3>{hospitalShowQuery.data?.text.potion.buy ?? 'hospital_potion_buy'}</H3>
+              <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} />
+            </Card.Inner>
+          )}
         </>
       )}
     </>
