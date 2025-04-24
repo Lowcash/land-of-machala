@@ -55,11 +55,13 @@ export const showInfo = cache(
       loot: PlayerEntity.hasLoot(ctx.player)
         ? {
             ...ctx.player.loot,
+            armors_loot: ctx.player.loot.armors_loot.map((x) => ({ ...x, text: { reward: `👕  ${x.armor.name}` } })),
+            weapons_loot: ctx.player.loot.weapons_loot.map((x) => ({ ...x, text: { reward: `🗡️ ${x.weapon.name}` } })),
             text: {
               loot: i18n.t('action.loot.header'),
               loot_found: i18n.t('action.loot.found'),
-              reward_money: `${ctx.player.loot.money} ${i18n.t('common.currency')}`,
-              reward_xp: `+ ${ctx.player.loot.xp} ${i18n.t('common.XP')}`,
+              reward_money: `💰 ${ctx.player.loot.money} ${i18n.t('common.currency')}`,
+              reward_xp: `⭐️ ${ctx.player.loot.xp} ${i18n.t('common.XP')}`,
             },
           }
         : undefined,
