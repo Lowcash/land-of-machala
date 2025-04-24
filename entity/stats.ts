@@ -15,11 +15,7 @@ import {
 
 export type StatsEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
-export async function get(playerId: string, wearableId: Nullish<string>) {
-  const [player, wearable] = await Promise.all([PlayerEntity.get(playerId), WearableEntity.get(playerId, wearableId)])
-
-  if (!player || !wearable) return undefined
-
+export async function get(player: PlayerEntity.PlayerEntity, wearable: WearableEntity.WearableEntity) {
   const character: Character = {
     level: player.level,
     class: player.class,

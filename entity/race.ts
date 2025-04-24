@@ -7,7 +7,18 @@ import type { Race } from '@prisma/client'
 import { CACHE } from '@/lib/cache'
 import { CACHE_KEY } from '@/config'
 
-export type RaceEntity = Race & ReturnType<typeof getI18n>
+export type RaceEntity = NonNullable<Awaited<ReturnType<typeof get>>>
+
+export async function get(id: string) {
+  const race = await db.race.findFirst({ where: { id } })
+
+  if (!race) return undefined
+
+  return {
+    ...race,
+    ...getI18n(race),
+  }
+}
 
 export async function getAll() {
   return (CACHE[CACHE_KEY.RACES] ??= (await db.race.findMany({ orderBy: { order_index: 'asc' } })).map((x) => ({

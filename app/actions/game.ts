@@ -75,6 +75,9 @@ export const attack = playerActionClient.metadata({ actionName: 'game_attack' })
   const actualPlayerHP = ctx.player.hp_actual - damageFromEnemy
   const actualEnemyHP = ctx.player.enemy_instance.hp_actual - damageFromPlayer
 
+  console.debug(`⚔️ [player: ${damageFromPlayer}; enemy: ${damageFromEnemy}]`)
+  console.debug(`❤️ [player: ${actualPlayerHP}; enemy: ${actualEnemyHP}]`)
+
   await db.user.update({
     where: { id: ctx.player.id },
     data: {
@@ -98,8 +101,8 @@ export const attack = playerActionClient.metadata({ actionName: 'game_attack' })
 
   if (playerDefeated) {
     await db.$transaction(async (dbTransaction) => {
-      GameManager.defeatePlayer(dbTransaction, ctx.player)
-      GameManager.respawnPlayer(dbTransaction, ctx.player)
+      await GameManager.defeatePlayer(dbTransaction, ctx.player)
+      await GameManager.respawnPlayer(dbTransaction, ctx.player)
     })
 
     return
@@ -111,7 +114,8 @@ export const attack = playerActionClient.metadata({ actionName: 'game_attack' })
 
       const defeatedEnemyRes = await GameManager.defeateEnemy(dbTransaction, ctx.player, ctx.player.enemy_instance)
 
-      if (!!defeatedEnemyRes?.reward) await RewardManager.assignReward(dbTransaction, ctx.player, defeatedEnemyRes.reward)
+      if (!!defeatedEnemyRes?.reward)
+        await RewardManager.assignReward(dbTransaction, ctx.player, defeatedEnemyRes.reward)
 
       await QuestManager.updateState(dbTransaction, ctx.player, { slainedEnemy: ctx.player.enemy_instance.enemy })
     })

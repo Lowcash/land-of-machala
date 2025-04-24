@@ -59,7 +59,7 @@ export async function get(id: string) {
   }
 }
 
-export function hasCharacter(player: any): player is User & {
+export type CharacterEntity = User & {
   race: Race
   race_id: number
   class: Class
@@ -71,7 +71,9 @@ export function hasCharacter(player: any): player is User & {
   xp_actual: number
   xp_max: number
   defeated: boolean
-} {
+}
+
+export function hasCharacter(player: any): player is CharacterEntity {
   return (
     typeof player?.race === 'object' &&
     typeof player?.race_id === 'string' &&

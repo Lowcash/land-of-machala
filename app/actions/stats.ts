@@ -4,9 +4,16 @@ import i18n from '@/lib/i18n'
 import { playerActionClient } from '@/lib/safe-action'
 
 import * as StatsEntity from '@/entity/stats'
+import * as WearableEntity from '@/entity/wearable'
+
+import { ERROR_CAUSE } from '@/config'
 
 export const show = playerActionClient.metadata({ actionName: 'stats_show' }).action(async ({ ctx }) => {
-  const stats = await StatsEntity.get(ctx.player.id, ctx.player.wearable_id)
+  const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+
+  if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+  const stats = await StatsEntity.get(ctx.player, wearable)
 
   return {
     ...stats,
