@@ -93,10 +93,16 @@ export default function Info() {
 
     return (
       <Card>
-        <Text dangerouslySetInnerHTML={{ __html: gameShowInfoQuery.data?.place?.text?.header ?? 'place_header' }} />
-        <Text
-          dangerouslySetInnerHTML={{ __html: gameShowInfoQuery.data?.place?.text?.description ?? 'place_description' }}
-        />
+        <div className='flex flex-col'>
+          <Text dangerouslySetInnerHTML={{ __html: gameShowInfoQuery.data?.place?.text?.header ?? 'place_header' }} />
+          <Text
+            dangerouslySetInnerHTML={{
+              __html: gameShowInfoQuery.data?.place?.text?.description ?? 'place_description',
+            }}
+            small
+            italic
+          />
+        </div>
 
         {gameShowInfoQuery.derived.hasSubplace && (
           <List>
