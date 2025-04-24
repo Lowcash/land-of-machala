@@ -52,7 +52,8 @@ export default function Hospital({ hospitalId }: Props) {
 
   const handleHeal = () => healMutation.mutate({ hospitalId })
   const handleResurect = () => resurectMutation.mutate({ hospitalId })
-  const handleBuyPotion = (potion: HospitalPotion) => buyPotionMutation.mutate({ hospitalId, potionId: potion.id })
+  const handleBuyPotion = (potion: HospitalPotion) =>
+    buyPotionMutation.mutate({ hospitalId, potionId: potion.potion_id })
 
   const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
   const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
