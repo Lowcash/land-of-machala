@@ -1,33 +1,34 @@
 model Loot {
   id String @id @default(uuid())
 
-  money Int
+  money Int?
+  xp    Int?
 
-  weapons_loot WeaponInLoot[]
-  armors_loot  ArmorInLoot[]
   user         User[]
-}
-
-model WeaponInLoot {
-  id String @id @default(uuid())
-
-  weapon    Weapon @relation(fields: [weapon_id], references: [id])
-  weapon_id String
-  loot      Loot   @relation(fields: [loot_id], references: [id])
-  loot_id   String
-
-  @@index([loot_id])
-  @@index([weapon_id])
+  armors_loot  ArmorInLoot[]
+  weapons_loot WeaponInLoot[]
 }
 
 model ArmorInLoot {
   id String @id @default(uuid())
 
-  armor    Armor  @relation(fields: [armor_id], references: [id])
+  armor    Armor  @relation(fields: [armor_id], references: [id], onDelete: Cascade)
   armor_id String
-  loot     Loot   @relation(fields: [loot_id], references: [id])
+  loot     Loot   @relation(fields: [loot_id], references: [id], onDelete: Cascade)
   loot_id  String
 
   @@index([armor_id])
   @@index([loot_id])
+}
+
+model WeaponInLoot {
+  id String @id @default(uuid())
+
+  weapon    Weapon @relation(fields: [weapon_id], references: [id], onDelete: Cascade)
+  weapon_id String
+  loot      Loot   @relation(fields: [loot_id], references: [id], onDelete: Cascade)
+  loot_id   String
+
+  @@index([loot_id])
+  @@index([weapon_id])
 }

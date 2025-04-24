@@ -5,22 +5,22 @@ import { toast } from '@/hooks/use-toast'
 import { signIn as userSignIn } from 'next-auth/react'
 import { signUp as userSignUp } from '@/app/actions/user'
 import { useNavigate } from '@/hooks/use-navigate'
-import { useShowLandingQuery } from '@/hooks/api/use-player'
-import { type PlayerSignSchema, playerSignSchema } from '@/zod-schema/player'
+import { useUserShowLandingQuery } from '@/hooks/api/use-user'
+import { type UserSignSchema, userSignSchema } from '@/zod-schema/user'
 
 import Form, { Handle as FormHandle } from '@/components/Form'
 import { Text } from '@/styles/typography'
 import Loading from '@/components/Loading'
 
 export default function LoginForm() {
-  const showLandingQuery = useShowLandingQuery()
+  const showLandingQuery = useUserShowLandingQuery()
 
   const formRef = React.useRef<FormHandle>(null)
-  const formValueRef = React.useRef<PlayerSignSchema>(null)
+  const formValueRef = React.useRef<UserSignSchema>(null)
 
   const { navigate } = useNavigate()
 
-  const handleFormChange = (data: PlayerSignSchema) => {
+  const handleFormChange = (data: UserSignSchema) => {
     formValueRef.current = data
   }
 
@@ -61,19 +61,19 @@ export default function LoginForm() {
     <Form
       ref={formRef}
       className='gap-6'
-      schema={playerSignSchema}
+      schema={userSignSchema}
       action={userSignUp}
       onForm={{ onChange: handleFormChange }}
       onAction={{ onSuccess: handleSignUpSuccess, onError: handleSignUpError }}
     >
       <div>
-        <Form.Input<PlayerSignSchema>
+        <Form.Input<UserSignSchema>
           id='email'
           type='email'
           label={<Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.email ?? 'email' }} />}
           autoComplete='email'
         />
-        <Form.Input<PlayerSignSchema>
+        <Form.Input<UserSignSchema>
           id='password'
           type='password'
           label={<Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.password ?? 'password' }} />}

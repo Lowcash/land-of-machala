@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { resolveActionResult } from '@/lib/safe-action-utils'
+import { resolveActionResult } from '@/lib/safe-action-client-utils'
 
 export const createQueryClient = () =>
   new QueryClient({

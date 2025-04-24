@@ -2,25 +2,25 @@ model Place {
   id       String @id
   i18n_key String
 
-  place_type PlaceType
+  type PlaceType
 
   x_min Int
   x_max Int
   y_min Int
   y_max Int
 
-  hospital    Hospital? @relation(fields: [hospital_id], references: [id])
-  hospital_id String?
   armory      Armory?   @relation(fields: [armory_id], references: [id])
   armory_id   String?
   bank        Bank?     @relation(fields: [bank_id], references: [id])
   bank_id     String?
+  hospital    Hospital? @relation(fields: [hospital_id], references: [id])
+  hospital_id String?
 
   enemy_place EnemyInPlace[]
 
-  @@index([hospital_id])
   @@index([armory_id])
   @@index([bank_id])
+  @@index([hospital_id])
 }
 
 enum PlaceType {
@@ -28,4 +28,16 @@ enum PlaceType {
   FOREST
   DESERT
   MOUNTAIN
+  CEMETERY
+  FARM
+  HILLS
+  ROAD
+  SUBURB
+  CASTLE
+  SWAMP
+  LAKE
+  CAVE
+  VILLAGE
+  TOWN
+  DUNGEON
 }

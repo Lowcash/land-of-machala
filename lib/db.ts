@@ -1,7 +1,7 @@
 import 'server-only'
-import { PrismaClient } from '@prisma/client'
 
 import { env } from '@/env'
+import { PrismaClient } from '@prisma/client'
 
 const createPrismaClient = () =>
   new PrismaClient({
@@ -13,6 +13,9 @@ const createPrismaClient = () =>
             'warn',
           ]
         : ['error'],
+    transactionOptions: {
+      timeout: env.NODE_ENV === 'development' ? 999999999 : 5000,
+    },
   })
 
 const globalForPrisma = globalThis as unknown as {
