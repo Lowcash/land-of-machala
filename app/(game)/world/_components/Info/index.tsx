@@ -46,12 +46,16 @@ export default function Info() {
     )
 
   if (gameShowInfoQuery.derived.hasLoot) {
-    const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x) => x.armor.name)
-    const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x) => x.weapon.name)
+    const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x) => x.text.reward)
+    const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x) => x.text.reward)
 
     return (
       <Card>
-        <Text>{gameShowInfoQuery.data?.loot?.text?.loot_found ?? 'game_loot_found'}:</Text>
+        <Text
+          dangerouslySetInnerHTML={{
+            __html: `${gameShowInfoQuery.data?.loot?.text?.loot_found ?? 'game_loot_found'}:`,
+          }}
+        />
         <div className='flex flex-col'>
           {armors?.map((x: string, idx: number) => <Text key={`LootArmor_${idx}`}>{x}</Text>)}
           {weapons?.map((x: string, idx: number) => <Text key={`LootWeapon_${idx}`}>{x}</Text>)}

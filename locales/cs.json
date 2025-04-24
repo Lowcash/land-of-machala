@@ -644,7 +644,7 @@
     "run_away": "Utéct",
     "loot": {
       "header": "Loot",
-      "found": "V lootu se nachází"
+      "found": "<b>V lootu se nachází</b>"
     }
   },
   "place": {
