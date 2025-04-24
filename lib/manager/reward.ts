@@ -3,6 +3,7 @@ import 'server-only'
 import type { Armor, Weapon, Prisma, PrismaClient } from '@prisma/client'
 
 import * as PlayerEntity from '@/entity/player'
+import * as InventoryEntity from '@/entity/inventory'
 
 export type Reward = NonNullable<Awaited<ReturnType<typeof prepareReward>>>
 
@@ -47,6 +48,8 @@ export async function collectReward(
 ) {
   const { armors_loot, weapons_loot, ...loot } = reward
 
+  const inventory = await InventoryEntity.get(player.id, player.inventory_id)
+
   await dbTransaction.loot.delete({
     where: { id: loot.id },
   })
@@ -64,7 +67,7 @@ export async function collectReward(
       xp_actual: hasLevelUp ? newXPSum - player.xp_max : newXPSum,
       inventory: {
         update: {
-          where: { id: player.inventory_id! }, // TODO potencial bug, will be fixed when refactored
+          where: { id: inventory?.id },
           data: {
             armors_inventory: { create: armors_loot.map((x) => ({ armor: { connect: { id: x.armor_id } } })) },
             weapons_inventory: { create: weapons_loot.map((x) => ({ weapon: { connect: { id: x.weapon_id } } })) },
