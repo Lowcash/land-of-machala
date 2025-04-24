@@ -74,7 +74,6 @@ cells:
                 ('GIANT_FROG', 'enemy.giant_frog', 120, 180, 14, 22),
                 ('DROWNED', 'enemy.drowned', 140, 200, 16, 26);
 
-      -- ...ostatní část skriptu beze změny...
        TRUNCATE TABLE EnemyInPlace;
 
          INSERT INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
@@ -523,6 +522,43 @@ cells:
          VALUES (i18n_key),
                 reward_money =
          VALUES (reward_money);
+    metadata: {}
+  - kind: 2
+    languageId: sql
+    value: >-
+      CREATE TEMPORARY TABLE TempMaxScore AS
+         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
+           FROM Enemy;
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
+                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
+                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
+
+           DROP TEMPORARY TABLE TempMaxScore;
+
+      -- Po INSERTu všech Enemy:
+
+      CREATE TEMPORARY TABLE TempMaxScore AS
+         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
+           FROM Enemy;
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
+                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
+
+         UPDATE Enemy,
+      TempMaxScore
+            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
+                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
+
+           DROP TEMPORARY TABLE TempMaxScore;
     metadata: {}
 metadata:
   conn:
