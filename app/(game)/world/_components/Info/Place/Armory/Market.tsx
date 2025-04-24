@@ -1,27 +1,67 @@
-import type { Armor, Weapon } from '@prisma/client'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
+import { useArmoryShowQuery, type ArmoryItem } from '@/hooks/api/use-armory'
 
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
 import Table from '@/components/table'
 
-export type Action = 'buy' | 'sell'
-export type Type = 'weapon' | 'armor'
+type Action = 'buy' | 'sell'
 
-type MarketItem<T> = T & { itemId: string; name: string; price: number; text: any }
+interface Props {
+  armoryId: string
 
-interface MarketProps<T> {
-  items: MarketItem<T>[]
   action: Action
-
-  onAction?: (action: Action, item: MarketItem<T>, type: Type) => void
+  onAction: (item: ArmoryItem, action: Action) => void
 }
 
-export type OnActionParams<T> = Parameters<NonNullable<MarketProps<T>['onAction']>>
-
-export function WeaponMarket(p: MarketProps<Omit<Weapon, 'id' | 'i18n_key'>>) {
+export function ArmorMarket({ armoryId, ...p }: Props) {
   const commonShowQuery = useCommonShowQuery()
+  const armoryShowQuery = useArmoryShowQuery({ armoryId })
+
+  const items = p.action === 'buy' ? armoryShowQuery.data?.buyArmors : armoryShowQuery.data?.sellArmors
+
+  return (
+    <Table
+      columns={[
+        {},
+        {},
+        { className: 'text-center', content: commonShowQuery.data?.text.armor ?? 'armor_market_armor' },
+        { className: 'text-center', content: commonShowQuery.data?.text.stregth ?? 'armor_market_stregth' },
+        { className: 'text-center', content: commonShowQuery.data?.text.agility ?? 'armor_market_agility' },
+        { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'armor_market_intelligence' },
+        { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'armor_market_price' },
+        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'armor_market_action' },
+      ]}
+      cells={items?.map((x) => [
+        { className: 'text-left', content: x.name },
+        { className: 'text-center', content: x.type },
+        { className: 'text-center', content: x.armor },
+        { className: 'text-center', content: x.strength },
+        { className: 'text-center', content: x.agility },
+        { className: 'text-center', content: x.intelligence },
+        {
+          className: 'text-right',
+          content: <Text>{x.text.price}</Text>,
+        },
+        {
+          className: 'text-right',
+          content: (
+            <Button variant='secondary' onClick={() => p.onAction?.(x, p.action)}>
+              <RxPaperPlane />
+            </Button>
+          ),
+        },
+      ])}
+    />
+  )
+}
+
+export function WeaponMarket({ armoryId, ...p }: Props) {
+  const commonShowQuery = useCommonShowQuery()
+  const armoryShowQuery = useArmoryShowQuery({ armoryId })
+
+  const items = p.action === 'buy' ? armoryShowQuery.data?.buyWeapons : armoryShowQuery.data?.sellWeapons
 
   return (
     <Table
@@ -31,7 +71,7 @@ export function WeaponMarket(p: MarketProps<Omit<Weapon, 'id' | 'i18n_key'>>) {
         { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'weapon_market_price' },
         { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_market_action' },
       ]}
-      cells={p.items.map((x) => [
+      cells={items?.map((x) => [
         { className: 'text-left', content: x.name },
         {
           className: 'text-center',
@@ -48,46 +88,7 @@ export function WeaponMarket(p: MarketProps<Omit<Weapon, 'id' | 'i18n_key'>>) {
         {
           className: 'text-right',
           content: (
-            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'weapon')}>
-              <RxPaperPlane />
-            </Button>
-          ),
-        },
-      ])}
-    />
-  )
-}
-
-export function ArmorMarket(p: MarketProps<Omit<Armor, 'id' | 'i18n_key'>>) {
-  const commonShowQuery = useCommonShowQuery()
-
-  return (
-    <Table
-      columns={[
-        {},
-        {},
-        { className: 'text-center', content: commonShowQuery.data?.text.armor ?? 'armor_market_armor' },
-        { className: 'text-center', content: commonShowQuery.data?.text.stregth ?? 'armor_market_stregth' },
-        { className: 'text-center', content: commonShowQuery.data?.text.agility ?? 'armor_market_agility' },
-        { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'armor_market_intelligence' },
-        { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'armor_market_price' },
-        { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'armor_market_action' },
-      ]}
-      cells={p.items.map((x) => [
-        { className: 'text-left', content: x.name },
-        { className: 'text-center', content: x.type },
-        { className: 'text-center', content: x.armor },
-        { className: 'text-center', content: x.strength },
-        { className: 'text-center', content: x.agility },
-        { className: 'text-center', content: x.intelligence },
-        {
-          className: 'text-right',
-          content: <Text>{x.text.price}</Text>,
-        },
-        {
-          className: 'text-right',
-          content: (
-            <Button variant='secondary' onClick={() => p.onAction?.(p.action, x, 'armor')}>
+            <Button variant='secondary' onClick={() => p.onAction?.(x, p.action)}>
               <RxPaperPlane />
             </Button>
           ),

@@ -18,15 +18,20 @@ export const LOCATION = {
   'forest_clearing': '/images/environment/forest_clearing/0.jpg', 
   'cemetery': '/images/environment/cemetery/0.jpg',
   'desert': '/images/environment/desert/0.jpg',
-  'farm': '/images/environment/farm/0.jpg',
+  'farmstead': '/images/environment/farmstead/0.jpg',
   'hills': '/images/environment/hills/0.jpg',
   'road': '/images/environment/road/2.jpg',
+  'castle_suburb': '/images/environment/castle_suburb/1.jpg',
+  'lake': '/images/environment/lake/0.jpg',
+  'swamp': '/images/environment/swamp/0.jpg',
 } as const
 
 export enum ERROR_CAUSE {
   ALREADY_EXISTS = 'ALREADY_EXISTS',
   UNAUTHORIZED = 'UNAUTHORIZED',
   NO_PERMISSION = 'NO_PERMISSION',
+  NO_CHARACTER = 'NO_CHARACTER',
+  NO_POSITION = 'NO_POSITION',
   ENTITY_NOT_EXIST = 'ENTITY_NOT_EXIST',
   NOT_AVAILABLE = 'NOT_AVAILABLE',
   CANNOT_MOVE = 'CANNOT_MOVE',
@@ -39,6 +44,9 @@ export const PAGE_COOKIE_KEY = 'page'
 export * from './routes'
 export * from './query-keys'
 export * from './cache-keys'
+
+export const BASE_SPAWN_X = 0
+export const BASE_SPAWN_Y = 0
 
 export const BASE_HP_ACTUAL = 100
 export const BASE_HP_MAX = 100

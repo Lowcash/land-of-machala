@@ -4,18 +4,18 @@ import * as GameAction from '@/app/actions/game'
 
 import { QUERY_KEY } from '@/config'
 
-const _useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.infoShow)
+const _useGameInfoShowQuery = createQueryHook([QUERY_KEY.GAME_INFO], GameAction.showInfo)
 
-export function useGameInfoShowQuery() {
+export function useGameShowInfoQuery() {
   const gameInfoShowQuery = _useGameInfoShowQuery()
 
   return {
     ...gameInfoShowQuery,
     derived: {
       hasPlace: !!gameInfoShowQuery.data?.place,
-      hasSubplace: (gameInfoShowQuery.data?.place?.subplaces.length ?? 0) > 0,
+      hasSubplace: !!gameInfoShowQuery.data?.place?.subplaces.length,
       hasCombat: !!gameInfoShowQuery.data?.combat,
-      hasDefeated: !!gameInfoShowQuery.data?.player.hasDefeated,
+      hasDefeated: !!gameInfoShowQuery.data?.player.defeated,
       hasLoot: !!gameInfoShowQuery.data?.loot,
     },
   }
@@ -26,6 +26,7 @@ export const useGameAttackMutation = createMutationHook(GameAction.attack, [
   QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,
   QUERY_KEY.GAME_INFO,
+  QUERY_KEY.QUEST_ASSIGNED,
 ])
 
 export const useGameRunAwayMutation = createMutationHook(GameAction.runAway, [
