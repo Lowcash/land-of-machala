@@ -1,5 +1,5 @@
 model Enemy {
-  id       String @id
+  id       EnemyIdent @id
   i18n_key String
 
   hp_from Int
@@ -26,8 +26,8 @@ model EnemyInstance {
   hp_actual Int
   hp_max    Int
 
-  enemy    Enemy  @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
-  enemy_id String
+  enemy    Enemy      @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
+  enemy_id EnemyIdent
 
   users User[]
 
@@ -39,9 +39,9 @@ model EnemyInPlace {
 
   spawn_rate Float
 
-  enemy    Enemy  @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
-  enemy_id String
-  place    Place  @relation(fields: [place_id], references: [id], onDelete: Cascade)
+  enemy    Enemy      @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
+  enemy_id EnemyIdent
+  place    Place      @relation(fields: [place_id], references: [id], onDelete: Cascade)
   place_id String
 
   @@unique([enemy_id, place_id])
@@ -54,15 +54,47 @@ model EnemyLoot {
 
   drop_chance Float
 
-  enemy     Enemy   @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
-  enemy_id  String
-  armor     Armor?  @relation(fields: [armor_id], references: [id], onDelete: Cascade)
+  enemy     Enemy      @relation(fields: [enemy_id], references: [id], onDelete: Cascade)
+  enemy_id  EnemyIdent
+  armor     Armor?     @relation(fields: [armor_id], references: [id], onDelete: Cascade)
   armor_id  String?
-  weapon    Weapon? @relation(fields: [weapon_id], references: [id], onDelete: Cascade)
+  weapon    Weapon?    @relation(fields: [weapon_id], references: [id], onDelete: Cascade)
   weapon_id String?
 
   @@unique([enemy_id, weapon_id, armor_id])
   @@index([enemy_id])
   @@index([armor_id])
   @@index([weapon_id])
+}
+
+enum EnemyIdent {
+  // FOREST
+  GOBLIN
+  WOLF
+  BANDIT
+  // CEMETERY
+  ZOMBIE
+  SKELETON
+  GHOUL
+  // DESERT
+  SCORPION
+  SAND_WORM
+  DESERT_BANDIT
+  // FARM
+  WILD_BOAR
+  ANGRY_FARMER
+  // SUBURB
+  THIEF
+  DRUNKARD
+  // HILLS
+  HILL_TROLL
+  MOUNTAIN_GOAT
+  // SWAMP
+  SWAMP_LIZARD
+  GIANT_LEECH
+  SWAMP_GHOST
+  // LAKE
+  WATER_SPRITE
+  GIANT_FROG
+  DROWNED
 }

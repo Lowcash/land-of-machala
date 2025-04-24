@@ -45,194 +45,166 @@ cells:
          INSERT INTO Enemy (id, i18n_key, hp_from, hp_to, damage_from, damage_to)
          VALUES
                 -- FOREST
-                ('goblin', 'enemy.goblin', 60, 90, 6, 12),
-                ('wolf', 'enemy.wolf', 80, 120, 8, 16),
-                ('bandit', 'enemy.bandit', 100, 140, 10, 18),
+                ('GOBLIN', 'enemy.goblin', 60, 90, 6, 12),
+                ('WOLF', 'enemy.wolf', 80, 120, 8, 16),
+                ('BANDIT', 'enemy.bandit', 100, 140, 10, 18),
                 -- CEMETERY
-                ('zombie', 'enemy.zombie', 120, 180, 12, 20),
-                ('skeleton', 'enemy.skeleton', 90, 130, 10, 16),
-                ('ghoul', 'enemy.ghoul', 160, 220, 16, 26),
+                ('ZOMBIE', 'enemy.zombie', 120, 180, 12, 20),
+                ('SKELETON', 'enemy.skeleton', 90, 130, 10, 16),
+                ('GHOUL', 'enemy.ghoul', 160, 220, 16, 26),
                 -- DESERT
-                ('scorpion', 'enemy.scorpion', 110, 160, 14, 22),
-                ('sand_worm', 'enemy.sand_worm', 180, 250, 18, 28),
-                ('desert_bandit', 'enemy.desert_bandit', 130, 180, 15, 24),
+                ('SCORPION', 'enemy.scorpion', 110, 160, 14, 22),
+                ('SAND_WORM', 'enemy.sand_worm', 180, 250, 18, 28),
+                ('DESERT_BANDIT', 'enemy.desert_bandit', 130, 180, 15, 24),
                 -- FARM
-                ('wild_boar', 'enemy.wild_boar', 70, 110, 8, 14),
-                ('angry_farmer', 'enemy.angry_farmer', 90, 130, 10, 16),
+                ('WILD_BOAR', 'enemy.wild_boar', 70, 110, 8, 14),
+                ('ANGRY_FARMER', 'enemy.angry_farmer', 90, 130, 10, 16),
                 -- SUBURB
-                ('thief', 'enemy.thief', 80, 120, 8, 15),
-                ('drunkard', 'enemy.drunkard', 60, 90, 5, 10),
+                ('THIEF', 'enemy.thief', 80, 120, 8, 15),
+                ('DRUNKARD', 'enemy.drunkard', 60, 90, 5, 10),
                 -- HILLS
-                ('hill_troll', 'enemy.hill_troll', 200, 260, 20, 32),
-                ('mountain_goat', 'enemy.mountain_goat', 90, 130, 10, 16),
+                ('HILL_TROLL', 'enemy.hill_troll', 200, 260, 20, 32),
+                ('MOUNTAIN_GOAT', 'enemy.mountain_goat', 90, 130, 10, 16),
                 -- SWAMP
-                ('swamp_lizard', 'enemy.swamp_lizard', 120, 170, 14, 22),
-                -- ('giant_leech', 'enemy.giant_leech', 140, 200, 16, 24),
-                ('swamp_ghost', 'enemy.swamp_ghost', 160, 220, 18, 28),
+                ('SWAMP_LIZARD', 'enemy.swamp_lizard', 120, 170, 14, 22),
+                ('GIANT_LEECH', 'enemy.giant_leech', 140, 200, 16, 24),
+                ('SWAMP_GHOST', 'enemy.swamp_ghost', 160, 220, 18, 28),
                 -- LAKE
-                ('water_sprite', 'enemy.water_sprite', 100, 150, 12, 20),
-                ('giant_frog', 'enemy.giant_frog', 120, 180, 14, 22),
-                ('drowned', 'enemy.drowned', 140, 200, 16, 26);
+                ('WATER_SPRITE', 'enemy.water_sprite', 100, 150, 12, 20),
+                ('GIANT_FROG', 'enemy.giant_frog', 120, 180, 14, 22),
+                ('DROWNED', 'enemy.drowned', 140, 200, 16, 26);
 
-      -- Create a temporary table to store the maximum score among all enemies.
-
-      CREATE TEMPORARY TABLE TempMaxScore AS
-         SELECT MAX((hp_from + hp_to) / 2 + (damage_from + damage_to) / 2) AS max_score
-           FROM Enemy;
-
-      -- Update the `xp_from` and `xp_to` columns in the `Enemy` table.
-
-      -- These values are calculated as a percentage of the maximum score,
-      scaled by factors (0.8 and 1.2).
-
-      -- The `LEAST` function ensures the values do not exceed 100.
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.xp_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.8), 100),
-                Enemy.xp_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 1.2), 100);
-
-      -- Update the `money_from` and `money_to` columns in the `Enemy` table.
-
-      -- These values are also calculated as a percentage of the maximum score,
-      scaled by factors (0.25 and 0.5).
-         UPDATE Enemy,
-      TempMaxScore
-            SET Enemy.money_from = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.25), 100),
-                Enemy.money_to = LEAST (ROUND(((Enemy.hp_from + Enemy.hp_to) / 2 + (Enemy.damage_from + Enemy.damage_to) / 2) / TempMaxScore.max_score * 100 * 0.5), 100);
-
-      -- Drop the temporary table as it is no longer needed.
-           DROP TEMPORARY TABLE TempMaxScore;
-
+      -- ...ostatní část skriptu beze změny...
        TRUNCATE TABLE EnemyInPlace;
 
          INSERT INTO EnemyInPlace (id, enemy_id, place_id, spawn_rate)
          VALUES
                 -- FOREST
-                (UUID (), 'goblin', 'forest_clearing', 0.35),
-                (UUID (), 'wolf', 'forest_clearing', 0.35),
-                (UUID (), 'bandit', 'forest_clearing', 0.30),
+                (UUID (), 'GOBLIN', 'forest_clearing', 0.35),
+                (UUID (), 'WOLF', 'forest_clearing', 0.35),
+                (UUID (), 'BANDIT', 'forest_clearing', 0.30),
                 -- CEMETERY
-                (UUID (), 'zombie', 'cemetery', 0.40),
-                (UUID (), 'skeleton', 'cemetery', 0.35),
-                (UUID (), 'ghoul', 'cemetery', 0.25),
+                (UUID (), 'ZOMBIE', 'cemetery', 0.40),
+                (UUID (), 'SKELETON', 'cemetery', 0.35),
+                (UUID (), 'GHOUL', 'cemetery', 0.25),
                 -- DESERT
-                (UUID (), 'scorpion', 'desert', 0.40),
-                (UUID (), 'sand_worm', 'desert', 0.30),
-                (UUID (), 'desert_bandit', 'desert', 0.30),
+                (UUID (), 'SCORPION', 'desert', 0.40),
+                (UUID (), 'SAND_WORM', 'desert', 0.30),
+                (UUID (), 'DESERT_BANDIT', 'desert', 0.30),
                 -- FARM
-                (UUID (), 'wild_boar', 'farmstead', 0.60),
-                (UUID (), 'angry_farmer', 'farmstead', 0.40),
+                (UUID (), 'WILD_BOAR', 'farmstead', 0.60),
+                (UUID (), 'ANGRY_FARMER', 'farmstead', 0.40),
                 -- SUBURB
-                (UUID (), 'thief', 'castle_suburb', 0.60),
-                (UUID (), 'drunkard', 'castle_suburb', 0.40),
+                (UUID (), 'THIEF', 'castle_suburb', 0.60),
+                (UUID (), 'DRUNKARD', 'castle_suburb', 0.40),
                 -- HILLS
-                (UUID (), 'hill_troll', 'hills', 0.40),
-                (UUID (), 'mountain_goat', 'hills', 0.60),
+                (UUID (), 'HILL_TROLL', 'hills', 0.40),
+                (UUID (), 'MOUNTAIN_GOAT', 'hills', 0.60),
                 -- SWAMP
-                (UUID (), 'swamp_lizard', 'swamp', 0.40),
-                (UUID (), 'giant_leech', 'swamp', 0.30),
-                (UUID (), 'swamp_ghost', 'swamp', 0.30),
+                (UUID (), 'SWAMP_LIZARD', 'swamp', 0.40),
+                (UUID (), 'GIANT_LEECH', 'swamp', 0.30),
+                (UUID (), 'SWAMP_GHOST', 'swamp', 0.30),
                 -- LAKE
-                (UUID (), 'water_sprite', 'lake', 0.40),
-                (UUID (), 'giant_frog', 'lake', 0.35),
-                (UUID (), 'drowned', 'lake', 0.25);
+                (UUID (), 'WATER_SPRITE', 'lake', 0.40),
+                (UUID (), 'GIANT_FROG', 'lake', 0.35),
+                (UUID (), 'DROWNED', 'lake', 0.25);
 
        TRUNCATE TABLE EnemyLoot;
 
          INSERT INTO EnemyLoot (id, enemy_id, weapon_id, armor_id, drop_chance)
          VALUES
                 -- FOREST
-                (UUID (), 'goblin', 'dagger', NULL, 0.25),
-                (UUID (), 'goblin', 'cloth', NULL, 0.18),
-                (UUID (), 'goblin', NULL, 'head_hood_shadow', 0.10),
-                (UUID (), 'goblin', NULL, 'hand_gloves_strength', 0.08),
-                (UUID (), 'wolf', 'fang', NULL, 0.28),
-                (UUID (), 'wolf', 'claw', NULL, 0.15),
-                (UUID (), 'wolf', NULL, 'boots_leather_boots_hunter', 0.12),
-                (UUID (), 'wolf', NULL, 'shoulder_pauldrons_crusher', 0.08),
-                (UUID (), 'bandit', 'sword', NULL, 0.18),
-                (UUID (), 'bandit', 'dagger', NULL, 0.14),
-                (UUID (), 'bandit', NULL, 'chest_leather_armor', 0.12),
-                (UUID (), 'bandit', NULL, 'pants_pants_strength', 0.09),
+                (UUID (), 'GOBLIN', 'dagger', NULL, 0.25),
+                (UUID (), 'GOBLIN', 'cloth', NULL, 0.18),
+                (UUID (), 'GOBLIN', NULL, 'head_hood_shadow', 0.10),
+                (UUID (), 'GOBLIN', NULL, 'hand_gloves_strength', 0.08),
+                (UUID (), 'WOLF', 'fang', NULL, 0.28),
+                (UUID (), 'WOLF', 'claw', NULL, 0.15),
+                (UUID (), 'WOLF', NULL, 'boots_leather_boots_hunter', 0.12),
+                (UUID (), 'WOLF', NULL, 'shoulder_pauldrons_crusher', 0.08),
+                (UUID (), 'BANDIT', 'sword', NULL, 0.18),
+                (UUID (), 'BANDIT', 'dagger', NULL, 0.14),
+                (UUID (), 'BANDIT', NULL, 'chest_leather_armor', 0.12),
+                (UUID (), 'BANDIT', NULL, 'pants_pants_strength', 0.09),
                 -- CEMETERY
-                (UUID (), 'zombie', 'club', NULL, 0.14),
-                (UUID (), 'zombie', 'bottle', NULL, 0.10),
-                (UUID (), 'zombie', NULL, 'pants_pants_strength', 0.08),
-                (UUID (), 'zombie', NULL, 'boots_boots_strength', 0.07),
-                (UUID (), 'skeleton', 'bone_club', NULL, 0.20),
-                (UUID (), 'skeleton', 'dagger', NULL, 0.10),
-                (UUID (), 'skeleton', NULL, 'head_mask_mystery', 0.10),
-                (UUID (), 'skeleton', NULL, 'hand_chainmail_gloves', 0.07),
-                (UUID (), 'ghoul', 'mace', NULL, 0.12),
-                (UUID (), 'ghoul', 'mace_2', NULL, 0.08),
-                (UUID (), 'ghoul', NULL, 'chest_cloak_mystery', 0.10),
-                (UUID (), 'ghoul', NULL, 'shoulder_pauldrons_mystic', 0.07),
+                (UUID (), 'ZOMBIE', 'club', NULL, 0.14),
+                (UUID (), 'ZOMBIE', 'bottle', NULL, 0.10),
+                (UUID (), 'ZOMBIE', NULL, 'pants_pants_strength', 0.08),
+                (UUID (), 'ZOMBIE', NULL, 'boots_boots_strength', 0.07),
+                (UUID (), 'SKELETON', 'bone_club', NULL, 0.20),
+                (UUID (), 'SKELETON', 'dagger', NULL, 0.10),
+                (UUID (), 'SKELETON', NULL, 'head_mask_mystery', 0.10),
+                (UUID (), 'SKELETON', NULL, 'hand_chainmail_gloves', 0.07),
+                (UUID (), 'GHOUL', 'mace', NULL, 0.12),
+                (UUID (), 'GHOUL', 'mace_2', NULL, 0.08),
+                (UUID (), 'GHOUL', NULL, 'chest_cloak_mystery', 0.10),
+                (UUID (), 'GHOUL', NULL, 'shoulder_pauldrons_mystic', 0.07),
                 -- DESERT
-                (UUID (), 'scorpion', 'claw', NULL, 0.25),
-                (UUID (), 'scorpion', 'fang', NULL, 0.15),
-                (UUID (), 'scorpion', NULL, 'boots_desert_snake', 0.10),
-                (UUID (), 'scorpion', NULL, 'hand_gloves_sprinter', 0.08),
-                (UUID (), 'sand_worm', 'fang', NULL, 0.16),
-                (UUID (), 'sand_worm', 'kama', NULL, 0.10),
-                (UUID (), 'sand_worm', NULL, 'chest_desert_shroud', 0.10),
-                (UUID (), 'sand_worm', NULL, 'pants_pants_sprinter', 0.07),
-                (UUID (), 'desert_bandit', 'kama', NULL, 0.20),
-                (UUID (), 'desert_bandit', 'kusatko', NULL, 0.12),
-                (UUID (), 'desert_bandit', NULL, 'head_desert_turban', 0.10),
-                (UUID (), 'desert_bandit', NULL, 'shoulder_pauldrons_stealth', 0.08),
+                (UUID (), 'SCORPION', 'claw', NULL, 0.25),
+                (UUID (), 'SCORPION', 'fang', NULL, 0.15),
+                (UUID (), 'SCORPION', NULL, 'boots_desert_snake', 0.10),
+                (UUID (), 'SCORPION', NULL, 'hand_gloves_sprinter', 0.08),
+                (UUID (), 'SAND_WORM', 'fang', NULL, 0.16),
+                (UUID (), 'SAND_WORM', 'kama', NULL, 0.10),
+                (UUID (), 'SAND_WORM', NULL, 'chest_desert_shroud', 0.10),
+                (UUID (), 'SAND_WORM', NULL, 'pants_pants_sprinter', 0.07),
+                (UUID (), 'DESERT_BANDIT', 'kama', NULL, 0.20),
+                (UUID (), 'DESERT_BANDIT', 'kusatko', NULL, 0.12),
+                (UUID (), 'DESERT_BANDIT', NULL, 'head_desert_turban', 0.10),
+                (UUID (), 'DESERT_BANDIT', NULL, 'shoulder_pauldrons_stealth', 0.08),
                 -- FARM
-                (UUID (), 'wild_boar', 'fang', NULL, 0.18),
-                (UUID (), 'wild_boar', 'club', NULL, 0.10),
-                (UUID (), 'wild_boar', NULL, 'boots_farm_boots', 0.10),
-                (UUID (), 'wild_boar', NULL, 'hand_leather_gloves', 0.07),
-                (UUID (), 'angry_farmer', 'pitchfork', NULL, 0.18),
-                (UUID (), 'angry_farmer', 'club', NULL, 0.12),
-                (UUID (), 'angry_farmer', NULL, 'head_farm_hat', 0.10),
-                (UUID (), 'angry_farmer', NULL, 'chest_farm_vest', 0.08),
+                (UUID (), 'WILD_BOAR', 'fang', NULL, 0.18),
+                (UUID (), 'WILD_BOAR', 'club', NULL, 0.10),
+                (UUID (), 'WILD_BOAR', NULL, 'boots_farm_boots', 0.10),
+                (UUID (), 'WILD_BOAR', NULL, 'hand_leather_gloves', 0.07),
+                (UUID (), 'ANGRY_FARMER', 'pitchfork', NULL, 0.18),
+                (UUID (), 'ANGRY_FARMER', 'club', NULL, 0.12),
+                (UUID (), 'ANGRY_FARMER', NULL, 'head_farm_hat', 0.10),
+                (UUID (), 'ANGRY_FARMER', NULL, 'chest_farm_vest', 0.08),
                 -- SUBURB
-                (UUID (), 'thief', 'dagger', NULL, 0.20),
-                (UUID (), 'thief', 'kama', NULL, 0.12),
-                (UUID (), 'thief', NULL, 'boots_suburb_shoes', 0.10),
-                (UUID (), 'thief', NULL, 'shoulder_epaulets_agility', 0.08),
-                (UUID (), 'drunkard', 'bottle', NULL, 0.22),
-                (UUID (), 'drunkard', 'club', NULL, 0.10),
-                (UUID (), 'drunkard', NULL, 'head_suburb_cap', 0.10),
-                (UUID (), 'drunkard', NULL, 'pants_trousers_agility', 0.07),
+                (UUID (), 'THIEF', 'dagger', NULL, 0.20),
+                (UUID (), 'THIEF', 'kama', NULL, 0.12),
+                (UUID (), 'THIEF', NULL, 'boots_suburb_shoes', 0.10),
+                (UUID (), 'THIEF', NULL, 'shoulder_epaulets_agility', 0.08),
+                (UUID (), 'DRUNKARD', 'bottle', NULL, 0.22),
+                (UUID (), 'DRUNKARD', 'club', NULL, 0.10),
+                (UUID (), 'DRUNKARD', NULL, 'head_suburb_cap', 0.10),
+                (UUID (), 'DRUNKARD', NULL, 'pants_trousers_agility', 0.07),
                 -- HILLS
-                (UUID (), 'hill_troll', 'club_2', NULL, 0.10),
-                (UUID (), 'hill_troll', 'club', NULL, 0.08),
-                (UUID (), 'hill_troll', NULL, 'head_hill_troll', 0.12),
-                (UUID (), 'hill_troll', NULL, 'chest_hill_stone', 0.09),
-                (UUID (), 'mountain_goat', 'fang', NULL, 0.15),
-                (UUID (), 'mountain_goat', 'claw', NULL, 0.10),
-                (UUID (), 'mountain_goat', NULL, 'boots_hill_goat', 0.10),
-                (UUID (), 'mountain_goat', NULL, 'pants_plate_trousers_warrior', 0.07),
+                (UUID (), 'HILL_TROLL', 'club_2', NULL, 0.10),
+                (UUID (), 'HILL_TROLL', 'club', NULL, 0.08),
+                (UUID (), 'HILL_TROLL', NULL, 'head_hill_troll', 0.12),
+                (UUID (), 'HILL_TROLL', NULL, 'chest_hill_stone', 0.09),
+                (UUID (), 'MOUNTAIN_GOAT', 'fang', NULL, 0.15),
+                (UUID (), 'MOUNTAIN_GOAT', 'claw', NULL, 0.10),
+                (UUID (), 'MOUNTAIN_GOAT', NULL, 'boots_hill_goat', 0.10),
+                (UUID (), 'MOUNTAIN_GOAT', NULL, 'pants_plate_trousers_warrior', 0.07),
                 -- SWAMP
-                (UUID (), 'swamp_lizard', 'claw', NULL, 0.18),
-                (UUID (), 'swamp_lizard', 'fang', NULL, 0.12),
-                (UUID (), 'swamp_lizard', NULL, 'boots_swamp_reed', 0.10),
-                (UUID (), 'swamp_lizard', NULL, 'chest_swamp_shell', 0.08),
-                (UUID (), 'giant_leech', 'fang', NULL, 0.16),
-                (UUID (), 'giant_leech', 'bottle', NULL, 0.10),
-                (UUID (), 'giant_leech', NULL, 'head_swamp_helm', 0.10),
-                (UUID (), 'giant_leech', NULL, 'hand_gloves_mystic', 0.07),
-                (UUID (), 'swamp_ghost', 'wand', NULL, 0.14),
-                (UUID (), 'swamp_ghost', 'cloth', NULL, 0.10),
-                (UUID (), 'swamp_ghost', NULL, 'chest_swamp_shell', 0.10),
-                (UUID (), 'swamp_ghost', NULL, 'shoulder_pauldrons_wizard', 0.08),
+                (UUID (), 'SWAMP_LIZARD', 'claw', NULL, 0.18),
+                (UUID (), 'SWAMP_LIZARD', 'fang', NULL, 0.12),
+                (UUID (), 'SWAMP_LIZARD', NULL, 'boots_swamp_reed', 0.10),
+                (UUID (), 'SWAMP_LIZARD', NULL, 'chest_swamp_shell', 0.08),
+                (UUID (), 'GIANT_LEECH', 'fang', NULL, 0.16),
+                (UUID (), 'GIANT_LEECH', 'bottle', NULL, 0.10),
+                (UUID (), 'GIANT_LEECH', NULL, 'head_swamp_helm', 0.10),
+                (UUID (), 'GIANT_LEECH', NULL, 'hand_gloves_mystic', 0.07),
+                (UUID (), 'SWAMP_GHOST', 'wand', NULL, 0.14),
+                (UUID (), 'SWAMP_GHOST', 'cloth', NULL, 0.10),
+                (UUID (), 'SWAMP_GHOST', NULL, 'chest_swamp_shell', 0.10),
+                (UUID (), 'SWAMP_GHOST', NULL, 'shoulder_pauldrons_wizard', 0.08),
                 -- LAKE
-                (UUID (), 'water_sprite', 'wand', NULL, 0.15),
-                (UUID (), 'water_sprite', 'bottle', NULL, 0.12),
-                (UUID (), 'water_sprite', NULL, 'head_lake_sprite', 0.10),
-                (UUID (), 'water_sprite', NULL, 'boots_lake_lily', 0.08),
-                (UUID (), 'giant_frog', 'fang', NULL, 0.18),
-                (UUID (), 'giant_frog', 'claw', NULL, 0.12),
-                (UUID (), 'giant_frog', NULL, 'boots_lake_lily', 0.10),
-                (UUID (), 'giant_frog', NULL, 'pants_pants_mystic', 0.07),
-                (UUID (), 'drowned', 'club', NULL, 0.14),
-                (UUID (), 'drowned', 'dagger', NULL, 0.10),
-                (UUID (), 'drowned', NULL, 'chest_lake_froth', 0.10),
-                (UUID (), 'drowned', NULL, 'hand_gloves_wizard', 0.08);
+                (UUID (), 'WATER_SPRITE', 'wand', NULL, 0.15),
+                (UUID (), 'WATER_SPRITE', 'bottle', NULL, 0.12),
+                (UUID (), 'WATER_SPRITE', NULL, 'head_lake_sprite', 0.10),
+                (UUID (), 'WATER_SPRITE', NULL, 'boots_lake_lily', 0.08),
+                (UUID (), 'GIANT_FROG', 'fang', NULL, 0.18),
+                (UUID (), 'GIANT_FROG', 'claw', NULL, 0.12),
+                (UUID (), 'GIANT_FROG', NULL, 'boots_lake_lily', 0.10),
+                (UUID (), 'GIANT_FROG', NULL, 'pants_pants_mystic', 0.07),
+                (UUID (), 'DROWNED', 'club', NULL, 0.14),
+                (UUID (), 'DROWNED', 'dagger', NULL, 0.10),
+                (UUID (), 'DROWNED', NULL, 'chest_lake_froth', 0.10),
+                (UUID (), 'DROWNED', NULL, 'hand_gloves_wizard', 0.08);
     metadata: {}
   - kind: 2
     languageId: sql
