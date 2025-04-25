@@ -19,9 +19,8 @@ export default function Info() {
   const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
 
-  const { selectedSubplace, setSelectedSubplace } = useSetPlace(
-    gameShowInfoQuery.data?.place?.id ?? 'road',
-    gameShowInfoQuery.derived.hasDefeated ? 'hospital' : undefined,
+  const { selectedPlace, setSelectedPlace } = useSetPlace(
+    gameShowInfoQuery.derived.hasDefeated ? 'hospital' : (gameShowInfoQuery.data?.place?.id ?? 'road'),
   )
 
   if (gameShowInfoQuery.derived.hasCombat)
@@ -69,7 +68,7 @@ export default function Info() {
   }
 
   if (gameShowInfoQuery.derived.hasPlace) {
-    if (!!selectedSubplace) {
+    if (selectedPlace === 'hospital' || selectedPlace === 'armory' || selectedPlace === 'bank') {
       const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
       const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
       const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
@@ -83,14 +82,14 @@ export default function Info() {
               }}
             />
           ) : (
-            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedSubplace(undefined)}>
+            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedPlace(undefined)}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
             </Button>
           )}
 
-          {selectedSubplace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
-          {selectedSubplace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
-          {selectedSubplace === 'bank' && !!bank && <Bank bankId={bank.id} />}
+          {selectedPlace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
+          {selectedPlace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
+          {selectedPlace === 'bank' && !!bank && <Bank bankId={bank.id} />}
         </Card>
       )
     }
@@ -112,7 +111,7 @@ export default function Info() {
           <List>
             {gameShowInfoQuery.data?.place?.subplaces?.map((x) => (
               <li key={`SubPlace_${x.type}`}>
-                <Link onClick={() => setSelectedSubplace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
+                <Link onClick={() => setSelectedPlace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
               </li>
             ))}
           </List>
@@ -128,12 +127,12 @@ export default function Info() {
   )
 }
 
-function useSetPlace(place?: Location, forceSubplace?: Location) {
-  const [selectedSubplace, setSelectedSubplace] = React.useState<Location | undefined>(forceSubplace)
+function useSetPlace(place?: Location) {
+  const [selectedPlace, setSelectedPlace] = React.useState<Location>()
 
-  useSetLocationBackgroundEffect(selectedSubplace ?? place)
+  useSetLocationBackgroundEffect(selectedPlace)
 
-  React.useEffect(() => forceSubplace && setSelectedSubplace(forceSubplace), [forceSubplace])
+  React.useEffect(() => setSelectedPlace(place), [place])
 
-  return { selectedSubplace, setSelectedSubplace }
+  return { selectedPlace, setSelectedPlace }
 }
