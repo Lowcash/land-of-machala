@@ -82,7 +82,8 @@ export default function Info() {
               }}
             />
           ) : (
-            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedPlace(undefined)}>
+            // TODO "main_city" is tempoprary solution
+            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedPlace('main_city')}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
             </Button>
           )}
