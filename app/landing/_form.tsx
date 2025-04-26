@@ -12,24 +12,27 @@ import Form, { Handle as FormHandle } from '@/components/Form'
 import { Text } from '@/styles/typography'
 import Loading from '@/components/Loading'
 
+const DEFAULT_SIGN_DATA: UserSignSchema = { email: '', password: '' }
+
 export default function LoginForm() {
+  const [formData, setFormData] = React.useState<UserSignSchema>(DEFAULT_SIGN_DATA)
+
   const showLandingQuery = useUserShowLandingQuery()
 
   const formRef = React.useRef<FormHandle>(null)
-  const formValueRef = React.useRef<UserSignSchema>(null)
 
   const { navigate } = useNavigate()
 
   const handleFormChange = (data: UserSignSchema) => {
-    formValueRef.current = data
+    setFormData(data)
   }
 
   const handleSignIn = async () => {
     const result = await userSignIn('credentials', {
       redirect: false,
       callbackUrl: '',
-      email: formValueRef.current?.email,
-      password: formValueRef.current?.password,
+      email: formData?.email,
+      password: formData?.password,
     })
 
     if (!!result?.ok) {
@@ -46,8 +49,9 @@ export default function LoginForm() {
 
   const handleSignUpSuccess = async () => {
     toast({ description: showLandingQuery.data?.text.signUpSuccess ?? 'sign_up_success' })
-    formRef.current?.reset?.()
     navigate()
+
+    setFormData(DEFAULT_SIGN_DATA)
   }
 
   const handleSignUpError = async () => {
@@ -59,6 +63,7 @@ export default function LoginForm() {
 
   return (
     <Form
+      data={formData}
       ref={formRef}
       className='gap-6'
       schema={userSignSchema}
@@ -70,13 +75,15 @@ export default function LoginForm() {
         <Form.Input<UserSignSchema>
           id='email'
           type='email'
-          label={<Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.email ?? 'email' }} />}
+          label={<Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.email ?? 'sign_email' }} />}
           autoComplete='email'
         />
         <Form.Input<UserSignSchema>
           id='password'
           type='password'
-          label={<Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.password ?? 'password' }} />}
+          label={
+            <Text dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text?.password ?? 'sign_password' }} />
+          }
           autoComplete='current-password'
         />
       </div>

@@ -21,16 +21,14 @@ interface Props<T extends ZodType<any>> {
   schema: T
   data?: FieldValues
   action: Parameters<typeof useAction>[0]
-  onAction?: Parameters<typeof useAction>[1]
+  onAction: Parameters<typeof useAction>[1]
   onForm?: {
-    onSubmit?: (data: Infer<T>) => void
     onChange?: (data: Infer<T>) => void
   }
 }
 
 export interface Handle {
   submit?: () => void
-  reset?: () => void
 }
 
 export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWithChildrenAndClassName<Props<T>>) {
@@ -53,7 +51,6 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
 
   React.useImperativeHandle(p.ref, () => ({
     submit: () => formRef?.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })),
-    reset: () => hookForm.reset(),
   }))
 
   return (
@@ -61,10 +58,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
       <form
         ref={formRef}
         className={cn('flex w-full flex-col', p.className)}
-        onSubmit={hookForm.handleSubmit(async (data) => {
-          p.onForm?.onSubmit?.(data as Infer<T>)
-          actionResult.executeAsync(data)
-        })}
+        onSubmit={hookForm.handleSubmit(async (data) => actionResult.executeAsync(data))}
       >
         {children}
       </form>
@@ -74,9 +68,9 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
 
 interface FieldProps<T> {
   id: keyof T
+  element: React.JSX.Element
   label?: React.JSX.Element | string
   description?: React.JSX.Element | string
-  element: React.JSX.Element
 }
 
 function Field<T>({ id, label, description, element: fieldElement }: FieldProps<T>) {
