@@ -13,14 +13,15 @@ export const H3 = (p: React.HTMLAttributes<HTMLHeadingElement>) => (
 interface TextProps {
   bold?: boolean
   light?: boolean
-  small?: boolean
+  size?: 'normal' | 'small' | 'large'
+  large?: boolean
   italic?: boolean
 }
 
 export const Text = <C extends React.ElementType = 'label'>({
   bold,
   light,
-  small,
+  size = 'normal',
   italic,
   ...p
 }: React.HtmlHTMLAttributes<HTMLElement> & TextProps & { as?: C }) => {
@@ -30,7 +31,7 @@ export const Text = <C extends React.ElementType = 'label'>({
     <Component
       {...p}
       className={cn(
-        small ? 'text-sm' : 'text-base',
+        size === 'normal' ? 'text-base' : size === 'small' ? 'text-sm' : 'text-xl',
         !!bold && 'font-bold',
         !!light && 'text-gray-500',
         !!italic && 'italic',

@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/button'
 import Hospital from '@/app/(game)/world/_components/Info/Place/Hospital'
 import Armory from '@/app/(game)/world/_components/Info/Place/Armory'
 import Bank from '@/app/(game)/world/_components/Info/Place/Bank'
+import Enemy from '@/app/(game)/world/_components/Action/Enemy'
 
 export default function Info() {
   const commonShowQuery = useCommonShowQuery()
@@ -33,14 +34,19 @@ export default function Info() {
             }}
           />
         </Card>
-        <Image
-          priority
-          src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id.toLowerCase()}.png`}
-          alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
-          width={500}
-          height={500}
-          className='ml-auto mr-auto mt-auto'
-        />
+        <div className='relative flex w-full flex-1'>
+          <Card className='w-fit justify-end'>
+            <Enemy />
+          </Card>
+          <Image
+            priority
+            src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id.toLowerCase()}.png`}
+            alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
+            width={500}
+            height={500}
+            className='absolute bottom-[-5%] left-[55%] -translate-x-1/2'
+          />
+        </div>
       </>
     )
 
@@ -103,7 +109,7 @@ export default function Info() {
             dangerouslySetInnerHTML={{
               __html: gameShowInfoQuery.data?.place?.text?.description ?? 'place_description',
             }}
-            small
+            size='small'
             italic
           />
         </div>

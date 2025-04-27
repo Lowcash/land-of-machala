@@ -51,7 +51,7 @@ export default function Armory({ armoryId }: Props) {
         <Text dangerouslySetInnerHTML={{ __html: armoryShowQuery.data?.text.header ?? 'armory_header' }} />
         <Text
           dangerouslySetInnerHTML={{ __html: armoryShowQuery.data?.text.description ?? 'armory_description' }}
-          small
+          size='small'
           italic
         />
       </div>
