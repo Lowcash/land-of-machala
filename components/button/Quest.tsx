@@ -11,8 +11,8 @@ export default function Quest() {
   const { navigate } = useNavigate()
 
   return (
-    <Button onClick={() => navigate(ROUTE.QUEST)} variant='secondary' size='icon'>
-      <RxListBullet />
+    <Button size='icon' onClick={() => navigate(ROUTE.QUEST)}>
+      <RxListBullet className='h-[1.2rem] w-[1.2rem] transition-all' />
     </Button>
   )
 }

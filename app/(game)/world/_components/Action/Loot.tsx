@@ -2,7 +2,6 @@
 
 import { useGameShowInfoQuery, useGameLootMutation } from '@/hooks/api/use-game'
 
-import * as S from './styles'
 import { Button } from '@/components/ui/button'
 
 export default function Loot() {
@@ -13,10 +12,10 @@ export default function Loot() {
   const handleLoot = () => lootMutation.mutate()
 
   return (
-    <S.Action>
+    <div className='flex justify-between'>
       <Button variant='destructive' onClick={handleLoot}>
         {gameShowInfoQuery.data?.loot?.text?.loot ?? 'game_loot'}
       </Button>
-    </S.Action>
+    </div>
   )
 }

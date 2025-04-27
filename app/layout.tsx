@@ -1,5 +1,5 @@
 import '@/styles/globals.css'
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import type { Metadata } from 'next'
 import { cn } from '@/lib/utils'
 import { MedievalSharp } from 'next/font/google'
@@ -22,16 +22,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='cs' suppressHydrationWarning>
       <head />
-      <body
-        className={cn(
-          'flex h-screen w-screen flex-col bg-background bg-cover font-sans antialiased',
-          medieval.variable
-        )}
-      >
+      <body className={cn('bg-background bg-cover font-sans antialiased', medieval.variable)}>
         <SpeedInsights />
-        
+
         <QueryProvider>
           <ThemeProvider
             attribute='class'

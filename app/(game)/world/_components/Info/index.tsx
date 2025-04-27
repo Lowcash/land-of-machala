@@ -14,14 +14,14 @@ import { Button } from '@/components/ui/button'
 import Hospital from '@/app/(game)/world/_components/Info/Place/Hospital'
 import Armory from '@/app/(game)/world/_components/Info/Place/Armory'
 import Bank from '@/app/(game)/world/_components/Info/Place/Bank'
+import Enemy from '@/app/(game)/world/_components/Action/Enemy'
 
 export default function Info() {
   const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
 
-  const { selectedSubplace, setSelectedSubplace } = useSetPlace(
-    gameShowInfoQuery.data?.place?.id ?? 'road',
-    gameShowInfoQuery.derived.hasDefeated ? 'hospital' : undefined,
+  const { selectedPlace, setSelectedPlace } = useSetPlace(
+    gameShowInfoQuery.derived.hasDefeated ? 'hospital' : (gameShowInfoQuery.data?.place?.id ?? 'road'),
   )
 
   if (gameShowInfoQuery.derived.hasCombat)
@@ -34,14 +34,19 @@ export default function Info() {
             }}
           />
         </Card>
-        <Image
-          priority
-          src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id.toLowerCase()}.png`}
-          alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
-          width={500}
-          height={500}
-          className='ml-auto mr-auto mt-auto'
-        />
+        <div className='relative flex w-full flex-1'>
+          <Card className='w-fit justify-end'>
+            <Enemy />
+          </Card>
+          <Image
+            priority
+            src={`/images/enemies/${gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id.toLowerCase()}.png`}
+            alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
+            width={500}
+            height={500}
+            className='absolute bottom-[-5%] left-[55%] -translate-x-1/2'
+          />
+        </div>
       </>
     )
 
@@ -69,7 +74,7 @@ export default function Info() {
   }
 
   if (gameShowInfoQuery.derived.hasPlace) {
-    if (!!selectedSubplace) {
+    if (selectedPlace === 'hospital' || selectedPlace === 'armory' || selectedPlace === 'bank') {
       const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
       const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
       const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
@@ -83,14 +88,15 @@ export default function Info() {
               }}
             />
           ) : (
-            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedSubplace(undefined)}>
+            // TODO "main_city" is tempoprary solution
+            <Button variant='warning' size={'shrink-sm'} onClick={() => setSelectedPlace('main_city')}>
               {commonShowQuery.data?.text.cityBack ?? 'city_back'}
             </Button>
           )}
 
-          {selectedSubplace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
-          {selectedSubplace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
-          {selectedSubplace === 'bank' && !!bank && <Bank bankId={bank.id} />}
+          {selectedPlace === 'hospital' && !!hospital && <Hospital hospitalId={hospital.id} />}
+          {selectedPlace === 'armory' && !!armory && <Armory armoryId={armory.id} />}
+          {selectedPlace === 'bank' && !!bank && <Bank bankId={bank.id} />}
         </Card>
       )
     }
@@ -103,7 +109,7 @@ export default function Info() {
             dangerouslySetInnerHTML={{
               __html: gameShowInfoQuery.data?.place?.text?.description ?? 'place_description',
             }}
-            small
+            size='small'
             italic
           />
         </div>
@@ -112,7 +118,7 @@ export default function Info() {
           <List>
             {gameShowInfoQuery.data?.place?.subplaces?.map((x) => (
               <li key={`SubPlace_${x.type}`}>
-                <Link onClick={() => setSelectedSubplace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
+                <Link onClick={() => setSelectedPlace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
               </li>
             ))}
           </List>
@@ -128,12 +134,12 @@ export default function Info() {
   )
 }
 
-function useSetPlace(place?: Location, forceSubplace?: Location) {
-  const [selectedSubplace, setSelectedSubplace] = React.useState<Location | undefined>(forceSubplace)
+function useSetPlace(place?: Location) {
+  const [selectedPlace, setSelectedPlace] = React.useState<Location>()
 
-  useSetLocationBackgroundEffect(selectedSubplace ?? place)
+  useSetLocationBackgroundEffect(selectedPlace)
 
-  React.useEffect(() => forceSubplace && setSelectedSubplace(forceSubplace), [forceSubplace])
+  React.useEffect(() => setSelectedPlace(place), [place])
 
-  return { selectedSubplace, setSelectedSubplace }
+  return { selectedPlace, setSelectedPlace }
 }
