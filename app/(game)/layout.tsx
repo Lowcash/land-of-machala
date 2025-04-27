@@ -1,8 +1,6 @@
 import { GameProvider } from '@/context/game-provider'
-import { Content, Main } from '@/styles/common'
+import { Main } from '@/styles/common'
 import Hydration from '@/app/(game)/_hydration'
-import SidebarLeft from '@/components/layout/Sidebar/Left'
-import SidebarRight from '@/components/layout/Sidebar/Right'
 import Footer from '@/components/layout/Footer'
 import Header from '@/components/layout/Header'
 
@@ -11,11 +9,7 @@ export default function Layout(p: Readonly<React.PropsWithChildren>) {
     <Hydration>
       <GameProvider>
         <Header />
-        <Main>
-          <SidebarLeft />
-          <Content>{p.children}</Content>
-          <SidebarRight />
-        </Main>
+        <Main layout='spaced'>{p.children}</Main>
         <Footer />
       </GameProvider>
     </Hydration>

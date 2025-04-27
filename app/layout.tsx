@@ -22,7 +22,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <html lang='en' suppressHydrationWarning>
+    <html lang='cs' suppressHydrationWarning>
       <head />
       <body className={cn('bg-background bg-cover font-sans antialiased', medieval.variable)}>
         <SpeedInsights />

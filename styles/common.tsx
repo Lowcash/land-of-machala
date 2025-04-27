@@ -1,17 +1,15 @@
 import { cn } from '@/lib/utils'
 
-export const Main = (p: React.HTMLAttributes<HTMLElement>) => (
+export const Main = (p: React.HTMLAttributes<HTMLElement> & { layout: 'center' | 'spaced' }) => (
   <main
     {...p}
     className={cn(
-      'flex h-[calc(100vh-36px-36px)] w-screen items-center justify-center overflow-hidden px-[16rem]',
+      'container mx-auto flex w-screen flex-col items-center justify-center gap-4 overflow-hidden p-2',
+      p.layout === 'center' ? 'justify-center' : 'justify-between',
+      p.layout === 'center' ? 'h-screen' : 'h-[calc(100vh-80px-64px)]', // TODO just temporary - simulates diff between landing a game layout
       p.className,
     )}
   />
-)
-
-export const Content = (p: React.HTMLAttributes<HTMLElement>) => (
-  <section {...p} className={cn('flex h-full w-full flex-col justify-start gap-4 p-4', p.className)} />
 )
 
 export const List = (p: React.HTMLAttributes<HTMLUListElement>) => (
@@ -22,7 +20,7 @@ export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     {...p}
     className={cn(
-      'flex flex-col gap-4 overflow-hidden rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
+      'flex w-full flex-col gap-4 overflow-hidden rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
       p.className,
     )}
   />

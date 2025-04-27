@@ -85,7 +85,7 @@ export default function Bank({ bankId }: Props) {
         <Text dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.header ?? 'bank_header' }} />
         <Text
           dangerouslySetInnerHTML={{ __html: bankShowQuery.data?.text.description ?? 'bank_description' }}
-          small
+          size='small'
           italic
         />
       </div>

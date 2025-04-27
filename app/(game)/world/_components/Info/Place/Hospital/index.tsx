@@ -64,7 +64,7 @@ export default function Hospital({ hospitalId }: Props) {
         <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? 'hospital_header' }} />
         <Text
           dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? 'hospital_description' }}
-          small
+          size='small'
           italic
         />
       </div>

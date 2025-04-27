@@ -4,7 +4,7 @@ import { Main } from '@/styles/common'
 export default async function Layout(p: Readonly<React.PropsWithChildren>) {
   return (
     <Hydration>
-      <Main>{p.children}</Main>
+      <Main layout='center'>{p.children}</Main>
     </Hydration>
   )
 }
