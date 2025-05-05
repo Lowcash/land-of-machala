@@ -1,17 +1,19 @@
-'use client'
-
-import { usePlayerShowQuery } from '@/hooks/api/use-player'
-
-import Quest from '@/components/button/Quest'
-import Inventory from '@/components/button/Inventory'
+import { H3 } from '@/styles/typography'
 import SignOut from '@/components/button/SignOut'
+import Coords from '@/components/Coords'
 
 export default function Header() {
-  const playerShowQuery = usePlayerShowQuery()
-
   return (
-    <header className='z-40 flex h-16 w-screen flex-col gap-0.5 bg-custom-yellow-2'>
-      <div className='container mx-auto flex justify-between'>
+    <header className='h-12 w-full bg-custom-yellow-2'>
+      <div className='container mx-auto flex items-center justify-between p-2'>
+        <div>
+          <H3>Land of Machala</H3>
+        </div>
+        <div className='flex items-center gap-2'>
+          <Coords />
+          <SignOut />
+        </div>
+        {/* <div className='container mx-auto flex justify-between'>
         <div className='flex w-fit items-center gap-1 px-2'>
           <span className='max-w-32 overflow-hidden text-ellipsis whitespace-nowrap'>
             {playerShowQuery.data?.name ?? 'player_name'}
@@ -41,6 +43,7 @@ export default function Header() {
           <span>🎖️ {playerShowQuery.data?.level ?? 'player_level'}</span>
           <span>💰 {new Intl.NumberFormat('cs-CZ').format(playerShowQuery.data?.money ?? 0)}</span>
         </div>
+      </div> */}
       </div>
     </header>
   )

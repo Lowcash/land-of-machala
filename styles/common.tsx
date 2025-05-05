@@ -17,13 +17,7 @@ export const List = (p: React.HTMLAttributes<HTMLUListElement>) => (
 )
 
 export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    {...p}
-    className={cn(
-      'flex w-full flex-col gap-4 rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
-      p.className,
-    )}
-  />
+  <div {...p} className={cn('flex flex-col rounded-md border-2 bg-custom-gold-1 p-2 shadow-side', p.className)} />
 )
 
 Card.Inner = (p: React.HTMLAttributes<HTMLDivElement>) => (

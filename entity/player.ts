@@ -56,6 +56,9 @@ export async function get(id: string) {
     hasSafePlace:
       !hasCombat(player) &&
       (await PlaceEntity.get({ posX: player.pos_x, posY: player.pos_y }))?.type == PlaceType.SAFEHOUSE,
+      text: {
+        level: `${player.level} ${i18n.t('stats.level_abbr')}`
+      }
   }
 }
 

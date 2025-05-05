@@ -12,7 +12,7 @@ export default function Quest() {
 
   return (
     <Button size='icon' onClick={() => navigate(ROUTE.QUEST)}>
-      <RxListBullet className='h-[1.2rem] w-[1.2rem] transition-all' />
+      <RxListBullet className='h-[1.2rem] w-[1.2rem]' />
     </Button>
   )
 }
