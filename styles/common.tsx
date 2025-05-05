@@ -20,7 +20,7 @@ export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     {...p}
     className={cn(
-      'flex w-full flex-col gap-4 overflow-hidden rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
+      'flex w-full flex-col gap-4 rounded-md border-2 bg-custom-gold-1 p-4 shadow-side',
       p.className,
     )}
   />

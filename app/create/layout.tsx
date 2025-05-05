@@ -1,11 +1,15 @@
+import PageBodyTransition from '@/components/PageTransition'
 import Hydration from '@/app/create/_hydration'
 import Header from '@/components/layout/Header'
+import { Main } from '@/styles/common'
 
-export default function Layout(p: Readonly<React.PropsWithChildren>) {
+export default function Layout(p: Readonly<React.PropsWithChildren<{ pageKey: string }>>) {
   return (
     <Hydration>
-      <Header />
-      {p.children}
+      <PageBodyTransition pageKey={p.pageKey}>
+        <Header />
+        <Main layout='center'>{p.children}</Main>
+      </PageBodyTransition>
     </Hydration>
   )
 }

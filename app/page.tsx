@@ -12,55 +12,48 @@ import WorldPage from '@/app/(game)/world/page'
 import QuestPage from '@/app/(game)/quest/page'
 import InventoryLayout from '@/app/(game)/inventory/layout'
 import InventoryPage from '@/app/(game)/inventory/page'
-import PageBodyTransition from '@/components/PageTransition'
 
 export default async function Home() {
-  let pageContent = null
-  let pageKey = ''
-
-  if (!(await UserAction.isSigned())?.data) {
-    pageContent = (
-      <LandingLayout>
+  if (!(await UserAction.isSigned())?.data)
+    return (
+      <LandingLayout pageKey='landing'>
         <LandingPage />
       </LandingLayout>
     )
-    pageKey = 'landing'
-  } else if (!(await PlayerAction.show())?.data) {
-    pageContent = (
-      <CreateLayout>
+
+  if (!(await PlayerAction.show())?.data)
+    return (
+      <CreateLayout pageKey='create'>
         <CreatePage />
       </CreateLayout>
     )
-    pageKey = 'create'
-  } else {
-    const page = await getPage()
-    if (page === 'WORLD') {
-      pageContent = (
-        <GameLayout>
+
+  const page = await getPage()
+
+  switch (page) {
+    case 'WORLD':
+      return (
+        <GameLayout pageKey='world'>
           <WorldLayout>
             <WorldPage />
           </WorldLayout>
         </GameLayout>
       )
-      pageKey = 'world'
-    } else if (page === 'QUEST') {
-      pageContent = (
-        <GameLayout>
+    case 'QUEST':
+      return (
+        <GameLayout pageKey='quest'>
           <QuestPage />
         </GameLayout>
       )
-      pageKey = 'quest'
-    } else if (page === 'INVENTORY') {
-      pageContent = (
-        <GameLayout>
+    case 'INVENTORY':
+      return (
+        <GameLayout pageKey='inventory'>
           <InventoryLayout>
             <InventoryPage />
           </InventoryLayout>
         </GameLayout>
       )
-      pageKey = 'inventory'
-    }
+    default:
+      return <></>
   }
-
-  return <PageBodyTransition pageKey={pageKey}>{pageContent}</PageBodyTransition>
 }

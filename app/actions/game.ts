@@ -72,7 +72,8 @@ export const showInfo = cache(
 export const attack = playerActionClient.metadata({ actionName: 'game_attack' }).action(async ({ ctx }) => {
   if (!PlayerEntity.hasCombat(ctx.player)) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-  const damageFromPlayer = random(ctx.player.damage_min, ctx.player.damage_max)
+  // const damageFromPlayer = random(ctx.player.damage_min, ctx.player.damage_max)
+  const damageFromPlayer = 1000
   const damageFromEnemy = random(ctx.player.enemy_instance.enemy.damage_from, ctx.player.enemy_instance.enemy.damage_to)
 
   const actualPlayerHP = ctx.player.hp_actual - damageFromEnemy

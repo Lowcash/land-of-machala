@@ -4,6 +4,7 @@ import React from 'react'
 import type { Location } from '@/types'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
+import { usePlayerMoveMutation } from '@/hooks/api/use-player'
 import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 
 import Image from 'next/image'
@@ -20,9 +21,13 @@ export default function Info() {
   const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
 
+  const playerMoveMutation = usePlayerMoveMutation()
+
   const { selectedPlace, setSelectedPlace } = useSetPlace(
     gameShowInfoQuery.derived.hasDefeated ? 'hospital' : (gameShowInfoQuery.data?.place?.id ?? 'road'),
   )
+
+  const handleLeavePlace = () => playerMoveMutation.mutate({ direction: 'up' })
 
   if (gameShowInfoQuery.derived.hasCombat)
     return (
@@ -35,7 +40,7 @@ export default function Info() {
           />
         </Card>
         <div className='relative flex w-full flex-1'>
-          <Card className='w-fit justify-end'>
+          <Card className='z-40 w-fit justify-end'>
             <Enemy />
           </Card>
           <Image
@@ -44,7 +49,7 @@ export default function Info() {
             alt={gameShowInfoQuery.data?.combat?.enemyInstance?.enemy.id ?? 'enemy'}
             width={500}
             height={500}
-            className='absolute bottom-[-5%] left-[55%] -translate-x-1/2'
+            className='absolute bottom-[-0%] left-[65%] h-[100%] min-h-[55vh] w-max max-w-none -translate-x-1/2'
           />
         </div>
       </>
@@ -121,6 +126,9 @@ export default function Info() {
                 <Link onClick={() => setSelectedPlace(x.type as Location)}>{x.place?.name ?? 'subplace_name'}</Link>
               </li>
             ))}
+            <li>
+              <Link onClick={handleLeavePlace}>Odejít z města</Link>
+            </li>
           </List>
         )}
       </Card>

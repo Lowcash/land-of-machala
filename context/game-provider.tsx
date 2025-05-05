@@ -16,8 +16,9 @@ export function GameProvider({ children }: React.PropsWithChildren) {
   const [background, setBackground] = React.useState<string>()
 
   React.useEffect(() => {
-    document.body.style.backgroundImage = background ? `url(${background})` : 'unset'
-    document.body.style.backgroundPosition = 'center'
+    document.getElementsByTagName('main')[0].style.backgroundImage = background ? `url(${background})` : 'unset'
+    document.getElementsByTagName('main')[0].style.backgroundPosition = 'center'
+    document.getElementsByTagName('main')[0].style.backgroundSize = 'cover'
   }, [background])
 
   return (
