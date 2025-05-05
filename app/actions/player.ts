@@ -17,10 +17,10 @@ import { BASE_HP_ACTUAL, BASE_HP_MAX, BASE_XP_ACTUAL, BASE_XP_MAX, ERROR_CAUSE }
 export const show = playerActionClient.metadata({ actionName: 'player_show' }).action(async ({ ctx }) => ({
   ...ctx.player,
   text: {
+    ...ctx.player.text,
     character: i18n.t('character.header'),
     race: i18n.t('race.header'),
     class: i18n.t('class.header'),
-    level: i18n.t('stats.level'),
     money: i18n.t('common.money'),
     currency: i18n.t('common.currency'),
     hp: i18n.t('common.hp'),
@@ -71,6 +71,7 @@ export const create = authActionClient
         strength: stats.strength,
         agility: stats.agility,
         intelligence: stats.intelligence,
+        armor: stats.armor,
         damage_min: stats.damage.min,
         damage_max: stats.damage.max,
       },

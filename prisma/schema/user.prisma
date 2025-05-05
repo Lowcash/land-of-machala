@@ -19,6 +19,7 @@ model User {
   level        Int @default(1)
   damage_min   Int @default(0)
   damage_max   Int @default(0)
+  armor        Int @default(0)
   strength     Int @default(0)
   agility      Int @default(0)
   intelligence Int @default(0)

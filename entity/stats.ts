@@ -38,9 +38,10 @@ export async function get(player: PlayerEntity.PlayerEntity, wearable: WearableE
   const agility = getAgility({ character, armors })
   const intelligence = getIntelligence({ character, armors })
 
+  const armor = getArmor({ character, armors })
   const damage = getDamage({ strength, agility, intelligence, weapons })
 
-  return { damage, strength, agility, intelligence }
+  return { armor, damage, strength, agility, intelligence }
 }
 
 type Character = {
@@ -128,4 +129,15 @@ function getDamage({ strength, agility, intelligence, weapons }: WeaponStatsCont
     min: BASE_MIN_DAMAGE + statsDamage + (weapons.leftHand?.damage_from ?? 0) + (weapons.rightHand?.damage_from ?? 0),
     max: BASE_MAX_DAMAGE + statsDamage + (weapons.leftHand?.damage_to ?? 0) + (weapons.rightHand?.damage_to ?? 0),
   }
+}
+
+function getArmor({ armors }: ArmorStatsContributor) {
+  return (
+    (armors.head?.armor ?? 0) +
+    (armors.shoulder?.armor ?? 0) +
+    (armors.chest?.armor ?? 0) +
+    (armors.hand?.armor ?? 0) +
+    (armors.pants?.armor ?? 0) +
+    (armors.boots?.armor ?? 0)
+  )
 }

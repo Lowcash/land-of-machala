@@ -37,6 +37,7 @@
   "stats": {
     "header": "Staty",
     "level": "Level",
+    "level_abbr": "lvl",
     "damage": "Poškození",
     "strength": "Síla",
     "agility": "Obratnost",
