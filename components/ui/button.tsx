@@ -10,11 +10,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'hover:bg-yellow-500/20',
-        success: 'bg-success text-success-foreground shadow-sm hover:bg-success/70',
-        warning: 'bg-warning text-warning-foreground shadow-sm hover:bg-warning/70',
-        destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/70',
-        info: 'bg-info text-info-foreground shadow-sm hover:bg-info/70',
-        secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/70',
+        success: 'hover:bg-success/70 bg-success text-success-foreground',
+        warning: 'hover:bg-warning/70 bg-warning text-warning-foreground',
+        destructive: 'hover:bg-destructive/70 bg-destructive text-destructive-foreground',
+        info: 'hover:bg-info/70 bg-info text-info-foreground',
+        secondary: 'hover:bg-secondary/70 bg-secondary text-secondary-foreground',
       },
       size: {
         default: 'h-9 px-4 py-2',
