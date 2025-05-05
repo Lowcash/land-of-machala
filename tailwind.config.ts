@@ -3,64 +3,64 @@ import { fontFamily } from 'tailwindcss/defaultTheme'
 
 export default {
   darkMode: ['class'],
-  content: [  
-    './components/**/*.{js,ts,jsx,tsx,mdx}',  
-    './styles/**/*.{js,ts,jsx,tsx,mdx}',  
-    './app/**/*.{js,ts,jsx,tsx,mdx}',  
-  ],  
+  content: [
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './styles/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     extend: {
       colors: {
-        background: 'var(--background)',
-        foreground: 'var(--foreground)',
+        background: 'hsl(var(--background))',
+        foreground: 'hsla(var(--foreground))',
         scrollbar: {
-          DEFAULT: 'var(--scrollbar-thumb)',
-          track: 'var(--scrollbar-track)',
+          DEFAULT: 'hsl(var(--scrollbar-thumb))',
+          track: 'hsl(var(--scrollbar-track))',
         },
         primary: {
-          DEFAULT: 'var(--primary)',
-          foreground: 'var(--primary-foreground)',
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: 'var(--secondary)',
-          foreground: 'var(--secondary-foreground)',
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
         },
         destructive: {
-          DEFAULT: 'var(--destructive)',
-          foreground: 'var(--destructive-foreground)',
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
         warning: {
-          DEFAULT: 'var(--warning)',
-          foreground: 'var(--warning-foreground)',
+          DEFAULT: 'hsl(var(--warning))',
+          foreground: 'hsl(var(--warning-foreground))',
         },
         success: {
-          DEFAULT: 'var(--success)',
-          foreground: 'var(--success-foreground)',
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
         },
         info: {
-          DEFAULT: 'var(--info)',
-          foreground: 'var(--info-foreground)',
+          DEFAULT: 'hsl(var(--info))',
+          foreground: 'hsl(var(--info-foreground))',
         },
         muted: {
-          DEFAULT: 'var(--muted)',
-          foreground: 'var(--muted-foreground)',
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
         accent: {
-          DEFAULT: 'var(--accent)',
-          foreground: 'var(--accent-foreground)',
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
         },
         popover: {
-          DEFAULT: 'var(--popover)',
-          foreground: 'var(--popover-foreground)',
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
         card: {
-          DEFAULT: 'var(--card)',
-          foreground: 'var(--card-foreground)',
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
-        ['custom-yellow-1']: 'var(--custom-yellow-1)',
-        ['custom-yellow-2']: 'var(--custom-yellow-2)',
-        ['custom-gold-1']: 'var(--custom-gold-1)',
-        ['custom-gold-2']: 'var(--custom-gold-2)',
+        ['custom-yellow-1']: 'hsl(var(--custom-yellow-1))',
+        ['custom-yellow-2']: 'hsl(var(--custom-yellow-2))',
+        ['custom-gold-1']: 'hsl(var(--custom-gold-1))',
+        ['custom-gold-2']: 'hsl(var(--custom-gold-2))',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
