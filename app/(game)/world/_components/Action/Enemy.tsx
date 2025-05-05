@@ -14,7 +14,7 @@ export default function Enemy() {
   const handleRunAway = () => runAwayMutation.mutate()
 
   return (
-    <div className='flex justify-center gap-4'>
+    <div className='flex flex-col justify-center gap-4'>
       <Button variant='destructive' onClick={handleAttack}>
         {gameShowInfoQuery.data?.combat?.text?.attack ?? 'game_attack'}
       </Button>

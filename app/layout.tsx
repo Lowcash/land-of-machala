@@ -24,7 +24,7 @@ export default function RootLayout({ children }: Readonly<React.PropsWithChildre
   return (
     <html lang='cs' suppressHydrationWarning>
       <head />
-      <body className={cn('bg-background bg-cover font-sans antialiased', medieval.variable)}>
+      <body className={cn('font-sans antialiased', medieval.variable)}>
         <SpeedInsights />
 
         <QueryProvider>
