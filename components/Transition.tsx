@@ -6,7 +6,7 @@ interface Props {
   pageKey: string
 }
 
-export default function PageBodyTransition({ children, ...p }: React.PropsWithChildren<Props>) {
+export default function Transition({ children, ...p }: React.PropsWithChildren<Props>) {
   return (
     <AnimatePresence mode='wait'>
       <motion.div

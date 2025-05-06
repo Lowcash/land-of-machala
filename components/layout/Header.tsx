@@ -1,6 +1,6 @@
 import { H3 } from '@/styles/typography'
 import SignOut from '@/components/button/SignOut'
-import Coords from '@/components/Coords'
+import Coords from '@/components/app/Coords'
 
 export default function Header() {
   return (

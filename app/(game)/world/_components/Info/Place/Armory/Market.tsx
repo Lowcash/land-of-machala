@@ -4,7 +4,7 @@ import { useArmoryShowQuery, type ArmoryItem } from '@/hooks/api/use-armory'
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
-import Table from '@/components/table'
+import Table from '@/components/Table'
 
 type Action = 'buy' | 'sell'
 

@@ -2,7 +2,7 @@
 
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
-import Table from '@/components/table'
+import Table from '@/components/Table'
 import Drink from '@/app/(game)/inventory/_components/Drink'
 
 export default function Potions() {

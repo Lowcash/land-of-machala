@@ -1,4 +1,4 @@
-import PageBodyTransition from '@/components/PageTransition'
+import Transition from '@/components/Transition'
 import { GameProvider } from '@/context/game-provider'
 import { Main } from '@/styles/common'
 import Hydration from '@/app/(game)/_hydration'
@@ -12,9 +12,9 @@ export default function Layout(p: Readonly<React.PropsWithChildren<{ pageKey: st
       <GameProvider>
         <Header />
         <Hero />
-        <PageBodyTransition pageKey={p.pageKey}>
+        <Transition pageKey={p.pageKey}>
           <Main layout='spaced'>{p.children}</Main>
-        </PageBodyTransition>
+        </Transition>
         <Footer />
       </GameProvider>
     </Hydration>

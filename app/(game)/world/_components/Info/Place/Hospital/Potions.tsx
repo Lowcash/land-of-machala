@@ -6,7 +6,7 @@ import { useHospitalShowQuery, type HospitalPotion } from '@/hooks/api/use-hospi
 import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
-import Table from '@/components/table'
+import Table from '@/components/Table'
 
 interface Props {
   hospitalId: string
