@@ -46,7 +46,7 @@ export default function Character(p: Props) {
     !!p.abilities?.damage
 
   return (
-    <Card className='h-full w-1/2 min-w-40 gap-2 sm:w-fit sm:min-w-80'>
+    <Card className='h-full w-1/2 min-w-40 gap-4 sm:w-fit sm:min-w-80'>
       <div className='flex flex-col gap-1'>
         <Text className='flex flex-col sm:flex-row sm:items-baseline sm:gap-1'>
           <b className='text-sm sm:text-base'>
@@ -73,6 +73,11 @@ export default function Character(p: Props) {
             <>&nbsp;</>
           )}
         </Text>
+        {p.progress?.xp && (
+          <Progress value={p.progress.xp.actual} max={p.progress.xp.max} variant='gold'>
+            XP {p.progress.xp.actual} / {p.progress.xp.max}
+          </Progress>
+        )}
       </div>
 
       <div className='flex flex-col gap-0.5'>
@@ -87,11 +92,6 @@ export default function Character(p: Props) {
           </Progress>
         )}
       </div>
-      {p.progress?.xp && (
-        <Progress value={p.progress.xp.actual} max={p.progress.xp.max} variant='gold'>
-          XP {p.progress.xp.actual} / {p.progress.xp.max}
-        </Progress>
-      )}
     </Card>
   )
 }
