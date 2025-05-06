@@ -2,7 +2,7 @@
 
 import { usePlayerShowQuery } from '@/hooks/api/use-player'
 
-import Character from '@/components/Character'
+import Character from '@/components/app/Character'
 
 export default function Hero() {
   const playerShowQuery = usePlayerShowQuery()

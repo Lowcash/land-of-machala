@@ -7,7 +7,7 @@ import { useQuestShowAssignedQuery } from '@/hooks/api/use-quest'
 import { RxCheck, RxCross1 } from 'react-icons/rx'
 import { Card } from '@/styles/common'
 import { H3 } from '@/styles/typography'
-import Table from '@/components/table'
+import Table from '@/components/Table'
 import Back from '@/app/(game)/world/_components/Back'
 
 export default function Page() {

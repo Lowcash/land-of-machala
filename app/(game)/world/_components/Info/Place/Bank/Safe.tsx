@@ -4,7 +4,7 @@ import { useInventoryShowQuery, type InventoryItem } from '@/hooks/api/use-inven
 
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
-import Table from '@/components/table'
+import Table from '@/components/Table'
 
 type Action = 'deposit' | 'withdraw'
 

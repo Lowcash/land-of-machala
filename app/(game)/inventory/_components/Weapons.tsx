@@ -2,7 +2,7 @@
 
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
-import Table from '@/components/table'
+import Table from '@/components/Table'
 import Wear from '@/app/(game)/inventory/_components/Wear'
 import Unwear from '@/app/(game)/inventory/_components/Unwear'
 
