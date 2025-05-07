@@ -32,7 +32,7 @@ export default function Action() {
           </Card>
         </>
       )}
-      <Card className='relative'>
+      {/* <Card className='relative'>
         <div className='absolute left-2/4 top-2/4 flex w-fit -translate-x-1/2 -translate-y-1/2 items-center gap-1'>
           <span>
             <Text bold size='large'>
@@ -51,7 +51,7 @@ export default function Action() {
             </Text>
           </span>
         </div>
-      </Card>
+      </Card> */}
       {/* )} */}
     </div>
   )

@@ -14,6 +14,7 @@ export const show = actionClient.metadata({ actionName: 'common_show' }).action(
       worldExplore: i18n.t('common.world_explore'),
       worldBack: i18n.t('common.world_back'),
       cityBack: i18n.t('common.city_back'),
+      cityLeave: i18n.t('common.city_leave'),
       buy: i18n.t('action.buy'),
       sell: i18n.t('action.sell'),
       deposit: i18n.t('place.bank.deposit'),

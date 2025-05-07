@@ -7,7 +7,7 @@ export const H2 = (p: React.HTMLAttributes<HTMLHeadingElement>) => (
   <h2 {...p} className={cn('text-2xl font-bold', p.className)} />
 )
 export const H3 = (p: React.HTMLAttributes<HTMLHeadingElement>) => (
-  <h3 {...p} className={cn('text-xl font-bold', p.className)} />
+  <h3 {...p} className={cn('text-xl/8 font-bold', p.className)} />
 )
 
 interface TextProps {
