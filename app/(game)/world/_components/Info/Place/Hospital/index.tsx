@@ -8,24 +8,40 @@ import {
   useHospitalAcceptEnemySlainQuestMutation,
   useHospitalCompleteEnemySlainQuestMutation,
   useHospitalBuyPotionMutation,
-  type HospitalPotion,
 } from '@/hooks/api/use-hospital'
+import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
-import { H3, Text } from '@/styles/typography'
-import { Card } from '@/styles/common'
-import { Button } from '@/components/ui/button'
 import Alert from '@/components/Alert'
-import Potions from './Potions'
 import Loading from '@/components/Loading'
+import Info from '@/components/app/Info'
+import Decision, { type DecisionItem, type DecisionSelectedEvent } from '@/components/app/Decision'
+import Potions, { type BuyPotionEvent, type PotionsLeaveEvent } from '@/components/app/Potions'
+
+const SUBPLACE = {
+  POTION: 'potion',
+} as const
+
+const DECISION = {
+  ...SUBPLACE,
+  BACK: 'back',
+  HEAL: 'heal',
+  RESURECT: 'resurect',
+  QUEST_ACCEPT: 'quest_accept',
+  QUEST_COMPLETE: 'quest_complete',
+} as const
 
 interface Props {
   hospitalId: string
+
+  onHospitalLeave?: () => void
 }
 
-export default function Hospital({ hospitalId }: Props) {
+export default function Hospital({ hospitalId, ...p }: Props) {
+  const [subplace, setSubplace] = React.useState<(typeof SUBPLACE)[keyof typeof SUBPLACE]>()
   const [message, setMessage] = React.useState<string>()
 
+  const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
   const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 
@@ -48,28 +64,100 @@ export default function Hospital({ hospitalId }: Props) {
     onSuccess: () => setMessage(hospitalShowQuery.data?.text.quest.enemySlain.looted ?? 'hospital_quest_looted'),
   })
 
-  if (gameShowInfoQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
+  const handleDecisionSelected: DecisionSelectedEvent = (decision) => {
+    switch (decision?.key) {
+      case DECISION.BACK:
+        p.onHospitalLeave?.()
+        break
+      case DECISION.HEAL:
+        healMutation.mutate({ hospitalId })
+        break
+      case DECISION.RESURECT:
+        resurectMutation.mutate({ hospitalId })
+        break
+      case DECISION.QUEST_ACCEPT:
+        acceptEnemySlainQuestMutation.mutate()
+        break
+      case DECISION.QUEST_COMPLETE:
+        completeEnemySlainQuestMutation.mutate()
+        break
+      case DECISION.POTION:
+        setSubplace(SUBPLACE.POTION)
+        break
+    }
+  }
 
-  const handleHeal = () => healMutation.mutate({ hospitalId })
-  const handleResurect = () => resurectMutation.mutate({ hospitalId })
-  const handleBuyPotion = (potion: HospitalPotion) =>
+  const handleBuyPotion: BuyPotionEvent = (potion) =>
     buyPotionMutation.mutate({ hospitalId, potionId: potion.potion_id })
 
-  const handleAcceptEnemySlainQuest = () => acceptEnemySlainQuestMutation.mutate()
-  const handleCompleteEnemySlainQuest = () => completeEnemySlainQuestMutation.mutate()
+  const handlePotionsLeave: PotionsLeaveEvent = () => setSubplace(undefined)
+
+  if (subplace === SUBPLACE.POTION)
+    return <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} onPotionsLeave={handlePotionsLeave} />
+
+  if (gameShowInfoQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
   return (
     <>
-      <div className='flex flex-col'>
-        <Text dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.header ?? 'hospital_header' }} />
-        <Text
-          dangerouslySetInnerHTML={{ __html: hospitalShowQuery.data?.text?.description ?? 'hospital_description' }}
-          size='small'
-          italic
-        />
-      </div>
+      <Info
+        header={hospitalShowQuery.data?.text?.header ?? 'hospital_header'}
+        description={[
+          hospitalShowQuery.data?.text?.description ?? 'hospital_description',
+          gameShowInfoQuery.derived.hasDefeated
+            ? (hospitalShowQuery.data?.text?.resurrect.description ?? 'hospital_resurrect_description')
+            : (hospitalShowQuery.data?.text?.heal?.header ?? 'hospital_heal_header'),
+          (!gameShowInfoQuery.derived.hasDefeated &&
+            hospitalShowQuery.data?.slainEnemyQuest.state === 'READY' &&
+            hospitalShowQuery.data?.text.quest.enemySlain.description) ??
+            'hospital_quest_description',
+          (!gameShowInfoQuery.derived.hasDefeated &&
+            hospitalShowQuery.data?.slainEnemyQuest.state === 'COMPLETE' &&
+            hospitalShowQuery.data?.text.quest.enemySlain.completed) ??
+            'hospital_quest_completed',
+        ].filter(Boolean)}
+      />
 
-      {!!gameShowInfoQuery.derived.hasDefeated ? (
+      {message && (
+        <Alert>
+          <div dangerouslySetInnerHTML={{ __html: message }} />
+        </Alert>
+      )}
+
+      <Decision
+        return={{
+          key: DECISION.BACK,
+          text: commonShowQuery.data?.text.cityBack ?? 'hospital_city_back',
+        }}
+        decisions={
+          (
+            [
+              gameShowInfoQuery.derived.hasDefeated && {
+                key: DECISION.RESURECT,
+                text: hospitalShowQuery.data?.text?.resurrect.action ?? 'hospital_resurrect_action',
+              },
+              {
+                key: DECISION.QUEST_ACCEPT,
+                text: hospitalShowQuery.data?.text?.quest?.enemySlain.accept ?? 'hospital_quest_accept',
+              },
+              {
+                key: DECISION.QUEST_COMPLETE,
+                text: hospitalShowQuery.data?.text?.quest?.enemySlain.complete ?? 'hospital_quest_complete',
+              },
+              {
+                key: DECISION.HEAL,
+                text: hospitalShowQuery.data?.text?.heal?.action ?? 'hospital_heal_action',
+              },
+              {
+                key: DECISION.POTION,
+                text: hospitalShowQuery.data?.text?.potion.buy ?? 'hospital_potion',
+              },
+            ] as (DecisionItem | undefined)[]
+          ).filter(Boolean) as DecisionItem[]
+        }
+        onDecisionSelected={handleDecisionSelected}
+      />
+
+      {/* {!!gameShowInfoQuery.derived.hasDefeated ? (
         // player defaeted scenario
         <div className='flex items-center gap-2'>
           <Text
@@ -97,12 +185,6 @@ export default function Hospital({ hospitalId }: Props) {
             </Button>
           </div>
         )
-      )}
-
-      {message && (
-        <Alert>
-          <div dangerouslySetInnerHTML={{ __html: message }} />
-        </Alert>
       )}
 
       {!gameShowInfoQuery.derived.hasDefeated && (
@@ -135,7 +217,7 @@ export default function Hospital({ hospitalId }: Props) {
             <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} />
           </Card.Inner>
         </>
-      )}
+      )} */}
     </>
   )
 }
