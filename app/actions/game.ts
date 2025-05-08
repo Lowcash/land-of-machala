@@ -5,7 +5,9 @@ import { db } from '@/lib/db'
 import { cache } from 'react'
 import { random } from '@/lib/utils'
 import type { Location } from '@/types'
+import { StaticImageData } from 'next/image'
 import { playerActionClient } from '@/lib/safe-action'
+import { backgroundSchema } from '@/zod-schema/place'
 
 import * as PlaceEntity from '@/entity/place'
 import * as PlayerEntity from '@/entity/player'
@@ -13,7 +15,18 @@ import * as GameManager from '@/lib/manager/game'
 import * as RewardManager from '@/lib/manager/reward'
 import * as QuestManager from '@/lib/manager/quest'
 
-import { ERROR_CAUSE } from '@/config'
+import { ERROR_CAUSE, LOCATION } from '@/config'
+
+export const getBackground = playerActionClient
+  .metadata({ actionName: 'game_background' })
+  .schema(backgroundSchema)
+  .action(async ({ parsedInput }) => {
+    const background = (await import(`@/app/assets/${LOCATION[parsedInput.location]}`).then(
+      (x) => x.default,
+    )) as StaticImageData
+
+    return { background }
+  })
 
 export const showInfo = cache(
   playerActionClient.metadata({ actionName: 'game_show_info' }).action(async ({ ctx }) => {

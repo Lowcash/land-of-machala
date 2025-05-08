@@ -17,7 +17,6 @@ const medieval = MedievalSharp({
 export const metadata: Metadata = {
   title: 'Land of Machala',
   description: 'A mystical realm of magic and adventure',
-  icons: [{ rel: 'icon', url: './favicon.ico' }],
 }
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {

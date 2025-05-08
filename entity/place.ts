@@ -3,11 +3,11 @@ import 'server-only'
 import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { type Place } from '@prisma/client'
-import { type PlaceSchema } from '@/zod-schema/place'
+import { type CoordinatesSchema } from '@/zod-schema/place'
 
 export type PlaceEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
-export async function get(p: PlaceSchema) {
+export async function get(p: CoordinatesSchema) {
   const place = await db.place.findFirst({
     where: {
       x_min: { lte: p.posX },
