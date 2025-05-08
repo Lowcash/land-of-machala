@@ -2,35 +2,22 @@
 
 import React from 'react'
 import type { Location } from '@/types'
-
-import { LOCATION } from '@/config'
+import { getBackground } from '@/app/actions/game'
 
 interface GameContext {
-  setBackground: (path?: string) => void
   setLocationBackground: (location?: Location) => void
 }
 
 const GameContext = React.createContext<GameContext | null>(null)
 
 export function GameProvider({ children }: React.PropsWithChildren) {
-  const [background, setBackground] = React.useState<string>()
-
-  React.useEffect(() => {
-    document.body.style.backgroundImage = background ? `url(${background})` : 'unset'
+  const setLocationBackground = async (location?: Location) => {
+    document.body.style.backgroundImage = location ? `url(${(await getBackground({ location }))?.data?.background.src})` : 'unset'
     document.body.style.backgroundPosition = 'center'
     document.body.style.backgroundSize = 'cover'
-  }, [background])
+  }
 
-  return (
-    <GameContext.Provider
-      value={{
-        setBackground,
-        setLocationBackground: (location?: Location) => setBackground(location && LOCATION[location]),
-      }}
-    >
-      {children}
-    </GameContext.Provider>
-  )
+  return <GameContext.Provider value={{ setLocationBackground }}>{children}</GameContext.Provider>
 }
 
 export function useGame() {

@@ -8,23 +8,25 @@ export const QUESTS = [QuestIdent.SLAIN_ENEMY, QuestIdent.SLAIN_TROLL] as const
 export const QUEST_STATE = ['waiting', 'ready', 'progress', 'complete', 'done'] as const
 
 export const LOCATION = {
-  inventory: '/images/environment/inventory.jpg',
-  quest: '/images/environment/quest.jpg',
-  main_city: '/images/environment/city.jpg',
-  hospital: '/images/environment/hospital.jpg',
-  armory: '/images/environment/armory.jpg',
-  bank: '/images/environment/bank.jpg',
-  forest: '/images/environment/forest/2.jpg',
-  forest_clearing: '/images/environment/forest_clearing/0.jpg',
-  cemetery: '/images/environment/cemetery/0.jpg',
-  desert: '/images/environment/desert/0.jpg',
-  farmstead: '/images/environment/farmstead/0.jpg',
-  hills: '/images/environment/hills/0.jpg',
-  road: '/images/environment/road/2.jpg',
-  castle_suburb: '/images/environment/castle_suburb/1.jpg',
-  lake: '/images/environment/lake/0.jpg',
-  swamp: '/images/environment/swamp/0.jpg',
+  inventory: 'images/environment/inventory.jpg',
+  quest: 'images/environment/quest.jpg',
+  main_city: 'images/environment/city.jpg',
+  hospital: 'images/environment/hospital.jpg',
+  armory: 'images/environment/armory.jpg',
+  bank: 'images/environment/bank.jpg',
+  forest: 'images/environment/forest/2.jpg',
+  forest_clearing: 'images/environment/forest_clearing/0.jpg',
+  cemetery: 'images/environment/cemetery/0.jpg',
+  desert: 'images/environment/desert/0.jpg',
+  farmstead: 'images/environment/farmstead/0.jpg',
+  hills: 'images/environment/hills/0.jpg',
+  road: 'images/environment/road/2.jpg',
+  castle_suburb: 'images/environment/castle_suburb/1.jpg',
+  lake: 'images/environment/lake/0.jpg',
+  swamp: 'images/environment/swamp/0.jpg',
 } as const
+
+export const locationKeys = Object.keys(LOCATION) as Array<keyof typeof LOCATION>
 
 export enum ERROR_CAUSE {
   ALREADY_EXISTS = 'ALREADY_EXISTS',
