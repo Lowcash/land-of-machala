@@ -12,9 +12,9 @@ const GameContext = React.createContext<GameContext | null>(null)
 
 export function GameProvider({ children }: React.PropsWithChildren) {
   const setLocationBackground = async (location?: Location) => {
-    document.body.style.backgroundImage = location ? `url(${(await getBackground({ location }))?.data?.background.src})` : 'unset'
-    document.body.style.backgroundPosition = 'center'
-    document.body.style.backgroundSize = 'cover'
+    document.getElementsByTagName('aside')[0].style.backgroundImage = location
+      ? `url(${(await getBackground({ location }))?.data?.background.src})`
+      : 'unset'
   }
 
   return <GameContext.Provider value={{ setLocationBackground }}>{children}</GameContext.Provider>

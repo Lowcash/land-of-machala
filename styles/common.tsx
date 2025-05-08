@@ -1,15 +1,17 @@
 import { cn } from '@/lib/utils'
 
 export const Main = (p: React.HTMLAttributes<HTMLElement> & { layout: 'center' | 'spaced' }) => (
-  <main
-    {...p}
-    className={cn(
-      'container mx-auto flex w-screen flex-col items-center justify-center gap-2 overflow-hidden px-2 pb-24 pt-14 sm:gap-4',
-      p.layout === 'center' ? 'justify-center' : 'justify-between',
-      p.layout === 'center' ? 'h-screen' : 'h-[calc(100vh-48px)]', // TODO just temporary - simulates diff between landing a game layout and header
-      p.className,
-    )}
-  />
+  <>
+    <aside className='fixed top-12 -z-50 h-[calc(100vh-48px-176px)] w-screen bg-cover bg-center bg-no-repeat' />
+    <main
+      {...p}
+      className={cn(
+        'container mx-auto flex w-screen flex-col items-center justify-center gap-2 overflow-hidden px-2 pb-40 pt-14 sm:gap-4',
+        p.layout === 'center' ? 'justify-center' : 'justify-between',
+        p.className,
+      )}
+    />
+  </>
 )
 
 export const Header = ({ children }: React.PropsWithChildren) => (
