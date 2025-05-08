@@ -20,9 +20,9 @@ export const Header = ({ children }: React.PropsWithChildren) => (
   </header>
 )
 
-export const Footer = ({ children }: React.PropsWithChildren) => (
+export const Footer = ({ children }: React.HTMLAttributes<HTMLElement>) => (
   <footer className='fixed bottom-0 h-44 w-full bg-custom-yellow-2'>
-    <div className='container mx-auto grid h-full grid-cols-12 grid-rows-3 items-center justify-center p-2'>
+    <div className='container mx-auto flex h-full w-[23rem] items-center justify-between gap-4 p-2 sm:w-[30rem]'>
       {children}
     </div>
   </footer>
