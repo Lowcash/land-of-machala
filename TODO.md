@@ -1,23 +1,23 @@
 # 📋 Land of Machala - Active Tasks
 
-> **Last Updated:** 2025-11-16 03:22  
-> **Current Sprint:** Performance Optimization + Code Quality
+> **Last Updated:** 2025-11-16 03:42  
+> **Current Sprint:** Code Quality + UX Improvements
 
 ---
 
 ## 🔥 HIGH PRIORITY
 
-### Code Organization
+### ✅ COMPLETED
 
-- [ ] **Split Large Action Files** - Single responsibility
-  - `app/actions/wearable.ts` (225 lines) - Candidate for splitting wear/unwear logic
-  - `app/actions/bank.ts` (225 lines) - Candidate for splitting deposit/withdraw logic
-  - `app/actions/armory.ts` (198 lines) - Review for extraction opportunities
-  - `app/actions/player.ts` (103 lines) - OK for now
-- [ ] **Consolidate Entity Logic** - Reduce manager/entity overlap
-  - Move pure data logic to entities
-  - Keep transactional logic in managers
-  - Document decision matrix in INSIGHTS.md
+- [x] **Code Organization - Large Files Refactored**
+  - `app/actions/bank.ts`: 226 → 217 lines (extracted money/item transaction helpers)
+  - `app/actions/wearable.ts`: 226 → 218 lines (extracted updatePlayerStats helper)
+  - `app/actions/armory.ts`: 198 lines - clean, no refactoring needed
+  - Removed dead code from `components/app/Place.tsx`
+- [x] **Entity Logic Consolidation**
+  - Verified clean separation: entity/ (1102 lines, data fetch) vs lib/manager/ (430 lines, business logic)
+  - No overlap found, architecture is solid
+  - Pattern: entities = "what", managers = "how"
 
 ---
 
@@ -89,6 +89,9 @@
 
 ## 📝 Notes
 
+- **HIGH PRIORITY tasks COMPLETE** ✅ - All code organization and entity consolidation tasks finished (2025-11-16)
+- **Code refactoring COMPLETE** ✅ - bank.ts (-4%), wearable.ts (-3.5%), dead code removed
+- **Entity-Manager pattern validated** ✅ - Clean separation confirmed, no overlap
 - **Code splitting COMPLETE** ✅ - Dynamic imports for Combat, Loot, Place, Explore, Inventory sections
 - **Prisma optimization COMPLETE** ✅ - All queries use include/select properly, all foreign keys indexed
 - **React.memo optimization COMPLETE** ✅ - 5 components memoized (CharacterPlayer, CharacterEnemy, Combat, Decision, Info)
