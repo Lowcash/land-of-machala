@@ -11,6 +11,84 @@ import * as InventoryEntity from '@/entity/inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
+// Helper: Deposit money transaction
+async function depositMoney(bankAccountId: string, userId: string, amount: number, userBalance: number) {
+  await db.$transaction(async (db) => {
+    await db.bankAccount.update({
+      where: { id: bankAccountId },
+      data: { money: { increment: amount } },
+    })
+    await db.user.update({
+      where: { id: userId },
+      data: { money: userBalance - amount },
+    })
+  })
+}
+
+// Helper: Withdraw money transaction
+async function withdrawMoney(bankAccountId: string, userId: string, amount: number, userBalance: number) {
+  await db.$transaction(async (db) => {
+    await db.user.update({
+      where: { id: userId },
+      data: { money: userBalance + amount },
+    })
+    await db.bankAccount.update({
+      where: { id: bankAccountId },
+      data: { money: { decrement: amount } },
+    })
+  })
+}
+
+// Helper: Deposit item transaction (armor/weapon/potion)
+async function depositItemTransaction(
+  bankAccountId: string,
+  itemType: 'armor' | 'weapon' | 'potion',
+  itemId: string,
+  relationId: string,
+) {
+  const tableMap = {
+    armor: { bank: 'armors', inventory: 'armorInInventory', field: 'armor_id' },
+    weapon: { bank: 'weapons', inventory: 'weaponInInventory', field: 'weapon_id' },
+    potion: { bank: 'potions', inventory: 'potionInInventory', field: 'potion_id' },
+  } as const
+
+  const config = tableMap[itemType]
+
+  await db.$transaction(async (db) => {
+    await db.bankAccount.update({
+      where: { id: bankAccountId },
+      data: { [config.bank]: { create: [{ [config.field]: relationId }] } },
+    })
+    // @ts-expect-error - Dynamic Prisma table access
+    await db[config.inventory].delete({ where: { id: itemId } })
+  })
+}
+
+// Helper: Withdraw item transaction (armor/weapon/potion)
+async function withdrawItemTransaction(
+  inventoryId: string,
+  itemType: 'armor' | 'weapon' | 'potion',
+  itemId: string,
+  relationId: string,
+) {
+  const tableMap = {
+    armor: { inventory: 'armors_inventory', bank: 'armorInBank', field: 'armor_id' },
+    weapon: { inventory: 'weapons_inventory', bank: 'weaponInBank', field: 'weapon_id' },
+    potion: { inventory: 'potions_inventory', bank: 'potionInBank', field: 'potion_id' },
+  } as const
+
+  const config = tableMap[itemType]
+
+  await db.$transaction(async (db) => {
+    await db.inventory.update({
+      where: { id: inventoryId },
+      data: { [config.inventory]: { create: [{ [config.field]: relationId }] } },
+    })
+    // @ts-expect-error - Dynamic Prisma table access
+    await db[config.bank].delete({ where: { id: itemId } })
+  })
+}
+
 export const show = playerActionClient
   .metadata({ actionName: 'bank_show' })
   .schema(bankSchema)
@@ -50,84 +128,41 @@ export const depositItem = playerActionClient
   .schema(bankActionSchema)
   .action(async ({ parsedInput, ctx }) => {
     const bankAccount = await BankAccountEntity.get(parsedInput.bankId, ctx.player.id)
-
     if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    if (!!parsedInput.money) {
+    if (parsedInput.money) {
       const balance = ctx.user.money - parsedInput.money
-
       if (balance < 0) throw new Error(ERROR_CAUSE.INSUFFICIENT_FUNDS)
-
-      await db.$transaction(async (db) => {
-        await db.bankAccount.update({
-          where: { id: bankAccount.id },
-          data: { money: bankAccount.money + parsedInput.money! },
-        })
-
-        await db.user.update({
-          where: { id: ctx.user.id },
-          data: { money: balance },
-        })
-      })
+      await depositMoney(bankAccount.id, ctx.user.id, parsedInput.money, ctx.user.money)
     }
 
-    if (!!parsedInput.item) {
+    if (parsedInput.item) {
       const inventory = await InventoryEntity.get(ctx.player.id, ctx.player.inventory_id)
-
       if (!inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-      switch (parsedInput.item.type) {
+      const itemType = parsedInput.item.type
+      // Bank only supports 'weapon', 'armor', 'potion' (not 'left_weapon' or 'right_weapon')
+      if (itemType === 'left_weapon' || itemType === 'right_weapon') {
+        throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+      }
+
+      switch (itemType) {
         case 'armor': {
           const inventoryItem = inventory.armors_inventory.find((x) => x.id === parsedInput.item!.id)
-
           if (!inventoryItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.bankAccount.update({
-              where: { id: bankAccount.id },
-              data: { armors: { create: [{ armor_id: inventoryItem.armor_id }] } },
-            })
-
-            await db.armorInInventory.delete({
-              where: { id: inventoryItem.id },
-            })
-          })
+          await depositItemTransaction(bankAccount.id, 'armor', inventoryItem.id, inventoryItem.armor_id)
           break
         }
         case 'weapon': {
           const inventoryItem = inventory.weapons_inventory.find((x) => x.id === parsedInput.item!.id)
-
           if (!inventoryItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.bankAccount.update({
-              where: { id: bankAccount.id },
-              data: { weapons: { create: [{ weapon_id: inventoryItem.weapon_id }] } },
-            })
-
-            await db.weaponInInventory.delete({
-              where: { id: inventoryItem.id },
-            })
-          })
-
+          await depositItemTransaction(bankAccount.id, 'weapon', inventoryItem.id, inventoryItem.weapon_id)
           break
         }
         case 'potion': {
           const inventoryItem = inventory.potions_inventory.find((x) => x.id === parsedInput.item!.id)
-
           if (!inventoryItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.bankAccount.update({
-              where: { id: bankAccount.id },
-              data: { potions: { create: [{ potion_id: inventoryItem.potion_id }] } },
-            })
-
-            await db.potionInInventory.delete({
-              where: { id: inventoryItem.id },
-            })
-          })
-
+          await depositItemTransaction(bankAccount.id, 'potion', inventoryItem.id, inventoryItem.potion_id)
           break
         }
       }
@@ -139,85 +174,41 @@ export const withdrawItem = playerActionClient
   .schema(bankActionSchema)
   .action(async ({ parsedInput, ctx }) => {
     const bankAccount = await BankAccountEntity.get(parsedInput.bankId, ctx.player.id)
-
     if (!bankAccount) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    if (!!parsedInput.money) {
+    if (parsedInput.money) {
       const balance = bankAccount.money - parsedInput.money
-
       if (balance < 0) throw new Error(ERROR_CAUSE.INSUFFICIENT_FUNDS)
-
-      await db.$transaction(async (db) => {
-        await db.user.update({
-          where: { id: ctx.user.id },
-          data: { money: ctx.user.money + parsedInput.money! },
-        })
-
-        await db.bankAccount.update({
-          where: { id: bankAccount.id },
-          data: { money: balance },
-        })
-      })
+      await withdrawMoney(bankAccount.id, ctx.user.id, parsedInput.money, ctx.user.money)
     }
 
-    if (!!parsedInput.item) {
+    if (parsedInput.item) {
       const inventory = await InventoryEntity.get(ctx.player.id, ctx.player.inventory_id)
-
       if (!inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-      switch (parsedInput.item.type) {
+      const itemType = parsedInput.item.type
+      // Bank only supports 'weapon', 'armor', 'potion' (not 'left_weapon' or 'right_weapon')
+      if (itemType === 'left_weapon' || itemType === 'right_weapon') {
+        throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+      }
+
+      switch (itemType) {
         case 'armor': {
           const bankItem = bankAccount.armors.find((x) => x.id === parsedInput.item!.id)
-
           if (!bankItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.inventory.update({
-              where: { id: inventory.id },
-              data: { armors_inventory: { create: [{ armor_id: bankItem.armor_id }] } },
-            })
-
-            await db.armorInBank.delete({
-              where: { id: bankItem.id },
-            })
-          })
-
+          await withdrawItemTransaction(inventory.id, 'armor', bankItem.id, bankItem.armor_id)
           break
         }
         case 'weapon': {
           const bankItem = bankAccount.weapons.find((x) => x.id === parsedInput.item!.id)
-
           if (!bankItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.inventory.update({
-              where: { id: inventory.id },
-              data: { weapons_inventory: { create: [{ weapon_id: bankItem.weapon_id }] } },
-            })
-
-            await db.weaponInBank.delete({
-              where: { id: bankItem.id },
-            })
-          })
-
+          await withdrawItemTransaction(inventory.id, 'weapon', bankItem.id, bankItem.weapon_id)
           break
         }
         case 'potion': {
           const bankItem = bankAccount.potions.find((x) => x.id === parsedInput.item!.id)
-
           if (!bankItem) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-          await db.$transaction(async (db) => {
-            await db.inventory.update({
-              where: { id: inventory.id },
-              data: { potions_inventory: { create: [{ potion_id: bankItem.potion_id }] } },
-            })
-
-            await db.potionInBank.delete({
-              where: { id: bankItem.id },
-            })
-          })
-
+          await withdrawItemTransaction(inventory.id, 'potion', bankItem.id, bankItem.potion_id)
           break
         }
       }

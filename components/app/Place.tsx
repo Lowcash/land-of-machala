@@ -88,19 +88,6 @@ export default function Place(p: Props) {
           <CharacterPlayer />
         </Hero>
         <Detail>
-          {/* {gameShowInfoQuery.derived.hasDefeated ? (
-            <Text
-              dangerouslySetInnerHTML={{
-                __html: gameShowInfoQuery.data?.player?.text?.defeated ?? 'game_player_defeated',
-              }}
-            />
-          ) : (
-            // TODO "main_city" is tempoprary solution
-            <Button variant='warning' size={'shrink-sm'} onClick={() => handleEnteredPlaceChange('main_city')}>
-              {commonShowQuery.data?.text.cityBack ?? 'city_back'}
-            </Button>
-          )} */}
-
           {enteredPlace === 'hospital' && !!hospital && (
             <Hospital hospitalId={hospital.id} onHospitalLeave={() => handleDecisionSelected({ key: 'main_city' })} />
           )}
