@@ -13,6 +13,31 @@ import * as WearableEntity from '@/entity/wearable'
 
 import { ERROR_CAUSE } from '@/config'
 
+// Helper: Update player stats after equipment change
+async function updatePlayerStats(userId: string, playerId: string, wearableId: string | null) {
+  if (!wearableId) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+  const player = await PlayerEntity.get(playerId)
+  if (!player) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+  const wearable = await WearableEntity.get(player, wearableId)
+  if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+
+  const stats = await StatsEntity.get(player, wearable)
+
+  await db.user.update({
+    where: { id: userId },
+    data: {
+      strength: stats.strength,
+      agility: stats.agility,
+      intelligence: stats.intelligence,
+      armor: stats.armor,
+      damage_min: stats.damage.min,
+      damage_max: stats.damage.max,
+    },
+  })
+}
+
 export const show = playerActionClient.metadata({ actionName: 'wearable_show' }).action(async ({ ctx }) => {
   const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
@@ -56,7 +81,7 @@ export const wear = playerActionClient
       }
     }
 
-    let wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+    const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
     if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -102,23 +127,7 @@ export const wear = playerActionClient
         })
     }
 
-    wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
-
-    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    const stats = await StatsEntity.get(ctx.player, wearable)
-
-    await db.user.update({
-      where: { id: ctx.user.id },
-      data: {
-        strength: stats.strength,
-        agility: stats.agility,
-        intelligence: stats.intelligence,
-        armor: stats.armor,
-        damage_min: stats.damage.min,
-        damage_max: stats.damage.max,
-      },
-    })
+    await updatePlayerStats(ctx.user.id, ctx.player.id, ctx.player.wearable_id)
   })
 
 export const unwear = playerActionClient
@@ -142,7 +151,7 @@ export const unwear = playerActionClient
       }
     }
 
-    let wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+    const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
 
     if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -179,23 +188,7 @@ export const unwear = playerActionClient
       })
     }
 
-    wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
-
-    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-
-    const stats = await StatsEntity.get(ctx.player, wearable)
-
-    await db.user.update({
-      where: { id: ctx.user.id },
-      data: {
-        strength: stats.strength,
-        agility: stats.agility,
-        intelligence: stats.intelligence,
-        armor: stats.armor,
-        damage_min: stats.damage.min,
-        damage_max: stats.damage.max,
-      },
-    })
+    await updatePlayerStats(ctx.user.id, ctx.player.id, ctx.player.wearable_id)
   })
 
 export const drink = playerActionClient
