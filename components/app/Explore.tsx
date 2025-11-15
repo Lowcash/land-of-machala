@@ -3,6 +3,7 @@
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 
 import { Detail, Hero } from '@/styles/common'
+import Action from '@/components/app/Action'
 import Info from '@/components/app/Info'
 import CharacterPlayer from '@/components/app/CharacterPlayer'
 
@@ -15,8 +16,9 @@ export default function Explore() {
         <CharacterPlayer />
       </Hero>
       <Detail>
-        <Info header={commonShowQuery.data?.text?.worldExplore ?? 'game_world_explore'} />
+        <Info headers={[commonShowQuery.data?.text?.worldExplore ?? 'game_world_explore']} />
       </Detail>
+      <Action />
     </>
   )
 }

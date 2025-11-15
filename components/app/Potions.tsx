@@ -10,7 +10,7 @@ import { RxPaperPlane } from 'react-icons/rx'
 import Table from '@/components/Table'
 import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
 
-export type BuyPotionEvent = (potion: HospitalPotion) => void
+export type PotionsActionEvent = (potion: HospitalPotion) => void
 export type PotionsLeaveEvent = () => void
 
 const DECISION = {
@@ -20,7 +20,7 @@ const DECISION = {
 interface Props {
   hospitalId: string
 
-  onBuyPotion: BuyPotionEvent
+  onPotionsAction: PotionsActionEvent
   onPotionsLeave?: PotionsLeaveEvent
 }
 
@@ -39,10 +39,12 @@ export default function Potions({ hospitalId, ...p }: Props) {
   return (
     <>
       <Decision
-        return={{
-          key: DECISION.BACK,
-          text: commonShowQuery.data?.text.cityBack ?? 'hospital_city_back',
-        }}
+        top={[
+          {
+            key: DECISION.BACK,
+            text: commonShowQuery.data?.text.back ?? 'potions_back',
+          },
+        ]}
         onDecisionSelected={handleDecisionSelected}
       />
 
@@ -67,7 +69,7 @@ export default function Potions({ hospitalId, ...p }: Props) {
             {
               className: 'text-right',
               content: (
-                <Button variant='secondary' onClick={() => p.onBuyPotion?.(x)}>
+                <Button variant='secondary' onClick={() => p.onPotionsAction?.(x)}>
                   <RxPaperPlane />
                 </Button>
               ),

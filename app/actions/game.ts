@@ -55,12 +55,17 @@ export const showInfo = cache(
         : undefined,
       combat: PlayerEntity.hasCombat(ctx.player)
         ? {
-            enemyInstance: ctx.player.enemy_instance,
+            enemyInstance: {
+              ...ctx.player.enemy_instance,
+              image: (await import(
+                `@/app/assets/images/enemies/${ctx.player.enemy_instance.enemy.id.toLowerCase()}.png`
+              ).then((x) => x.default)) as StaticImageData,
+            },
             text: {
               attack: i18n.t('action.attack'),
               runAway: i18n.t('action.run_away'),
               enemyAppear: i18n.t('enemy.appear', {
-                enemy: `${i18n.t(`${ctx.player.enemy_instance.enemy.i18n_key}.header` as any)} ${ctx.player.enemy_instance.hp_actual}/${ctx.player.enemy_instance.hp_max}`,
+                enemy: `${ctx.player.enemy_instance.enemy.name} ${ctx.player.enemy_instance.hp_actual}/${ctx.player.enemy_instance.hp_max}`,
               }),
             },
           }

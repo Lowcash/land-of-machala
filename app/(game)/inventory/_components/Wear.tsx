@@ -7,7 +7,7 @@ import type { MutationInput } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { RxCheck } from 'react-icons/rx'
 
-interface Props extends MutationInput<typeof useWearableWearMutation> {}
+type Props = MutationInput<typeof useWearableWearMutation>
 
 export default function Wear(p: Props) {
   const gameShowInfoQuery = useGameShowInfoQuery()

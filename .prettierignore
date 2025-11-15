@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+.next/
+out/
+dist/
+build/
+
+# Coverage
+coverage/
+
+# Misc
+.DS_Store
+*.log
+
+# Database
+prisma/schema.prisma.bak
+
+# Environment files
+.env
+.env*.local

@@ -7,7 +7,7 @@ import type { MutationInput } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { RxCross1 } from 'react-icons/rx'
 
-interface Props extends MutationInput<typeof useWearableUnwearMutation> {}
+type Props = MutationInput<typeof useWearableUnwearMutation>
 
 export default function Unwear(p: Props) {
   const gameShowInfoQuery = useGameShowInfoQuery()

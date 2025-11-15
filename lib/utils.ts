@@ -1,6 +1,7 @@
 import { twMerge } from 'tailwind-merge'
 import { type ClassValue, clsx } from 'clsx'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic mutation input requires any for function parameters
 export type MutationInput<T extends (...args: any) => any> = Parameters<ReturnType<T>['mutate']>[0]
 
 export function cn(...inputs: ClassValue[]) {

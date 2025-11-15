@@ -850,6 +850,9 @@
   "common": {
     "city_back": "Zpět do města",
     "city_leave": "Odejít z města",
+    "city_enter": "Vstoupit do města",
+    "back": "Zpět",
+    "leave": "Odejít",
     "world_back": "Zpět do světa",
     "world_explore": "Jsi na průzkumu světa",
     "price": "Cena",

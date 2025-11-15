@@ -16,7 +16,7 @@ import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
 import Info from '@/components/app/Info'
 import Decision, { type DecisionItem, type DecisionSelectedEvent } from '@/components/app/Decision'
-import Potions, { type BuyPotionEvent, type PotionsLeaveEvent } from '@/components/app/Potions'
+import Potions, { type PotionsActionEvent, type PotionsLeaveEvent } from '@/components/app/Potions'
 
 const SUBPLACE = {
   POTION: 'potion',
@@ -64,6 +64,11 @@ export default function Hospital({ hospitalId, ...p }: Props) {
     onSuccess: () => setMessage(hospitalShowQuery.data?.text.quest.enemySlain.looted ?? 'hospital_quest_looted'),
   })
 
+  const handleBuyPotion: PotionsActionEvent = (potion) =>
+    buyPotionMutation.mutate({ hospitalId, potionId: potion.potion_id })
+
+  const handlePotionsLeave: PotionsLeaveEvent = () => setSubplace(undefined)
+
   const handleDecisionSelected: DecisionSelectedEvent = (decision) => {
     switch (decision?.key) {
       case DECISION.BACK:
@@ -87,21 +92,21 @@ export default function Hospital({ hospitalId, ...p }: Props) {
     }
   }
 
-  const handleBuyPotion: BuyPotionEvent = (potion) =>
-    buyPotionMutation.mutate({ hospitalId, potionId: potion.potion_id })
-
-  const handlePotionsLeave: PotionsLeaveEvent = () => setSubplace(undefined)
-
-  if (subplace === SUBPLACE.POTION)
-    return <Potions hospitalId={hospitalId} onBuyPotion={handleBuyPotion} onPotionsLeave={handlePotionsLeave} />
+  switch (subplace) {
+    case SUBPLACE.POTION:
+      return <Potions hospitalId={hospitalId} onPotionsAction={handleBuyPotion} onPotionsLeave={handlePotionsLeave} />
+  }
 
   if (gameShowInfoQuery.isLoading || hospitalShowQuery.isLoading) return <Loading position='local' />
 
   return (
     <>
       <Info
-        header={hospitalShowQuery.data?.text?.header ?? 'hospital_header'}
-        description={[
+        headers={[
+          gameShowInfoQuery.data?.player?.text?.defeated ?? 'game_player_defeated',
+          hospitalShowQuery.data?.text?.header ?? 'hospital_header',
+        ].filter(Boolean)}
+        descriptions={[
           hospitalShowQuery.data?.text?.description ?? 'hospital_description',
           gameShowInfoQuery.derived.hasDefeated
             ? (hospitalShowQuery.data?.text?.resurrect.description ?? 'hospital_resurrect_description')
@@ -124,11 +129,13 @@ export default function Hospital({ hospitalId, ...p }: Props) {
       )}
 
       <Decision
-        return={{
-          key: DECISION.BACK,
-          text: commonShowQuery.data?.text.cityBack ?? 'hospital_city_back',
-        }}
-        decisions={
+        top={[
+          {
+            key: DECISION.BACK,
+            text: commonShowQuery.data?.text.cityBack ?? 'hospital_city_back',
+          },
+        ]}
+        bottom={
           (
             [
               gameShowInfoQuery.derived.hasDefeated && {
@@ -152,7 +159,7 @@ export default function Hospital({ hospitalId, ...p }: Props) {
                 text: hospitalShowQuery.data?.text?.potion.buy ?? 'hospital_potion',
               },
             ] as (DecisionItem | undefined)[]
-          ).filter(Boolean) as DecisionItem[]
+          ).filter((x) => !!x) as DecisionItem[]
         }
         onDecisionSelected={handleDecisionSelected}
       />

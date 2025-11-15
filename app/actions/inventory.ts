@@ -17,7 +17,7 @@ export const show = playerActionClient.metadata({ actionName: 'inventory_show' }
 
   return {
     weapons: inventory.weapons_inventory?.map((x) => {
-      const armed = Object.entries(wearable).find(([_, v]) => v === x.id)
+      const armed = Object.entries(wearable).find(([, v]) => v === x.id)
 
       return {
         ...x,
