@@ -1,14 +1,23 @@
 'use client'
 
+import dynamic from 'next/dynamic'
 import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import { Card } from '@/styles/common'
 import { H3 } from '@/styles/typography'
 import Back from '@/app/(game)/world/_components/Back'
-import Weapons from './_components/Weapons'
-import Armors from './_components/Armors'
-import Potions from './_components/Potions'
+
+// Dynamic imports for inventory sections - reduces initial bundle
+const Weapons = dynamic(() => import('./_components/Weapons'), {
+  loading: () => <div>Loading weapons...</div>,
+})
+const Armors = dynamic(() => import('./_components/Armors'), {
+  loading: () => <div>Loading armors...</div>,
+})
+const Potions = dynamic(() => import('./_components/Potions'), {
+  loading: () => <div>Loading potions...</div>,
+})
 
 export default function Page() {
   const inventoryShowQuery = useInventoryShowQuery()

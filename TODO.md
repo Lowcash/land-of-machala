@@ -1,45 +1,27 @@
 # 📋 Land of Machala - Active Tasks
 
-> **Last Updated:** 2025-11-16 01:50  
-> **Current Sprint:** Code Quality + Refactoring
+> **Last Updated:** 2025-11-16 03:22  
+> **Current Sprint:** Performance Optimization + Code Quality
 
 ---
 
 ## 🔥 HIGH PRIORITY
 
-### TypeScript & Type Safety
-
-- [ ] **Enable Strict Mode** - Catch more errors
-  - `"strict": true` in `tsconfig.json`
-  - Fix all type errors (estimate: ~50-100 issues)
-  - Add `noUncheckedIndexedAccess`
-- [ ] **Replace Magic Strings** - Type-safe enums
-  - `Route` type → `ROUTE` enum
-  - Quest identifiers → `QUEST_IDENT` enum
-  - Place types already enum ✅
-- [ ] **Improve Prisma Types** - Better inference
-  - Use `satisfies` operator for complex types
-  - Create branded types for IDs
-  - Type guards for entity validation
-
----
-
-## ⚡ MEDIUM PRIORITY
-
 ### Code Organization
 
-- [ ] **Replace Wildcard Imports** - Explicit dependencies
-  - `import * as PlayerEntity` → `import { get, hasCharacter }`
-  - Apply to all `entity/*` imports
-  - Apply to all `lib/manager/*` imports
-  - Estimate: ~30 files affected
 - [ ] **Split Large Action Files** - Single responsibility
-  - `app/actions/player.ts` (104 lines) - OK for now
-  - Review others for splitting opportunities
+  - `app/actions/wearable.ts` (225 lines) - Candidate for splitting wear/unwear logic
+  - `app/actions/bank.ts` (225 lines) - Candidate for splitting deposit/withdraw logic
+  - `app/actions/armory.ts` (198 lines) - Review for extraction opportunities
+  - `app/actions/player.ts` (103 lines) - OK for now
 - [ ] **Consolidate Entity Logic** - Reduce manager/entity overlap
   - Move pure data logic to entities
   - Keep transactional logic in managers
   - Document decision matrix in INSIGHTS.md
+
+---
+
+## ⚡ MEDIUM PRIORITY
 
 ### Error Handling & UX
 
@@ -47,21 +29,6 @@
   - Consistent success/error patterns
   - Action-specific messages (not generic)
   - Undo/retry options for failures
-
-### Performance Optimization
-
-- [ ] **Add React.memo** - Prevent unnecessary re-renders
-  - `CharacterPlayer` component
-  - `CharacterEnemy` component
-  - `Combat` action buttons
-- [ ] **Code Splitting** - Reduce bundle size
-  - Dynamic imports for game pages
-  - Split heavy dependencies (framer-motion)
-  - Analyze bundle with `@next/bundle-analyzer`
-- [ ] **Optimize Prisma Queries** - Reduce database load
-  - Audit N+1 query patterns
-  - Add indexes for common queries
-  - Use `select` to limit fetched fields
 
 ---
 
@@ -122,9 +89,14 @@
 
 ## 📝 Notes
 
+- **Code splitting COMPLETE** ✅ - Dynamic imports for Combat, Loot, Place, Explore, Inventory sections
+- **Prisma optimization COMPLETE** ✅ - All queries use include/select properly, all foreign keys indexed
+- **React.memo optimization COMPLETE** ✅ - 5 components memoized (CharacterPlayer, CharacterEnemy, Combat, Decision, Info)
+- **TypeScript strict mode COMPLETE** ✅ - noUncheckedIndexedAccess enabled, all errors fixed
+- **Magic strings COMPLETE** ✅ - Routes using ROUTE constants, QuestIdent using Prisma enum
+- **Prisma types COMPLETE** ✅ - Branded types, satisfies operator, enhanced type guards, UUID validation
 - **Testing infrastructure complete** ✅ - 14 passing tests, Vitest + Testing Library + Playwright setup
 - **ESLint clean** ✅ - All errors fixed with proper justifications
 - **Follow PR template** - All changes need CHANGELOG update
 - **Small PRs preferred** - Max 400 lines changed
 - **Document architecture decisions** - Update INSIGHTS.md for major changes
-- **Next major task:** Refactor wildcard imports, then enable TypeScript strict mode

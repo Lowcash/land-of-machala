@@ -1,14 +1,26 @@
 'use client'
 
 import React from 'react'
+import dynamic from 'next/dynamic'
 import type { Location } from '@/types'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 
-import Combat from '@/components/app/Combat'
-import Loot from '@/components/app/Loot'
-import Place, { type EnterPlaceChangeEvent } from '@/components/app/Place'
-import Explore from '@/components/app/Explore'
+import type { EnterPlaceChangeEvent } from '@/components/app/Place'
+
+// Dynamic imports for heavy components - reduces initial bundle size
+const Combat = dynamic(() => import('@/components/app/Combat'), {
+  loading: () => <div>Loading combat...</div>,
+})
+const Loot = dynamic(() => import('@/components/app/Loot'), {
+  loading: () => <div>Loading loot...</div>,
+})
+const Place = dynamic(() => import('@/components/app/Place'), {
+  loading: () => <div>Loading place...</div>,
+})
+const Explore = dynamic(() => import('@/components/app/Explore'), {
+  loading: () => <div>Loading exploration...</div>,
+})
 
 export default function World() {
   const gameShowInfoQuery = useGameShowInfoQuery()

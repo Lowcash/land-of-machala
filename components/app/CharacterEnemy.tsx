@@ -1,9 +1,10 @@
 'use client'
 
+import { memo } from 'react'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 import Character from '@/components/app/Character'
 
-export default function CharacterPlayer() {
+function CharacterEnemy() {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   return (
@@ -23,3 +24,7 @@ export default function CharacterPlayer() {
     />
   )
 }
+
+CharacterEnemy.displayName = 'CharacterEnemy'
+
+export default memo(CharacterEnemy)

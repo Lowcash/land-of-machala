@@ -1,6 +1,6 @@
 import { createQueryHook } from '@/hooks/api/_api-hooks'
 
-import * as InvetoryAction from '@/app/actions/inventory'
+import { show } from '@/app/actions/inventory'
 
 import { QUERY_KEY } from '@/config'
 
@@ -9,7 +9,7 @@ export type InventoryItem = NonNullable<ReturnType<typeof _useInventoryShowQuery
   | 'weapons'
   | 'potions'][0]
 
-const _useInventoryShowQuery = createQueryHook([QUERY_KEY.INVENTORY], InvetoryAction.show)
+const _useInventoryShowQuery = createQueryHook([QUERY_KEY.INVENTORY], show)
 
 export function useInventoryShowQuery(...p: Parameters<typeof _useInventoryShowQuery>) {
   const inventoryShowQuery = _useInventoryShowQuery(...p)

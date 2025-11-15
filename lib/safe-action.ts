@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getServerSession } from 'next-auth/next'
 import { createSafeActionClient, flattenValidationErrors } from 'next-safe-action'
-import * as Player from '@/entity/player'
+import { get as getPlayer, hasCharacter } from '@/entity/player'
 
 import { ERROR_CAUSE } from '@/config'
 
@@ -48,9 +48,9 @@ export const authActionClient = actionClient.use(async ({ next, metadata }) => {
 })
 
 export const playerActionClient = authActionClient.use(async ({ next, ctx }) => {
-  const player = await Player.get(ctx.user.id)
+  const player = await getPlayer(ctx.user.id)
 
-  if (!Player.hasCharacter(player)) throw new Error(ERROR_CAUSE.NO_CHARACTER)
+  if (!hasCharacter(player)) throw new Error(ERROR_CAUSE.NO_CHARACTER)
 
   return next({ ctx: { player } })
 })

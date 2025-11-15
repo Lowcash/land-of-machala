@@ -2,13 +2,13 @@ import 'server-only'
 
 import { db } from '@/lib/db'
 
-import * as ArmorEntity from '@/entity/armor'
-import * as PlayerEntity from '@/entity/player'
-import * as WeaponEntity from '@/entity/weapon'
+import { getI18n as getArmorI18n } from '@/entity/armor'
+import type { CharacterEntity } from '@/entity/player'
+import { getI18n as getWeaponI18n } from '@/entity/weapon'
 
 export type WearableEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
-export async function get(player: PlayerEntity.CharacterEntity, wearableId: Nullish<string>) {
+export async function get(player: CharacterEntity, wearableId: Nullish<string>) {
   const wearable = wearableId
     ? await db.wearable.findFirst({
         where: { id: wearableId },
@@ -55,7 +55,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.head?.armor
         ? {
             ...wearable.head.armor,
-            ...ArmorEntity.getI18n(wearable.head.armor),
+            ...getArmorI18n(wearable.head.armor),
           }
         : undefined,
     },
@@ -64,7 +64,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.shoulder?.armor
         ? {
             ...wearable.shoulder.armor,
-            ...ArmorEntity.getI18n(wearable.shoulder.armor),
+            ...getArmorI18n(wearable.shoulder.armor),
           }
         : undefined,
     },
@@ -73,7 +73,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.chest?.armor
         ? {
             ...wearable.chest.armor,
-            ...ArmorEntity.getI18n(wearable.chest.armor),
+            ...getArmorI18n(wearable.chest.armor),
           }
         : undefined,
     },
@@ -82,7 +82,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.hands?.armor
         ? {
             ...wearable.hands.armor,
-            ...ArmorEntity.getI18n(wearable.hands.armor),
+            ...getArmorI18n(wearable.hands.armor),
           }
         : undefined,
     },
@@ -91,7 +91,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.pants?.armor
         ? {
             ...wearable.pants?.armor,
-            ...ArmorEntity.getI18n(wearable.pants.armor),
+            ...getArmorI18n(wearable.pants.armor),
           }
         : undefined,
     },
@@ -100,7 +100,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       armor: wearable.boots?.armor
         ? {
             ...wearable.boots.armor,
-            ...ArmorEntity.getI18n(wearable.boots.armor),
+            ...getArmorI18n(wearable.boots.armor),
           }
         : undefined,
     },
@@ -109,7 +109,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       weapon: wearable.left_hand?.weapon
         ? {
             ...wearable.left_hand.weapon,
-            ...WeaponEntity.getI18n(wearable.left_hand.weapon),
+            ...getWeaponI18n(wearable.left_hand.weapon),
           }
         : undefined,
     },
@@ -118,7 +118,7 @@ export async function get(player: PlayerEntity.CharacterEntity, wearableId: Null
       weapon: wearable.right_hand?.weapon
         ? {
             ...wearable.right_hand.weapon,
-            ...WeaponEntity.getI18n(wearable.right_hand.weapon),
+            ...getWeaponI18n(wearable.right_hand.weapon),
           }
         : undefined,
     },

@@ -12,7 +12,10 @@ const GameContext = React.createContext<GameContext | null>(null)
 
 export function GameProvider({ children }: React.PropsWithChildren) {
   const setLocationBackground = async (location?: Location) => {
-    document.getElementsByTagName('aside')[0].style.backgroundImage = location
+    const aside = document.getElementsByTagName('aside')[0]
+    if (!aside) return
+
+    aside.style.backgroundImage = location
       ? `url(${(await getBackground({ location }))?.data?.background.src})`
       : 'unset'
   }
@@ -36,5 +39,5 @@ export function useSetLocationBackgroundEffect(location?: Location) {
 
     // TODO potencial bug and can cause screen blinking
     return () => setLocationBackground()
-  }, [location])
+  }, [location, setLocationBackground])
 }

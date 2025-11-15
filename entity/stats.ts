@@ -2,8 +2,8 @@ import 'server-only'
 
 import type { Armor, Class, Race, Weapon } from '@prisma/client'
 
-import * as PlayerEntity from '@/entity/player'
-import * as WearableEntity from '@/entity/wearable'
+import type { PlayerEntity } from '@/entity/player'
+import type { WearableEntity } from '@/entity/wearable'
 
 import {
   AGILITY_DAMAGE_CONTRIBUTOR_MULTIPLIER,
@@ -15,7 +15,7 @@ import {
 
 export type StatsEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
-export async function get(player: PlayerEntity.PlayerEntity, wearable: WearableEntity.WearableEntity) {
+export async function get(player: PlayerEntity, wearable: WearableEntity) {
   const character: Character = {
     level: player.level,
     class: player.class,

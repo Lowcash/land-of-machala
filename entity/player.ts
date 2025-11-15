@@ -5,10 +5,10 @@ import { db } from '@/lib/db'
 import type { Class, Race, EnemyInstance, Loot, User } from '@prisma/client'
 import { PlaceType } from '@prisma/client'
 
-import * as PlaceEntity from '@/entity/place'
-import * as RaceEntity from '@/entity/race'
-import * as ClassEntity from '@/entity/class'
-import * as EnemyEntity from '@/entity/enemy'
+import { get as getPlace } from '@/entity/place'
+import { getI18n as getRaceI18n } from '@/entity/race'
+import { getI18n as getClassI18n } from '@/entity/class'
+import { getI18n as getEnemyI18n } from '@/entity/enemy'
 
 export type PlayerEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
@@ -34,18 +34,18 @@ export async function get(id: string) {
     ...player,
     race: {
       ...player.race,
-      ...RaceEntity.getI18n(player.race),
+      ...getRaceI18n(player.race),
     },
     class: {
       ...player.class,
-      ...ClassEntity.getI18n(player.class),
+      ...getClassI18n(player.class),
     },
     enemy_instance: player.enemy_instance
       ? {
           ...player.enemy_instance,
           enemy: {
             ...player.enemy_instance.enemy,
-            ...EnemyEntity.getI18n(player.enemy_instance.enemy),
+            ...getEnemyI18n(player.enemy_instance.enemy),
           },
         }
       : undefined,
@@ -66,8 +66,7 @@ export async function get(id: string) {
       : undefined,
     canMove: !hasCombat(player) && !player.defeated && !hasLoot(player),
     hasSafePlace:
-      !hasCombat(player) &&
-      (await PlaceEntity.get({ posX: player.pos_x, posY: player.pos_y }))?.type == PlaceType.SAFEHOUSE,
+      !hasCombat(player) && (await getPlace({ posX: player.pos_x, posY: player.pos_y }))?.type == PlaceType.SAFEHOUSE,
     text: {
       level: `${player.level} ${i18n.t('stats.level_abbr')}`,
     },
@@ -88,29 +87,38 @@ export type CharacterEntity = User & {
   defeated: boolean
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
-export function hasCharacter(player: any): player is CharacterEntity {
+// Enhanced type guards with branded types
+export function hasCharacter(player: unknown): player is CharacterEntity {
+  if (typeof player !== 'object' || player === null) return false
+  const p = player as Record<string, unknown>
+
   return (
-    typeof player?.race === 'object' &&
-    typeof player?.race_id === 'string' &&
-    typeof player?.class === 'object' &&
-    typeof player?.class_id === 'string' &&
-    typeof player?.pos_x === 'number' &&
-    typeof player?.pos_y === 'number' &&
-    typeof player?.hp_actual === 'number' &&
-    typeof player?.hp_max === 'number' &&
-    typeof player?.xp_actual === 'number' &&
-    typeof player?.xp_max === 'number' &&
-    typeof player?.defeated === 'boolean'
+    typeof p.race === 'object' &&
+    p.race !== null &&
+    typeof p.race_id === 'string' &&
+    typeof p.class === 'object' &&
+    p.class !== null &&
+    typeof p.class_id === 'string' &&
+    typeof p.pos_x === 'number' &&
+    typeof p.pos_y === 'number' &&
+    typeof p.hp_actual === 'number' &&
+    typeof p.hp_max === 'number' &&
+    typeof p.xp_actual === 'number' &&
+    typeof p.xp_max === 'number' &&
+    typeof p.defeated === 'boolean'
   )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
-export function hasCombat(player: any): player is { enemy_instance: EnemyInstance; enemy_instance_id: number } {
-  return typeof player?.enemy_instance === 'object' && typeof player?.enemy_instance_id === 'string'
+export function hasCombat(player: unknown): player is { enemy_instance: EnemyInstance; enemy_instance_id: string } {
+  if (typeof player !== 'object' || player === null) return false
+  const p = player as Record<string, unknown>
+
+  return typeof p.enemy_instance === 'object' && p.enemy_instance !== null && typeof p.enemy_instance_id === 'string'
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
-export function hasLoot(player: any): player is { loot: Loot; loot_id: number } {
-  return typeof player?.loot === 'object' && typeof player?.loot_id === 'string'
+export function hasLoot(player: unknown): player is { loot: Loot; loot_id: string } {
+  if (typeof player !== 'object' || player === null) return false
+  const p = player as Record<string, unknown>
+
+  return typeof p.loot === 'object' && p.loot !== null && typeof p.loot_id === 'string'
 }

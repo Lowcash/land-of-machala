@@ -1,6 +1,6 @@
 import { createMutationHook, createQueryHook } from '@/hooks/api/_api-hooks'
 
-import * as ArmoryAction from '@/app/actions/armory'
+import { show, buyItem, sellItem } from '@/app/actions/armory'
 
 import { QUERY_KEY } from '@/config'
 
@@ -10,7 +10,7 @@ export type ArmoryItem = NonNullable<ReturnType<typeof _useArmoryShowQuery>['dat
   | 'sellArmors'
   | 'sellWeapons'][0]
 
-const _useArmoryShowQuery = createQueryHook([QUERY_KEY.ARMORY], ArmoryAction.show)
+const _useArmoryShowQuery = createQueryHook([QUERY_KEY.ARMORY], show)
 
 export function useArmoryShowQuery(...p: Parameters<typeof _useArmoryShowQuery>) {
   const armoryShowQuery = _useArmoryShowQuery(...p)
@@ -26,8 +26,8 @@ export function useArmoryShowQuery(...p: Parameters<typeof _useArmoryShowQuery>)
   }
 }
 
-export const useArmoryBuyItemMutation = createMutationHook(ArmoryAction.buyItem, [QUERY_KEY.PLAYER, QUERY_KEY.ARMORY])
-export const useArmorySellItemMutation = createMutationHook(ArmoryAction.sellItem, [
+export const useArmoryBuyItemMutation = createMutationHook(buyItem, [QUERY_KEY.PLAYER, QUERY_KEY.ARMORY])
+export const useArmorySellItemMutation = createMutationHook(sellItem, [
   QUERY_KEY.PLAYER,
   QUERY_KEY.STATS,
   QUERY_KEY.WEARABLE,

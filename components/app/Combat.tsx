@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { memo } from 'react'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
 import { Detail, Hero } from '@/styles/common'
@@ -22,7 +22,7 @@ const PHASE = {
   RUN_AWAY: 'run_away',
 } as const
 
-export default function Combat() {
+function Combat() {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   const [phase, setPhase] = React.useState<(typeof PHASE)[keyof typeof PHASE]>(PHASE.START)
@@ -64,3 +64,7 @@ export default function Combat() {
     </>
   )
 }
+
+Combat.displayName = 'Combat'
+
+export default memo(Combat)

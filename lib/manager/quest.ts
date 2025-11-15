@@ -2,14 +2,19 @@ import 'server-only'
 
 import { type Enemy, EnemyIdent, QuestIdent, type Prisma, PrismaClient } from '@prisma/client'
 
-import * as EnemyEntity from '@/entity/enemy'
-import * as QuestEntity from '@/entity/quest'
-import * as PlayerEntity from '@/entity/player'
+import { get as getEnemy } from '@/entity/enemy'
+import {
+  get as getQuest,
+  getAssigned as getAssignedQuest,
+  type QuestEntity,
+  type QuestAssignedEntity,
+} from '@/entity/quest'
+import type { PlayerEntity } from '@/entity/player'
 
 export async function accept(
   dbTransaction: Prisma.TransactionClient,
-  selectedQuest: QuestEntity.QuestEntity,
-  assignedQuests: QuestEntity.QuestAssignedEntity,
+  selectedQuest: QuestEntity,
+  assignedQuests: QuestAssignedEntity,
 ) {
   switch (selectedQuest.ident) {
     case QuestIdent.SLAIN_ENEMY: {
@@ -31,7 +36,7 @@ export async function accept(
       break
     }
     case QuestIdent.SLAIN_TROLL: {
-      const troll = await EnemyEntity.get(EnemyIdent.HILL_TROLL)
+      const troll = await getEnemy(EnemyIdent.HILL_TROLL)
 
       if (!troll) return
 
@@ -57,8 +62,8 @@ export async function accept(
 
 export async function complete(
   dbTransaction: Prisma.TransactionClient,
-  selectedQuest: QuestEntity.QuestEntity,
-  assignedQuests: QuestEntity.QuestAssignedEntity,
+  selectedQuest: QuestEntity,
+  assignedQuests: QuestAssignedEntity,
 ) {
   let questKey: keyof typeof assignedQuests
   let questDoneKey: keyof typeof assignedQuests
@@ -103,8 +108,8 @@ export async function complete(
 
 export async function getUpdatedProgress(
   dbTransaction: Prisma.TransactionClient,
-  selectedQuest: QuestEntity.QuestEntity,
-  assignedQuests: QuestEntity.QuestAssignedEntity,
+  selectedQuest: QuestEntity,
+  assignedQuests: QuestAssignedEntity,
 ) {
   let questKey: keyof typeof assignedQuests
   let questDoneKey: keyof typeof assignedQuests
@@ -153,17 +158,17 @@ export async function getUpdatedProgress(
 
 export async function updateState(
   dbOrDbTransaction: PrismaClient | Prisma.TransactionClient,
-  player: PlayerEntity.PlayerEntity,
+  player: PlayerEntity,
   data: {
     slainedEnemy?: Enemy
   },
 ) {
-  const userQuest = await QuestEntity.getAssigned(player.id, player.user_quest_id)
+  const userQuest = await getAssignedQuest(player.id, player.user_quest_id)
 
   if (!userQuest) return
 
   if (!!userQuest.quest_slain_enemy) {
-    const quest = await QuestEntity.get(QuestIdent.SLAIN_ENEMY)
+    const quest = await getQuest(QuestIdent.SLAIN_ENEMY)
 
     if (!quest) return
 
@@ -182,7 +187,7 @@ export async function updateState(
   if (!!userQuest.quest_slain_troll) {
     if (data.slainedEnemy?.id !== EnemyIdent.HILL_TROLL) return
 
-    const quest = await QuestEntity.get(QuestIdent.SLAIN_TROLL)
+    const quest = await getQuest(QuestIdent.SLAIN_TROLL)
 
     if (!quest) return
 
