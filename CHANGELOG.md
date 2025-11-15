@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- 2025-11-16 03:35 - Extracted helper functions in bank.ts for transaction logic (depositMoney/withdrawMoney/depositItemTransaction/withdrawItemTransaction)
+- 2025-11-16 03:35 - Added validation for left_weapon/right_weapon in bank deposit/withdraw (bank only supports weapon/armor/potion)
 - 2025-11-16 03:22 - Added @next/bundle-analyzer for bundle size optimization analysis
 - 2025-11-16 03:22 - Added dynamic imports for heavy components (Combat, Loot, Place, Explore, Inventory sections)
 - 2025-11-16 03:22 - Added npm script `build:analyze` for bundle analysis (ANALYZE=true npm run build)
@@ -51,6 +53,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- 2025-11-16 03:35 - Refactored bank.ts: extracted money transaction helpers (226 → 217 lines, -4% duplication)
+- 2025-11-16 03:35 - Removed commented dead code in components/app/Place.tsx (TODO 'main_city is temporary solution')
 - 2025-11-16 03:13 - Enhanced type guards in entity/player.ts (hasCharacter, hasCombat, hasLoot) to use unknown instead of any
 - 2025-11-16 03:13 - Improved type safety with null checks in enhanced type guards (typeof check + null guard)
 - 2025-11-16 02:56 - Fixed type error in context/game-provider.tsx: added undefined guard for getElementsByTagName result
