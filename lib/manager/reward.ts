@@ -2,8 +2,8 @@ import 'server-only'
 
 import type { Armor, Weapon, Prisma, PrismaClient } from '@prisma/client'
 
-import * as PlayerEntity from '@/entity/player'
-import * as InventoryEntity from '@/entity/inventory'
+import type { PlayerEntity } from '@/entity/player'
+import { get as getInventory } from '@/entity/inventory'
 
 export type Reward = NonNullable<Awaited<ReturnType<typeof prepareReward>>>
 
@@ -28,7 +28,7 @@ export async function prepareReward(
 
 export async function assignReward(
   dbOrDbTransaction: PrismaClient | Prisma.TransactionClient,
-  player: PlayerEntity.PlayerEntity,
+  player: PlayerEntity,
   reward: Reward,
 ) {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Destructured to exclude from loot object
@@ -42,14 +42,10 @@ export async function assignReward(
   })
 }
 
-export async function collectReward(
-  dbTransaction: Prisma.TransactionClient,
-  player: PlayerEntity.PlayerEntity,
-  reward: Reward,
-) {
+export async function collectReward(dbTransaction: Prisma.TransactionClient, player: PlayerEntity, reward: Reward) {
   const { armors_loot, weapons_loot, ...loot } = reward
 
-  const inventory = await InventoryEntity.get(player.id, player.inventory_id)
+  const inventory = await getInventory(player.id, player.inventory_id)
 
   await dbTransaction.loot.delete({
     where: { id: loot.id },

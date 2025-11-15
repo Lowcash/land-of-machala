@@ -4,9 +4,9 @@ import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
 import type { Armor, Armory, Weapon } from '@prisma/client'
 
-import * as ArmorEntity from '@/entity/armor'
-import * as WeaponEntity from '@/entity/weapon'
-import * as InventoryEntity from '@/entity/inventory'
+import { getI18n as getArmorI18n, getAll as getAllArmors } from '@/entity/armor'
+import { getI18n as getWeaponI18n, getAll as getAllWeapons } from '@/entity/weapon'
+import { get as getInventory, type InventoryEntity } from '@/entity/inventory'
 
 import { ERROR_CAUSE } from '@/config'
 
@@ -28,11 +28,11 @@ async function _get(id: string) {
     ...getI18n(armory),
     armors: armory.armors.map((x) => ({
       ...x,
-      armor: { ...x.armor, ...ArmorEntity.getI18n(x.armor) },
+      armor: { ...x.armor, ...getArmorI18n(x.armor) },
     })),
     weapons: armory.weapons.map((x) => ({
       ...x,
-      weapon: { ...x.weapon, ...WeaponEntity.getI18n(x.weapon) },
+      weapon: { ...x.weapon, ...getWeaponI18n(x.weapon) },
     })),
   }
 }
@@ -40,11 +40,11 @@ async function _get(id: string) {
 export type ArmoryEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
 export async function get(armoryId: string, playerId: string, inventoryId: Nullish<string>) {
-  const [armory, inventory] = await Promise.all([_get(armoryId), InventoryEntity.get(playerId, inventoryId)])
+  const [armory, inventory] = await Promise.all([_get(armoryId), getInventory(playerId, inventoryId)])
 
   if (!armory || !inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-  const [armorsAll, weaponsAll] = await Promise.all([ArmorEntity.getAll(), WeaponEntity.getAll()])
+  const [armorsAll, weaponsAll] = await Promise.all([getAllArmors(), getAllWeapons()])
 
   return {
     ...armory,
@@ -57,7 +57,9 @@ export async function get(armoryId: string, playerId: string, inventoryId: Nulli
 
 export function getI18n(entity: Armory) {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
     name: i18n.t(`${entity.i18n_key}.header` as any),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
     description: i18n.t(`${entity.i18n_key}.description` as any),
   }
 }
@@ -120,7 +122,7 @@ function getBuyWeapons(args: { weaponsAll: Weapon[]; armory: _ArmoryEntity }) {
   })
 }
 
-function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryEntity.InventoryEntity }) {
+function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryEntity }) {
   const spreadSellPriceArmors = spreadItemsPrices(
     args.armorsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },
@@ -147,7 +149,7 @@ function getSellArmors(args: { armorsAll: Armor[]; inventory: InventoryEntity.In
   })
 }
 
-function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryEntity.InventoryEntity }) {
+function getSellWeapons(args: { weaponsAll: Weapon[]; inventory: InventoryEntity }) {
   const spreadSellPriceWeapons = spreadItemsPrices(
     args.weaponsAll,
     { min: SELL_MIN_PRICE, max: SELL_MAX_PRICE },

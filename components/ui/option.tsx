@@ -7,7 +7,7 @@ interface Props extends Pick<React.ComponentProps<typeof RadioGroup>, 'id' | 'va
 
 export function Option({ value, ...p }: Props) {
   return (
-    <RadioGroup {...p} defaultValue={value}>
+    <RadioGroup {...p} defaultValue={value ?? undefined}>
       {Object.entries(p.options).map(([id, label]) => {
         const optionKey = `Option_${id}_${label}`
 

@@ -24,7 +24,7 @@ export const LOCATION = {
   castle_suburb: 'images/environment/castle_suburb/1.jpg',
   lake: 'images/environment/lake/0.jpg',
   swamp: 'images/environment/swamp/0.jpg',
-} as const
+} as const satisfies Record<string, string>
 
 export const locationKeys = Object.keys(LOCATION) as Array<keyof typeof LOCATION>
 

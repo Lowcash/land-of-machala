@@ -1,3 +1,4 @@
+import { memo } from 'react'
 import { Card, List } from '@/styles/common'
 import { Link } from '@/styles/typography'
 
@@ -12,7 +13,7 @@ interface Props {
   onDecisionSelected?: DecisionSelectedEvent
 }
 
-export default function Decision(p: Props) {
+function Decision(p: Props) {
   return (
     <Card className='h-fit w-fit justify-between gap-8'>
       {(p.top?.length ?? 0) > 0 && (
@@ -36,3 +37,7 @@ export default function Decision(p: Props) {
     </Card>
   )
 }
+
+Decision.displayName = 'Decision'
+
+export default memo(Decision)

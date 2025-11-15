@@ -1,9 +1,10 @@
 'use client'
 
+import { memo } from 'react'
 import { usePlayerShowQuery } from '@/hooks/api/use-player'
 import Character from '@/components/app/Character'
 
-export default function CharacterPlayer() {
+function CharacterPlayer() {
   const playerShowQuery = usePlayerShowQuery()
 
   return (
@@ -38,3 +39,7 @@ export default function CharacterPlayer() {
     />
   )
 }
+
+CharacterPlayer.displayName = 'CharacterPlayer'
+
+export default memo(CharacterPlayer)

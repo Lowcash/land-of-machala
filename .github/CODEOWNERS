@@ -1,0 +1,32 @@
+# CODEOWNERS file for land-of-machala
+# Lines starting with '#' are comments.
+# Each line is a file pattern followed by one or more owners.
+# Order matters: the last matching pattern has precedence.
+
+# Default owner for everything in the repo
+* @Lowcash
+
+# Core application logic
+/app/actions/ @Lowcash
+/entity/ @Lowcash
+/lib/manager/ @Lowcash
+
+# Database schema - requires careful review
+/prisma/ @Lowcash
+
+# Configuration files
+/.github/ @Lowcash
+/tsconfig.json @Lowcash
+/next.config.ts @Lowcash
+/package.json @Lowcash
+
+# Documentation
+/README.md @Lowcash
+/CHANGELOG.md @Lowcash
+/TODO.md @Lowcash
+/locals/ @Lowcash
+
+# Testing infrastructure
+/__tests__/ @Lowcash
+/vitest.config.ts @Lowcash
+/playwright.config.ts @Lowcash
