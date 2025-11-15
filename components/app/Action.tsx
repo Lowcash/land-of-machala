@@ -1,6 +1,7 @@
 'use client'
 
 import { usePlayerMoveMutation } from '@/hooks/api/use-player'
+import { useGameAttackMutation } from '@/hooks/api/use-game'
 
 import {
   RxChevronUp,
@@ -11,6 +12,7 @@ import {
   RxBackpack,
   RxMagicWand,
   RxGroup,
+  RxHobbyKnife,
 } from 'react-icons/rx'
 import { Footer } from '@/styles/common'
 import { Button } from '@/components/ui/button'
@@ -23,12 +25,14 @@ interface Props {
 
 export default function Action({ type = 'move' }: Props) {
   const playerMoveMutation = usePlayerMoveMutation()
+  const attackMutation = useGameAttackMutation()
 
   const handleMove = (direction: (typeof DIRECTIONS)[number]) => playerMoveMutation.mutate({ direction })
+  const handleAttack = () => attackMutation.mutate()
 
   return (
     <Footer>
-      <div className='grid h-full grid-cols-9 grid-rows-3 justify-items-center w-[15rem]'>
+      <div className='grid h-full w-[15rem] grid-cols-9 grid-rows-3 justify-items-center'>
         {(type === 'move' || type === 'move_disabled' || type === 'combat_run_away') && (
           <>
             {/* Up */}
@@ -77,20 +81,36 @@ export default function Action({ type = 'move' }: Props) {
         {type === 'combat_attack' && (
           <>
             {/* Attack 1 */}
-            <Button className='col-start-2 row-start-3 h-12 w-12 border shadow-lg' size='icon-lg'>
-              <RxGroup size={'2em'} />
+            <Button
+              className='col-start-2 row-start-3 h-12 w-12 border shadow-lg'
+              size='icon-lg'
+              onClick={handleAttack}
+            >
+              <RxHobbyKnife size={'2em'} />
             </Button>
             {/* Attack 2 */}
-            <Button className='col-start-4 row-start-3 h-12 w-12 border shadow-lg' size='icon-lg'>
-              <RxGroup size={'2em'} />
+            <Button
+              className='col-start-4 row-start-3 h-12 w-12 border shadow-lg'
+              size='icon-lg'
+              onClick={handleAttack}
+            >
+              <RxHobbyKnife size={'2em'} />
             </Button>
             {/* Attack 3 */}
-            <Button className='col-start-6 row-start-3 h-12 w-12 border shadow-lg' size='icon-lg'>
-              <RxGroup size={'2em'} />
+            <Button
+              className='col-start-6 row-start-3 h-12 w-12 border shadow-lg'
+              size='icon-lg'
+              onClick={handleAttack}
+            >
+              <RxHobbyKnife size={'2em'} />
             </Button>
             {/* Attack 4 */}
-            <Button className='col-start-8 row-start-3 h-12 w-12 border shadow-lg' size='icon-lg'>
-              <RxGroup size={'2em'} />
+            <Button
+              className='col-start-8 row-start-3 h-12 w-12 border shadow-lg'
+              size='icon-lg'
+              onClick={handleAttack}
+            >
+              <RxHobbyKnife size={'2em'} />
             </Button>
           </>
         )}

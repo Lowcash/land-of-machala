@@ -8,6 +8,7 @@ import { PlaceType } from '@prisma/client'
 import * as PlaceEntity from '@/entity/place'
 import * as RaceEntity from '@/entity/race'
 import * as ClassEntity from '@/entity/class'
+import * as EnemyEntity from '@/entity/enemy'
 
 export type PlayerEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
@@ -39,15 +40,26 @@ export async function get(id: string) {
       ...player.class,
       ...ClassEntity.getI18n(player.class),
     },
+    enemy_instance: player.enemy_instance
+      ? {
+          ...player.enemy_instance,
+          enemy: {
+            ...player.enemy_instance.enemy,
+            ...EnemyEntity.getI18n(player.enemy_instance.enemy),
+          },
+        }
+      : undefined,
     loot: hasLoot(player)
       ? {
           ...player.loot,
           armors_loot: player.loot.armors_loot.map((x) => ({
             ...x,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
             armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
           })),
           weapons_loot: player.loot.weapons_loot.map((x) => ({
             ...x,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
             weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
           })),
         }
@@ -56,9 +68,9 @@ export async function get(id: string) {
     hasSafePlace:
       !hasCombat(player) &&
       (await PlaceEntity.get({ posX: player.pos_x, posY: player.pos_y }))?.type == PlaceType.SAFEHOUSE,
-      text: {
-        level: `${player.level} ${i18n.t('stats.level_abbr')}`
-      }
+    text: {
+      level: `${player.level} ${i18n.t('stats.level_abbr')}`,
+    },
   }
 }
 
@@ -76,6 +88,7 @@ export type CharacterEntity = User & {
   defeated: boolean
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
 export function hasCharacter(player: any): player is CharacterEntity {
   return (
     typeof player?.race === 'object' &&
@@ -92,10 +105,12 @@ export function hasCharacter(player: any): player is CharacterEntity {
   )
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
 export function hasCombat(player: any): player is { enemy_instance: EnemyInstance; enemy_instance_id: number } {
   return typeof player?.enemy_instance === 'object' && typeof player?.enemy_instance_id === 'string'
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Type guard requires any to narrow unknown types
 export function hasLoot(player: any): player is { loot: Loot; loot_id: number } {
   return typeof player?.loot === 'object' && typeof player?.loot_id === 'string'
 }

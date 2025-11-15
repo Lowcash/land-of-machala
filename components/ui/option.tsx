@@ -15,7 +15,7 @@ export function Option({ value, ...p }: Props) {
           <div key={optionKey} className='flex items-center space-x-2'>
             <RadioGroupItem value={id} id={optionKey} />
 
-            {/* @ts-ignore */}
+            {/* @ts-expect-error - Text component doesn't have htmlFor in types but label element supports it */}
             <Text as='label' htmlFor={optionKey}>
               {label}
             </Text>

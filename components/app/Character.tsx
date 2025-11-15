@@ -1,3 +1,5 @@
+import React from 'react'
+
 import { Card } from '@/styles/common'
 import { Text } from '@/styles/typography'
 import Progress from '@/components/ui/progress'
@@ -65,9 +67,15 @@ export default function Character(p: Props) {
               { ability: p.abilities?.armor, icon: '👕' },
               { ability: p.abilities?.damage, icon: '⚔️' },
             ].map((x, idx) => (
-              <span key={`${p.character?.name}Ability_${idx}`} className='whitespace-nowrap'>
-                {x.ability ? `${x.icon} ${x.ability}` : ''}
-              </span>
+              <React.Fragment key={`${p.character?.name}Ability_${idx}`}>
+                {x.ability ? (
+                  <span className='whitespace-nowrap'>
+                    {x.icon} {x.ability}
+                  </span>
+                ) : (
+                  <></>
+                )}
+              </React.Fragment>
             ))
           ) : (
             <>&nbsp;</>

@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   description: 'A mystical realm of magic and adventure',
 }
 
+// Force dynamic rendering for all pages (required for cookie-based routing)
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
     <html lang='cs' suppressHydrationWarning>

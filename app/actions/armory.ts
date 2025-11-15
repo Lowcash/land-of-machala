@@ -27,9 +27,13 @@ export const show = playerActionClient
         armorSell: i18n.t('armor.sell'),
         weaponBuy: i18n.t('weapon.buy'),
         weaponSell: i18n.t('weapon.sell'),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         sellSuccess: i18n.t(`${armory.i18n_key}.sell_success` as any),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         sellFailed: i18n.t(`${armory.i18n_key}.sell_failed` as any),
       },
     }

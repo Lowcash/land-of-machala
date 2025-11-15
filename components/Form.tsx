@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Option } from '@/components/ui/option'
 import { Button } from '@/components/ui/button'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form schema requires any for Zod type flexibility
 interface Props<T extends ZodType<any>> {
   ref?: React.Ref<Handle>
   schema: T
@@ -31,6 +32,7 @@ export interface Handle {
   submit?: () => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form component requires any for schema type
 export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWithChildrenAndClassName<Props<T>>) {
   const formRef = React.useRef<React.ComponentRef<'form'>>(null)
   const actionResult = useAction(p.action, p.onAction)
@@ -47,6 +49,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
   React.useEffect(() => {
     const subscription = hookForm.watch((v) => p.onForm?.onChange?.(v as Infer<T>))
     return () => subscription.unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hookForm.watch])
 
   React.useImperativeHandle(p.ref, () => ({
@@ -81,7 +84,7 @@ function Field<T>({ id, label, description, element: fieldElement }: FieldProps<
       control={form.control}
       name={id as string}
       render={({ field: renderFieldProps }) => {
-        const { ref, value, ...otherRenderFieldProps } = renderFieldProps
+        const { value, ...otherRenderFieldProps } = renderFieldProps
 
         return (
           <FormItem>
@@ -105,7 +108,7 @@ function Field<T>({ id, label, description, element: fieldElement }: FieldProps<
 
 type FieldPropsWithoutElement<T> = Omit<FieldProps<T>, 'element'>
 
-Form.Input = <T,>({
+const FormInput = <T,>({
   id,
   label,
   description,
@@ -113,7 +116,10 @@ Form.Input = <T,>({
 }: FieldPropsWithoutElement<T> & React.ComponentProps<typeof Input>) => {
   return <Field id={id as string} label={label} description={description} element={<Input {...fieldProps} id={id} />} />
 }
-Form.Option = <T,>({
+FormInput.displayName = 'Form.Input'
+Form.Input = FormInput
+
+const FormOption = <T,>({
   id,
   label,
   description,
@@ -123,7 +129,10 @@ Form.Option = <T,>({
     <Field id={id as string} label={label} description={description} element={<Option {...fieldProps} id={id} />} />
   )
 }
-Form.Button = ({
+FormOption.displayName = 'Form.Option'
+Form.Option = FormOption
+
+const FormButton = ({
   children,
   variant = 'warning',
   ...p
@@ -133,3 +142,5 @@ Form.Button = ({
     {children}
   </Button>
 )
+FormButton.displayName = 'Form.Button'
+Form.Button = FormButton

@@ -15,6 +15,7 @@ export const actionClient = createSafeActionClient({
       role: z.string().nullish(),
     })
   },
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Parameters reserved for Sentry integration
   handleServerError: (error, { clientInput, metadata }) => {
     // Sentry.captureExceptions(error, (scope) => {
     //   scope.clear()
@@ -30,6 +31,7 @@ export const actionClient = createSafeActionClient({
   },
 })
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- metadata reserved for role-based auth
 export const authActionClient = actionClient.use(async ({ next, metadata }) => {
   const session = await getServerSession()
 
@@ -53,4 +55,5 @@ export const playerActionClient = authActionClient.use(async ({ next, ctx }) => 
   return next({ ctx: { player } })
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Validation errors shape is generic
 export const handleValidationErrorsShape = async (ve: any) => flattenValidationErrors(ve).fieldErrors

@@ -2,6 +2,7 @@ import { z } from 'zod'
 import type { InferSafeActionFnResult, SafeActionResult } from 'next-safe-action'
 
 const isActionSuccessful = <T extends z.ZodType>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic safe action result requires any for flexibility
   action?: SafeActionResult<string, T, readonly [], any, any>,
 ): action is { data: T; serverError: undefined; validationError: undefined } => {
   if (!action) return false
@@ -13,6 +14,7 @@ const isActionSuccessful = <T extends z.ZodType>(
 }
 
 export const resolveActionResult = async <T extends z.ZodType>(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action result requires any for flexibility
   action: Promise<SafeActionResult<string, T, readonly [], any, any> | undefined>,
 ): Promise<T> => {
   return new Promise((resolve, reject) => {
@@ -35,4 +37,5 @@ export const resolveActionResult = async <T extends z.ZodType>(
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- Generic function type required for type inference
 export type SafeActionResultData<T extends Function> = InferSafeActionFnResult<T>['data']

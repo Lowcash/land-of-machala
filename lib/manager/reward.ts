@@ -31,6 +31,7 @@ export async function assignReward(
   player: PlayerEntity.PlayerEntity,
   reward: Reward,
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Destructured to exclude from loot object
   const { armors_loot, weapons_loot, ...loot } = reward
 
   return dbOrDbTransaction.user.update({

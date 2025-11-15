@@ -2,7 +2,6 @@
 
 import i18n from '@/lib/i18n'
 import type { Route } from '@/types'
-import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 import { actionClient } from '@/lib/safe-action'
 
@@ -13,8 +12,11 @@ export const show = actionClient.metadata({ actionName: 'common_show' }).action(
     text: {
       worldExplore: i18n.t('common.world_explore'),
       worldBack: i18n.t('common.world_back'),
+      back: i18n.t('common.back'),
+      leave: i18n.t('common.leave'),
       cityBack: i18n.t('common.city_back'),
       cityLeave: i18n.t('common.city_leave'),
+      cityEnter: i18n.t('common.city_enter'),
       buy: i18n.t('action.buy'),
       sell: i18n.t('action.sell'),
       deposit: i18n.t('place.bank.deposit'),
@@ -32,7 +34,5 @@ export const show = actionClient.metadata({ actionName: 'common_show' }).action(
     },
   }
 })
-
-export const navigate = async (...args: Parameters<typeof redirect>) => redirect(...args)
 
 export const getPage = async () => ((await cookies()).get(PAGE_COOKIE_KEY)?.value as Route) || 'WORLD'

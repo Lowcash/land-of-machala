@@ -33,7 +33,7 @@ export default function Page() {
 
           {hasWeapons && (
             <Card.Inner>
-              <H3>{inventoryShowQuery.data?.text.weapon_multi ?? 'inventory_weapon_multi'}</H3>
+              <H3 className='border-gra'>{inventoryShowQuery.data?.text.weapon_multi ?? 'inventory_weapon_multi'}</H3>
               <Weapons />
             </Card.Inner>
           )}
