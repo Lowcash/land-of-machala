@@ -2,9 +2,8 @@ import type { NextConfig } from 'next'
 import withBundleAnalyzer from '@next/bundle-analyzer'
 
 const nextConfig: NextConfig = {
-  experimental: {
-    reactCompiler: true,
-  },
+  // React Compiler is now stable in Next.js 16
+  reactCompiler: true,
 }
 
 const bundleAnalyzer = withBundleAnalyzer({

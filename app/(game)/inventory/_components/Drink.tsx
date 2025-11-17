@@ -8,7 +8,7 @@ import { RxPaperPlane } from 'react-icons/rx'
 
 type Props = MutationInput<typeof useWearableDrinkMutation>
 
-export default function Drink(p: Props) {
+export function Drink(p: Props) {
   const drinkMutation = useWearableDrinkMutation()
 
   return (

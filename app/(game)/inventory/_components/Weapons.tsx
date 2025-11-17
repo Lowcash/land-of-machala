@@ -3,10 +3,9 @@
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
 import Table from '@/components/Table'
-import Wear from '@/app/(game)/inventory/_components/Wear'
-import Unwear from '@/app/(game)/inventory/_components/Unwear'
+import { Wear, Unwear } from './'
 
-export default function Weapons() {
+export function Weapons() {
   const inventoryShowQuery = useInventoryShowQuery()
 
   return (

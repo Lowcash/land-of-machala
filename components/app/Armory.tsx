@@ -6,9 +6,9 @@ import { useArmoryShowQuery, useArmoryBuyItemMutation, useArmorySellItemMutation
 
 import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
-import Info from '@/components/app/Info'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
-import { ArmorMarket, WeaponMarket, type MarketActionEvent, type MarketLeaveEvent } from '@/components/app/Market'
+import { Info } from '@/components/app/Info'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
+import { ArmorMarket, WeaponMarket, type MarketActionEvent, type MarketLeaveEvent } from '@/components/app/market'
 
 const SUBPLACE = {
   ARMOR_BUY: 'armor_buy',
@@ -28,7 +28,7 @@ interface Props {
   onArmoryLeave?: () => void
 }
 
-export default function Armory({ armoryId, ...p }: Props) {
+export function Armory({ armoryId, ...p }: Props) {
   const [subplace, setSubplace] = React.useState<(typeof SUBPLACE)[keyof typeof SUBPLACE]>()
   const [message, setMessage] = React.useState<string>()
 

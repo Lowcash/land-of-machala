@@ -7,7 +7,7 @@ import { cache } from 'react'
 import { getServerSession } from 'next-auth/next'
 
 import { actionClient } from '@/lib/safe-action'
-import { userSignSchema } from '@/zod-schema/user'
+import { signInSchema } from '@/zod-schema/user'
 
 import { ERROR_CAUSE } from '@/config'
 
@@ -28,7 +28,7 @@ export const showLanding = actionClient.metadata({ actionName: 'user_show_landin
 
 export const signUp = actionClient
   .metadata({ actionName: 'user_signUp' })
-  .schema(userSignSchema)
+  .schema(signInSchema)
   .action(async ({ parsedInput }) => {
     const isExisting = await db.user.findFirst({ where: { email: parsedInput.email } })
 

@@ -3,11 +3,11 @@
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 
 import { Detail, Hero } from '@/styles/common'
-import Action from '@/components/app/Action'
-import Info from '@/components/app/Info'
-import CharacterPlayer from '@/components/app/CharacterPlayer'
+import { Action } from '@/components/app/Action'
+import { Info } from '@/components/app/Info'
+import { CharacterPlayer } from '@/components/app/CharacterPlayer'
 
-export default function Explore() {
+export function Explore() {
   const commonShowQuery = useCommonShowQuery()
 
   return (

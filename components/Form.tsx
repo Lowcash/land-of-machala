@@ -2,14 +2,11 @@
 
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { ZodType } from 'zod'
+import { z, type ZodType } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form'
+import { type FieldValues, FormProvider, useFormContext } from 'react-hook-form'
 
-import { type Infer } from 'next-safe-action/adapters/types'
-import { type ValidationErrors } from 'next-safe-action'
-import { useAction } from 'next-safe-action/hooks'
-import { useHookFormActionErrorMapper } from '@next-safe-action/adapter-react-hook-form/hooks'
+import { useHookFormAction, type HookProps } from '@next-safe-action/adapter-react-hook-form/hooks'
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -21,10 +18,12 @@ interface Props<T extends ZodType<any>> {
   ref?: React.Ref<Handle>
   schema: T
   data?: FieldValues
-  action: Parameters<typeof useAction>[0]
-  onAction: Parameters<typeof useAction>[1]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action type requires any
+  action: Parameters<typeof useHookFormAction<any, any, any, any, any>>[0]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action callbacks require any
+  onAction?: HookProps<any, any, any, any, any>['actionProps']
   onForm?: {
-    onChange?: (data: Infer<T>) => void
+    onChange?: (data: z.infer<T>) => void
   }
 }
 
@@ -35,19 +34,21 @@ export interface Handle {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form component requires any for schema type
 export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWithChildrenAndClassName<Props<T>>) {
   const formRef = React.useRef<React.ComponentRef<'form'>>(null)
-  const actionResult = useAction(p.action, p.onAction)
-
-  const { hookFormValidationErrors } = useHookFormActionErrorMapper<typeof p.schema>(
-    actionResult.result.validationErrors as ValidationErrors<typeof p.schema>,
+  
+  const { form: hookForm, handleSubmitWithAction } = useHookFormAction(
+    p.action,
+    // @ts-expect-error -- Zod v4 type compatibility with zodResolver
+    zodResolver(p.schema),
     {
-      joinBy: '\n',
+      actionProps: p.onAction,
+      formProps: {
+        values: p.data,
+      },
     },
   )
 
-  const hookForm = useForm({ resolver: zodResolver(p.schema), values: p.data, errors: hookFormValidationErrors })
-
   React.useEffect(() => {
-    const subscription = hookForm.watch((v) => p.onForm?.onChange?.(v as Infer<T>))
+    const subscription = hookForm.watch((v) => p.onForm?.onChange?.(v as z.infer<T>))
     return () => subscription.unsubscribe()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hookForm.watch])
@@ -61,7 +62,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
       <form
         ref={formRef}
         className={cn('flex w-full flex-col', p.className)}
-        onSubmit={hookForm.handleSubmit(async (data) => actionResult.executeAsync(data))}
+        onSubmit={handleSubmitWithAction}
       >
         {children}
       </form>

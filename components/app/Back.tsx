@@ -8,7 +8,7 @@ import { RxChevronLeft } from 'react-icons/rx'
 
 import { ROUTE } from '@/config'
 
-export default function Back() {
+export function Back() {
   const commonShowQuery = useCommonShowQuery()
 
   const { navigate } = useNavigate()
@@ -16,11 +16,9 @@ export default function Back() {
   const handleBackClick = () => navigate(ROUTE.WORLD)
 
   return (
-    <>
-      <Button size={'shrink-sm'} onClick={handleBackClick}>
-        <RxChevronLeft />
-        &nbsp;{commonShowQuery.data?.text.worldBack ?? 'world_back'}
-      </Button>
-    </>
+    <Button size={'shrink-sm'} onClick={handleBackClick}>
+      <RxChevronLeft />
+      &nbsp;{commonShowQuery.data?.text.worldBack ?? 'world_back'}
+    </Button>
   )
 }

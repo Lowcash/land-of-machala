@@ -4,12 +4,12 @@ import React, { memo } from 'react'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
 import { Detail, Hero } from '@/styles/common'
-import Action from '@/components/app/Action'
-import Info from '@/components/app/Info'
-import CharacterPlayer from '@/components/app/CharacterPlayer'
-import CharacterEnemy from '@/components/app/CharacterEnemy'
-import Enemy from '@/components/app/Enemy'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
+import { Action } from '@/components/app/Action'
+import { Info } from '@/components/app/Info'
+import { CharacterPlayer } from '@/components/app/CharacterPlayer'
+import { CharacterEnemy } from '@/components/app/CharacterEnemy'
+import { Enemy } from '@/components/app/Enemy'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
 
 const DECISION = {
   ATTACK: 'attack',
@@ -22,7 +22,7 @@ const PHASE = {
   RUN_AWAY: 'run_away',
 } as const
 
-function Combat() {
+export const Combat = memo(function Combat() {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   const [phase, setPhase] = React.useState<(typeof PHASE)[keyof typeof PHASE]>(PHASE.START)
@@ -63,8 +63,4 @@ function Combat() {
       {phase === PHASE.RUN_AWAY && <Action type='combat_run_away' />}
     </>
   )
-}
-
-Combat.displayName = 'Combat'
-
-export default memo(Combat)
+})

@@ -9,7 +9,7 @@ import { RxCross1 } from 'react-icons/rx'
 
 type Props = MutationInput<typeof useWearableUnwearMutation>
 
-export default function Unwear(p: Props) {
+export function Unwear(p: Props) {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   const wearableUnwearMutation = useWearableUnwearMutation()

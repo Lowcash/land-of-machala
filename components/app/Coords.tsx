@@ -4,7 +4,7 @@ import { usePlayerShowQuery } from '@/hooks/api/use-player'
 
 import { Text } from '@/styles/typography'
 
-export default function Coords() {
+export function Coords() {
   const playerShowQuery = usePlayerShowQuery()
 
   return (

@@ -9,7 +9,7 @@ import { RxCheck } from 'react-icons/rx'
 
 type Props = MutationInput<typeof useWearableWearMutation>
 
-export default function Wear(p: Props) {
+export function Wear(p: Props) {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   const wearableWearMutation = useWearableWearMutation()

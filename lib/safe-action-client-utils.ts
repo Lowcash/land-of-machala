@@ -8,7 +8,6 @@ const isActionSuccessful = <T extends z.ZodType>(
   if (!action) return false
   if (action.serverError) return false
   if (action.validationErrors) return false
-  if (action.bindArgsValidationErrors) return false
 
   return true
 }
@@ -26,7 +25,6 @@ export const resolveActionResult = async <T extends z.ZodType>(
           reject(
             result?.serverError ??
               result?.validationErrors ??
-              result?.bindArgsValidationErrors ??
               'Something went wrong',
           )
         }

@@ -1,57 +1,75 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-@layer base {
-  :root {
-    --custom-yellow-1: 42 49% 93%;
-    --custom-yellow-2: 44 67% 88%;
-
-    --custom-gold-1: 40, 50%, 88%, 0.933;
-    --custom-gold-2: 41 96% 40%;
-
-    --background: 42 49% 93%;
-    --foreground: 220.91deg 39.29% 10.98%;
-
-    --scrollbar-thumb: 41 69% 73%;
-    --scrollbar-track: 45 47% 87%;
-
-    --primary: 0 0% 0%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    
-    --secondary: 0 0% 86%;
-    --secondary-foreground: 0 0% 0%;
-
-    --destructive: 0 52% 61%;
-    --destructive-foreground: 0 0% 0%;
-
-    --warning: 41 69% 73%;
-    --warning-foreground: 0 0% 0%;
-
-    --success: 86 33% 67%;
-    --success-foreground: 0 0% 0%;
-
-    --info: 217 61% 83%;
-    --info-foreground: 0 0% 0%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-
-    --radius: 0.5rem;
+@theme {
+  /* Custom colors */
+  --color-custom-yellow-1: oklch(from hsl(42 49% 93%) l c h);
+  --color-custom-yellow-2: oklch(from hsl(44 67% 88%) l c h);
+  --color-custom-gold-1: oklch(from hsl(40 50% 88%) l c h / 0.933);
+  --color-custom-gold-2: oklch(from hsl(41 96% 40%) l c h);
+  
+  /* Semantic colors */
+  --color-background: oklch(from hsl(42 49% 93%) l c h);
+  --color-foreground: oklch(from hsl(220.91 39.29% 10.98%) l c h);
+  
+  --color-scrollbar: oklch(from hsl(41 69% 73%) l c h);
+  --color-scrollbar-track: oklch(from hsl(45 47% 87%) l c h);
+  
+  --color-primary: oklch(from hsl(0 0% 0%) l c h);
+  --color-primary-foreground: oklch(from hsl(222.2 47.4% 11.2%) l c h);
+  
+  --color-secondary: oklch(from hsl(0 0% 86%) l c h);
+  --color-secondary-foreground: oklch(from hsl(0 0% 0%) l c h);
+  
+  --color-destructive: oklch(from hsl(0 52% 61%) l c h);
+  --color-destructive-foreground: oklch(from hsl(0 0% 0%) l c h);
+  
+  --color-warning: oklch(from hsl(41 69% 73%) l c h);
+  --color-warning-foreground: oklch(from hsl(0 0% 0%) l c h);
+  
+  --color-success: oklch(from hsl(86 33% 67%) l c h);
+  --color-success-foreground: oklch(from hsl(0 0% 0%) l c h);
+  
+  --color-info: oklch(from hsl(217 61% 83%) l c h);
+  --color-info-foreground: oklch(from hsl(0 0% 0%) l c h);
+  
+  --color-card: oklch(from hsl(222.2 84% 4.9%) l c h);
+  --color-card-foreground: oklch(from hsl(210 40% 98%) l c h);
+  
+  --color-popover: oklch(from hsl(222.2 84% 4.9%) l c h);
+  --color-popover-foreground: oklch(from hsl(210 40% 98%) l c h);
+  
+  --color-muted: oklch(from hsl(217.2 32.6% 17.5%) l c h);
+  --color-muted-foreground: oklch(from hsl(215 20.2% 65.1%) l c h);
+  
+  --color-accent: oklch(from hsl(217.2 32.6% 17.5%) l c h);
+  --color-accent-foreground: oklch(from hsl(210 40% 98%) l c h);
+  
+  --color-border: oklch(from hsl(217.2 32.6% 17.5%) l c h);
+  --color-input: oklch(from hsl(217.2 32.6% 17.5%) l c h);
+  --color-ring: oklch(from hsl(212.7 26.8% 83.9%) l c h);
+  
+  /* Border radius */
+  --radius-lg: 0.5rem;
+  --radius-md: calc(0.5rem - 2px);
+  --radius-sm: calc(0.5rem - 4px);
+  
+  /* Box shadows */
+  --shadow-side: 0 4px 8px rgb(0 0 0 / 0.5);
+  
+  /* Keyframes */
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
   }
+  
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+  
+  /* Animation */
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
 }
 
 @layer base {
@@ -65,7 +83,15 @@
 }
 
 @layer utilities {
-  * {
-    @apply scrollbar-thin scrollbar-track-scrollbar-track scrollbar-thumb-scrollbar;
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-track-scrollbar-track {
+    scrollbar-color: var(--color-scrollbar) var(--color-scrollbar-track);
+  }
+  
+  .scrollbar-thumb-scrollbar {
+    scrollbar-color: var(--color-scrollbar) transparent;
   }
 }

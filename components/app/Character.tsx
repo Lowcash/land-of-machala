@@ -11,7 +11,6 @@ interface Props {
     race?: string
     class?: string
   }
-
   abilities?: {
     strength?: string
     agility?: string
@@ -19,7 +18,6 @@ interface Props {
     armor?: string
     damage?: string
   }
-
   progress?: {
     hp?: {
       actual: number
@@ -36,7 +34,7 @@ interface Props {
   }
 }
 
-export default function Character(p: Props) {
+export function Character(p: Props) {
   const hasName = !!p.character?.name
   const hasLevel = !!p.character?.level
   const hasAddCharactedInfo = !!p.character?.race && !!p.character?.class

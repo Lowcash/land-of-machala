@@ -5,9 +5,11 @@ import {
   resurrect,
   heal,
   buyPotion,
+} from '@/app/actions/hospital'
+import {
   acceptSlainEnemyQuest,
   completeSlainEnemyQuest,
-} from '@/app/actions/hospital'
+} from '@/app/actions/quest'
 
 import { QUERY_KEY } from '@/config'
 
