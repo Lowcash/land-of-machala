@@ -2,7 +2,7 @@
 
 import React from 'react'
 import type { Location } from '@/types'
-import { getBackground } from '@/app/actions/game'
+import { LOCATION } from '@/config/game-constants'
 
 interface GameContext {
   setLocationBackground: (location?: Location) => void
@@ -11,13 +11,11 @@ interface GameContext {
 const GameContext = React.createContext<GameContext | null>(null)
 
 export function GameProvider({ children }: React.PropsWithChildren) {
-  const setLocationBackground = async (location?: Location) => {
+  const setLocationBackground = (location?: Location) => {
     const aside = document.getElementsByTagName('aside')[0]
     if (!aside) return
 
-    aside.style.backgroundImage = location
-      ? `url(${(await getBackground({ location }))?.data?.background.src})`
-      : 'unset'
+    aside.style.backgroundImage = location && LOCATION[location] ? `url(${LOCATION[location]})` : 'unset'
   }
 
   return <GameContext.Provider value={{ setLocationBackground }}>{children}</GameContext.Provider>

@@ -14,9 +14,9 @@ import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
 import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
-import Info from '@/components/app/Info'
-import Decision, { type DecisionItem, type DecisionSelectedEvent } from '@/components/app/Decision'
-import Potions, { type PotionsActionEvent, type PotionsLeaveEvent } from '@/components/app/Potions'
+import { Info } from '@/components/app/Info'
+import { Decision, type DecisionItem, type DecisionSelectedEvent } from '@/components/app/Decision'
+import { Potions, type PotionsActionEvent, type PotionsLeaveEvent } from '@/components/app/Potions'
 
 const SUBPLACE = {
   POTION: 'potion',
@@ -37,7 +37,7 @@ interface Props {
   onHospitalLeave?: () => void
 }
 
-export default function Hospital({ hospitalId, ...p }: Props) {
+export function Hospital({ hospitalId, ...p }: Props) {
   const [subplace, setSubplace] = React.useState<(typeof SUBPLACE)[keyof typeof SUBPLACE]>()
   const [message, setMessage] = React.useState<string>()
 

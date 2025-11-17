@@ -6,8 +6,8 @@ import { useBankShowQuery, useBankDepositItemMutation, useBankWithdrawItemMutati
 
 import Alert from '@/components/Alert'
 import Loading from '@/components/Loading'
-import Info from '@/components/app/Info'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
+import { Info } from '@/components/app/Info'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
 import {
   ArmorSafe,
   PotionSafe,
@@ -16,7 +16,7 @@ import {
   type SafeActionEvent,
   type SafeMoneyActionEvent,
   type SafeLeaveEvent,
-} from '@/components/app/Safe'
+} from '@/components/app/safe'
 
 const SUBPLACE = {
   ARMOR_DEPOSIT: 'armor_deposit',
@@ -40,7 +40,7 @@ interface Props {
   onBankLeave?: () => void
 }
 
-export default function Bank({ bankId, ...p }: Props) {
+export function Bank({ bankId, ...p }: Props) {
   const [subplace, setSubplace] = React.useState<(typeof SUBPLACE)[keyof typeof SUBPLACE]>()
   const [message, setMessage] = React.useState<string>()
 

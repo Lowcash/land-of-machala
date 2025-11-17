@@ -13,7 +13,7 @@ interface Props {
   onDecisionSelected?: DecisionSelectedEvent
 }
 
-function Decision(p: Props) {
+export const Decision = memo(function Decision(p: Props) {
   return (
     <Card className='h-fit w-fit justify-between gap-8'>
       {(p.top?.length ?? 0) > 0 && (
@@ -36,8 +36,4 @@ function Decision(p: Props) {
       )}
     </Card>
   )
-}
-
-Decision.displayName = 'Decision'
-
-export default memo(Decision)
+})

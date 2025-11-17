@@ -7,7 +7,7 @@ interface Props {
   descriptions?: string[]
 }
 
-function Info(p: Props) {
+export const Info = memo(function Info(p: Props) {
   return (
     <Card className='flex flex-col'>
       {p.headers?.map((x, idx) => (
@@ -18,8 +18,4 @@ function Info(p: Props) {
       ))}
     </Card>
   )
-}
-
-Info.displayName = 'Info'
-
-export default memo(Info)
+})

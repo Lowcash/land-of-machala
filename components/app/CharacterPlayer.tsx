@@ -2,9 +2,9 @@
 
 import { memo } from 'react'
 import { usePlayerShowQuery } from '@/hooks/api/use-player'
-import Character from '@/components/app/Character'
+import { Character } from '@/components/app/Character'
 
-function CharacterPlayer() {
+export const CharacterPlayer = memo(function CharacterPlayer() {
   const playerShowQuery = usePlayerShowQuery()
 
   return (
@@ -38,8 +38,4 @@ function CharacterPlayer() {
       }}
     />
   )
-}
-
-CharacterPlayer.displayName = 'CharacterPlayer'
-
-export default memo(CharacterPlayer)
+})

@@ -4,15 +4,15 @@ import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useGameShowInfoQuery, useGameLootMutation } from '@/hooks/api/use-game'
 
 import { Detail, Hero } from '@/styles/common'
-import Info from '@/components/app/Info'
-import CharacterPlayer from '@/components/app/CharacterPlayer'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
+import { Info } from '@/components/app/Info'
+import { CharacterPlayer } from '@/components/app/CharacterPlayer'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
 
 const DECISION = {
   LEAVE: 'leave',
 } as const
 
-export default function Loot() {
+export function Loot() {
   const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
 

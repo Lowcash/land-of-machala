@@ -2,7 +2,7 @@
 
 import i18n from '@/lib/i18n'
 import { db } from '@/lib/db'
-import { playerCreateSchema, playerMoveSchema } from '@/zod-schema/player'
+import { createPlayerSchema, playerMoveSchema } from '@/zod-schema/player'
 import { actionClient, authActionClient, playerActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
 
 import * as ClassEntity from '@/entity/class'
@@ -44,7 +44,7 @@ export const showCreate = actionClient.metadata({ actionName: 'user_show_create'
 
 export const create = authActionClient
   .metadata({ actionName: 'player_create' })
-  .schema(playerCreateSchema, { handleValidationErrorsShape })
+  .schema(createPlayerSchema, { handleValidationErrorsShape })
   .action(async ({ ctx, parsedInput }) => {
     const [race, class_] = await Promise.all([RaceEntity.get(parsedInput.raceId), ClassEntity.get(parsedInput.classId)])
 

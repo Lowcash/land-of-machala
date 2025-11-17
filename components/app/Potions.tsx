@@ -8,7 +8,7 @@ import { Text } from '@/styles/typography'
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
 import Table from '@/components/Table'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
 
 export type PotionsActionEvent = (potion: HospitalPotion) => void
 export type PotionsLeaveEvent = () => void
@@ -19,12 +19,11 @@ const DECISION = {
 
 interface Props {
   hospitalId: string
-
-  onPotionsAction: PotionsActionEvent
+  onPotionsAction?: PotionsActionEvent
   onPotionsLeave?: PotionsLeaveEvent
 }
 
-export default function Potions({ hospitalId, ...p }: Props) {
+export function Potions({ hospitalId, ...p }: Props) {
   const commonShowQuery = useCommonShowQuery()
   const hospitalShowQuery = useHospitalShowQuery({ hospitalId })
 

@@ -2,9 +2,9 @@
 
 import { memo } from 'react'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
-import Character from '@/components/app/Character'
+import { Character } from '@/components/app/Character'
 
-function CharacterEnemy() {
+export const CharacterEnemy = memo(function CharacterEnemy() {
   const gameShowInfoQuery = useGameShowInfoQuery()
 
   return (
@@ -23,8 +23,4 @@ function CharacterEnemy() {
       }}
     />
   )
-}
-
-CharacterEnemy.displayName = 'CharacterEnemy'
-
-export default memo(CharacterEnemy)
+})

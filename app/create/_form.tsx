@@ -6,7 +6,7 @@ import { useNavigate } from '@/hooks/use-navigate'
 import { useRaceShowQuery } from '@/hooks/api/use-race'
 import { useClassShowQuery } from '@/hooks/api/use-class'
 import { usePlayerShowCreateQuery } from '@/hooks/api/use-player'
-import { type PlayerCreateSchema, playerCreateSchema } from '@/zod-schema/player'
+import { type PlayerCreateSchema, createPlayerSchema } from '@/zod-schema/player'
 
 import * as PlayerAction from '@/app/actions/player'
 
@@ -43,7 +43,7 @@ export default function CreateForm() {
     <Form
       ref={formRef}
       className='gap-6'
-      schema={playerCreateSchema}
+      schema={createPlayerSchema}
       action={PlayerAction.create}
       onAction={{ onSuccess: handleSubmitActionSuccess, onError: handleSubmitActionFailure }}
     >

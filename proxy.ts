@@ -14,5 +14,5 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [ROUTE.WORLD, ROUTE.QUEST, ROUTE.INVENTORY],
+  matcher: ['/world', '/quest', '/inventory'],
 }

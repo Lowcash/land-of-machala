@@ -6,7 +6,7 @@ import { signIn as userSignIn } from 'next-auth/react'
 import { signUp as userSignUp } from '@/app/actions/user'
 import { useNavigate } from '@/hooks/use-navigate'
 import { useUserShowLandingQuery } from '@/hooks/api/use-user'
-import { type UserSignSchema, userSignSchema } from '@/zod-schema/user'
+import { type UserSignSchema, signInSchema } from '@/zod-schema/user'
 
 import Form, { Handle as FormHandle } from '@/components/Form'
 import { Text } from '@/styles/typography'
@@ -66,7 +66,7 @@ export default function LoginForm() {
       data={formData}
       ref={formRef}
       className='gap-6'
-      schema={userSignSchema}
+      schema={signInSchema}
       action={userSignUp}
       onForm={{ onChange: handleFormChange }}
       onAction={{ onSuccess: handleSignUpSuccess, onError: handleSignUpError }}

@@ -47,3 +47,4 @@ next-env.d.ts
 /locals/
 INSIGHTS.md
 DEVELOPMENT.md
+.analysis/

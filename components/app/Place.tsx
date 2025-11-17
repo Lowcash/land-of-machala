@@ -6,14 +6,14 @@ import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
 
 import { Detail, Hero } from '@/styles/common'
-import Hospital from '@/components/app/Hospital'
-import Armory from '@/components/app/Armory'
-import Bank from '@/components/app/Bank'
+import { Hospital } from '@/components/app/Hospital'
+import { Armory } from '@/components/app/Armory'
+import { Bank } from '@/components/app/Bank'
 
-import Action from '@/components/app/Action'
-import Info from '@/components/app/Info'
-import Decision, { type DecisionSelectedEvent } from '@/components/app/Decision'
-import CharacterPlayer from '@/components/app/CharacterPlayer'
+import { Action } from '@/components/app/Action'
+import { Info } from '@/components/app/Info'
+import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
+import { CharacterPlayer } from '@/components/app/CharacterPlayer'
 
 export type EnterPlaceChangeEvent = (place?: Location) => void
 
@@ -30,9 +30,10 @@ const PHASE = {
 interface Props {
   enteredPlace?: Location
   onEnteredPlaceChange?: EnterPlaceChangeEvent
+  onPlaceLeave?: () => void
 }
 
-export default function Place(p: Props) {
+export function Place(p: Props) {
   const commonShowQuery = useCommonShowQuery()
   const gameShowInfoQuery = useGameShowInfoQuery()
 
