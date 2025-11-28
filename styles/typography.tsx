@@ -45,6 +45,6 @@ export const Link = (p: React.HTMLAttributes<HTMLAnchorElement> & TextProps) => 
   <Text {...p} as='a' className={cn('cursor-pointer hover:text-gray-600', p.className)} />
 )
 
-export const Input = React.forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>((p, ref) => (
-  <input {...p} ref={ref} className={cn('max-w-28 rounded-md border-2 bg-transparent pl-2', p.className)} />
-))
+export const Input = React.forwardRef<HTMLInputElement, React.HTMLProps<HTMLInputElement>>(function Input(p, ref) {
+  return <input {...p} ref={ref} className={cn('max-w-28 rounded-md border-2 bg-transparent pl-2', p.className)} />
+})
