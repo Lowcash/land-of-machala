@@ -34,7 +34,7 @@ export interface Handle {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form component requires any for schema type
 export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWithChildrenAndClassName<Props<T>>) {
   const formRef = React.useRef<React.ComponentRef<'form'>>(null)
-  
+
   const { form: hookForm, handleSubmitWithAction } = useHookFormAction(
     p.action,
     // @ts-expect-error -- Zod v4 type compatibility with zodResolver
@@ -59,11 +59,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
 
   return (
     <FormProvider {...hookForm}>
-      <form
-        ref={formRef}
-        className={cn('flex w-full flex-col', p.className)}
-        onSubmit={handleSubmitWithAction}
-      >
+      <form ref={formRef} className={cn('flex w-full flex-col', p.className)} onSubmit={handleSubmitWithAction}>
         {children}
       </form>
     </FormProvider>
