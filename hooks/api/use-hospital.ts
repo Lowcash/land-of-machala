@@ -1,15 +1,7 @@
 import { createMutationHook, createQueryHook } from '@/hooks/api/_api-hooks'
 
-import {
-  show,
-  resurrect,
-  heal,
-  buyPotion,
-} from '@/app/actions/hospital'
-import {
-  acceptSlainEnemyQuest,
-  completeSlainEnemyQuest,
-} from '@/app/actions/quest'
+import { show, resurrect, heal, buyPotion } from '@/app/actions/hospital'
+import { acceptSlainEnemyQuest, completeSlainEnemyQuest } from '@/app/actions/quest'
 
 import { QUERY_KEY } from '@/config'
 

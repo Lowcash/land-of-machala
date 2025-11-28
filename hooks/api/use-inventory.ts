@@ -6,10 +6,7 @@ import { show } from '@/app/actions/inventory'
 
 import { QUERY_KEY } from '@/config'
 
-export type InventoryItem = NonNullable<SafeActionResultData<typeof show>>[
-  | 'armors'
-  | 'weapons'
-  | 'potions'][0]
+export type InventoryItem = NonNullable<SafeActionResultData<typeof show>>['armors' | 'weapons' | 'potions'][0]
 
 const _useInventoryShowQuery = createQueryHook([QUERY_KEY.INVENTORY], show)
 

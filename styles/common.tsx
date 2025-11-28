@@ -6,7 +6,7 @@ const MainComponent = (p: React.HTMLAttributes<HTMLElement> & { layout: 'center'
     <main
       {...p}
       className={cn(
-        'container mx-auto flex h-screen w-screen flex-col items-center justify-center gap-2 overflow-hidden px-2 pb-[184px] pt-[56px] sm:gap-4',
+        'container mx-auto flex h-screen w-screen flex-col items-center justify-center gap-2 overflow-hidden px-2 pt-[56px] pb-[184px] sm:gap-4',
         p.layout === 'center' ? 'justify-center' : 'justify-between',
         p.className,
       )}
@@ -17,13 +17,13 @@ MainComponent.displayName = 'Main'
 export const Main = MainComponent
 
 export const Header = ({ children }: React.PropsWithChildren) => (
-  <header className='fixed top-0 flex h-12 w-full items-center bg-custom-yellow-2 p-2'>
+  <header className='bg-custom-yellow-2 fixed top-0 flex h-12 w-full items-center p-2'>
     <div className='container mx-auto flex items-center justify-between'>{children}</div>
   </header>
 )
 
 export const Footer = ({ children }: React.HTMLAttributes<HTMLElement>) => (
-  <footer className='fixed bottom-0 h-44 w-full bg-custom-yellow-2'>
+  <footer className='bg-custom-yellow-2 fixed bottom-0 h-44 w-full'>
     <div className='container mx-auto flex h-full w-[23rem] items-center justify-between gap-4 p-2 sm:w-[30rem]'>
       {children}
     </div>
@@ -46,7 +46,7 @@ export const List = (p: React.HTMLAttributes<HTMLUListElement>) => (
 )
 
 export const Card = (p: React.HTMLAttributes<HTMLDivElement>) => (
-  <div {...p} className={cn('flex flex-col rounded-md border-2 bg-custom-gold-1 p-2 shadow-side', p.className)} />
+  <div {...p} className={cn('bg-custom-gold-1 shadow-side flex flex-col rounded-md border-2 p-2', p.className)} />
 )
 
 const CardInner = (p: React.HTMLAttributes<HTMLDivElement>) => (
