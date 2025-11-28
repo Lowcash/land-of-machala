@@ -21,7 +21,9 @@ export async function get(id: string) {
 
 export function getI18n(entity: Bank) {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
     name: i18n.t(`${entity.i18n_key}.header` as any),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
     description: i18n.t(`${entity.i18n_key}.description` as any),
   }
 }
