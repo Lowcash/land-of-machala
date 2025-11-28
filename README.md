@@ -131,9 +131,10 @@ npm run lint             # Run ESLint
 npm run prisma:update    # Push schema changes to database (dev)
 npm run prisma:reset     # Reset database (⚠️ DESTRUCTIVE - deletes all data)
 npm run prisma:generate  # Regenerate Prisma Client after schema changes
+npm run prisma:seed      # Seed database with initial game data
 npx prisma studio        # Open Prisma Studio GUI for database inspection
 
-# Testing (coming soon)
+# Testing
 npm test                 # Run all tests
 npm run test:watch       # Run tests in watch mode
 npm run test:e2e         # Run end-to-end tests
