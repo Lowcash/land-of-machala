@@ -165,5 +165,15 @@ Use: `python3 -c "from datetime import datetime; print(datetime.now().strftime('
 - **After code changes affecting constants/config:** Add "Review [constants_module] for patterns" to TODO tracking
 - **Breaking Interface Changes:** Document in CHANGELOG with migration guide
 - **Never modify working code** without explicit reason and validation plan
+
+## 🌐 Language & Communication
+- **Chat Language:** Adapt to the user's language (Czech). If the user speaks Czech, reply in Czech.
+- **Code Language:** ALWAYS use English for code, comments, commit messages, and documentation.
+- **Technical Terms:** Keep standard technical terms in English (e.g., "Server Actions", "Props", "Hook") even when speaking Czech.
+
+## 🏗️ Project Architecture
+- **Entity Pattern:** Always use `entity/*` modules for data fetching and domain logic. Do not call `db.*` directly in UI components.
+- **Server Actions:** Use `actionClient` or `playerActionClient` from `@/lib/safe-action` for mutations.
+- **Prisma:** Schema is split in `prisma/schema/*.prisma`. Use `prisma/seed.ts` for initial data.
 ```
 ````
