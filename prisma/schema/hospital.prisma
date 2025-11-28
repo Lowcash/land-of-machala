@@ -18,6 +18,7 @@ model PotionInHospital {
   hospital    Hospital @relation(fields: [hospital_id], references: [id], onDelete: Cascade)
   hospital_id String
 
+  @@unique([potion_id, hospital_id])
   @@index([potion_id])
   @@index([hospital_id])
 }

@@ -17,6 +17,7 @@ model ArmorInArmory {
   armory    Armory @relation(fields: [armory_id], references: [id], onDelete: Cascade)
   armory_id String
 
+  @@unique([armor_id, armory_id])
   @@index([armor_id])
   @@index([armory_id])
 }
@@ -31,6 +32,7 @@ model WeaponInArmory {
   armory    Armory @relation(fields: [armory_id], references: [id], onDelete: Cascade)
   armory_id String
 
+  @@unique([weapon_id, armory_id])
   @@index([weapon_id])
   @@index([armory_id])
 }
