@@ -1,14 +1,17 @@
 'use server'
 
+import { z } from 'zod'
+import { createServerAction } from 'zsa'
 import { getTranslations } from 'next-intl/server'
 import { db } from '@/lib/db'
 import { createPlayerSchema, playerMoveSchema } from '@/zod-schema/player'
-import { playerProcedure } from '@/lib/safe-action'
+import { authProcedure, playerProcedure } from '@/lib/safe-action'
 import { RaceEntity, ClassEntity, PlayerEntity, WearableEntity, StatsEntity } from '@/entity'
 import { GameManager } from '@/lib/manager'
 import { BASE_HP_ACTUAL, BASE_HP_MAX, BASE_XP_ACTUAL, BASE_XP_MAX, ERROR_CAUSE } from '@/config'
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const t = await getTranslations()
@@ -46,19 +49,20 @@ export const showCreate = createServerAction()
     }
   })
 
-export const create = authProcedure.createServerAction()
+export const create = authProcedure
+  .createServerAction()
   .input(createPlayerSchema)
   .handler(async ({ ctx, input }) => {
     const [race, class_] = await Promise.all([RaceEntity.get(input.raceId), ClassEntity.get(input.classId)])
 
     if (!race || !class_) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-    
+
     const player = { ...ctx.user, race, class: class_ } as PlayerEntity.PlayerEntity
 
     const wearable = await WearableEntity.get(player, player.wearable_id)
 
     if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-    
+
     const stats = await StatsEntity.get(player, wearable)
 
     await db.user.update({
@@ -81,7 +85,8 @@ export const create = authProcedure.createServerAction()
     })
   })
 
-export const move = playerProcedure.createServerAction()
+export const move = playerProcedure
+  .createServerAction()
   .input(playerMoveSchema)
   .handler(async ({ ctx, input }) => {
     if (!ctx.player.canMove) throw new Error(ERROR_CAUSE.CANNOT_MOVE)

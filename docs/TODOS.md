@@ -43,6 +43,7 @@
 - [x] Fix Form component integration with ZSA
 - [x] Upgrade to next-intl for official i18n support
 - [x] Fix i18n MALFORMED_ARGUMENT errors preventing dev startup
+- [x] Re-implement {b} tags for bold formatting in Czech translations using t.rich()
 - [ ] Evaluate Redis for player state caching
 - [ ] Fix e2e tests (Playwright browsers need installation: `npx playwright install`)
 
