@@ -1,6 +1,6 @@
 import 'server-only'
 
-import i18n from '@/lib/i18n'
+import { t } from '@/lib/i18n'
 import { db } from '@/lib/db'
 import type { Armor, ArmorType } from '@prisma/client'
 
@@ -42,8 +42,8 @@ const getAllMap = (x: ArmorProcedureResult): Armor => ({
 export function getI18n(entity: Armor) {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-    name: i18n.t(`${entity.i18n_key}.header` as any),
+    name: t(`${entity.i18n_key}.header` as any),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-    description: i18n.t(`${entity.i18n_key}.description` as any),
+    description: t(`${entity.i18n_key}.description` as any),
   }
 }

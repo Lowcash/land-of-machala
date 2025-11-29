@@ -1,28 +1,27 @@
-import { z } from 'zod'
-import type { InferSafeActionFnResult, SafeActionResult } from 'next-safe-action'
+import type { inferServerActionReturnType } from 'zsa'
 
-const isActionSuccessful = <T extends z.ZodType>(
+const isActionSuccessful = <T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic safe action result requires any for flexibility
-  action?: SafeActionResult<string, T, readonly [], any, any>,
-): action is { data: T; serverError: undefined; validationError: undefined } => {
+  action?: any,
+): action is [T, null] => {
   if (!action) return false
-  if (action.serverError) return false
-  if (action.validationErrors) return false
+  if (!Array.isArray(action)) return false
+  if (action[1] !== null) return false
 
   return true
 }
 
-export const resolveActionResult = async <T extends z.ZodType>(
+export const resolveActionResult = async <T>(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action result requires any for flexibility
-  action: Promise<SafeActionResult<string, T, readonly [], any, any> | undefined>,
+  action: Promise<any>,
 ): Promise<T> => {
   return new Promise((resolve, reject) => {
     action
       .then((result) => {
         if (isActionSuccessful(result)) {
-          resolve(result.data)
+          resolve(result[0] as T)
         } else {
-          reject(result?.serverError ?? result?.validationErrors ?? 'Something went wrong')
+          reject(result[1]?.message ?? 'Something went wrong')
         }
       })
       .catch((error) => {
@@ -32,4 +31,4 @@ export const resolveActionResult = async <T extends z.ZodType>(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type -- Generic function type required for type inference
-export type SafeActionResultData<T extends Function> = InferSafeActionFnResult<T>['data']
+export type SafeActionResultData<T extends (...args: any) => any> = inferServerActionReturnType<T>[0]

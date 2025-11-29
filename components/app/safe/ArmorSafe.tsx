@@ -50,7 +50,7 @@ export function ArmorSafe({ bankId, ...p }: SafeProps) {
             { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'safe_armor_intelligene' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'safe_armor_action' },
           ]}
-          cells={items?.map((x) => [
+          cells={items?.map((x: any) => [
             { className: 'text-left', content: x.armor.name },
             { className: 'text-center', content: x.armor.type },
             { className: 'text-center', content: x.armor.armor },

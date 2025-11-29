@@ -1,7 +1,10 @@
 'use server'
 
-import { actionClient } from '@/lib/safe-action'
+import { z } from 'zod'
+import { createServerAction } from 'zsa'
 
-import * as RaceEntity from '@/entity/race'
+import { getAll } from '@/entity/race'
 
-export const show = actionClient.metadata({ actionName: 'race_show' }).action(async () => RaceEntity.getAll())
+export const show = createServerAction()
+  .input(z.object({}).optional())
+  .handler(async () => getAll())

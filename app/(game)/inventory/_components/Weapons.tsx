@@ -22,7 +22,7 @@ export function Weapons() {
           content: `${inventoryShowQuery.data?.text.wear ?? 'inventory_wear'} (${inventoryShowQuery.data?.text.right_hand ?? 'inventory_right_hand'}})`,
         },
       ]}
-      cells={inventoryShowQuery.data?.weapons.map((x) => [
+      cells={inventoryShowQuery.data?.weapons?.map((x: any) => [
         { className: 'text-left', content: x.weapon.name },
         {
           className: 'text-center',

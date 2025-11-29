@@ -1,7 +1,8 @@
 'use server'
 
+import { z } from 'zod'
 import { db } from '@/lib/db'
-import { playerActionClient } from '@/lib/safe-action'
+import { playerProcedure } from '@/lib/safe-action'
 import { QuestIdent } from '@prisma/client'
 
 import * as QuestEntity from '@/entity/quest'
@@ -10,9 +11,9 @@ import * as RewardManager from '@/lib/manager/reward'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const showAssigned = playerActionClient
-  .metadata({ actionName: 'quest_show_assigned' })
-  .action(async ({ ctx }) => {
+export const showAssigned = playerProcedure.createServerAction()
+  .input(z.object({}).optional())
+  .handler(async ({ ctx }) => {
     const assignedQuests = await QuestEntity.getAssigned(ctx.player.id, ctx.player.user_quest_id)
 
     if (!assignedQuests) throw new Error(ERROR_CAUSE.ENTITY_NOT_EXIST)
@@ -20,9 +21,9 @@ export const showAssigned = playerActionClient
     return assignedQuests
   })
 
-export const acceptSlainEnemyQuest = playerActionClient
-  .metadata({ actionName: 'quest_accept_slain_enemy' })
-  .action(async ({ ctx }) => {
+export const acceptSlainEnemyQuest = playerProcedure.createServerAction()
+  .input(z.object({}).optional())
+  .handler(async ({ ctx }) => {
     const [selectedQuest, assignedQuests] = await Promise.all([
       QuestEntity.get(QuestIdent.SLAIN_ENEMY),
       QuestEntity.getAssigned(ctx.player.id, ctx.player.user_quest_id),
@@ -36,9 +37,9 @@ export const acceptSlainEnemyQuest = playerActionClient
     await db.$transaction(async (dbTransaction) => QuestManager.accept(dbTransaction, selectedQuest, assignedQuests))
   })
 
-export const completeSlainEnemyQuest = playerActionClient
-  .metadata({ actionName: 'quest_complete_slain_enemy' })
-  .action(async ({ ctx }) => {
+export const completeSlainEnemyQuest = playerProcedure.createServerAction()
+  .input(z.object({}).optional())
+  .handler(async ({ ctx }) => {
     const [selectedQuest, assignedQuests] = await Promise.all([
       QuestEntity.get(QuestIdent.SLAIN_ENEMY),
       QuestEntity.getAssigned(ctx.player.id, ctx.player.user_quest_id),

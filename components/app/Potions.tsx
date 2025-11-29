@@ -55,7 +55,7 @@ export function Potions({ hospitalId, ...p }: Props) {
             { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'potion_price' },
             { className: 'text-right', content: commonShowQuery.data?.text.buy ?? 'potion_buy' },
           ]}
-          cells={hospitalShowQuery.data?.potions_hospital?.map((x) => [
+          cells={hospitalShowQuery.data?.potions_hospital?.map((x: any) => [
             { className: 'text-left', content: x.potion.name },
             {
               className: 'text-center',

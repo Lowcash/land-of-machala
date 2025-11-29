@@ -2,9 +2,9 @@ import 'server-only'
 
 import { db } from '@/lib/db'
 
-import * as ArmorEntity from '@/entity/armor'
-import * as PotionEntity from '@/entity/potion'
-import * as WeaponEntity from '@/entity/weapon'
+import { getI18n as getArmorI18n } from '@/entity/armor'
+import { getI18n as getPotionI18n } from '@/entity/potion'
+import { getI18n as getWeaponI18n } from '@/entity/weapon'
 
 export type BankAccountEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
@@ -46,15 +46,15 @@ export async function get(bankId: string, playerId: string) {
     ...bankAccount,
     armors: bankAccount.armors.map((x) => ({
       ...x,
-      armor: { ...x.armor, ...ArmorEntity.getI18n(x.armor) },
+      armor: { ...x.armor, ...getArmorI18n(x.armor) },
     })),
     weapons: bankAccount.weapons.map((x) => ({
       ...x,
-      weapon: { ...x.weapon, ...WeaponEntity.getI18n(x.weapon) },
+      weapon: { ...x.weapon, ...getWeaponI18n(x.weapon) },
     })),
     potions: bankAccount.potions.map((x) => ({
       ...x,
-      potion: { ...x.potion, ...PotionEntity.getI18n(x.potion) },
+      potion: { ...x.potion, ...getPotionI18n(x.potion) },
     })),
   }
 }

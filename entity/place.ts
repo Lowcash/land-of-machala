@@ -1,6 +1,6 @@
 import 'server-only'
 
-import i18n from '@/lib/i18n'
+import { t } from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { type Place } from '@prisma/client'
 import { type CoordinatesSchema } from '@/zod-schema/place'
@@ -31,21 +31,21 @@ export async function get(p: CoordinatesSchema) {
       ? {
           ...place.hospital,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-          name: i18n.t(`${place.hospital.i18n_key}.header` as any),
+          name: t(`${place.hospital.i18n_key}.header` as any),
         }
       : undefined,
     armory: place.armory
       ? {
           ...place.armory,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-          name: i18n.t(`${place.armory.i18n_key}.header` as any),
+          name: t(`${place.armory.i18n_key}.header` as any),
         }
       : undefined,
     bank: place.bank
       ? {
           ...place.bank,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-          name: i18n.t(`${place.bank.i18n_key}.header` as any),
+          name: t(`${place.bank.i18n_key}.header` as any),
         }
       : undefined,
   }
@@ -54,8 +54,8 @@ export async function get(p: CoordinatesSchema) {
 export function getI18n(entity: Place) {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-    name: i18n.t(`${entity.i18n_key}.header` as any),
+    name: t(`${entity.i18n_key}.header` as any),
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-    description: i18n.t(`${entity.i18n_key}.description` as any),
+    description: t(`${entity.i18n_key}.description` as any),
   }
 }

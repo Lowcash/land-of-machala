@@ -15,7 +15,7 @@ export function Potions() {
         { className: 'text-center', content: inventoryShowQuery.data?.text.efficiency ?? 'potion_efficiency' },
         { className: 'text-right', content: inventoryShowQuery.data?.text.use ?? 'potion_use' },
       ]}
-      cells={inventoryShowQuery.data?.potions.map((x) => [
+      cells={inventoryShowQuery.data?.potions?.map((x: any) => [
         { className: 'text-left', content: x.potion.name },
         {
           className: 'text-center',

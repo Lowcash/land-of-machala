@@ -1,62 +1,62 @@
 'use server'
 
-import i18n from '@/lib/i18n'
+import { getTranslations } from 'next-intl/server'
 import { db } from '@/lib/db'
-import { playerActionClient, handleValidationErrorsShape } from '@/lib/safe-action'
 import { armoryItemActionSchema, armorySchema } from '@/zod-schema/armory'
+import { playerProcedure } from '@/lib/safe-action'
 
-import * as ArmorEntity from '@/entity/armor'
-import * as WeaponEntity from '@/entity/weapon'
-import * as ArmoryEntity from '@/entity/armory'
-import * as InventoryEntity from '@/entity/inventory'
+import { get as getArmory } from '@/entity/armory'
+import { get as getInventory } from '@/entity/inventory'
+import { getAll as getAllArmor } from '@/entity/armor'
+import { getAll as getAllWeapon } from '@/entity/weapon'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = playerActionClient
-  .metadata({ actionName: 'armory_show' })
-  .schema(armorySchema, { handleValidationErrorsShape })
-  .action(async ({ parsedInput, ctx }) => {
-    const armory = await ArmoryEntity.get(parsedInput.armoryId, ctx.player.id, ctx.player.inventory_id)
+export const show = playerProcedure.createServerAction()
+  .input(armorySchema)
+  .handler(async ({ input, ctx }) => {
+    const t = await getTranslations()
+
+    const armory = await getArmory(input.armoryId, ctx.player.id, ctx.player.inventory_id)
 
     return {
       ...armory,
       text: {
-        header: i18n.t('place.your_are_in', { place: armory.name }),
+        header: t('place.your_are_in', { place: armory.name }),
         description: armory.description,
-        armorBuy: i18n.t('armor.buy'),
-        armorSell: i18n.t('armor.sell'),
-        weaponBuy: i18n.t('weapon.buy'),
-        weaponSell: i18n.t('weapon.sell'),
+        armorBuy: t('armor.buy'),
+        armorSell: t('armor.sell'),
+        weaponBuy: t('weapon.buy'),
+        weaponSell: t('weapon.sell'),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        buySuccess: i18n.t(`${armory.i18n_key}.buy_success` as any),
+        buySuccess: t(`${armory.i18n_key}.buy_success` as any),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        buyFailed: i18n.t(`${armory.i18n_key}.buy_failed` as any),
+        buyFailed: t(`${armory.i18n_key}.buy_failed` as any),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        sellSuccess: i18n.t(`${armory.i18n_key}.sell_success` as any),
+        sellSuccess: t(`${armory.i18n_key}.sell_success` as any),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        sellFailed: i18n.t(`${armory.i18n_key}.sell_failed` as any),
+        sellFailed: t(`${armory.i18n_key}.sell_failed` as any),
       },
     }
   })
 
-export const buyItem = playerActionClient
-  .metadata({ actionName: 'armory_buy_item' })
-  .schema(armoryItemActionSchema)
-  .action(async ({ parsedInput, ctx }) => {
+export const buyItem = playerProcedure.createServerAction()
+  .input(armoryItemActionSchema)
+  .handler(async ({ input, ctx }) => {
     const [armory, inventory] = await Promise.all([
-      ArmoryEntity.get(parsedInput.armoryId, ctx.player.id, ctx.player.inventory_id),
-      InventoryEntity.get(ctx.player.id, ctx.player.inventory_id),
+      getArmory(input.armoryId, ctx.player.id, ctx.player.inventory_id),
+      getInventory(ctx.player.id, ctx.player.inventory_id),
     ])
 
     if (!armory || !inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    switch (parsedInput.armoryItemType) {
+    switch (input.armoryItemType) {
       case 'armor': {
-        const armorsAll = await ArmorEntity.getAll()
+        const armorsAll = await getAllArmor()
 
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armoryArmor = armory.buyArmors?.find((x) => x.itemId === parsedInput.armoryItemId)
+        const armoryArmor = armory.buyArmors?.find((x) => x.itemId === input.armoryItemId)
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -81,11 +81,11 @@ export const buyItem = playerActionClient
         break
       }
       case 'weapon': {
-        const weaponsAll = await WeaponEntity.getAll()
+        const weaponsAll = await getAllWeapon()
 
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armoryBuyWeapon = armory.buyWeapons?.find((x) => x.itemId === parsedInput.armoryItemId)
+        const armoryBuyWeapon = armory.buyWeapons?.find((x) => x.itemId === input.armoryItemId)
 
         if (!armoryBuyWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -112,24 +112,23 @@ export const buyItem = playerActionClient
     }
   })
 
-export const sellItem = playerActionClient
-  .metadata({ actionName: 'armory_sell_item' })
-  .schema(armoryItemActionSchema)
-  .action(async ({ parsedInput, ctx }) => {
+export const sellItem = playerProcedure.createServerAction()
+  .input(armoryItemActionSchema)
+  .handler(async ({ input, ctx }) => {
     const [armory, inventory] = await Promise.all([
-      ArmoryEntity.get(parsedInput.armoryId, ctx.player.id, ctx.player.inventory_id),
-      InventoryEntity.get(ctx.player.id, ctx.player.inventory_id),
+      getArmory(input.armoryId, ctx.player.id, ctx.player.inventory_id),
+      getInventory(ctx.player.id, ctx.player.inventory_id),
     ])
 
     if (!armory || !inventory) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-    switch (parsedInput.armoryItemType) {
+    switch (input.armoryItemType) {
       case 'armor': {
-        const armorsAll = await ArmorEntity.getAll()
+        const armorsAll = await getAllArmor()
 
         if (!armorsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armoryArmor = armory.sellArmors?.find((x) => x.itemId === parsedInput.armoryItemId)
+        const armoryArmor = armory.sellArmors?.find((x) => x.itemId === input.armoryItemId)
 
         if (!armoryArmor) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
@@ -160,11 +159,11 @@ export const sellItem = playerActionClient
         break
       }
       case 'weapon': {
-        const weaponsAll = await WeaponEntity.getAll()
+        const weaponsAll = await getAllWeapon()
 
         if (!weaponsAll) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-        const armorySellWeapon = armory.sellWeapons?.find((x) => x.itemId === parsedInput.armoryItemId)
+        const armorySellWeapon = armory.sellWeapons?.find((x) => x.itemId === input.armoryItemId)
 
         if (!armorySellWeapon) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 

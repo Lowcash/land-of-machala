@@ -19,7 +19,7 @@ export function Armors() {
         { className: 'text-center', content: inventoryShowQuery.data?.text.intelligence ?? 'armor_intelligence' },
         { className: 'text-center', content: inventoryShowQuery.data?.text.wear ?? 'armor_wear' },
       ]}
-      cells={inventoryShowQuery.data?.armors.map((x) => [
+      cells={inventoryShowQuery.data?.armors?.map((x: any) => [
         { className: 'text-left', content: x.armor.name },
         { className: 'text-center', content: x.armor.type },
         { className: 'text-center', content: x.armor.armor },

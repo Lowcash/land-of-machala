@@ -2,6 +2,7 @@
 // Used in app/page.tsx for conditional rendering based on auth/player state
 // Named _layout.tsx to differentiate from Next.js layout.tsx convention
 
+import { Suspense } from 'react'
 import { GameProvider } from '@/context/game-provider'
 import { H3 } from '@/styles/typography'
 import { Main, Header } from '@/styles/common'
@@ -24,7 +25,9 @@ export default function Layout(p: Readonly<React.PropsWithChildren<{ pageKey: st
           </div>
         </Header>
         <Transition pageKey={p.pageKey}>
-          <Main layout='spaced'>{p.children}</Main>
+          <Suspense fallback={<Main layout='spaced'>Loading...</Main>}>
+            <Main layout='spaced'>{p.children}</Main>
+          </Suspense>
         </Transition>
       </GameProvider>
     </Hydration>

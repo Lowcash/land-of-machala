@@ -1,46 +1,50 @@
 'use server'
 
-import i18n from '@/lib/i18n'
+import { z } from 'zod'
+import { getTranslations } from 'next-intl/server'
 import bcrypt from 'bcrypt'
 import { db } from '@/lib/db'
 import { cache } from 'react'
 import { getServerSession } from 'next-auth/next'
 
-import { actionClient } from '@/lib/safe-action'
+import { createServerAction } from 'zsa'
 import { signInSchema } from '@/zod-schema/user'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const showLanding = actionClient.metadata({ actionName: 'user_show_landing' }).action(async () => {
-  return {
-    text: {
-      email: i18n.t('user.email.header'),
-      password: i18n.t('user.password.header'),
-      signIn: i18n.t('user.sign_in.header'),
-      signInSuccess: i18n.t('user.sign_in.success'),
-      signInFailure: i18n.t('user.sign_in.failure'),
-      signUp: i18n.t('user.sign_up.header'),
-      signUpSuccess: i18n.t('user.sign_up.success'),
-      signUpFailure: i18n.t('user.sign_up.failure'),
-    },
-  }
-})
+export const showLanding = createServerAction()
+  .input(z.object({}).optional())
+  .handler(async () => {
+    const t = await getTranslations()
 
-export const signUp = actionClient
-  .metadata({ actionName: 'user_signUp' })
-  .schema(signInSchema)
-  .action(async ({ parsedInput }) => {
-    const isExisting = await db.user.findFirst({ where: { email: parsedInput.email } })
+    return {
+      text: {
+        email: t('user.email.header'),
+        password: t('user.password.header'),
+        signIn: t('user.sign_in.header'),
+        signInSuccess: t('user.sign_in.success'),
+        signInFailure: t('user.sign_in.failure'),
+        signUp: t('user.sign_up.header'),
+        signUpSuccess: t('user.sign_up.success'),
+        signUpFailure: t('user.sign_up.failure'),
+      },
+    }
+  })
+
+export const signUp = createServerAction()
+  .input(signInSchema)
+  .handler(async ({ input }) => {
+    const isExisting = await db.user.findFirst({ where: { email: input.email } })
 
     if (isExisting) throw new Error(ERROR_CAUSE.ALREADY_EXISTS)
 
-    const hashedPassword = await bcrypt.hash(parsedInput.password, 10)
+    const hashedPassword = await bcrypt.hash(input.password, 10)
 
-    await db.user.create({ data: { email: parsedInput.email, password: hashedPassword } })
+    await db.user.create({ data: { email: input.email, password: hashedPassword } })
   })
 
 export const isSigned = cache(
-  actionClient.metadata({ actionName: 'user_isSigned' }).action(async () => {
-    return !!(await getServerSession())
-  }),
+  createServerAction()
+    .input(z.object({}).optional())
+    .handler(async () => !!(await getServerSession())),
 )

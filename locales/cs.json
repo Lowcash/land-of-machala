@@ -1,20 +1,20 @@
 {
   "user": {
     "email": {
-      "header": "Odemkni svět – zadej svůj e-mail, poutníku <b>(e-mail)</b>:",
+      "header": "Odemkni svět – zadej svůj e-mail, poutníku (e-mail):",
       "required": "Vyplňte e-mail"
     },
     "password": {
-      "header": "Tvůj tajný vzkaz bráně <b>(heslo)</b>:",
+      "header": "Tvůj tajný vzkaz bráně (heslo):",
       "required": "Vyplňte heslo"
     },
     "sign_in": {
-      "header": "Vítej zpět! <b>(přihlášení)</b>",
+      "header": "Vítej zpět! (přihlášení)",
       "success": "Úspěšně přihlášen",
       "failure": "Nepodařilo se přihlásit"
     },
     "sign_up": {
-      "header": "Rád Tě poznávám udatný dobrodruhu <b>(registrace)</b>",
+      "header": "Rád Tě poznávám udatný dobrodruhu (registrace)",
       "success": "Úspěšně registrován",
       "failure": "Nepodařilo se registrovat"
     }
@@ -31,7 +31,7 @@
       "failure": "Postavu se nepodařilo vytvořit"
     },
     "state": {
-      "defeated_long": "<b>Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!</b>"
+      "defeated_long": "Byl jsi zničen a probudil ses v nemocnici. Přišel jsi o všechny své věci!!"
     }
   },
   "stats": {
@@ -624,7 +624,7 @@
     "header_multi": "Potiony",
     "buy": "Koupit Potion",
     "buy_success": "Tady to máš",
-    "buy_failure": "Přijď, až na to budeš mít <b>(nedostatek peněz)</b>",
+    "buy_failure": "Přijď, až na to budeš mít (nedostatek peněz)",
     "efficiency": "Účinnost",
     "potion_weak": {
       "header": "Slabý lék"
@@ -645,22 +645,22 @@
     "run_away": "Utéct",
     "loot": {
       "header": "Loot",
-      "found": "<b>V lootu se nachází</b>"
+      "found": "V lootu se nachází"
     }
   },
   "place": {
-    "your_are_in": "Nacházíš se v <b>{{ place }}</b>",
+    "your_are_in": "Nacházíš se v {{ place }}",
     "hospital": {
       "heal": {
-        "header": "Uzdravení za {{ price }}&nbsp;<b></b>",
+        "header": "Uzdravení za {{ price }}&nbsp;",
         "action": "To chci!",
-        "success": "Teď jsi jako rybička <b>(vyléčen)</b>",
-        "failure": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme <b>(nedostatek peněz)</b>"
+        "success": "Teď jsi jako rybička (vyléčen)",
+        "failure": "Bude potřeba lepšího pojištění kamaráde..tady tě vyléčit nemůžeme (nedostatek peněz)"
       },
       "resurrect": {
-        "description": "Teda kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění.. <b>(zničen)</b>",
+        "description": "Teda kamaráde..moc toho z tebe teda nezbylo..něco s tím provedeme! Snad máš dobré pojištění.. (zničen)",
         "action": "Uzdravit!",
-        "success": "Vítej zpět <b>(vyléčen)</b>"
+        "success": "Vítej zpět (vyléčen)"
       }
     },
     "bank": {
@@ -675,9 +675,9 @@
       "withdraw_armor": "Vybrat Zbroj",
       "deposit_potion": "Uložit Potion",
       "withdraw_potion": "Vybrat Potion",
-      "deposit_success": "Ale překrásně.. my to tady pro tebe schováme na později <b>(✔️ úspěšně uloženo v bance)</b>",
-      "withdraw_success": "Tak tedy tady máte pane <b>(✔️ úspěšně vybráno z banky)</b>",
-      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?! <b>(❌ výběr se nezdařil)</b>"
+      "deposit_success": "Ale překrásně.. my to tady pro tebe schováme na později (✔️ úspěšně uloženo v bance)",
+      "withdraw_success": "Tak tedy tady máte pane (✔️ úspěšně vybráno z banky)",
+      "deposit_or_withdraw_failure": "Nějak se nám to zkomplikovalo?! (❌ výběr se nezdařil)"
     },
     "main_city": {
       "header": "Královský palác",
@@ -693,9 +693,9 @@
       "description": "Exkluzivní kovárna, kde se vyrábějí zbroje s ochrannými kouzly",
       "greeting": "Ahoy! Vítej v mým skromném doupěti železa a síly. Co tě přivedlo k mým mistrovským zbrojím?",
       "buy_success": "Zboží zakoupeno (najdeš jej v inventáři)",
-      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? <b>(nedostatek peněz)</b>",
-      "sell_success": "Nejlepší..to se mi hodilo <b>(✔️ úspěšně prodáno)</b>",
-      "sell_failure": "No..nějak se mi to nezdá <b>(❌ prodej se nezdařil)</b>"
+      "buy_failed": "Přijď za mnou znovu, až na to našetříš!? (nedostatek peněz)",
+      "sell_success": "Nejlepší..to se mi hodilo (✔️ úspěšně prodáno)",
+      "sell_failure": "No..nějak se mi to nezdá (❌ prodej se nezdařil)"
     },
     "main_city_bank": {
       "header": "Banka U dvou přátel",
@@ -736,7 +736,7 @@
     }
   },
   "enemy": {
-    "appear": "Najednou se před tebou objevil <b>{{ enemy }}</b>&nbsp;a vyzývá tě na souboj",
+    "appear": "Najednou se před tebou objevil {{ enemy }}&nbsp;a vyzývá tě na souboj",
     "goblin": {
       "header": "Goblin",
       "description": "Malý, rychlý a nebezpečný tvor s loveckými schopnostmi."
@@ -839,7 +839,7 @@
       "accept": "Beru",
       "accepted": "Hezky pěkně, dej se do toho!",
       "complete": "Odevzdat",
-      "completed": "Tak to je nádhera, zde je tvoje odměna <b>{{ reward }}</b>",
+      "completed": "Tak to je nádhera, zde je tvoje odměna {{ reward }}",
       "looted": "Super..někdy se za mnou zase stav, třeba tu pro tebe budu zase něco mít!"
     },
     "slain_troll": {

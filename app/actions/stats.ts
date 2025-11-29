@@ -1,29 +1,34 @@
 'use server'
 
-import i18n from '@/lib/i18n'
-import { playerActionClient } from '@/lib/safe-action'
+import { z } from 'zod'
+import { getTranslations } from 'next-intl/server'
+import { playerProcedure } from '@/lib/safe-action'
 
-import * as StatsEntity from '@/entity/stats'
-import * as WearableEntity from '@/entity/wearable'
+import { get as getWearable } from '@/entity/wearable'
+import { get as getStats } from '@/entity/stats'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = playerActionClient.metadata({ actionName: 'stats_show' }).action(async ({ ctx }) => {
-  const wearable = await WearableEntity.get(ctx.player, ctx.player.wearable_id)
+export const show = playerProcedure.createServerAction()
+  .input(z.object({}).optional())
+  .handler(async ({ ctx }) => {
+    const t = await getTranslations()
 
-  if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
+    const wearable = await getWearable(ctx.player, ctx.player.wearable_id)
 
-  const stats = await StatsEntity.get(ctx.player, wearable)
+    if (!wearable) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
-  return {
-    ...stats,
-    text: {
-      header: i18n.t('stats.header'),
-      level: i18n.t('stats.level'),
-      damage: i18n.t('stats.damage'),
-      strength: i18n.t('stats.strength'),
-      agility: i18n.t('stats.agility'),
-      intelligence: i18n.t('stats.intelligence'),
-    },
-  }
-})
+    const stats = await getStats(ctx.player, wearable)
+
+    return {
+      ...stats,
+      text: {
+        header: t('stats.header'),
+        level: t('stats.level'),
+        damage: t('stats.damage'),
+        strength: t('stats.strength'),
+        agility: t('stats.agility'),
+        intelligence: t('stats.intelligence'),
+      },
+    }
+  })

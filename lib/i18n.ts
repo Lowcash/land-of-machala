@@ -19,4 +19,9 @@ i18n.init({
   },
 })
 
+i18n.services.formatter?.add('b', (value) => `<b>${value}</b>`)
+i18n.services.formatter?.add('/b', (value) => `</b>${value}`)
+
+export const t = i18n.t.bind(i18n)
+
 export default i18n
