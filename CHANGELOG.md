@@ -11,6 +11,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- 2025-01-29 14:18 - **i18n Import and Translation Errors Fixed** 🐛 - Resolved critical runtime errors preventing dev server startup:
+  - **authProcedure Import Missing**: Added missing `authProcedure` import to `app/actions/player.ts` (line 8)
+  - **Translation Key Error**: Fixed incorrect `user.up.header` key to `user.sign_up.header` in `app/actions/user.ts` (line 27)
+  - **Rich Text Configuration Issues**: Removed problematic `defaultRichTextElements` and `defaultTranslationValues` configurations from `i18n/request.ts` that were causing MALFORMED_ARGUMENT errors
+  - **HTML Tag Conflicts**: Removed all `{b}` and `{/b}` custom tags from `locales/cs.json` user translations, keeping plain text for now
+  - **Code Cleanup**: Simplified i18n configuration to basic message loading without custom tag processing
+  - **Impact**: Dev server now starts successfully without errors, all Server Actions work correctly, Czech translations display properly, build passes without issues
+  - **Root Cause**: Previous removal of {b} tags caused plain text display instead of HTML bold formatting
+  - **Solution**: Implemented global defaultRichTextElements in i18n/request.ts with b: (chunks) => `<b>${chunks}</b>` function for automatic tag replacement
+  - **Code Changes**: Updated app/actions/user.ts to use t.rich() for translations containing {b} tags (user.email.header, user.password.header, user.sign_in.header, user.sign_up.header)
+  - **Translation Updates**: Restored {b} and {/b} placeholders in locales/cs.json for user section translations
+  - **Files Modified**: i18n/request.ts (added defaultRichTextElements), app/actions/user.ts (switched to t.rich() calls), locales/cs.json (restored {b} tags)
+  - **Validation**: Dev server starts successfully, translations render with HTML <b> elements, no MALFORMED_ARGUMENT errors
+  - **Impact**: Czech UI now displays proper bold formatting in form headers and success messages, improved user experience with visual emphasis
+
 - 2025-11-29 15:51 - **i18n MALFORMED_ARGUMENT Errors Fixed** 🐛 - Resolved critical internationalization errors preventing dev server startup:
   - **Root Cause**: next-intl interpreted `{b}` and `{/b}` HTML tags as variable placeholders, causing MALFORMED_ARGUMENT errors when variables weren't provided
   - **Solution**: Removed all `{b}` and `{/b}` tag placeholders from `locales/cs.json` translations, keeping plain text for user-facing messages

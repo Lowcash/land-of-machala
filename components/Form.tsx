@@ -16,10 +16,12 @@ interface Props<T extends ZodType<any>> {
   ref?: React.Ref<Handle>
   schema: T
   data?: FieldValues
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action type requires any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ZSA server action type requires any for flexibility
   action: any // ZSA server action
   onAction?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Action result types require any for flexibility
     onSuccess?: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Error types require any for flexibility
     onError?: (error: any) => void
   }
   onForm?: {
@@ -38,13 +40,17 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
   type FormData = z.infer<T>
 
   const form = useForm<FormData>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Zod resolver requires any for generic schema compatibility
     resolver: zodResolver(p.schema as any),
     defaultValues: p.data as FormData,
   })
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
+    // Form submission handled by external action
+  }
 
   React.useImperativeHandle(p.ref, () => ({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Form submission type casting required for react-hook-form compatibility
     submit: () => form.handleSubmit(onSubmit as any)(),
   }))
 
@@ -52,6 +58,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
     <FormProvider {...form}>
       <form
         ref={formRef}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Form submission type casting required for react-hook-form compatibility
         onSubmit={form.handleSubmit(onSubmit as any)}
         className={cn('flex w-full flex-col', p.className)}
       >
@@ -129,7 +136,9 @@ const FormButton = ({
   variant = 'warning',
   disabled,
   ...p
-}: PropsWithChildrenAndClassName<Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick'> & { disabled?: boolean }>) => {
+}: PropsWithChildrenAndClassName<
+  Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick'> & { disabled?: boolean }
+>) => {
   const form = useFormContext()
   const isSubmitting = form?.formState?.isSubmitting || false
 
@@ -148,4 +157,3 @@ const FormButton = ({
 }
 FormButton.displayName = 'Form.Button'
 Form.Button = FormButton
-}
