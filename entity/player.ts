@@ -1,6 +1,6 @@
 import 'server-only'
 
-import i18n from '@/lib/i18n'
+import { t } from '@/lib/i18n'
 import { db } from '@/lib/db'
 import type { Class, Race, EnemyInstance, Loot, User } from '@prisma/client'
 import { PlaceType } from '@prisma/client'
@@ -55,12 +55,12 @@ export async function get(id: string) {
           armors_loot: player.loot.armors_loot.map((x) => ({
             ...x,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-            armor: { ...x.armor, name: i18n.t(`${x.armor.i18n_key}.header` as any) },
+            armor: { ...x.armor, name: t(`${x.armor.i18n_key}.header` as any) },
           })),
           weapons_loot: player.loot.weapons_loot.map((x) => ({
             ...x,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
-            weapon: { ...x.weapon, name: i18n.t(`${x.weapon.i18n_key}.header` as any) },
+            weapon: { ...x.weapon, name: t(`${x.weapon.i18n_key}.header` as any) },
           })),
         }
       : undefined,
@@ -68,7 +68,7 @@ export async function get(id: string) {
     hasSafePlace:
       !hasCombat(player) && (await getPlace({ posX: player.pos_x, posY: player.pos_y }))?.type == PlaceType.SAFEHOUSE,
     text: {
-      level: `${player.level} ${i18n.t('stats.level_abbr')}`,
+      level: `${player.level} ${t('stats.level_abbr')}`,
     },
   }
 }

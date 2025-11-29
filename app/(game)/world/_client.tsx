@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { Suspense } from 'react'
 import dynamic from 'next/dynamic'
 import type { Location } from '@/types'
 import { useGameShowInfoQuery } from '@/hooks/api/use-game'
@@ -42,12 +42,16 @@ export function WorldClient({ initialData }: WorldClientProps) {
 
   const handleEnteredPlaceChange: EnterPlaceChangeEvent = (place) => setSelectedLocation(place)
 
-  if (gameShowInfoQuery.derived.hasCombat) return <Combat />
-  if (gameShowInfoQuery.derived.hasLoot) return <Loot />
-  if (gameShowInfoQuery.derived.hasPlace)
-    return <Place enteredPlace={selectedLocation} onEnteredPlaceChange={handleEnteredPlaceChange} />
-
-  return <Explore />
+  return (
+    <Suspense fallback={<div>Loading world...</div>}>
+      {gameShowInfoQuery.derived.hasCombat && <Combat />}
+      {gameShowInfoQuery.derived.hasLoot && <Loot />}
+      {gameShowInfoQuery.derived.hasPlace && (
+        <Place enteredPlace={selectedLocation} onEnteredPlaceChange={handleEnteredPlaceChange} />
+      )}
+      {!gameShowInfoQuery.derived.hasCombat && !gameShowInfoQuery.derived.hasLoot && !gameShowInfoQuery.derived.hasPlace && <Explore />}
+    </Suspense>
+  )
 }
 
 function useSetLocation(location?: Location) {

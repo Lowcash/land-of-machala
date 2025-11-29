@@ -1,9 +1,9 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { createSafeQueryClient } from '@/lib/query'
 
-import * as PlayerAction from '@/app/actions/player'
-import * as ClassAction from '@/app/actions/class'
-import * as RaceAction from '@/app/actions/race'
+import { showCreate as PlayerShowCreate } from '@/app/actions/player'
+import { show as ClassShow } from '@/app/actions/class'
+import { show as RaceShow } from '@/app/actions/race'
 
 import { QUERY_KEY } from '@/config'
 
@@ -11,15 +11,15 @@ export default async function Hydration(p: React.PropsWithChildren) {
   const queryClient = await createSafeQueryClient().prefetch([
     {
       queryKey: [QUERY_KEY.CREATE],
-      action: PlayerAction.showCreate,
+      action: PlayerShowCreate,
     },
     {
       queryKey: [QUERY_KEY.CLASS],
-      action: ClassAction.show,
+      action: ClassShow,
     },
     {
       queryKey: [QUERY_KEY.RACE],
-      action: RaceAction.show,
+      action: RaceShow,
     },
   ])
 

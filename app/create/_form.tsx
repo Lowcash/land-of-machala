@@ -55,12 +55,12 @@ export default function CreateForm() {
         <Form.Option<PlayerCreateSchema>
           id='raceId'
           label={<Text dangerouslySetInnerHTML={{ __html: playerShowCreateQuery.data?.text?.race ?? 'race' }} />}
-          options={Object.fromEntries(raceShowQuery.data?.map((x) => [x.id, x.name]))}
+          options={Object.fromEntries(raceShowQuery.data?.map((x: any) => [x.id, x.name]))}
         />
         <Form.Option<PlayerCreateSchema>
           id='classId'
           label={<Text dangerouslySetInnerHTML={{ __html: playerShowCreateQuery.data?.text?.class ?? 'class' }} />}
-          options={Object.fromEntries(classShowQuery.data?.map((x) => [x.id, x.name]))}
+          options={Object.fromEntries(classShowQuery.data?.map((x: any) => [x.id, x.name]))}
         />
       </div>
 

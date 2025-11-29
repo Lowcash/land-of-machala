@@ -4,6 +4,7 @@ import type { NextRequest } from 'next/server'
 import { ROUTE } from '@/config'
 
 export default function middleware(request: NextRequest) {
+  // Apply custom routing logic
   const response = NextResponse.redirect(new URL('/', request.url))
 
   if (request.nextUrl.pathname.startsWith(ROUTE.WORLD)) response.cookies.set('page', 'WORLD')
@@ -14,5 +15,6 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
+  // Match custom routes only
   matcher: ['/world', '/quest', '/inventory'],
 }

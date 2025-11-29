@@ -46,7 +46,7 @@ export function PotionSafe({ bankId, ...p }: SafeProps) {
             { className: 'text-center', content: commonShowQuery.data?.text.efficiency ?? 'safe_potion_efficiency' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'safe_potion_action' },
           ]}
-          cells={items?.map((x) => [
+          cells={items?.map((x: any) => [
             { className: 'text-left', content: x.potion.name },
             {
               className: 'text-center',

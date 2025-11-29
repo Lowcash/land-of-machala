@@ -2,9 +2,9 @@ import 'server-only'
 
 import { db } from '@/lib/db'
 
-import * as ArmorEntity from '@/entity/armor'
-import * as PotionEntity from '@/entity/potion'
-import * as WeaponEntity from '@/entity/weapon'
+import { getI18n as armorGetI18n } from '@/entity/armor'
+import { getI18n as weaponGetI18n } from '@/entity/weapon'
+import { getI18n as potionGetI18n } from '@/entity/potion'
 
 export type InventoryEntity = NonNullable<Awaited<ReturnType<typeof get>>>
 
@@ -44,21 +44,21 @@ export async function get(playerId: string, inventoryId: Nullish<string>) {
       ...x,
       armor: {
         ...x.armor,
-        ...ArmorEntity.getI18n(x.armor),
+        ...armorGetI18n(x.armor),
       },
     })),
     weapons_inventory: inventory.weapons_inventory.map((x) => ({
       ...x,
       weapon: {
         ...x.weapon,
-        ...WeaponEntity.getI18n(x.weapon),
+        ...weaponGetI18n(x.weapon),
       },
     })),
     potions_inventory: inventory.potions_inventory.map((x) => ({
       ...x,
       potion: {
         ...x.potion,
-        ...PotionEntity.getI18n(x.potion),
+        ...potionGetI18n(x.potion),
       },
     })),
   }

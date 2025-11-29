@@ -45,7 +45,7 @@ export function WeaponMarket({ armoryId, ...p }: MarketProps) {
             { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'weapon_market_price' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_market_action' },
           ]}
-          cells={items?.map((x) => [
+          cells={items?.map((x: any) => [
             { className: 'text-left', content: x.name },
             {
               className: 'text-center',

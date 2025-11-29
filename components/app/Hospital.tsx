@@ -81,10 +81,10 @@ export function Hospital({ hospitalId, ...p }: Props) {
         resurectMutation.mutate({ hospitalId })
         break
       case DECISION.QUEST_ACCEPT:
-        acceptEnemySlainQuestMutation.mutate()
+        acceptEnemySlainQuestMutation.mutate({})
         break
       case DECISION.QUEST_COMPLETE:
-        completeEnemySlainQuestMutation.mutate()
+        completeEnemySlainQuestMutation.mutate({})
         break
       case DECISION.POTION:
         setSubplace(SUBPLACE.POTION)

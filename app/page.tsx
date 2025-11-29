@@ -14,46 +14,55 @@ import InventoryLayout from '@/app/(game)/inventory/layout'
 import InventoryPage from '@/app/(game)/inventory/page'
 
 export default async function Home() {
-  if (!(await UserAction.isSigned())?.data)
-    return (
-      <LandingLayout pageKey='landing'>
-        <LandingPage />
-      </LandingLayout>
-    )
-
-  if (!(await PlayerAction.show())?.data)
-    return (
-      <CreateLayout pageKey='create'>
-        <CreatePage />
-      </CreateLayout>
-    )
-
-  const page = await getPage()
-
-  switch (page) {
-    case 'WORLD':
+  try {
+    const userSigned = await UserAction.isSigned()
+    if (!userSigned?.data) {
       return (
-        <GameLayout pageKey='world'>
-          <WorldLayout>
-            <WorldPage />
-          </WorldLayout>
-        </GameLayout>
+        <LandingLayout pageKey='landing'>
+          <LandingPage />
+        </LandingLayout>
       )
-    case 'QUEST':
+    }
+
+    const playerData = await PlayerAction.show()
+    if (!playerData?.data) {
       return (
-        <GameLayout pageKey='quest'>
-          <QuestPage />
-        </GameLayout>
+        <CreateLayout pageKey='create'>
+          <CreatePage />
+        </CreateLayout>
       )
-    case 'INVENTORY':
-      return (
-        <GameLayout pageKey='inventory'>
-          <InventoryLayout>
-            <InventoryPage />
-          </InventoryLayout>
-        </GameLayout>
-      )
-    default:
-      return <></>
+    }
+
+    const page = await getPage()
+
+    switch (page) {
+      case 'WORLD':
+        return (
+          <GameLayout pageKey='world'>
+            <WorldLayout>
+              <WorldPage />
+            </WorldLayout>
+          </GameLayout>
+        )
+      case 'QUEST':
+        return (
+          <GameLayout pageKey='quest'>
+            <QuestPage />
+          </GameLayout>
+        )
+      case 'INVENTORY':
+        return (
+          <GameLayout pageKey='inventory'>
+            <InventoryLayout>
+              <InventoryPage />
+            </InventoryLayout>
+          </GameLayout>
+        )
+      default:
+        return <div>Default page</div>
+    }
+  } catch (error) {
+    console.error('Page error:', error)
+    return <div>Error: {error instanceof Error ? error.message : 'Unknown error'}</div>
   }
 }

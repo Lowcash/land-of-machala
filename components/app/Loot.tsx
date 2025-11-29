@@ -18,8 +18,8 @@ export function Loot() {
 
   const lootMutation = useGameLootMutation()
 
-  const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x) => x.text.reward).filter((x) => !!x)
-  const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x) => x.text.reward).filter((x) => !!x)
+  const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x: any) => x.text.reward).filter((x: any) => !!x)
+  const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x: any) => x.text.reward).filter((x: any) => !!x)
 
   const itemsLoot = [armors, weapons].flat().filter((x): x is string => !!x)
 
@@ -30,7 +30,7 @@ export function Loot() {
         break
     }
 
-    lootMutation.mutate()
+    lootMutation.mutate({})
   }
 
   return (

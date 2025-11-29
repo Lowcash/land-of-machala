@@ -1,5 +1,6 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSetLocationBackgroundEffect } from '@/context/game-provider'
 import { useCommonShowQuery } from '@/hooks/api/use-common'
 import { useQuestShowAssignedQuery } from '@/hooks/api/use-quest'
@@ -31,53 +32,66 @@ export function QuestClient({ initialData }: QuestClientProps) {
   const hasSlainEnemyQuest = slainEnemyQuest?.id !== undefined
   const hasSlainTrollQuest = slainTrollQuest?.id !== undefined
 
-  if (!hasSlainEnemyQuest && !hasSlainTrollQuest)
-    return (
-      <Card>
-        <Back />
+  return (
+    <Suspense
+      fallback={
+        <Card>
+          <H3>Loading quests...</H3>
+        </Card>
+      }
+    >
+      {!hasSlainEnemyQuest && !hasSlainTrollQuest ? (
+        <Card>
+          <Back />
 
-        <H3>{commonShowQuery.data?.text.questEmpty ?? 'quest_empty'}</H3>
-      </Card>
-    )
+          <H3>{commonShowQuery.data?.text.questEmpty ?? 'quest_empty'}</H3>
+        </Card>
+      ) : (
+        <Card>
+          <Back />
 
+          <Card.Inner>
+            <H3>{commonShowQuery.data?.text.questHeader ?? 'quest_header'}:</H3>
+            <Table hideHeader columns={[{}, {}, {}]} cells={buildQuests(questShowAssignedQuery.data)} />
+          </Card.Inner>
+        </Card>
+      )}
+    </Suspense>
+  )
+}
+
+function buildQuests(data?: SafeActionResultData<typeof showAssigned>) {
   const quests = []
+  const slainEnemyQuest = data?.quest_slain_enemy
+  const slainTrollQuest = data?.quest_slain_troll
 
-  if (hasSlainEnemyQuest)
+  if (slainEnemyQuest?.id)
     quests.push(
       buildQuest(
         slainEnemyQuest.quest.name ?? 'quest_slain_enemy',
-        questShowAssignedQuery.data?.quest_slain_enemy?.text.description ?? 'quest_slain_enemy_description',
+        data?.quest_slain_enemy?.text.description ?? 'quest_slain_enemy_description',
         <b>
-          {questShowAssignedQuery.data?.quest_slain_enemy?.text.slained ?? 'quest_slain_enemy_slained'}:{' '}
-          {slainEnemyQuest.slain.actual_slain}/{slainEnemyQuest.slain.desired_slain}
+          {data?.quest_slain_enemy?.text.slained ?? 'quest_slain_enemy_slained'}: {slainEnemyQuest.slain.actual_slain}/
+          {slainEnemyQuest.slain.desired_slain}
         </b>,
-        !!questShowAssignedQuery.data?.quest_slain_enemy_complete,
+        !!data?.quest_slain_enemy_complete,
       ),
     )
 
-  if (hasSlainTrollQuest)
+  if (slainTrollQuest?.id)
     quests.push(
       buildQuest(
         slainTrollQuest.quest.name ?? 'quest_slain_troll',
-        questShowAssignedQuery.data?.quest_slain_enemy?.text.description ?? 'quest_slain_troll_description',
+        data?.quest_slain_troll?.text.description ?? 'quest_slain_troll_description',
         <b>
-          {questShowAssignedQuery.data?.quest_slain_enemy?.text.slained ?? 'quest_slain_troll_slained'}:{' '}
-          {slainTrollQuest.slain.actual_slain}/{slainTrollQuest.slain.desired_slain}
+          {data?.quest_slain_troll?.text.slained ?? 'quest_slain_troll_slained'}: {slainTrollQuest.slain.actual_slain}/
+          {slainTrollQuest.slain.desired_slain}
         </b>,
-        !!questShowAssignedQuery.data?.quest_slain_enemy_complete,
+        !!data?.quest_slain_troll_complete,
       ),
     )
 
-  return (
-    <Card>
-      <Back />
-
-      <Card.Inner>
-        <H3>{commonShowQuery.data?.text.questHeader ?? 'quest_header'}:</H3>
-        <Table hideHeader columns={[{}, {}, {}]} cells={quests} />
-      </Card.Inner>
-    </Card>
-  )
+  return quests
 }
 
 function buildQuest(name: string, description: React.ReactNode, progress: React.ReactNode, done: boolean) {

@@ -7,7 +7,7 @@ import { ActionButton } from './ActionButton'
 export function CombatActions() {
   const attackMutation = useGameAttackMutation()
 
-  const handleAttack = () => attackMutation.mutate()
+  const handleAttack = () => attackMutation.mutate({})
 
   return (
     <>

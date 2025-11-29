@@ -1,59 +1,36 @@
 import 'server-only'
 
-import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getServerSession } from 'next-auth/next'
-import { createSafeActionClient, flattenValidationErrors } from 'next-safe-action'
+import { createServerAction, createServerActionProcedure, ZSAError } from 'zsa'
 import { get as getPlayer, hasCharacter } from '@/entity/player'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const actionClient = createSafeActionClient({
-  defineMetadataSchema() {
-    return z.object({
-      actionName: z.string(),
-      role: z.string().nullish(),
-    })
-  },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars -- Parameters reserved for Sentry integration
-  handleServerError: (error, { clientInput, metadata }) => {
-    // Sentry.captureExceptions(error, (scope) => {
-    //   scope.clear()
-    //   scope.setContext('serverError', { message: error.message })
-    //   scope.setContext('clientInput', { clientInput })
-    //   return scope
-    // })
-    // if (error.contructor.name === 'DatabaseError') {
-    //   return 'Database Error: Data did not save'
-    // }
+// TODO: Add Sentry DSN to environment variables and initialize Sentry
+// import * as Sentry from '@sentry/nextjs'
 
-    return error.message
-  },
-})
+export const actionClient = createServerAction()
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars -- metadata reserved for role-based auth
-export const authActionClient = actionClient.use(async ({ next, metadata }) => {
-  const session = await getServerSession()
+// Create reusable procedures
+export const authProcedure = createServerActionProcedure()
+  .handler(async () => {
+    const session = await getServerSession()
 
-  if (!session) throw new Error(ERROR_CAUSE.UNAUTHORIZED)
+    if (!session) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-  const user = await db.user.findUnique({ where: { email: session.user.email! } })
+    const user = await db.user.findUnique({ where: { email: session.user.email! } })
 
-  if (!user) throw new Error(ERROR_CAUSE.UNAUTHORIZED) // TODO login by role
+    if (!user) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-  // if (!user || user.role !== metadata.role) throw new Error(ERROR_CAUSE.NO_PERMISSION)
-  // if (!!user?.role && user.role === metadata.role) throw new Error(ERROR_CAUSE.NO_PERMISSION)
+    return { user }
+  })
 
-  return next({ ctx: { user } })
-})
+export const playerProcedure = createServerActionProcedure(authProcedure)
+  .handler(async ({ ctx }) => {
+    const player = await getPlayer(ctx.user.id)
 
-export const playerActionClient = authActionClient.use(async ({ next, ctx }) => {
-  const player = await getPlayer(ctx.user.id)
+    if (!hasCharacter(player)) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.NO_CHARACTER)
 
-  if (!hasCharacter(player)) throw new Error(ERROR_CAUSE.NO_CHARACTER)
-
-  return next({ ctx: { player } })
-})
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Validation errors shape is generic
-export const handleValidationErrorsShape = async (ve: any) => flattenValidationErrors(ve).fieldErrors
+    return { ...ctx, player }
+  })

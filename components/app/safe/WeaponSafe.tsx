@@ -46,7 +46,7 @@ export function WeaponSafe({ bankId, ...p }: SafeProps) {
             { className: 'text-center', content: commonShowQuery.data?.text.damage ?? 'safe_weapon_damage' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'safe_weapon_action' },
           ]}
-          cells={items?.map((x) => [
+          cells={items?.map((x: any) => [
             { className: 'text-left', content: x.weapon.name },
             {
               className: 'text-center',

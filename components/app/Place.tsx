@@ -79,9 +79,9 @@ export function Place(p: Props) {
   }
 
   if (enteredPlace === 'hospital' || enteredPlace === 'armory' || enteredPlace === 'bank') {
-    const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'hospital')?.place
-    const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'armory')?.place
-    const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x) => x.type === 'bank')?.place
+    const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'hospital')?.place
+    const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'armory')?.place
+    const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'bank')?.place
 
     return (
       <>
@@ -127,7 +127,7 @@ export function Place(p: Props) {
           ].filter((x) => !!x)}
           bottom={
             phase === PHASE.ALREADY_ENTERED
-              ? gameShowInfoQuery.data?.place?.subplaces?.map((x) => ({
+              ? gameShowInfoQuery.data?.place?.subplaces?.map((x: any) => ({
                   key: x.type,
                   text: x.place?.name ?? 'subplace_name',
                 }))
