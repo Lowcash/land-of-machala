@@ -1,7 +1,7 @@
 # 📋 Active Tasks
 
-> **Last Updated:** 2025-01-29 14:18  
-> **Status:** Phase 4 Complete - Next-intl Migration Done, HTML Formatting Fixed
+> **Last Updated:** 2025-11-29 16:13  
+> **Status:** Phase 4 Complete - Next-intl Migration Done, HTML Formatting Fixed, Pre-commit Hooks Fixed
 
 ## 🔴 HIGH PRIORITY
 
@@ -43,6 +43,7 @@
 - [x] Fix Form component integration with ZSA
 - [x] Upgrade to next-intl for official i18n support
 - [x] Fix i18n MALFORMED_ARGUMENT errors preventing dev startup
+- [x] Fix pre-commit hook failures (ESLint any types, TypeScript zodResolver errors)
 - [x] Re-implement {b} tags for bold formatting in Czech translations using t.rich()
 - [ ] Evaluate Redis for player state caching
 - [ ] Fix e2e tests (Playwright browsers need installation: `npx playwright install`)
