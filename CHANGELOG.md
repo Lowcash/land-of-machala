@@ -9,6 +9,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- 2025-11-30 14:45 - **GitHub Workflow & Documentation Optimization** 📋 - Major infrastructure improvements for AI agent efficiency and token economy:
+  - **Token tracking standards:** Added `## 💰 Token Usage & Efficiency Standards` section to `copilot-instructions.md` with unified reporting format (Context %, Model, ETA)
+  - **Session handoff protocol:** Documented escalation path for high token usage (>85% → Sonnet 4.5) with checkpoint-resume pattern
+  - **CI/CD optimization:** Updated `ci.yml` to generate coverage reports only on current/dev branches (skip on main/beta to reduce GitHub artifact storage)
+  - **Workflow consolidation:** Removed redundant `test.yml` (functionality merged into `ci.yml`)
+  - **DEVELOPMENT.md relocation:** Moved from `local/DEVELOPMENT.md` → `docs/DEVELOPMENT.md` for public Git visibility
+  - **Issue template for agents:** Created `.github/ISSUE_TEMPLATE/ai-agent.md` with structured fields (WHAT, WHY, Acceptance Criteria, Reference Files, ETA)
+  - **Docs cleanup:** Removed `docs/TODOS.md` (redundant with `local/TODOS.md`)
+  - **Impact:** Streamlined AI agent workflow, reduced GitHub storage waste, clear token economy guidelines, aggregated task batching enabled (2–6h per issue)
+
 ### Fixed
 
 - 2025-11-29 16:13 - **Pre-commit Hook and TypeScript Errors Fixed** 🐛 - Resolved code quality enforcement issues blocking commits:

@@ -1,8 +1,0 @@
-blank_issues_enabled: true
-contact_links:
-  - name: 💬 Discussion
-    url: https://github.com/Lowcash/land-of-machala/discussions
-    about: Ask questions, discuss ideas, or chat with the community
-  - name: 📖 Documentation
-    url: https://github.com/Lowcash/land-of-machala/blob/main/README.md
-    about: Read the project documentation
