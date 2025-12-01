@@ -36,7 +36,7 @@ vi.mock('@/lib/safe-action', () => ({
   },
 }))
 
-vi.mock('./game', () => ({
+vi.mock('@/app/actions/game', () => ({
   checkEnemyAppeared: vi.fn(),
 }))
 
