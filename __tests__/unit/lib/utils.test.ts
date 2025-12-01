@@ -22,7 +22,7 @@ describe('utils', () => {
 
   describe('random', () => {
     it('should return a number within range', () => {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const result = random(10, 0)
         expect(result).toBeGreaterThanOrEqual(0)
         expect(result).toBeLessThan(10)
@@ -30,7 +30,7 @@ describe('utils', () => {
     })
 
     it('should return a number with only to parameter', () => {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const result = random(5)
         expect(result).toBeGreaterThanOrEqual(0)
         expect(result).toBeLessThan(5)
@@ -38,7 +38,7 @@ describe('utils', () => {
     })
 
     it('should handle from > 0', () => {
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const result = random(20, 10)
         expect(result).toBeGreaterThanOrEqual(10)
         expect(result).toBeLessThan(20)

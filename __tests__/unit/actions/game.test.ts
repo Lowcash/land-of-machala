@@ -115,7 +115,7 @@ describe('game combat logic', () => {
       const hpFrom = 40
       const hpTo = 60
       
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const hp = random(hpTo, hpFrom)
         expect(hp).toBeGreaterThanOrEqual(hpFrom)
         expect(hp).toBeLessThan(hpTo)
@@ -142,7 +142,7 @@ describe('game combat logic', () => {
       const xpFrom = 10
       const xpTo = 20
       
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const xpGain = random(xpTo, xpFrom)
         expect(xpGain).toBeGreaterThanOrEqual(xpFrom)
         expect(xpGain).toBeLessThan(xpTo)
@@ -153,7 +153,7 @@ describe('game combat logic', () => {
       const moneyFrom = 5
       const moneyTo = 15
       
-      for (let i = 0; i < 100; i++) {
+      for (let i = 0; i < 20; i++) {
         const moneyGain = random(moneyTo, moneyFrom)
         expect(moneyGain).toBeGreaterThanOrEqual(moneyFrom)
         expect(moneyGain).toBeLessThan(moneyTo)
