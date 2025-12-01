@@ -6,7 +6,7 @@ export default function Landing() {
   return (
     <S.Landing>
       <Image
-        className={'ml-auto mr-auto mt-auto'}
+        className={'mt-auto mr-auto ml-auto'}
         src={`/images/icon.png`}
         alt={'icon'}
         width={500}

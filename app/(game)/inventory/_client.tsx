@@ -41,7 +41,13 @@ export function InventoryClient({ initialData }: InventoryClientProps) {
   const hasItems = hasWeapons || hasArmors || hasPotions
 
   return (
-    <Suspense fallback={<Card><H3>Loading inventory...</H3></Card>}>
+    <Suspense
+      fallback={
+        <Card>
+          <H3>Loading inventory...</H3>
+        </Card>
+      }
+    >
       <Card>
         <Back />
 

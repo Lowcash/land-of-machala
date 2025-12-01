@@ -12,12 +12,12 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
 
   return (
     <div className='flex min-h-screen flex-col items-center justify-center gap-4 p-8'>
-      <div className='flex items-center gap-2 text-destructive'>
+      <div className='text-destructive flex items-center gap-2'>
         <AlertCircle className='h-10 w-10' />
         <h1 className='text-3xl font-bold'>Aplikace narazila na chybu</h1>
       </div>
 
-      <p className='max-w-md text-center text-lg text-muted-foreground'>
+      <p className='text-muted-foreground max-w-md text-center text-lg'>
         Omlouváme se za nepříjemnosti. Zkuste prosím obnovit stránku.
       </p>
 
