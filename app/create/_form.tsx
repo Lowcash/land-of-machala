@@ -55,11 +55,13 @@ export default function CreateForm() {
         <Form.Option<PlayerCreateSchema>
           id='raceId'
           label={<Text dangerouslySetInnerHTML={{ __html: playerShowCreateQuery.data?.text?.race ?? 'race' }} />}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type, complex nested structure
           options={Object.fromEntries(raceShowQuery.data?.map((x: any) => [x.id, x.name]))}
         />
         <Form.Option<PlayerCreateSchema>
           id='classId'
           label={<Text dangerouslySetInnerHTML={{ __html: playerShowCreateQuery.data?.text?.class ?? 'class' }} />}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type, complex nested structure
           options={Object.fromEntries(classShowQuery.data?.map((x: any) => [x.id, x.name]))}
         />
       </div>
