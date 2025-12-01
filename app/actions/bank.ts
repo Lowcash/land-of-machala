@@ -89,7 +89,8 @@ async function withdrawItemTransaction(
   })
 }
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(bankSchema)
   .handler(async ({ input }) => {
     const t = await getTranslations()
@@ -119,11 +120,13 @@ export const show = playerProcedure.createServerAction()
     }
   })
 
-export const showAccount = playerProcedure.createServerAction()
+export const showAccount = playerProcedure
+  .createServerAction()
   .input(bankSchema)
   .handler(async ({ input, ctx }) => getBankAccount(input.bankId, ctx.player.id))
 
-export const depositItem = playerProcedure.createServerAction()
+export const depositItem = playerProcedure
+  .createServerAction()
   .input(bankActionSchema)
   .handler(async ({ input, ctx }) => {
     const bankAccount = await getBankAccount(input.bankId, ctx.player.id)
@@ -168,7 +171,8 @@ export const depositItem = playerProcedure.createServerAction()
     }
   })
 
-export const withdrawItem = playerProcedure.createServerAction()
+export const withdrawItem = playerProcedure
+  .createServerAction()
   .input(bankActionSchema)
   .handler(async ({ input, ctx }) => {
     const bankAccount = await getBankAccount(input.bankId, ctx.player.id)

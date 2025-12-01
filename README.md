@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+
 ## Land of Machala App
 
 A mystical realm of magic and adventure - a browser-based RPG game built with Next.js.
@@ -63,6 +64,7 @@ npm run test:e2e
 For more details, see `docs/INSIGHTS.md`.
 
 =======
+
 # 🎮 Land of Machala
 
 > A browser-based fantasy RPG built with Next.js 15, React 19, and TypeScript
@@ -481,4 +483,5 @@ This project is proprietary. All rights reserved.
 ---
 
 **Happy adventuring in the Land of Machala! ⚔️🏰✨**
->>>>>>> origin/dev
+
+> > > > > > > origin/dev

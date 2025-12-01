@@ -11,7 +11,8 @@ import * as RewardManager from '@/lib/manager/reward'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const showAssigned = playerProcedure.createServerAction()
+export const showAssigned = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const assignedQuests = await QuestEntity.getAssigned(ctx.player.id, ctx.player.user_quest_id)
@@ -21,14 +22,15 @@ export const showAssigned = playerProcedure.createServerAction()
     return assignedQuests
   })
 
-export const acceptSlainEnemyQuest = playerProcedure.createServerAction()
+export const acceptSlainEnemyQuest = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const [selectedQuest, assignedQuests] = await Promise.all([
       QuestEntity.get(QuestIdent.SLAIN_ENEMY),
       QuestEntity.getAssigned(ctx.player.id, ctx.player.user_quest_id),
     ])
-    
+
     if (!selectedQuest || !assignedQuests) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
     if ((await QuestManager.getUpdatedProgress(db, selectedQuest, assignedQuests)) !== 'READY')
@@ -37,7 +39,8 @@ export const acceptSlainEnemyQuest = playerProcedure.createServerAction()
     await db.$transaction(async (dbTransaction) => QuestManager.accept(dbTransaction, selectedQuest, assignedQuests))
   })
 
-export const completeSlainEnemyQuest = playerProcedure.createServerAction()
+export const completeSlainEnemyQuest = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const [selectedQuest, assignedQuests] = await Promise.all([

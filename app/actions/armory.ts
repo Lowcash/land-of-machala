@@ -12,7 +12,8 @@ import { getAll as getAllWeapon } from '@/entity/weapon'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(armorySchema)
   .handler(async ({ input, ctx }) => {
     const t = await getTranslations()
@@ -40,7 +41,8 @@ export const show = playerProcedure.createServerAction()
     }
   })
 
-export const buyItem = playerProcedure.createServerAction()
+export const buyItem = playerProcedure
+  .createServerAction()
   .input(armoryItemActionSchema)
   .handler(async ({ input, ctx }) => {
     const [armory, inventory] = await Promise.all([
@@ -112,7 +114,8 @@ export const buyItem = playerProcedure.createServerAction()
     }
   })
 
-export const sellItem = playerProcedure.createServerAction()
+export const sellItem = playerProcedure
+  .createServerAction()
   .input(armoryItemActionSchema)
   .handler(async ({ input, ctx }) => {
     const [armory, inventory] = await Promise.all([
