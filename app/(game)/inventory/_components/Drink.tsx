@@ -6,9 +6,9 @@ import type { MutationInput } from '@/lib/utils'
 import { Button } from '@/components/ui/button'
 import { RxPaperPlane } from 'react-icons/rx'
 
-interface Props extends MutationInput<typeof useWearableDrinkMutation> {}
+type Props = MutationInput<typeof useWearableDrinkMutation>
 
-export default function Drink(p: Props) {
+export function Drink(p: Props) {
   const drinkMutation = useWearableDrinkMutation()
 
   return (

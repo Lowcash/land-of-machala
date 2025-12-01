@@ -7,7 +7,7 @@ interface Props extends Pick<React.ComponentProps<typeof RadioGroup>, 'id' | 'va
 
 export function Option({ value, ...p }: Props) {
   return (
-    <RadioGroup {...p} defaultValue={value}>
+    <RadioGroup {...p} defaultValue={value ?? undefined}>
       {Object.entries(p.options).map(([id, label]) => {
         const optionKey = `Option_${id}_${label}`
 
@@ -15,7 +15,7 @@ export function Option({ value, ...p }: Props) {
           <div key={optionKey} className='flex items-center space-x-2'>
             <RadioGroupItem value={id} id={optionKey} />
 
-            {/* @ts-ignore */}
+            {/* @ts-expect-error - Text component doesn't have htmlFor in types but label element supports it */}
             <Text as='label' htmlFor={optionKey}>
               {label}
             </Text>

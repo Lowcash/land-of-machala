@@ -26,9 +26,11 @@ export default function Progress(p: React.PropsWithChildren<Props>) {
   )
 }
 
-Progress.Root = (p: React.PropsWithChildren & Pick<React.ComponentProps<typeof Root>, 'value' | 'max'>) => (
-  <Root {...p} className='relative h-6 w-full overflow-hidden rounded-full border border-black/10 bg-custom-gold-1' />
+const ProgressRoot = (p: React.PropsWithChildren & Pick<React.ComponentProps<typeof Root>, 'value' | 'max'>) => (
+  <Root {...p} className='bg-custom-gold-1 relative h-4 w-full overflow-hidden rounded-sm border border-black/10' />
 )
+ProgressRoot.displayName = 'Progress.Root'
+Progress.Root = ProgressRoot
 
 const VARIANT = {
   red: 'bg-red-800',
@@ -43,21 +45,25 @@ interface IndicatorProps {
   variant: Variant
 }
 
-Progress.Indicator = ({
+const ProgressIndicator = ({
   variant = 'gold',
   ...p
 }: React.PropsWithChildren<IndicatorProps> & { style?: React.CSSProperties }) => (
   <Indicator
     {...p}
     className={cn(
-      'h-full w-full flex-1 transition-all [&>*]:absolute [&>*]:left-1/2 [&>*]:top-1/2 [&>*]:-translate-x-1/2 [&>*]:-translate-y-1/2 [&>*]:transform',
+      'h-full w-full flex-1 transition-all [&>*]:absolute [&>*]:top-1/2 [&>*]:left-1/2 [&>*]:-translate-x-1/2 [&>*]:-translate-y-1/2 [&>*]:transform',
       VARIANT[variant],
     )}
   />
 )
+ProgressIndicator.displayName = 'Progress.Indicator'
+Progress.Indicator = ProgressIndicator
 
-Progress.Text = (p: React.PropsWithChildren) => (
-  <Text className='absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-sm bg-white/45 px-1 shadow-sm'>
+const ProgressText = (p: React.PropsWithChildren) => (
+  <Text className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform rounded-sm bg-white/45 px-1 text-sm whitespace-nowrap shadow-sm'>
     <div className='mt-[3px]'>{p.children}</div>
   </Text>
 )
+ProgressText.displayName = 'Progress.Text'
+Progress.Text = ProgressText

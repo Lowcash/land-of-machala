@@ -2,10 +2,10 @@
 
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
-import Table from '@/components/table'
-import Drink from '@/app/(game)/inventory/_components/Drink'
+import Table from '@/components/Table'
+import { Drink } from './'
 
-export default function Potions() {
+export function Potions() {
   const inventoryShowQuery = useInventoryShowQuery()
 
   return (
@@ -15,7 +15,7 @@ export default function Potions() {
         { className: 'text-center', content: inventoryShowQuery.data?.text.efficiency ?? 'potion_efficiency' },
         { className: 'text-right', content: inventoryShowQuery.data?.text.use ?? 'potion_use' },
       ]}
-      cells={inventoryShowQuery.data?.potions.map((x) => [
+      cells={inventoryShowQuery.data?.potions?.map((x: any) => [
         { className: 'text-left', content: x.potion.name },
         {
           className: 'text-center',

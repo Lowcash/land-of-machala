@@ -1,0 +1,35 @@
+// This is a reusable layout COMPONENT (not a Next.js layout file)
+// Used in app/page.tsx for conditional rendering based on auth/player state
+// Named _layout.tsx to differentiate from Next.js layout.tsx convention
+
+import { Suspense } from 'react'
+import { GameProvider } from '@/context/game-provider'
+import { H3 } from '@/styles/typography'
+import { Main, Header } from '@/styles/common'
+import Transition from '@/components/Transition'
+import Hydration from '@/app/(game)/_hydration'
+import SignOut from '@/components/button/SignOut'
+import { Coords } from '@/components/app/Coords'
+
+export default function Layout(p: Readonly<React.PropsWithChildren<{ pageKey: string }>>) {
+  return (
+    <Hydration>
+      <GameProvider>
+        <Header>
+          <div>
+            <H3>Land of Machala</H3>
+          </div>
+          <div className='flex items-center gap-2'>
+            <Coords />
+            <SignOut />
+          </div>
+        </Header>
+        <Transition pageKey={p.pageKey}>
+          <Suspense fallback={<Main layout='spaced'>Loading...</Main>}>
+            <Main layout='spaced'>{p.children}</Main>
+          </Suspense>
+        </Transition>
+      </GameProvider>
+    </Hydration>
+  )
+}

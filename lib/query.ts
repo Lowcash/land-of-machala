@@ -1,5 +1,5 @@
 import { QueryClient } from '@tanstack/react-query'
-import { resolveActionResult } from '@/lib/safe-action-utils'
+import { resolveActionResult } from '@/lib/safe-action-client-utils'
 
 export const createQueryClient = () =>
   new QueryClient({
@@ -13,13 +13,16 @@ export const createQueryClient = () =>
     },
   })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic query action requires any for flexibility
 type QueryAction<TParams extends any[] = [], TResult = any> = (...params: TParams) => Promise<TResult>
 
 export function createSafeQueryClient(queryClient = new QueryClient()) {
   return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic types require any for flexibility
     async prefetch<TQueryKey extends any[], TParams extends any[] = []>(
       queries: Array<{
         queryKey: TQueryKey
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action result type
         action: QueryAction<TParams, any>
         params?: TParams
       }>,
@@ -30,7 +33,7 @@ export function createSafeQueryClient(queryClient = new QueryClient()) {
             queryKey: query.queryKey,
             queryFn: () =>
               resolveActionResult(
-                // @ts-ignore
+                // @ts-expect-error - Dynamic params spreading not fully type-safe
                 query.params ? query.action(...query.params) : query.action(),
               ),
           }),
