@@ -48,5 +48,4 @@ next-env.d.ts
 # AI-specific documentation (local context only)
 /locals/
 INSIGHTS.md
-DEVELOPMENT.md
 .analysis/

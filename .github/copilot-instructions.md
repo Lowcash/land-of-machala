@@ -12,6 +12,18 @@
 - Fix errors immediately during completion
 - For percentage mentions, add remaining tasks and execute them
 
+### Automation-First Policy (NEW)
+**CRITICAL:** Maximize autonomy. Execute automatically WITHOUT waiting for user approval:
+- ✅ Do: Create/update files, run linters, commit-ready code, push branches
+- ✅ Do: Make architecture decisions within guidelines (follow DEVELOPMENT.md, INSIGHTS.md)
+- ✅ Do: Auto-create PR drafts with detailed descriptions (user reviews before merge)
+- ❌ Don't: Ask user for approval on each small change
+- ❌ Don't: Wait for confirmation before implementing obvious fixes
+- ❌ Don't: Stop at "Here's what I would do..." — actually do it
+- ⏸️ Only pause for: Major breaking changes, architecture overhauls, user-facing behavior changes
+
+**User involvement:** User reviews final PR, merges when ready. No micro-management.
+
 ## 🔧 Code Standards
 - **No magic numbers:** Use named constants for literals >1
 - **Self-documenting code:** Meaningful names, enums over strings, no unused code
@@ -115,7 +127,45 @@ Use: `python3 -c "from datetime import datetime; print(datetime.now().strftime('
 - **Throttle repetitive logs:** Session-based deduplication for warnings
 - **No noise in production:** Default INFO level, <10 lines per minute in normal operation
 - **Structured context:** Always include timestamp, component name, relevant IDs
+## 💰 Token Usage & Efficiency Standards
 
+### Unified Context Tracking Format
+All AI agents MUST report token usage in this format:
+
+**Session Report Template:**
+```
+📊 Context: <used>k / <budget>k tokens (<percent>%)
+⏱️ Model: [Claude Haiku 4.5 | Claude Sonnet 4.5 | Other]
+⏱️ ETA: <specific activity description>
+```
+
+**Example:**
+```
+📊 Context: 51k / 200k tokens (25.5%)
+⏱️ Model: Claude Haiku 4.5
+⏱️ ETA: ~20 min (test coverage phase + updating Server Actions)
+```
+
+**Guidelines:**
+- **Used tokens:** Actual value from context window
+- **Budget:** 200k per default agent session (escalate to Sonnet if approaching 80%)
+- **Percent:** (used ÷ budget) × 100, round to nearest 1%
+- **Model:** Explicit model name (enables future multi-model routing)
+- **ETA:** Specific, actionable (NOT "implementation" but "adding 15 Server Action tests + manager tests")
+
+### Token Economy Rules
+- ✅ **Maximize per-session work:** Ask agents to batch 3–5 related tasks (not atomic 30-min tasks)
+- ✅ **Minimize searches:** Each grep_search counts ~500 tokens; batch searches in one call
+- ✅ **GitHub storage:** Artifacts clean-up handled via GitHub settings (7-day retention), not scripts
+- ✅ **Coverage reports:** Generate only on current branch/dev branches (not main/beta until release)
+- ⚠️ **Context escalation:** If usage >85%, switch to Sonnet 4.5 or summarize + restart with new agent
+
+### Session Handoff Protocol
+**If approaching token limit (>85% used):**
+1. Create summary of completed work + remaining tasks
+2. Add summary to CHANGELOG.md as "Session checkpoint"
+3. Provide new agent: INSIGHTS.md + latest CHANGELOG entry + specific remaining task
+4. New agent reads checkpoint first, resumes from there (no re-context needed)
 ## �🤖 AI Agent Rules
 
 ### Collaboration Model (Established 2025-10-20)
