@@ -15,8 +15,8 @@ import InventoryPage from '@/app/(game)/inventory/page'
 
 export default async function Home() {
   try {
-    const userSigned = await UserAction.isSigned()
-    if (!userSigned?.data) {
+    const [userSignedData] = await UserAction.isSigned({})
+    if (!userSignedData) {
       return (
         <LandingLayout pageKey='landing'>
           <LandingPage />
@@ -24,8 +24,8 @@ export default async function Home() {
       )
     }
 
-    const playerData = await PlayerAction.show()
-    if (!playerData?.data) {
+    const [playerData] = await PlayerAction.show({})
+    if (!playerData) {
       return (
         <CreateLayout pageKey='create'>
           <CreatePage />
