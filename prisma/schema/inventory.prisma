@@ -3,51 +3,51 @@ model Inventory {
 
   user User[]
 
-  weapons_inventory WeaponInInventory[]
   armors_inventory  ArmorInInventory[]
+  weapons_inventory WeaponInInventory[]
   potions_inventory PotionInInventory[]
-}
-
-model WeaponInInventory {
-  id String @id @default(uuid())
-
-  weapon       Weapon    @relation(fields: [weapon_id], references: [id])
-  weapon_id    String
-  inventory    Inventory @relation(fields: [inventory_id], references: [id])
-  inventory_id String
-
-  left_hand_weapons  Wearable[] @relation("LeftHandWeapon")
-  right_hand_weapons Wearable[] @relation("RightHandWeapon")
-
-  @@index([weapon_id])
-  @@index([inventory_id])
 }
 
 model ArmorInInventory {
   id String @id @default(uuid())
 
-  armor        Armor     @relation(fields: [armor_id], references: [id])
+  armor        Armor     @relation(fields: [armor_id], references: [id], onDelete: Cascade)
   armor_id     String
-  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory    Inventory @relation(fields: [inventory_id], references: [id], onDelete: Cascade)
   inventory_id String
 
-  head_armors     Wearable[] @relation("HeadArmor")
-  shoulder_armors Wearable[] @relation("ShoulderArmor")
-  chest_armors    Wearable[] @relation("ChestArmor")
-  hand_armors     Wearable[] @relation("HandArmor")
-  pants_armors    Wearable[] @relation("PantsArmor")
-  boots_armors    Wearable[] @relation("BootsArmor")
+  head_armors     Wearable[] @relation("head_armor")
+  shoulder_armors Wearable[] @relation("shoulder_armor")
+  chest_armors    Wearable[] @relation("chest_armor")
+  hands_armors    Wearable[] @relation("hands_armor")
+  pants_armors    Wearable[] @relation("pants_armor")
+  boots_armors    Wearable[] @relation("boots_armor")
 
   @@index([armor_id])
+  @@index([inventory_id])
+}
+
+model WeaponInInventory {
+  id String @id @default(uuid())
+
+  weapon       Weapon    @relation(fields: [weapon_id], references: [id], onDelete: Cascade)
+  weapon_id    String
+  inventory    Inventory @relation(fields: [inventory_id], references: [id], onDelete: Cascade)
+  inventory_id String
+
+  left_hand_weapons  Wearable[] @relation("left_hand_weapon")
+  right_hand_weapons Wearable[] @relation("right_hand_weapon")
+
+  @@index([weapon_id])
   @@index([inventory_id])
 }
 
 model PotionInInventory {
   id String @id @default(uuid())
 
-  potion       Potion    @relation(fields: [potion_id], references: [id])
+  potion       Potion    @relation(fields: [potion_id], references: [id], onDelete: Cascade)
   potion_id    String
-  inventory    Inventory @relation(fields: [inventory_id], references: [id])
+  inventory    Inventory @relation(fields: [inventory_id], references: [id], onDelete: Cascade)
   inventory_id String
 
   @@index([potion_id])

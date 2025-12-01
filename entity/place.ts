@@ -1,11 +1,13 @@
 import 'server-only'
 
-import i18n from '@/lib/i18n'
+import { t } from '@/lib/i18n'
 import { db } from '@/lib/db'
 import { type Place } from '@prisma/client'
-import { type PlaceSchema } from '@/zod-schema/place'
+import { type CoordinatesSchema } from '@/zod-schema/place'
 
-export default async function get(p: PlaceSchema) {
+export type PlaceEntity = NonNullable<Awaited<ReturnType<typeof get>>>
+
+export async function get(p: CoordinatesSchema) {
   const place = await db.place.findFirst({
     where: {
       x_min: { lte: p.posX },
@@ -28,27 +30,32 @@ export default async function get(p: PlaceSchema) {
     hospital: place.hospital
       ? {
           ...place.hospital,
-          name: i18n.t(`${place.hospital.i18n_key}.header` as any),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
+          name: t(`${place.hospital.i18n_key}.header` as any),
         }
       : undefined,
     armory: place.armory
       ? {
           ...place.armory,
-          name: i18n.t(`${place.armory.i18n_key}.header` as any),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
+          name: t(`${place.armory.i18n_key}.header` as any),
         }
       : undefined,
     bank: place.bank
       ? {
           ...place.bank,
-          name: i18n.t(`${place.bank.i18n_key}.header` as any),
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
+          name: t(`${place.bank.i18n_key}.header` as any),
         }
       : undefined,
   }
 }
 
-export function getI18n(place: Place) {
+export function getI18n(entity: Place) {
   return {
-    name: i18n.t(`${place.i18n_key}.header` as any),
-    description: i18n.t(`${place.i18n_key}.description` as any),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
+    name: t(`${entity.i18n_key}.header` as any),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Dynamic i18n key from database
+    description: t(`${entity.i18n_key}.description` as any),
   }
 }

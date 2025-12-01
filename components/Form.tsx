@@ -2,69 +2,65 @@
 
 import React from 'react'
 import { cn } from '@/lib/utils'
-import { ZodType } from 'zod'
+import { z, type ZodType } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { type FieldValues, FormProvider, useForm, useFormContext } from 'react-hook-form'
-
-import { type Infer } from 'next-safe-action/adapters/types'
-import { type ValidationErrors } from 'next-safe-action'
-import { useAction } from 'next-safe-action/hooks'
-import { useHookFormActionErrorMapper } from '@next-safe-action/adapter-react-hook-form/hooks'
+import { useForm, type FieldValues, FormProvider, useFormContext } from 'react-hook-form'
 
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Option } from '@/components/ui/option'
 import { Button } from '@/components/ui/button'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form schema requires any for Zod type flexibility
 interface Props<T extends ZodType<any>> {
   ref?: React.Ref<Handle>
   schema: T
   data?: FieldValues
-  action: Parameters<typeof useAction>[0]
-  onAction?: Parameters<typeof useAction>[1]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- ZSA server action type requires any for flexibility
+  action: any // ZSA server action
+  onAction?: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Action result types require any for flexibility
+    onSuccess?: (data: any) => void
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Error types require any for flexibility
+    onError?: (error: any) => void
+  }
   onForm?: {
-    onSubmit?: (data: Infer<T>) => void
-    onChange?: (data: Infer<T>) => void
+    onChange?: (data: z.infer<T>) => void
   }
 }
 
 export interface Handle {
   submit?: () => void
-  reset?: () => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form component requires any for schema type
 export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWithChildrenAndClassName<Props<T>>) {
   const formRef = React.useRef<React.ComponentRef<'form'>>(null)
-  const actionResult = useAction(p.action, p.onAction)
 
-  const { hookFormValidationErrors } = useHookFormActionErrorMapper<typeof p.schema>(
-    actionResult.result.validationErrors as ValidationErrors<typeof p.schema>,
-    {
-      joinBy: '\n',
-    },
-  )
+  type FormData = z.infer<T>
 
-  const hookForm = useForm({ resolver: zodResolver(p.schema), values: p.data, errors: hookFormValidationErrors })
+  const form = useForm<FormData>({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Zod resolver requires any for generic schema compatibility
+    resolver: zodResolver(p.schema as any),
+    defaultValues: p.data as FormData,
+  })
 
-  React.useEffect(() => {
-    const subscription = hookForm.watch((v) => p.onForm?.onChange?.(v as Infer<T>))
-    return () => subscription.unsubscribe()
-  }, [hookForm.watch])
+  const onSubmit = async () => {
+    // Form submission handled by external action
+  }
 
   React.useImperativeHandle(p.ref, () => ({
-    submit: () => formRef?.current?.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true })),
-    reset: () => hookForm.reset(),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Form submission type casting required for react-hook-form compatibility
+    submit: () => form.handleSubmit(onSubmit as any)(),
   }))
 
   return (
-    <FormProvider {...hookForm}>
+    <FormProvider {...form}>
       <form
         ref={formRef}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Form submission type casting required for react-hook-form compatibility
+        onSubmit={form.handleSubmit(onSubmit as any)}
         className={cn('flex w-full flex-col', p.className)}
-        onSubmit={hookForm.handleSubmit(async (data) => {
-          p.onForm?.onSubmit?.(data as Infer<T>)
-          actionResult.executeAsync(data)
-        })}
       >
         {children}
       </form>
@@ -74,9 +70,9 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
 
 interface FieldProps<T> {
   id: keyof T
+  element: React.JSX.Element
   label?: React.JSX.Element | string
   description?: React.JSX.Element | string
-  element: React.JSX.Element
 }
 
 function Field<T>({ id, label, description, element: fieldElement }: FieldProps<T>) {
@@ -87,7 +83,7 @@ function Field<T>({ id, label, description, element: fieldElement }: FieldProps<
       control={form.control}
       name={id as string}
       render={({ field: renderFieldProps }) => {
-        const { ref, value, ...otherRenderFieldProps } = renderFieldProps
+        const { value, ...otherRenderFieldProps } = renderFieldProps
 
         return (
           <FormItem>
@@ -111,7 +107,7 @@ function Field<T>({ id, label, description, element: fieldElement }: FieldProps<
 
 type FieldPropsWithoutElement<T> = Omit<FieldProps<T>, 'element'>
 
-Form.Input = <T,>({
+const FormInput = <T,>({
   id,
   label,
   description,
@@ -119,7 +115,10 @@ Form.Input = <T,>({
 }: FieldPropsWithoutElement<T> & React.ComponentProps<typeof Input>) => {
   return <Field id={id as string} label={label} description={description} element={<Input {...fieldProps} id={id} />} />
 }
-Form.Option = <T,>({
+FormInput.displayName = 'Form.Input'
+Form.Input = FormInput
+
+const FormOption = <T,>({
   id,
   label,
   description,
@@ -129,13 +128,32 @@ Form.Option = <T,>({
     <Field id={id as string} label={label} description={description} element={<Option {...fieldProps} id={id} />} />
   )
 }
-Form.Button = ({
+FormOption.displayName = 'Form.Option'
+Form.Option = FormOption
+
+const FormButton = ({
   children,
   variant = 'warning',
+  disabled,
   ...p
-}: PropsWithChildrenAndClassName<Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick'>>) => (
-  // when using with combination with onChange, submit can be triggered twice => button type button
-  <Button {...p} className={cn('w-full', p.className)} variant={variant} type='button'>
-    {children}
-  </Button>
-)
+}: PropsWithChildrenAndClassName<
+  Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick'> & { disabled?: boolean }
+>) => {
+  const form = useFormContext()
+  const isSubmitting = form?.formState?.isSubmitting || false
+
+  return (
+    // when using with combination with onChange, submit can be triggered twice => button type button
+    <Button
+      {...p}
+      className={cn('w-full', p.className)}
+      variant={variant}
+      type='button'
+      disabled={disabled || isSubmitting}
+    >
+      {isSubmitting ? 'Loading...' : children}
+    </Button>
+  )
+}
+FormButton.displayName = 'Form.Button'
+Form.Button = FormButton

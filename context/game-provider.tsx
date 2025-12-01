@@ -2,34 +2,23 @@
 
 import React from 'react'
 import type { Location } from '@/types'
-
-import { LOCATION } from '@/config'
+import { LOCATION } from '@/config/game-constants'
 
 interface GameContext {
-  setBackground: (path?: string) => void
   setLocationBackground: (location?: Location) => void
 }
 
 const GameContext = React.createContext<GameContext | null>(null)
 
 export function GameProvider({ children }: React.PropsWithChildren) {
-  const [background, setBackground] = React.useState<string>()
+  const setLocationBackground = (location?: Location) => {
+    const aside = document.getElementsByTagName('aside')[0]
+    if (!aside) return
 
-  React.useEffect(() => {
-    document.body.style.backgroundImage = background ? `url(${background})` : 'unset'
-    document.body.style.backgroundPosition = 'center'
-  }, [background])
+    aside.style.backgroundImage = location && LOCATION[location] ? `url(${LOCATION[location]})` : 'unset'
+  }
 
-  return (
-    <GameContext.Provider
-      value={{
-        setBackground,
-        setLocationBackground: (location?: Location) => setBackground(location && LOCATION[location]),
-      }}
-    >
-      {children}
-    </GameContext.Provider>
-  )
+  return <GameContext.Provider value={{ setLocationBackground }}>{children}</GameContext.Provider>
 }
 
 export function useGame() {
@@ -48,5 +37,5 @@ export function useSetLocationBackgroundEffect(location?: Location) {
 
     // TODO potencial bug and can cause screen blinking
     return () => setLocationBackground()
-  }, [location])
+  }, [location, setLocationBackground])
 }

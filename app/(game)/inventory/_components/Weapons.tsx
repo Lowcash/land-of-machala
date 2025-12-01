@@ -2,11 +2,10 @@
 
 import { useInventoryShowQuery } from '@/hooks/api/use-inventory'
 
-import Table from '@/components/table'
-import Wear from '@/app/(game)/inventory/_components/Wear'
-import Unwear from '@/app/(game)/inventory/_components/Unwear'
+import Table from '@/components/Table'
+import { Wear, Unwear } from './'
 
-export default function Weapons() {
+export function Weapons() {
   const inventoryShowQuery = useInventoryShowQuery()
 
   return (
@@ -23,7 +22,7 @@ export default function Weapons() {
           content: `${inventoryShowQuery.data?.text.wear ?? 'inventory_wear'} (${inventoryShowQuery.data?.text.right_hand ?? 'inventory_right_hand'}})`,
         },
       ]}
-      cells={inventoryShowQuery.data?.weapons.map((x) => [
+      cells={inventoryShowQuery.data?.weapons?.map((x: any) => [
         { className: 'text-left', content: x.weapon.name },
         {
           className: 'text-center',

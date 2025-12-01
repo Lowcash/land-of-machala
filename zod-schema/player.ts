@@ -3,20 +3,13 @@ import i18n from '@/lib/i18n'
 
 import { DIRECTIONS } from '@/config'
 
-export const playerSignSchema = z.object({
-  email: z.string({ required_error: i18n.t('user.email.required') }),
-  password: z.string({ required_error: i18n.t('user.password.required') }),
+export const createPlayerSchema = z.object({
+  name: z.string({ message: i18n.t('character.name.required') }),
+  raceId: z.string({ message: i18n.t('race.required') }),
+  classId: z.string({ message: i18n.t('class.required') }),
 })
 
-export type PlayerSignSchema = z.infer<typeof playerSignSchema>
-
-export const playerCreateSchema = z.object({
-  name: z.string({ required_error: i18n.t('character.name.required') }),
-  raceId: z.string({ required_error: i18n.t('race.required') }),
-  classId: z.string({ required_error: i18n.t('class.required') }),
-})
-
-export type PlayerCreateSchema = z.infer<typeof playerCreateSchema>
+export type PlayerCreateSchema = z.infer<typeof createPlayerSchema>
 
 export const playerMoveSchema = z.object({ direction: z.enum(DIRECTIONS) })
 

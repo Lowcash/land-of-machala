@@ -1,4 +1,4 @@
-import { resolveActionResult, type SafeActionResultData } from '@/lib/safe-action-utils'
+import { resolveActionResult, type SafeActionResultData } from '@/lib/safe-action-client-utils'
 import {
   useMutation,
   useQuery,
@@ -7,9 +7,11 @@ import {
   type UseQueryOptions,
 } from '@tanstack/react-query'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic query function type
 export function createQueryHook<T extends (...args: any) => any>(queryKey: string[], queryFn: T) {
   return (
     params?: Parameters<T>[0],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TanStack Query requires any[] for queryKey type
     options?: UseQueryOptions<SafeActionResultData<T>, Error, SafeActionResultData<T>, any[]>,
   ) => {
     return useQuery({
@@ -20,18 +22,17 @@ export function createQueryHook<T extends (...args: any) => any>(queryKey: strin
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic mutation function type
 export function createMutationHook<T extends (...args: any) => any>(
   mutationFn: T,
   invalidateQueriesWhenSuccess?: string[],
 ) {
-  return (options?: UseMutationOptions<SafeActionResultData<T>, Error, Parameters<T>[0]>) => {
+  return (options?: UseMutationOptions<SafeActionResultData<T>, Error, Parameters<T>[0], unknown>) => {
     const queryClient = useQueryClient()
 
     return useMutation({
       ...options,
-      onSuccess: (data, variables, context) => {
-        options?.onSuccess?.(data, variables, context)
-
+      onSuccess: () => {
         if (!invalidateQueriesWhenSuccess) return
 
         queryClient.invalidateQueries({

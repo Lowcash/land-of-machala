@@ -1,12 +1,16 @@
 import type { NextConfig } from 'next'
+import withBundleAnalyzer from '@next/bundle-analyzer'
+import createNextIntlPlugin from 'next-intl/plugin'
+
+const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
-  experimental: {
-    reactCompiler: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true
-  }
+  // React Compiler is now stable in Next.js 16
+  reactCompiler: true,
 }
 
-export default nextConfig
+const bundleAnalyzer = withBundleAnalyzer({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+export default bundleAnalyzer(withNextIntl(nextConfig))

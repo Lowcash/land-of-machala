@@ -1,37 +1,43 @@
 'use server'
 
-import i18n from '@/lib/i18n'
+import { getTranslations } from 'next-intl/server'
 import type { Route } from '@/types'
-import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
-import { actionClient } from '@/lib/safe-action'
+import { z } from 'zod'
+import { createServerAction } from 'zsa'
 
 import { PAGE_COOKIE_KEY } from '@/config'
 
-export const show = actionClient.metadata({ actionName: 'common_show' }).action(async () => {
-  return {
-    text: {
-      worldExplore: i18n.t('common.world_explore'),
-      worldBack: i18n.t('common.world_back'),
-      cityBack: i18n.t('common.city_back'),
-      buy: i18n.t('action.buy'),
-      sell: i18n.t('action.sell'),
-      deposit: i18n.t('place.bank.deposit'),
-      withdraw: i18n.t('place.bank.withdraw'),
-      armor: i18n.t('armor.header'),
-      weapon: i18n.t('weapon.header'),
-      price: i18n.t('common.price'),
-      damage: i18n.t('stats.damage'),
-      stregth: i18n.t('stats.strength'),
-      agility: i18n.t('stats.agility'),
-      intelligence: i18n.t('stats.intelligence'),
-      efficiency: i18n.t('potion.efficiency'),
-      questHeader: i18n.t('quest.header_multi'),
-      questEmpty: i18n.t('quest.empty'),
-    },
-  }
-})
+export const show = createServerAction()
+  .input(z.object({}).optional())
+  .handler(async () => {
+    const t = await getTranslations()
 
-export const navigate = async (...args: Parameters<typeof redirect>) => redirect(...args)
+    return {
+      text: {
+        worldExplore: t('common.world_explore'),
+        worldBack: t('common.world_back'),
+        back: t('common.back'),
+        leave: t('common.leave'),
+        cityBack: t('common.city_back'),
+        cityLeave: t('common.city_leave'),
+        cityEnter: t('common.city_enter'),
+        buy: t('action.buy'),
+        sell: t('action.sell'),
+        deposit: t('place.bank.deposit'),
+        withdraw: t('place.bank.withdraw'),
+        armor: t('armor.header'),
+        weapon: t('weapon.header'),
+        price: t('common.price'),
+        damage: t('stats.damage'),
+        stregth: t('stats.strength'),
+        agility: t('stats.agility'),
+        intelligence: t('stats.intelligence'),
+        efficiency: t('potion.efficiency'),
+        questHeader: t('quest.header_multi'),
+        questEmpty: t('quest.empty'),
+      },
+    }
+  })
 
 export const getPage = async () => ((await cookies()).get(PAGE_COOKIE_KEY)?.value as Route) || 'WORLD'

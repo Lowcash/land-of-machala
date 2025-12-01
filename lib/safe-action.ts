@@ -1,44 +1,36 @@
 import 'server-only'
-import { z } from 'zod'
+
 import { db } from '@/lib/db'
-import { createSafeActionClient, flattenValidationErrors } from 'next-safe-action'
 import { getServerSession } from 'next-auth/next'
-import { type User } from '@prisma/client'
+import { createServerAction, createServerActionProcedure, ZSAError } from 'zsa'
+import { get as getPlayer, hasCharacter } from '@/entity/player'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const actionClient = createSafeActionClient({
-  defineMetadataSchema() {
-    return z.object({
-      actionName: z.string(),
-      role: z.string().nullish(),
-    })
-  },
-  handleServerError: (error, { clientInput, metadata }) => {
-    // Sentry.captureExceptions(error, (scope) => {
-    //   scope.clear()
-    //   scope.setContext('serverError', { message: error.message })
-    //   scope.setContext('clientInput', { clientInput })
-    //   return scope
-    // })
-    // if (error.contructor.name === 'DatabaseError') {
-    //   return 'Database Error: Data did not save'
-    // }
+// TODO: Add Sentry DSN to environment variables and initialize Sentry
+// import * as Sentry from '@sentry/nextjs'
 
-    return error.message
-  },
-})
+export const actionClient = createServerAction()
 
-export const authActionClient = actionClient.use(async ({ next, metadata }) => {
-  const userSession = await getServerSession()
+// Create reusable procedures
+export const authProcedure = createServerActionProcedure()
+  .handler(async () => {
+    const session = await getServerSession()
 
-  if (!userSession) throw new Error(ERROR_CAUSE.UNAUTHORIZED)
+    if (!session) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-  const user = (await db.user.findUnique({ where: { email: userSession?.user.email! } })) as User
+    const user = await db.user.findUnique({ where: { email: session.user.email! } })
 
-  if (!!user?.role && user.role === metadata.role) throw new Error(ERROR_CAUSE.NO_PERMISSION)
+    if (!user) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-  return next({ ctx: { user } })
-})
+    return { user }
+  })
 
-export const handleValidationErrorsShape = async (ve: any) => flattenValidationErrors(ve).fieldErrors
+export const playerProcedure = createServerActionProcedure(authProcedure)
+  .handler(async ({ ctx }) => {
+    const player = await getPlayer(ctx.user.id)
+
+    if (!hasCharacter(player)) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.NO_CHARACTER)
+
+    return { ...ctx, player }
+  })
