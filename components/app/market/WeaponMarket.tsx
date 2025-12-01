@@ -45,6 +45,7 @@ export function WeaponMarket({ armoryId, ...p }: MarketProps) {
             { className: 'text-right', content: commonShowQuery.data?.text.price ?? 'weapon_market_price' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'weapon_market_action' },
           ]}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with weapon data
           cells={items?.map((x: any) => [
             { className: 'text-left', content: x.name },
             {

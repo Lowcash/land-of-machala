@@ -50,6 +50,7 @@ export function ArmorSafe({ bankId, ...p }: SafeProps) {
             { className: 'text-center', content: commonShowQuery.data?.text.intelligence ?? 'safe_armor_intelligene' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'safe_armor_action' },
           ]}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with nested armor data
           cells={items?.map((x: any) => [
             { className: 'text-left', content: x.armor.name },
             { className: 'text-center', content: x.armor.type },

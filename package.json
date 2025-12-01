@@ -7,13 +7,6 @@
     "build": "npm run prisma:generate && next build",
     "build:analyze": "ANALYZE=true npm run build",
     "start": "next start",
-<<<<<<< HEAD
-    "lint": "next lint",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage",
-    "test:e2e": "playwright test",
-=======
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "test": "vitest",
@@ -22,7 +15,6 @@
     "test:coverage": "vitest --coverage",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
->>>>>>> origin/dev
     "prisma:update": "npx prisma db push --schema prisma/schema",
     "prisma:reset": "npx prisma db push --schema prisma/schema --force-reset",
     "prisma:generate": "npx prisma generate --schema prisma/schema",
@@ -73,59 +65,38 @@
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
     "@eslint/eslintrc": "^3",
-<<<<<<< HEAD
-    "@playwright/test": "^1.47.2",
-    "@testing-library/jest-dom": "^6.5.0",
-    "@testing-library/react": "^16.0.1",
-=======
     "@next/bundle-analyzer": "^16.0.3",
     "@playwright/test": "^1.56.1",
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
->>>>>>> origin/dev
     "@types/bcrypt": "^5.0.2",
     "@types/js-cookie": "^3.0.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/tailwindcss": "^3.1.0",
-<<<<<<< HEAD
-    "@vitejs/plugin-react": "^4.3.1",
-=======
     "@vitejs/plugin-react": "^5.1.1",
     "@vitest/coverage-v8": "^4.0.9",
     "@vitest/ui": "^4.0.9",
->>>>>>> origin/dev
     "autoprefixer": "^10.4.20",
     "baseline-browser-mapping": "^2.8.32",
     "clsx": "^2.1.1",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
-<<<<<<< HEAD
-    "jsdom": "^25.0.1",
-=======
     "husky": "^9.1.7",
     "jsdom": "^27.2.0",
     "lint-staged": "^16.2.6",
     "msw": "^2.12.2",
->>>>>>> origin/dev
     "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "prisma": "^6.3.0",
     "tailwind-merge": "^3.0.1",
-<<<<<<< HEAD
-    "tailwindcss": "^3.4.17",
-    "typescript": "^5",
-    "vitest": "^2.0.5",
-    "vitest-mock-extended": "^2.0.0"
-=======
     "tailwindcss": "^4.1.17",
     "tsx": "^4.20.6",
     "typescript": "^5",
     "vitest": "^4.0.9"
->>>>>>> origin/dev
   }
 }

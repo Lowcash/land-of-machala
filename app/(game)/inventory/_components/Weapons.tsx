@@ -22,6 +22,7 @@ export function Weapons() {
           content: `${inventoryShowQuery.data?.text.wear ?? 'inventory_wear'} (${inventoryShowQuery.data?.text.right_hand ?? 'inventory_right_hand'}})`,
         },
       ]}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type, complex nested structure
       cells={inventoryShowQuery.data?.weapons?.map((x: any) => [
         { className: 'text-left', content: x.weapon.name },
         {

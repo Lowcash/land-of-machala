@@ -15,6 +15,7 @@ export function Potions() {
         { className: 'text-center', content: inventoryShowQuery.data?.text.efficiency ?? 'potion_efficiency' },
         { className: 'text-right', content: inventoryShowQuery.data?.text.use ?? 'potion_use' },
       ]}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type, complex nested structure
       cells={inventoryShowQuery.data?.potions?.map((x: any) => [
         { className: 'text-left', content: x.potion.name },
         {

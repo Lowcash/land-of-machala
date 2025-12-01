@@ -79,8 +79,11 @@ export function Place(p: Props) {
   }
 
   if (enteredPlace === 'hospital' || enteredPlace === 'armory' || enteredPlace === 'bank') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with complex subplaces structure
     const hospital = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'hospital')?.place
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with complex subplaces structure
     const armory = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'armory')?.place
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with complex subplaces structure
     const bank = gameShowInfoQuery.data?.place?.subplaces?.find((x: any) => x.type === 'bank')?.place
 
     return (
@@ -127,7 +130,8 @@ export function Place(p: Props) {
           ].filter((x) => !!x)}
           bottom={
             phase === PHASE.ALREADY_ENTERED
-              ? gameShowInfoQuery.data?.place?.subplaces?.map((x: any) => ({
+              ? // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with complex subplaces structure
+                gameShowInfoQuery.data?.place?.subplaces?.map((x: any) => ({
                   key: x.type,
                   text: x.place?.name ?? 'subplace_name',
                 }))

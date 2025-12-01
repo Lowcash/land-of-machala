@@ -18,7 +18,9 @@ export function Loot() {
 
   const lootMutation = useGameLootMutation()
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with nested i18n text fields
   const armors = gameShowInfoQuery.data?.loot?.armors_loot?.map((x: any) => x.text.reward).filter((x: any) => !!x)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type with nested i18n text fields
   const weapons = gameShowInfoQuery.data?.loot?.weapons_loot?.map((x: any) => x.text.reward).filter((x: any) => !!x)
 
   const itemsLoot = [armors, weapons].flat().filter((x): x is string => !!x)
