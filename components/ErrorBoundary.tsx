@@ -60,12 +60,12 @@ interface ErrorFallbackProps {
 function DefaultErrorFallback({ error, reset }: ErrorFallbackProps) {
   return (
     <div className='flex min-h-[400px] flex-col items-center justify-center gap-4 p-8'>
-      <div className='flex items-center gap-2 text-destructive'>
+      <div className='text-destructive flex items-center gap-2'>
         <AlertCircle className='h-8 w-8' />
         <h2 className='text-2xl font-bold'>Něco se pokazilo</h2>
       </div>
 
-      <p className='max-w-md text-center text-muted-foreground'>
+      <p className='text-muted-foreground max-w-md text-center'>
         {error.message || 'Vyskytla se neočekávaná chyba. Zkuste to prosím znovu.'}
       </p>
 

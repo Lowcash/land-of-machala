@@ -17,7 +17,8 @@ import { updateState } from '@/lib/manager/quest'
 import { ERROR_CAUSE, ENEMY_IMAGE } from '@/config'
 
 export const showInfo = cache(
-  playerProcedure.createServerAction()
+  playerProcedure
+    .createServerAction()
     .input(z.object({}).optional())
     .handler(async ({ ctx }) => {
       const t = await getTranslations()
@@ -64,7 +65,10 @@ export const showInfo = cache(
           ? {
               ...ctx.player.loot,
               armors_loot: ctx.player.loot.armors_loot.map((x) => ({ ...x, text: { reward: `👕  ${x.armor.name}` } })),
-              weapons_loot: ctx.player.loot.weapons_loot.map((x) => ({ ...x, text: { reward: `🗡️ ${x.weapon.name}` } })),
+              weapons_loot: ctx.player.loot.weapons_loot.map((x) => ({
+                ...x,
+                text: { reward: `🗡️ ${x.weapon.name}` },
+              })),
               text: {
                 loot: t('action.loot.header'),
                 loot_found: t('action.loot.found'),
@@ -77,14 +81,18 @@ export const showInfo = cache(
     }),
 )
 
-export const attack = playerProcedure.createServerAction()
+export const attack = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     if (!hasCombat(ctx.player)) throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
 
     // const damageFromPlayer = random(ctx.player.damage_min, ctx.player.damage_max)
     const damageFromPlayer = 1000
-    const damageFromEnemy = random(ctx.player.enemy_instance.enemy.damage_from, ctx.player.enemy_instance.enemy.damage_to)
+    const damageFromEnemy = random(
+      ctx.player.enemy_instance.enemy.damage_from,
+      ctx.player.enemy_instance.enemy.damage_to,
+    )
 
     const actualPlayerHP = ctx.player.hp_actual - damageFromEnemy
     const actualEnemyHP = ctx.player.enemy_instance.hp_actual - damageFromPlayer
@@ -128,8 +136,7 @@ export const attack = playerProcedure.createServerAction()
 
         const defeatedEnemyRes = await defeateEnemy(dbTransaction, ctx.player, ctx.player.enemy_instance)
 
-        if (!!defeatedEnemyRes?.reward)
-          await assignReward(dbTransaction, ctx.player, defeatedEnemyRes.reward)
+        if (!!defeatedEnemyRes?.reward) await assignReward(dbTransaction, ctx.player, defeatedEnemyRes.reward)
 
         await updateState(dbTransaction, ctx.player, { slainedEnemy: ctx.player.enemy_instance.enemy })
       })
@@ -138,7 +145,8 @@ export const attack = playerProcedure.createServerAction()
     }
   })
 
-export const runAway = playerProcedure.createServerAction()
+export const runAway = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) =>
     db.$transaction(async (dbTransaction) => {
@@ -148,7 +156,8 @@ export const runAway = playerProcedure.createServerAction()
     }),
   )
 
-export const loot = playerProcedure.createServerAction()
+export const loot = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) =>
     db.$transaction(async (dbTransaction) => {

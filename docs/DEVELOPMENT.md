@@ -8,6 +8,7 @@
 ## 🎯 Development Philosophy
 
 ### Core Principles
+
 1. **Type Safety First** - TypeScript strict mode, Zod validation, no `any` types
 2. **Server-First** - Use Server Components and Server Actions by default
 3. **Progressive Enhancement** - Core game works without JavaScript where possible
@@ -17,13 +18,16 @@
 ### Code Standards
 
 #### TypeScript
+
 ```typescript
 // ✅ Good: Explicit types, branded IDs
 type PlayerId = string & { readonly __brand: 'PlayerId' }
 function getPlayer(id: PlayerId): Promise<Player>
 
 // ❌ Bad: Any types, implicit returns
-function getPlayer(id: any) { return db.user.find(id) }
+function getPlayer(id: any) {
+  return db.user.find(id)
+}
 
 // ✅ Good: Type guards with predicates
 export function hasCharacter(player: User): player is PlayerEntity {
@@ -37,6 +41,7 @@ export function hasCharacter(player: User): boolean {
 ```
 
 #### React Components
+
 ```typescript
 // ✅ Good: Server Component by default
 export default async function GamePage() {
@@ -60,6 +65,7 @@ export default async function GamePage() { // async + 'use client' = error
 ```
 
 #### Server Actions
+
 ```typescript
 // ✅ Good: Proper action structure
 'use server'
@@ -72,24 +78,25 @@ export const movePlayer = authActionClient
     // ctx.user guaranteed by authActionClient
     const result = await db.user.update({
       where: { id: ctx.user.id },
-      data: { pos_x: parsedInput.x, pos_y: parsedInput.y }
+      data: { pos_x: parsedInput.x, pos_y: parsedInput.y },
     })
-    
+
     return { success: true, player: result }
   })
 
 // ❌ Bad: Missing validation, no type safety
-'use server'
+;('use server')
 export async function movePlayer(x: any, y: any) {
   const session = await getServerSession()
-  await db.user.update({ 
-    where: { id: session.user.id }, 
-    data: { pos_x: x, pos_y: y } 
+  await db.user.update({
+    where: { id: session.user.id },
+    data: { pos_x: x, pos_y: y },
   })
 }
 ```
 
 #### Error Handling
+
 ```typescript
 // ✅ Good: Typed error causes, proper handling
 if (!inventory) {
@@ -106,6 +113,7 @@ if (!inventory) throw new Error('oops')
 ```
 
 #### Constants vs Magic Numbers
+
 ```typescript
 // ✅ Good: Named constants with context
 export const BASE_HP_MAX = 100
@@ -126,6 +134,7 @@ if (Math.random() < 0.15) { ... }
 **Example: Adding "Pet" system**
 
 #### 1. Create Prisma Schema
+
 ```prisma
 // prisma/schema/pet.prisma
 model Pet {
@@ -146,6 +155,7 @@ enum PetType {
 ```
 
 #### 2. Create Entity File
+
 ```typescript
 // entity/pet.ts
 import type { Pet, PetType } from '@prisma/client'
@@ -167,6 +177,7 @@ export async function get(petId: string): Promise<Pet | null> {
 ```
 
 #### 3. Create Zod Schema
+
 ```typescript
 // zod-schema/pet.ts
 import { z } from 'zod'
@@ -181,6 +192,7 @@ export type PetCreateSchema = z.infer<typeof petCreateSchema>
 ```
 
 #### 4. Create Server Actions
+
 ```typescript
 // app/actions/pet.ts
 'use server'
@@ -191,21 +203,19 @@ import { playerActionClient } from '@/lib/safe-action'
 import { petCreateSchema } from '@/zod-schema/pet'
 import { get } from '@/entity/pet'
 
-export const show = playerActionClient
-  .metadata({ actionName: 'pet_show' })
-  .action(async ({ ctx }) => {
-    const pets = await db.pet.findMany({
-      where: { owner_id: ctx.player.id }
-    })
-    
-    return {
-      pets,
-      text: {
-        header: i18n.t('pet.header'),
-        create: i18n.t('pet.create'),
-      }
-    }
+export const show = playerActionClient.metadata({ actionName: 'pet_show' }).action(async ({ ctx }) => {
+  const pets = await db.pet.findMany({
+    where: { owner_id: ctx.player.id },
   })
+
+  return {
+    pets,
+    text: {
+      header: i18n.t('pet.header'),
+      create: i18n.t('pet.create'),
+    },
+  }
+})
 
 export const create = playerActionClient
   .metadata({ actionName: 'pet_create' })
@@ -216,32 +226,31 @@ export const create = playerActionClient
         name: parsedInput.name,
         type: parsedInput.type,
         owner_id: ctx.player.id,
-      }
+      },
     })
-    
+
     return pet
   })
 ```
 
 #### 5. Create React Query Hooks
+
 ```typescript
 // hooks/api/pet.ts
 import { createQueryHook, createMutationHook } from './_api-hooks'
 import * as PetAction from '@/app/actions/pet'
 import { QUERY_KEY } from '@/config'
 
-export const usePetShowQuery = createQueryHook(
-  [QUERY_KEY.PET],
-  PetAction.show
-)
+export const usePetShowQuery = createQueryHook([QUERY_KEY.PET], PetAction.show)
 
 export const usePetCreateMutation = createMutationHook(
   PetAction.create,
-  [QUERY_KEY.PET] // Invalidate on success
+  [QUERY_KEY.PET], // Invalidate on success
 )
 ```
 
 #### 6. Create Component
+
 ```typescript
 // components/app/Pet.tsx
 'use client'
@@ -252,16 +261,16 @@ import { Button } from '@/components/ui/button'
 export default function PetList() {
   const { data } = usePetShowQuery()
   const createPet = usePetCreateMutation()
-  
+
   return (
     <div>
       <h2>{data?.text.header}</h2>
       {data?.pets.map(pet => (
         <div key={pet.id}>{pet.name} - {pet.type}</div>
       ))}
-      <Button onClick={() => createPet.mutate({ 
-        name: 'Fluffy', 
-        type: 'CAT' 
+      <Button onClick={() => createPet.mutate({
+        name: 'Fluffy',
+        type: 'CAT'
       })}>
         {data?.text.create}
       </Button>
@@ -271,6 +280,7 @@ export default function PetList() {
 ```
 
 #### 7. Add Tests
+
 ```typescript
 // __tests__/entity/pet.test.ts
 import { describe, it, expect } from 'vitest'
@@ -281,7 +291,7 @@ describe('Pet Entity', () => {
     const pet = { level: 10 } as Pet
     expect(isAdult(pet)).toBe(true)
   })
-  
+
   it('should identify young pet', () => {
     const pet = { level: 5 } as Pet
     expect(isAdult(pet)).toBe(false)
@@ -294,6 +304,7 @@ describe('Pet Entity', () => {
 ## 🧪 Testing Standards
 
 ### Test Structure
+
 ```
 __tests__/
   ├── unit/
@@ -308,6 +319,7 @@ __tests__/
 ```
 
 ### Unit Test Example
+
 ```typescript
 // __tests__/unit/lib/utils.test.ts
 import { describe, it, expect } from 'vitest'
@@ -321,7 +333,7 @@ describe('utils', () => {
       expect(clamp(50, 0, 100)).toBe(50)
     })
   })
-  
+
   describe('random', () => {
     it('should generate number in range', () => {
       const result = random(10, 5)
@@ -333,6 +345,7 @@ describe('utils', () => {
 ```
 
 ### Component Test Example
+
 ```typescript
 // __tests__/integration/components/Form.test.tsx
 import { describe, it, expect, vi } from 'vitest'
@@ -346,16 +359,16 @@ describe('Form', () => {
   it('should validate on submit', async () => {
     const mockAction = vi.fn().mockResolvedValue({ success: true })
     const user = userEvent.setup()
-    
+
     render(
       <Form schema={schema} action={mockAction}>
         <Form.Input name="name" label="Name" />
         <Form.Submit>Submit</Form.Submit>
       </Form>
     )
-    
+
     await user.click(screen.getByText('Submit'))
-    
+
     expect(screen.getByText(/required/i)).toBeInTheDocument()
     expect(mockAction).not.toHaveBeenCalled()
   })
@@ -363,6 +376,7 @@ describe('Form', () => {
 ```
 
 ### E2E Test Example
+
 ```typescript
 // __tests__/e2e/character-creation.spec.ts
 import { test, expect } from '@playwright/test'
@@ -373,14 +387,14 @@ test('user can create character and enter game', async ({ page }) => {
   await page.fill('[name="email"]', 'test@example.com')
   await page.fill('[name="password"]', 'password123')
   await page.click('text=Sign Up')
-  
+
   // Create character
   await expect(page).toHaveURL('/')
   await page.fill('[name="name"]', 'TestHero')
   await page.selectOption('[name="raceId"]', 'human')
   await page.selectOption('[name="classId"]', 'warrior')
   await page.click('text=Create Character')
-  
+
   // Verify in game
   await expect(page.locator('text=TestHero')).toBeVisible()
   await expect(page.locator('text=HP: 100/100')).toBeVisible()
@@ -388,6 +402,7 @@ test('user can create character and enter game', async ({ page }) => {
 ```
 
 ### Test Coverage Requirements
+
 - **Core modules:** 80% (entity/, lib/, app/actions/)
 - **Components:** 70% (components/)
 - **UI primitives:** 50% (components/ui/)
@@ -398,6 +413,7 @@ test('user can create character and enter game', async ({ page }) => {
 ## 🔧 Common Tasks
 
 ### Running Development Server
+
 ```bash
 # Start Next.js dev server
 npm run dev
@@ -406,6 +422,7 @@ npm run dev
 ```
 
 ### Database Operations
+
 ```bash
 # Apply schema changes to database
 npm run prisma:update
@@ -421,6 +438,7 @@ npx prisma studio
 ```
 
 ### Code Quality
+
 ```bash
 # Lint TypeScript files
 npm run lint
@@ -436,6 +454,7 @@ npm run lint && npx tsc --noEmit && npm test
 ```
 
 ### Testing
+
 ```bash
 # Run all tests
 npm test
@@ -458,6 +477,7 @@ npm test -- --coverage
 ## 🚀 Deployment Checklist
 
 ### Pre-Deploy
+
 - [ ] All tests passing (`npm test`)
 - [ ] Type-check passing (`npx tsc --noEmit`)
 - [ ] Lint passing (`npm run lint`)
@@ -466,6 +486,7 @@ npm test -- --coverage
 - [ ] Environment variables set in production
 
 ### Deploy to Vercel
+
 ```bash
 # Install Vercel CLI
 npm i -g vercel
@@ -478,6 +499,7 @@ vercel --prod
 ```
 
 ### Post-Deploy
+
 - [ ] Verify site loads: https://land-of-machala.cz
 - [ ] Test critical paths: sign up, character creation, movement
 - [ ] Monitor error tracking (Sentry when implemented)
@@ -488,23 +510,27 @@ vercel --prod
 ## 🐛 Debugging Tips
 
 ### Server Actions Not Working
+
 1. Check `'use server'` directive at top of file
 2. Verify action client middleware (auth/player required?)
 3. Check browser Network tab for 500 errors
 4. Add `console.log` in action (logs show in server terminal)
 
 ### Hydration Errors
+
 1. Check for `useState` in Server Components
 2. Verify data matches between server/client render
 3. Look for Date objects (serialize to ISO strings)
 4. Check for Math.random() or other non-deterministic code
 
 ### Type Errors After Prisma Changes
+
 1. Regenerate client: `npm run prisma:generate`
 2. Restart TypeScript server in VS Code
 3. Clear `.next` folder: `rm -rf .next`
 
 ### Database Connection Issues
+
 1. Check `DATABASE_URL` in `.env`
 2. Verify MySQL is running (Docker: `docker ps`)
 3. Test connection: `npx prisma db pull`
@@ -514,12 +540,14 @@ vercel --prod
 ## 📚 Resources
 
 ### Internal Documentation
+
 - [INSIGHTS.md](../local/INSIGHTS.md) - Architecture decisions
 - [TODO.md](../local/TODOS.md) - Active tasks
 - [CHANGELOG.md](../CHANGELOG.md) - Version history
 - [README.md](../README.md) - Setup guide
 
 ### External Resources
+
 - [Next.js Docs](https://nextjs.org/docs)
 - [React 19 Docs](https://react.dev)
 - [Prisma Docs](https://www.prisma.io/docs)
@@ -527,6 +555,7 @@ vercel --prod
 - [next-safe-action](https://next-safe-action.dev)
 
 ### Community
+
 - Discord: (not set up yet)
 - GitHub Discussions: (not enabled yet)
 

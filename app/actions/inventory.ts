@@ -9,7 +9,8 @@ import * as WearableEntity from '@/entity/wearable'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const t = await getTranslations()

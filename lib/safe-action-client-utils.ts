@@ -26,5 +26,5 @@ export const resolveActionResult = async <T>(action: Promise<any>): Promise<T> =
   })
 }
 
- 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic type utility for inferring server action return types
 export type SafeActionResultData<T extends (...args: any) => any> = inferServerActionReturnType<T>[0]

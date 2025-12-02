@@ -11,12 +11,12 @@ export default function GameError({ error, reset }: { error: Error & { digest?: 
 
   return (
     <div className='flex min-h-[600px] flex-col items-center justify-center gap-4 p-8'>
-      <div className='flex items-center gap-2 text-destructive'>
+      <div className='text-destructive flex items-center gap-2'>
         <AlertCircle className='h-8 w-8' />
         <h2 className='text-2xl font-bold'>Herní chyba</h2>
       </div>
 
-      <p className='max-w-md text-center text-muted-foreground'>
+      <p className='text-muted-foreground max-w-md text-center'>
         Ve hře se vyskytla chyba. Zkuste obnovit hru nebo se vrátit na hlavní stránku.
       </p>
 

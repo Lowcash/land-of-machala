@@ -11,8 +11,6 @@ import Table from '@/components/Table'
 import { Decision, type DecisionSelectedEvent } from '@/components/app/Decision'
 
 import { DECISION, type SafeProps } from './types'
-import type { BankAccountItem } from '@/hooks/api/use-bank'
-import type { InventoryItem } from '@/hooks/api/use-inventory'
 
 export function PotionSafe({ bankId, ...p }: SafeProps) {
   const commonShowQuery = useCommonShowQuery()
@@ -48,7 +46,7 @@ export function PotionSafe({ bankId, ...p }: SafeProps) {
             { className: 'text-center', content: commonShowQuery.data?.text.efficiency ?? 'safe_potion_efficiency' },
             { className: 'text-right', content: commonShowQuery.data?.text[p.action] ?? 'safe_potion_action' },
           ]}
-          cells={items?.map((x: BankAccountItem | InventoryItem) => [
+          cells={items?.map((x) => [
             { className: 'text-left', content: x.potion.name },
             {
               className: 'text-center',

@@ -49,7 +49,9 @@ export function WorldClient({ initialData }: WorldClientProps) {
       {gameShowInfoQuery.derived.hasPlace && (
         <Place enteredPlace={selectedLocation} onEnteredPlaceChange={handleEnteredPlaceChange} />
       )}
-      {!gameShowInfoQuery.derived.hasCombat && !gameShowInfoQuery.derived.hasLoot && !gameShowInfoQuery.derived.hasPlace && <Explore />}
+      {!gameShowInfoQuery.derived.hasCombat &&
+        !gameShowInfoQuery.derived.hasLoot &&
+        !gameShowInfoQuery.derived.hasPlace && <Explore />}
     </Suspense>
   )
 }

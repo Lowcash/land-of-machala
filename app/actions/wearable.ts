@@ -39,7 +39,8 @@ async function updatePlayerStats(userId: string, playerId: string, wearableId: s
   })
 }
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(z.object({}).optional())
   .handler(async ({ ctx }) => {
     const t = await getTranslations()
@@ -65,7 +66,8 @@ export const show = playerProcedure.createServerAction()
     }
   })
 
-export const wear = playerProcedure.createServerAction()
+export const wear = playerProcedure
+  .createServerAction()
   .input(wearableActionSchema)
   .handler(async ({ input, ctx }) => {
     function makeWearableArmor(armorType: ArmorType): Partial<Wearable> {
@@ -134,7 +136,8 @@ export const wear = playerProcedure.createServerAction()
     await updatePlayerStats(ctx.user.id, ctx.player.id, ctx.player.wearable_id)
   })
 
-export const unwear = playerProcedure.createServerAction()
+export const unwear = playerProcedure
+  .createServerAction()
   .input(wearableActionSchema)
   .handler(async ({ input, ctx }) => {
     function makeUnwearableArmor(armorType: ArmorType): Partial<Wearable> {
@@ -194,7 +197,8 @@ export const unwear = playerProcedure.createServerAction()
     await updatePlayerStats(ctx.user.id, ctx.player.id, ctx.player.wearable_id)
   })
 
-export const drink = playerProcedure.createServerAction()
+export const drink = playerProcedure
+  .createServerAction()
   .input(consumableActionSchema)
   .handler(async ({ input, ctx }) => {
     const inventory = await getInventory(ctx.player.id, ctx.player.inventory_id)
