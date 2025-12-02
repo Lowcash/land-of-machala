@@ -13,24 +13,22 @@ import { ERROR_CAUSE } from '@/config'
 export const actionClient = createServerAction()
 
 // Create reusable procedures
-export const authProcedure = createServerActionProcedure()
-  .handler(async () => {
-    const session = await getServerSession()
+export const authProcedure = createServerActionProcedure().handler(async () => {
+  const session = await getServerSession()
 
-    if (!session) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
+  if (!session) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-    const user = await db.user.findUnique({ where: { email: session.user.email! } })
+  const user = await db.user.findUnique({ where: { email: session.user.email! } })
 
-    if (!user) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
+  if (!user) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.UNAUTHORIZED)
 
-    return { user }
-  })
+  return { user }
+})
 
-export const playerProcedure = createServerActionProcedure(authProcedure)
-  .handler(async ({ ctx }) => {
-    const player = await getPlayer(ctx.user.id)
+export const playerProcedure = createServerActionProcedure(authProcedure).handler(async ({ ctx }) => {
+  const player = await getPlayer(ctx.user.id)
 
-    if (!hasCharacter(player)) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.NO_CHARACTER)
+  if (!hasCharacter(player)) throw new ZSAError('FORBIDDEN', ERROR_CAUSE.NO_CHARACTER)
 
-    return { ...ctx, player }
-  })
+  return { ...ctx, player }
+})

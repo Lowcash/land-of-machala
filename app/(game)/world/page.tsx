@@ -17,8 +17,8 @@ import { WorldClient } from './_client'
  */
 export default async function WorldPage() {
   // Fetch initial game data on server (cached)
-  const result = await showInfo()
+  const [data] = await showInfo({})
 
   // Pass resolved data to client component for hydration
-  return <WorldClient initialData={result?.data} />
+  return <WorldClient initialData={data} />
 }

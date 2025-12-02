@@ -19,6 +19,7 @@ export function Armors() {
         { className: 'text-center', content: inventoryShowQuery.data?.text.intelligence ?? 'armor_intelligence' },
         { className: 'text-center', content: inventoryShowQuery.data?.text.wear ?? 'armor_wear' },
       ]}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Prisma result type, complex nested structure
       cells={inventoryShowQuery.data?.armors?.map((x: any) => [
         { className: 'text-left', content: x.armor.name },
         { className: 'text-center', content: x.armor.type },

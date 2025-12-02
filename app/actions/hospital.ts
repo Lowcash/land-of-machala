@@ -13,7 +13,8 @@ import * as QuestManager from '@/lib/manager/quest'
 
 import { ERROR_CAUSE } from '@/config'
 
-export const show = playerProcedure.createServerAction()
+export const show = playerProcedure
+  .createServerAction()
   .input(hospitalSchema)
   .handler(async ({ input, ctx }) => {
     const t = await getTranslations()
@@ -86,7 +87,8 @@ export const show = playerProcedure.createServerAction()
     }
   })
 
-export const resurrect = playerProcedure.createServerAction()
+export const resurrect = playerProcedure
+  .createServerAction()
   .input(hospitalSchema)
   .handler(async ({ ctx }) => {
     await db.user.update({
@@ -95,7 +97,8 @@ export const resurrect = playerProcedure.createServerAction()
     })
   })
 
-export const heal = playerProcedure.createServerAction()
+export const heal = playerProcedure
+  .createServerAction()
   .input(hospitalSchema)
   .handler(async ({ input, ctx }) => {
     const hospital = await HospitalEntity.get(input.hospitalId)
@@ -112,7 +115,8 @@ export const heal = playerProcedure.createServerAction()
     })
   })
 
-export const buyPotion = playerProcedure.createServerAction()
+export const buyPotion = playerProcedure
+  .createServerAction()
   .input(hospitalItemActionSchema)
   .handler(async ({ input, ctx }) => {
     const [hospital, inventory] = await Promise.all([

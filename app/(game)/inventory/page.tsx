@@ -6,6 +6,6 @@ import { InventoryClient } from './_client'
  * Fetches inventory items on server for instant render
  */
 export default async function InventoryPage() {
-  const result = await show()
-  return <InventoryClient initialData={result?.data} />
+  const [data] = await show({})
+  return <InventoryClient initialData={data} />
 }

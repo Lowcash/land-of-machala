@@ -14,28 +14,24 @@ export const createQueryClient = () =>
   })
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic query action requires any for flexibility
-type QueryAction<TParams extends any[] = [], TResult = any> = (...params: TParams) => Promise<TResult>
+type QueryAction = (...args: any[]) => Promise<any>
 
 export function createSafeQueryClient(queryClient = new QueryClient()) {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic types require any for flexibility
-    async prefetch<TQueryKey extends any[], TParams extends any[] = []>(
+    async prefetch<TQueryKey extends any[]>(
       queries: Array<{
         queryKey: TQueryKey
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic action result type
-        action: QueryAction<TParams, any>
-        params?: TParams
+        action: QueryAction
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        params?: any[]
       }>,
     ) {
       await Promise.all(
         queries.map(async (query) =>
           queryClient.prefetchQuery({
             queryKey: query.queryKey,
-            queryFn: () =>
-              resolveActionResult(
-                // @ts-expect-error - Dynamic params spreading not fully type-safe
-                query.params ? query.action(...query.params) : query.action(),
-              ),
+            queryFn: () => resolveActionResult(query.params ? query.action(...query.params) : query.action()),
           }),
         ),
       )

@@ -14,7 +14,7 @@ export default function Table({ hideHeader = false, ...p }: Props) {
     <div className='max-h-[300px] overflow-auto'>
       <table className='w-full border-collapse border'>
         {!hideHeader && (
-          <thead className='sticky top-[-1px] z-10 bg-custom-gold-1'>
+          <thead className='bg-custom-gold-1 sticky top-[-1px] z-10'>
             <tr key={`TableHeaderRow_${0}`}>
               {p.columns?.map((cell, idx) => (
                 <th key={`TableHeaderCell_${idx}`} className={cn('border border-gray-300', cell.className)}>
