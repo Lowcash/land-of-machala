@@ -31,6 +31,7 @@ interface Props<T extends ZodType<any>> {
 
 export interface Handle {
   submit?: () => void
+  getValues?: () => FieldValues
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Generic form component requires any for schema type
@@ -57,6 +58,7 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
   React.useImperativeHandle(p.ref, () => ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any -- Form submission type casting required for react-hook-form compatibility
     submit: () => form.handleSubmit(onSubmit as any)(),
+    getValues: () => form.getValues(),
   }))
 
   return (

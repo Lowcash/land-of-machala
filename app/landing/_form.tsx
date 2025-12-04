@@ -28,10 +28,11 @@ export default function LoginForm() {
   }
 
   const handleSignIn = async () => {
+    const currentValues = formRef.current?.getValues?.()
     const result = await userSignIn('credentials', {
       redirect: false,
-      email: formData?.email,
-      password: formData?.password,
+      email: currentValues?.email,
+      password: currentValues?.password,
     })
 
     if (!!result?.ok) {
