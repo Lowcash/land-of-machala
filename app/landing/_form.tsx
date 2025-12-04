@@ -30,7 +30,6 @@ export default function LoginForm() {
   const handleSignIn = async () => {
     const result = await userSignIn('credentials', {
       redirect: false,
-      callbackUrl: '',
       email: formData?.email,
       password: formData?.password,
     })
