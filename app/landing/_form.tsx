@@ -43,10 +43,6 @@ export default function LoginForm() {
     }
   }
 
-  const handleSignUp = () => {
-    formRef.current?.submit?.()
-  }
-
   const handleSignUpSuccess = async () => {
     toast({ description: showLandingQuery.data?.text.signUpSuccess ?? 'sign_up_success' })
     navigate()
@@ -91,10 +87,10 @@ export default function LoginForm() {
       <hr />
 
       <div className='flex flex-col gap-4'>
-        <Form.Button variant='secondary' onClick={handleSignIn}>
+        <Form.Button variant='secondary' type='button' onClick={handleSignIn}>
           <span dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text.signIn ?? 'sign_in' }} />
         </Form.Button>
-        <Form.Button onClick={handleSignUp}>
+        <Form.Button type='submit'>
           <span dangerouslySetInnerHTML={{ __html: showLandingQuery.data?.text.signUp ?? 'sign_up' }} />
         </Form.Button>
       </div>
