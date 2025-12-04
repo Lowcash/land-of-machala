@@ -45,8 +45,13 @@ export default function Form<T extends ZodType<any>>({ children, ...p }: PropsWi
     defaultValues: p.data as FormData,
   })
 
-  const onSubmit = async () => {
-    // Form submission handled by external action
+  const onSubmit = async (data: FormData) => {
+    try {
+      const result = await p.action(data)
+      p.onAction?.onSuccess?.(result)
+    } catch (error) {
+      p.onAction?.onError?.(error)
+    }
   }
 
   React.useImperativeHandle(p.ref, () => ({
@@ -135,20 +140,20 @@ const FormButton = ({
   children,
   variant = 'warning',
   disabled,
+  type = 'submit',
   ...p
 }: PropsWithChildrenAndClassName<
-  Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick'> & { disabled?: boolean }
+  Pick<React.ComponentProps<typeof Button>, 'variant' | 'onClick' | 'type'> & { disabled?: boolean }
 >) => {
   const form = useFormContext()
   const isSubmitting = form?.formState?.isSubmitting || false
 
   return (
-    // when using with combination with onChange, submit can be triggered twice => button type button
     <Button
       {...p}
       className={cn('w-full', p.className)}
       variant={variant}
-      type='button'
+      type={type}
       disabled={disabled || isSubmitting}
     >
       {isSubmitting ? 'Loading...' : children}

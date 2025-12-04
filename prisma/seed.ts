@@ -1,4 +1,5 @@
 import { PrismaClient, EnemyIdent } from '@prisma/client'
+import bcrypt from 'bcrypt'
 
 const prisma = new PrismaClient()
 
@@ -1212,6 +1213,17 @@ async function main() {
       { enemy_id: 'DROWNED', armor_id: 'chest_lake_froth', drop_chance: 0.1 },
       { enemy_id: 'DROWNED', armor_id: 'hand_gloves_wizard', drop_chance: 0.08 },
     ],
+  })
+
+  // Seed test user
+  console.log('👤 Seeding test user...')
+  const hashedPassword = await bcrypt.hash('123456', 10)
+  await prisma.user.create({
+    data: {
+      email: 'lukas.lowcash@gmail.com',
+      password: hashedPassword,
+      name: 'Test User',
+    },
   })
 
   console.log('✅ Database seed completed successfully!')
