@@ -1,27 +1,15 @@
-import 'server-only'
-
-import { env } from '@/env'
 import { PrismaClient } from '@prisma/client'
 
-const createPrismaClient = () =>
-  new PrismaClient({
-    log:
-      env.NODE_ENV === 'development'
-        ? [
-            // "query",
-            'error',
-            'warn',
-          ]
-        : ['error'],
-    transactionOptions: {
-      timeout: env.NODE_ENV === 'development' ? 999999999 : 5000,
-    },
-  })
-
-const globalForPrisma = globalThis as unknown as {
-  prisma: ReturnType<typeof createPrismaClient> | undefined
+const prismaClientSingleton = () => {
+  return new PrismaClient()
 }
 
-export const db = globalForPrisma.prisma ?? createPrismaClient()
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>
+} & typeof global
 
-if (env.NODE_ENV !== 'production') globalForPrisma.prisma = db
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton()
+
+export { prisma }
+
+if (process.env.NODE_ENV !== 'production') globalThis.prismaGlobal = prisma

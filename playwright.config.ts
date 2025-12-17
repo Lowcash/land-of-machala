@@ -12,6 +12,15 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Enable visual comparison features
+    ignoreHTTPSErrors: true,
+  },
+
+  expect: {
+    toHaveScreenshot: {
+      maxDiffPixelRatio: 0.01,
+      animations: 'disabled', // Disable CSS animations for stable snapshots
+    },
   },
 
   projects: [

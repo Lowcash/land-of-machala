@@ -1,10 +1,11 @@
-````instructions
-# GitHub Copilot Instructions
+# 🤖 GitHub Copilot Instructions (Meta-Driven Development)
+
+---
 
 ## 🎯 Core Requirements
 
 ### Complete Response Policy
-**CRITICAL:** Address ALL aspects of user queries comprehensively. Never leave questions unanswered or partially addressed. If a question has multiple components, explicitly address each one.
+**CRITICAL:** Address ALL aspects of user queries comprehensively. Never leave questions unanswered or partially addressed.
 
 ### 100% Completion Policy
 - Deliver production-ready code: tested, functional, documented
@@ -12,218 +13,345 @@
 - Fix errors immediately during completion
 - For percentage mentions, add remaining tasks and execute them
 
-### Automation-First Policy (NEW)
-**CRITICAL:** Maximize autonomy. Execute automatically WITHOUT waiting for user approval:
-- ✅ Do: Create/update files, run linters, commit-ready code, push branches
-- ✅ Do: Make architecture decisions within guidelines (follow DEVELOPMENT.md, INSIGHTS.md)
-- ✅ Do: Auto-create PR drafts with detailed descriptions (user reviews before merge)
-- ❌ Don't: Ask user for approval on each small change
-- ❌ Don't: Wait for confirmation before implementing obvious fixes
-- ❌ Don't: Stop at "Here's what I would do..." — actually do it
-- ⏸️ Only pause for: Major breaking changes, architecture overhauls, user-facing behavior changes
-
-**User involvement:** User reviews final PR, merges when ready. No micro-management.
-
-## 🔧 Code Standards
+### Code Standards (Universal)
 - **No magic numbers:** Use named constants for literals >1
-- **Self-documenting code:** Meaningful names, enums over strings, no unused code
-- **Automated linting:** Run `npm run lint`, `npx prettier --write .` after changes
-- **Type safety:** TypeScript strict mode, no `any` types, use type guards
+- **Self-documenting code:** Meaningful names, explicit types, no unused code
+- **Automated linting:** Run linting & formatting after changes
 - **SOLID Principles:** Single responsibility, open/closed, Liskov substitution, interface segregation, dependency inversion
 - **No duplication:** Reuse existing solutions, consolidate duplicates immediately
 - **Constants vs Config:** Immutable = constants, user-optimizable = config
 - **Comments:** Explain WHY and CONTEXT only, avoid obvious comments
-- **No historical comments:** NEVER include "REMOVED", "Phase X", "cleanup" markers - code shows current state only
-- **Server-first:** Use Server Components and Server Actions by default
-- **VERIFY BEFORE CLAIMING SUCCESS:** Always test proposed solutions before saying they work (common pattern: propose → implement → claim works → actually fails)
+- **VERIFY BEFORE CLAIMING SUCCESS:** Always test proposed solutions before claiming they work
 
-## 🚫 Absolute Prohibitions
-- **No long terminal code execution:** Never run complex code blocks in terminal - create script files instead
-- **No long terminal output:** Terminal commands MUST NOT produce excessive output (>500 lines). Use head/tail/grep to limit output. For progress tracking, use progress bars or summary counts, not line-by-line logs
-- **No auto-commit/push:** NEVER commit or push changes automatically - always let user review and commit manually
-- No fallback constants (*_AVAILABLE flags) - fail fast on missing dependencies
-- No deprecated code markers - remove immediately
-- No long parameter lists (>4) - use parameter objects
-- No large classes/components (>200 lines) - split responsibilities
-- No redundant comments or reinventing wheels
-- **No new constants for existing values** - always reuse existing enums/constants
-- No fragile utility functions - handle validation/normalization internally
-- **No wildcard imports** - Use named imports (`import { X } from 'Y'` not `import * as Y`)
-- **No 'any' types** - Use proper TypeScript types or `unknown` with type guards
-- **ABSOLUTE PROHIBITION: Never include historical comments** - No "REMOVED", "Phase X", "cleanup" notes - document current code only
-- **ABSOLUTE PROHIBITION: Never add completed tasks to TODO.md** - Completed tasks belong in CHANGELOG.md, not TODO.md
-- **ABSOLUTE PROHIBITION: Never create "COMPLETED TASKS" sections in TODO.md** - TODO.md contains ONLY active tasks
+### Absolute Prohibitions
+- ❌ No "REMOVED", "Phase X", "cleanup" markers in code
+- ❌ No historical/TODO comments - document current state only
+- ❌ No `any` types or implicit conversions
+- ❌ No fallback flags (e.g., `*_AVAILABLE`) - fail fast on missing dependencies
+- ❌ No long parameter lists (>4) - use parameter objects
+- ❌ Code shows current state only, never past states
 
-## 📚 Documentation Rules
+---
 
-### Key Files (Priority Order)
-- **CHANGELOG.md:** Timestamp (YYYY-MM-DD HH:MM) + what changed + why + impact. **Update after EVERY change.**
-- **TODOS.md:** Active tasks only (HIGH/MEDIUM/LOW priority). **Update after EVERY task start/completion.**
-- **INSIGHTS.md:** High-level project overview, architecture, design decisions. **Update ONLY for major architectural changes.**
-- **README.md:** User-facing documentation, setup instructions. **Update ONLY when user-facing behavior changes.**
-- **AI_CONTEXT.md:** Meta-guide for AI assistants. **Update when discovering better workflows.**
-- **DEVELOPMENT.md:** Development workflow, code standards (internal use). **Rarely updated.**
+## 🚀 Session Start Protocol
 
-### Documentation Workflow
-1. **Session Start (MANDATORY):**
-   - Read INSIGHTS.md (5 min) - Understand WHY things are designed this way
-   - Read TODOS.md (2 min) - Know WHAT to work on
-   - Read CHANGELOG.md (last 5 entries, 2 min) - Recent changes context
-2. **During Work:** Reference documentation for architecture decisions
-3. **After EVERY Task Completion (STRICT ROUTINE):**
-   ```
-   Step 1: Get timestamp (python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y-%m-%d %H:%M'))")
-   Step 2: Update CHANGELOG.md (WHAT changed + WHY + IMPACT)
-   Step 3: Update TODOS.md (mark completed, add new)
-   Step 4: Update INSIGHTS.md (ONLY if architectural decision changed)
-   Step 5: Update README.md (ONLY if user-facing behavior changed)
-   ```
-4. **INSIGHTS.md:** Keep concise (<500 lines), AI-readable, focused on essential context
-5. **COMPLETED TASKS WORKFLOW:**
-   - When a task is completed, REMOVE it from TODO.md immediately
-   - Add completion details to CHANGELOG.md with timestamp
-   - NEVER create "COMPLETED TASKS" sections in TODO.md
-   - TODO.md contains ONLY active, actionable tasks
-6. **README.md Maintenance:**
-   - Update when user-facing features change
-   - Remove outdated information immediately
-   - Keep aligned with actual project state
+### Step 1: Load Context (2 minutes)
 
-### Timestamp Generation
-Use: `python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y-%m-%d %H:%M'))"`
-(Keep Python for timestamp - works on all platforms)
+**Read in this order:**
+1. **local/INSIGHTS.md** - Architecture decisions, tech stack, key learnings
+2. **local/TODOS.md** - Active tasks, priorities, owners
+3. **CHANGELOG.md** (last 5 entries) - Recent changes context
 
-## ⚡ Quality Assurance
-- **Every change:** Document state, batch related changes (≤5 files), validate after each group
-- **Never:** Change unrelated files without validation, start new features while existing code is broken
-- **Always:** Preserve working interfaces, test before/after changes
-- **Quick mode:** For small tasks (<3 files), skip full validation, just syntax check and basic tests
+**Then report:**
+```
+✅ Context loaded (2 min)
+
+Project: [name]
+Status: [Development / Production]
+Active tasks: [count from TODOS.md]
+Recent changes: [what changed last]
+
+What should I do first?
+
+📊 Context: XXk / 200k tokens (XX%)
+⏱️ Model: Claude Haiku 4.5
+⏱️ ETA: Awaiting instructions
+```
+
+### Step 2: Auto-Detect Project Type
+
+**Detect from filesystem:**
+- Analyze directory structure and configuration files to identify stack.
+- Read `ARCHITECTURE.md` and `DEVELOPMENT.md` (filled from templates).
+- Understand project-specific patterns from existing code.
+
+---
+
+## 🤖 Master Agent Delegation Rules
+
+**Why Delegate?**
+1. **Context Preservation:** Prevent context window overflow by offloading detailed work.
+2. **Parallelization:** Execute independent tasks simultaneously (e.g., Frontend & Backend).
+3.  **Specialization:** Use agents with specific prompts/tools for distinct domains.
+
+**When to Split Work:**
+1. **Total scope >50 lines of code** OR **>3 files changed**
+2. **Context usage >70%** (Proactive offloading)
+3. **Multiple independent tasks** (Phase 1 doesn't block Phase 2)
+4. **Different skill domains** (ML training vs. Frontend UI)
+
+**Workflow (Manager/Worker Pattern):**
+- **Master Agent (Manager):**
+    - Defines the **"What"** and **"Why"** (Goals, Constraints, Questions to answer).
+    - Creates Task Context Files.
+    - Reviews and integrates results.
+- **Slave Agent (Worker):**
+    - Determines the **"How"** (Implementation details).
+    - Executes the task autonomously.
+    - Reports back via the Task Context File.
+
+**Delegation Protocol:**
+1. Create a task file in `copilot-solutions/.orchestration/sessions/task-[ID]-[NAME].md`.
+2. Define **Context**, **Goal**, and **Definition of Done**.
+3. **Crucial:** Frame requirements as *questions/goals* to solve, not just code to copy.
+4. Instruct Slave Agent to read this file and execute.
+5. Slave Agent updates the task file with progress.
+
+---
+
+## 🔄 Commit Standards (Conventional Commits)
+
+**Format:** `<type>(<scope>): <subject>` (max 50 chars)
+
+**Types:** `feat|fix|refactor|docs|test|chore|perf|style`
+
+**Rules:**
+- Imperative mood ("add", not "added")
+- No period at end
+- ~50 characters max
+- Scope optional
+- **Keep it short.** Body only if WHY is non-obvious.
+
+**Examples (GOOD):**
+```
+feat(ml): add ensemble voting weights optimization
+fix(data): handle utf-16 encoding in mt5 exports
+refactor: consolidate duplicate validation logic
+```
+
+---
 
 ## 🧪 Testing Standards
-- **Test-first for bug fixes:** Write failing test before fixing bug
-- **Coverage target:** 80% for core modules (entity/, lib/, app/actions/)
-- **No skipped tests in production:** Skip only in dev with TODO comment
-- **Mock external dependencies:** Database (Prisma), Server Actions, external APIs
-- **Integration tests for critical paths:** Authentication, character creation, combat, quests
-- **Regression tests required:** All production bugs must have test preventing recurrence
-- **Use Vitest:** Unit tests with `vitest`
-- **Use Testing Library:** Component tests with `@testing-library/react`
-- **Use Playwright:** E2E tests for critical user journeys
 
-## 🔍 Code Review Standards
-- **Self-review first:** Run full checklist before creating PR
-- **Small PRs preferred:** Max 400 lines changed for easier review
-- **Single responsibility:** One feature/fix per PR, no mixing concerns
-- **Test evidence required:** Show test results in PR description
-- **Breaking changes:** Document migration path in CHANGELOG with examples
-- **Mandatory checks:** Linters passed, tests passed, CHANGELOG updated, TODOS.md cleaned
+### Coverage Targets
+- **Core modules:** >80% coverage
+- **Feature/Entity layer:** >80% coverage
+- **Utils:** >70% coverage
+- **UI/Components:** >70% coverage
 
-## 📊 Logging Standards
-- **Log levels:**
-  - DEBUG: Verbose internal state (enable via --verbose flag)
-  - INFO: State changes, signals, important milestones only
-  - WARNING: Recoverable errors, deprecated features
-  - ERROR: Failures requiring immediate intervention
-- **Throttle repetitive logs:** Session-based deduplication for warnings
-- **No noise in production:** Default INFO level, <10 lines per minute in normal operation
-- **Structured context:** Always include timestamp, component name, relevant IDs
-## 💰 Token Usage & Efficiency Standards
+### Test Structure
+- **Unit tests:** Individual functions/components in isolation
+- **Integration tests:** Component interactions, data flow
+- **E2E tests:** Critical user journeys (web projects only)
+- **Fixtures/Mocks:** External dependencies (files, APIs, databases)
 
-### Unified Context Tracking Format
-All AI agents MUST report token usage in this format:
+### Test-First for Bugs
+1. Write failing test (reproduces bug)
+2. Implement fix to make test pass
+3. Verify test passes + no regression
 
-**Session Report Template:**
+### Mock External Dependencies
+- File I/O → use temp directories or mocks
+- APIs → mock responses
+- Databases → test fixtures or in-memory DBs
+- ML models → synthetic test data
+
+---
+
+## 📚 Documentation Workflow (STRICT)
+
+### After EVERY task completion (Non-negotiable):
+
+**Step 1: Get timestamp**
+```bash
+python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y-%m-%d %H:%M'))"
 ```
-📊 Context: <used>k / <budget>k tokens (<percent>%)
-⏱️ Model: [Claude Haiku 4.5 | Claude Sonnet 4.5 | Other]
-⏱️ ETA: <specific activity description>
+
+**Step 2: Update CHANGELOG.md**
+```markdown
+## 2025-MM-DD HH:MM - [Task Name]
+
+**Type:** [Added | Fixed | Changed]
+**Scope:** [Module/Component]
+**Impact:** [What improved, metrics if applicable]
+
+### [Type]
+- **[Component]:** What changed + why
+- **[Tests]:** What was tested
+```
+
+**Step 3: Update TODOS.md**
+- Remove completed task
+- Add any new tasks discovered during work
+- Keep ONLY active, actionable tasks (no "COMPLETED TASKS" sections)
+
+**Step 4: Update INSIGHTS.md** (ONLY if architecture changed)
+- Add learned patterns
+- Update tech stack notes if new tools added
+- Keep <200 lines total
+
+**Step 5: Update README.md** (ONLY if user-facing behavior changed)
+
+### Key Files Priority
+1. **CHANGELOG.md** - ALWAYS update (strict, non-negotiable)
+2. **TODOS.md** - ALWAYS update (mark completed)
+3. **INSIGHTS.md** - Update ONLY for architectural changes
+4. **README.md** - Update ONLY for user-facing behavior changes
+
+### TODOS.md Rule (Absolute)
+- ✅ Contains ONLY active, actionable tasks
+- ❌ NEVER create "COMPLETED TASKS" sections
+- ✅ Completed tasks → CHANGELOG.md with timestamp + details
+
+---
+
+## 🚫 Anti-Patterns (Universal)
+
+### Forbidden Patterns:
+
+```
+❌ Magic numbers               → ✅ Named constants
+❌ Fallback flags              → ✅ Fail fast on missing deps
+❌ God classes (>200 lines)    → ✅ Single responsibility
+❌ Props drilling (>2 levels)  → ✅ Context/composition
+❌ Deprecated code markers     → ✅ Remove immediately
+❌ Long parameter lists (>4)   → ✅ Parameter objects
+❌ `any` type in TS            → ✅ Explicit types
+❌ Implicit conversions        → ✅ Explicit casting
+❌ Historical comments         → ✅ Current state only
+❌ Unused code                 → ✅ Remove before commit
+```
+
+---
+
+## 🔍 Validation Checklist (Before Commit)
+
+Before every commit:
+- ✅ Linting passes (project-specific rules)
+- ✅ All tests pass
+- ✅ Type check passes (if applicable)
+- ✅ Build/compile check passes
+- ✅ CHANGELOG.md updated (ALWAYS)
+- ✅ TODOS.md cleaned (ALWAYS)
+- ✅ No console.log/print debugging left
+- ✅ No commented code left
+
+---
+
+## 🔄 Best Practices Research (When Uncertain)
+
+**When to research online:**
+- ✅ Framework updated recently (React 19, Next.js 15, scikit-learn changes)
+- ✅ New patterns mentioned (Server Components, Async Actions)
+- ✅ Performance optimization needed
+- ✅ Security concerns (auth, encryption)
+- ✅ Library deprecation suspected
+
+**How to research:**
+1. Check official documentation FIRST
+2. Search GitHub trending projects in category
+3. Cross-reference multiple sources (not just first Google result)
+4. Benchmark if performance critical
+5. Propose: "Found X pattern, should we use it? (yes/no)"
+
+**Report findings:**
+- What you found
+- Why it's relevant
+- Alternatives considered
+- Recommendation with reasoning
+
+---
+
+## 💰 Token Tracking (Every Response)
+
+**Include in every response:**
+```
+📊 Context: XXk / 200k tokens (XX%)
+⏱️ Model: Claude Haiku 4.5
+⏱️ ETA: [specific activity being done]
 ```
 
 **Example:**
 ```
-📊 Context: 51k / 200k tokens (25.5%)
+📊 Context: 67k / 200k tokens (33.5%)
 ⏱️ Model: Claude Haiku 4.5
-⏱️ ETA: ~20 min (test coverage phase + updating Server Actions)
+⏱️ ETA: ~15 min (refactoring FeatureEngineer + tests)
 ```
 
-**Guidelines:**
-- **Used tokens:** Actual value from context window
-- **Budget:** 200k per default agent session (escalate to Sonnet if approaching 80%)
-- **Percent:** (used ÷ budget) × 100, round to nearest 1%
-- **Model:** Explicit model name (enables future multi-model routing)
-- **ETA:** Specific, actionable (NOT "implementation" but "adding 15 Server Action tests + manager tests")
+---
 
-### Token Economy Rules
-- ✅ **Maximize per-session work:** Ask agents to batch 3–5 related tasks (not atomic 30-min tasks)
-- ✅ **Minimize searches:** Each grep_search counts ~500 tokens; batch searches in one call
-- ✅ **GitHub storage:** Artifacts clean-up handled via GitHub settings (7-day retention), not scripts
-- ✅ **Coverage reports:** Generate only on current branch/dev branches (not main/beta until release)
-- ⚠️ **Context escalation:** If usage >85%, switch to Sonnet 4.5 or summarize + restart with new agent
+## 💬 Communication & English Feedback
 
-### Session Handoff Protocol
-**If approaching token limit (>85% used):**
-1. Create summary of completed work + remaining tasks
-2. Add summary to CHANGELOG.md as "Session checkpoint"
-3. Provide new agent: INSIGHTS.md + latest CHANGELOG entry + specific remaining task
-4. New agent reads checkpoint first, resumes from there (no re-context needed)
-## �🤖 AI Agent Rules
+**Primary Language:** English 🇬🇧 (with learning support)
 
-### Collaboration Model (Established 2025-10-20)
-**User's Role:** Architecture, strategy, business logic decisions, final approval, project leadership
-**AI's Role:** Implementation, technical analysis, code quality, testing, documentation, execution
+**When to provide feedback:**
+- After code work completion
+- 1-3 language items max (focused, not overwhelming)
+- Focus on: Natural phrasing, business English, common patterns
+- Tone: Encouraging, constructive, educational
 
-**Default Workflow:**
-1. **User provides direction** - "what" and "why" (architectural decisions, priorities)
-2. **AI implements solution** - "how" (code, tests, refactoring, optimization)
-3. **AI explains options** - when multiple approaches exist, present trade-offs
-4. **User decides on trade-offs** - strategic choices (performance vs simplicity, time investment)
-5. **AI provides realistic estimates** - AI execution time, not human time (minutes/hours for AI vs hours/days for human)
-
-**AI Autonomy:**
-- Full autonomy on: Code style, variable names, file organization, test structure, implementation details
-- Consultation required: Architecture changes, breaking changes, major refactoring scope
-- Always explain: Why specific approach chosen, trade-offs, alternatives considered
-
-**Quality Standards:**
-- Production-ready code by default (tested, linted, documented)
-- Realistic time estimates: AI can refactor 1000+ lines in ~10-30 minutes (vs hours/days for human)
-- Progress updates: After each major milestone (e.g., "Task 1/3 complete")
-- Continuous execution: Don't stop for approval unless architecture decision required
-
-**Effort Estimation Guidelines (AI Execution):**
-- Quick fix: <5 minutes (single file, simple change)
-- Medium task: 10-20 minutes (multiple files, refactoring, tests)
-- Major refactoring: 20-30 minutes (1000+ line class split, full test validation)
-- Complex feature: 30-60 minutes (new subsystem, integration tests, documentation)
-
-### Session Management
-- **Session Start:** ALWAYS read INSIGHTS.md and TODO.md to understand current state and architecture
-- **Before Changes:** Verify assumptions by reading relevant files - never rely on memory alone
-- **Context Validation:** When unsure, use grep_search or semantic_search to verify facts
-- Critical failures trigger immediate correction or session restart
-- At session end: Update documentation with current state, known issues, next priorities
-
-### Anti-Hallucination Protocols
-1. **Verify Before Acting:** Read files before editing, search codebase before assuming patterns
-2. **Small Batch Changes:** Max 5 files per batch, validate each batch before proceeding
-3. **Test After Changes:** Run linters, syntax checks, or tests after each modification group
-4. **Cross-Reference:** When modifying constants/enums, search for all usages first
-5. **Document Uncertainty:** If unsure about something, search/read rather than guess
-
-### State Preservation
-- **INSIGHTS.md is Source of Truth:** When in doubt about architecture/patterns, consult INSIGHTS.md
-- **After code changes affecting constants/config:** Add "Review [constants_module] for patterns" to TODO tracking
-- **Breaking Interface Changes:** Document in CHANGELOG with migration guide
-- **Never modify working code** without explicit reason and validation plan
-
-## 🌐 Language & Communication
-- **Chat Language:** Adapt to the user's language (Czech). If the user speaks Czech, reply in Czech.
-- **Code Language:** ALWAYS use English for code, comments, commit messages, and documentation.
-- **Technical Terms:** Keep standard technical terms in English (e.g., "Server Actions", "Props", "Hook") even when speaking Czech.
-
-## 🏗️ Project Architecture
-- **Entity Pattern:** Always use `entity/*` modules for data fetching and domain logic. Do not call `db.*` directly in UI components.
-- **Server Actions:** Use `actionClient` or `playerActionClient` from `@/lib/safe-action` for mutations.
-- **Prisma:** Schema is split in `prisma/schema/*.prisma`. Use `prisma/seed.ts` for initial data.
+**Format:**
 ```
-````
+📝 English Notes:
+- "I will help you" → More natural: "I'll help you" (contractions common in tech)
+- "Maybe let's try to switch" → More direct: "Let's switch"
+- Good use of: "don't repeat yourself" (idiomatic!)
+```
+
+**Never:**
+- Correct grammar in code comments (focus on communication)
+- Over-explain simple rules
+- Use pedantic tone
+
+---
+
+## 📁 File Structure (Standard for All Projects)
+
+```
+project/
+├── docs/
+│   ├── ARCHITECTURE.md         # Project architecture decisions (filled)
+│   └── README.md               # Project overview & setup
+├── local/                       # Local state (not committed)
+│   ├── INSIGHTS.md            # Key learnings, tech decisions
+│   └── TODOS.md               # Active tasks only
+├── CHANGELOG.md               # Change history with timestamps
+├── .github/
+│   └── copilot-instructions.md # AI guidance (if project-specific)
+├── CONFIG_GUIDE.md            # Setup & environment (delete after setup)
+├── DEVELOPMENT.md             # Development methodology
+└── [project-specific folders]
+```
+
+---
+
+## 🎯 TL;DR - Core Workflow
+
+**Session start:**
+1. Load INSIGHTS → TODOS → CHANGELOG (2 min)
+2. Auto-detect project type
+3. Report status and ask what to do first
+
+**During work:**
+- Follow code standards (no magic numbers, self-documenting)
+- Test-first for bugs
+- Linting after changes
+
+**After EVERY task (STRICT):**
+- Update CHANGELOG.md (timestamp + what + why + impact)
+- Update TODOS.md (remove completed, add new)
+- Update INSIGHTS.md (ONLY if architecture changed)
+- Validate all checks pass before commit
+
+**Key mindset:**
+- Research modern practices (not prescriptive templates)
+- Fail fast on missing dependencies
+- Production-ready code always
+- Document decisions, not processes
+
+---
+
+## 📖 Where to Find Project-Specific Info
+
+- **ARCHITECTURE.md** → How this project is structured
+- **DEVELOPMENT.md** → How to work on this project
+- **CONFIG_GUIDE.md** → How to set up tools & environment
+- **local/INSIGHTS.md** → What you've learned in this project
+- **CHANGELOG.md** → What's changed and why
+- **Existing code** → Best reference for "how we do things here"
+
+---
+
+**Status:** Production-ready ✅  
+**Version:** 2.0 (Consolidated, meta-driven)  
+**Last Updated:** 2025-12-12

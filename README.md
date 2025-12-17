@@ -1,487 +1,305 @@
-<<<<<<< HEAD
+# Land of Machala — Text-Based RPG
 
-## Land of Machala App
+**A modern web-based RPG experience built with Next.js 16**
 
-A mystical realm of magic and adventure - a browser-based RPG game built with Next.js.
-
-### Getting Started
-
-```bash
-# Install dependencies
-npm install
-
-# Generate Prisma client
-npm run prisma:generate
-
-# Run development server
-npm run dev
-
-# Build for production
-npm run build
-```
-
-### Testing
-
-The project uses a comprehensive testing setup:
-
-- **Unit Tests**: Vitest for testing server actions, game logic, and utility functions
-- **Integration Tests**: Testing Library for component testing
-- **E2E Tests**: Playwright for end-to-end testing
-
-```bash
-# Run unit and integration tests
-npm run test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-
-# Run E2E tests
-npm run test:e2e
-```
-
-### Architecture
-
-- `app/` - Next.js App Router pages and server actions
-- `components/` - Reusable UI components
-- `entity/` - Game entity logic
-- `lib/` - Utility functions and shared modules
-- `hooks/` - React hooks for data fetching and state management
-- `prisma/` - Database schema and migrations
-
-### Features
-
-- Character creation with races and classes
-- Exploration and movement system
-- Combat system with enemies
-- Quest system
-- Inventory management
-- Bank system for item storage
-- Hospital for healing
-
-For more details, see `docs/INSIGHTS.md`.
-
-=======
-
-# 🎮 Land of Machala
-
-> A browser-based fantasy RPG built with Next.js 15, React 19, and TypeScript
-
-[![Next.js](https://img.shields.io/badge/Next.js-15.3-black?style=flat&logo=next.js)](https://nextjs.org)
-[![React](https://img.shields.io/badge/React-19.0-blue?style=flat&logo=react)](https://react.dev)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue?style=flat&logo=typescript)](https://www.typescriptlang.org)
-[![Prisma](https://img.shields.io/badge/Prisma-6.3-2D3748?style=flat&logo=prisma)](https://www.prisma.io)
-
-**Live Demo:** [land-of-machala.cz](https://land-of-machala.cz) _(if deployed)_
+**Status:** 🚧 Active Development  
+**Framework:** Next.js 16 (App Router)  
+**Language:** TypeScript  
+**Last Updated:** 2025-12-13
 
 ---
 
-## 📖 About
+## 🎯 What This Does
 
-Land of Machala is a single-player RPG where you create a character, explore a fantasy world, battle enemies, complete quests, and manage your inventory. The game features a unique **single-URL navigation** system that maintains a clean browser experience while leveraging Next.js server-side rendering.
+Land of Machala is an immersive text-based RPG where players create characters, embark on quests, explore a rich fantasy world, and progress through engaging storylines. Built with modern web technologies, it delivers a seamless, accessible RPG experience directly in your browser.
 
-### Key Features
+- **Character Creation & Progression:** Level up, allocate skill points, customize builds
+- **Quest-Driven Gameplay:** Complete quests, earn rewards, unlock new storylines
+- **Rich Game World:** Explore maps, interact with NPCs, discover hidden secrets
 
-- 🎭 **Character System** - Choose from multiple races and classes
-- ⚔️ **Turn-Based Combat** - Fight enemies with strategic decision-making
-- 📜 **Quest System** - Complete objectives for rewards
-- 🎒 **Inventory Management** - Collect weapons, armor, and potions
-- 🏦 **Economy** - Buy/sell items, manage bank accounts
-- 🏥 **Safe Zones** - Hospitals, banks, and markets in cities
-- 🗺️ **Exploration** - Grid-based world with diverse terrains
+---
+
+## 📊 Key Metrics
+
+| Metric           | Value | Target           |
+| ---------------- | ----- | ---------------- |
+| Lighthouse Score | —     | >90              |
+| Test Coverage    | —     | >75%             |
+| Bundle Size      | —     | <250kb (gzipped) |
+| Build Time       | —     | <30s             |
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- **Node.js** 20.x or 22.x ([Download](https://nodejs.org))
-- **MySQL** 8.0+ (or Docker for containerized setup)
-- **npm** 10+ (comes with Node.js)
-
-### Installation
+### 1. Setup Environment
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/Lowcash/land-of-machala.git
-cd land-of-machala
-
-# 2. Install dependencies
+cd land-of-machala-v2
 npm install
+```
 
-# 3. Setup environment variables
-cp .env.example .env
-# Edit .env with your database credentials (see Configuration below)
+### 2. Configure Database (Docker)
 
-# 4. Setup database
-docker-compose -f deploy/docker-compose.yml up -d  # Start MySQL in Docker
-npm run prisma:update                               # Apply schema to DB
+```bash
+# Start PostgreSQL container
+docker run --name machala-db \
+  -e POSTGRES_USER=myuser \
+  -e POSTGRES_PASSWORD=myuserpassword \
+  -e POSTGRES_DB=mydatabase \
+  -p 3306:5432 \
+  -d postgres:16
 
-# 5. Start development server
+# Copy environment template
+cp .env.example .env.local
+
+# Edit .env.local if needed (default values work)
+```
+
+### 3. Initialize Database
+
+```bash
+# Generate Prisma Client
+npm run prisma:generate
+
+# Push schema to database
+npm run prisma:update
+
+# Seed development data
+npm run prisma:seed
+```
+
+### 4. Run Development Server
+
+```bash
 npm run dev
+
+# Open http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) and start playing! 🎉
-
----
-
-## ⚙️ Configuration
-
-### Environment Variables
-
-Create a `.env` file in the project root:
-
-```env
-# Database Connection (MySQL)
-DATABASE_URL="mysql://username:password@localhost:3306/land_of_machala"
-
-# NextAuth Configuration
-NEXTAUTH_URL="http://localhost:3000"
-NEXTAUTH_SECRET="your-super-secret-key-min-32-chars"  # Generate: openssl rand -base64 32
-
-# Optional: Node Environment
-NODE_ENV="development"
-```
-
-### Database Setup Options
-
-#### Option 1: Docker (Recommended for Development)
+### 5. Build for Production
 
 ```bash
-# Start MySQL container from deploy/docker-compose.yml
-docker-compose -f deploy/docker-compose.yml up -d
-
-# Verify it's running
-docker ps | grep mysql
-
-# DATABASE_URL should be:
-# mysql://root:password@localhost:3306/land_of_machala
-```
-
-#### Option 2: Local MySQL Installation
-
-```bash
-# Install MySQL 8.0+ on your system
-# Then create database:
-mysql -u root -p
-CREATE DATABASE land_of_machala;
-exit
-
-# Update DATABASE_URL in .env with your credentials
-```
-
-#### Option 3: Remote MySQL (PlanetScale, AWS RDS, etc.)
-
-```bash
-# Get connection string from your provider
-# Update DATABASE_URL in .env
-# Run prisma:update to apply schema
+npm run build
+npm start
 ```
 
 ---
 
-## 🛠️ Development
+## 📂 Project Structure
 
-### Available Scripts
-
-```bash
-# Development
-npm run dev              # Start Next.js dev server (localhost:3000)
-npm run build            # Build for production
-npm run start            # Start production server
-npm run lint             # Run ESLint
-
-# Database Operations
-npm run prisma:update    # Push schema changes to database (dev)
-npm run prisma:reset     # Reset database (⚠️ DESTRUCTIVE - deletes all data)
-npm run prisma:generate  # Regenerate Prisma Client after schema changes
-npm run prisma:seed      # Seed database with initial game data
-npx prisma studio        # Open Prisma Studio GUI for database inspection
-
-# Testing
-npm test                 # Run all tests
-npm run test:watch       # Run tests in watch mode
-npm run test:e2e         # Run end-to-end tests
 ```
+app/                    # Next.js App Router (routes & pages)
+├── (auth)/             # Authentication pages (login, register)
+├── (game)/             # Protected game pages (character, quests, map)
+├── api/                # API routes (NextAuth, health check)
+├── layout.tsx          # Root layout
+└── page.tsx            # Home (redirects to /login)
 
-### Development Workflow
+components/
+├── ui/                 # Reusable UI components (Button, Card, Dialog)
+└── features/           # Feature-specific components
+    ├── Auth/           # Login, Register forms
+    ├── Character/      # Character panel, stats
+    ├── Quest/          # Quest log, quest items
+    └── Map/            # Game map, navigation
 
-1. **Make code changes** - Edit files in `app/`, `components/`, `lib/`, etc.
-2. **Hot reload activates** - Next.js automatically refreshes the browser
-3. **Run type-check** - `npx tsc --noEmit` to catch TypeScript errors
-4. **Test changes** - Create account → Create character → Test feature
-5. **Update documentation** - Add entry to `CHANGELOG.md` with timestamp
+lib/                    # Utilities & helpers
+├── db.ts               # Prisma client singleton
+├── auth.ts             # NextAuth.js v5 configuration
+├── utils.ts            # Common helpers
+└── hooks/              # Shared React hooks
 
-### Common Development Tasks
+entity/                 # Data access layer (Prisma queries)
+├── user.ts             # User CRUD operations
+├── character.ts        # Character queries
+└── quest.ts            # Quest queries
 
-**Add a new game feature:**
+types/                  # TypeScript definitions
+├── game.ts             # Game domain types
+├── user.ts             # User & auth types
+└── api.ts              # API response types
 
-```bash
-# 1. Define Prisma schema (prisma/schema/*.prisma)
-# 2. Apply schema: npm run prisma:update
-# 3. Create entity file (entity/*.ts)
-# 4. Create Zod schema (zod-schema/*.ts)
-# 5. Create server actions (app/actions/*.ts)
-# 6. Create React hooks (hooks/api/*.ts)
-# 7. Create UI components (components/app/*.tsx)
-# 8. Add tests (__tests__/*)
-```
+__tests__/              # Test files
+├── unit/               # Function & utility tests
+├── components/         # Component rendering tests
+├── integration/        # Server Actions, API tests
+└── e2e/                # Playwright end-to-end tests
 
-**Debug Server Actions:**
+prisma/
+├── schema.prisma       # Database schema
+└── seed.ts             # Development seed data
 
-```bash
-# Server Actions run on the server, so console.logs appear in terminal
-npm run dev
-# Check terminal output, not browser console
-```
-
-**Reset game state for testing:**
-
-```bash
-npm run prisma:reset  # ⚠️ Deletes all data including accounts
+public/                 # Static assets
 ```
 
 ---
 
-## 📁 Project Structure
+## 🔄 Common Workflows
 
-```
-land-of-machala/
-├── app/                      # Next.js App Router
-│   ├── (game)/              # Game routes (world, quest, inventory)
-│   │   ├── _hydration.tsx   # TanStack Query prefetching
-│   │   ├── world/           # Main game world page
-│   │   ├── quest/           # Quest management page
-│   │   └── inventory/       # Inventory management page
-│   ├── actions/             # Server Actions (data mutations)
-│   │   ├── player.ts        # Player-related actions
-│   │   ├── armory.ts        # Shop actions
-│   │   ├── quest.ts         # Quest actions
-│   │   └── ...
-│   ├── api/auth/            # NextAuth API routes
-│   ├── landing/             # Landing/login page
-│   ├── create/              # Character creation page
-│   ├── layout.tsx           # Root layout
-│   └── page.tsx             # Main router (cookie-based navigation)
-│
-├── components/              # React components
-│   ├── app/                 # Game-specific components
-│   │   ├── Character.tsx    # Character display
-│   │   ├── Combat.tsx       # Combat UI
-│   │   ├── Inventory.tsx    # Inventory grid
-│   │   └── ...
-│   ├── ui/                  # Radix UI primitives
-│   │   ├── button.tsx
-│   │   ├── form.tsx
-│   │   └── ...
-│   └── Form.tsx             # Generic form with validation
-│
-├── entity/                  # Data entities + type guards
-│   ├── player.ts            # Player entity + hasCharacter()
-│   ├── enemy.ts             # Enemy types
-│   ├── armor.ts, weapon.ts  # Equipment entities
-│   └── ...
-│
-├── lib/                     # Core libraries
-│   ├── auth.ts              # NextAuth configuration
-│   ├── db.ts                # Prisma client instance
-│   ├── safe-action.ts       # Server Action middleware
-│   ├── query.ts             # TanStack Query utilities
-│   ├── i18n.ts              # Internationalization
-│   └── manager/             # Business logic
-│       ├── game.ts          # Combat, defeat, spawning
-│       └── reward.ts        # Loot calculation
-│
-├── hooks/                   # React hooks
-│   └── api/                 # TanStack Query hooks
-│       ├── player.ts        # usePlayerShowQuery(), etc.
-│       └── ...
-│
-├── prisma/                  # Database schema
-│   └── schema/              # Split schema files
-│       ├── schema.prisma    # Main config
-│       ├── user.prisma      # User/Player models
-│       ├── enemy.prisma     # Enemy models
-│       └── ...
-│
-├── zod-schema/              # Validation schemas
-│   ├── player.ts            # playerCreateSchema, etc.
-│   └── ...
-│
-├── config/                  # Configuration constants
-│   ├── index.ts             # Game constants (BASE_HP, etc.)
-│   ├── routes.ts            # Route constants
-│   └── query-keys.ts        # React Query keys
-│
-├── styles/                  # Global styles
-│   └── globals.css          # Tailwind base + custom CSS
-│
-├── locales/                 # Translations
-│   └── cs.json              # Czech translations
-│
-├── .github/                 # GitHub configuration
-│   ├── workflows/           # CI/CD pipelines (needs update)
-│   ├── copilot-instructions.md
-│   └── PULL_REQUEST_TEMPLATE.md
-│
-├── INSIGHTS.md              # Architecture documentation
-├── TODO.md                  # Active tasks
-├── CHANGELOG.md             # Version history
-├── DEVELOPMENT.md           # Contributor guide
-└── README.md                # This file
-```
+### Add New Feature
+
+1. Create folder in `components/features/[Feature]/`
+2. Add components: `FeaturePanel.tsx`, `useFeature.ts`
+3. Create Server Action in `app/actions.ts`
+4. Add types in `types/`
+5. Write tests in `__tests__/`
+6. Test: `npm run test && npm run type-check`
+
+### Add Database Query
+
+1. Create function in `entity/[model].ts`
+2. Use Prisma Client with type-safe queries
+3. Add type definition in `types/`
+4. Write unit test in `__tests__/integration/`
+5. Test: `npm run test`
+
+### Add Server Action
+
+1. Create in `app/actions.ts` or feature folder
+2. Use `createServerAction` from zsa (type-safe)
+3. Add Zod schema for input validation
+4. Test in component + write integration test
+5. Check error handling
 
 ---
 
-## 🏗️ Tech Stack
+## 💡 Architecture Decisions
 
-### Core Framework
+### Why Next.js 16?
 
-- **Next.js 15.3** - React framework with App Router, Server Components, Server Actions
-- **React 19.0** - UI library with new Compiler support
-- **TypeScript 5.x** - Type-safe development
+Server Components reduce bundle size by 30-50%, built-in routing simplifies structure, SEO-friendly for game wiki/guides, seamless Vercel deployment.
 
-### Database & ORM
+### Why Prisma?
 
-- **Prisma 6.3** - Type-safe database ORM
-- **MySQL 8.0+** - Relational database
+Type-safe queries prevent runtime errors, auto-generated types from schema, excellent migration workflow, Prisma Studio for data inspection.
 
-### State Management
+### Why Features-based Components?
 
-- **TanStack Query 5.x** - Server state management, caching, prefetching
-- **React Hook Form 7.x** - Form state management
-- **Zod 3.x** - Schema validation
-
-### Authentication
-
-- **NextAuth 4.24** - Authentication with Prisma adapter
-- **bcrypt** - Password hashing
-
-### UI & Styling
-
-- **Tailwind CSS 3.4** - Utility-first CSS framework
-- **Radix UI** - Unstyled, accessible component primitives
-- **Framer Motion 12.x** - Animation library
-- **Lucide React** - Icon library
-
-### Developer Tools
-
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-- **TypeScript** - Type checking
-- **Vercel Speed Insights** - Performance monitoring
+Easier navigation as project grows, clear dependencies, tests colocated with code, self-contained features.
 
 ---
 
-## 🎮 Game Mechanics
+## 📖 Documentation
 
-### Character Creation
-
-1. Sign up with email/password
-2. Choose race (Human, Elf, Dwarf, etc.)
-3. Choose class (Warrior, Mage, Rogue, etc.)
-4. Start at spawn point (0, 0)
-
-### Combat System
-
-- **Turn-based** - Player attacks → Enemy attacks → Repeat
-- **Damage calculation** - Based on weapon + stats vs enemy defense
-- **Victory rewards** - XP, gold, loot drops
-- **Defeat penalty** - Lose inventory, respawn at base
-
-### Progression
-
-- **XP system** - Gain XP from combat, level up for stat increases
-- **Equipment** - Weapons and armor improve combat effectiveness
-- **Quests** - Complete objectives for rewards
-- **Economy** - Earn gold, buy better equipment
-
-### World Navigation
-
-- **Grid-based movement** - Move up/down/left/right
-- **Terrain types** - Forest, desert, hills, roads, farms
-- **Safe zones** - Cities with banks, hospitals, markets, armories
-- **Enemy encounters** - Random spawns when moving in wilderness
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — Design patterns & technology choices
+- [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) — Workflow, testing strategy, deployment
+- [local/INSIGHTS.md](local/INSIGHTS.md) — Tech stack summary & key learnings
+- [local/TODOS.md](local/TODOS.md) — Active tasks & priorities
+- [CHANGELOG.md](CHANGELOG.md) — Change history with timestamps
+- [.github/copilot-instructions.md](.github/copilot-instructions.md) — AI collaboration guide
 
 ---
 
-## 🧪 Testing (Coming Soon)
+## ✅ Before Contributing
 
-Testing infrastructure is in development. Planned setup:
+- [ ] Read [local/INSIGHTS.md](local/INSIGHTS.md) (architecture overview)
+- [ ] Run tests: `npm run test`
+- [ ] Check types: `npm run type-check`
+- [ ] Lint code: `npm run lint`
+- [ ] Build: `npm run build`
+
+---
+
+## 🧪 Testing
 
 ```bash
-# Unit tests (Vitest)
-npm test
+# Run all tests
+npm run test
 
-# Component tests (Testing Library)
-npm run test:component
+# Run tests in watch mode
+npm run test:watch
 
-# End-to-end tests (Playwright)
+# Check test coverage
+npm run test:coverage
+
+# Run E2E tests
 npm run test:e2e
 
-# Coverage report
-npm run test:coverage
+# Run E2E with UI (debugging)
+npm run test:e2e:ui
 ```
-
-See [TODO.md](./TODO.md) for testing setup progress.
 
 ---
 
-## 📚 Documentation
+## 🔧 Configuration
 
-- **[INSIGHTS.md](./INSIGHTS.md)** - Architecture decisions, design patterns, trade-offs
-- **[TODO.md](./TODO.md)** - Active tasks, roadmap, known issues
-- **[CHANGELOG.md](./CHANGELOG.md)** - Version history, breaking changes
-- **[DEVELOPMENT.md](./DEVELOPMENT.md)** - Detailed development guide, code standards
+All settings in [local/INSIGHTS.md](local/INSIGHTS.md) and `.env.local` file.
+
+Key configurations:
+
+- **Database:** PostgreSQL via Prisma
+- **Authentication:** NextAuth.js v5 (Credentials provider)
+- **Environment:** Development (local), Staging, Production
+- **Deployment:** Vercel (automatic on git push)
+
+---
+
+## 📈 Performance Optimization
+
+Check current performance:
+
+```bash
+npm run build
+npm run build:analyze  # Bundle size analysis
+```
+
+Key optimizations:
+
+- Server Components by default (reduce JS bundle)
+- Image optimization with `next/image`
+- Code splitting automatic (Next.js routes)
+- CSS modules for scoped styles
+- TanStack Query for data caching
+
+---
+
+## 🐛 Common Issues
+
+### Issue: Build Fails with TypeScript Error
+
+**Check:** Run `npm run type-check` to see full errors  
+**Fix:** Regenerate Prisma types: `npm run prisma:generate`
+
+### Issue: Database Connection Error
+
+**Check:** Verify Docker container is running: `docker ps`  
+**Fix:** Restart container: `docker restart machala-db`
+
+### Issue: Tests Failing in CI but Pass Locally
+
+**Check:** Clean install: `rm -rf node_modules && npm ci`  
+**Fix:** Run tests with same env: `NODE_ENV=test npm run test`
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Before committing:
 
-1. **Read documentation** - [INSIGHTS.md](./INSIGHTS.md) + [DEVELOPMENT.md](./DEVELOPMENT.md)
-2. **Check TODO.md** - Find a task to work on
-3. **Create feature branch** - `git checkout -b feature/your-feature`
-4. **Write tests** - All new features require tests
-5. **Update CHANGELOG.md** - Document your changes with timestamp
-6. **Submit PR** - Use the PR template, link related issues
+1. Write tests first (test-driven development)
+2. Run type-check: `npm run type-check`
+3. Run linting: `npm run lint`
+4. Format code: `npm run format`
+5. Update `CHANGELOG.md` (with timestamp)
+6. Update `local/TODOS.md` (remove completed tasks)
 
-### Code Quality Requirements
-
-- ✅ All tests passing
-- ✅ Type-check passing (`npx tsc --noEmit`)
-- ✅ Lint passing (`npm run lint`)
-- ✅ CHANGELOG.md updated
-- ✅ No breaking changes without migration guide
+See [.github/copilot-instructions.md](.github/copilot-instructions.md) for detailed standards.
 
 ---
 
-## 📄 License
+## 📞 Questions?
 
-This project is proprietary. All rights reserved.
+See:
 
----
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** - Amazing React framework
-- **Vercel** - Hosting platform
-- **Radix UI** - Accessible component primitives
-- **TanStack** - React Query library
+- Architecture questions → [local/INSIGHTS.md](local/INSIGHTS.md)
+- How to work on this project → [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md)
+- Design patterns → [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- Specific feature → Search repo for component name
 
 ---
 
-## 📧 Contact
-
-- **GitHub Issues** - For bugs and feature requests
-- **Email** - (add your email if you want)
-
----
-
-**Happy adventuring in the Land of Machala! ⚔️🏰✨**
-
-> > > > > > > origin/dev
+**Created:** 2025-12-13  
+**Framework:** Next.js 16.0.3  
+**Status:** Active Development  
+**Last Review:** 2025-12-13

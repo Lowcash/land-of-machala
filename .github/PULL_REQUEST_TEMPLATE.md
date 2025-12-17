@@ -1,83 +1,126 @@
+# Pull Request
+
+**Link to issue:** Closes #[issue number]
+
+---
+
 ## 📝 Description
 
-<!-- Briefly describe what this PR does and why -->
+[What does this PR accomplish? Why was it needed?]
 
-## 🎯 Type of Change
+**Example:** "Implements login authentication. Addresses #15."
 
-<!-- Mark with 'x' all that apply -->
+---
 
-- [ ] 🐛 Bug fix (non-breaking change fixing an issue)
-- [ ] ✨ New feature (non-breaking change adding functionality)
-- [ ] 💥 Breaking change (fix or feature causing existing functionality to change)
-- [ ] 📚 Documentation update
-- [ ] 🔧 Refactoring (no functional changes)
-- [ ] 🧪 Test coverage improvement
+## 🔄 Changes
 
-## ✅ Code Review Checklist
+- [ ] [What file changed and why]
+- [ ] [Another change]
+- [ ] [Another change]
 
-### Functionality
+**Example:**
+- Added `app/(auth)/login/page.tsx` with login form
+- Added `src/app/actions/auth.ts` Server Action for authentication
+- Added `tests/components/LoginForm.test.tsx` with form tests
+- Updated `CHANGELOG.md` with feature addition
 
-- [ ] Code fulfills requirements from issue/TODO
-- [ ] Tests exist and pass (unit + integration where applicable)
-- [ ] Breaking changes documented in CHANGELOG.md
-- [ ] No unintended side effects
+---
+
+## ✅ Quality Checklist
+
+### Tests
+- [ ] All tests pass: `npm test`
+- [ ] New tests added for this feature
+- [ ] Coverage: >70% for touched files
+- [ ] No test skips in production code
 
 ### Code Quality
-
-- [ ] `npm run lint` passed (ESLint)
-- [ ] `npx prettier --check .` passed (or formatted with `--write`)
-- [ ] `npx tsc --noEmit` passed (type-check)
-- [ ] No magic numbers (constants used)
-- [ ] Max 4 parameters per function (parameter objects used if needed)
-- [ ] No TODO/FIXME comments (moved to TODO.md)
-- [ ] Functions <50 lines, components/classes <200 lines
-- [ ] No wildcard imports (`import * as X`)
-- [ ] No `any` types (use proper TypeScript types)
+- [ ] Type check passes: `npm run type-check`
+- [ ] Linting passes: `npm run lint`
+- [ ] Code formatted: `npm run format`
+- [ ] No commented-out code
+- [ ] No `any` types
 
 ### Documentation
+- [ ] CHANGELOG.md updated (timestamp, type, scope, impact)
+- [ ] local/TODOS.md updated (completed task removed)
+- [ ] Components have JSDoc comments
+- [ ] Complex logic has explanatory comments
 
-- [ ] CHANGELOG.md updated (timestamp + what/why/impact)
-- [ ] TODO.md updated (completed tasks removed)
-- [ ] INSIGHTS.md updated (only for major architectural changes)
-- [ ] TSDoc comments for public functions/components
-- [ ] Zod schemas for all Server Action inputs
+### Functionality
+- [ ] Dev server works: `npm run dev`
+- [ ] Feature works in browser (manual test)
+- [ ] Mobile responsive (if UI change)
+- [ ] No console errors/warnings
 
-### Anti-Patterns (Must NOT contain)
+### Review
+- [ ] Changes are focused (single responsibility)
+- [ ] No unrelated refactoring mixed in
+- [ ] Commit messages are clear
+- [ ] No breaking changes (or documented migration)
 
-- [ ] No fallback constants (\*\_AVAILABLE flags)
-- [ ] No code duplication (DRY principle)
-- [ ] No long parameter lists (>4)
-- [ ] No large classes (>200 lines)
-- [ ] No deprecated code markers
+---
 
-## 🧪 Test Evidence
+## 📊 Test Results
 
-<!-- Show test results - paste output from npm test or describe manual testing -->
+**Command:** `npm test -- --coverage`
 
-```bash
-# Paste test output here:
-# npm test
-# npm run test:e2e
-# Or describe manual testing steps
+```
+[Paste test output]
+
+Example:
+PASS  tests/components/LoginForm.test.tsx
+  LoginForm
+    ✓ renders login form (45ms)
+    ✓ validates email format (12ms)
+    ✓ calls onSubmit with credentials (28ms)
+    ✓ disables submit during loading (15ms)
+
+PASS  tests/unit/validators.test.ts
+  ✓ validateEmail accepts valid emails (5ms)
+  ✓ validatePassword checks minimum length (3ms)
+
+Test Suites: 2 passed, 2 total
+Tests: 6 passed, 6 total
+Coverage: 75% (23/30 lines)
 ```
 
-## 📊 Coverage Impact
+---
 
-<!-- If applicable, show coverage before/after -->
+## 🎯 Type
 
-- Before: X%
-- After: Y%
+- [ ] Feature (new functionality)
+- [ ] Bug fix (fixes existing issue)
+- [ ] Refactoring (improves code, same behavior)
+- [ ] Performance (faster/more efficient)
+- [ ] Documentation (docs only)
+- [ ] Styling (UI/CSS changes)
 
-## 🔗 Related Issues
+---
 
-<!-- Link related issues, TODOs, or discussions -->
+## 🚫 Breaking Changes
 
-Closes #
+- [ ] No breaking changes
+- [ ] Breaking changes (describe migration path below)
 
-## 📸 Screenshots (if applicable)
+**If breaking:**
+```
+What changed:
+- [Old API/behavior]
+- [New API/behavior]
 
-<!-- Add screenshots for UI changes or visual improvements -->
+Migration path:
+1. [Step 1]
+2. [Step 2]
 
-## 🚀 Deployment Notes
+Timeline: [When will old API be removed?]
+```
 
-<!-- Any special deployment steps or migration notes -->
+---
+
+## 📋 Before Merging
+
+- [ ] All checks pass (tests, type, lint)
+- [ ] Code review approved
+- [ ] No merge conflicts
+- [ ] Local testing done

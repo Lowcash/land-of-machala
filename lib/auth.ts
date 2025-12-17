@@ -1,50 +1,57 @@
-import 'server-only'
+import { prisma } from '@/lib/db'
+import { compare } from 'bcryptjs'
+import NextAuth from 'next-auth'
+import Credentials from 'next-auth/providers/credentials'
 
-import { db } from '@/lib/db'
-import bcrypt from 'bcrypt'
-
-import { type NextAuthOptions } from 'next-auth'
-import { PrismaAdapter } from '@auth/prisma-adapter'
-import CredentialsProvider from 'next-auth/providers/credentials'
-
-export const authOptions = {
-  adapter: PrismaAdapter(db),
+export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
-    CredentialsProvider({
+    Credentials({
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null
+      authorize: async (credentials) => {
+        if (!credentials?.email || !credentials?.password) {
+          return null
+        }
 
-        const user = await db.user.findUnique({ where: { email: credentials.email } })
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email as string },
+        })
 
-        if (!user?.password) return null
+        if (!user) {
+          return null
+        }
 
-        return (await bcrypt.compare(credentials.password, user.password)) ? user : null
+        const isPasswordValid = await compare(credentials.password as string, user.passwordHash)
+
+        if (!isPasswordValid) {
+          return null
+        }
+
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.username,
+        }
       },
     }),
   ],
-  session: {
-    strategy: 'jwt',
-  },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        token.id = user.id
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        token.role = (user as any).role
+        token.sub = user.id
       }
       return token
     },
     async session({ session, token }) {
-      if (session.user) {
-        session.user.id = token.id as string
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        session.user.role = token.role as any
+      if (token && session.user) {
+        session.user.id = token.sub!
       }
       return session
     },
   },
-} satisfies NextAuthOptions
+  pages: {
+    signIn: '/login',
+  },
+})

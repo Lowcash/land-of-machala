@@ -1,16 +1,30 @@
+import bundleAnalyzer from '@next/bundle-analyzer'
 import type { NextConfig } from 'next'
-import withBundleAnalyzer from '@next/bundle-analyzer'
-import createNextIntlPlugin from 'next-intl/plugin'
-
-const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
-  // React Compiler is now stable in Next.js 16
-  reactCompiler: true,
+  reactStrictMode: true,
+  poweredByHeader: false,
+
+  typedRoutes: true,
+
+  images: {
+    formats: ['image/avif', 'image/webp'],
+    remotePatterns: [],
+  },
+
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/login',
+        permanent: false,
+      },
+    ]
+  },
 }
 
-const bundleAnalyzer = withBundleAnalyzer({
+const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 })
 
-export default bundleAnalyzer(withNextIntl(nextConfig))
+export default withBundleAnalyzer(nextConfig)
