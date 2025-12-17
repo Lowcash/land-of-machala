@@ -4,19 +4,8 @@ module.exports = {
     'type-enum': [
       2,
       'always',
-      [
-        'feat', // New feature
-        'fix', // Bug fix
-        'docs', // Documentation only
-        'style', // Formatting, missing semicolons, etc
-        'refactor', // Code change that neither fixes bug nor adds feature
-        'perf', // Performance improvement
-        'test', // Adding tests
-        'chore', // Updating build tasks, package manager configs, etc
-        'revert', // Revert previous commit
-        'ci', // CI/CD changes
-      ],
+      ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'chore', 'revert'],
     ],
-    'subject-case': [0], // Allow any case for subject
+    'subject-case': [0],
   },
 }

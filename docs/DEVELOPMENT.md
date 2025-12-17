@@ -1,564 +1,558 @@
-# 🛠️ Development Guide
+# 🔨 Development Methodology
 
-> **Target Audience:** Contributors, new developers  
-> **Prerequisite Reading:** README.md, INSIGHTS.md
-
----
-
-## 🎯 Development Philosophy
-
-### Core Principles
-
-1. **Type Safety First** - TypeScript strict mode, Zod validation, no `any` types
-2. **Server-First** - Use Server Components and Server Actions by default
-3. **Progressive Enhancement** - Core game works without JavaScript where possible
-4. **Test Everything** - 80% coverage target, test-first for bug fixes
-5. **Document Decisions** - Update INSIGHTS.md for architecture changes
-
-### Code Standards
-
-#### TypeScript
-
-```typescript
-// ✅ Good: Explicit types, branded IDs
-type PlayerId = string & { readonly __brand: 'PlayerId' }
-function getPlayer(id: PlayerId): Promise<Player>
-
-// ❌ Bad: Any types, implicit returns
-function getPlayer(id: any) {
-  return db.user.find(id)
-}
-
-// ✅ Good: Type guards with predicates
-export function hasCharacter(player: User): player is PlayerEntity {
-  return player.name !== null && player.defeated === false
-}
-
-// ❌ Bad: Type assertions without validation
-export function hasCharacter(player: User): boolean {
-  return (player as PlayerEntity).name !== null
-}
-```
-
-#### React Components
-
-```typescript
-// ✅ Good: Server Component by default
-export default async function GamePage() {
-  const player = await PlayerAction.show()
-  return <Character data={player} />
-}
-
-// ✅ Good: Client Component when needed (explicit 'use client')
-'use client'
-export function InteractiveButton() {
-  const [count, setCount] = useState(0)
-  return <button onClick={() => setCount(c => c + 1)}>{count}</button>
-}
-
-// ❌ Bad: Unnecessary client component
-'use client'
-export default async function GamePage() { // async + 'use client' = error
-  const player = await PlayerAction.show() // Can't fetch in client component
-  return <Character data={player} />
-}
-```
-
-#### Server Actions
-
-```typescript
-// ✅ Good: Proper action structure
-'use server'
-
-export const movePlayer = authActionClient
-  .metadata({ actionName: 'player_move' })
-  .schema(playerMoveSchema)
-  .action(async ({ ctx, parsedInput }) => {
-    // Validation already done by schema
-    // ctx.user guaranteed by authActionClient
-    const result = await db.user.update({
-      where: { id: ctx.user.id },
-      data: { pos_x: parsedInput.x, pos_y: parsedInput.y },
-    })
-
-    return { success: true, player: result }
-  })
-
-// ❌ Bad: Missing validation, no type safety
-;('use server')
-export async function movePlayer(x: any, y: any) {
-  const session = await getServerSession()
-  await db.user.update({
-    where: { id: session.user.id },
-    data: { pos_x: x, pos_y: y },
-  })
-}
-```
-
-#### Error Handling
-
-```typescript
-// ✅ Good: Typed error causes, proper handling
-if (!inventory) {
-  throw new Error(ERROR_CAUSE.NOT_AVAILABLE)
-}
-
-// Client-side with error boundary
-<ErrorBoundary fallback={<ErrorMessage />}>
-  <GameContent />
-</ErrorBoundary>
-
-// ❌ Bad: Generic errors, no recovery
-if (!inventory) throw new Error('oops')
-```
-
-#### Constants vs Magic Numbers
-
-```typescript
-// ✅ Good: Named constants with context
-export const BASE_HP_MAX = 100
-export const BASE_MOVEMENT_COST = 1
-export const ENEMY_SPAWN_CHANCE = 0.15 // 15% per move
-
-// ❌ Bad: Magic numbers
-if (player.hp > 100) { ... }
-if (Math.random() < 0.15) { ... }
-```
+**Status:** ✅ Active  
+**Purpose:** Document HOW to work on this project  
+**Last Updated:** 2025-12-13
 
 ---
 
-## 📂 Project Patterns
+## 🎯 Development Workflow
 
-### Adding a New Entity
+### Project Type Detection
 
-**Example: Adding "Pet" system**
+This is a **Next.js 16 App Router** project with:
 
-#### 1. Create Prisma Schema
+- `/app` folder (routing)
+- `package.json` with Next.js, React, Prisma
+- Server Components default
+- TypeScript strict mode
 
-```prisma
-// prisma/schema/pet.prisma
-model Pet {
-  id         String   @id @default(cuid())
-  name       String
-  type       PetType
-  level      Int      @default(1)
-  owner_id   String
-  owner      User     @relation(fields: [owner_id], references: [id])
-  created_at DateTime @default(now())
-}
+### Feature Development Workflow
 
-enum PetType {
-  DOG
-  CAT
-  DRAGON
-}
-```
-
-#### 2. Create Entity File
-
-```typescript
-// entity/pet.ts
-import type { Pet, PetType } from '@prisma/client'
-
-export type PetEntity = Pet & {
-  text?: {
-    name: string
-    type: string
-  }
-}
-
-export function isAdult(pet: Pet): boolean {
-  return pet.level >= 10
-}
-
-export async function get(petId: string): Promise<Pet | null> {
-  return db.pet.findUnique({ where: { id: petId } })
-}
-```
-
-#### 3. Create Zod Schema
-
-```typescript
-// zod-schema/pet.ts
-import { z } from 'zod'
-import { PetType } from '@prisma/client'
-
-export const petCreateSchema = z.object({
-  name: z.string().min(1).max(50),
-  type: z.nativeEnum(PetType),
-})
-
-export type PetCreateSchema = z.infer<typeof petCreateSchema>
-```
-
-#### 4. Create Server Actions
-
-```typescript
-// app/actions/pet.ts
-'use server'
-
-import i18n from '@/lib/i18n'
-import { db } from '@/lib/db'
-import { playerActionClient } from '@/lib/safe-action'
-import { petCreateSchema } from '@/zod-schema/pet'
-import { get } from '@/entity/pet'
-
-export const show = playerActionClient.metadata({ actionName: 'pet_show' }).action(async ({ ctx }) => {
-  const pets = await db.pet.findMany({
-    where: { owner_id: ctx.player.id },
-  })
-
-  return {
-    pets,
-    text: {
-      header: i18n.t('pet.header'),
-      create: i18n.t('pet.create'),
-    },
-  }
-})
-
-export const create = playerActionClient
-  .metadata({ actionName: 'pet_create' })
-  .schema(petCreateSchema)
-  .action(async ({ ctx, parsedInput }) => {
-    const pet = await db.pet.create({
-      data: {
-        name: parsedInput.name,
-        type: parsedInput.type,
-        owner_id: ctx.player.id,
-      },
-    })
-
-    return pet
-  })
-```
-
-#### 5. Create React Query Hooks
-
-```typescript
-// hooks/api/pet.ts
-import { createQueryHook, createMutationHook } from './_api-hooks'
-import * as PetAction from '@/app/actions/pet'
-import { QUERY_KEY } from '@/config'
-
-export const usePetShowQuery = createQueryHook([QUERY_KEY.PET], PetAction.show)
-
-export const usePetCreateMutation = createMutationHook(
-  PetAction.create,
-  [QUERY_KEY.PET], // Invalidate on success
-)
-```
-
-#### 6. Create Component
-
-```typescript
-// components/app/Pet.tsx
-'use client'
-
-import { usePetShowQuery, usePetCreateMutation } from '@/hooks/api/pet'
-import { Button } from '@/components/ui/button'
-
-export default function PetList() {
-  const { data } = usePetShowQuery()
-  const createPet = usePetCreateMutation()
-
-  return (
-    <div>
-      <h2>{data?.text.header}</h2>
-      {data?.pets.map(pet => (
-        <div key={pet.id}>{pet.name} - {pet.type}</div>
-      ))}
-      <Button onClick={() => createPet.mutate({
-        name: 'Fluffy',
-        type: 'CAT'
-      })}>
-        {data?.text.create}
-      </Button>
-    </div>
-  )
-}
-```
-
-#### 7. Add Tests
-
-```typescript
-// __tests__/entity/pet.test.ts
-import { describe, it, expect } from 'vitest'
-import { isAdult } from '@/entity/pet'
-
-describe('Pet Entity', () => {
-  it('should identify adult pet', () => {
-    const pet = { level: 10 } as Pet
-    expect(isAdult(pet)).toBe(true)
-  })
-
-  it('should identify young pet', () => {
-    const pet = { level: 5 } as Pet
-    expect(isAdult(pet)).toBe(false)
-  })
-})
-```
+1. **Check existing code** → Avoid duplication, follow established patterns
+2. **Create feature branch** → `git checkout -b feat/feature-name`
+3. **Write tests first** (TDD recommended):
+   - Unit test for logic
+   - Component test for UI
+   - E2E test for critical paths
+4. **Implement feature** → Follow SOLID principles, no magic numbers
+5. **Test locally** → `npm run dev`, manual testing in browser
+6. **Run checks** → `npm run lint && npm run type-check && npm run test`
+7. **Update documentation**:
+   - `CHANGELOG.md` (with timestamp)
+   - `local/TODOS.md` (remove completed task)
+   - `local/INSIGHTS.md` (if architecture changed)
+8. **Commit** → Conventional commits format
+9. **Push & create PR** → Merge to `dev` after code review
 
 ---
 
-## 🧪 Testing Standards
+## 🔄 Git Workflow (dev → staging → main)
 
-### Test Structure
+### Branch Strategy
 
 ```
-__tests__/
-  ├── unit/
-  │   ├── entity/          # Pure functions, type guards
-  │   ├── lib/             # Utilities, helpers
-  │   └── zod-schema/      # Validation schemas
-  ├── integration/
-  │   ├── actions/         # Server Actions with DB mocks
-  │   └── components/      # React components with providers
-  └── e2e/
-      └── critical-paths/  # Full user journeys
+main (production)
+  ↑
+  └─ staging (pre-production, QA testing)
+      ↑
+      └─ dev (development, integration)
+          ↑
+          └─ feat/* (feature branches)
 ```
 
-### Unit Test Example
-
-```typescript
-// __tests__/unit/lib/utils.test.ts
-import { describe, it, expect } from 'vitest'
-import { clamp, random } from '@/lib/utils'
-
-describe('utils', () => {
-  describe('clamp', () => {
-    it('should clamp value within range', () => {
-      expect(clamp(150, 0, 100)).toBe(100)
-      expect(clamp(-10, 0, 100)).toBe(0)
-      expect(clamp(50, 0, 100)).toBe(50)
-    })
-  })
-
-  describe('random', () => {
-    it('should generate number in range', () => {
-      const result = random(10, 5)
-      expect(result).toBeGreaterThanOrEqual(5)
-      expect(result).toBeLessThan(10)
-    })
-  })
-})
-```
-
-### Component Test Example
-
-```typescript
-// __tests__/integration/components/Form.test.tsx
-import { describe, it, expect, vi } from 'vitest'
-import { render, screen, userEvent } from '@/test-utils'
-import Form from '@/components/Form'
-import { z } from 'zod'
-
-const schema = z.object({ name: z.string().min(1) })
-
-describe('Form', () => {
-  it('should validate on submit', async () => {
-    const mockAction = vi.fn().mockResolvedValue({ success: true })
-    const user = userEvent.setup()
-
-    render(
-      <Form schema={schema} action={mockAction}>
-        <Form.Input name="name" label="Name" />
-        <Form.Submit>Submit</Form.Submit>
-      </Form>
-    )
-
-    await user.click(screen.getByText('Submit'))
-
-    expect(screen.getByText(/required/i)).toBeInTheDocument()
-    expect(mockAction).not.toHaveBeenCalled()
-  })
-})
-```
-
-### E2E Test Example
-
-```typescript
-// __tests__/e2e/character-creation.spec.ts
-import { test, expect } from '@playwright/test'
-
-test('user can create character and enter game', async ({ page }) => {
-  // Sign up
-  await page.goto('/')
-  await page.fill('[name="email"]', 'test@example.com')
-  await page.fill('[name="password"]', 'password123')
-  await page.click('text=Sign Up')
-
-  // Create character
-  await expect(page).toHaveURL('/')
-  await page.fill('[name="name"]', 'TestHero')
-  await page.selectOption('[name="raceId"]', 'human')
-  await page.selectOption('[name="classId"]', 'warrior')
-  await page.click('text=Create Character')
-
-  // Verify in game
-  await expect(page.locator('text=TestHero')).toBeVisible()
-  await expect(page.locator('text=HP: 100/100')).toBeVisible()
-})
-```
-
-### Test Coverage Requirements
-
-- **Core modules:** 80% (entity/, lib/, app/actions/)
-- **Components:** 70% (components/)
-- **UI primitives:** 50% (components/ui/)
-- **E2E:** Critical paths only (sign up, combat, quests)
-
----
-
-## 🔧 Common Tasks
-
-### Running Development Server
+### Workflow Details
 
 ```bash
-# Start Next.js dev server
+# 1. Start new feature
+git checkout dev
+git pull origin dev
+git checkout -b feat/character-skills
+
+# 2. Develop & commit
+# ... work on feature ...
+git add .
+git commit -m "feat(character): add skill tree UI"
+
+# 3. Push & create PR to dev
+git push origin feat/character-skills
+# Open PR on GitHub → merge to dev after review
+
+# 4. When ready for staging
+git checkout staging
+git pull origin staging
+git merge --no-ff dev
+git push origin staging
+# Auto-deploy to staging.machala.com (Vercel)
+
+# 5. After QA approval → production
+git checkout main
+git pull origin main
+git merge --no-ff staging
+git tag v1.2.0
+git push origin main --tags
+# Auto-deploy to machala.com (Vercel)
+```
+
+### Environment Variables by Branch
+
+| Branch    | Environment    | Database      | URL                 |
+| --------- | -------------- | ------------- | ------------------- |
+| `dev`     | Development    | Local Docker  | localhost:3000      |
+| `staging` | Pre-production | Staging DB    | staging.machala.com |
+| `main`    | Production     | Production DB | machala.com         |
+
+---
+
+## 🧪 Testing Strategy
+
+### What to Test?
+
+**HIGH PRIORITY (must test >80% coverage):**
+
+- Game logic (level up, experience calculation, quest completion)
+- Authentication (login, register, session management)
+- Database queries (character CRUD, quest updates)
+- Server Actions (validation, error handling)
+
+**MEDIUM PRIORITY (should test >70%):**
+
+- UI components (rendering, props, interactions)
+- Utility functions (formatters, validators)
+- Custom hooks (useAuth, useCharacter)
+
+**LOW PRIORITY (optional):**
+
+- Styling (CSS classes, responsive breakpoints)
+- Third-party integrations (Radix UI components)
+
+### Testing Layers
+
+#### 1. Unit Tests (Vitest)
+
+**Purpose:** Test individual functions in isolation
+
+```bash
+# Run unit tests
+npm run test
+
+# Run with coverage
+npm run test:coverage
+
+# Run specific test file
+npm run test -- character.test.ts
+
+# Watch mode (during development)
+npm run test:watch
+```
+
+**Example:**
+
+```typescript
+// lib/utils.ts
+export function calculateExperience(level: number): number {
+  return level * 100
+}
+
+// __tests__/unit/utils.test.ts
+import { calculateExperience } from '@/lib/utils'
+
+describe('calculateExperience', () => {
+  it('returns correct XP for level 1', () => {
+    expect(calculateExperience(1)).toBe(100)
+  })
+
+  it('returns correct XP for level 10', () => {
+    expect(calculateExperience(10)).toBe(1000)
+  })
+})
+```
+
+#### 2. Component Tests (Testing Library)
+
+**Purpose:** Test UI rendering and user interactions
+
+```bash
+# Run component tests (part of npm run test)
+npm run test -- components/
+
+# Interactive UI
+npm run test:ui
+```
+
+**Example:**
+
+```typescript
+// __tests__/components/Character.test.tsx
+import { render, screen } from '@testing-library/react';
+import { CharacterPanel } from '@/components/features/Character/CharacterPanel';
+
+describe('CharacterPanel', () => {
+  it('renders character name', () => {
+    render(<CharacterPanel name="Hero" level={5} />);
+    expect(screen.getByText('Hero')).toBeInTheDocument();
+  });
+
+  it('displays level correctly', () => {
+    render(<CharacterPanel name="Hero" level={5} />);
+    expect(screen.getByText('Level 5')).toBeInTheDocument();
+  });
+});
+```
+
+#### 3. Integration Tests (Server Actions)
+
+**Purpose:** Test Server Actions with database
+
+```typescript
+// __tests__/integration/auth.test.ts
+import { registerUser } from '@/app/actions'
+
+describe('registerUser Server Action', () => {
+  it('creates user with hashed password', async () => {
+    const result = await registerUser({
+      email: 'test@example.com',
+      password: 'SecurePass123',
+    })
+
+    expect(result.success).toBe(true)
+    expect(result.data.password).not.toBe('SecurePass123') // hashed
+  })
+
+  it('rejects duplicate email', async () => {
+    await registerUser({ email: 'test@example.com', password: 'pass' })
+    const result = await registerUser({ email: 'test@example.com', password: 'pass' })
+
+    expect(result.success).toBe(false)
+    expect(result.error).toContain('Email already exists')
+  })
+})
+```
+
+#### 4. E2E Tests (Playwright)
+
+**Purpose:** Test critical user journeys
+
+```bash
+# Run E2E tests
+npm run test:e2e
+
+# Run with UI (debugging)
+npm run test:e2e:ui
+
+# Run specific test
+npx playwright test auth.spec.ts
+```
+
+**Example:**
+
+```typescript
+// __tests__/e2e/game.spec.ts
+import { test, expect } from '@playwright/test'
+
+test('user can login and start game', async ({ page }) => {
+  // Navigate to login
+  await page.goto('/login')
+
+  // Fill credentials
+  await page.fill('input[name="email"]', 'test@example.com')
+  await page.fill('input[name="password"]', 'password123')
+  await page.click('button[type="submit"]')
+
+  // Verify redirected to game
+  await expect(page).toHaveURL('/game')
+  await expect(page.locator('h1')).toContainText('Land of Machala')
+})
+
+test('character creation flow', async ({ page }) => {
+  await page.goto('/login')
+  // ... login steps ...
+
+  await page.goto('/character/create')
+  await page.fill('input[name="name"]', 'Hero')
+  await page.selectOption('select[name="class"]', 'warrior')
+  await page.click('button[type="submit"]')
+
+  await expect(page).toHaveURL('/game')
+  await expect(page.locator('[data-testid="character-name"]')).toContainText('Hero')
+})
+```
+
+### Coverage Targets
+
+| Layer          | Target | Command                 |
+| -------------- | ------ | ----------------------- |
+| **Overall**    | >75%   | `npm run test:coverage` |
+| **Core logic** | >80%   | Check lib/, entity/     |
+| **Components** | >70%   | Check components/       |
+| **Utils**      | >80%   | Check lib/utils.ts      |
+
+---
+
+## 🐳 Local Development Setup
+
+### 1. Clone & Install
+
+```bash
+cd /Users/lowcash/repos/land-of-machala-v2
+npm install
+```
+
+### 2. Database Setup (Docker)
+
+```bash
+# Start PostgreSQL container
+docker run --name machala-db \
+  -e POSTGRES_USER=myuser \
+  -e POSTGRES_PASSWORD=myuserpassword \
+  -e POSTGRES_DB=mydatabase \
+  -p 3306:5432 \
+  -d postgres:16
+
+# Verify running
+docker ps
+```
+
+### 3. Environment Variables
+
+```bash
+# Copy example env file
+cp .env.example .env.local
+
+# Edit .env.local with your settings
+# DATABASE_URL is already configured for local Docker
+```
+
+### 4. Prisma Setup
+
+```bash
+# Generate Prisma Client
+npm run prisma:generate
+
+# Push schema to database (creates tables)
+npm run prisma:update
+
+# Seed development data
+npm run prisma:seed
+
+# Open Prisma Studio (database GUI)
+npx prisma studio
+```
+
+### 5. Run Development Server
+
+```bash
 npm run dev
 
 # Open http://localhost:3000
 ```
 
-### Database Operations
+### 6. Verify Setup
 
 ```bash
-# Apply schema changes to database
-npm run prisma:update
+# Type check
+npm run type-check
 
-# Reset database (⚠️ destructive)
-npm run prisma:reset
-
-# Generate Prisma Client (after schema changes)
-npm run prisma:generate
-
-# Open Prisma Studio (GUI for database)
-npx prisma studio
-```
-
-### Code Quality
-
-```bash
-# Lint TypeScript files
+# Linting
 npm run lint
 
-# Type-check without building
-npx tsc --noEmit
+# Tests
+npm run test
 
-# Format all files
-npx prettier --write .
-
-# Run all checks before commit
-npm run lint && npx tsc --noEmit && npm test
-```
-
-### Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm test -- --watch
-
-# Run specific test file
-npm test -- pet.test.ts
-
-# Run e2e tests
-npm run test:e2e
-
-# Generate coverage report
-npm test -- --coverage
+# Build (production check)
+npm run build
 ```
 
 ---
 
-## 🚀 Deployment Checklist
+## 📝 After Each Task
 
-### Pre-Deploy
+### 1. Get Timestamp
 
-- [ ] All tests passing (`npm test`)
-- [ ] Type-check passing (`npx tsc --noEmit`)
-- [ ] Lint passing (`npm run lint`)
-- [ ] Build successful (`npm run build`)
-- [ ] CHANGELOG.md updated
-- [ ] Environment variables set in production
+```bash
+python3 -c "from datetime import datetime; print(datetime.now().strftime('%Y-%m-%d %H:%M'))"
+```
 
-### Deploy to Vercel
+### 2. Update CHANGELOG.md
+
+```markdown
+## 2025-12-13 15:30 — Add character skill tree
+
+**Type:** Added
+**Scope:** components/features/Character/SkillTree
+**Impact:** Players can now allocate skill points
+
+### Added
+
+- SkillTree component with interactive nodes
+- useSkills hook for state management
+- allocateSkillPoint Server Action
+
+### Tests
+
+- SkillTree renders correctly
+- Skill point allocation validates prerequisites
+- E2E test for full skill allocation flow
+```
+
+### 3. Update local/TODOS.md
+
+- Remove completed task
+- Add any new tasks discovered
+- Keep ONLY active tasks
+
+### 4. Commit with Conventional Commits
+
+```bash
+git add .
+git commit -m "feat(character): add skill tree UI
+
+- Interactive skill node selection
+- Prerequisite validation
+- Skill point allocation
+- Tests: unit, component, e2e"
+```
+
+---
+
+## 🔍 Code Quality Checks
+
+### Before Committing
+
+```bash
+# 1. Type check
+npm run type-check
+
+# 2. Lint & fix
+npm run lint
+
+# 3. Format code (Prettier)
+npm run format
+
+# 4. Run tests
+npm run test
+
+# 5. Check coverage
+npm run test:coverage
+
+# 6. Build check
+npm run build
+```
+
+### Pre-commit Hook (Husky)
+
+Automatically runs on `git commit`:
+
+- Lint-staged (ESLint + Prettier on staged files)
+- Type check
+- Unit tests
+
+If any check fails → commit is blocked.
+
+---
+
+## 🚨 Common Issues & Solutions
+
+### Issue: TypeScript Error "Cannot find module"
+
+**Solution:**
+
+```bash
+# Regenerate Prisma types
+npm run prisma:generate
+
+# Full type check
+npm run type-check
+```
+
+### Issue: Tests Failing in CI but Pass Locally
+
+**Solution:**
+
+```bash
+# Clean install (matches CI)
+rm -rf node_modules package-lock.json
+npm ci
+
+# Run tests with same env
+NODE_ENV=test npm run test
+```
+
+### Issue: Database Connection Error
+
+**Solution:**
+
+```bash
+# Check Docker container is running
+docker ps
+
+# Restart container
+docker restart machala-db
+
+# Verify DATABASE_URL in .env.local
+cat .env.local | grep DATABASE_URL
+```
+
+### Issue: Build Fails with "Out of Memory"
+
+**Solution:**
+
+```bash
+# Increase Node.js memory
+NODE_OPTIONS="--max-old-space-size=4096" npm run build
+```
+
+---
+
+## 🚀 Deployment (Vercel)
+
+### Automatic Deployment
+
+- **Push to `dev`** → No deploy (development only)
+- **Push to `staging`** → Deploy to `staging.machala.com`
+- **Push to `main`** → Deploy to `machala.com`
+
+### Manual Deployment
 
 ```bash
 # Install Vercel CLI
 npm i -g vercel
 
-# Deploy preview
+# Deploy to preview
 vercel
 
-# Deploy production
+# Deploy to production
 vercel --prod
 ```
 
-### Post-Deploy
+### Environment Variables (Vercel Dashboard)
 
-- [ ] Verify site loads: https://land-of-machala.cz
-- [ ] Test critical paths: sign up, character creation, movement
-- [ ] Monitor error tracking (Sentry when implemented)
-- [ ] Check database performance
+1. Go to Vercel Dashboard → Project → Settings → Environment Variables
+2. Add for each environment:
 
----
-
-## 🐛 Debugging Tips
-
-### Server Actions Not Working
-
-1. Check `'use server'` directive at top of file
-2. Verify action client middleware (auth/player required?)
-3. Check browser Network tab for 500 errors
-4. Add `console.log` in action (logs show in server terminal)
-
-### Hydration Errors
-
-1. Check for `useState` in Server Components
-2. Verify data matches between server/client render
-3. Look for Date objects (serialize to ISO strings)
-4. Check for Math.random() or other non-deterministic code
-
-### Type Errors After Prisma Changes
-
-1. Regenerate client: `npm run prisma:generate`
-2. Restart TypeScript server in VS Code
-3. Clear `.next` folder: `rm -rf .next`
-
-### Database Connection Issues
-
-1. Check `DATABASE_URL` in `.env`
-2. Verify MySQL is running (Docker: `docker ps`)
-3. Test connection: `npx prisma db pull`
+| Variable          | Development    | Staging             | Production    |
+| ----------------- | -------------- | ------------------- | ------------- |
+| `DATABASE_URL`    | Local Docker   | Staging DB          | Production DB |
+| `NEXTAUTH_SECRET` | Local secret   | Staging secret      | Prod secret   |
+| `NEXTAUTH_URL`    | localhost:3000 | staging.machala.com | machala.com   |
 
 ---
 
-## 📚 Resources
+## 🎯 Success Checklist
 
-### Internal Documentation
+After completing a task:
 
-- [INSIGHTS.md](../local/INSIGHTS.md) - Architecture decisions
-- [TODO.md](../local/TODOS.md) - Active tasks
-- [CHANGELOG.md](../CHANGELOG.md) - Version history
-- [README.md](../README.md) - Setup guide
-
-### External Resources
-
-- [Next.js Docs](https://nextjs.org/docs)
-- [React 19 Docs](https://react.dev)
-- [Prisma Docs](https://www.prisma.io/docs)
-- [TanStack Query Docs](https://tanstack.com/query/latest)
-- [next-safe-action](https://next-safe-action.dev)
-
-### Community
-
-- Discord: (not set up yet)
-- GitHub Discussions: (not enabled yet)
+- [ ] Feature works as intended (manual testing)
+- [ ] Tests written and passing (`npm run test`)
+- [ ] Code formatted (`npm run lint`)
+- [ ] Type checking passes (`npm run type-check`)
+- [ ] Build succeeds (`npm run build`)
+- [ ] CHANGELOG.md updated (with timestamp)
+- [ ] local/TODOS.md updated (task removed)
+- [ ] No `console.log` or debugging code left
+- [ ] No commented code left
+- [ ] Follows project conventions (check existing code)
 
 ---
 
-**Questions?** Open an issue or check INSIGHTS.md for architecture context.
+## 📚 References
+
+- **ARCHITECTURE.md** — Design decisions & patterns
+- **copilot-instructions.md** — Code standards & AI workflow
+- **local/INSIGHTS.md** — Tech stack & conventions
+- **README.md** — Quick start & project overview
+
+---
+
+**Created:** 2025-12-13  
+**Maintainer:** Land of Machala Team

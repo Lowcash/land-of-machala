@@ -1,0 +1,178 @@
+'use client'
+
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+import { Check, Lock } from 'lucide-react'
+import { useRef } from 'react'
+import { getIconFromName } from './iconMap'
+import { SkillCategoryFilter } from './SkillCategoryFilter'
+import type { MergedSkill, SkillCategory } from './types'
+
+type SkillGridProps = {
+  skills: MergedSkill[]
+  talentPoints: number
+  selectedCategory: SkillCategory
+  setSelectedCategory: (cat: SkillCategory) => void
+  selectedSkill: string | null
+  setSelectedSkill: (id: string | null) => void
+}
+
+function getCategoryColor(category: SkillCategory) {
+  switch (category) {
+    case 'combat':
+      return 'text-[#ff6b6b]'
+    case 'defense':
+      return 'text-[#69ccf0]'
+    case 'magic':
+      return 'text-[#b66bd4]'
+    case 'utility':
+      return 'text-[#6fbf6f]'
+    default:
+      return 'text-[#d4a574]'
+  }
+}
+
+function getCategoryBg(category: SkillCategory) {
+  switch (category) {
+    case 'combat':
+      return 'bg-[#ff6b6b]/10 border-[#ff6b6b]'
+    case 'defense':
+      return 'bg-[#69ccf0]/10 border-[#69ccf0]'
+    case 'magic':
+      return 'bg-[#b66bd4]/10 border-[#b66bd4]'
+    case 'utility':
+      return 'bg-[#6fbf6f]/10 border-[#6fbf6f]'
+    default:
+      return 'bg-black/40 border-[#8b6f47]'
+  }
+}
+
+export function SkillGrid({
+  skills,
+  talentPoints,
+  selectedCategory,
+  setSelectedCategory,
+  selectedSkill,
+  setSelectedSkill,
+}: SkillGridProps) {
+  const filteredSkills =
+    selectedCategory === 'all' ? skills : skills.filter((s) => s.category === selectedCategory)
+
+  const totalSkillsLearned = skills.filter((s) => s.currentLevel > 0).length
+
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <>
+      <SkillCategoryFilter
+        selectedCategory={selectedCategory}
+        onSelectCategory={setSelectedCategory}
+      />
+
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        <ScrollIndicator targetRef={scrollRef} />
+        <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
+          <div className="mx-auto max-w-7xl">
+            <div className="mb-4 text-center">
+              <h2
+                className="mb-1 text-2xl text-[#ffd700]"
+                style={{ fontFamily: 'var(--font-medieval)' }}
+              >
+                Strom dovedností
+              </h2>
+              <p className="text-sm text-[#d4a574]">
+                Dostupné body: <span className="text-[#ffd700]">{talentPoints}</span> • Naučeno:{' '}
+                <span className="text-[#ffd700]">
+                  {totalSkillsLearned}/{skills.length}
+                </span>
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              {filteredSkills.map((skill) => {
+                const Icon = getIconFromName(skill.iconName)
+                const maxed = skill.currentLevel >= skill.maxRank
+                const canUpgrade =
+                  skill.unlocked && skill.currentLevel < skill.maxRank && talentPoints >= skill.cost
+
+                return (
+                  <button
+                    key={skill.id}
+                    onClick={() => (skill.unlocked ? setSelectedSkill(skill.id) : null)}
+                    className={`rounded border-2 p-3 text-left transition-all ${
+                      selectedSkill === skill.id && skill.unlocked
+                        ? `${getCategoryBg(skill.category)} scale-105`
+                        : skill.unlocked
+                          ? 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
+                          : 'cursor-not-allowed border-[#8b6f47]/30 bg-black/20 opacity-50'
+                    }`}
+                  >
+                    <div className="mb-2 flex items-start gap-2">
+                      <div
+                        className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex flex-shrink-0 items-center justify-center`}
+                      >
+                        {skill.unlocked ? (
+                          <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
+                        ) : (
+                          <Lock className="h-5 w-5 text-[#8b6f47]" />
+                        )}
+                      </div>
+                      <div className="min-w-0 flex-1">
+                        <h3
+                          className={`truncate text-sm ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#8b7355]'}`}
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          {skill.name}
+                        </h3>
+                        <p className="text-xs text-[#8b7355]">
+                          Level {skill.currentLevel}/{skill.maxRank}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Level dots */}
+                    <div className="mb-2 flex gap-1">
+                      {Array.from({ length: skill.maxRank }).map((_, i) => (
+                        <div
+                          key={i}
+                          className={`h-1.5 flex-1 rounded-full ${
+                            i < skill.currentLevel
+                              ? `bg-gradient-to-r ${
+                                  skill.category === 'combat'
+                                    ? 'from-[#ff6b6b] to-[#ff8b8b]'
+                                    : skill.category === 'defense'
+                                      ? 'from-[#69ccf0] to-[#89dcff]'
+                                      : skill.category === 'magic'
+                                        ? 'from-[#b66bd4] to-[#d68bf4]'
+                                        : 'from-[#6fbf6f] to-[#8fdf8f]'
+                                }`
+                              : 'bg-black/60'
+                          }`}
+                        />
+                      ))}
+                    </div>
+
+                    {maxed && skill.unlocked && (
+                      <div className="flex items-center gap-1 text-[10px] text-[#6fbf6f]">
+                        <Check className="h-3 w-3" />
+                        <span>Maximální level</span>
+                      </div>
+                    )}
+
+                    {!maxed && skill.unlocked && (
+                      <div className="text-[10px] text-[#8b7355]">
+                        Cena:{' '}
+                        <span className={canUpgrade ? 'text-[#ffd700]' : 'text-[#ff6b6b]'}>
+                          {skill.cost} bodů
+                        </span>
+                      </div>
+                    )}
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}

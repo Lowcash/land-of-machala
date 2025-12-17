@@ -1,56 +1,47 @@
-import '@/styles/globals.css'
-import { SpeedInsights } from '@vercel/speed-insights/next'
-import type { Metadata } from 'next'
-import { cn } from '@/lib/utils'
-import { MedievalSharp } from 'next/font/google'
-import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
-
 import { Toaster } from '@/components/ui/toaster'
-import { ThemeProvider } from '@/context/theme-provider'
-import { QueryProvider } from '@/context/query-provider'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
+import type { Metadata } from 'next'
+import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
+import './globals.css'
 
-const medieval = MedievalSharp({
+const cinzel = Cinzel({
+  subsets: ['latin'],
+  variable: '--font-cinzel',
+  display: 'swap',
+})
+
+const medievalSharp = MedievalSharp({
   weight: '400',
   subsets: ['latin'],
-  variable: '--font-sans',
+  variable: '--font-medieval',
+  display: 'swap',
+})
+
+const philosopher = Philosopher({
+  weight: ['400', '700'],
+  subsets: ['latin'],
+  variable: '--font-philosopher',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
   title: 'Land of Machala',
-  description: 'A mystical realm of magic and adventure',
+  description: 'An epic RPG adventure',
 }
 
-// Force dynamic rendering for all pages (required for cookie-based routing)
-export const dynamic = 'force-dynamic'
-
-export default async function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
-  const messages = await getMessages()
-
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) {
   return (
-    <html lang='cs' suppressHydrationWarning>
-      <head />
-      <ErrorBoundary>
-        <body className={cn('font-sans antialiased', medieval.variable)}>
-          <SpeedInsights />
-
-          <NextIntlClientProvider messages={messages}>
-            <QueryProvider>
-              <ThemeProvider
-                attribute='class'
-                // defaultTheme='system'
-                defaultTheme='light'
-                enableSystem
-                disableTransitionOnChange
-              >
-                {children}
-                <Toaster />
-              </ThemeProvider>
-            </QueryProvider>
-          </NextIntlClientProvider>
-        </body>
-      </ErrorBoundary>
+    <html
+      lang="en"
+      className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}
+    >
+      <body className="font-body bg-game-bg text-game-fg antialiased">
+        {children}
+        <Toaster />
+      </body>
     </html>
   )
 }
