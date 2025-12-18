@@ -144,57 +144,57 @@ export function QuestList({
         <ScrollIndicator targetRef={scrollRef} />
         <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-2 overflow-y-auto p-3">
           {filteredQuests.map((quest) => (
-          <button
-            key={quest.id}
-            onClick={() => setSelectedQuest(quest.id)}
-            className={`w-full rounded border p-3 text-left transition-all ${
-              selectedQuest === quest.id
-                ? 'border-[#ffd700] bg-black/60'
-                : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
-            }`}
-          >
-            <div className="mb-2 flex items-start gap-2">
-              {getStatusIcon(quest.characterStatus)}
-              <div className="min-w-0 flex-1">
-                <h3
-                  className={`mb-1 truncate text-sm ${getCategoryColor(quest.category)}`}
+            <button
+              key={quest.id}
+              onClick={() => setSelectedQuest(quest.id)}
+              className={`w-full rounded border p-3 text-left transition-all ${
+                selectedQuest === quest.id
+                  ? 'border-[#ffd700] bg-black/60'
+                  : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
+              }`}
+            >
+              <div className="mb-2 flex items-start gap-2">
+                {getStatusIcon(quest.characterStatus)}
+                <div className="min-w-0 flex-1">
+                  <h3
+                    className={`mb-1 truncate text-sm ${getCategoryColor(quest.category)}`}
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    {quest.title}
+                  </h3>
+                  <p className="line-clamp-2 text-xs text-[#8b7355]">{quest.description}</p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className={`rounded px-2 py-0.5 text-[10px] ${getCategoryBadge(quest.category)}`}
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
-                  {quest.title}
-                </h3>
-                <p className="line-clamp-2 text-xs text-[#8b7355]">{quest.description}</p>
+                  {getCategoryName(quest.category)}
+                </span>
+                <span className="text-[10px] text-[#8b7355]">Lvl {quest.level}</span>
+                <span className="ml-auto text-[10px] text-[#8b7355]">
+                  {quest.objectives.filter((o) => o.completed).length}/{quest.objectives.length}
+                </span>
               </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={`rounded px-2 py-0.5 text-[10px] ${getCategoryBadge(quest.category)}`}
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                {getCategoryName(quest.category)}
-              </span>
-              <span className="text-[10px] text-[#8b7355]">Lvl {quest.level}</span>
-              <span className="ml-auto text-[10px] text-[#8b7355]">
-                {quest.objectives.filter((o) => o.completed).length}/{quest.objectives.length}
-              </span>
-            </div>
 
-            {/* Progress bar */}
-            <div className="mt-2 h-1 overflow-hidden rounded-full bg-black/60">
-              <div
-                className={`h-full bg-gradient-to-r ${
-                  quest.category === 'MAIN'
-                    ? 'from-[#ffd700] to-[#ffed4e]'
-                    : quest.category === 'SIDE'
-                      ? 'from-[#69ccf0] to-[#89dcff]'
-                      : quest.category === 'DAILY'
-                        ? 'from-[#6fbf6f] to-[#8fdf8f]'
-                        : 'from-[#b66bd4] to-[#d68bf4]'
-                } transition-all`}
-                style={{ width: `${quest.progress}%` }}
-              />
-            </div>
-          </button>
-        ))}
+              {/* Progress bar */}
+              <div className="mt-2 h-1 overflow-hidden rounded-full bg-black/60">
+                <div
+                  className={`h-full bg-gradient-to-r ${
+                    quest.category === 'MAIN'
+                      ? 'from-[#ffd700] to-[#ffed4e]'
+                      : quest.category === 'SIDE'
+                        ? 'from-[#69ccf0] to-[#89dcff]'
+                        : quest.category === 'DAILY'
+                          ? 'from-[#6fbf6f] to-[#8fdf8f]'
+                          : 'from-[#b66bd4] to-[#d68bf4]'
+                  } transition-all`}
+                  style={{ width: `${quest.progress}%` }}
+                />
+              </div>
+            </button>
+          ))}
         </div>
       </div>
     </div>

@@ -2,5 +2,5 @@
  * Layout components for consistent UI structure
  */
 
-export { GameLayout } from './GameLayout';
-export { PageTemplate } from './PageTemplate';
+export { GameLayout } from './GameLayout'
+export { PageTemplate } from './PageTemplate'

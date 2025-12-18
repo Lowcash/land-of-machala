@@ -10,10 +10,12 @@ import {
   Cross,
   Hammer,
   Home,
+  Pickaxe,
   ScrollText,
   ShoppingBag,
   Store,
   Swords,
+  Users,
 } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn, DirectionBtn } from './ActionBtn'
@@ -27,6 +29,8 @@ interface TownActionsProps {
   onTavern: () => void
   onBlacksmith: () => void
   onMarket: () => void
+  onWorkshop: () => void
+  onGuildHall: () => void
   onMove: (direction: 'north' | 'south' | 'east' | 'west') => void
   setInfoText: (text: string | null) => void
 }
@@ -40,6 +44,8 @@ export function TownActions({
   onTavern,
   onBlacksmith,
   onMarket,
+  onWorkshop,
+  onGuildHall,
   setInfoText,
 }: TownActionsProps) {
   const [showDirections, setShowDirections] = useState(false)
@@ -135,6 +141,12 @@ export function TownActions({
           </ActionBtn>
           <ActionBtn onClick={onMarket} icon={ShoppingBag}>
             Prozkoumat <span className="text-[#ffd700]">tržiště</span> a obchodovat
+          </ActionBtn>
+          <ActionBtn onClick={onWorkshop} icon={Pickaxe}>
+            Navštívit <span className="text-[#ffd700]">dílnu</span> a vyrábět předměty
+          </ActionBtn>
+          <ActionBtn onClick={onGuildHall} icon={Users}>
+            Vstoupit do <span className="text-[#ffd700]">cechovní síně</span>
           </ActionBtn>
 
           <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">

@@ -5,7 +5,11 @@ import { Suspense } from 'react'
 
 export default function InventoryPage() {
   return (
-    <PageTemplate title="Inventář" icon={<Backpack />} backgroundImage="/assets/city-background.jpg">
+    <PageTemplate
+      title="Inventář"
+      icon={<Backpack />}
+      backgroundImage="/assets/city-background.jpg"
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <InventoryPanel />
       </Suspense>

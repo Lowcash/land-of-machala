@@ -28,6 +28,8 @@ export const metadata: Metadata = {
   description: 'An epic RPG adventure',
 }
 
+import { GameBackgroundWrapper } from '@/components/layout/GameBackgroundWrapper'
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -38,8 +40,8 @@ export default function RootLayout({
       lang="en"
       className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}
     >
-      <body className="font-body bg-game-bg text-game-fg antialiased">
-        {children}
+      <body className="font-body text-game-fg bg-black antialiased">
+        <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
         <Toaster />
       </body>
     </html>

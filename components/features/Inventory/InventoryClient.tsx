@@ -285,112 +285,116 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
           <ScrollIndicator targetRef={itemsScrollRef} position="bottom" />
           <div className="scrollbar-custom flex-1 overflow-y-auto p-4" ref={itemsScrollRef}>
             <div className="w-full">
-            {viewMode === 'grid' ? (
-              <div
-                className="grid grid-cols-5 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10"
-                style={{ gridAutoRows: '1fr' }}
-              >
-                {filteredInventory.map((item) => {
-                  const Icon = getIconFromName(item.iconName)
-                  const tooltipContent = (
-                    <div>
-                      <div
-                        className={`${getRarityColor(item.rarity)} mb-1`}
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        {item.name}
-                      </div>
-                      {item.description && (
-                        <div className="mb-1 text-[#8b7355]">{item.description}</div>
-                      )}
-                      {item.attack && <div className="text-[#ff6b6b]">Útok: +{item.attack}</div>}
-                      {item.defense && (
-                        <div className="text-[#69ccf0]">Obrana: +{item.defense}</div>
-                      )}
-                      {item.value && <div className="text-[#ffd700]">Hodnota: {item.value}g</div>}
-                    </div>
-                  )
-                  return (
-                    <Tooltip key={item.id} content={tooltipContent} position="top" delay={300}>
-                      <button
-                        onClick={() => setSelectedItem(item.id)}
-                        className={`relative flex aspect-square w-full flex-col items-center justify-center rounded border-2 p-1.5 transition-all sm:p-2 ${getRarityBorder(
-                          item.rarity
-                        )} ${getRarityBg(item.rarity)} ${
-                          selectedItem === item.id ? 'scale-105 shadow-lg' : 'hover:scale-105'
-                        }`}
-                      >
-                        <Icon className={`h-5 w-5 sm:h-6 sm:w-6 ${getRarityColor(item.rarity)}`} />
-                        {item.equipped && (
-                          <Check className="absolute top-0.5 right-0.5 h-2.5 w-2.5 text-[#6fbf6f] sm:top-1 sm:right-1 sm:h-3 sm:w-3" />
-                        )}
-                        {item.quantity > 1 && (
-                          <span
-                            className="absolute right-0.5 bottom-0.5 rounded bg-black/60 px-0.5 text-[9px] text-[#ffd700] sm:right-1 sm:bottom-1 sm:px-1 sm:text-[10px]"
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            {item.quantity}
-                          </span>
-                        )}
-                      </button>
-                    </Tooltip>
-                  )
-                })}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {filteredInventory.map((item) => {
-                  const Icon = getIconFromName(item.iconName)
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => setSelectedItem(item.id)}
-                      className={`flex w-full items-center gap-3 rounded border p-3 transition-all ${
-                        selectedItem === item.id
-                          ? `border-2 ${getRarityBorder(item.rarity)} bg-black/60`
-                          : 'border-[#8b6f47] bg-black/40 hover:bg-black/60'
-                      }`}
-                    >
-                      <div
-                        className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded border-2 ${getRarityBorder(
-                          item.rarity
-                        )} ${getRarityBg(item.rarity)}`}
-                      >
-                        <Icon className={`h-6 w-6 ${getRarityColor(item.rarity)}`} />
-                      </div>
-                      <div className="min-w-0 flex-1 text-left">
-                        <h3
-                          className={`truncate text-sm ${getRarityColor(item.rarity)}`}
+              {viewMode === 'grid' ? (
+                <div
+                  className="grid grid-cols-5 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10"
+                  style={{ gridAutoRows: '1fr' }}
+                >
+                  {filteredInventory.map((item) => {
+                    const Icon = getIconFromName(item.iconName)
+                    const tooltipContent = (
+                      <div>
+                        <div
+                          className={`${getRarityColor(item.rarity)} mb-1`}
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
-                          {item.name} {item.quantity > 1 && `(${item.quantity})`}
-                        </h3>
-                        <p className="text-xs text-[#8b7355]">
-                          {item.type === 'weapon'
-                            ? 'Zbraň'
-                            : item.type === 'armor'
-                              ? 'Zbroj'
-                              : item.type === 'consumable'
-                                ? 'Spotřební'
-                                : item.type === 'material'
-                                  ? 'Materiál'
-                                  : 'Quest'}
-                        </p>
+                          {item.name}
+                        </div>
+                        {item.description && (
+                          <div className="mb-1 text-[#8b7355]">{item.description}</div>
+                        )}
+                        {item.attack && <div className="text-[#ff6b6b]">Útok: +{item.attack}</div>}
+                        {item.defense && (
+                          <div className="text-[#69ccf0]">Obrana: +{item.defense}</div>
+                        )}
+                        {item.value && <div className="text-[#ffd700]">Hodnota: {item.value}g</div>}
                       </div>
-                      {item.equipped && <Check className="h-5 w-5 flex-shrink-0 text-[#6fbf6f]" />}
-                      <span
-                        className="flex-shrink-0 text-sm text-[#ffd700]"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                    )
+                    return (
+                      <Tooltip key={item.id} content={tooltipContent} position="top" delay={300}>
+                        <button
+                          onClick={() => setSelectedItem(item.id)}
+                          className={`relative flex aspect-square w-full flex-col items-center justify-center rounded border-2 p-1.5 transition-all sm:p-2 ${getRarityBorder(
+                            item.rarity
+                          )} ${getRarityBg(item.rarity)} ${
+                            selectedItem === item.id ? 'scale-105 shadow-lg' : 'hover:scale-105'
+                          }`}
+                        >
+                          <Icon
+                            className={`h-5 w-5 sm:h-6 sm:w-6 ${getRarityColor(item.rarity)}`}
+                          />
+                          {item.equipped && (
+                            <Check className="absolute top-0.5 right-0.5 h-2.5 w-2.5 text-[#6fbf6f] sm:top-1 sm:right-1 sm:h-3 sm:w-3" />
+                          )}
+                          {item.quantity > 1 && (
+                            <span
+                              className="absolute right-0.5 bottom-0.5 rounded bg-black/60 px-0.5 text-[9px] text-[#ffd700] sm:right-1 sm:bottom-1 sm:px-1 sm:text-[10px]"
+                              style={{ fontFamily: 'var(--font-fantasy)' }}
+                            >
+                              {item.quantity}
+                            </span>
+                          )}
+                        </button>
+                      </Tooltip>
+                    )
+                  })}
+                </div>
+              ) : (
+                <div className="space-y-2">
+                  {filteredInventory.map((item) => {
+                    const Icon = getIconFromName(item.iconName)
+                    return (
+                      <button
+                        key={item.id}
+                        onClick={() => setSelectedItem(item.id)}
+                        className={`flex w-full items-center gap-3 rounded border p-3 transition-all ${
+                          selectedItem === item.id
+                            ? `border-2 ${getRarityBorder(item.rarity)} bg-black/60`
+                            : 'border-[#8b6f47] bg-black/40 hover:bg-black/60'
+                        }`}
                       >
-                        {item.value}g
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
+                        <div
+                          className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded border-2 ${getRarityBorder(
+                            item.rarity
+                          )} ${getRarityBg(item.rarity)}`}
+                        >
+                          <Icon className={`h-6 w-6 ${getRarityColor(item.rarity)}`} />
+                        </div>
+                        <div className="min-w-0 flex-1 text-left">
+                          <h3
+                            className={`truncate text-sm ${getRarityColor(item.rarity)}`}
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
+                            {item.name} {item.quantity > 1 && `(${item.quantity})`}
+                          </h3>
+                          <p className="text-xs text-[#8b7355]">
+                            {item.type === 'weapon'
+                              ? 'Zbraň'
+                              : item.type === 'armor'
+                                ? 'Zbroj'
+                                : item.type === 'consumable'
+                                  ? 'Spotřební'
+                                  : item.type === 'material'
+                                    ? 'Materiál'
+                                    : 'Quest'}
+                          </p>
+                        </div>
+                        {item.equipped && (
+                          <Check className="h-5 w-5 flex-shrink-0 text-[#6fbf6f]" />
+                        )}
+                        <span
+                          className="flex-shrink-0 text-sm text-[#ffd700]"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          {item.value}g
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
