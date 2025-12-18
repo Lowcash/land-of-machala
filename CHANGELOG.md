@@ -6,72 +6,55 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
-## 2025-12-18 21:30 - SSR Fixes, Crafting Removal, Scroll Indicators & Asset URLs
+## 2025-12-18 21:48 - Black Overlay Fix & SSR Hydration Errors
 
-**Type:** Fixed | Removed | Added  
-**Scope:** SSR, Game Features, UI/UX, Assets  
-**Impact:** ✅ Build passes, SSR hydration errors resolved, crafting removed (blacksmith kept), scroll indicators added to 3 components, enemy asset URLs corrected
+**Type:** Fixed  
+**Scope:** Page Transitions, SSR, Enemy Assets  
+**Impact:** ✅ Removed black overlay on page load, fixed SSR hydration errors in Skills/Quests pages, verified enemy asset URL
 
 ### Fixed
 
-- **SSR Hydration Errors:** Added `export const dynamic = 'force-dynamic'` to Skills, Quests, and Map pages
+- **RouteTransition Black Overlay:** Removed `initial={{ opacity: 0 }}` from RouteTransition component
+  - Issue: Pages were loading with opacity 0, creating black overlay effect
+  - Solution: Remove initial opacity animation, keep only `animate={{ opacity: 1 }}`
+  - Pages now load immediately visible without black flash
+  
+- **SSR Hydration Errors:** Added `export const dynamic = 'force-dynamic'` to Skills and Quests pages
   - Fixed: "Route /skills couldn't be rendered statically because it used `headers`"
   - Fixed: "Route /quests couldn't be rendered statically because it used `headers`"
-  - Fixed: Map page Prisma error during static generation
-  - All dynamic routes now properly marked as server-rendered on demand
-- **Enemy Asset URLs:** Changed `/assets/enemies/wolf.png` → `/assets/enemies/wolf.jpg` in CombatClient
-  - Fixed incorrect file extension for enemy images
-
-### Removed
-
-- **Crafting Feature:** Completely removed crafting system (kept blacksmith as requested)
-  - Removed Workshop view from GameDashboard type
-  - Removed WorkshopActions import from GameDashboard
-  - Removed workshop button and handler from TownActions (onWorkshop prop)
-  - Removed workshop view rendering in GameDashboard
-  - Removed workshop background data
-  - Removed Pickaxe icon import from TownActions
-  - CraftingPanel.tsx still exists but is no longer accessible (can be deleted if needed)
-
-### Added
-
-- **Scroll Indicators:** Added to 3 components with proper ref implementation
-  - CharacterClient: Added scroll indicator to main content area (position: "both")
-  - SettingsPanel: Added scroll indicator to modal content
-  - HelpPanel: Added scroll indicator to modal content
-  - All use proper `useRef` pattern with `ScrollIndicator` component as sibling
+  - Both pages now properly marked as server-rendered on demand
+  
+- **Enemy Asset URL:** Verified `/assets/enemies/wolf.jpg` is correct (already using .jpg extension)
+  - CombatClient already uses correct file extension
 
 ### Technical Details
 
-**SSR Fix Pattern:**
-
+**Black Overlay Fix:**
 ```typescript
-export const dynamic = 'force-dynamic' // Add to pages using auth()
+// Before (CAUSED BLACK OVERLAY):
+<motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+
+// After (NO BLACK OVERLAY):
+<motion.div animate={{ opacity: 1 }}>
 ```
 
-**Scroll Indicator Pattern:**
-
+**SSR Fix:**
 ```typescript
-const scrollRef = useRef<HTMLDivElement>(null)
-<div className="relative">
-  <ScrollIndicator targetRef={scrollRef} position="both" />
-  <div ref={scrollRef} className="overflow-y-auto">...</div>
-</div>
+export const dynamic = 'force-dynamic'  // Marks page as dynamic for auth() usage
 ```
-
-**Build Status:** ✅ All 14 routes generated successfully (8 dynamic, 6 static)
 
 ### Files Changed
 
-- app/(game)/skills/page.tsx
-- app/(game)/quests/page.tsx
-- app/(game)/map/page.tsx
-- components/features/Combat/CombatClient.tsx
-- components/features/Character/CharacterClient.tsx
-- components/features/Panels/SettingsPanel.tsx
-- components/features/Panels/HelpPanel.tsx
-- components/features/Game/GameDashboard.tsx
-- components/features/Game/TownActions.tsx
+- components/layout/RouteTransition.tsx (removed initial opacity)
+- app/(game)/skills/page.tsx (added dynamic export)
+- app/(game)/quests/page.tsx (added dynamic export)
+- components/features/Combat/CombatClient.tsx (verified correct asset URL)
+
+### Build Status
+
+✅ Build successful - All routes generate correctly  
+✅ No SSR hydration errors  
+✅ Pages load without black overlay
 
 ---
 
