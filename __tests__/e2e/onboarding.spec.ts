@@ -4,7 +4,7 @@ test.describe('Onboarding Flow', () => {
   test('completes character creation', async ({ page }) => {
     // 1. Login as guest
     await page.goto('/login')
-    await page.getByRole('button', { name: 'Hrát jako Host (bez registrace)' }).click()
+    await page.getByRole('button', { name: 'Zkusit hru jako host (bez registrace)' }).click()
 
     // 2. Expect redirect to onboarding
     await expect(page).toHaveURL(/\/onboarding/)
