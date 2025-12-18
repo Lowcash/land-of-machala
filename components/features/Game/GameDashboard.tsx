@@ -15,15 +15,18 @@ import {
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { FishingGame, LockpickGame, MiningGame } from '../Minigames'
 import { ArmoryActions } from './ArmoryActions'
 import { BankActions } from './BankActions'
 import { BlacksmithActions } from './BlacksmithActions'
 import { CharacterBox } from './CharacterBox'
+import { GuildHallActions } from './GuildHallActions'
 import { HealerActions } from './HealerActions'
 import { LocationActions } from './LocationActions'
 import { MarketActions } from './MarketActions'
 import { TavernActions } from './TavernActions'
 import { TownActions } from './TownActions'
+import { WorkshopActions } from './WorkshopActions'
 
 type View =
   | 'town'
@@ -33,6 +36,8 @@ type View =
   | 'tavern'
   | 'blacksmith'
   | 'market'
+  | 'workshop'
+  | 'guild_hall'
   | 'mountains'
   | 'plains'
   | 'desert'
@@ -46,6 +51,9 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const [currentView, setCurrentView] = useState<View>('town')
   const [infoText, setInfoText] = useState<string | null>(null)
   const [isShaking] = useState(false)
+  const [activeMinigame, setActiveMinigame] = useState<'fishing' | 'mining' | 'lockpick' | null>(
+    null
+  )
 
   // Mock data for now - should come from props or query
   const [gold, setGold] = useState(character.gold || 0)
@@ -76,6 +84,15 @@ export function GameDashboard({ character }: GameDashboardProps) {
       setInfoText(
         'Procházíš krajinou, ale nenarazil jsi na nic zajímavého. Jen vítr šumí v korunách stromů.'
       )
+    }
+  }
+
+  const handleMinigameComplete = (rewards: any) => {
+    setActiveMinigame(null)
+    if (rewards) {
+      // Handle rewards (add to inventory/gold)
+      console.log('Minigame rewards:', rewards)
+      setInfoText('Získal jsi odměnu z minihry!')
     }
   }
 
@@ -122,6 +139,18 @@ export function GameDashboard({ character }: GameDashboardProps) {
       icon: ShoppingBag,
       desc: 'Rušné tržiště plné kupců a obchodníků. Můžeš zde najít opravdu cokoliv, pokud máš dost zlata.',
     },
+    workshop: {
+      bg: '/assets/blacksmith-background.jpg',
+      title: 'Ateliér',
+      icon: Hammer,
+      desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
+    },
+    guild_hall: {
+      bg: '/assets/city-background.jpg',
+      title: 'Hradová hala',
+      icon: Building,
+      desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
+    },
     mountains: {
       bg: '/assets/mountains-background.jpg',
       title: 'Horské průsmyky',
@@ -149,7 +178,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
       icon={viewData.icon}
       maxWidth="lg"
     >
-      <div className="flex flex-1 min-w-0 flex-col gap-3">
+      <div className="flex min-w-0 flex-1 flex-col gap-3">
         {/* Player box at top - constrained width */}
         <div className="w-full max-w-sm">
           <CharacterBox
@@ -163,7 +192,9 @@ export function GameDashboard({ character }: GameDashboardProps) {
             xpMax={character.xpToNextLevel}
             stats={character.stats}
             isEnemy={false}
-            resourceType={character.class === 'warrior' || character.class === 'rogue' ? 'energy' : 'mana'}
+            resourceType={
+              character.class === 'warrior' || character.class === 'rogue' ? 'energy' : 'mana'
+            }
           />
         </div>
 
@@ -192,6 +223,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
               onTavern={() => setCurrentView('tavern')}
               onBlacksmith={() => setCurrentView('blacksmith')}
               onMarket={() => setCurrentView('market')}
+              onWorkshop={() => setCurrentView('workshop')}
+              onGuildHall={() => setCurrentView('guild_hall')}
               onMove={handleMove}
               setInfoText={setInfoText}
             />
@@ -241,6 +274,22 @@ export function GameDashboard({ character }: GameDashboardProps) {
               setInfoText={setInfoText}
             />
           )}
+          {currentView === 'workshop' && (
+            <WorkshopActions
+              onBack={() => setCurrentView('town')}
+              onOpenCrafting={() => {}}
+              onOpenEnchanting={() => {}}
+              setInfoText={setInfoText}
+            />
+          )}
+          {currentView === 'guild_hall' && (
+            <GuildHallActions
+              onBack={() => setCurrentView('town')}
+              onOpenFactions={() => {}}
+              setInfoText={setInfoText}
+              playerReputation={0}
+            />
+          )}
           {currentView === 'market' && (
             <MarketActions
               onBack={() => setCurrentView('town')}
@@ -257,10 +306,31 @@ export function GameDashboard({ character }: GameDashboardProps) {
             <LocationActions
               onBack={() => setCurrentView('town')}
               onCombat={() => router.push('/combat')}
+              onMining={currentView === 'mountains' ? () => setActiveMinigame('mining') : undefined}
+              onFishing={currentView === 'plains' ? () => setActiveMinigame('fishing') : undefined}
             />
           )}
         </div>
       </div>
+
+      {/* Minigames */}
+      <FishingGame
+        isOpen={activeMinigame === 'fishing'}
+        onClose={() => setActiveMinigame(null)}
+        onCatch={(fish) => handleMinigameComplete(fish)}
+      />
+      <MiningGame
+        isOpen={activeMinigame === 'mining'}
+        onClose={() => setActiveMinigame(null)}
+        onComplete={(rewards) => handleMinigameComplete(rewards)}
+      />
+      <LockpickGame
+        isOpen={activeMinigame === 'lockpick'}
+        onClose={() => setActiveMinigame(null)}
+        difficulty="easy"
+        onSuccess={(reward) => handleMinigameComplete(reward)}
+        onFailure={() => setActiveMinigame(null)}
+      />
     </PageTemplate>
   )
 }

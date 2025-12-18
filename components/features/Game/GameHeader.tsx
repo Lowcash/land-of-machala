@@ -75,15 +75,14 @@ export function GameHeader({
         {/* Left - Title/Icon or Custom Content */}
         {leftContent || (
           <div className="flex min-w-0 flex-1 items-center gap-2">
-            {Icon && (
-              isValidElement(Icon) ? (
+            {Icon &&
+              (isValidElement(Icon) ? (
                 <div className="h-5 w-5 shrink-0 text-[#ffd700] [&>svg]:h-full [&>svg]:w-full">
                   {Icon}
                 </div>
               ) : (
                 <Icon className="h-5 w-5 shrink-0 text-[#ffd700]" />
-              )
-            )}
+              ))}
             <div className="min-w-0">
               <h1
                 className="truncate text-lg text-[#ffd700]"
@@ -122,7 +121,7 @@ export function GameHeader({
                 </button>
 
                 {showSettingsMenu && (
-                  <div className="absolute right-0 z-[100] mt-1 w-48 rounded border border-[#d4a574] bg-black/95 shadow-2xl backdrop-blur-md top-full">
+                  <div className="absolute top-full right-0 z-[100] mt-1 w-48 rounded border border-[#d4a574] bg-black/95 shadow-2xl backdrop-blur-md">
                     {customMenuItems || (
                       <>
                         <button className="flex w-full items-center gap-2 border-b border-[#8b6f47] px-3 py-2 text-sm text-[#f5e6d3] hover:bg-black/60">

@@ -1,47 +1,50 @@
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'
 
 interface GameLayoutProps {
-  children: ReactNode;
+  children: ReactNode
   /** Background image URL */
-  backgroundImage?: string;
+  backgroundImage?: string
   /** Custom background class (if not using image) */
-  backgroundClass?: string;
+  backgroundClass?: string
   /** Whether content should scroll (false = fullscreen sections) */
-  scrollable?: boolean;
+  scrollable?: boolean
   /** Max width constraint for content */
-  maxWidth?: 'default' | 'wide' | 'full';
+  maxWidth?: 'default' | 'wide' | 'full'
 }
 
 /**
  * Unified layout component for all game screens
  * Provides consistent structure: background, content area, optional scrolling
  */
-export function GameLayout({ 
-  children, 
-  backgroundImage, 
+export function GameLayout({
+  children,
+  backgroundImage,
   backgroundClass = 'bg-[#0a0806]',
   scrollable = false,
-  maxWidth = 'default'
+  maxWidth = 'default',
 }: GameLayoutProps) {
   const maxWidthClass = {
     default: 'max-w-5xl',
     wide: 'max-w-7xl',
-    full: 'max-w-none'
-  }[maxWidth];
+    full: 'max-w-none',
+  }[maxWidth]
 
   return (
-    <div className={`h-screen flex flex-col overflow-hidden ${backgroundClass}`} style={{ fontFamily: 'var(--font-body)' }}>
+    <div
+      className={`flex h-screen flex-col overflow-hidden ${backgroundClass}`}
+      style={{ fontFamily: 'var(--font-body)' }}
+    >
       {/* Background Layer */}
       {backgroundImage && (
         <>
           <div className="absolute inset-0 flex justify-center">
-            <div className="w-full max-w-500 h-full relative">
-              <img src={backgroundImage} alt="" className="w-full h-full object-cover" />
+            <div className="relative h-full w-full max-w-500">
+              <img src={backgroundImage} alt="" className="h-full w-full object-cover" />
               <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-black/60"></div>
             </div>
             {/* Black bars for ultra-wide screens */}
-            <div className="absolute inset-y-0 left-0 right-0 pointer-events-none">
-              <div className="h-full mx-auto max-w-500 relative">
+            <div className="pointer-events-none absolute inset-y-0 right-0 left-0">
+              <div className="relative mx-auto h-full max-w-500">
                 <div className="absolute inset-y-0 left-0 w-[calc((100vw-2000px)/2)] bg-black"></div>
                 <div className="absolute inset-y-0 right-0 w-[calc((100vw-2000px)/2)] bg-black"></div>
               </div>
@@ -51,11 +54,15 @@ export function GameLayout({
       )}
 
       {/* Content Layer */}
-      <div className={`relative z-10 flex-1 flex flex-col ${scrollable ? 'overflow-y-auto' : 'overflow-hidden'}`}>
-        <div className={`w-full ${maxWidthClass} mx-auto flex-1 flex flex-col ${scrollable ? '' : 'overflow-hidden'}`}>
+      <div
+        className={`relative z-10 flex flex-1 flex-col ${scrollable ? 'overflow-y-auto' : 'overflow-hidden'}`}
+      >
+        <div
+          className={`w-full ${maxWidthClass} mx-auto flex flex-1 flex-col ${scrollable ? '' : 'overflow-hidden'}`}
+        >
           {children}
         </div>
       </div>
     </div>
-  );
+  )
 }
