@@ -1,8 +1,8 @@
 'use client'
 
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { X } from 'lucide-react'
 import { Dispatch, SetStateAction, useRef } from 'react'
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 
 interface SettingsPanelProps {
   onClose: () => void
@@ -20,12 +20,15 @@ interface SettingsPanelProps {
 
 export function SettingsPanel({ onClose }: SettingsPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
-  
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
       <div className="relative max-h-[80vh] w-full max-w-2xl">
         <ScrollIndicator targetRef={scrollRef} position="both" />
-        <div ref={scrollRef} className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-6">
+        <div
+          ref={scrollRef}
+          className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-6"
+        >
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-2xl text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
               Nastavení
@@ -38,9 +41,9 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             </button>
           </div>
           <div className="space-y-4 text-[#d4a574]">
-          <p>Nastavení hry - Coming soon</p>
+            <p>Nastavení hry - Coming soon</p>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   )
