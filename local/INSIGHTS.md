@@ -321,6 +321,7 @@ components/features/
 **Why it matters:** Consistent UI/UX across all game pages is critical for immersion. The `PageTemplate` component acts as a single source of truth for page structure (Header, Background, Content Container, Footer spacing).
 
 **Pattern:**
+
 ```tsx
 <PageTemplate background="bg-image.jpg">
   <ClientComponent />
@@ -328,6 +329,7 @@ components/features/
 ```
 
 **Benefits:**
+
 - Enforces consistent max-width and padding.
 - Handles global footer spacing automatically.
 - Centralizes background image handling.
@@ -337,10 +339,12 @@ components/features/
 **Why it matters:** Complex features like Inventory, Skills, and Quests require browsing a list while viewing details. A "Split View" pattern (List on Left, Details on Right) works best for desktop, while mobile uses a Fullscreen Overlay for details.
 
 **Implementation:**
+
 - **Desktop:** Grid/List (Left) + Sticky Sidebar (Right)
 - **Mobile:** Grid/List (Full Width) + Modal/Overlay (Details)
 
 **Applied to:**
+
 - Inventory (Grid + Item Details)
 - Skills (Tree + Skill Details)
 - Quests (List + Quest Details)

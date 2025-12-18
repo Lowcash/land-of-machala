@@ -23,14 +23,17 @@
 ## 📝 Details
 
 ### Why
+
 [Context: why is this needed? what breaks without it?]
 
 **Example:** "Users need way to log in. Currently can access dashboard without auth."
 
 ### What
+
 [Specific work to do. Be concrete.]
 
-**Example:** 
+**Example:**
+
 - Create `app/(auth)/login/page.tsx` with form
 - Add email/password fields with validation
 - Create Server Action `src/app/actions/auth.ts` for authentication
@@ -38,9 +41,11 @@
 - Update `app/layout.tsx` with login link
 
 ### Success Criteria
+
 [How do you know when this is done?]
 
 **Example:**
+
 - Login page renders without errors
 - Form validates email format
 - Submission calls Server Action
@@ -68,12 +73,14 @@ Checklist:
 ## 📈 FOR COMPLEX TASKS (2+ hours)
 
 ### Phase 1: Diagnostic (~ X minutes)
+
 - [ ] Understand problem domain
 - [ ] Read related code (pages, components, API)
 - [ ] Identify what needs to change
 - [ ] Sketch component structure
 
 ### Phase 2: Implementation (~ X minutes)
+
 - [ ] Create/modify components
 - [ ] Add Server Actions or API routes
 - [ ] Write tests (test-first recommended)
@@ -81,6 +88,7 @@ Checklist:
 - [ ] Follow code standards (see copilot-instructions.md)
 
 ### Phase 3: Validation (~ X minutes)
+
 - [ ] All tests pass: `npm test`
 - [ ] Type check passes: `npm run type-check`
 - [ ] Code quality OK: `npm run lint`
@@ -93,6 +101,7 @@ Checklist:
 ## 🐛 FOR BUG REPORTS
 
 **Steps to Reproduce:**
+
 1. [First step]
 2. [Second step]
 3. [What happens]
@@ -104,6 +113,7 @@ Checklist:
 [What actually happens]
 
 **Error Output:**
+
 ```
 [Paste full error from console or network tab]
 ```
@@ -112,6 +122,7 @@ Checklist:
 [If visual issue, describe or attach screenshot]
 
 **Environment:**
+
 - Node version: [output of `node --version`]
 - OS: [macOS/Linux/Windows]
 - Browser: [Chrome, Firefox, Safari]
@@ -147,7 +158,8 @@ Checklist:
 
 ---
 
-**See also:** 
+**See also:**
+
 - ARCHITECTURE.md (design patterns)
 - DEVELOPMENT.md (workflow)
 - copilot-instructions.md (code standards)
