@@ -91,8 +91,8 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   // Background image for combat
   const forestBg = '/assets/locations/forest.jpg'
 
-  // Enemy data
-  const wolfEnemyImage = '/assets/enemies/wolf.png'
+  // Enemy data - use proper asset URL
+  const wolfEnemyImage = '/assets/enemies/wolf.jpg'
   const wolfEnemy = {
     name: 'Divoký vlk',
     level: 1,

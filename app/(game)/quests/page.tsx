@@ -3,6 +3,8 @@ import { PageTemplate } from '@/components/layout/PageTemplate'
 import { ScrollText } from 'lucide-react'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 export default function QuestsPage() {
   return (
     <PageTemplate

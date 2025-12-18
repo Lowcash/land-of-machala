@@ -3,6 +3,8 @@ import { PageTemplate } from '@/components/layout/PageTemplate'
 import { Zap } from 'lucide-react'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 export default function SkillsPage() {
   return (
     <PageTemplate

@@ -27,7 +27,6 @@ import { LocationActions } from './LocationActions'
 import { MarketActions } from './MarketActions'
 import { TavernActions } from './TavernActions'
 import { TownActions } from './TownActions'
-import { WorkshopActions } from './WorkshopActions'
 
 type View =
   | 'town'
@@ -37,7 +36,6 @@ type View =
   | 'tavern'
   | 'blacksmith'
   | 'market'
-  | 'workshop'
   | 'guild_hall'
   | 'mountains'
   | 'plains'
@@ -140,12 +138,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
       icon: ShoppingBag,
       desc: 'Rušné tržiště plné kupců a obchodníků. Můžeš zde najít opravdu cokoliv, pokud máš dost zlata.',
     },
-    workshop: {
-      bg: '/assets/blacksmith-background.jpg',
-      title: 'Ateliér',
-      icon: Hammer,
-      desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
-    },
     guild_hall: {
       bg: '/assets/locations/city-background.jpg',
       title: 'Hradová hala',
@@ -225,7 +217,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onTavern={() => setCurrentView('tavern')}
                 onBlacksmith={() => setCurrentView('blacksmith')}
                 onMarket={() => setCurrentView('market')}
-                onWorkshop={() => setCurrentView('workshop')}
                 onGuildHall={() => setCurrentView('guild_hall')}
                 onMove={handleMove}
                 setInfoText={setInfoText}
@@ -273,14 +264,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setGold={setGold}
                 inventory={[]}
                 setInventory={() => {}}
-                setInfoText={setInfoText}
-              />
-            )}
-            {currentView === 'workshop' && (
-              <WorkshopActions
-                onBack={() => setCurrentView('town')}
-                onOpenCrafting={() => {}}
-                onOpenEnchanting={() => {}}
                 setInfoText={setInfoText}
               />
             )}
