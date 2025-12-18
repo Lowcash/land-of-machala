@@ -1,6 +1,7 @@
 'use client'
 
 import { PageTemplate } from '@/components/layout/PageTemplate'
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { Tooltip } from '@/components/ui/CustomTooltip'
 import {
   Activity,
@@ -15,7 +16,7 @@ import {
   User,
   Wind,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 type Item = {
   id: string
@@ -55,6 +56,7 @@ interface CharacterClientProps {
 }
 
 export function CharacterClient({ character, inventory }: CharacterClientProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
   const [, setPanel] = useState<'help' | null>(null)
   const equipped = inventory.filter((item) => item.equipped)
 
@@ -141,8 +143,10 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
       onHelp={() => setPanel('help')}
     >
       {/* Content - Scrollable Area */}
-      <div className="scrollbar-custom flex-1 overflow-y-auto">
-        <div className="w-full p-3 sm:p-4">
+      <div className="relative flex flex-1 flex-col overflow-hidden">
+        <ScrollIndicator targetRef={scrollRef} position="both" />
+        <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto">
+          <div className="w-full p-3 sm:p-4">
           {/* Top: Character Profile Card (Compact) */}
           <div className="mb-3 rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-3 shadow-xl sm:p-4">
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-stretch">
@@ -466,6 +470,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
             </div>
           </div>
         </div>
+      </div>
       </div>
     </PageTemplate>
   )

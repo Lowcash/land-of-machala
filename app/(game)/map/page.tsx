@@ -3,6 +3,8 @@ import { PageTemplate } from '@/components/layout/PageTemplate'
 import { Map as MapIcon } from 'lucide-react'
 import { Suspense } from 'react'
 
+export const dynamic = 'force-dynamic'
+
 export default function MapPage() {
   return (
     <PageTemplate

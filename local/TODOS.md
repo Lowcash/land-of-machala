@@ -6,10 +6,27 @@
 
 ## 🔴 HIGH PRIORITY
 
+- [x] **Fix SSR hydration errors** ✅ DONE (2025-12-18 21:30)
+  - Added `export const dynamic = 'force-dynamic'` to Skills, Quests, Map pages
+  - All routes now build successfully
+
+- [x] **Remove crafting feature (keep blacksmith)** ✅ DONE (2025-12-18 21:30)
+  - Removed Workshop from GameDashboard
+  - Removed workshop button from TownActions
+  - Blacksmith feature preserved
+
+- [x] **Fix enemy asset URLs** ✅ DONE (2025-12-18 21:30)
+  - Changed wolf.png → wolf.jpg in CombatClient
+
+- [x] **Add scroll indicators to key components** ✅ DONE (2025-12-18 21:30)
+  - Added to CharacterClient, SettingsPanel, HelpPanel
+  - Used proper ref pattern with ScrollIndicator component
+  - Note: Many components already have ScrollIndicator (SkillGrid, QuestList, InventoryClient, ArmoryActions, GameLayout, CombatClient)
+
 - [ ] **Complete Visual Parity with Design Reference**
   - **Goal:** Finish implementing all visual effects, transitions, and styling from land-of-machala-design
   - **Owner:** Agent
-  - **Priority:** HIGH (IN PROGRESS)
+  - **Priority:** HIGH (MOSTLY COMPLETE)
   - **Scope:** Hover effects, rarity glows, remaining route transitions, scroll indicators
   - **Completed:**
     - ✅ Framer Motion installed (v12.9)
@@ -24,7 +41,7 @@
     - ✅ Sound system enhanced for browser autoplay policy
     - ✅ Hover effects verified (all interactive elements already have hover:scale-105 or similar)
     - ✅ Rarity glows added to inventory items (legendary/epic/rare)
-    - ✅ ScrollIndicators verified (already present in SkillGrid, QuestList, InventoryClient, ArmoryActions, GameLayout, CombatClient)
+    - ✅ ScrollIndicators verified and added where missing
     - ✅ Visual parity tests written (28 tests covering gradients, colors, hover effects, asset paths)
   - **Success criteria:** ✅ Build passes, ✅ 28 visual parity tests passing (85% pass rate)
 
