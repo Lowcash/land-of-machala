@@ -9,7 +9,7 @@ type SoundType = 'click' | 'attack' | 'damage' | 'gold'
 
 let audioContext: AudioContext | null = null
 
-// Initialize AudioContext on first use (needed for browser security)
+// Initialize AudioContext on first user interaction (needed for browser autoplay policy)
 function getAudioContext(): AudioContext | null {
   if (typeof window === 'undefined') return null
 
@@ -17,6 +17,20 @@ function getAudioContext(): AudioContext | null {
     const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext
     if (AudioContextClass) {
       audioContext = new AudioContextClass()
+
+      // Resume context on first interaction if suspended (autoplay policy)
+      if (audioContext.state === 'suspended') {
+        const resume = () => {
+          audioContext?.resume()
+          // Remove listener after first interaction
+          document.removeEventListener('click', resume)
+          document.removeEventListener('touchstart', resume)
+          document.removeEventListener('keydown', resume)
+        }
+        document.addEventListener('click', resume, { once: true })
+        document.addEventListener('touchstart', resume, { once: true })
+        document.addEventListener('keydown', resume, { once: true })
+      }
     }
   }
 

@@ -1,5 +1,6 @@
 'use client'
 
+import { RouteTransition } from '@/components/layout/RouteTransition'
 import { ArrowRight, Lock, Mail, Sparkles, Swords } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -49,157 +50,162 @@ export default function RegisterPage() {
   }
 
   return (
-    <div
-      className="flex h-screen flex-col overflow-y-auto bg-[#0a0806]"
-      style={{ fontFamily: 'var(--font-body)' }}
-    >
-      {/* Background */}
+    <RouteTransition>
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/assets/city-background.jpg)' }}
+        className="flex h-screen flex-col overflow-y-auto bg-[#0a0806]"
+        style={{ fontFamily: 'var(--font-body)' }}
       >
-        <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
-      </div>
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+        </div>
 
-      {/* Content */}
-      <div className="relative z-10 flex flex-1 items-center justify-center p-3 sm:p-4">
-        <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2">
-          {/* Left Column: Register Form */}
-          <div className="mx-auto w-full max-w-md">
-            {/* Logo & Title */}
-            <div className="mb-6 text-center sm:mb-8">
-              <div className="relative mb-4 inline-block">
-                <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
-                <div className="relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
-                  <Swords className="h-10 w-10 text-[#ffd700]" />
+        {/* Content */}
+        <div className="relative z-10 flex flex-1 items-center justify-center p-3 sm:p-4">
+          <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2">
+            {/* Left Column: Register Form */}
+            <div className="mx-auto w-full max-w-md">
+              {/* Logo & Title */}
+              <div className="mb-6 text-center sm:mb-8">
+                <div className="relative mb-4 inline-block">
+                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
+                  <div className="relative rounded-full border-2 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
+                    <Swords className="h-10 w-10 text-[#ffd700]" />
+                  </div>
+                </div>
+
+                <h1
+                  className="mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
+                  style={{
+                    fontFamily: 'var(--font-medieval)',
+                    textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
+                  }}
+                >
+                  Land of Machala
+                </h1>
+
+                <div className="mb-2 flex items-center justify-center gap-2">
+                  <Sparkles className="h-3 w-3 text-[#d4a574]" />
+                  <p className="text-sm text-[#d4a574] sm:text-base">Vytvoř si nový účet</p>
+                  <Sparkles className="h-3 w-3 text-[#d4a574]" />
                 </div>
               </div>
 
-              <h1
-                className="mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
-                style={{
-                  fontFamily: 'var(--font-medieval)',
-                  textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
-                }}
+              {/* Register Form */}
+              <form
+                onSubmit={handleSubmit}
+                className="mb-4 rounded-lg border-2 border-[#d4a574] bg-black/90 p-4 shadow-2xl backdrop-blur-md sm:p-6"
               >
-                Land of Machala
-              </h1>
+                <div className="space-y-4">
+                  <div>
+                    <label
+                      className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
+                    >
+                      Email
+                    </label>
+                    <div className="relative">
+                      <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
+                      <input
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Zadej email..."
+                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                        required
+                      />
+                    </div>
+                  </div>
 
-              <div className="mb-2 flex items-center justify-center gap-2">
-                <Sparkles className="h-3 w-3 text-[#d4a574]" />
-                <p className="text-sm text-[#d4a574] sm:text-base">Vytvoř si nový účet</p>
-                <Sparkles className="h-3 w-3 text-[#d4a574]" />
+                  <div>
+                    <label
+                      className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
+                    >
+                      Heslo
+                    </label>
+                    <div className="relative">
+                      <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
+                      <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Zadej heslo (min. 6 znaků)..."
+                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                  </div>
+
+                  {error && (
+                    <div className="rounded-lg border border-red-500/50 bg-red-900/30 p-3">
+                      <p className="text-center text-sm text-[#ff6b6b]">{error}</p>
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={loading || !email || !password}
+                    className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg border-2 py-3 transition-all duration-300 ${
+                      email && password && !loading
+                        ? 'border-[#ffd700] bg-gradient-to-br from-[#d4a574] via-[#8b6f47] to-[#6d5a3e] text-white shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffd700] hover:via-[#d4a574] hover:to-[#8b6f47] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
+                        : 'cursor-not-allowed border-[#8b6f47]/50 bg-black/40 text-[#8b7355] opacity-50'
+                    }`}
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    <span className="relative z-10 text-base sm:text-lg">
+                      {loading ? 'Registruji...' : 'Vytvořit účet'}
+                    </span>
+                    <ArrowRight
+                      className={`relative z-10 h-5 w-5 transition-transform ${email && password && name && !loading ? 'group-hover:translate-x-1' : ''}`}
+                    />
+                  </button>
+                </div>
+              </form>
+
+              <div className="text-center">
+                <p className="text-sm text-[#8b7355] sm:text-base">
+                  Již máš účet?{' '}
+                  <Link
+                    href="/login"
+                    className="text-[#d4a574] hover:text-[#ffd700] hover:underline"
+                  >
+                    Přihlas se zde
+                  </Link>
+                </p>
               </div>
             </div>
 
-            {/* Register Form */}
-            <form
-              onSubmit={handleSubmit}
-              className="mb-4 rounded-lg border-2 border-[#d4a574] bg-black/90 p-4 shadow-2xl backdrop-blur-md sm:p-6"
-            >
-              <div className="space-y-4">
-                <div>
-                  <label
-                    className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    Email
-                  </label>
-                  <div className="relative">
-                    <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Zadej email..."
-                      className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                      required
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label
-                    className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    Heslo
-                  </label>
-                  <div className="relative">
-                    <Lock className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
-                    <input
-                      type="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Zadej heslo (min. 6 znaků)..."
-                      className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                      required
-                      minLength={6}
-                    />
-                  </div>
-                </div>
-
-                {error && (
-                  <div className="rounded-lg border border-red-500/50 bg-red-900/30 p-3">
-                    <p className="text-center text-sm text-[#ff6b6b]">{error}</p>
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  disabled={loading || !email || !password}
-                  className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg border-2 py-3 transition-all duration-300 ${
-                    email && password && !loading
-                      ? 'border-[#ffd700] bg-linear-to-br from-[#d4a574] via-[#8b6f47] to-[#6d5a3e] text-white shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffd700] hover:via-[#d4a574] hover:to-[#8b6f47] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
-                      : 'cursor-not-allowed border-[#8b6f47]/50 bg-black/40 text-[#8b7355] opacity-50'
-                  }`}
+            {/* Right Column: Info */}
+            <div className="mx-auto w-full max-w-md">
+              <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
+                <h3
+                  className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
-                  <span className="relative z-10 text-base sm:text-lg">
-                    {loading ? 'Registruji...' : 'Vytvořit účet'}
-                  </span>
-                  <ArrowRight
-                    className={`relative z-10 h-5 w-5 transition-transform ${email && password && name && !loading ? 'group-hover:translate-x-1' : ''}`}
-                  />
-                </button>
+                  <Sparkles className="h-5 w-5" />
+                  Začni své dobrodružství
+                </h3>
+                <p className="text-sm leading-relaxed text-[#d4a574]">
+                  Registrací získáš přístup do světa Machala, kde můžeš vytvořit svého hrdinu,
+                  bojovat s monstry a získávat legendární předměty.
+                </p>
               </div>
-            </form>
-
-            <div className="text-center">
-              <p className="text-sm text-[#8b7355] sm:text-base">
-                Již máš účet?{' '}
-                <Link href="/login" className="text-[#d4a574] hover:text-[#ffd700] hover:underline">
-                  Přihlas se zde
-                </Link>
-              </p>
             </div>
-          </div>
 
-          {/* Right Column: Info */}
-          <div className="mx-auto w-full max-w-md">
-            <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
-              <h3
-                className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                <Sparkles className="h-5 w-5" />
-                Začni své dobrodružství
-              </h3>
-              <p className="text-sm leading-relaxed text-[#d4a574]">
-                Registrací získáš přístup do světa Machala, kde můžeš vytvořit svého hrdinu, bojovat
-                s monstry a získávat legendární předměty.
-              </p>
+            {/* Mobile Footer */}
+            <div className="mt-4 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
+              <p className="text-xs text-[#8b7355]">Verze 2.0 • © 2025 Land of Machala</p>
             </div>
-          </div>
-
-          {/* Mobile Footer */}
-          <div className="mt-4 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
-            <p className="text-xs text-[#8b7355]">Verze 2.0 • © 2025 Land of Machala</p>
           </div>
         </div>
       </div>
-    </div>
+    </RouteTransition>
   )
 }

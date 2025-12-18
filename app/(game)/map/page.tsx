@@ -5,7 +5,11 @@ import { Suspense } from 'react'
 
 export default function MapPage() {
   return (
-    <PageTemplate title="Mapa" icon={<MapIcon />} backgroundImage="/assets/city-background.jpg">
+    <PageTemplate
+      title="Mapa"
+      icon={<MapIcon />}
+      backgroundImage="/assets/locations/city-background.jpg"
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <MapPanel />
       </Suspense>

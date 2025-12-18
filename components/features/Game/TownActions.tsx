@@ -92,21 +92,21 @@ export function TownActions({
                 <DirectionBtn
                   onClick={() => onMove('north')}
                   icon={ArrowUp}
-                  image="/assets/locations/mountains.jpg"
+                  image="/assets/locations/mountains-background.jpg"
                 >
                   Vydat se na <span className="text-[#ffd700]">sever</span> - horské průsmyky
                 </DirectionBtn>
                 <DirectionBtn
                   onClick={() => onMove('south')}
                   icon={ArrowDown}
-                  image="/assets/locations/plains.jpg"
+                  image="/assets/locations/plains-background.jpg"
                 >
                   Vydat se na <span className="text-[#ffd700]">jih</span> - zelené pláně
                 </DirectionBtn>
                 <DirectionBtn
                   onClick={() => onMove('east')}
                   icon={ArrowRight}
-                  image="/assets/locations/desert.jpg"
+                  image="/assets/locations/desert-background.jpg"
                 >
                   Vydat se na <span className="text-[#ffd700]">východ</span> - vyprahlá poušť
                 </DirectionBtn>
