@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 interface TypewriterTextProps {
   text: string
@@ -12,14 +12,14 @@ export function TypewriterText({ text, className = '' }: TypewriterTextProps) {
 
   useEffect(() => {
     setIsVisible(false)
-    // Quick fade in
+    // Enhanced fade in with wave effect
     const timer = setTimeout(() => setIsVisible(true), 50)
     return () => clearTimeout(timer)
   }, [text])
 
   return (
     <div
-      className={`${className} transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+      className={`${className} ${isVisible ? 'animate-fade-in-wave opacity-100' : 'opacity-0'}`}
       dangerouslySetInnerHTML={{ __html: text }}
     />
   )

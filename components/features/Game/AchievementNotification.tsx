@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 
 type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
-interface Achievement {
+export interface Achievement {
   id: number
   title: string
   description: string

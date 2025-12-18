@@ -148,6 +148,19 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
     }
   }
 
+  const getRarityGlow = (rarity: ItemRarity) => {
+    switch (rarity) {
+      case 'legendary':
+        return 'shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
+      case 'epic':
+        return 'shadow-[0_0_15px_rgba(182,107,212,0.2)] hover:shadow-[0_0_25px_rgba(182,107,212,0.4)]'
+      case 'rare':
+        return 'shadow-[0_0_10px_rgba(105,204,240,0.2)] hover:shadow-[0_0_20px_rgba(105,204,240,0.3)]'
+      default:
+        return ''
+    }
+  }
+
   const filteredInventory = initialInventory
     .filter((item) => selectedType === 'all' || item.type === selectedType)
     .filter((item) => selectedRarity === 'all' || item.rarity === selectedRarity)
@@ -316,7 +329,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                           onClick={() => setSelectedItem(item.id)}
                           className={`relative flex aspect-square w-full flex-col items-center justify-center rounded border-2 p-1.5 transition-all sm:p-2 ${getRarityBorder(
                             item.rarity
-                          )} ${getRarityBg(item.rarity)} ${
+                          )} ${getRarityBg(item.rarity)} ${getRarityGlow(item.rarity)} ${
                             selectedItem === item.id ? 'scale-105 shadow-lg' : 'hover:scale-105'
                           }`}
                         >
@@ -347,7 +360,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                       <button
                         key={item.id}
                         onClick={() => setSelectedItem(item.id)}
-                        className={`flex w-full items-center gap-3 rounded border p-3 transition-all ${
+                        className={`flex w-full items-center gap-3 rounded border p-3 transition-all ${getRarityGlow(item.rarity)} ${
                           selectedItem === item.id
                             ? `border-2 ${getRarityBorder(item.rarity)} bg-black/60`
                             : 'border-[#8b6f47] bg-black/40 hover:bg-black/60'

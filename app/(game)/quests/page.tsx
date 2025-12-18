@@ -5,7 +5,11 @@ import { Suspense } from 'react'
 
 export default function QuestsPage() {
   return (
-    <PageTemplate title="Úkoly" icon={<ScrollText />} backgroundImage="/assets/city-background.jpg">
+    <PageTemplate
+      title="Úkoly"
+      icon={<ScrollText />}
+      backgroundImage="/assets/locations/city-background.jpg"
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <QuestPanel />
       </Suspense>

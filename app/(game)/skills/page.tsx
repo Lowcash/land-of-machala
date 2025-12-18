@@ -5,7 +5,11 @@ import { Suspense } from 'react'
 
 export default function SkillsPage() {
   return (
-    <PageTemplate title="Dovednosti" icon={<Zap />} backgroundImage="/assets/city-background.jpg">
+    <PageTemplate
+      title="Dovednosti"
+      icon={<Zap />}
+      backgroundImage="/assets/locations/city-background.jpg"
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <SkillsPanel />
       </Suspense>

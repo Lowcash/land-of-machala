@@ -1,5 +1,6 @@
 'use client'
 
+import { RouteTransition } from '@/components/layout/RouteTransition'
 import {
   Activity,
   ArrowRight,
@@ -301,9 +302,9 @@ export function OnboardingForm() {
         {/* Background */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{ backgroundImage: 'url(/assets/city-background.jpg)' }}
+          style={{ backgroundImage: 'url(/assets//locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/90 to-black/95"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/90 to-black/95"></div>
         </div>
 
         {/* Story Content */}
@@ -351,463 +352,473 @@ export function OnboardingForm() {
 
   // Character Creation Screen
   return (
-    <div
-      className="relative flex h-screen flex-col bg-[#0a0806]"
-      style={{ fontFamily: 'var(--font-body)' }}
-    >
-      {/* Background */}
+    <RouteTransition>
       <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/assets/city-background.jpg)' }}
+        className="relative flex h-screen flex-col bg-[#0a0806]"
+        style={{ fontFamily: 'var(--font-body)' }}
       >
-        <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
-      </div>
+        {/* Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+        </div>
 
-      {/* Content */}
-      <div className="scrollbar-custom relative z-10 flex flex-1 items-center justify-center overflow-y-auto p-2 sm:p-4">
-        <div className="my-4 w-full max-w-4xl sm:my-8">
-          {/* Title */}
-          <div className="mb-3 text-center sm:mb-6">
-            <h1
-              className="mb-1 text-xl text-[#ffd700] sm:text-3xl lg:text-4xl"
-              style={{
-                fontFamily: 'var(--font-medieval)',
-                textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              Vytvoř svého hrdinu
-            </h1>
-            <p className="text-xs text-[#d4a574] sm:text-sm lg:text-base">
-              Tvá legenda začíná v zemi Machala
-            </p>
-          </div>
+        {/* Content */}
+        <div className="scrollbar-custom relative z-10 flex flex-1 items-center justify-center overflow-y-auto p-2 sm:p-4">
+          <div className="my-4 w-full max-w-4xl sm:my-8">
+            {/* Title */}
+            <div className="mb-3 text-center sm:mb-6">
+              <h1
+                className="mb-1 text-xl text-[#ffd700] sm:text-3xl lg:text-4xl"
+                style={{
+                  fontFamily: 'var(--font-medieval)',
+                  textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
+                }}
+              >
+                Vytvoř svého hrdinu
+              </h1>
+              <p className="text-xs text-[#d4a574] sm:text-sm lg:text-base">
+                Tvá legenda začíná v zemi Machala
+              </p>
+            </div>
 
-          <div className="mb-3 grid gap-2 sm:mb-4 sm:gap-4 lg:grid-cols-3">
-            {/* Left: Name + Random */}
-            <div className="space-y-2 sm:space-y-4">
-              {/* Name Input */}
-              <div className="rounded-lg border-2 border-[#d4a574] bg-black/90 p-3 shadow-2xl backdrop-blur-md sm:p-4">
-                <label
-                  className="mb-2 block text-center text-base text-[#ffd700] sm:mb-3 sm:text-xl"
+            <div className="mb-3 grid gap-2 sm:mb-4 sm:gap-4 lg:grid-cols-3">
+              {/* Left: Name + Random */}
+              <div className="space-y-2 sm:space-y-4">
+                {/* Name Input */}
+                <div className="rounded-lg border-2 border-[#d4a574] bg-black/90 p-3 shadow-2xl backdrop-blur-md sm:p-4">
+                  <label
+                    className="mb-2 block text-center text-base text-[#ffd700] sm:mb-3 sm:text-xl"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    Jméno hrdiny
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Zadej jméno..."
+                    className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 px-3 py-2 text-center text-base text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:px-4 sm:py-3 sm:text-lg"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  />
+                </div>
+
+                {/* Random Generator */}
+                <button
+                  onClick={randomizeCharacter}
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] px-3 py-2 text-white shadow-xl transition-all hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d] sm:px-4 sm:py-3"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
-                  Jméno hrdiny
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Zadej jméno..."
-                  className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 px-3 py-2 text-center text-base text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:px-4 sm:py-3 sm:text-lg"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                />
+                  <Dices className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="text-sm sm:text-base">Náhodná postava</span>
+                </button>
+
+                {/* Stats Preview */}
+                <div className="rounded-lg border-2 border-[#d4a574] bg-black/90 p-3 shadow-2xl backdrop-blur-md sm:p-4">
+                  <h3
+                    className="mb-2 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    Tvé statistiky
+                  </h3>
+                  <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:flex sm:flex-col sm:space-y-2">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Heart className="h-3 w-3 text-[#ff6b6b] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#ff6b6b] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          HP
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#ff6b6b] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.hp}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Droplet className="h-3 w-3 text-[#69ccf0] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#69ccf0] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          Mana
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#69ccf0] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.mana}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Sword className="h-3 w-3 text-[#ff6b6b] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#d4a574] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          Síla
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#ffd700] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.strength}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Brain className="h-3 w-3 text-[#c084fc] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#d4a574] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          Inteligence
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#ffd700] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.intelligence}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Wind className="h-3 w-3 text-[#ffd700] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#d4a574] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          Obratnost
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#ffd700] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.agility}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
+                        <Activity className="h-3 w-3 text-[#69ccf0] sm:h-4 sm:w-4" />
+                        <span
+                          className="text-[10px] text-[#d4a574] sm:text-xs"
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          Výdrž
+                        </span>
+                      </div>
+                      <span
+                        className="text-xs text-[#ffd700] sm:text-sm"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {finalStats.stamina}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Random Generator */}
-              <button
-                onClick={randomizeCharacter}
-                className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] px-3 py-2 text-white shadow-xl transition-all hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d] sm:px-4 sm:py-3"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                <Dices className="h-4 w-4 sm:h-5 sm:w-5" />
-                <span className="text-sm sm:text-base">Náhodná postava</span>
-              </button>
-
-              {/* Stats Preview */}
-              <div className="rounded-lg border-2 border-[#d4a574] bg-black/90 p-3 shadow-2xl backdrop-blur-md sm:p-4">
+              {/* Middle: Race */}
+              <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
                 <h3
-                  className="mb-2 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
+                  className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
-                  Tvé statistiky
+                  Vyber svou rasu
                 </h3>
-                <div className="grid grid-cols-2 gap-x-3 gap-y-1.5 sm:flex sm:flex-col sm:space-y-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Heart className="h-3 w-3 text-[#ff6b6b] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#ff6b6b] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
+                  {races.map((r) => {
+                    const Icon = r.icon
+                    return (
+                      <button
+                        key={r.id}
+                        onClick={() => setRace(r.id)}
+                        className={`flex h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-[70px] sm:gap-1 sm:p-3 ${
+                          race === r.id
+                            ? 'scale-105 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
+                        }`}
                       >
-                        HP
-                      </span>
-                    </div>
-                    <span
-                      className="text-xs text-[#ff6b6b] sm:text-sm"
+                        <Icon
+                          className={`h-4 w-4 sm:h-5 sm:w-5 ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                        />
+                        <span
+                          className={`text-[10px] sm:text-xs ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          {r.name}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
+                <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
+                  <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
+                    {selectedRace.desc}
+                  </p>
+
+                  {/* Race Stats */}
+                  <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
+                    <p
+                      className="mb-1.5 text-[10px] text-[#ffd700]"
                       style={{ fontFamily: 'var(--font-fantasy)' }}
                     >
-                      {finalStats.hp}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Droplet className="h-3 w-3 text-[#69ccf0] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#69ccf0] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        Mana
-                      </span>
+                      Bonusy rasy:
+                    </p>
+                    <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[9px] sm:text-[10px]">
+                      <div className="flex items-center gap-1">
+                        <Heart className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                        <span className="text-[#d4a574]">{selectedRace.stats.hp} HP</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Droplet className="h-2.5 w-2.5 text-[#69ccf0]" />
+                        <span className="text-[#d4a574]">{selectedRace.stats.mana} MP</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                        <span className="text-[#d4a574]">{selectedRace.stats.strength} Síla</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
+                        <span className="text-[#d4a574]">
+                          {selectedRace.stats.intelligence} Intel.
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
+                        <span className="text-[#d4a574]">{selectedRace.stats.agility} Obrat.</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
+                        <span className="text-[#d4a574]">{selectedRace.stats.stamina} Výdrž</span>
+                      </div>
                     </div>
-                    <span
-                      className="text-xs text-[#69ccf0] sm:text-sm"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {finalStats.mana}
-                    </span>
+                    <p className="mt-2 text-[9px] text-[#8b7355] italic sm:text-[10px]">
+                      {selectedRace.bonuses}
+                    </p>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Sword className="h-3 w-3 text-[#ff6b6b] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#d4a574] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        Síla
-                      </span>
-                    </div>
-                    <span
-                      className="text-xs text-[#ffd700] sm:text-sm"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {finalStats.strength}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Brain className="h-3 w-3 text-[#c084fc] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#d4a574] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        Inteligence
-                      </span>
-                    </div>
-                    <span
-                      className="text-xs text-[#ffd700] sm:text-sm"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {finalStats.intelligence}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Wind className="h-3 w-3 text-[#ffd700] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#d4a574] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        Obratnost
-                      </span>
-                    </div>
-                    <span
-                      className="text-xs text-[#ffd700] sm:text-sm"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {finalStats.agility}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-1.5 sm:gap-2">
-                      <Activity className="h-3 w-3 text-[#69ccf0] sm:h-4 sm:w-4" />
-                      <span
-                        className="text-[10px] text-[#d4a574] sm:text-xs"
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        Výdrž
-                      </span>
-                    </div>
-                    <span
-                      className="text-xs text-[#ffd700] sm:text-sm"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {finalStats.stamina}
-                    </span>
-                  </div>
+                  {/* Scroll hint gradient */}
+                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
               </div>
-            </div>
 
-            {/* Middle: Race */}
-            <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
-              <h3
-                className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                Vyber svou rasu
-              </h3>
-              <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
-                {races.map((r) => {
-                  const Icon = r.icon
-                  return (
-                    <button
-                      key={r.id}
-                      onClick={() => setRace(r.id)}
-                      className={`flex h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-[70px] sm:gap-1 sm:p-3 ${
-                        race === r.id
-                          ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                          : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
-                      }`}
-                    >
-                      <Icon
-                        className={`h-4 w-4 sm:h-5 sm:w-5 ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
-                      />
-                      <span
-                        className={`text-[10px] sm:text-xs ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
+              {/* Right: Class */}
+              <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
+                <h3
+                  className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
+                  style={{ fontFamily: 'var(--font-fantasy)' }}
+                >
+                  Vyber své povolání
+                </h3>
+                <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
+                  {classes.map((c) => {
+                    const Icon = c.icon
+                    return (
+                      <button
+                        key={c.id}
+                        onClick={() => setCharacterClass(c.id)}
+                        className={`flex min-h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-[70px] sm:gap-1 sm:p-3 ${
+                          characterClass === c.id
+                            ? 'scale-105 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
+                        }`}
                       >
-                        {r.name}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-              <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
-                <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
-                  {selectedRace.desc}
-                </p>
-
-                {/* Race Stats */}
-                <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
-                  <p
-                    className="mb-1.5 text-[10px] text-[#ffd700]"
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    Bonusy rasy:
-                  </p>
-                  <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[9px] sm:text-[10px]">
-                    <div className="flex items-center gap-1">
-                      <Heart className="h-2.5 w-2.5 text-[#ff6b6b]" />
-                      <span className="text-[#d4a574]">{selectedRace.stats.hp} HP</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Droplet className="h-2.5 w-2.5 text-[#69ccf0]" />
-                      <span className="text-[#d4a574]">{selectedRace.stats.mana} MP</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
-                      <span className="text-[#d4a574]">{selectedRace.stats.strength} Síla</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
-                      <span className="text-[#d4a574]">
-                        {selectedRace.stats.intelligence} Intel.
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
-                      <span className="text-[#d4a574]">{selectedRace.stats.agility} Obrat.</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
-                      <span className="text-[#d4a574]">{selectedRace.stats.stamina} Výdrž</span>
-                    </div>
-                  </div>
-                  <p className="mt-2 text-[9px] text-[#8b7355] italic sm:text-[10px]">
-                    {selectedRace.bonuses}
-                  </p>
+                        <Icon
+                          className={`h-4 w-4 sm:h-5 sm:w-5 ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                        />
+                        <span
+                          className={`text-[10px] sm:text-xs ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                          style={{ fontFamily: 'var(--font-fantasy)' }}
+                        >
+                          {c.name}
+                        </span>
+                      </button>
+                    )
+                  })}
                 </div>
-                {/* Scroll hint gradient */}
-                <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
-              </div>
-            </div>
+                <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
+                  <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
+                    {selectedClass.desc}
+                  </p>
 
-            {/* Right: Class */}
-            <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
-              <h3
-                className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                Vyber své povolání
-              </h3>
-              <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
-                {classes.map((c) => {
-                  const Icon = c.icon
-                  return (
-                    <button
-                      key={c.id}
-                      onClick={() => setCharacterClass(c.id)}
-                      className={`flex min-h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-[70px] sm:gap-1 sm:p-3 ${
-                        characterClass === c.id
-                          ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                          : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
+                  {/* Class Type Badge */}
+                  <div className="mb-2">
+                    <span
+                      className={`inline-block rounded border px-2 py-0.5 text-[9px] sm:text-[10px] ${
+                        ['mage', 'necromancer'].includes(selectedClass.id)
+                          ? 'border-[#c084fc] bg-[#c084fc]/20 text-[#c084fc]'
+                          : ['warrior', 'paladin'].includes(selectedClass.id)
+                            ? 'border-[#ff6b6b] bg-[#ff6b6b]/20 text-[#ff6b6b]'
+                            : 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700]'
                       }`}
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
                     >
-                      <Icon
-                        className={`h-4 w-4 sm:h-5 sm:w-5 ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
-                      />
-                      <span
-                        className={`text-[10px] sm:text-xs ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                      >
-                        {c.name}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-              <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
-                <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
-                  {selectedClass.desc}
-                </p>
-
-                {/* Class Type Badge */}
-                <div className="mb-2">
-                  <span
-                    className={`inline-block rounded border px-2 py-0.5 text-[9px] sm:text-[10px] ${
-                      ['mage', 'necromancer'].includes(selectedClass.id)
-                        ? 'border-[#c084fc] bg-[#c084fc]/20 text-[#c084fc]'
+                      {['mage', 'necromancer'].includes(selectedClass.id)
+                        ? 'Kouzlící'
                         : ['warrior', 'paladin'].includes(selectedClass.id)
-                          ? 'border-[#ff6b6b] bg-[#ff6b6b]/20 text-[#ff6b6b]'
-                          : 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700]'
-                    }`}
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    {['mage', 'necromancer'].includes(selectedClass.id)
-                      ? 'Kouzlící'
-                      : ['warrior', 'paladin'].includes(selectedClass.id)
-                        ? 'Tank'
-                        : 'Hybrid'}
-                  </span>
+                          ? 'Tank'
+                          : 'Hybrid'}
+                    </span>
+                  </div>
+
+                  {/* Class Stat Modifiers with bars */}
+                  <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
+                    <p
+                      className="mb-1 text-[10px] text-[#ffd700]"
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
+                    >
+                      Bonusy povolání:
+                    </p>
+
+                    {/* Strength */}
+                    {selectedClass.statMod.strength !== 0 && (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                          <div className="flex items-center gap-1">
+                            <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                            <span className="text-[#d4a574]">Síla</span>
+                          </div>
+                          <span
+                            className={
+                              selectedClass.statMod.strength > 0
+                                ? 'text-[#6fbf6f]'
+                                : 'text-[#ff6b6b]'
+                            }
+                          >
+                            {selectedClass.statMod.strength > 0 ? '+' : ''}
+                            {selectedClass.statMod.strength}
+                          </span>
+                        </div>
+                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                          <div
+                            className={`h-full ${selectedClass.statMod.strength > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                            style={{ width: `${Math.abs(selectedClass.statMod.strength) * 8}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Intelligence */}
+                    {selectedClass.statMod.intelligence !== 0 && (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                          <div className="flex items-center gap-1">
+                            <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
+                            <span className="text-[#d4a574]">Inteligence</span>
+                          </div>
+                          <span
+                            className={
+                              selectedClass.statMod.intelligence > 0
+                                ? 'text-[#6fbf6f]'
+                                : 'text-[#ff6b6b]'
+                            }
+                          >
+                            {selectedClass.statMod.intelligence > 0 ? '+' : ''}
+                            {selectedClass.statMod.intelligence}
+                          </span>
+                        </div>
+                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                          <div
+                            className={`h-full ${selectedClass.statMod.intelligence > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                            style={{
+                              width: `${Math.abs(selectedClass.statMod.intelligence) * 8}%`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Agility */}
+                    {selectedClass.statMod.agility !== 0 && (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                          <div className="flex items-center gap-1">
+                            <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
+                            <span className="text-[#d4a574]">Obratnost</span>
+                          </div>
+                          <span
+                            className={
+                              selectedClass.statMod.agility > 0
+                                ? 'text-[#6fbf6f]'
+                                : 'text-[#ff6b6b]'
+                            }
+                          >
+                            {selectedClass.statMod.agility > 0 ? '+' : ''}
+                            {selectedClass.statMod.agility}
+                          </span>
+                        </div>
+                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                          <div
+                            className={`h-full ${selectedClass.statMod.agility > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                            style={{ width: `${Math.abs(selectedClass.statMod.agility) * 8}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Stamina */}
+                    {selectedClass.statMod.stamina !== 0 && (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                          <div className="flex items-center gap-1">
+                            <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
+                            <span className="text-[#d4a574]">Výdrž</span>
+                          </div>
+                          <span
+                            className={
+                              selectedClass.statMod.stamina > 0
+                                ? 'text-[#6fbf6f]'
+                                : 'text-[#ff6b6b]'
+                            }
+                          >
+                            {selectedClass.statMod.stamina > 0 ? '+' : ''}
+                            {selectedClass.statMod.stamina}
+                          </span>
+                        </div>
+                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                          <div
+                            className={`h-full ${selectedClass.statMod.stamina > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                            style={{ width: `${Math.abs(selectedClass.statMod.stamina) * 8}%` }}
+                          ></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {/* Scroll hint gradient */}
+                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
                 </div>
-
-                {/* Class Stat Modifiers with bars */}
-                <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-                  <p
-                    className="mb-1 text-[10px] text-[#ffd700]"
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    Bonusy povolání:
-                  </p>
-
-                  {/* Strength */}
-                  {selectedClass.statMod.strength !== 0 && (
-                    <div className="space-y-0.5">
-                      <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                        <div className="flex items-center gap-1">
-                          <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
-                          <span className="text-[#d4a574]">Síla</span>
-                        </div>
-                        <span
-                          className={
-                            selectedClass.statMod.strength > 0 ? 'text-[#6fbf6f]' : 'text-[#ff6b6b]'
-                          }
-                        >
-                          {selectedClass.statMod.strength > 0 ? '+' : ''}
-                          {selectedClass.statMod.strength}
-                        </span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                        <div
-                          className={`h-full ${selectedClass.statMod.strength > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                          style={{ width: `${Math.abs(selectedClass.statMod.strength) * 8}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Intelligence */}
-                  {selectedClass.statMod.intelligence !== 0 && (
-                    <div className="space-y-0.5">
-                      <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                        <div className="flex items-center gap-1">
-                          <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
-                          <span className="text-[#d4a574]">Inteligence</span>
-                        </div>
-                        <span
-                          className={
-                            selectedClass.statMod.intelligence > 0
-                              ? 'text-[#6fbf6f]'
-                              : 'text-[#ff6b6b]'
-                          }
-                        >
-                          {selectedClass.statMod.intelligence > 0 ? '+' : ''}
-                          {selectedClass.statMod.intelligence}
-                        </span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                        <div
-                          className={`h-full ${selectedClass.statMod.intelligence > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                          style={{ width: `${Math.abs(selectedClass.statMod.intelligence) * 8}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Agility */}
-                  {selectedClass.statMod.agility !== 0 && (
-                    <div className="space-y-0.5">
-                      <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                        <div className="flex items-center gap-1">
-                          <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
-                          <span className="text-[#d4a574]">Obratnost</span>
-                        </div>
-                        <span
-                          className={
-                            selectedClass.statMod.agility > 0 ? 'text-[#6fbf6f]' : 'text-[#ff6b6b]'
-                          }
-                        >
-                          {selectedClass.statMod.agility > 0 ? '+' : ''}
-                          {selectedClass.statMod.agility}
-                        </span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                        <div
-                          className={`h-full ${selectedClass.statMod.agility > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                          style={{ width: `${Math.abs(selectedClass.statMod.agility) * 8}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Stamina */}
-                  {selectedClass.statMod.stamina !== 0 && (
-                    <div className="space-y-0.5">
-                      <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                        <div className="flex items-center gap-1">
-                          <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
-                          <span className="text-[#d4a574]">Výdrž</span>
-                        </div>
-                        <span
-                          className={
-                            selectedClass.statMod.stamina > 0 ? 'text-[#6fbf6f]' : 'text-[#ff6b6b]'
-                          }
-                        >
-                          {selectedClass.statMod.stamina > 0 ? '+' : ''}
-                          {selectedClass.statMod.stamina}
-                        </span>
-                      </div>
-                      <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                        <div
-                          className={`h-full ${selectedClass.statMod.stamina > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                          style={{ width: `${Math.abs(selectedClass.statMod.stamina) * 8}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-                {/* Scroll hint gradient */}
-                <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
               </div>
             </div>
-          </div>
 
-          {/* Start Button */}
-          <button
-            onClick={handleStart}
-            disabled={!name.trim()}
-            className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 py-3 shadow-2xl transition-all sm:gap-3 sm:py-4 ${
-              name.trim()
-                ? 'cursor-pointer border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d]'
-                : 'cursor-not-allowed border-[#8b6f47] bg-black/60 opacity-50'
-            }`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            <span className="text-base text-white sm:text-xl">Vstoupit do hry</span>
-            <ArrowRight className="h-5 w-5 text-white sm:h-6 sm:w-6" />
-          </button>
+            {/* Start Button */}
+            <button
+              onClick={handleStart}
+              disabled={!name.trim()}
+              className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 py-3 shadow-2xl transition-all sm:gap-3 sm:py-4 ${
+                name.trim()
+                  ? 'cursor-pointer border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d]'
+                  : 'cursor-not-allowed border-[#8b6f47] bg-black/60 opacity-50'
+              }`}
+              style={{ fontFamily: 'var(--font-fantasy)' }}
+            >
+              <span className="text-base text-white sm:text-xl">Vstoupit do hry</span>
+              <ArrowRight className="h-5 w-5 text-white sm:h-6 sm:w-6" />
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </RouteTransition>
   )
 }

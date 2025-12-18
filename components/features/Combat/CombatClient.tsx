@@ -5,6 +5,7 @@ import { HelpPanel } from '@/components/features/Panels/HelpPanel'
 import { SettingsPanel } from '@/components/features/Panels/SettingsPanel'
 import { PageTemplate } from '@/components/layout'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowLeft,
   ChevronRight,
@@ -319,21 +320,27 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
 
           {/* Middle: Combat Log */}
           <div className="relative h-[120px] shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
-            {floatingDamage.map((dmg) => (
-              <div
-                key={dmg.id}
-                className="floating-damage pointer-events-none absolute z-50 text-2xl font-bold"
-                style={{
-                  left: dmg.isPlayer ? '25%' : '75%',
-                  top: '50%',
-                  color: dmg.text ? '#ffd700' : '#ff6b6b',
-                  textShadow: '0 0 10px rgba(0,0,0,0.8)',
-                  fontFamily: 'var(--font-fantasy)',
-                }}
-              >
-                {dmg.text || `-${dmg.damage}`}
-              </div>
-            ))}
+            <AnimatePresence>
+              {floatingDamage.map((dmg) => (
+                <motion.div
+                  key={dmg.id}
+                  initial={{ y: 0, opacity: 1 }}
+                  animate={{ y: -50, opacity: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 1.5, ease: 'easeOut' }}
+                  className="pointer-events-none absolute z-50 text-2xl font-bold will-change-transform"
+                  style={{
+                    left: dmg.isPlayer ? '25%' : '75%',
+                    top: '50%',
+                    color: dmg.text ? '#ffd700' : '#ff6b6b',
+                    textShadow: '0 0 10px rgba(0,0,0,0.8)',
+                    fontFamily: 'var(--font-fantasy)',
+                  }}
+                >
+                  {dmg.text || `-${dmg.damage}`}
+                </motion.div>
+              ))}
+            </AnimatePresence>
             <div className="scrollbar-custom h-full space-y-1.5 overflow-y-auto p-3">
               {combatLog.map((log, idx) => {
                 const colors = {

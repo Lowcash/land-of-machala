@@ -23,12 +23,12 @@ export function CharacterBox({
       className={`group relative border-2 bg-black/90 backdrop-blur-md ${isEnemy ? 'border-red-900/80' : 'border-[#d4a574]'} overflow-hidden rounded-lg shadow-2xl transition-all duration-300 select-none hover:shadow-[0_0_30px_rgba(212,165,116,0.3)]`}
     >
       {/* Background Gradient */}
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-white/5 via-transparent to-black/20" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/5 via-transparent to-black/20" />
 
       <div className="relative z-10 flex h-20 items-stretch">
         {/* Avatar Section */}
         <div
-          className={`relative w-20 shrink-0 border-r-2 ${isEnemy ? 'border-red-900/80' : 'border-[#8b6f47]'} bg-linear-to-br ${isEnemy ? 'from-red-950/50 to-black/60' : 'from-[#1a1410]/80 to-black/60'} flex items-center justify-center`}
+          className={`relative w-20 shrink-0 border-r-2 ${isEnemy ? 'border-red-900/80' : 'border-[#8b6f47]'} bg-gradient-to-br ${isEnemy ? 'from-red-950/50 to-black/60' : 'from-[#1a1410]/80 to-black/60'} flex items-center justify-center`}
         >
           {image ? (
             <img
@@ -44,7 +44,7 @@ export function CharacterBox({
 
           {/* Level Badge - Modern corner style */}
           <div
-            className={`absolute top-0 left-0 ${isEnemy ? 'bg-red-900/90' : 'bg-linear-to-br from-[#d4a574] to-[#8b6f47]'} rounded-br border-r border-b px-1.5 py-0.5 text-[10px] text-white ${isEnemy ? 'border-red-700' : 'border-[#ffd700]/50'} shadow-lg`}
+            className={`absolute top-0 left-0 ${isEnemy ? 'bg-red-900/90' : 'bg-gradient-to-br from-[#d4a574] to-[#8b6f47]'} rounded-br border-r border-b px-1.5 py-0.5 text-[10px] text-white ${isEnemy ? 'border-red-700' : 'border-[#ffd700]/50'} shadow-lg`}
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             LVL {level}
@@ -82,7 +82,7 @@ export function CharacterBox({
                 className="absolute inset-0 bg-gradient-to-r from-red-900 to-red-600 transition-all duration-300"
                 style={{ width: `${Math.max(0, Math.min(100, (hp / hpMax) * 100))}%` }}
               />
-              <div className="absolute inset-0 bg-linear-to-t from-white/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center gap-1">
                 <span
                   className="z-10 font-mono text-[9px] text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
@@ -101,7 +101,7 @@ export function CharacterBox({
                 className={`absolute inset-0 bg-gradient-to-r ${resourceColor} transition-all duration-300`}
                 style={{ width: `${Math.max(0, Math.min(100, (mana / manaMax) * 100))}%` }}
               />
-              <div className="absolute inset-0 bg-linear-to-t from-white/10 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-white/10 to-transparent" />
               <div className="absolute inset-0 flex items-center justify-center gap-1">
                 <span
                   className="z-10 font-mono text-[9px] text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]"
