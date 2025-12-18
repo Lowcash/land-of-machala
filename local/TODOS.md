@@ -6,6 +6,14 @@
 
 ## 🔴 HIGH PRIORITY
 
+- [ ] **Verify Character UI Parity**
+  - **Goal:** Ensure the new `CharacterClient.tsx` visually matches the design project.
+  - **Owner:** Agent
+  - **Priority:** HIGH (IMMEDIATE)
+  - **Scope:** Character Page
+  - **How to test:** Run Playwright tests or manual verification.
+  - **Success criteria:** Vertical layout, correct stats, equipment grid, responsive design.
+
 - [ ] **Manual E2E testing in browser**
   - **Goal:** Test complete user flow: register → login → onboarding → play game
   - **Owner:** Agent

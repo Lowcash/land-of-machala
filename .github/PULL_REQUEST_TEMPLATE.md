@@ -19,6 +19,7 @@
 - [ ] [Another change]
 
 **Example:**
+
 - Added `app/(auth)/login/page.tsx` with login form
 - Added `src/app/actions/auth.ts` Server Action for authentication
 - Added `tests/components/LoginForm.test.tsx` with form tests
@@ -29,12 +30,14 @@
 ## ✅ Quality Checklist
 
 ### Tests
+
 - [ ] All tests pass: `npm test`
 - [ ] New tests added for this feature
 - [ ] Coverage: >70% for touched files
 - [ ] No test skips in production code
 
 ### Code Quality
+
 - [ ] Type check passes: `npm run type-check`
 - [ ] Linting passes: `npm run lint`
 - [ ] Code formatted: `npm run format`
@@ -42,18 +45,21 @@
 - [ ] No `any` types
 
 ### Documentation
+
 - [ ] CHANGELOG.md updated (timestamp, type, scope, impact)
 - [ ] local/TODOS.md updated (completed task removed)
 - [ ] Components have JSDoc comments
 - [ ] Complex logic has explanatory comments
 
 ### Functionality
+
 - [ ] Dev server works: `npm run dev`
 - [ ] Feature works in browser (manual test)
 - [ ] Mobile responsive (if UI change)
 - [ ] No console errors/warnings
 
 ### Review
+
 - [ ] Changes are focused (single responsibility)
 - [ ] No unrelated refactoring mixed in
 - [ ] Commit messages are clear
@@ -104,6 +110,7 @@ Coverage: 75% (23/30 lines)
 - [ ] Breaking changes (describe migration path below)
 
 **If breaking:**
+
 ```
 What changed:
 - [Old API/behavior]
