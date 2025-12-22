@@ -12,7 +12,7 @@ import {
   updateQuestObjectiveProgress,
 } from '@/entity/quest'
 import { auth } from '@/lib/auth'
-import { QuestStatus } from '@prisma/client'
+import type { QuestStatus } from '@prisma/client'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
 

@@ -2,7 +2,8 @@
 
 import { ArrowLeft, Book, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { ReactNode, useEffect, useRef, useState, isValidElement } from 'react'
+import type { ReactNode} from 'react';
+import { useEffect, useRef, useState, isValidElement } from 'react'
 
 interface GameHeaderProps {
   /** Icon to display */

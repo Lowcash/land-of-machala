@@ -8,7 +8,6 @@ export default function CharacterPage() {
     <PageTemplate
       title="Postava"
       icon={<User />}
-      backgroundImage="/assets/locations/city-background.jpg"
     >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <CharacterPanel />

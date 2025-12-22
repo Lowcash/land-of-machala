@@ -1,7 +1,8 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { ReactNode, useRef } from 'react'
+import type { ReactNode} from 'react';
+import { useRef } from 'react'
 
 interface PanelProps {
   title: string

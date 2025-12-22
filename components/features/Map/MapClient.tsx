@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { LocationDetails } from './LocationDetails'
 import { MapCanvas } from './MapCanvas'
-import { MapLegend } from './MapLegend'
 import type { Location } from './types'
 
 const PLAYER_POSITION = { x: 100, y: 100 } // Starting Town position
@@ -14,23 +13,9 @@ interface MapClientProps {
 
 export function MapClient({ locations }: MapClientProps) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
-  const [filters, setFilters] = useState({
-    showTowns: true,
-    showDungeons: true,
-    showWilderness: true,
-    showLandmarks: true,
-  })
-
-  const filteredLocations = locations.filter((loc) => {
-    if (loc.type === 'TOWN' && !filters.showTowns) return false
-    if (loc.type === 'DUNGEON' && !filters.showDungeons) return false
-    if (loc.type === 'WILDERNESS' && !filters.showWilderness) return false
-    if (loc.type === 'LANDMARK' && !filters.showLandmarks) return false
-    return true
-  })
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
+    <div className="flex w-full flex-1 flex-col overflow-hidden md:flex-row">
       {/* Map Canvas */}
       <div
         className={`${
@@ -38,7 +23,7 @@ export function MapClient({ locations }: MapClientProps) {
         } relative min-h-[300px] flex-1 overflow-hidden bg-gradient-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510] md:min-h-0`}
       >
         <MapCanvas
-          locations={filteredLocations}
+          locations={locations}
           playerPosition={PLAYER_POSITION}
           selectedLocation={selectedLocation}
           onSelectLocation={setSelectedLocation}
@@ -72,8 +57,6 @@ export function MapClient({ locations }: MapClientProps) {
             </div>
           </div>
         )}
-
-        <MapLegend filters={filters} onFiltersChange={setFilters} />
       </div>
     </div>
   )

@@ -12,9 +12,6 @@ type QuestClientProps = {
 }
 
 export function QuestClient({ quests, characterId }: QuestClientProps) {
-  const [selectedCategory, setSelectedCategory] = useState<
-    'all' | 'MAIN' | 'SIDE' | 'DAILY' | 'EVENT'
-  >('all')
   const [selectedQuest, setSelectedQuest] = useState<string | null>(null)
 
   const selectedQuestData = quests.find((q) => q.id === selectedQuest)
@@ -24,8 +21,6 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
       <div className="flex w-full flex-1 overflow-hidden">
         <QuestList
           quests={quests}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
           selectedQuest={selectedQuest}
           setSelectedQuest={setSelectedQuest}
         />

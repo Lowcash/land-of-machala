@@ -12,7 +12,7 @@ import {
 import { addExperience, getCharacter, updateCharacterResources } from '@/entity/character'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import { AchievementCategory } from '@prisma/client'
+import type { AchievementCategory } from '@prisma/client'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
 

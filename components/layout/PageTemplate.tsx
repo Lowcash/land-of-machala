@@ -3,7 +3,7 @@
 import { GameFooter } from '@/components/features/Game/GameFooter'
 import { GameHeader } from '@/components/features/Game/GameHeader'
 import { RouteTransition } from '@/components/layout/RouteTransition'
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface PageTemplateProps {
   /** Page title */

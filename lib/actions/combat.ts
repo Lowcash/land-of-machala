@@ -115,7 +115,7 @@ export const performCombatActionAction = createServerAction()
     let enemyDamage = 0
     let playerCrit = false
     let enemyCrit = false
-    let combatLog: string[] = []
+    const combatLog: string[] = []
 
     // Handle player action
     switch (input.action) {

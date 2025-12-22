@@ -6,6 +6,59 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-22 18:42 - UI Simplification & Design Consistency
+
+**Type:** Changed  
+**Scope:** Character, Skills, Quests, Inventory, Map pages  
+**Impact:** ✅ Simplified UI, removed backgrounds, consistent design, better UX
+
+### Changed
+
+- **Removed Background Images:** All game pages (character, skills, quests, inventory, map) now use black background instead of image backgrounds
+  - Better performance
+  - Consistent visual style
+  - Less distraction
+
+- **Skills Page:** Fixed skills to be clickable regardless of unlock status
+  - Removed cursor-not-allowed for locked skills
+  - All skills now respond to clicks
+
+- **Quest Page:** Removed filter buttons, all quests now displayed by default
+  - Simplified interface
+  - Removed category filtering (all, MAIN, SIDE, DAILY)
+  - Better UX for quest browsing
+
+- **Quest Detail:** Added scroll indicators (arrows) to quest detail panel
+  - ScrollIndicator component with position="both"
+  - Better visual feedback for scrollable content
+
+- **Inventory:** Major simplification
+  - Removed search bar
+  - Removed type filters (weapon, armor, consumable, material, quest)
+  - Removed rarity filters and sorting options
+  - Removed location display (X, Y, Z coordinates)
+  - Kept only gold display and grid/list view toggle
+  - Cleaner, more focused interface
+
+- **Map:** Simplified location details
+  - Removed "Cestovat sem" (Travel here) button
+  - Added scroll indicators to detail panel
+  - Removed MapLegend filters
+  - Location details now scroll smoothly with visual indicators
+
+- **Map Panel:** Removed duplicate header (already in PageTemplate)
+  - Consistent with other game pages
+
+### Fixed
+
+- **Hydration Error:** Fixed Math.random() in MarketActions causing SSR/Client mismatch
+  - Moved isNight initialization to useEffect
+  - Prevents hydration errors on initial render
+
+### Technical Details
+
+```
+
 ## 2025-12-18 21:48 - Black Overlay Fix & SSR Hydration Errors
 
 **Type:** Fixed  
