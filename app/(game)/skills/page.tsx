@@ -10,7 +10,6 @@ export default function SkillsPage() {
     <PageTemplate
       title="Dovednosti"
       icon={<Zap />}
-      backgroundImage="/assets/locations/city-background.jpg"
     >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <SkillsPanel />

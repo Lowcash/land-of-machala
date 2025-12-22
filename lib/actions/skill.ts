@@ -11,7 +11,7 @@ import {
   unlockSkill,
 } from '@/entity/skill'
 import { auth } from '@/lib/auth'
-import { SkillTree } from '@prisma/client'
+import type { SkillTree } from '@prisma/client'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
 

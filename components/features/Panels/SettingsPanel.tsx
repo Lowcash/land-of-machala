@@ -2,7 +2,8 @@
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { X } from 'lucide-react'
-import { Dispatch, SetStateAction, useRef } from 'react'
+import type { Dispatch, SetStateAction} from 'react';
+import { useRef } from 'react'
 
 interface SettingsPanelProps {
   onClose: () => void

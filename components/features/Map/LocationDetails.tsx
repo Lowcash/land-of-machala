@@ -1,7 +1,8 @@
 'use client'
 
 import { ArrowLeft, Lock } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRef } from 'react'
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 import type { Location } from './types'
 
 interface LocationDetailsProps {
@@ -31,7 +32,7 @@ const REWARD_LEVELS = {
 }
 
 export function LocationDetails({ location, onClose }: LocationDetailsProps) {
-  const router = useRouter()
+  const scrollRef = useRef<HTMLDivElement>(null)
   const isUnlocked = location.level <= 5 // Simple unlock logic
 
   const typeColor =
@@ -43,16 +44,10 @@ export function LocationDetails({ location, onClose }: LocationDetailsProps) {
           ? 'bg-[#6fbf6f]/20 text-[#6fbf6f]'
           : 'bg-[#b66bd4]/20 text-[#b66bd4]'
 
-  const handleTravel = () => {
-    if (location.type === 'TOWN') {
-      router.push('/game')
-    } else {
-      router.push('/combat')
-    }
-  }
-
   return (
-    <div className="space-y-4">
+    <div className="relative flex h-full flex-col overflow-hidden">
+      <ScrollIndicator targetRef={scrollRef} position="both" />
+      <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-4 overflow-y-auto p-4">
       {/* Back button (mobile only) */}
       <button
         onClick={onClose}
@@ -127,14 +122,6 @@ export function LocationDetails({ location, onClose }: LocationDetailsProps) {
               </div>
             </div>
           </div>
-
-          <button
-            onClick={handleTravel}
-            className="w-full rounded border border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] py-3 text-white shadow-lg transition-all hover:from-[#a8865d] hover:to-[#a8865d]"
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            Cestovat sem
-          </button>
         </>
       ) : (
         <div className="rounded border border-[#ff6b6b] bg-black/60 p-4 text-center">
@@ -143,6 +130,7 @@ export function LocationDetails({ location, onClose }: LocationDetailsProps) {
           <p className="text-xs text-[#8b7355]">Dosáhni level {location.level} pro odemknutí</p>
         </div>
       )}
+      </div>
     </div>
   )
 }

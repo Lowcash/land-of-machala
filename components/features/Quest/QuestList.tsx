@@ -7,8 +7,6 @@ import type { MergedQuest, QuestCategory, QuestStatus } from './types'
 
 type QuestListProps = {
   quests: MergedQuest[]
-  selectedCategory: 'all' | 'MAIN' | 'SIDE' | 'DAILY' | 'EVENT'
-  setSelectedCategory: (cat: 'all' | 'MAIN' | 'SIDE' | 'DAILY' | 'EVENT') => void
   selectedQuest: string | null
   setSelectedQuest: (id: string | null) => void
 }
@@ -67,78 +65,17 @@ function getStatusIcon(status: QuestStatus | null) {
 
 export function QuestList({
   quests,
-  selectedCategory,
-  setSelectedCategory,
   selectedQuest,
   setSelectedQuest,
 }: QuestListProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
-  const filteredQuests =
-    selectedCategory === 'all' ? quests : quests.filter((q) => q.category === selectedCategory)
-
-  const questCounts = {
-    all: quests.length,
-    MAIN: quests.filter((q) => q.category === 'MAIN').length,
-    SIDE: quests.filter((q) => q.category === 'SIDE').length,
-    DAILY: quests.filter((q) => q.category === 'DAILY').length,
-  }
+  const filteredQuests = quests
 
   return (
     <div
       className={`${selectedQuest ? 'hidden md:flex' : 'flex'} w-full flex-col border-r border-[#8b6f47] bg-black/70 backdrop-blur-sm md:w-80 lg:w-96`}
     >
-      {/* Category filters */}
-      <div className="border-b border-[#8b6f47] p-2 sm:p-3">
-        <div className="flex flex-wrap gap-1 sm:gap-2">
-          <button
-            onClick={() => setSelectedCategory('all')}
-            className={`rounded border px-2 py-1 text-[10px] transition-colors sm:px-3 sm:py-1.5 sm:text-xs ${
-              selectedCategory === 'all'
-                ? 'border-[#ffd700] bg-[#8b6f47] text-white'
-                : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
-            }`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            <span className="hidden sm:inline">Všechny ({questCounts.all})</span>
-            <span className="sm:hidden">Vše</span>
-          </button>
-          <button
-            onClick={() => setSelectedCategory('MAIN')}
-            className={`rounded border px-2 py-1 text-[10px] transition-colors sm:px-3 sm:py-1.5 sm:text-xs ${
-              selectedCategory === 'MAIN'
-                ? 'border-[#ffd700] bg-[#8b6f47] text-white'
-                : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
-            }`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            Hlavní
-          </button>
-          <button
-            onClick={() => setSelectedCategory('SIDE')}
-            className={`rounded border px-2 py-1 text-[10px] transition-colors sm:px-3 sm:py-1.5 sm:text-xs ${
-              selectedCategory === 'SIDE'
-                ? 'border-[#ffd700] bg-[#8b6f47] text-white'
-                : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
-            }`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            Vedlejší
-          </button>
-          <button
-            onClick={() => setSelectedCategory('DAILY')}
-            className={`rounded border px-2 py-1 text-[10px] transition-colors sm:px-3 sm:py-1.5 sm:text-xs ${
-              selectedCategory === 'DAILY'
-                ? 'border-[#ffd700] bg-[#8b6f47] text-white'
-                : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
-            }`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            Denní
-          </button>
-        </div>
-      </div>
-
       {/* Quest list */}
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <ScrollIndicator targetRef={scrollRef} />

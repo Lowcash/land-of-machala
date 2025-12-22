@@ -70,13 +70,17 @@ export function MarketActions({
   const [mode, setMode] = useState<'default' | 'buy' | 'sell' | 'blackmarket'>('default')
   const [stock, setStock] = useState<Item[]>([])
   const [blackMarketStock, setBlackMarketStock] = useState<Item[]>([])
-  const [isNight] = useState(() => Math.random() > 0.5)
+  const [isNight, setIsNight] = useState(false)
   const [bribed, setBribed] = useState(false)
   const [message, setMessage] = useState('')
 
   // Track haggling per item ID
   const [haggledItems, setHaggledItems] = useState<Record<number, HaggleState>>({})
 
+  // Set isNight only on client side to avoid hydration error
+  useEffect(() => {
+    setIsNight(Math.random() > 0.5)
+  }, [])
   const showMessage = (msg: string) => {
     setMessage(msg)
     setTimeout(() => setMessage(''), 3000)

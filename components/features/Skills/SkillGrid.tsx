@@ -97,13 +97,13 @@ export function SkillGrid({
                 return (
                   <button
                     key={skill.id}
-                    onClick={() => (skill.unlocked ? setSelectedSkill(skill.id) : null)}
+                    onClick={() => setSelectedSkill(skill.id)}
                     className={`rounded border-2 p-3 text-left transition-all ${
-                      selectedSkill === skill.id && skill.unlocked
+                      selectedSkill === skill.id
                         ? `${getCategoryBg(skill.category)} scale-105`
                         : skill.unlocked
                           ? 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
-                          : 'cursor-not-allowed border-[#8b6f47]/30 bg-black/20 opacity-50'
+                          : 'border-[#8b6f47]/30 bg-black/20 opacity-50'
                     }`}
                   >
                     <div className="mb-2 flex items-start gap-2">

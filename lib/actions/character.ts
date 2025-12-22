@@ -12,7 +12,7 @@ import {
   updateCharacterStats,
 } from '@/entity/character'
 import { auth } from '@/lib/auth'
-import { CharacterClass, CharacterRace } from '@prisma/client'
+import type { CharacterClass, CharacterRace } from '@prisma/client'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
 

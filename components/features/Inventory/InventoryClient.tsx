@@ -16,8 +16,6 @@ import {
   Grid3x3,
   Heart,
   List,
-  MapPin,
-  Search,
   Shield,
   Sparkles,
   Sword,
@@ -25,7 +23,7 @@ import {
 } from 'lucide-react'
 import { useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
-import type { InventoryItemUI, ItemRarity, ItemType } from './types'
+import type { InventoryItemUI, ItemRarity } from './types'
 
 const ICON_MAP: Record<string, any> = {
   sword: Sword,
@@ -47,16 +45,9 @@ type InventoryClientProps = {
 
 export function InventoryClient({ initialInventory, gold }: InventoryClientProps) {
   const itemsScrollRef = useRef<HTMLDivElement>(null)
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedType, setSelectedType] = useState<ItemType | 'all'>('all')
-  const [selectedRarity, setSelectedRarity] = useState<ItemRarity | 'all'>('all')
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
-  const [sortBy, setSortBy] = useState<'name' | 'type' | 'rarity' | 'value'>('type')
   const [isPending, startTransition] = useTransition()
-
-  // Mock location for now
-  const [location] = useState({ x: 12, y: 8, z: 1 })
 
   const handleEquip = async (id: string) => {
     startTransition(async () => {
@@ -162,19 +153,6 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
   }
 
   const filteredInventory = initialInventory
-    .filter((item) => selectedType === 'all' || item.type === selectedType)
-    .filter((item) => selectedRarity === 'all' || item.rarity === selectedRarity)
-    .filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()))
-    .sort((a, b) => {
-      if (sortBy === 'name') return a.name.localeCompare(b.name)
-      if (sortBy === 'type') return a.type.localeCompare(b.type)
-      if (sortBy === 'rarity') {
-        const rarityOrder = { common: 0, uncommon: 1, rare: 2, epic: 3, legendary: 4 }
-        return rarityOrder[b.rarity as ItemRarity] - rarityOrder[a.rarity as ItemRarity]
-      }
-      if (sortBy === 'value') return (b.value || 0) - (a.value || 0)
-      return 0
-    })
 
   const selectedItemData = initialInventory.find((i) => i.id === selectedItem)
 
@@ -182,114 +160,30 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
     <div className="flex w-full flex-1 overflow-hidden">
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-hidden">
-        {/* Filters */}
+        {/* Gold display */}
         <div className="border-b border-[#8b6f47] bg-black/70 p-3 backdrop-blur-sm">
-          <div className="mx-auto max-w-5xl">
-            {/* Info Bar (Gold & Location) */}
-            <div className="mb-3 flex items-center justify-between rounded border border-[#8b6f47] bg-black/40 px-3 py-2">
-              <div className="flex items-center gap-2">
-                <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#ffd700] bg-[#ffd700]/20">
-                  <Coins className="h-3.5 w-3.5 text-[#ffd700]" />
-                </div>
-                <span
-                  className="font-bold text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {gold}g
-                </span>
+          <div className="mx-auto flex max-w-5xl items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded-full border border-[#ffd700] bg-[#ffd700]/20">
+                <Coins className="h-3.5 w-3.5 text-[#ffd700]" />
               </div>
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-[#8b7355]">Lokace:</span>
-                <div
-                  className="flex items-center gap-1 text-[#d4a574]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  <span>X: {location.x}</span>
-                  <span className="text-[#8b6f47]">•</span>
-                  <span>Y: {location.y}</span>
-                  <span className="text-[#8b6f47]">•</span>
-                  <span>Z: {location.z}</span>
-                </div>
-                <MapPin className="h-4 w-4 text-[#8b6f47]" />
-              </div>
-            </div>
-
-            {/* Search and view controls */}
-            <div className="mb-3 flex gap-2">
-              <div className="relative flex-1">
-                <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Hledat předměty..."
-                  className="w-full rounded border border-[#8b6f47] bg-black/60 py-2 pr-3 pl-10 text-sm text-[#f5e6d3] focus:border-[#ffd700] focus:outline-none"
-                />
-              </div>
-              <button
-                onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-                className="rounded border border-[#8b6f47] bg-black/60 px-3 py-2 transition-colors hover:border-[#ffd700]"
+              <span
+                className="font-bold text-[#ffd700]"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
               >
-                {viewMode === 'grid' ? (
-                  <List className="h-4 w-4 text-[#d4a574]" />
-                ) : (
-                  <Grid3x3 className="h-4 w-4 text-[#d4a574]" />
-                )}
-              </button>
+                {gold}g
+              </span>
             </div>
-
-            {/* Type filters */}
-            <div className="mb-2 flex flex-wrap gap-2">
-              {['all', 'weapon', 'armor', 'consumable', 'material', 'quest'].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedType(type as any)}
-                  className={`rounded border px-3 py-1 text-xs transition-colors ${
-                    selectedType === type
-                      ? 'border-[#ffd700] bg-[#8b6f47] text-white'
-                      : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
-                  }`}
-                >
-                  {type === 'all'
-                    ? 'Vše'
-                    : type === 'weapon'
-                      ? 'Zbraně'
-                      : type === 'armor'
-                        ? 'Zbroj'
-                        : type === 'consumable'
-                          ? 'Spotřební'
-                          : type === 'material'
-                            ? 'Materiály'
-                            : 'Quest'}
-                </button>
-              ))}
-            </div>
-
-            {/* Rarity and sort */}
-            <div className="flex flex-wrap gap-2">
-              <select
-                value={selectedRarity}
-                onChange={(e) => setSelectedRarity(e.target.value as any)}
-                className="rounded border border-[#8b6f47] bg-black/60 px-3 py-1 text-xs text-[#d4a574] focus:border-[#ffd700] focus:outline-none"
-              >
-                <option value="all">Všechny kvality</option>
-                <option value="common">Běžné</option>
-                <option value="uncommon">Neobvyklé</option>
-                <option value="rare">Vzácné</option>
-                <option value="epic">Epické</option>
-                <option value="legendary">Legendární</option>
-              </select>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value as any)}
-                className="rounded border border-[#8b6f47] bg-black/60 px-3 py-1 text-xs text-[#d4a574] focus:border-[#ffd700] focus:outline-none"
-              >
-                <option value="type">Seřadit podle typu</option>
-                <option value="name">Seřadit podle jména</option>
-                <option value="rarity">Seřadit podle kvality</option>
-                <option value="value">Seřadit podle hodnoty</option>
-              </select>
-            </div>
+            <button
+              onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+              className="rounded border border-[#8b6f47] bg-black/60 px-3 py-2 transition-colors hover:border-[#ffd700]"
+            >
+              {viewMode === 'grid' ? (
+                <List className="h-4 w-4 text-[#d4a574]" />
+              ) : (
+                <Grid3x3 className="h-4 w-4 text-[#d4a574]" />
+              )}
+            </button>
           </div>
         </div>
 

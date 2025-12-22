@@ -1,4 +1,6 @@
 import { CheckCircle, Circle, Coins, MapPin, User, Zap } from 'lucide-react'
+import { useRef } from 'react'
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 import { QuestStartButton } from './QuestStartButton'
 import type { MergedQuest, QuestCategory } from './types'
 
@@ -47,9 +49,13 @@ function getCategoryName(category: QuestCategory) {
 }
 
 export function QuestDetailContent({ quest, characterId }: QuestDetailContentProps) {
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   return (
-    <div className="scrollbar-custom flex-1 overflow-y-auto p-4">
-      <div className="mx-auto max-w-2xl">
+    <div className="relative flex flex-1 flex-col overflow-hidden">
+      <ScrollIndicator targetRef={scrollRef} position="both" />
+      <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
+        <div className="mx-auto max-w-2xl">
         {/* Quest header */}
         <div className="mb-4">
           <div className="mb-2 flex items-center gap-2">
@@ -193,6 +199,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
         {/* Action button */}
         <QuestStartButton quest={quest} characterId={characterId} />
       </div>
+    </div>
     </div>
   )
 }

@@ -6,6 +6,16 @@
 
 ## 🔴 HIGH PRIORITY
 
+- [x] **UI Simplification & Design Consistency** ✅ DONE (2025-12-22 18:42)
+  - Removed background images from all game pages (character, skills, quests, inventory, map)
+  - Fixed skills page - all skills now clickable
+  - Removed quest filters - show all quests by default
+  - Added scroll arrows to quest detail
+  - Simplified inventory - removed filters, search, location display
+  - Simplified map - removed travel button, added scroll arrows
+  - Fixed hydration error in MarketActions (Math.random)
+  - Ensured consistent design across all pages
+
 - [x] **Fix SSR hydration errors** ✅ DONE (2025-12-18 21:30)
   - Added `export const dynamic = 'force-dynamic'` to Skills, Quests, Map pages
   - All routes now build successfully
@@ -123,4 +133,4 @@
 
 ---
 
-**Last updated:** 2025-12-18 20:23
+**Last updated:** 2025-12-22 18:42
