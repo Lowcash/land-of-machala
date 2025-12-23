@@ -1,5 +1,6 @@
 import { GameBackgroundWrapper } from '@/components/layout/GameBackgroundWrapper'
 import { AchievementProvider } from '@/components/providers/AchievementProvider'
+import { NotificationProvider } from '@/components/providers/NotificationProvider'
 import { Toaster } from '@/components/ui/toaster'
 import type { Metadata } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
@@ -41,10 +42,12 @@ export default function RootLayout({
       className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}
     >
       <body className="font-body text-game-fg bg-black antialiased">
-        <AchievementProvider>
-          <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
-          <Toaster />
-        </AchievementProvider>
+        <NotificationProvider>
+          <AchievementProvider>
+            <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
+            <Toaster />
+          </AchievementProvider>
+        </NotificationProvider>
       </body>
     </html>
   )

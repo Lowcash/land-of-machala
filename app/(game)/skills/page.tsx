@@ -7,10 +7,7 @@ export const dynamic = 'force-dynamic'
 
 export default function SkillsPage() {
   return (
-    <PageTemplate
-      title="Dovednosti"
-      icon={<Zap />}
-    >
+    <PageTemplate title="Dovednosti" icon={<Zap />} backUrl="/game">
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <SkillsPanel />
       </Suspense>

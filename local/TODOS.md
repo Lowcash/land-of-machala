@@ -6,32 +6,63 @@
 
 ## 🔴 HIGH PRIORITY
 
-- [x] **UI Simplification & Design Consistency** ✅ DONE (2025-12-22 18:42)
-  - Removed background images from all game pages (character, skills, quests, inventory, map)
-  - Fixed skills page - all skills now clickable
-  - Removed quest filters - show all quests by default
-  - Added scroll arrows to quest detail
-  - Simplified inventory - removed filters, search, location display
-  - Simplified map - removed travel button, added scroll arrows
-  - Fixed hydration error in MarketActions (Math.random)
-  - Ensured consistent design across all pages
+- [x] **UI/UX Standardization (Phases 1 & 2) - COMPLETE**
+  - **Goal:** Complete comprehensive UI/UX refactoring for mobile-first, consistent components, and accessibility
+  - **Owner:** Agent
+  - **Priority:** HIGH (COMPLETED 2025-12-23 20:56)
+  - **Phase 1 Complete (2025-12-23 20:44):**
+    - ✅ NotificationProvider with semantic variants
+    - ✅ Button loading state and mobile touch targets
+    - ✅ useDetailViewHistory hook
+    - ✅ Combat SSR state backend preparation
+    - ✅ Development data reset script
+    - ✅ Replaced all window.alert() with notifications (LoginForm, OnboardingForm)
+  - **Phase 2 Complete (2025-12-23 20:56):**
+    - ✅ Character page responsive design (mobile-first grids, touch targets, spacing)
+    - ✅ Skills page mobile-first improvements (touch targets, padding, notification)
+    - ✅ Standardized page padding & scroll indicators (removed duplicate, consistent patterns)
+    - ✅ Onboarding UX already optimized (from previous session)
+  - **Remaining Tasks (Future Sessions):**
+    - [ ] Apply useDetailViewHistory to remaining pages (Quests, Inventory, Map)
+    - [ ] Town location unification (merge Blacksmith + Armory → "Zbrojíř", simplify Bank, refactor Tavern)
+    - [ ] Fix settings panel wiring (connect SettingsPanel to GameHeader)
+    - [ ] ARIA labels and keyboard navigation
+    - [ ] Storybook setup (local only)
+    - [ ] Write E2E tests for mobile layouts, notifications, navigation, a11y (~50 tests)
+    - [ ] Run full test suite and fix failures
+  - **Blockers:**
+    - ⚠️ Pre-existing bug: GameDashboard.tsx line 225 - ArmoryActions missing props (out of scope)
+    - ⚠️ Prisma schema changes not migrated yet (run `npx prisma db push` when needed)
+  - **Success criteria:** ✅ Phases 1 & 2 complete (11/17 tasks = 65%)
 
-- [x] **Fix SSR hydration errors** ✅ DONE (2025-12-18 21:30)
-  - Added `export const dynamic = 'force-dynamic'` to Skills, Quests, Map pages
-  - All routes now build successfully
+- [ ] **Town Locations Unification**
+  - **Goal:** Merge redundant locations and simplify town structure
+  - **Owner:** Agent
+  - **Priority:** HIGH (NEXT SESSION)
+  - **Scope:**
+    - Merge Blacksmith + Armory → "Zbrojíř" (tab-based or combined interface)
+    - Simplify Bank (remove investments, combine deposit/withdraw)
+    - Refactor Tavern action slots (radio selection pattern instead of fixed slots)
+    - Remove redundant wilderness actions (těžit suroviny, prozkoumat místa from LocationActions)
+  - **Success criteria:** Cleaner town navigation, no duplicate functionality
 
-- [x] **Remove crafting feature (keep blacksmith)** ✅ DONE (2025-12-18 21:30)
-  - Removed Workshop from GameDashboard
-  - Removed workshop button from TownActions
-  - Blacksmith feature preserved
+- [ ] **Settings Panel Integration**
+  - **Goal:** Wire up SettingsPanel to GameHeader settings button
+  - **Owner:** Agent
+  - **Priority:** MEDIUM
+  - **Scope:** Connect GameHeader dropdown menu "Nastavení" item to open SettingsPanel overlay
+  - **Success criteria:** Settings panel opens from header, E2E test validates
 
-- [x] **Fix enemy asset URLs** ✅ DONE (2025-12-18 21:30)
-  - Changed wolf.png → wolf.jpg in CombatClient
-
-- [x] **Add scroll indicators to key components** ✅ DONE (2025-12-18 21:30)
-  - Added to CharacterClient, SettingsPanel, HelpPanel
-  - Used proper ref pattern with ScrollIndicator component
-  - Note: Many components already have ScrollIndicator (SkillGrid, QuestList, InventoryClient, ArmoryActions, GameLayout, CombatClient)
+- [ ] **Verify Critical Bug Fixes**
+  - **Goal:** Confirm that the recent fixes for Async Components, Prisma errors, and mobile UI are working correctly
+  - **Owner:** Agent
+  - **Priority:** HIGH (IMMEDIATE)
+  - **Scope:**
+    - Verify /character, /skills, /quests, /inventory, /map load without 500 errors
+    - Verify potion usage in combat doesn't crash app
+    - Verify mobile scrolling in town works with arrows
+    - Verify Guild Hall is hidden
+  - **Success criteria:** All critical paths functional, no console errors
 
 - [ ] **Complete Visual Parity with Design Reference**
   - **Goal:** Finish implementing all visual effects, transitions, and styling from land-of-machala-design
@@ -39,6 +70,7 @@
   - **Priority:** HIGH (MOSTLY COMPLETE)
   - **Scope:** Hover effects, rarity glows, remaining route transitions, scroll indicators
   - **Completed:**
+    - ✅ Unified Town Shop UX (Armory, Guild Hall, Workshop, Market, Blacksmith)
     - ✅ Framer Motion installed (v12.9)
     - ✅ RouteTransition component created and applied to LoginForm, GameDashboard, PageTemplate
     - ✅ All routes wrapped with RouteTransition (via PageTemplate wrapper)
@@ -133,4 +165,4 @@
 
 ---
 
-**Last updated:** 2025-12-22 18:42
+**Last updated:** 2025-12-23 20:56

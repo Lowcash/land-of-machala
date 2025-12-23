@@ -1,8 +1,8 @@
 'use client'
 
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { CheckCircle, Circle, Star } from 'lucide-react'
 import { useRef } from 'react'
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 import type { MergedQuest, QuestCategory, QuestStatus } from './types'
 
 type QuestListProps = {
@@ -63,11 +63,7 @@ function getStatusIcon(status: QuestStatus | null) {
   }
 }
 
-export function QuestList({
-  quests,
-  selectedQuest,
-  setSelectedQuest,
-}: QuestListProps) {
+export function QuestList({ quests, selectedQuest, setSelectedQuest }: QuestListProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const filteredQuests = quests
@@ -78,7 +74,7 @@ export function QuestList({
     >
       {/* Quest list */}
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <ScrollIndicator targetRef={scrollRef} />
+        <ScrollIndicator targetRef={scrollRef} position="both" />
         <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-2 overflow-y-auto p-3">
           {filteredQuests.map((quest) => (
             <button

@@ -1,7 +1,7 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import type { ReactNode} from 'react';
+import type { ReactNode } from 'react'
 import { useRef } from 'react'
 
 interface PanelProps {
@@ -20,9 +20,11 @@ export function GamePanel({ title, children, className = '' }: PanelProps) {
       <h3 className="mb-3 shrink-0 text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
         {title}
       </h3>
-      <div ref={scrollRef} className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto">
-        <ScrollIndicator targetRef={scrollRef} position="bottom" />
-        {children}
+      <div className="relative min-h-0 flex-1">
+        <ScrollIndicator targetRef={scrollRef} position="both" />
+        <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto">
+          {children}
+        </div>
       </div>
     </div>
   )

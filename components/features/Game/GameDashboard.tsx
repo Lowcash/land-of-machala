@@ -174,7 +174,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Player box at top - constrained width */}
-          <div className="w-full max-w-sm">
+          <div className="w-full max-w-sm px-3 pt-3">
             <CharacterBox
               name={character.name}
               level={character.level}
@@ -194,10 +194,10 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
           {/* Central Info Panel */}
           <div
-            className={`shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 backdrop-blur-sm transition-colors ${isShaking ? 'shake border-[#ff4444]' : ''}`}
+            className={`mx-3 shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 p-4 backdrop-blur-sm transition-colors ${isShaking ? 'shake border-[#ff4444]' : ''}`}
             style={{ height: '140px' }}
           >
-            <div className="scrollbar-custom h-full overflow-y-auto p-4">
+            <div className="scrollbar-custom h-full overflow-y-auto">
               <div
                 className="mx-auto max-w-2xl animate-[fadeInWave_0.6s_ease-out] py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
                 key={infoText || viewData.desc}
@@ -207,7 +207,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
           </div>
 
           {/* Actions */}
-          <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#d4a574]/50 bg-black/70 p-3 backdrop-blur-sm">
+          <div className="relative min-h-0 flex-1 px-3 pb-3">
             {currentView === 'town' && (
               <TownActions
                 onExplore={handleExplore}

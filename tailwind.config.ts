@@ -35,6 +35,15 @@ const config: Config = {
           epic: 'hsl(280deg 50% 63%)',
           legendary: 'hsl(51deg 100% 50%)',
         },
+        notification: {
+          success: '#6fbf6f',
+          error: '#ff6b6b',
+          warning: '#ffd700',
+          info: '#69ccf0',
+        },
+      },
+      spacing: {
+        'touch-target': '44px', // Minimum mobile touch target
       },
       borderRadius: {
         lg: 'var(--radius)',

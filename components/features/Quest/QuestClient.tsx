@@ -1,7 +1,7 @@
 'use client'
 
 import { ArrowLeft, Scroll } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { QuestDetailContent } from './QuestDetailContent'
 import { QuestList } from './QuestList'
 import type { MergedQuest } from './types'
@@ -14,6 +14,38 @@ type QuestClientProps = {
 export function QuestClient({ quests, characterId }: QuestClientProps) {
   const [selectedQuest, setSelectedQuest] = useState<string | null>(null)
 
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search)
+      const questId = params.get('questId')
+      if (questId && quests.find((q) => q.id === questId)) {
+        setSelectedQuest(questId)
+      } else {
+        setSelectedQuest(null)
+      }
+    }
+
+    handlePopState()
+    window.addEventListener('popstate', handlePopState)
+    return () => window.removeEventListener('popstate', handlePopState)
+  }, [quests])
+
+  const handleSelectQuest = (id: string | null) => {
+    if (id) {
+      setSelectedQuest(id)
+      window.history.pushState({ questId: id }, '', `?questId=${id}`)
+    } else {
+      setSelectedQuest(null)
+      const url = new URL(window.location.href)
+      url.searchParams.delete('questId')
+      window.history.pushState({}, '', url.toString())
+    }
+  }
+
+  const handleBack = () => {
+    window.history.back()
+  }
+
   const selectedQuestData = quests.find((q) => q.id === selectedQuest)
 
   return (
@@ -22,7 +54,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
         <QuestList
           quests={quests}
           selectedQuest={selectedQuest}
-          setSelectedQuest={setSelectedQuest}
+          setSelectedQuest={handleSelectQuest}
         />
 
         {/* Desktop detail panel */}
@@ -40,7 +72,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
                   Vyber quest
                 </h3>
                 <p className="text-sm leading-relaxed text-[#8b7355]">
-                  Klikni na quest v seznamu pro zobrazení detailů a postupu.
+                  Klikni na quest v seznamu pro zobrazen?detailů a postuu.
                 </p>
               </div>
             </div>
@@ -56,12 +88,12 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
               Detail questu
             </h2>
             <button
-              onClick={() => setSelectedQuest(null)}
+              onClick={handleBack}
               className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ffd700]"
             >
               <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
               <span className="text-sm text-[#d4a574]">Zpět</span>
-            </button>
+           </button>
           </div>
 
           <div className="scrollbar-custom flex-1 overflow-y-auto p-4">

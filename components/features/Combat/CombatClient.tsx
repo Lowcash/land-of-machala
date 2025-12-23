@@ -1,10 +1,12 @@
 'use client'
 
+import { ActionBtn } from '@/components/features/Game/ActionBtn'
 import { CharacterBox } from '@/components/features/Game/CharacterBox'
+import { GamePanel } from '@/components/features/Game/GameLayout'
 import { HelpPanel } from '@/components/features/Panels/HelpPanel'
 import { SettingsPanel } from '@/components/features/Panels/SettingsPanel'
 import { PageTemplate } from '@/components/layout'
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { getIconFromName } from '@/lib/icons'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowLeft,
@@ -18,7 +20,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 
 type Panel = 'inventory' | 'character' | 'skills' | 'quests' | 'map' | 'settings' | 'help' | null
 type ItemType = 'weapon' | 'armor' | 'consumable'
@@ -27,7 +29,7 @@ interface Item {
   id: number
   name: string
   type: ItemType
-  icon: any
+  iconName?: string
   attack?: number
   defense?: number
   magic?: number
@@ -369,7 +371,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
           </div>
 
           {/* Bottom: Combat Actions */}
-          <div className="min-h-0 flex-1 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 p-3 shadow-xl backdrop-blur-md">
+          <GamePanel title="Bojové akce" className="flex-1">
             <CombatActions
               onAttack={handleAttack}
               onDefend={handleDefend}
@@ -378,7 +380,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
               potions={inventory.filter((i) => i.type === 'consumable')}
               isPlayerTurn={turn === 'player'}
             />
-          </div>
+          </GamePanel>
         </div>
       </div>
 
@@ -395,7 +397,6 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
 }
 
 function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPlayerTurn }: any) {
-  const actionsScrollRef = useRef<HTMLDivElement>(null)
   const [showPotions, setShowPotions] = useState(false)
 
   return (
@@ -403,166 +404,129 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
       className={`flex h-full flex-col ${!isPlayerTurn ? 'pointer-events-none opacity-50' : ''}`}
     >
       <div className="mb-2 flex shrink-0 items-center justify-between">
-        <h3 className="text-sm text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          Bojové akce
-        </h3>
         <span className="text-[10px] tracking-widest text-[#8b7355] uppercase">
           {isPlayerTurn ? 'Tvůj tah' : 'Tah nepřítele'}
         </span>
       </div>
 
-      <div ref={actionsScrollRef} className="scrollbar-custom flex-1 overflow-y-auto">
-        <ScrollIndicator targetRef={actionsScrollRef} position="bottom" />
-
-        <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-          {/* Attacks */}
-          <div className="space-y-1">
-            <div className="mb-1 pl-1 text-[10px] tracking-wider text-[#8b7355] uppercase">
-              Útok
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {/* Attacks */}
+        <div className="space-y-1">
+          <div className="mb-1 pl-1 text-[10px] tracking-wider text-[#8b7355] uppercase">Útok</div>
+          <ActionBtn
+            onClick={() => onAttack('quick')}
+            icon={Zap}
+            color="text-[#ffd700]"
+            border="hover:border-[#ffd700]"
+          >
+            <div className="flex w-full justify-between">
+              <span>Rychlý útok</span>
+              <span className="text-[10px] opacity-70">95% přesnost</span>
             </div>
-            <ActionBtn
-              onClick={() => onAttack('quick')}
-              icon={Zap}
-              color="text-[#ffd700]"
-              border="hover:border-[#ffd700]"
-              small
-            >
-              <div className="flex w-full justify-between">
-                <span>Rychlý útok</span>
-                <span className="text-[10px] opacity-70">95% přesnost</span>
-              </div>
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => onAttack('heavy')}
-              icon={Target}
-              color="text-[#ff6b6b]"
-              border="hover:border-[#ff6b6b]"
-              small
-            >
-              <div className="flex w-full justify-between">
-                <span>Silný úder</span>
-                <span className="text-[10px] text-[#ff6b6b]">-15 E</span>
-              </div>
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => onAttack('magic')}
-              icon={Sparkles}
-              color="text-[#b66bd4]"
-              border="hover:border-[#b66bd4]"
-              small
-            >
-              <div className="flex w-full justify-between">
-                <span>Magie</span>
-                <span className="text-[10px] text-[#b66bd4]">-20 M</span>
-              </div>
-            </ActionBtn>
-          </div>
-
-          {/* Defenses & Utility */}
-          <div className="space-y-1">
-            <div className="mb-1 pl-1 text-[10px] tracking-wider text-[#8b7355] uppercase">
-              Obrana & Taktika
+          </ActionBtn>
+          <ActionBtn
+            onClick={() => onAttack('heavy')}
+            icon={Target}
+            color="text-[#ff6b6b]"
+            border="hover:border-[#ff6b6b]"
+          >
+            <div className="flex w-full justify-between">
+              <span>Silný úder</span>
+              <span className="text-[10px] text-[#ff6b6b]">-15 E</span>
             </div>
-            <ActionBtn
-              onClick={() => onDefend('block')}
-              icon={Shield}
-              color="text-[#69ccf0]"
-              border="hover:border-[#69ccf0]"
-              small
-            >
-              <span>Blokovat</span> (Sníží poškození)
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => onDefend('dodge')}
-              icon={Wind}
-              color="text-[#69ccf0]"
-              border="hover:border-[#69ccf0]"
-              small
-            >
-              <div className="flex w-full justify-between">
-                <span>Uhnout</span>
-                <span className="text-[10px] text-[#69ccf0]">-10 E</span>
-              </div>
-            </ActionBtn>
-
-            <div className="mt-1 border-t border-[#8b6f47]/30 pt-2"></div>
-
-            <ActionBtn
-              onClick={onFlee}
-              icon={ArrowLeft}
-              color="text-[#8b7355]"
-              border="hover:border-[#d4a574]"
-              small
-            >
-              <div className="flex w-full justify-between">
-                <span>Útěk</span>
-                <span className="text-[10px] opacity-70">50% šance</span>
-              </div>
-            </ActionBtn>
-          </div>
-
-          {/* Potions Toggle */}
-          {potions.length > 0 && (
-            <div className="col-span-1 mt-1 space-y-1 border-t border-[#8b6f47]/30 pt-2 sm:col-span-2">
-              <button
-                onClick={() => setShowPotions(!showPotions)}
-                className="flex w-full items-center justify-between rounded border border-[#6fbf6f]/30 bg-black/40 px-3 py-1.5 text-xs text-[#6fbf6f] transition-colors hover:border-[#6fbf6f] hover:bg-black/60"
-              >
-                <div className="flex items-center gap-2">
-                  <Droplet className="h-3 w-3" />
-                  <span>Lektvary ({potions.length})</span>
-                </div>
-                <ChevronRight
-                  className={`h-3 w-3 transition-transform ${showPotions ? 'rotate-90' : ''}`}
-                />
-              </button>
-
-              {showPotions && (
-                <div className="grid grid-cols-2 gap-2 border-l border-[#6fbf6f]/30 pl-2">
-                  {potions.map((potion: Item) => (
-                    <ActionBtn
-                      key={potion.id}
-                      onClick={() => onUsePotion(potion.id)}
-                      icon={potion.icon}
-                      color="text-[#6fbf6f]"
-                      border="hover:border-[#6fbf6f]"
-                      small
-                    >
-                      <div className="flex w-full justify-between">
-                        <span>{potion.name}</span>
-                        <span className="text-[10px] opacity-70">
-                          {potion.healing ? `+${potion.healing} HP` : `+${potion.mana} MP`}
-                        </span>
-                      </div>
-                    </ActionBtn>
-                  ))}
-                </div>
-              )}
+          </ActionBtn>
+          <ActionBtn
+            onClick={() => onAttack('magic')}
+            icon={Sparkles}
+            color="text-[#b66bd4]"
+            border="hover:border-[#b66bd4]"
+          >
+            <div className="flex w-full justify-between">
+              <span>Magie</span>
+              <span className="text-[10px] text-[#b66bd4]">-20 M</span>
             </div>
-          )}
+          </ActionBtn>
         </div>
+
+        {/* Defenses & Utility */}
+        <div className="space-y-1">
+          <div className="mb-1 pl-1 text-[10px] tracking-wider text-[#8b7355] uppercase">
+            Obrana & Taktika
+          </div>
+          <ActionBtn
+            onClick={() => onDefend('block')}
+            icon={Shield}
+            color="text-[#69ccf0]"
+            border="hover:border-[#69ccf0]"
+          >
+            <span>Blokovat</span> (Sníží poškození)
+          </ActionBtn>
+          <ActionBtn
+            onClick={() => onDefend('dodge')}
+            icon={Wind}
+            color="text-[#69ccf0]"
+            border="hover:border-[#69ccf0]"
+          >
+            <div className="flex w-full justify-between">
+              <span>Uhnout</span>
+              <span className="text-[10px] text-[#69ccf0]">-10 E</span>
+            </div>
+          </ActionBtn>
+
+          <div className="mt-1 border-t border-[#8b6f47]/30 pt-2"></div>
+
+          <ActionBtn
+            onClick={onFlee}
+            icon={ArrowLeft}
+            color="text-[#8b7355]"
+            border="hover:border-[#d4a574]"
+          >
+            <div className="flex w-full justify-between">
+              <span>Útěk</span>
+              <span className="text-[10px] opacity-70">50% šance</span>
+            </div>
+          </ActionBtn>
+        </div>
+
+        {/* Potions Toggle */}
+        {potions.length > 0 && (
+          <div className="col-span-1 mt-1 space-y-1 border-t border-[#8b6f47]/30 pt-2 sm:col-span-2">
+            <button
+              onClick={() => setShowPotions(!showPotions)}
+              className="flex w-full items-center justify-between rounded border border-[#6fbf6f]/30 bg-black/40 px-3 py-1.5 text-xs text-[#6fbf6f] transition-colors hover:border-[#6fbf6f] hover:bg-black/60"
+            >
+              <div className="flex items-center gap-2">
+                <Droplet className="h-3 w-3" />
+                <span>Lektvary ({potions.length})</span>
+              </div>
+              <ChevronRight
+                className={`h-3 w-3 transition-transform ${showPotions ? 'rotate-90' : ''}`}
+              />
+            </button>
+
+            {showPotions && (
+              <div className="grid grid-cols-2 gap-2 border-l border-[#6fbf6f]/30 pl-2">
+                {potions.map((potion: Item) => (
+                  <ActionBtn
+                    key={potion.id}
+                    onClick={() => onUsePotion(potion.id)}
+                    icon={getIconFromName(potion.iconName || '')}
+                    color="text-[#6fbf6f]"
+                    border="hover:border-[#6fbf6f]"
+                  >
+                    <div className="flex w-full justify-between">
+                      <span>{potion.name}</span>
+                      <span className="text-[10px] opacity-70">
+                        {potion.healing ? `+${potion.healing} HP` : `+${potion.mana} MP`}
+                      </span>
+                    </div>
+                  </ActionBtn>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
-  )
-}
-
-function ActionBtn({
-  onClick,
-  icon: Icon,
-  children,
-  color = 'text-[#d4a574]',
-  border = 'hover:border-[#ffd700]',
-  small,
-}: any) {
-  return (
-    <button
-      onClick={onClick}
-      className={`group flex items-center gap-2 ${small ? 'px-2 py-1.5 text-xs' : 'px-3 py-2.5 text-sm'} rounded border border-[#8b6f47]/50 bg-black/40 hover:bg-black/60 ${border} w-full text-left transition-all`}
-    >
-      <Icon className={`h-4 w-4 flex-shrink-0 ${color}`} />
-      <div className="flex min-w-0 flex-1 items-center leading-tight text-[#f5e6d3]">
-        {children}
-      </div>
-    </button>
   )
 }

@@ -59,6 +59,13 @@ model Character {
   locationY   Int    @default(0)
   currentView String @default("town")
 
+  // Combat state (for SSR protection)
+  inCombat       Boolean @default(false)
+  combatEnemyId  String?
+  combatTurn     String? // "player" or "enemy"
+  combatPlayerHp Int?
+  combatEnemyHp  Int?
+
   // Progression
   talentPoints Int @default(0)
 

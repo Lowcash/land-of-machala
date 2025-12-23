@@ -1,15 +1,18 @@
 'use client'
 
 import { RouteTransition } from '@/components/layout/RouteTransition'
+import { useNotification } from '@/components/providers/NotificationProvider'
 import { ArrowRight, Check, Lock, Scroll, Sparkles, Swords, User, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export function LoginForm() {
   const router = useRouter()
+  const { showNotification } = useNotification()
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   const flavorTexts = [
     'Vstup do světa plného nebezpečí a dobrodružství...',
@@ -18,12 +21,17 @@ export function LoginForm() {
     'Čest, sláva a zlato čekají na statečné...',
   ]
 
-  const [flavorText] = useState(flavorTexts[Math.floor(Math.random() * flavorTexts.length)])
+  const [flavorText, setFlavorText] = useState(flavorTexts[0])
+
+  useEffect(() => {
+    setFlavorText(flavorTexts[Math.floor(Math.random() * flavorTexts.length)])
+  }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!username || !password) return
+    if (!username || !password || isLoading) return
 
+    setIsLoading(true)
     try {
       const { signIn } = await import('next-auth/react')
       const result = await signIn('credentials', {
@@ -33,7 +41,12 @@ export function LoginForm() {
       })
 
       if (result?.error) {
-        alert('Přihlášení selhalo. Zkontroluj email a heslo.')
+        showNotification({
+          variant: 'error',
+          title: 'Přihlášení selhalo',
+          description: 'Zkontroluj email a heslo',
+        })
+        setIsLoading(false)
       } else {
         // Check if user has character
         const response = await fetch('/api/character/check')
@@ -47,11 +60,18 @@ export function LoginForm() {
       }
     } catch (error) {
       console.error('Login error:', error)
-      alert('Došlo k chybě při přihlašování')
+      showNotification({
+        variant: 'error',
+        title: 'Chyba přihlášení',
+        description: 'Došlo k chybě při přihlašování',
+      })
+      setIsLoading(false)
     }
   }
 
   const handleDemoMode = async () => {
+    if (isLoading) return
+    setIsLoading(true)
     try {
       // Create guest account
       const response = await fetch('/api/auth/guest', {
@@ -71,18 +91,24 @@ export function LoginForm() {
       router.push('/onboarding')
     } catch (error) {
       console.error('Guest login error:', error)
-      alert('Došlo k chybě při vytváření host účtu')
+      showNotification({
+        variant: 'error',
+        title: 'Chyba host účtu',
+        description: 'Došlo k chybě při vytváření host účtu',
+      })
+      setIsLoading(false)
     }
   }
 
   const handleRegister = () => {
+    setIsLoading(true)
     router.push('/register')
   }
 
   return (
     <RouteTransition>
       <div
-        className="relative flex h-screen flex-col overflow-y-auto bg-[#0a0806]"
+        className="relative flex h-[100dvh] flex-col overflow-y-auto bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -94,7 +120,7 @@ export function LoginForm() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-1 items-center justify-center p-3 sm:p-4">
+        <div className="relative z-10 flex flex-1 items-center justify-center p-3 pt-12 sm:p-4">
           <div className="grid w-full max-w-5xl items-center gap-8 lg:grid-cols-2">
             {/* Left Column: Login Form */}
             <div className="mx-auto w-full max-w-md">
@@ -127,11 +153,8 @@ export function LoginForm() {
               </div>
 
               {/* Login Form */}
-              <form
-                onSubmit={handleLogin}
-                className="mb-4 rounded-lg border-2 border-[#d4a574] bg-black/90 p-4 shadow-2xl backdrop-blur-md sm:p-6"
-              >
-                <div className="space-y-4">
+              <div className="mb-4 rounded-lg border-2 border-[#d4a574] bg-black/90 p-4 shadow-2xl backdrop-blur-md sm:p-6">
+                <form onSubmit={handleLogin} className="space-y-4">
                   <div>
                     <label
                       className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
@@ -146,7 +169,8 @@ export function LoginForm() {
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         placeholder="Zadej jméno..."
-                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
+                        disabled={isLoading}
+                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />
                     </div>
@@ -166,7 +190,8 @@ export function LoginForm() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Zadej heslo..."
-                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
+                        disabled={isLoading}
+                        className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />
                     </div>
@@ -176,12 +201,13 @@ export function LoginForm() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
+                      disabled={isLoading}
                       onClick={() => setRememberMe(!rememberMe)}
                       className={`flex h-5 w-5 items-center justify-center rounded border-2 transition-all ${
                         rememberMe
                           ? 'border-[#ffd700] bg-[#ffd700]'
                           : 'border-[#8b6f47] bg-black/60 hover:border-[#ffd700]'
-                      }`}
+                      } disabled:cursor-not-allowed disabled:opacity-50`}
                     >
                       {rememberMe && <Check className="h-3.5 w-3.5 text-black" />}
                     </button>
@@ -196,43 +222,62 @@ export function LoginForm() {
 
                   <button
                     type="submit"
-                    disabled={!username || !password}
+                    disabled={!username || !password || isLoading}
                     className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg border-2 py-3 transition-all duration-300 ${
-                      username && password
+                      username && password && !isLoading
                         ? 'border-[#ffd700] bg-gradient-to-br from-[#d4a574] via-[#8b6f47] to-[#6d5a3e] text-white shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffd700] hover:via-[#d4a574] hover:to-[#8b6f47] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
                         : 'cursor-not-allowed border-[#8b6f47]/50 bg-black/40 text-[#8b7355] opacity-50'
                     }`}
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
-                    <span className="relative z-10 text-base sm:text-lg">Přihlásit se</span>
-                    <ArrowRight
-                      className={`relative z-10 h-5 w-5 transition-transform ${username && password ? 'group-hover:translate-x-1' : ''}`}
-                    />
+                    <span className="relative z-10 text-base sm:text-lg">
+                      {isLoading ? 'Přihlašování...' : 'Přihlásit se'}
+                    </span>
+                    {!isLoading && (
+                      <ArrowRight
+                        className={`relative z-10 h-5 w-5 transition-transform ${username && password ? 'group-hover:translate-x-1' : ''}`}
+                      />
+                    )}
+                  </button>
+                </form>
+
+                {/* Divider */}
+                <div className="my-6 flex items-center gap-4">
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                  <span
+                    className="text-xs text-[#8b7355]"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    NEBO
+                  </span>
+                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                </div>
+
+                {/* Other Actions */}
+                <div className="space-y-3">
+                  <button
+                    onClick={handleDemoMode}
+                    disabled={isLoading}
+                    className="w-full rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    {isLoading ? 'Vytváření účtu...' : 'Zkusit hru jako host (bez registrace)'}
+                  </button>
+
+                  <button
+                    onClick={handleRegister}
+                    disabled={isLoading}
+                    className="w-full rounded-lg border-2 border-[#d4a574] py-2.5 text-center text-sm text-[#ffd700] transition-all hover:scale-[1.02] hover:bg-[#d4a574]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    Vytvořit nový účet
                   </button>
                 </div>
-              </form>
-
-              <div className="space-y-2 text-center">
-                <button
-                  onClick={handleDemoMode}
-                  className="w-full rounded-lg border border-[#8b6f47]/30 py-2 text-center text-sm text-[#8b7355] transition-colors hover:border-[#ffd700]/30 hover:text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  Zkusit hru jako host (bez registrace)
-                </button>
-
-                <button
-                  onClick={handleRegister}
-                  className="block w-full text-sm text-[#d4a574] transition-colors hover:text-[#ffd700] sm:text-base"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  Vytvořit nový účet
-                </button>
               </div>
             </div>
 
             {/* Right Column: Info & Stats */}
-            <div className="mx-auto w-full max-w-md space-y-4">
+            <div className="mx-auto hidden w-full max-w-md space-y-4 lg:block">
               {/* Server Stats */}
               <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
                 <h3
@@ -317,17 +362,12 @@ export function LoginForm() {
               {/* Quote/Lore */}
               <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
                 &quot;V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění
-                jako ti před tebou?&quot;
+                jako ti před tebou?&quot; hidden lg:block
               </div>
 
               <div className="pt-2 text-center">
                 <p className="text-xs text-[#8b7355]">Verze 1.2.5 • © 2025 Land of Machala</p>
               </div>
-            </div>
-
-            {/* Mobile Footer (visible only on small screens) */}
-            <div className="mt-4 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
-              <p className="text-xs text-[#8b7355]">Verze 1.2.5 • © 2025 Land of Machala</p>
             </div>
           </div>
         </div>

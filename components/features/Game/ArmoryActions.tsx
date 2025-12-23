@@ -1,124 +1,213 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { ChevronRight, Coins, Home, Store } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { Coins, Home, Shield, Store, Sword } from 'lucide-react'
+import { useState } from 'react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
 
-interface ArmoryActionsProps {
-  onBack: () => void
+type ItemType = 'weapon' | 'armor' | 'consumable'
+
+interface Item {
+  id: number
+  name: string
+  type: ItemType
+  icon: any
+  price?: number
+  attack?: number
+  defense?: number
+  durability?: number
+  maxDurability?: number
+  level?: number
+  equipped?: boolean
+  magic?: number
+  speed?: number
+  healing?: number
+  mana?: number
+  slot?: string
+  strength?: number
+  intelligence?: number
+  agility?: number
+  stamina?: number
 }
 
-export function ArmoryActions({ onBack }: ArmoryActionsProps) {
-  const [selectedAction, setSelectedAction] = useState<'buy' | 'sell'>('buy')
-  const tableScrollRef = useRef<HTMLDivElement>(null)
+interface ArmoryActionsProps {
+  onBack: () => void
+  gold: number
+  setGold: (val: number | ((prev: number) => number)) => void
+  inventory: Item[]
+  setInventory: (val: Item[] | ((prev: Item[]) => Item[])) => void
+  setInfoText: (text: string) => void
+}
 
-  const items = [
-    { name: 'Dřevěný meč', attack: 5, price: 50 },
-    { name: 'Železný meč', attack: 12, price: 150 },
-    { name: 'Dlouhý meč', attack: 15, price: 200 },
-    { name: 'Bojová sekera', attack: 18, price: 300 },
-    { name: 'Kožená zbroj', defense: 8, price: 100 },
-    { name: 'Řetězová zbroj', defense: 15, price: 250 },
-    { name: 'Ocelová zbroj', defense: 20, price: 400 },
-    { name: 'Platová zbroj', defense: 25, price: 600 },
+export function ArmoryActions({
+  onBack,
+  gold,
+  setGold,
+  inventory,
+  setInventory,
+  setInfoText,
+}: ArmoryActionsProps) {
+  const [mode, setMode] = useState<'default' | 'buy' | 'sell'>('default')
+  const [message, setMessage] = useState('')
+
+  const showMessage = (msg: string) => {
+    setMessage(msg)
+    setTimeout(() => setMessage(''), 3000)
+  }
+
+  const stock = [
+    { name: 'Dřevěný meč', attack: 5, price: 50, type: 'weapon', icon: Sword },
+    { name: 'Železný meč', attack: 12, price: 150, type: 'weapon', icon: Sword },
+    { name: 'Dlouhý meč', attack: 15, price: 200, type: 'weapon', icon: Sword },
+    { name: 'Bojová sekera', attack: 18, price: 300, type: 'weapon', icon: Sword },
+    { name: 'Kožená zbroj', defense: 8, price: 100, type: 'armor', icon: Shield },
+    { name: 'Řetězová zbroj', defense: 15, price: 250, type: 'armor', icon: Shield },
+    { name: 'Ocelová zbroj', defense: 20, price: 400, type: 'armor', icon: Shield },
+    { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor', icon: Shield },
   ]
+
+  const handleBuy = (template: any) => {
+    if (gold < template.price) {
+      showMessage('Nemáš dost zlata!')
+      return
+    }
+    setGold((g) => g - template.price)
+    const newItem = {
+      ...template,
+      id: Math.max(0, ...inventory.map((i) => i.id)) + 1 + Math.floor(Math.random() * 1000),
+      durability: 100,
+      maxDurability: 100,
+      level: 0,
+    }
+    setInventory((prev) => [...prev, newItem])
+    setInfoText(`Koupil jsi ${template.name}.`)
+    showMessage(`Koupeno: ${template.name}`)
+  }
+
+  const handleSell = (item: Item) => {
+    const price = Math.floor((item.price || 10) * 0.5)
+    setGold((g) => g + price)
+    setInventory((prev) => prev.filter((i) => i.id !== item.id))
+    setInfoText(`Prodals ${item.name} za ${price} zlaťáků.`)
+    showMessage(`Prodáno: ${item.name} (+${price}g)`)
+  }
 
   return (
     <GameLayout>
-      <GamePanel title="Akce">
+      <GamePanel title={mode === 'default' ? 'Zbrojíř' : mode === 'buy' ? 'Nákup' : 'Prodej'}>
         <div className="space-y-1.5">
-          <ActionBtn onClick={onBack} icon={Home}>
-            <span>Vrátit se do města</span>
-          </ActionBtn>
+          <div className="mb-2 flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-2">
+            <ActionBtn onClick={mode === 'default' ? onBack : () => setMode('default')} icon={Home}>
+              <span>{mode === 'default' ? 'Vrátit se do města' : 'Zpět k výběru'}</span>
+            </ActionBtn>
+            <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
+              <Coins className="h-4 w-4" />
+              {gold}
+            </div>
+          </div>
 
           <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-            <ActionBtn
-              onClick={() => setSelectedAction('buy')}
-              icon={Store}
-              className={selectedAction === 'buy' ? 'border-[#ffd700] bg-black/60' : ''}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>Koupit zbraně a zbroje</span>
-                <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-              </span>
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => setSelectedAction('sell')}
-              icon={Coins}
-              className={selectedAction === 'sell' ? 'border-[#ffd700] bg-black/60' : ''}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>Prodat své předměty</span>
-                <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-              </span>
-            </ActionBtn>
+            {mode === 'default' && (
+              <>
+                <ActionBtn onClick={() => setMode('buy')} icon={Store}>
+                  Koupit <span className="text-[#ffd700]">zbraně a zbroje</span>
+                </ActionBtn>
+                <ActionBtn onClick={() => setMode('sell')} icon={Coins}>
+                  Prodat <span className="text-[#69ccf0]">předměty</span>
+                </ActionBtn>
+              </>
+            )}
+
+            {mode === 'buy' && (
+              <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto">
+                {stock.map((item, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleBuy(item)}
+                    className="group w-full rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all hover:border-[#ffd700]"
+                  >
+                    <div className="mb-1 flex items-start justify-between">
+                      <span className="flex items-center gap-2 text-sm font-bold text-[#f5e6d3] group-hover:text-[#ffd700]">
+                        <item.icon className="h-4 w-4" />
+                        {item.name}
+                      </span>
+                      <span className="text-xs text-[#ffd700]">{item.price}g</span>
+                    </div>
+                    <div className="flex gap-2 text-[10px] text-[#8b7355]">
+                      {item.attack && (
+                        <span>
+                          Útok: <span className="text-[#ff6b6b]">+{item.attack}</span>
+                        </span>
+                      )}
+                      {item.defense && (
+                        <span>
+                          Obrana: <span className="text-[#69ccf0]">+{item.defense}</span>
+                        </span>
+                      )}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+
+            {mode === 'sell' && (
+              <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto">
+                {inventory.filter((i) => i.type === 'weapon' || i.type === 'armor').length === 0 ? (
+                  <div className="p-4 text-center text-xs text-[#8b7355]">
+                    Nemáš žádné vybavení k prodeji.
+                  </div>
+                ) : (
+                  inventory
+                    .filter((i) => i.type === 'weapon' || i.type === 'armor')
+                    .map((item) => {
+                      const price = Math.floor((item.price || 10) * 0.5)
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => handleSell(item)}
+                          className="group w-full rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all hover:border-[#69ccf0]"
+                        >
+                          <div className="mb-1 flex items-start justify-between">
+                            <span className="flex items-center gap-2 text-sm font-bold text-[#f5e6d3] group-hover:text-[#69ccf0]">
+                              <item.icon className="h-4 w-4" />
+                              {item.name}
+                            </span>
+                            <span className="text-xs text-[#69ccf0]">{price}g</span>
+                          </div>
+                          <div className="flex gap-2 text-[10px] text-[#8b7355]">
+                            {item.attack && <span>Útok: +{item.attack}</span>}
+                            {item.defense && <span>Obrana: +{item.defense}</span>}
+                            {item.equipped && <span className="text-[#6fbf6f]">(Nasazeno)</span>}
+                          </div>
+                        </button>
+                      )
+                    })
+                )}
+              </div>
+            )}
           </div>
         </div>
       </GamePanel>
 
-      <GamePanel title={selectedAction === 'buy' ? 'Nabídka zbrojíře' : 'Prodej předmětů'}>
-        {selectedAction === 'buy' ? (
-          <div className="relative flex max-h-full flex-col overflow-hidden rounded border border-[#8b6f47] bg-black/60">
-            <div ref={tableScrollRef} className="scrollbar-custom overflow-y-auto">
-              <ScrollIndicator targetRef={tableScrollRef} position="bottom" />
-              <table className="w-full text-xs">
-                <thead className="sticky top-0 z-10 bg-black/80">
-                  <tr className="border-b border-[#8b6f47]">
-                    <th
-                      className="px-2 py-1.5 text-left text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Předmět
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-center text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Bonus
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-right text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Cena
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-right text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Akce
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, idx) => (
-                    <tr key={idx} className="border-b border-[#8b6f47]/30 hover:bg-black/20">
-                      <td className="px-2 py-2 text-[#f5e6d3]">{item.name}</td>
-                      <td className="px-2 py-2 text-center">
-                        {item.attack && <span className="text-[#ff6b6b]">+{item.attack}</span>}
-                        {item.defense && <span className="text-[#69ccf0]">+{item.defense}</span>}
-                      </td>
-                      <td className="px-2 py-2 text-right text-[#ffd700]">{item.price}g</td>
-                      <td className="px-2 py-2 text-right">
-                        <button className="rounded border border-[#ffd700] bg-gradient-to-r from-[#8b6f47] to-[#6d5a3e] px-2 py-1 text-xs text-white hover:from-[#a8865d] hover:to-[#a8865d]">
-                          Koupit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+      {message && (
+        <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
+          {message}
+        </div>
+      )}
+
+      <GamePanel title="Zbrojíř">
+        <div className="flex gap-3 rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
+          <div className="flex h-[40px] min-w-[40px] items-center justify-center rounded-full border border-[#8b6f47] bg-[#8b6f47]/20">
+            <Shield className="h-5 w-5 text-[#f5e6d3]" />
           </div>
-        ) : (
-          <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
-            <p className="py-4 text-center text-xs text-[#8b7355]">
-              Vyber předměty z batohu k prodeji zbrojíři.
-            </p>
+          <div>
+            {mode === 'default'
+              ? '"Potřebuješ pořádnou ocel? Mám tu meče ostré jako břitva a zbroje, co vydrží úder draka."'
+              : mode === 'buy'
+                ? '"Vybírej pečlivě. Tvůj život může záviset na kvalitě tvé zbroje."'
+                : '"Vykupuji jen kvalitní zboží. Žádný rezavý šrot."'}
           </div>
-        )}
+        </div>
       </GamePanel>
     </GameLayout>
   )

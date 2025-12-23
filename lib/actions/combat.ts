@@ -274,3 +274,128 @@ export const useCombatItemAction = createServerAction()
       message: 'Item used successfully',
     }
   })
+
+/**
+ * Combat State Management for SSR
+ */
+
+import { db } from '@/lib/db'
+
+const startCombatSchema = z.object({
+  enemyId: z.string(),
+  enemyHp: z.number(),
+})
+
+const updateCombatSchema = z.object({
+  playerHp: z.number(),
+  enemyHp: z.number(),
+  turn: z.enum(['player', 'enemy']),
+})
+
+/**
+ * Start combat encounter (sets backend state)
+ */
+export const startCombatState = createServerAction()
+  .input(startCombatSchema)
+  .handler(async ({ input }) => {
+    const session = await auth()
+    if (!session?.user?.id) throw new Error('Unauthorized')
+
+    const character = await db.character.findFirst({
+      where: { userId: session.user.id },
+    })
+
+    if (!character) throw new Error('Character not found')
+
+    await db.character.update({
+      where: { id: character.id },
+      data: {
+        inCombat: true,
+        combatEnemyId: input.enemyId,
+        combatTurn: 'player',
+        combatPlayerHp: character.hp,
+        combatEnemyHp: input.enemyHp,
+        currentView: 'combat',
+      },
+    })
+
+    return { success: true }
+  })
+
+/**
+ * Update combat state during battle
+ */
+export const updateCombatState = createServerAction()
+  .input(updateCombatSchema)
+  .handler(async ({ input }) => {
+    const session = await auth()
+    if (!session?.user?.id) throw new Error('Unauthorized')
+
+    const character = await db.character.findFirst({
+      where: { userId: session.user.id },
+    })
+
+    if (!character) throw new Error('Character not found')
+    if (!character.inCombat) throw new Error('Not in combat')
+
+    await db.character.update({
+      where: { id: character.id },
+      data: {
+        combatPlayerHp: input.playerHp,
+        combatEnemyHp: input.enemyHp,
+        combatTurn: input.turn,
+      },
+    })
+
+    return { success: true }
+  })
+
+/**
+ * End combat (victory or defeat)
+ */
+export const endCombatState = createServerAction().handler(async () => {
+  const session = await auth()
+  if (!session?.user?.id) throw new Error('Unauthorized')
+
+  const character = await db.character.findFirst({
+    where: { userId: session.user.id },
+  })
+
+  if (!character) throw new Error('Character not found')
+
+  await db.character.update({
+    where: { id: character.id },
+    data: {
+      inCombat: false,
+      combatEnemyId: null,
+      combatTurn: null,
+      combatPlayerHp: null,
+      combatEnemyHp: null,
+      currentView: 'town',
+    },
+  })
+
+  return { success: true }
+})
+
+/**
+ * Get current combat state (for SSR)
+ */
+export async function getCombatState() {
+  const session = await auth()
+  if (!session?.user?.id) return null
+
+  const character = await db.character.findFirst({
+    where: { userId: session.user.id },
+    select: {
+      inCombat: true,
+      combatEnemyId: true,
+      combatTurn: true,
+      combatPlayerHp: true,
+      combatEnemyHp: true,
+      currentView: true,
+    },
+  })
+
+  return character
+}
