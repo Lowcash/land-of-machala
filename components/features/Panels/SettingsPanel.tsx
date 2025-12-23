@@ -3,7 +3,7 @@
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { X } from 'lucide-react'
 import type { Dispatch, SetStateAction} from 'react';
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 
 interface SettingsPanelProps {
   onClose: () => void
@@ -22,8 +22,25 @@ interface SettingsPanelProps {
 export function SettingsPanel({ onClose }: SettingsPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
 
+  // Keyboard navigation: close with Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="settings-title"
+    >
       <div className="relative max-h-[80vh] w-full max-w-2xl">
         <ScrollIndicator targetRef={scrollRef} position="both" />
         <div
@@ -31,12 +48,13 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
           className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-6"
         >
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-2xl text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
+            <h2 id="settings-title" className="text-2xl text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
               Nastavení
             </h2>
             <button
               onClick={onClose}
-              className="text-[#d4a574] transition-colors hover:text-[#ffd700]"
+              aria-label="Zavřít nastavení"
+              className="text-[#d4a574] transition-colors hover:text-[#ffd700] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffd700]"
             >
               <X className="h-6 w-6" />
             </button>

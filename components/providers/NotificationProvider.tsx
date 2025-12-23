@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+import type { ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react'
 import { X, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react'
 
 type NotificationVariant = 'success' | 'error' | 'warning' | 'info'
@@ -90,6 +91,9 @@ function NotificationItem({
 
   return (
     <div
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
       className={`relative mb-3 w-80 overflow-hidden rounded-lg border-2 backdrop-blur-md transition-all duration-300 ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       } bg-gradient-to-br ${config.bgGradient}`}
