@@ -335,7 +335,6 @@ export function OnboardingForm() {
 
         {/* Story Content */}
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center p-4">
-          <ScrollIndicator position="down" />
           <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 

@@ -5,13 +5,16 @@
  */
 
 export { TownActions } from './TownActions'
-export { ArmoryActions } from './ArmoryActions'
+export { SmithActions } from './SmithActions'
 export { BankActions } from './BankActions'
 export { HealerActions } from './HealerActions'
 export { TavernActions } from './TavernActions'
-export { BlacksmithActions } from './BlacksmithActions'
 export { MarketActions } from './MarketActions'
 export { LocationActions } from './LocationActions'
 export { WorkshopActions } from './WorkshopActions'
 export { GuildHallActions } from './GuildHallActions'
 export { ActionBtn, DirectionBtn } from './ActionBtn'
+
+// Legacy components (deprecated, use SmithActions instead)
+export { ArmoryActions } from './ArmoryActions'
+export { BlacksmithActions } from './BlacksmithActions'
