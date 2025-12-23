@@ -6,6 +6,30 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 21:35 - Town Locations Unification (WIP)
+
+**Type:** Feature (Work in Progress)
+**Scope:** Game locations, SmithActions component
+**Impact:** ⏳ Preparing unified smithy component (not yet integrated)
+
+### Added
+
+- **SmithActions.tsx:** Unified component merging Blacksmith + Armory
+  - Tab navigation: "Obchod" (Buy/Sell weapons/armor) | "Kovárna" (Craft/Upgrade/Repair)
+  - Preserves all functionality from both original components
+  - Smart back button (returns to tab root before going to town)
+  - Consistent UI with existing GamePanel style
+
+### Status
+
+- ✅ Component created and committed
+- ⏳ Not yet integrated into GameDashboard (requires testing)
+- ⏳ Old ArmoryActions/BlacksmithActions still in use
+- ⏳ Bank simplification pending
+- ⏳ Tavern refactor pending
+
+---
+
 ## 2025-12-23 21:32 - Accessibility Improvements (ARIA + Keyboard Navigation)
 
 **Type:** Feature

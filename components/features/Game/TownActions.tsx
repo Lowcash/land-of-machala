@@ -12,7 +12,6 @@ import {
   Home,
   ScrollText,
   ShoppingBag,
-  Store,
   Swords,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -21,11 +20,10 @@ import { GameLayout, GamePanel } from './GameLayout'
 
 interface TownActionsProps {
   onExplore: () => void
-  onArmory: () => void
+  onSmith: () => void
   onBank: () => void
   onHealer: () => void
   onTavern: () => void
-  onBlacksmith: () => void
   onMarket: () => void
   onGuildHall: () => void
   onMove: (direction: 'north' | 'south' | 'east' | 'west') => void
@@ -34,14 +32,12 @@ interface TownActionsProps {
 
 export function TownActions({
   onExplore,
-  onArmory,
+  onSmith,
   onBank,
   onHealer,
   onMove,
   onTavern,
-  onBlacksmith,
   onMarket,
-  onGuildHall,
   setInfoText,
 }: TownActionsProps) {
   const [showDirections, setShowDirections] = useState(false)
@@ -123,17 +119,14 @@ export function TownActions({
           <ActionBtn onClick={onHealer} icon={Cross}>
             Navštívit <span className="text-[#ffd700]">léčitele</span> pro pomoc a léčení
           </ActionBtn>
-          <ActionBtn onClick={onArmory} icon={Store}>
-            Navštívit <span className="text-[#ffd700]">zbrojíře</span> a prohlédnout zbraně
+          <ActionBtn onClick={onSmith} icon={Hammer}>
+            Navštívit <span className="text-[#ffd700]">zbrojíře a kováře</span> pro zbraně
           </ActionBtn>
           <ActionBtn onClick={onBank} icon={Building}>
             Jít do <span className="text-[#ffd700]">banky</span> a uložit cennosti
           </ActionBtn>
           <ActionBtn onClick={onTavern} icon={Beer}>
             Navštívit <span className="text-[#ffd700]">tavernu</span> a odpočinout si
-          </ActionBtn>
-          <ActionBtn onClick={onBlacksmith} icon={Hammer}>
-            Zajít do <span className="text-[#ffd700]">kovárny</span> vylepšit výstroj
           </ActionBtn>
           <ActionBtn onClick={onMarket} icon={ShoppingBag}>
             Prozkoumat <span className="text-[#ffd700]">tržiště</span> a obchodovat

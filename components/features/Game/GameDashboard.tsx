@@ -11,30 +11,27 @@ import {
   Home,
   Mountain,
   ShoppingBag,
-  Store,
   Trees,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { FishingGame, LockpickGame, MiningGame } from '../Minigames'
-import { ArmoryActions } from './ArmoryActions'
 import { BankActions } from './BankActions'
-import { BlacksmithActions } from './BlacksmithActions'
 import { CharacterBox } from './CharacterBox'
 import { GuildHallActions } from './GuildHallActions'
 import { HealerActions } from './HealerActions'
 import { LocationActions } from './LocationActions'
 import { MarketActions } from './MarketActions'
+import { SmithActions } from './SmithActions'
 import { TavernActions } from './TavernActions'
 import { TownActions } from './TownActions'
 
 type View =
   | 'town'
-  | 'armory'
+  | 'smith'
   | 'bank'
   | 'healer'
   | 'tavern'
-  | 'blacksmith'
   | 'market'
   | 'guild_hall'
   | 'mountains'
@@ -100,13 +97,13 @@ export function GameDashboard({ character }: GameDashboardProps) {
       bg: '/assets/locations/city-background.jpg',
       title: 'Město Machala',
       icon: Home,
-      desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
+      desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře a kováře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
     },
-    armory: {
+    smith: {
       bg: '/assets/locations/armory-background.jpg',
-      title: 'Zbrojíř',
-      icon: Store,
-      desc: 'Vůně kovu a oleje naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> - od jednoduchých dřevěných mečů po mistrovská ocelová díla. Na stěnách visí přilby, štíty a brnění všech druhů. Můžeš zde <span class="text-[#ffd700]">koupit</span> nebo <span class="text-[#69ccf0]">prodat</span> vybavení.',
+      title: 'Zbrojíř & Kovárna',
+      icon: Hammer,
+      desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> k prodeji, zatímco kovář v zadní části může <span class="text-[#ffd700]">vykovat</span> nové předměty nebo <span class="text-[#69ccf0]">opravit a vylepšit</span> tvou výbavu. Oheň v kovárně plane a kladivo je připravené.',
     },
     bank: {
       bg: '/assets/locations/bank-background.jpg',
@@ -125,12 +122,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
       title: 'Taverna',
       icon: Beer,
       desc: 'Hlasitý smích a zvuk cinkajících hrnků naplňuje prostornou tavernu. Za barem stojí hostinský a čepuje pivo pro hladové dobrodruhy.',
-    },
-    blacksmith: {
-      bg: '/assets/blacksmith-background.jpg',
-      title: 'Kovárna',
-      icon: Hammer,
-      desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
     },
     market: {
       bg: '/assets/market-background.jpg',
@@ -211,18 +202,26 @@ export function GameDashboard({ character }: GameDashboardProps) {
             {currentView === 'town' && (
               <TownActions
                 onExplore={handleExplore}
-                onArmory={() => setCurrentView('armory')}
+                onSmith={() => setCurrentView('smith')}
                 onBank={() => setCurrentView('bank')}
                 onHealer={() => setCurrentView('healer')}
                 onTavern={() => setCurrentView('tavern')}
-                onBlacksmith={() => setCurrentView('blacksmith')}
                 onMarket={() => setCurrentView('market')}
                 onGuildHall={() => setCurrentView('guild_hall')}
                 onMove={handleMove}
                 setInfoText={setInfoText}
               />
             )}
-            {currentView === 'armory' && <ArmoryActions onBack={() => setCurrentView('town')} />}
+            {currentView === 'smith' && (
+              <SmithActions
+                onBack={() => setCurrentView('town')}
+                gold={gold}
+                setGold={setGold}
+                inventory={[]}
+                setInventory={() => {}}
+                setInfoText={setInfoText}
+              />
+            )}
             {currentView === 'bank' && (
               <BankActions
                 onBack={() => setCurrentView('town')}
@@ -254,16 +253,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onRest={() => {}}
                 gold={gold}
                 setGold={setGold}
-                setInfoText={setInfoText}
-              />
-            )}
-            {currentView === 'blacksmith' && (
-              <BlacksmithActions
-                onBack={() => setCurrentView('town')}
-                gold={gold}
-                setGold={setGold}
-                inventory={[]}
-                setInventory={() => {}}
                 setInfoText={setInfoText}
               />
             )}
