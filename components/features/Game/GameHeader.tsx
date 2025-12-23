@@ -26,6 +26,8 @@ interface GameHeaderProps {
   customMenuItems?: ReactNode
   /** Callback when help is clicked */
   onHelp?: () => void
+  /** Callback when settings is clicked */
+  onSettings?: () => void
 }
 
 /**
@@ -43,6 +45,7 @@ export function GameHeader({
   showSettings = true,
   customMenuItems,
   onHelp,
+  onSettings,
 }: GameHeaderProps) {
   const router = useRouter()
   const [showSettingsMenu, setShowSettingsMenu] = useState(false)
@@ -125,10 +128,18 @@ export function GameHeader({
                   <div className="absolute top-full right-0 z-[100] mt-1 w-48 rounded border border-[#d4a574] bg-black/95 shadow-2xl backdrop-blur-md">
                     {customMenuItems || (
                       <>
-                        <button className="flex w-full items-center gap-2 border-b border-[#8b6f47] px-3 py-2 text-sm text-[#f5e6d3] hover:bg-black/60">
-                          <Settings className="h-4 w-4" />
-                          <span>Nastavení</span>
-                        </button>
+                        {onSettings && (
+                          <button
+                            onClick={() => {
+                              onSettings()
+                              setShowSettingsMenu(false)
+                            }}
+                            className="flex w-full items-center gap-2 border-b border-[#8b6f47] px-3 py-2 text-sm text-[#f5e6d3] hover:bg-black/60"
+                          >
+                            <Settings className="h-4 w-4" />
+                            <span>Nastavení</span>
+                          </button>
+                        )}
                         {onHelp && (
                           <button
                             onClick={() => {
