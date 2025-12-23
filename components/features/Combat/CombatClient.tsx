@@ -79,17 +79,6 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
     : 'mana'
   const [turn, setTurn] = useState<'player' | 'enemy'>('player')
 
-  // Settings state
-  const [settings, setSettings] = useState({
-    sound: true,
-    music: true,
-    animationSpeed: 1,
-    textSpeed: 1,
-    autoSave: true,
-    combatAnimations: true,
-    showTutorial: false,
-  })
-
   // Background image for combat
   const forestBg = '/assets/locations/forest.jpg'
 
@@ -387,8 +376,6 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
       {panel === 'settings' && (
         <SettingsPanel
           onClose={() => setPanel(null)}
-          settings={settings}
-          setSettings={setSettings}
         />
       )}
       {panel === 'help' && <HelpPanel onClose={() => setPanel(null)} />}

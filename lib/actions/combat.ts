@@ -279,7 +279,7 @@ export const useCombatItemAction = createServerAction()
  * Combat State Management for SSR
  */
 
-import { db } from '@/lib/db'
+import { prisma } from '@/lib/db'
 
 const startCombatSchema = z.object({
   enemyId: z.string(),
@@ -301,13 +301,13 @@ export const startCombatState = createServerAction()
     const session = await auth()
     if (!session?.user?.id) throw new Error('Unauthorized')
 
-    const character = await db.character.findFirst({
+    const character = await prisma.character.findFirst({
       where: { userId: session.user.id },
     })
 
     if (!character) throw new Error('Character not found')
 
-    await db.character.update({
+    await prisma.character.update({
       where: { id: character.id },
       data: {
         inCombat: true,
@@ -331,14 +331,14 @@ export const updateCombatState = createServerAction()
     const session = await auth()
     if (!session?.user?.id) throw new Error('Unauthorized')
 
-    const character = await db.character.findFirst({
+    const character = await prisma.character.findFirst({
       where: { userId: session.user.id },
     })
 
     if (!character) throw new Error('Character not found')
     if (!character.inCombat) throw new Error('Not in combat')
 
-    await db.character.update({
+    await prisma.character.update({
       where: { id: character.id },
       data: {
         combatPlayerHp: input.playerHp,
@@ -357,13 +357,13 @@ export const endCombatState = createServerAction().handler(async () => {
   const session = await auth()
   if (!session?.user?.id) throw new Error('Unauthorized')
 
-  const character = await db.character.findFirst({
+  const character = await prisma.character.findFirst({
     where: { userId: session.user.id },
   })
 
   if (!character) throw new Error('Character not found')
 
-  await db.character.update({
+  await prisma.character.update({
     where: { id: character.id },
     data: {
       inCombat: false,
@@ -385,7 +385,7 @@ export async function getCombatState() {
   const session = await auth()
   if (!session?.user?.id) return null
 
-  const character = await db.character.findFirst({
+  const character = await prisma.character.findFirst({
     where: { userId: session.user.id },
     select: {
       inCombat: true,

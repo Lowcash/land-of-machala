@@ -59,7 +59,7 @@ export function PageTemplate({
     if (onBack) {
       onBack()
     } else if (backUrl) {
-      router.push(backUrl)
+      router.push(backUrl as any)
     }
   }
 
