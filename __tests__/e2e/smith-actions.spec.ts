@@ -1,16 +1,9 @@
 import { test, expect } from '@playwright/test'
+import { loginAsGuest } from './helpers'
 
 test.describe('SmithActions (Zbrojíř)', () => {
   test.beforeEach(async ({ page }) => {
-    // Login and complete onboarding
-    await page.goto('/login')
-    await page.getByRole('button', { name: /Host jako/i }).click()
-    await expect(page).toHaveURL('/onboarding')
-
-    await page.getByRole('button', { name: /Pokračovat/i }).click()
-    await page.getByRole('button', { name: /Lidé/i }).click()
-    await page.getByRole('button', { name: /Bojovník/i }).click()
-    await page.waitForURL('/game')
+    await loginAsGuest(page)
 
     // Navigate to smith
     const smithButton = page.locator('button').filter({ hasText: /Navštívit zbrojíře|zbrojíř/i })

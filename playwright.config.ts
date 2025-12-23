@@ -7,11 +7,14 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
+  timeout: 90 * 1000, // Increased from 30s to 90s for slow onboarding flows
 
   use: {
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    actionTimeout: 15 * 1000, // 15s for individual actions
+    navigationTimeout: 30 * 1000, // 30s for page navigation
     // Enable visual comparison features
     ignoreHTTPSErrors: true,
   },

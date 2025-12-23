@@ -1,17 +1,9 @@
 import { expect, test } from '@playwright/test'
+import { loginAsGuest } from './helpers'
 
 test.describe('Settings Panel', () => {
   test.beforeEach(async ({ page }) => {
-    // Login as guest
-    await page.goto('/login')
-    await page.getByRole('button', { name: /Host jako/i }).click()
-    await expect(page).toHaveURL('/onboarding')
-
-    // Complete onboarding
-    await page.getByRole('button', { name: /Pokračovat/i }).click()
-    await page.getByRole('button', { name: /Lidé/i }).click()
-    await page.getByRole('button', { name: /Bojovník/i }).click()
-    await page.waitForURL('/game')
+    await loginAsGuest(page)
   })
 
   test.describe('Panel Opening and Closing', () => {

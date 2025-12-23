@@ -77,15 +77,24 @@ export function LoginForm() {
       const response = await fetch('/api/auth/guest', {
         method: 'POST',
       })
+      
+      if (!response.ok) {
+        throw new Error('Failed to create guest account')
+      }
+      
       const { email, password } = await response.json()
 
       // Sign in with guest credentials
       const { signIn } = await import('next-auth/react')
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         email,
         password,
         redirect: false,
       })
+
+      if (result?.error) {
+        throw new Error(result.error)
+      }
 
       // Guest users always need to create character
       router.push('/onboarding')
