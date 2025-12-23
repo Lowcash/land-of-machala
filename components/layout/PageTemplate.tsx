@@ -2,9 +2,11 @@
 
 import { GameFooter } from '@/components/features/Game/GameFooter'
 import { GameHeader } from '@/components/features/Game/GameHeader'
+import { SettingsPanel } from '@/components/features/Panels/SettingsPanel'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
+import { useState } from 'react'
 
 interface PageTemplateProps {
   /** Page title */
@@ -43,6 +45,8 @@ export function PageTemplate({
   children,
 }: PageTemplateProps) {
   const router = useRouter()
+  const [showSettings, setShowSettings] = useState(false)
+  
   const maxWidthClass = {
     sm: 'max-w-4xl',
     md: 'max-w-5xl',
@@ -57,6 +61,14 @@ export function PageTemplate({
     } else if (backUrl) {
       router.push(backUrl)
     }
+  }
+
+  const handleOpenSettings = () => {
+    setShowSettings(true)
+  }
+
+  const handleCloseSettings = () => {
+    setShowSettings(false)
   }
 
   return (
@@ -94,6 +106,7 @@ export function PageTemplate({
               subtitle={subtitle}
               onHelp={onHelp}
               onBack={onBack || backUrl ? handleBack : undefined}
+              onSettings={handleOpenSettings}
             />
 
             {/* Main Content Area */}
@@ -104,6 +117,9 @@ export function PageTemplate({
         {/* Footer */}
         <GameFooter />
       </div>
+
+      {/* Settings Panel Overlay */}
+      {showSettings && <SettingsPanel onClose={handleCloseSettings} />}
     </RouteTransition>
   )
 }

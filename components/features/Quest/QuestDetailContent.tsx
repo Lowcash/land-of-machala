@@ -1,4 +1,4 @@
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { CheckCircle, Circle, Coins, MapPin, User, Zap } from 'lucide-react'
 import { useRef } from 'react'
 import { QuestStartButton } from './QuestStartButton'

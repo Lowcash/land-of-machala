@@ -6,6 +6,49 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 21:28 - Settings Panel Integration Complete
+
+**Type:** Feature
+**Scope:** Settings panel, GameHeader, PageTemplate
+**Impact:** ✅ Settings panel now accessible from all pages via header menu
+
+### Added
+
+- **Settings Panel Integration:** Wired SettingsPanel to GameHeader settings button
+  - Added `onSettings` prop to GameHeaderProps interface
+  - PageTemplate manages `showSettings` state
+  - Settings button in header dropdown calls `onSettings()` callback
+  - SettingsPanel renders as overlay when state is true
+  - E2E test suite created (`__tests__/e2e/settings.spec.ts`)
+
+### Changed
+
+- **GameHeader.tsx:** Added `onSettings?: () => void` prop and wiring
+  - Settings menu button now functional (previously static UI)
+  - Dropdown closes automatically when settings opens
+  
+- **PageTemplate.tsx:** Added settings state management
+  - `useState` for showSettings
+  - `handleOpenSettings` / `handleCloseSettings` handlers
+  - Passes `onSettings` callback to GameHeader
+  - Renders SettingsPanel conditionally
+
+### Fixed
+
+- **QuestDetailContent.tsx:** Fixed ScrollIndicator import path
+  - Changed `@/components/ui/scroll-indicator` → `@/components/ui/ScrollIndicator`
+  - Resolves "Module not found" build error
+
+### Tests
+
+- Created 6 E2E tests for settings panel functionality
+  - Open settings from header menu
+  - Close with X button
+  - Open from character/skills pages
+  - Verify dropdown closes on settings open
+
+---
+
 ## 2025-12-23 20:56 - UI/UX Standardization Phase 2 Complete
 
 **Type:** Refactor
