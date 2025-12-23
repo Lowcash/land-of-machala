@@ -1,0 +1,5 @@
+
+Running 489 tests using 2 workers
+
+  ✘    1 [chromium] › __tests__/e2e/accessibility.spec.ts:17:9 › Accessibility (A11y) › Keyboard Navigation › can navigate footer with Tab key (30.2s)
+  ✘    2 [chromium] › __tests__/e2e/accessibility.spec.ts:35:9 › Accessibility (A11y) › Keyboard Navigation › can activate buttons with Enter and Space (30.2s)
