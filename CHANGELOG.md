@@ -6,6 +6,41 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 21:32 - Accessibility Improvements (ARIA + Keyboard Navigation)
+
+**Type:** Feature
+**Scope:** GameHeader, SettingsPanel, NotificationProvider
+**Impact:** ✅ Enhanced accessibility for screen readers and keyboard-only users
+
+### Added
+
+- **ARIA Labels:** Comprehensive screen reader support
+  - GameHeader back button: `aria-label="Zpět na předchozí stránku"`
+  - Settings menu trigger: `aria-label="Otevřít menu nastavení"`, `aria-expanded`, `aria-haspopup="menu"`
+  - Settings dropdown: `role="menu"`, `aria-label="Menu nastavení"`
+  - All menu items: `role="menuitem"` with descriptive `aria-label`
+  - SettingsPanel: `role="dialog"`, `aria-modal="true"`, `aria-labelledby="settings-title"`
+  - Notifications: `role="alert"`, `aria-live="polite"`, `aria-atomic="true"`
+
+- **Keyboard Navigation:**
+  - All interactive elements: `focus-visible:ring-2 focus-visible:ring-[#ffd700]`
+  - SettingsPanel: Escape key closes modal
+  - Menu items: `focus-visible:outline-none` + bg-black/60 highlight
+
+### Changed
+
+- **GameHeader.tsx:** Added ARIA attributes and focus styles to all buttons/menu items
+- **SettingsPanel.tsx:** Added dialog role, keyboard handler for Escape key
+- **NotificationProvider.tsx:** Added alert role and live region for screen readers
+
+### Testing
+
+- Manual keyboard navigation verified (Tab, Enter, Escape)
+- Screen reader compatibility (role, aria-label, aria-live)
+- Focus indicators visible on all interactive elements
+
+---
+
 ## 2025-12-23 21:28 - Settings Panel Integration Complete
 
 **Type:** Feature
