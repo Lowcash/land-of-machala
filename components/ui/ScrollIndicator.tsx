@@ -25,13 +25,14 @@ export function ScrollIndicator({
       const { scrollTop, scrollHeight, clientHeight } = element
       const isAtTop = scrollTop === 0
       const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 5
+      const hasOverflow = scrollHeight > clientHeight
 
       if (position === 'top' || position === 'both') {
-        setShowTop(!isAtTop && scrollTop > 20)
+        setShowTop(hasOverflow && !isAtTop && scrollTop > 5)
       }
 
       if (position === 'bottom' || position === 'both') {
-        setShowBottom(!isAtBottom && scrollHeight > clientHeight)
+        setShowBottom(hasOverflow && !isAtBottom)
       }
     }
 

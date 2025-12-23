@@ -19,9 +19,9 @@ export async function CombatPanel() {
     id: invItem.id,
     name: invItem.item.name,
     type: invItem.item.type.toLowerCase(),
-    icon: null, // Icons will be handled in client component or mapped here if possible
-    attack: invItem.item.attack || 0,
-    defense: invItem.item.defense || 0,
+    iconName: invItem.item.iconName,
+    attack: invItem.item.strength, // Mapping strength to attack for now
+    defense: invItem.item.stamina, // Mapping stamina to defense for now
     magic: invItem.item.magic || 0,
     speed: invItem.item.speed || 0,
     healing: invItem.item.healing || 0,

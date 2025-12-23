@@ -3,6 +3,7 @@
 import { GameFooter } from '@/components/features/Game/GameFooter'
 import { GameHeader } from '@/components/features/Game/GameHeader'
 import { RouteTransition } from '@/components/layout/RouteTransition'
+import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 interface PageTemplateProps {
@@ -16,6 +17,10 @@ interface PageTemplateProps {
   backgroundImage?: string
   /** Callback when help is clicked */
   onHelp?: () => void
+  /** Callback when back is clicked */
+  onBack?: () => void
+  /** URL to navigate back to (alternative to onBack) */
+  backUrl?: string
   /** Max width constraint for content */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** Main content */
@@ -32,9 +37,12 @@ export function PageTemplate({
   icon,
   backgroundImage,
   onHelp,
+  onBack,
+  backUrl,
   maxWidth = 'lg',
   children,
 }: PageTemplateProps) {
+  const router = useRouter()
   const maxWidthClass = {
     sm: 'max-w-4xl',
     md: 'max-w-5xl',
@@ -42,6 +50,14 @@ export function PageTemplate({
     xl: 'max-w-7xl',
     full: 'max-w-none',
   }[maxWidth]
+
+  const handleBack = () => {
+    if (onBack) {
+      onBack()
+    } else if (backUrl) {
+      router.push(backUrl)
+    }
+  }
 
   return (
     <RouteTransition>
@@ -72,7 +88,13 @@ export function PageTemplate({
         <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
           <div className={`w-full ${maxWidthClass} mx-auto flex flex-1 flex-col overflow-hidden`}>
             {/* Header */}
-            <GameHeader icon={icon} title={title} subtitle={subtitle} onHelp={onHelp} />
+            <GameHeader
+              icon={icon}
+              title={title}
+              subtitle={subtitle}
+              onHelp={onHelp}
+              onBack={onBack || backUrl ? handleBack : undefined}
+            />
 
             {/* Main Content Area */}
             {children}

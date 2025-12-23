@@ -6,7 +6,11 @@ test.describe('Visual Regression Tests', () => {
     await page.goto('/login')
     await page.fill('input[type="text"]', 'test@example.com')
     await page.fill('input[type="password"]', 'password123')
-    await page.click('button[type="submit"]')
+
+    const submitButton = page.locator('button[type="submit"]')
+    await expect(submitButton).toBeEnabled()
+    await submitButton.click()
+
     await page.waitForURL('/game')
   })
 

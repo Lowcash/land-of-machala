@@ -1,6 +1,8 @@
 'use client'
 
 import { RouteTransition } from '@/components/layout/RouteTransition'
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { useNotification } from '@/components/providers/NotificationProvider'
 import {
   Activity,
   ArrowRight,
@@ -22,7 +24,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 type Race = 'human' | 'dwarf' | 'elf' | 'orc' | 'halfling' | 'dragonborn'
 type Class = 'warrior' | 'mage' | 'rogue' | 'paladin' | 'ranger' | 'necromancer'
@@ -39,6 +41,7 @@ type StoryStep = {
 
 export function OnboardingForm() {
   const router = useRouter()
+  const { showNotification } = useNotification()
   const [step, setStep] = useState<'intro' | 'creation'>('intro')
   const [storyIndex, setStoryIndex] = useState(0)
 
@@ -46,6 +49,9 @@ export function OnboardingForm() {
   const [name, setName] = useState('')
   const [race, setRace] = useState<Race>('human')
   const [characterClass, setCharacterClass] = useState<Class>('warrior')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const classScrollRef = useRef<HTMLDivElement>(null)
 
   const storySteps: StoryStep[] = [
     {
@@ -258,8 +264,9 @@ export function OnboardingForm() {
   }
 
   const handleStart = async () => {
-    if (!name.trim()) return
+    if (!name.trim() || isLoading) return
 
+    setIsLoading(true)
     try {
       // Create character in database
       const response = await fetch('/api/character/create', {
@@ -275,14 +282,33 @@ export function OnboardingForm() {
 
       if (!response.ok) {
         const error = await response.json()
-        alert(error.error || 'Nepodařilo se vytvořit postavu')
+        showNotification({
+          variant: 'error',
+          title: 'Chyba vytváření postavy',
+          description: error.error || 'Nepodařilo se vytvořit postavu',
+        })
+        setIsLoading(false)
         return
       }
 
-      router.push('/game')
+      showNotification({
+        variant: 'success',
+        title: 'Postava vytvořena!',
+        description: `Vítej v zemi Machala, ${name}!`,
+      })
+
+      // Small delay to show notification
+      setTimeout(() => {
+        router.push('/game')
+      }, 500)
     } catch (error) {
       console.error('Character creation error:', error)
-      alert('Došlo k chybě při vytváření postavy')
+      showNotification({
+        variant: 'error',
+        title: 'Chyba',
+        description: 'Došlo k chybě při vytváření postavy',
+      })
+      setIsLoading(false)
     }
   }
 
@@ -309,6 +335,7 @@ export function OnboardingForm() {
 
         {/* Story Content */}
         <div className="relative z-10 flex flex-1 flex-col items-center justify-center p-4">
+          <ScrollIndicator position="down" />
           <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
@@ -324,7 +351,8 @@ export function OnboardingForm() {
                 <button
                   key={idx}
                   onClick={() => handleStoryChoice(choice)}
-                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-4 text-lg text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700]"
+                  disabled={isLoading}
+                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-sm text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-base md:text-lg"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -339,9 +367,9 @@ export function OnboardingForm() {
 
             <button
               onClick={skipTutorial}
-              className="mx-auto mt-8 flex items-center justify-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#ffd700]"
+              className="mx-auto mt-8 flex items-center justify-center gap-2 text-xs text-[#8b7355] transition-colors hover:text-[#ffd700] sm:text-sm"
             >
-              <SkipForward className="h-4 w-4" />
+              <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />
               Přeskočit úvod (Jsem zkušený hráč)
             </button>
           </div>
@@ -648,153 +676,165 @@ export function OnboardingForm() {
                     )
                   })}
                 </div>
-                <div className="scrollbar-custom relative min-h-0 flex-1 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
-                  <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
-                    {selectedClass.desc}
-                  </p>
-
-                  {/* Class Type Badge */}
-                  <div className="mb-2">
-                    <span
-                      className={`inline-block rounded border px-2 py-0.5 text-[9px] sm:text-[10px] ${
-                        ['mage', 'necromancer'].includes(selectedClass.id)
-                          ? 'border-[#c084fc] bg-[#c084fc]/20 text-[#c084fc]'
-                          : ['warrior', 'paladin'].includes(selectedClass.id)
-                            ? 'border-[#ff6b6b] bg-[#ff6b6b]/20 text-[#ff6b6b]'
-                            : 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700]'
-                      }`}
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {['mage', 'necromancer'].includes(selectedClass.id)
-                        ? 'Kouzlící'
-                        : ['warrior', 'paladin'].includes(selectedClass.id)
-                          ? 'Tank'
-                          : 'Hybrid'}
-                    </span>
-                  </div>
-
-                  {/* Class Stat Modifiers with bars */}
-                  <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-                    <p
-                      className="mb-1 text-[10px] text-[#ffd700]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Bonusy povolání:
+                <div className="relative min-h-0 flex-1 overflow-hidden rounded border border-[#8b6f47] bg-black/60">
+                  <ScrollIndicator targetRef={classScrollRef} position="both" />
+                  <div
+                    ref={classScrollRef}
+                    className="scrollbar-custom h-full max-h-[200px] overflow-y-auto p-2 sm:p-3"
+                  >
+                    <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
+                      {selectedClass.desc}
                     </p>
 
-                    {/* Strength */}
-                    {selectedClass.statMod.strength !== 0 && (
-                      <div className="space-y-0.5">
-                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                          <div className="flex items-center gap-1">
-                            <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
-                            <span className="text-[#d4a574]">Síla</span>
-                          </div>
-                          <span
-                            className={
-                              selectedClass.statMod.strength > 0
-                                ? 'text-[#6fbf6f]'
-                                : 'text-[#ff6b6b]'
-                            }
-                          >
-                            {selectedClass.statMod.strength > 0 ? '+' : ''}
-                            {selectedClass.statMod.strength}
-                          </span>
-                        </div>
-                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                          <div
-                            className={`h-full ${selectedClass.statMod.strength > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                            style={{ width: `${Math.abs(selectedClass.statMod.strength) * 8}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    )}
+                    {/* Class Type Badge */}
+                    <div className="mb-2">
+                      <span
+                        className={`inline-block rounded border px-2 py-0.5 text-[9px] sm:text-[10px] ${
+                          ['mage', 'necromancer'].includes(selectedClass.id)
+                            ? 'border-[#c084fc] bg-[#c084fc]/20 text-[#c084fc]'
+                            : ['warrior', 'paladin'].includes(selectedClass.id)
+                              ? 'border-[#ff6b6b] bg-[#ff6b6b]/20 text-[#ff6b6b]'
+                              : 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700]'
+                        }`}
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        {['mage', 'necromancer'].includes(selectedClass.id)
+                          ? 'Kouzlící'
+                          : ['warrior', 'paladin'].includes(selectedClass.id)
+                            ? 'Tank'
+                            : 'Hybrid'}
+                      </span>
+                    </div>
 
-                    {/* Intelligence */}
-                    {selectedClass.statMod.intelligence !== 0 && (
-                      <div className="space-y-0.5">
-                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                          <div className="flex items-center gap-1">
-                            <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
-                            <span className="text-[#d4a574]">Inteligence</span>
-                          </div>
-                          <span
-                            className={
-                              selectedClass.statMod.intelligence > 0
-                                ? 'text-[#6fbf6f]'
-                                : 'text-[#ff6b6b]'
-                            }
-                          >
-                            {selectedClass.statMod.intelligence > 0 ? '+' : ''}
-                            {selectedClass.statMod.intelligence}
-                          </span>
-                        </div>
-                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                          <div
-                            className={`h-full ${selectedClass.statMod.intelligence > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                            style={{
-                              width: `${Math.abs(selectedClass.statMod.intelligence) * 8}%`,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    )}
+                    {/* Class Stat Modifiers with bars */}
+                    <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
+                      <p
+                        className="mb-1 text-[10px] text-[#ffd700]"
+                        style={{ fontFamily: 'var(--font-fantasy)' }}
+                      >
+                        Bonusy povolání:
+                      </p>
 
-                    {/* Agility */}
-                    {selectedClass.statMod.agility !== 0 && (
-                      <div className="space-y-0.5">
-                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                          <div className="flex items-center gap-1">
-                            <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
-                            <span className="text-[#d4a574]">Obratnost</span>
+                      {/* Strength */}
+                      {selectedClass.statMod.strength !== 0 && (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                            <div className="flex items-center gap-1">
+                              <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                              <span className="text-[#d4a574]">Síla</span>
+                            </div>
+                            <span
+                              className={
+                                selectedClass.statMod.strength > 0
+                                  ? 'text-[#6fbf6f]'
+                                  : 'text-[#ff6b6b]'
+                              }
+                            >
+                              {selectedClass.statMod.strength > 0 ? '+' : ''}
+                              {selectedClass.statMod.strength}
+                            </span>
                           </div>
-                          <span
-                            className={
-                              selectedClass.statMod.agility > 0
-                                ? 'text-[#6fbf6f]'
-                                : 'text-[#ff6b6b]'
-                            }
-                          >
-                            {selectedClass.statMod.agility > 0 ? '+' : ''}
-                            {selectedClass.statMod.agility}
-                          </span>
+                          <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                            <div
+                              className={`h-full ${selectedClass.statMod.strength > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                              style={{
+                                width: `${Math.abs(selectedClass.statMod.strength) * 8}%`,
+                              }}
+                            ></div>
+                          </div>
                         </div>
-                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                          <div
-                            className={`h-full ${selectedClass.statMod.agility > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                            style={{ width: `${Math.abs(selectedClass.statMod.agility) * 8}%` }}
-                          ></div>
-                        </div>
-                      </div>
-                    )}
+                      )}
 
-                    {/* Stamina */}
-                    {selectedClass.statMod.stamina !== 0 && (
-                      <div className="space-y-0.5">
-                        <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
-                          <div className="flex items-center gap-1">
-                            <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
-                            <span className="text-[#d4a574]">Výdrž</span>
+                      {/* Intelligence */}
+                      {selectedClass.statMod.intelligence !== 0 && (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                            <div className="flex items-center gap-1">
+                              <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
+                              <span className="text-[#d4a574]">Inteligence</span>
+                            </div>
+                            <span
+                              className={
+                                selectedClass.statMod.intelligence > 0
+                                  ? 'text-[#6fbf6f]'
+                                  : 'text-[#ff6b6b]'
+                              }
+                            >
+                              {selectedClass.statMod.intelligence > 0 ? '+' : ''}
+                              {selectedClass.statMod.intelligence}
+                            </span>
                           </div>
-                          <span
-                            className={
-                              selectedClass.statMod.stamina > 0
-                                ? 'text-[#6fbf6f]'
-                                : 'text-[#ff6b6b]'
-                            }
-                          >
-                            {selectedClass.statMod.stamina > 0 ? '+' : ''}
-                            {selectedClass.statMod.stamina}
-                          </span>
+                          <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                            <div
+                              className={`h-full ${selectedClass.statMod.intelligence > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                              style={{
+                                width: `${Math.abs(selectedClass.statMod.intelligence) * 8}%`,
+                              }}
+                            ></div>
+                          </div>
                         </div>
-                        <div className="h-1 overflow-hidden rounded-full bg-black/60">
-                          <div
-                            className={`h-full ${selectedClass.statMod.stamina > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
-                            style={{ width: `${Math.abs(selectedClass.statMod.stamina) * 8}%` }}
-                          ></div>
+                      )}
+
+                      {/* Agility */}
+                      {selectedClass.statMod.agility !== 0 && (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                            <div className="flex items-center gap-1">
+                              <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
+                              <span className="text-[#d4a574]">Obratnost</span>
+                            </div>
+                            <span
+                              className={
+                                selectedClass.statMod.agility > 0
+                                  ? 'text-[#6fbf6f]'
+                                  : 'text-[#ff6b6b]'
+                              }
+                            >
+                              {selectedClass.statMod.agility > 0 ? '+' : ''}
+                              {selectedClass.statMod.agility}
+                            </span>
+                          </div>
+                          <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                            <div
+                              className={`h-full ${selectedClass.statMod.agility > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                              style={{
+                                width: `${Math.abs(selectedClass.statMod.agility) * 8}%`,
+                              }}
+                            ></div>
+                          </div>
                         </div>
-                      </div>
-                    )}
+                      )}
+
+                      {/* Stamina */}
+                      {selectedClass.statMod.stamina !== 0 && (
+                        <div className="space-y-0.5">
+                          <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                            <div className="flex items-center gap-1">
+                              <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
+                              <span className="text-[#d4a574]">Výdrž</span>
+                            </div>
+                            <span
+                              className={
+                                selectedClass.statMod.stamina > 0
+                                  ? 'text-[#6fbf6f]'
+                                  : 'text-[#ff6b6b]'
+                              }
+                            >
+                              {selectedClass.statMod.stamina > 0 ? '+' : ''}
+                              {selectedClass.statMod.stamina}
+                            </span>
+                          </div>
+                          <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                            <div
+                              className={`h-full ${selectedClass.statMod.stamina > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                              style={{
+                                width: `${Math.abs(selectedClass.statMod.stamina) * 8}%`,
+                              }}
+                            ></div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                   {/* Scroll hint gradient */}
                   <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -805,16 +845,25 @@ export function OnboardingForm() {
             {/* Start Button */}
             <button
               onClick={handleStart}
-              disabled={!name.trim()}
+              disabled={!name.trim() || isLoading}
               className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 py-3 shadow-2xl transition-all sm:gap-3 sm:py-4 ${
-                name.trim()
+                name.trim() && !isLoading
                   ? 'cursor-pointer border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d]'
                   : 'cursor-not-allowed border-[#8b6f47] bg-black/60 opacity-50'
               }`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
-              <span className="text-base text-white sm:text-xl">Vstoupit do hry</span>
-              <ArrowRight className="h-5 w-5 text-white sm:h-6 sm:w-6" />
+              {isLoading ? (
+                <>
+                  <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#ffd700] border-t-transparent sm:h-6 sm:w-6" />
+                  <span className="text-sm text-white sm:text-base md:text-lg">Vytvářím hrdinu...</span>
+                </>
+              ) : (
+                <>
+                  <span className="text-sm text-white sm:text-base md:text-lg">Vstoupit do hry</span>
+                  <ArrowRight className="h-4 w-4 text-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                </>
+              )}
             </button>
           </div>
         </div>

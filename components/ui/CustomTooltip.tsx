@@ -10,18 +10,23 @@ interface TooltipProps {
   delay?: number
 }
 
-export function Tooltip({ content, children, position = 'top', delay = 300 }: TooltipProps) {
+export function Tooltip({ content, children, position = 'top', delay = 0 }: TooltipProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [coords, setCoords] = useState({ x: 0, y: 0 })
+  const [isPositioned, setIsPositioned] = useState(false)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null)
   const triggerRef = useRef<HTMLDivElement>(null)
   const tooltipRef = useRef<HTMLDivElement>(null)
 
   const handleMouseEnter = () => {
     if (timeoutRef.current) clearTimeout(timeoutRef.current)
-    timeoutRef.current = setTimeout(() => {
+    if (delay === 0) {
       setIsVisible(true)
-    }, delay)
+    } else {
+      timeoutRef.current = setTimeout(() => {
+        setIsVisible(true)
+      }, delay)
+    }
   }
 
   const handleMouseLeave = () => {
@@ -72,6 +77,7 @@ export function Tooltip({ content, children, position = 'top', delay = 300 }: To
     y = Math.max(8, Math.min(y, window.innerHeight - tooltipRect.height - 8))
 
     setCoords({ x, y })
+    setIsPositioned(true)
   }, [position])
 
   useEffect(() => {
@@ -83,6 +89,8 @@ export function Tooltip({ content, children, position = 'top', delay = 300 }: To
         window.removeEventListener('scroll', updatePosition, true)
         window.removeEventListener('resize', updatePosition)
       }
+    } else {
+      setIsPositioned(false)
     }
   }, [isVisible, updatePosition])
 
@@ -106,7 +114,7 @@ export function Tooltip({ content, children, position = 'top', delay = 300 }: To
       {isVisible && (
         <div
           ref={tooltipRef}
-          className="animate-in fade-in zoom-in-95 pointer-events-none fixed z-9999 duration-150"
+          className={`pointer-events-none fixed z-9999 transition-opacity duration-75 ${isPositioned ? 'opacity-100' : 'opacity-0'}`}
           style={{
             left: `${coords.x}px`,
             top: `${coords.y}px`,

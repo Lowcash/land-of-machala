@@ -1,6 +1,6 @@
 'use client'
 
-import { toast } from '@/components/ui/use-toast'
+import { useNotification } from '@/components/providers/NotificationProvider'
 import { increaseSkillRankAction } from '@/lib/actions/skill'
 import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -25,6 +25,7 @@ export function SkillUpgradeButton({
 }: SkillUpgradeButtonProps) {
   const [isUpgrading, setIsUpgrading] = useState(false)
   const router = useRouter()
+  const { showNotification } = useNotification()
 
   const handleUpgrade = async () => {
     if (!canUpgrade || isUpgrading) return
@@ -38,13 +39,13 @@ export function SkillUpgradeButton({
       })
 
       if (error) {
-        toast({
+        showNotification({
           variant: 'error',
           title: 'Chyba při upgradu',
           description: error.message || 'Nepodařilo se upgradovat dovednost',
         })
       } else if (result?.success) {
-        toast({
+        showNotification({
           variant: 'success',
           title: 'Dovednost upgradována!',
           description: `${skillName} byl úspěšně vylepšen`,
@@ -54,7 +55,7 @@ export function SkillUpgradeButton({
         router.refresh()
       }
     } catch (err) {
-      toast({
+      showNotification({
         variant: 'error',
         title: 'Chyba',
         description: 'Něco se pokazilo při upgradu dovednosti',
@@ -66,7 +67,7 @@ export function SkillUpgradeButton({
 
   if (maxed) {
     return (
-      <div className="flex items-center justify-center gap-2 py-2 text-[#6fbf6f]">
+      <div className="flex items-center justify-center gap-2 py-2 sm:py-3 text-[#6fbf6f]">
         <Check className="h-4 w-4" />
         <span className="text-sm">Maximální level</span>
       </div>
@@ -77,7 +78,7 @@ export function SkillUpgradeButton({
     <button
       onClick={handleUpgrade}
       disabled={!canUpgrade || isUpgrading}
-      className={`w-full rounded border-2 py-2 transition-all ${
+      className={`w-full rounded border-2 py-2 sm:py-3 min-h-touch-target sm:min-h-0 transition-all ${
         canUpgrade && !isUpgrading
           ? 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700] hover:bg-[#ffd700]/30'
           : 'cursor-not-allowed border-[#8b6f47]/30 bg-black/40 text-[#8b7355]'

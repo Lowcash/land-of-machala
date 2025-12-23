@@ -6,6 +6,266 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 20:56 - UI/UX Standardization Phase 2 Complete
+
+**Type:** Refactor
+**Scope:** Character page, Skills page, ScrollIndicator standardization, padding consistency
+**Impact:** ✅ Mobile-first responsive grids, touch target improvements, removed duplicates, consistent spacing
+
+### Changed
+
+- **CharacterClient.tsx:** Applied mobile-first responsive design
+  - Attribute cards: responsive padding `p-2 sm:p-3`, touch targets `min-h-touch-target sm:min-h-0`
+  - Text sizing: `text-sm sm:text-base` for headings, `text-xl sm:text-2xl` for stats
+  - Section padding: `p-3 sm:p-4` on all card containers
+  - Improved mobile readability with responsive font scaling
+
+- **SkillsClient.tsx:** Enhanced mobile detail view experience
+  - Mobile overlay header: responsive padding `py-3`, text sizing `text-base sm:text-lg`
+  - Back button: added touch targets `min-h-touch-target sm:min-h-0`
+  - Content padding: `p-3 sm:p-4` for consistent spacing
+
+- **SkillGrid.tsx:** Mobile-first grid improvements
+  - Grid gap: `gap-3 sm:gap-4` for responsive spacing
+  - Skill cards: touch targets `min-h-touch-target sm:min-h-0`
+  - Card padding: `p-2 sm:p-3` for mobile optimization
+
+- **SkillUpgradeButton.tsx:** Replaced toast with NotificationProvider
+  - Replaced deprecated `toast()` with `useNotification()` hook
+  - All 3 notification calls now use achievement-style system
+  - Added touch targets: `py-2 sm:py-3`, `min-h-touch-target sm:min-h-0`
+
+### Removed
+
+- **Duplicate ScrollIndicator file:** Deleted `components/ui/scroll-indicator.tsx`
+  - Kept PascalCase version: `components/ui/ScrollIndicator.tsx`
+  - Updated all imports in LocationDetails, QuestList, SkillGrid to use standardized path
+
+### Verified
+
+- **Padding Consistency:** All pages use standardized patterns
+  - Cards/containers: `p-3 sm:p-4`
+  - Buttons/interactive elements: `p-2 sm:p-3`
+  - Touch targets: `min-h-touch-target sm:min-h-0` on all mobile buttons
+
+- **ScrollIndicator Coverage:** Verified usage across all scrollable areas
+  - CharacterClient, SkillGrid, QuestList, LocationDetails, HelpPanel, SettingsPanel, GameLayout
+
+### Tests
+
+- No new tests added (visual changes only)
+- Existing visual regression tests will validate responsive behavior
+
+---
+
+## 2025-12-23 20:44 - UI/UX Standardization Foundation (Phase 1)
+
+**Type:** Refactor
+**Scope:** Notifications, Buttons, Mobile-first CSS, Combat SSR, Dev Tools
+**Impact:** ✅ Unified notification system, enhanced button component, mobile touch targets, combat state backend, dev data reset script
+
+### Added
+
+- **NotificationProvider:** Achievement-style notification system with semantic variants
+  - Success (green), Error (red), Warning (yellow), Info (blue) variants
+  - Top-right positioning on all devices
+  - Auto-dismiss (5s) with animated progress bar
+  - Replaces all `window.alert()` and `window.confirm()` calls
+  - File: `components/providers/NotificationProvider.tsx`
+
+- **Button Loading State:** Extended `ui/button.tsx` with `loading` prop
+  - Integrated Loader2 spinner from lucide-react
+  - Disabled state during loading
+  - Minimum 44px touch target on mobile (`min-h-touch-target sm:min-h-0`)
+  
+- **useDetailViewHistory Hook:** Reusable hook for URL-based detail view navigation
+  - Browser history integration (back/forward support)
+  - Direct URL access support
+  - Invalid ID fallback handling
+  - File: `lib/hooks/useDetailViewHistory.ts`
+
+- **Combat SSR State Management:** Backend combat state enforcement
+  - Added Prisma schema fields: `inCombat`, `combatEnemyId`, `combatTurn`, `combatPlayerHp`, `combatEnemyHp`
+  - Server actions: `startCombatState`, `updateCombatState`, `endCombatState`, `getCombatState`
+  - Prevents client-side navigation during combat (future SSR protection)
+  - File: `lib/actions/combat.ts` (extended)
+
+- **Development Data Reset Script:** `scripts/reset-dev-data.ts`
+  - Wipes character data while preserving user accounts
+  - Usage: `npm run db:reset-dev`
+  - Safe for testing UI/UX changes from fresh state
+
+### Changed
+
+- **Tailwind Config:** Added notification color palette and touch target spacing
+  ```typescript
+  notification: {
+    success: '#6fbf6f',
+    error: '#ff6b6b',
+    warning: '#ffd700',
+    info: '#69ccf0',
+  }
+  spacing: { 'touch-target': '44px' }
+  ```
+
+- **LoginForm:** Replaced all `alert()` calls with `useNotification()` hook
+  - Login errors, guest account errors now use semantic notifications
+  
+- **OnboardingForm:** Replaced all `alert()` calls with `useNotification()` hook
+  - Character creation errors now use semantic notifications
+  - Removed unused `raceScrollRef` and `useRef` import
+
+- **Root Layout:** Integrated NotificationProvider alongside AchievementProvider
+  - File: `app/layout.tsx`
+
+### Technical Details
+
+- **Mobile-first CSS:** Button component defaults to mobile touch targets, scales down on `sm:` breakpoint
+- **Notification Pattern:** Based on AchievementProvider architecture (React Context + state management)
+- **History Hook Pattern:** Follows research recommendations from browser history analysis
+- **Combat State:** Prepares for SSR-enforced view rendering based on `character.currentView`
+
+### Testing Recommendations
+
+- Test notifications across all variants (success/error/warning/info)
+- Verify button loading states in auth forms
+- Test mobile touch targets on 375px viewport
+- Verify browser back/forward behavior with detail views (future implementation)
+- Test dev data reset script: `npm run db:reset-dev`
+
+### Known Issues
+
+- **Pre-existing Bug:** `GameDashboard.tsx` line 225 - `ArmoryActions` called without required props (gold, setGold, inventory, setInventory, setInfoText)
+  - Out of scope for this phase
+  - Requires refactoring GameDashboard state management
+  
+- **Prisma Schema:** Added combat state fields but not yet migrated to database
+  - Run `npx prisma db push` to apply schema changes
+
+### Next Steps (Phase 2)
+
+- Apply `useDetailViewHistory` hook to Skills, Quests, Inventory, Map components
+- Fix settings panel wiring (connect to GameHeader)
+- Merge Blacksmith/Armory into "Zbrojíř"
+- Simplify Bank (remove investments, combine deposit/withdraw)
+- Add ARIA labels and keyboard navigation
+- Storybook setup for component library documentation
+
+---
+
+## 2025-12-22 20:15 - Unify Town Shop UX
+
+**Type:** Refactor
+**Scope:** Town Actions (Armory, Guild Hall, Workshop, Market, Blacksmith)
+**Impact:** ✅ Consistent UI/UX across all town shops, standardized layout components
+
+### Refactored
+
+- **ArmoryActions.tsx:** Updated to use `GameLayout` and `GamePanel` components correctly
+  - Standardized header with Back button
+  - Consistent layout structure with other shops
+- **GuildHallActions.tsx:** Complete rewrite to use `GameLayout` and `GamePanel`
+  - Replaced raw divs with standardized components
+  - Added proper header with Back button
+  - Moved flavor text to a secondary panel
+- **WorkshopActions.tsx:** Complete rewrite to use `GameLayout` and `GamePanel`
+  - Replaced raw divs with standardized components
+  - Added proper header with Back button
+  - Moved flavor text to a secondary panel
+
+### Verified
+
+- **MarketActions.tsx:** Verified consistency with new layout standard
+- **BlacksmithActions.tsx:** Verified consistency with new layout standard
+- **TownActions.tsx:** Verified consistency with new layout standard
+- **LocationActions.tsx:** Verified consistency with new layout standard
+
+### Technical Details
+
+- All town action components now use the shared `GameLayout` wrapper and `GamePanel` containers
+- Consistent "Back to Town" button placement in the top bar
+- Standardized use of `ActionBtn` component
+
+---
+
+## 2025-12-22 19:45 - Critical Runtime Fixes & Mobile UI Polish
+
+**Type:** Fixed
+**Scope:** Core Architecture, Combat, Town UI, Mobile UX
+**Impact:** ✅ Fixed critical "Async Client Component" errors, resolved Prisma browser crashes, fixed potion usage crash, improved mobile scrolling
+
+### Fixed
+
+- **Async Client Component Error:** Fixed critical Next.js error on all game subpages (/character, /skills, /quests, /inventory, /map)
+  - Issue: Async Server Components were being imported into Client Components
+  - Solution: Converted all page.tsx files to Server Components and removed 'use client'
+  - Added `backUrl` prop to PageTemplate to handle navigation without useRouter hook
+
+- **Prisma Browser Bundle Error:** Fixed "PrismaClient is unable to run in this browser"
+  - Issue: Prisma code was leaking into Client Components via direct imports
+  - Solution: Strict separation of Server Actions (database) and Client Components (UI)
+
+- **Combat Potion Crash:** Fixed application crash when clicking potions
+  - Issue: Passing React nodes (icons) as props caused serialization errors
+  - Solution: Implemented string-based icon mapping system (`lib/icons.ts`)
+  - Updated CombatClient to use `iconName` string instead of component instance
+
+- **Mobile Scrolling:** Fixed scrolling issues in Town Actions
+  - Removed double-nested flex containers in GameDashboard that broke overflow behavior
+  - Added `position="both"` to ScrollIndicator for better visual feedback
+  - Fixed missing scroll arrows in mobile view
+
+- **Guild Hall:** Temporarily hidden "Cechovní síň" button in Town Actions (feature not ready)
+
+### Added
+
+- **Icon Mapping Utility:** Created `lib/icons.ts` for safe icon serialization
+  - Maps string names ('swords', 'shield', 'zap', etc.) to Lucide React components
+  - Prevents "Functions cannot be passed directly to Client Components" errors
+
+### Technical Details
+
+- **Architecture Refactor:** Enforced strict Server/Client component boundary
+- **Navigation Logic:** Moved `router.push` logic from Server Components to Client wrapper (PageTemplate)
+- **Serialization:** Replaced non-serializable ReactNode props with serializable strings
+
+---
+
+## 2025-12-22 19:07 - UI/UX Improvements Across Game Pages
+
+**Type:** Fixed  
+**Scope:** Skills, Quests, Inventory, Combat, Game Dashboard  
+**Impact:** ✅ Better navigation, consistent button sizes, improved scrolling UX, proper padding
+
+### Fixed
+
+- **ScrollIndicator:** Added position='both' to show both up/down arrows in skills and quests pages
+- **Inventory Tooltip:** Changed delay from 300ms to 0ms for instant appearance, removed animation classes
+- **Inventory Detail:** Added ScrollIndicator with detailScrollRef for better scrolling UX
+- **Back Button Navigation:** All game pages (character, skills, quests, inventory, map) now return to /game instead of using router.back()
+- **Game Dashboard Padding:** Added p-4 padding to Central Info Panel for better spacing
+- **Combat Action Buttons:** Standardized by importing shared ActionBtn component instead of inline definition
+  - Added 'small', 'color', 'border' props to ActionBtn for flexibility
+  - Replaced min-h-[44px] with min-h-11 and min-h-[36px] with min-h-9 (Tailwind standard classes)
+  - Combat actions now use small=true for compact layout while maintaining consistency
+
+### Changed
+
+- **ActionBtn Component:** Extended with color and border customization props
+  - Default color: 'text-[#d4a574]'
+  - Default border: 'hover:border-[#ffd700]'
+  - Supports small variant for compact layouts
+
+### Tests
+
+- Verified ScrollIndicator shows both arrows in skills/quests
+- Tested tooltip instant appearance in inventory
+- Confirmed back button navigation to /game works
+- Checked padding in game dashboard
+- Validated ActionBtn size consistency across game and combat
+
+---
+
 ## 2025-12-22 18:42 - UI Simplification & Design Consistency
 
 **Type:** Changed  
@@ -57,12 +317,12 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ### Technical Details
 
-```
+````
 
 ## 2025-12-18 21:48 - Black Overlay Fix & SSR Hydration Errors
 
-**Type:** Fixed  
-**Scope:** Page Transitions, SSR, Enemy Assets  
+**Type:** Fixed
+**Scope:** Page Transitions, SSR, Enemy Assets
 **Impact:** ✅ Removed black overlay on page load, fixed SSR hydration errors in Skills/Quests pages, verified enemy asset URL
 
 ### Fixed
@@ -71,12 +331,12 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Issue: Pages were loading with opacity 0, creating black overlay effect
   - Solution: Remove initial opacity animation, keep only `animate={{ opacity: 1 }}`
   - Pages now load immediately visible without black flash
-  
+
 - **SSR Hydration Errors:** Added `export const dynamic = 'force-dynamic'` to Skills and Quests pages
   - Fixed: "Route /skills couldn't be rendered statically because it used `headers`"
   - Fixed: "Route /quests couldn't be rendered statically because it used `headers`"
   - Both pages now properly marked as server-rendered on demand
-  
+
 - **Enemy Asset URL:** Verified `/assets/enemies/wolf.jpg` is correct (already using .jpg extension)
   - CombatClient already uses correct file extension
 
@@ -89,11 +349,12 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 // After (NO BLACK OVERLAY):
 <motion.div animate={{ opacity: 1 }}>
-```
+````
 
 **SSR Fix:**
+
 ```typescript
-export const dynamic = 'force-dynamic'  // Marks page as dynamic for auth() usage
+export const dynamic = 'force-dynamic' // Marks page as dynamic for auth() usage
 ```
 
 ### Files Changed

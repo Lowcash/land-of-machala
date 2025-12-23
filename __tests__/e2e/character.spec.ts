@@ -40,7 +40,7 @@ test.describe('Character Page', () => {
     await expect(page.getByText('Výdrž')).toBeVisible()
 
     // Check derived stats
-    await expect(page.getByText('Zdraví')).toBeVisible()
+    await expect(page.getByText('HP', { exact: true })).toBeVisible()
   })
 
   test('displays equipment slots', async ({ page }) => {

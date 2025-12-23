@@ -1,6 +1,6 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { Check, Lock } from 'lucide-react'
 import { useRef } from 'react'
 import { getIconFromName } from './iconMap'
@@ -69,7 +69,7 @@ export function SkillGrid({
       />
 
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <ScrollIndicator targetRef={scrollRef} />
+        <ScrollIndicator targetRef={scrollRef} position="both" />
         <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
           <div className="mx-auto max-w-7xl">
             <div className="mb-4 text-center">
@@ -87,7 +87,7 @@ export function SkillGrid({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredSkills.map((skill) => {
                 const Icon = getIconFromName(skill.iconName)
                 const maxed = skill.currentLevel >= skill.maxRank
@@ -98,7 +98,7 @@ export function SkillGrid({
                   <button
                     key={skill.id}
                     onClick={() => setSelectedSkill(skill.id)}
-                    className={`rounded border-2 p-3 text-left transition-all ${
+                    className={`rounded border-2 p-2 sm:p-3 text-left transition-all min-h-touch-target sm:min-h-0 ${
                       selectedSkill === skill.id
                         ? `${getCategoryBg(skill.category)} scale-105`
                         : skill.unlocked

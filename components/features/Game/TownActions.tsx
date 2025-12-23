@@ -14,7 +14,6 @@ import {
   ShoppingBag,
   Store,
   Swords,
-  Users,
 } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn, DirectionBtn } from './ActionBtn'
@@ -139,9 +138,9 @@ export function TownActions({
           <ActionBtn onClick={onMarket} icon={ShoppingBag}>
             Prozkoumat <span className="text-[#ffd700]">tržiště</span> a obchodovat
           </ActionBtn>
-          <ActionBtn onClick={onGuildHall} icon={Users}>
+          {/* <ActionBtn onClick={onGuildHall} icon={Users}>
             Vstoupit do <span className="text-[#ffd700]">cechovní síně</span>
-          </ActionBtn>
+          </ActionBtn> */}
 
           <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
             <ActionBtn onClick={handleBulletinBoard} icon={ScrollText}>
