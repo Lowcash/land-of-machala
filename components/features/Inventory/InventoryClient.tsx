@@ -246,7 +246,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                 className={viewMode === 'grid' ? 'grid grid-cols-4 gap-2' : 'flex flex-col gap-2'}
               >
                 {filteredInventory.map((item) => {
-                  const Icon = getIconFromName(item.icon)
+                  const Icon = getIconFromName(item.iconName)
                   return (
                     <button
                       key={item.id}
@@ -318,7 +318,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                         )} shadow-[0_0_20px_rgba(0,0,0,0.5)]`}
                       >
                         {(() => {
-                          const Icon = getIconFromName(selectedItemData.icon)
+                          const Icon = getIconFromName(selectedItemData.iconName)
                           return (
                             <Icon
                               className={`h-12 w-12 ${getRarityColor(selectedItemData.rarity)}`}
@@ -337,16 +337,44 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
 
                     {/* Stats */}
                     <div className="space-y-2 rounded border border-[#8b6f47] bg-black/40 p-4">
-                      {selectedItemData.stats && (
-                        <div className="grid gap-2">
-                          {Object.entries(selectedItemData.stats).map(([key, value]) => (
-                            <div key={key} className="flex justify-between text-sm">
-                              <span className="text-[#8b7355] capitalize">{key}:</span>
-                              <span className="text-[#d4a574]">+{value}</span>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <div className="grid gap-2">
+                        {selectedItemData.attack && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Útok:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.attack}</span>
+                          </div>
+                        )}
+                        {selectedItemData.defense && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Obrana:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.defense}</span>
+                          </div>
+                        )}
+                        {selectedItemData.magic && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Magie:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.magic}</span>
+                          </div>
+                        )}
+                        {selectedItemData.speed && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Rychlost:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.speed}</span>
+                          </div>
+                        )}
+                        {selectedItemData.healing && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Léčení:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.healing}</span>
+                          </div>
+                        )}
+                        {selectedItemData.mana && (
+                          <div className="flex justify-between text-sm">
+                            <span className="text-[#8b7355]">Mana:</span>
+                            <span className="text-[#d4a574]">+{selectedItemData.mana}</span>
+                          </div>
+                        )}
+                      </div>
                       <div className="border-t border-[#8b6f47]/50 pt-2">
                         <p className="text-sm text-[#8b7355] italic">
                           "{selectedItemData.description}"
@@ -438,7 +466,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                   )} shadow-[0_0_20px_rgba(0,0,0,0.5)]`}
                 >
                   {(() => {
-                    const Icon = getIconFromName(selectedItemData.icon)
+                    const Icon = getIconFromName(selectedItemData.iconName)
                     return (
                       <Icon className={`h-12 w-12 ${getRarityColor(selectedItemData.rarity)}`} />
                     )
@@ -455,16 +483,44 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
 
               {/* Stats */}
               <div className="space-y-2 rounded border border-[#8b6f47] bg-black/40 p-4">
-                {selectedItemData.stats && (
-                  <div className="grid gap-2">
-                    {Object.entries(selectedItemData.stats).map(([key, value]) => (
-                      <div key={key} className="flex justify-between text-sm">
-                        <span className="text-[#8b7355] capitalize">{key}:</span>
-                        <span className="text-[#d4a574]">+{value}</span>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                <div className="grid gap-2">
+                  {selectedItemData.attack && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Útok:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.attack}</span>
+                    </div>
+                  )}
+                  {selectedItemData.defense && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Obrana:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.defense}</span>
+                    </div>
+                  )}
+                  {selectedItemData.magic && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Magie:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.magic}</span>
+                    </div>
+                  )}
+                  {selectedItemData.speed && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Rychlost:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.speed}</span>
+                    </div>
+                  )}
+                  {selectedItemData.healing && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Léčení:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.healing}</span>
+                    </div>
+                  )}
+                  {selectedItemData.mana && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-[#8b7355]">Mana:</span>
+                      <span className="text-[#d4a574]">+{selectedItemData.mana}</span>
+                    </div>
+                  )}
+                </div>
                 <div className="border-t border-[#8b6f47]/50 pt-2">
                   <p className="text-sm text-[#8b7355] italic">"{selectedItemData.description}"</p>
                 </div>

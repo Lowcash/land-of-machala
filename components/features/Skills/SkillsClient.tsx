@@ -13,7 +13,7 @@ type SkillsClientProps = {
 }
 
 export function SkillsClient({ skills, talentPoints, characterId }: SkillsClientProps) {
-  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('COMBAT')
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('combat')
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
 
   useEffect(() => {

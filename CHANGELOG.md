@@ -6,6 +6,33 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 21:56 - Bank Simplification Complete
+
+**Type:** Refactor (Completed)
+**Scope:** BankActions component
+**Impact:** ✅ Simplified bank interface with tab navigation, removed investment complexity
+
+### Changed
+
+- **BankActions.tsx:** Complete rewrite with tab-based UI
+  - "Zlato" tab: Unified deposit/withdraw interface
+    - Single amount input with quick percentage buttons (25%, 50%, 75%, Max)
+    - Side-by-side Vložit/Vybrat buttons
+    - Clear balance display: pocket + bank + total
+  - "Trezor" tab: Item storage (unchanged functionality)
+  - Removed separate deposit/withdraw/invest screens
+  - Removed investment feature entirely (was adding unnecessary complexity)
+
+- **GameDashboard.tsx:** Removed bankInvestment and setBankInvestment props
+
+### Removed
+
+- Investment fund feature (5% interest mechanic)
+- Separate deposit/withdraw action screens
+- TrendingUp icon and invest-related UI
+
+---
+
 ## 2025-12-23 21:51 - SmithActions Integration Complete
 
 **Type:** Feature (Completed)

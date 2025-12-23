@@ -16,7 +16,7 @@ export function MapClient({ locations }: MapClientProps) {
 
   // Handle browser back button
   useEffect(() => {
-    const handlePopState = (event: PopStateEvent) => {
+    const handlePopState = (_event: PopStateEvent) => {
       const params = new URLSearchParams(window.location.search)
       const locationId = params.get('locationId')
 
