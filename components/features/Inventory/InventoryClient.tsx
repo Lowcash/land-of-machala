@@ -86,17 +86,20 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
 
   const handleEquip = async (id: string) => {
     startTransition(async () => {
-      const [newItem, err] = await equipItemAction({ inventoryItemId: id })
+      const [result, err] = await equipItemAction({ inventoryItemId: id })
       if (err) {
         toast.error('Chyba při nasazování předmětu')
         return
       }
-      if (newItem) {
+      if (result?.success) {
+        const itemToEquip = inventory.find((item) => item.id === id)
         setInventory((prev) =>
           prev.map((item) => {
             if (item.id === id) return { ...item, equipped: true }
             // Unequip other items of same type if needed
-            if (item.type === newItem.type && item.id !== id) return { ...item, equipped: false }
+            if (itemToEquip && item.type === itemToEquip.type && item.id !== id) {
+              return { ...item, equipped: false }
+            }
             return item
           })
         )
@@ -143,15 +146,18 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
 
   const handleSell = async (id: string) => {
     startTransition(async () => {
+      const itemToSell = inventory.find((i) => i.id === id)
+      const sellPrice = itemToSell ? Math.floor((itemToSell.value || 10) * 0.5) : 0
+      
       const [result, err] = await sellItemAction({ inventoryItemId: id })
       if (err) {
         toast.error('Chyba při prodeji předmětu')
         return
       }
-      if (result) {
+      if (result?.success) {
         setInventory((prev) => prev.filter((i) => i.id !== id))
-        setCurrentGold((prev) => prev + result.goldEarned)
-        toast.success(`Předmět prodán za ${result.goldEarned} zlaťáků`)
+        setCurrentGold((prev) => prev + sellPrice)
+        toast.success(`Předmět prodán za ${sellPrice} zlaťáků`)
         handleSelectItem(null)
       }
     })
@@ -188,23 +194,6 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
         return 'border-[#ffd700]'
       default:
         return 'border-[#8b7355]'
-    }
-  }
-
-  const getRarityBg = (rarity: ItemRarity) => {
-    switch (rarity) {
-      case 'common':
-        return 'bg-[#8b7355]/10'
-      case 'uncommon':
-        return 'bg-[#6fbf6f]/10'
-      case 'rare':
-        return 'bg-[#69ccf0]/10'
-      case 'epic':
-        return 'bg-[#b66bd4]/10'
-      case 'legendary':
-        return 'bg-[#ffd700]/10'
-      default:
-        return 'bg-[#8b7355]/10'
     }
   }
 
