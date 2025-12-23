@@ -233,8 +233,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setBankItems={() => {}}
                 inventory={[]}
                 setInventory={() => {}}
-                bankInvestment={0}
-                setBankInvestment={() => {}}
               />
             )}
             {currentView === 'healer' && (
