@@ -1,13 +1,16 @@
 import { test, expect } from '@playwright/test'
+import { loginAsGuest } from './helpers'
 
 test.describe('Notification System', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/login')
-  })
-
   test.describe('Notification Variants', () => {
     test('should show success notification on guest login', async ({ page }) => {
-      await page.getByRole('button', { name: /Host jako/i }).click()
+      await page.goto('/login')
+      
+      // Wait for guest login to complete and redirect
+      await Promise.all([
+        page.waitForURL('/onboarding', { timeout: 15000 }),
+        page.getByRole('button', { name: /Zkusit hru jako host/i }).click()
+      ])
 
       // Should show success notification
       const notification = page.locator('[role="alert"]').filter({ hasText: /Přihlášen/i })
