@@ -14,7 +14,3 @@ export { LocationActions } from './LocationActions'
 export { WorkshopActions } from './WorkshopActions'
 export { GuildHallActions } from './GuildHallActions'
 export { ActionBtn, DirectionBtn } from './ActionBtn'
-
-// Legacy components (deprecated, use SmithActions instead)
-export { ArmoryActions } from './ArmoryActions'
-export { BlacksmithActions } from './BlacksmithActions'
