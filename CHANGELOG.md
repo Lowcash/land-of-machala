@@ -6,6 +6,49 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-23 21:51 - SmithActions Integration Complete
+
+**Type:** Feature (Completed)
+**Scope:** Town locations, unified smithy
+**Impact:** ✅ Armory + Blacksmith merged into single SmithActions component with tab navigation
+
+### Added
+
+- **SmithActions.tsx:** Unified component with tab navigation
+  - "Obchod" tab: Buy/Sell weapons and armor (from ArmoryActions)
+  - "Kovárna" tab: Craft/Upgrade/Repair items (from BlacksmithActions)
+  - Smart back button (tab root → town)
+  - All functionality preserved from both original components
+
+- **GameDashboard.tsx:** Integrated SmithActions
+  - Replaced 'armory' and 'blacksmith' views with single 'smith' view
+  - Updated viewData with merged location description
+  - Removed unused Store import
+
+- **TownActions.tsx:** Unified callbacks
+  - Merged onArmory + onBlacksmith → onSmith
+  - Updated action button text: "Navštívit zbrojíře a kováře"
+  - Changed icon from Store to Hammer
+
+### Changed
+
+- **index.ts exports:** SmithActions as primary, legacy exports marked deprecated
+
+### Fixed
+
+- **InventoryClient.tsx:** Server action response handling
+  - equipItemAction returns {success: boolean}, not item object
+  - sellItemAction client-side price calculation
+  - Removed unused getRarityBg function
+
+- **OnboardingForm.tsx:** Removed invalid ScrollIndicator usage
+
+### Breaking Changes
+
+- TownActionsProps: onArmory and onBlacksmith replaced with onSmith
+
+---
+
 ## 2025-12-23 21:35 - Town Locations Unification (WIP)
 
 **Type:** Feature (Work in Progress)
