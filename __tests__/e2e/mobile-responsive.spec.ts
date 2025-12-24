@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { loginAsGuest } from './helpers'
 
 test.describe('Mobile Responsive Design', () => {
@@ -23,7 +23,7 @@ test.describe('Mobile Responsive Design', () => {
     test('should render correctly on iPhone 12 Pro (390x844)', async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 })
       await loginAsGuest(page)
-      
+
       await page.getByRole('button', { name: /Dovednosti/i }).click()
       await page.waitForURL('**/skills', { timeout: 5000 })
 

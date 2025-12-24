@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { loginAsGuest } from './helpers'
 
 test.describe('Navigation System', () => {
@@ -45,9 +45,12 @@ test.describe('Navigation System', () => {
       })
 
       // Should have some visual distinction (color, underline, etc.)
-      expect(isHighlighted || await characterButton.evaluate((el) => {
-        return window.getComputedStyle(el).textDecoration.includes('underline')
-      })).toBeTruthy()
+      expect(
+        isHighlighted ||
+          (await characterButton.evaluate((el) => {
+            return window.getComputedStyle(el).textDecoration.includes('underline')
+          }))
+      ).toBeTruthy()
     })
   })
 
@@ -56,8 +59,10 @@ test.describe('Navigation System', () => {
       await page.goto('/game')
 
       // Navigate to a town location (if available)
-      const tavernButton = page.locator('button').filter({ hasText: /Navštívit hostinec|Hostinec/i })
-      if (await tavernButton.count() > 0) {
+      const tavernButton = page
+        .locator('button')
+        .filter({ hasText: /Navštívit hostinec|Hostinec/i })
+      if ((await tavernButton.count()) > 0) {
         await tavernButton.first().click()
 
         // Back button should be visible
@@ -76,8 +81,11 @@ test.describe('Navigation System', () => {
       await page.goto('/quests')
 
       // Click on a quest to view details
-      const questButton = page.locator('button').filter({ hasText: /První kroky|Úkol/i }).first()
-      if (await questButton.count() > 0 && await questButton.isVisible()) {
+      const questButton = page
+        .locator('button')
+        .filter({ hasText: /První kroky|Úkol/i })
+        .first()
+      if ((await questButton.count()) > 0 && (await questButton.isVisible())) {
         await questButton.click()
 
         // Detail view should show

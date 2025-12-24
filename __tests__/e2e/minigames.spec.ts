@@ -94,7 +94,7 @@ test.describe('Minigames', () => {
         // Check for lockpicking game elements (may not exist in current location)
         const lockpickGame = page.locator('text=/páčid|lockpick|zámek|lock/i')
         const gameElementCount = await lockpickGame.count()
-        
+
         // Test passes if button was visible and clickable (game may not be available at all locations)
         expect(gameElementCount).toBeGreaterThanOrEqual(0)
       } else {
@@ -208,7 +208,7 @@ test.describe('Minigames', () => {
     // Minigames are typically modal/overlay based
     // Just verify we're still on the game page
     await expect(page).toHaveURL(/\/game/)
-    
+
     // Try to find any minigame button to verify they exist
     const minigameButtons = [
       page.getByRole('button', { name: /ryb|fish/i }),
@@ -221,7 +221,7 @@ test.describe('Minigames', () => {
         break
       }
     }
-    
+
     // If no minigame buttons found, that's okay - they may be location-specific
     // The test passes as long as we're on the game page
   })

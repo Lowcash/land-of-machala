@@ -46,7 +46,7 @@ export function PageTemplate({
 }: PageTemplateProps) {
   const router = useRouter()
   const [showSettings, setShowSettings] = useState(false)
-  
+
   const maxWidthClass = {
     sm: 'max-w-4xl',
     md: 'max-w-5xl',
@@ -97,7 +97,9 @@ export function PageTemplate({
         )}
 
         {/* Content Layer - centered with max-width */}
-        <div className={`relative z-10 mx-auto flex w-full ${maxWidthClass} flex-col overflow-hidden`}>
+        <div
+          className={`relative z-10 mx-auto flex w-full ${maxWidthClass} flex-col overflow-hidden`}
+        >
           {/* Header */}
           <header>
             <GameHeader
@@ -111,9 +113,7 @@ export function PageTemplate({
           </header>
 
           {/* Main Content Area */}
-          <main className="flex-1 overflow-hidden">
-            {children}
-          </main>
+          <main className="flex-1 overflow-hidden">{children}</main>
 
           {/* Footer */}
           <footer>
