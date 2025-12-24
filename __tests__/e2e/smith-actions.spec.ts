@@ -5,8 +5,15 @@ test.describe('SmithActions (Zbrojíř)', () => {
   test.beforeEach(async ({ page }) => {
     await loginAsGuest(page)
 
-    // Navigate to smith
-    const smithButton = page.locator('button').filter({ hasText: /Navštívit zbrojíře|zbrojíř/i })
+    // Navigate to town map first
+    await page.getByRole('button', { name: /Mapa/i }).click()
+    await page.waitForTimeout(500)
+
+    // Scroll down to ensure smith button is visible
+    await page.evaluate(() => window.scrollBy(0, 200))
+    
+    // Navigate to smith (text: "Navštívit zbrojíře a kováře pro zbraně")
+    const smithButton = page.locator('button').filter({ hasText: /zbrojíře a kováře/i })
     await smithButton.click()
   })
 
@@ -191,8 +198,8 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
       await backButton.click()
 
-      // Should return to town
-      await expect(page.locator('button').filter({ hasText: /Navštívit zbrojíře/i })).toBeVisible({ timeout: 3000 })
+      // Should return to town (check for smith button text: "Navštívit zbrojíře a kováře")
+      await expect(page.locator('button').filter({ hasText: /zbrojíře/i })).toBeVisible({ timeout: 3000 })
     })
 
     test('back button from sub-view returns to tab root', async ({ page }) => {

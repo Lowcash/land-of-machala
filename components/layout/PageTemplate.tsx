@@ -96,10 +96,10 @@ export function PageTemplate({
           </>
         )}
 
-        {/* Content Layer with max-width constraint */}
-        <div className="relative z-10 flex flex-1 flex-col overflow-hidden">
-          <div className={`w-full ${maxWidthClass} mx-auto flex flex-1 flex-col overflow-hidden`}>
-            {/* Header */}
+        {/* Content Layer - centered with max-width */}
+        <div className={`relative z-10 mx-auto flex w-full ${maxWidthClass} flex-col overflow-hidden`}>
+          {/* Header */}
+          <header>
             <GameHeader
               icon={icon}
               title={title}
@@ -108,14 +108,18 @@ export function PageTemplate({
               onBack={onBack || backUrl ? handleBack : undefined}
               onSettings={handleOpenSettings}
             />
+          </header>
 
-            {/* Main Content Area */}
+          {/* Main Content Area */}
+          <main className="flex-1 overflow-hidden">
             {children}
-          </div>
-        </div>
+          </main>
 
-        {/* Footer */}
-        <GameFooter />
+          {/* Footer */}
+          <footer>
+            <GameFooter />
+          </footer>
+        </div>
       </div>
 
       {/* Settings Panel Overlay */}

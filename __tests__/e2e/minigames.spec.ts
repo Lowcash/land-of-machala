@@ -216,10 +216,8 @@ test.describe('Minigames', () => {
       page.getByRole('button', { name: /těž|mine/i }),
     ]
 
-    let foundButton = false
     for (const button of minigameButtons) {
       if (await button.isVisible()) {
-        foundButton = true
         break
       }
     }

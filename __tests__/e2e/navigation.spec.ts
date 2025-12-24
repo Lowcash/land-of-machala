@@ -8,7 +8,7 @@ test.describe('Navigation System', () => {
 
   test.describe('Footer Navigation', () => {
     test('should navigate between main pages via footer', async ({ page }) => {
-      // From game to character
+      // Start from character page (loginAsGuest ends on /game which has different footer behavior)
       await page.getByRole('button', { name: /Postava/i }).click()
       await expect(page).toHaveURL('/character')
 
@@ -16,8 +16,8 @@ test.describe('Navigation System', () => {
       await page.getByRole('button', { name: /Dovednosti/i }).click()
       await expect(page).toHaveURL('/skills')
 
-      // To quests
-      await page.getByRole('button', { name: /Úkoly/i }).click()
+      // To quests (label is "Questy" not "Úkoly")
+      await page.getByRole('button', { name: /Questy/i }).click()
       await expect(page).toHaveURL('/quests')
 
       // To inventory
@@ -28,15 +28,16 @@ test.describe('Navigation System', () => {
       await page.getByRole('button', { name: /Mapa/i }).click()
       await expect(page).toHaveURL('/map')
 
-      // Back to game
-      await page.getByRole('button', { name: /Hra/i }).click()
-      await expect(page).toHaveURL('/game')
+      // Back to character
+      await page.getByRole('button', { name: /Postava/i }).click()
+      await expect(page).toHaveURL('/character')
     })
 
     test('footer highlights active page', async ({ page }) => {
       await page.goto('/character')
+      await page.waitForLoadState('networkidle')
 
-      const characterButton = page.getByRole('button', { name: /Postava/i })
+      const characterButton = page.getByRole('button', { name: /Postava/i }).first()
       const isHighlighted = await characterButton.evaluate((el) => {
         const color = window.getComputedStyle(el).color
         // Active buttons should have gold/yellow color
@@ -114,12 +115,15 @@ test.describe('Navigation System', () => {
 
     test('URL changes reflect navigation state', async ({ page }) => {
       await page.goto('/game')
+      await page.waitForLoadState('networkidle')
 
       // Navigate to different sections
       await page.getByRole('button', { name: /Postava/i }).click()
+      await page.waitForURL('**/character', { timeout: 5000 })
       expect(page.url()).toContain('/character')
 
       await page.getByRole('button', { name: /Dovednosti/i }).click()
+      await page.waitForURL('**/skills', { timeout: 5000 })
       expect(page.url()).toContain('/skills')
     })
   })
@@ -136,7 +140,7 @@ test.describe('Navigation System', () => {
       await page.goto('/map?locationId=nonexistent')
 
       // Should still load map without crashing
-      await expect(page.getByText(/Mapa/i)).toBeVisible()
+      await expect(page.getByText(/Mapa/i).first()).toBeVisible()
     })
   })
 

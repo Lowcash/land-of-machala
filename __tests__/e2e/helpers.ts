@@ -1,4 +1,4 @@
-import { Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 /**
  * Complete guest login flow - handles both new users (→onboarding) and returning users (→game)
@@ -15,10 +15,20 @@ export async function loginAsGuest(page: Page) {
 
   // If redirected to onboarding, complete character creation
   if (page.url().includes('/onboarding')) {
-    // Quick onboarding
-    await page.getByRole('button', { name: /Pokračovat/i }).click()
-    await page.getByRole('button', { name: /Lidé/i }).click()
-    await page.getByRole('button', { name: /Bojovník/i }).click()
+    // Skip intro (important - avoids tutorial!)
+    await page.getByRole('button', { name: 'Přeskočit úvod (Jsem zkušený hráč)' }).click()
+
+    // Fill character name
+    await page.getByPlaceholder('Zadej jméno...').fill('Test Hero')
+
+    // Select Race (Trpaslík - good balanced choice for tests)
+    await page.getByRole('button', { name: 'Trpaslík' }).click()
+
+    // Select Class (Paladin - balanced class for tests)
+    await page.getByRole('button', { name: 'Paladin' }).click()
+
+    // Create character and enter game
+    await page.getByRole('button', { name: 'Vstoupit do hry' }).click()
     await page.waitForURL('/game', { timeout: 15000 })
   }
 

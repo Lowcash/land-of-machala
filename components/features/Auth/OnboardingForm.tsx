@@ -1,8 +1,8 @@
 'use client'
 
 import { RouteTransition } from '@/components/layout/RouteTransition'
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { useNotification } from '@/components/providers/NotificationProvider'
+import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import {
   Activity,
   ArrowRight,
@@ -679,7 +679,7 @@ export function OnboardingForm() {
                   <ScrollIndicator targetRef={classScrollRef} position="both" />
                   <div
                     ref={classScrollRef}
-                    className="scrollbar-custom h-full max-h-[200px] overflow-y-auto p-2 sm:p-3"
+                    className="scrollbar-custom h-full max-h-[252px] overflow-y-auto p-2 sm:p-3"
                   >
                     <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
                       {selectedClass.desc}
@@ -855,11 +855,15 @@ export function OnboardingForm() {
               {isLoading ? (
                 <>
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#ffd700] border-t-transparent sm:h-6 sm:w-6" />
-                  <span className="text-sm text-white sm:text-base md:text-lg">Vytvářím hrdinu...</span>
+                  <span className="text-sm text-white sm:text-base md:text-lg">
+                    Vytvářím hrdinu...
+                  </span>
                 </>
               ) : (
                 <>
-                  <span className="text-sm text-white sm:text-base md:text-lg">Vstoupit do hry</span>
+                  <span className="text-sm text-white sm:text-base md:text-lg">
+                    Vstoupit do hry
+                  </span>
                   <ArrowRight className="h-4 w-4 text-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
                 </>
               )}
