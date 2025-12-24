@@ -16,7 +16,7 @@ export function GameFooter() {
   ]
 
   return (
-    <div className="z-100 border-t border-[#8b6f47] bg-black/90 shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
+    <div className="z-100 border-t border-[#8b6f47] shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
       <div className="mx-auto w-full max-w-lg px-4 py-2">
         <div className="flex items-center justify-between">
           {navItems.map((item) => {

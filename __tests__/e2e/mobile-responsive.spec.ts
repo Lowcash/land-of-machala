@@ -22,7 +22,10 @@ test.describe('Mobile Responsive Design', () => {
 
     test('should render correctly on iPhone 12 Pro (390x844)', async ({ page }) => {
       await page.setViewportSize({ width: 390, height: 844 })
-      await page.goto('/skills')
+      await loginAsGuest(page)
+      
+      await page.getByRole('button', { name: /Dovednosti/i }).click()
+      await page.waitForURL('**/skills', { timeout: 5000 })
 
       const header = page.locator('header')
       await expect(header).toBeVisible()
@@ -37,7 +40,7 @@ test.describe('Mobile Responsive Design', () => {
       await page.goto('/inventory')
 
       // Inventory grid should be visible
-      const inventory = page.getByText(/Inventář/i)
+      const inventory = page.getByText(/Inventář/i).first()
       await expect(inventory).toBeVisible()
     })
   })
@@ -113,10 +116,11 @@ test.describe('Mobile Responsive Design', () => {
 
     test('inventory grid adapts to screen size', async ({ page }) => {
       await page.setViewportSize({ width: 375, height: 667 })
-      await page.goto('/inventory')
+      await page.getByRole('button', { name: /Inventář/i }).click()
+      await page.waitForURL('**/inventory', { timeout: 5000 })
 
       // Inventory should be visible
-      const inventory = page.getByText(/Inventář/i)
+      const inventory = page.getByText(/Inventář/i).first()
       await expect(inventory).toBeVisible()
 
       // Grid should fit in viewport

@@ -5,8 +5,15 @@ test.describe('BankActions', () => {
   test.beforeEach(async ({ page }) => {
     await loginAsGuest(page)
 
-    // Navigate to bank
-    const bankButton = page.locator('button').filter({ hasText: /Navštívit banku|Banka/i })
+    // Navigate to town map first (loginAsGuest lands on /game but not on town view)
+    await page.getByRole('button', { name: /Mapa/i }).click()
+    await page.waitForTimeout(500) // Wait for town view to load
+
+    // Scroll down to ensure bank button is visible
+    await page.evaluate(() => window.scrollBy(0, 200))
+
+    // Navigate to bank (button text: "Jít do banky a uložit cennosti")
+    const bankButton = page.locator('button').filter({ hasText: /banky/i })
     await bankButton.click()
   })
 
@@ -167,8 +174,8 @@ test.describe('BankActions', () => {
 
       await backButton.click()
 
-      // Should return to town
-      await expect(page.locator('button').filter({ hasText: /Navštívit banku/i })).toBeVisible({ timeout: 3000 })
+      // Should return to town (check for bank button text: "Jít do banky...")
+      await expect(page.locator('button').filter({ hasText: /banky/i })).toBeVisible({ timeout: 3000 })
     })
   })
 })
