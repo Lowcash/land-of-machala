@@ -1,15 +1,15 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 test.describe('Notification System', () => {
   test.describe('Notification Variants', () => {
     test('should show success notification on guest login', async ({ page }) => {
       await page.goto('/login')
       await page.waitForLoadState('domcontentloaded')
-      
+
       // Click guest login and wait for redirect
       await page.getByRole('button', { name: /Zkusit hru jako host/i }).click()
       await page.waitForURL('/onboarding', { timeout: 15000 })
-      
+
       // Wait a moment for notification to appear
       await page.waitForTimeout(500)
 
@@ -28,13 +28,15 @@ test.describe('Notification System', () => {
     test('should show error notification on invalid login', async ({ page }) => {
       await page.goto('/login')
       await page.waitForLoadState('domcontentloaded')
-      
+
       await page.getByPlaceholder(/Zadej jméno/i).fill('invalid@test.com')
       await page.getByPlaceholder(/Zadej heslo/i).fill('wrongpassword')
       await page.getByRole('button', { name: /Přihlásit se/i }).click()
 
       // Should show error notification
-      const notification = page.locator('[role="alert"]').filter({ hasText: /chybné|nesprávn|nelze/i })
+      const notification = page
+        .locator('[role="alert"]')
+        .filter({ hasText: /chybné|nesprávn|nelze/i })
       await expect(notification).toBeVisible({ timeout: 5000 })
     })
 
@@ -46,10 +48,10 @@ test.describe('Notification System', () => {
       // Skip intro
       await page.getByRole('button', { name: /Přeskočit úvod/i }).click()
       await page.waitForTimeout(300)
-      
+
       // Fill name but don't select race/class
       await page.getByPlaceholder(/Zadej jméno/i).fill('Test')
-      
+
       // Try to enter game without selecting race/class
       const finishButton = page.getByRole('button', { name: /Vstoupit do hry/i })
       if (await finishButton.isVisible()) {
@@ -57,7 +59,7 @@ test.describe('Notification System', () => {
 
         // May show validation notification
         const notification = page.locator('[role="alert"]')
-        if (await notification.count() > 0) {
+        if ((await notification.count()) > 0) {
           await expect(notification.first()).toBeVisible()
         }
       }

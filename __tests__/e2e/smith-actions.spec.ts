@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { loginAsGuest } from './helpers'
 
 test.describe('SmithActions (Zbrojíř)', () => {
@@ -11,7 +11,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
     // Scroll down to ensure smith button is visible
     await page.evaluate(() => window.scrollBy(0, 200))
-    
+
     // Navigate to smith (text: "Navštívit zbrojíře a kováře pro zbraně")
     const smithButton = page.locator('button').filter({ hasText: /zbrojíře a kováře/i })
     await smithButton.click()
@@ -36,7 +36,9 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await kovarnaTab.click()
 
       // Kovárna content should be visible (e.g., craft/upgrade/repair buttons)
-      await expect(page.getByText(/Vytvořit|Vylepšit|Opravit/i).first()).toBeVisible({ timeout: 3000 })
+      await expect(page.getByText(/Vytvořit|Vylepšit|Opravit/i).first()).toBeVisible({
+        timeout: 3000,
+      })
 
       // Switch back to Obchod
       await obchodTab.click()
@@ -72,8 +74,8 @@ test.describe('SmithActions (Zbrojíř)', () => {
       const sellButton = page.getByRole('button', { name: /Prodat/i })
 
       // At least one should be visible
-      const buyVisible = await buyButton.count() > 0 && await buyButton.first().isVisible()
-      const sellVisible = await sellButton.count() > 0 && await sellButton.first().isVisible()
+      const buyVisible = (await buyButton.count()) > 0 && (await buyButton.first().isVisible())
+      const sellVisible = (await sellButton.count()) > 0 && (await sellButton.first().isVisible())
 
       expect(buyVisible || sellVisible).toBeTruthy()
     })
@@ -84,7 +86,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
       // Click buy button if present
       const buyButton = page.getByRole('button', { name: /Koupit/i })
-      if (await buyButton.count() > 0) {
+      if ((await buyButton.count()) > 0) {
         await buyButton.first().click()
       }
 
@@ -93,7 +95,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
       // Items should be displayed
       const items = page.locator('[data-item], button').filter({ hasText: /Meč|Dřevěný|Kožená/i })
-      if (await items.count() > 0) {
+      if ((await items.count()) > 0) {
         await expect(items.first()).toBeVisible()
       }
     })
@@ -104,7 +106,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
       // Click sell button
       const sellButton = page.getByRole('button', { name: /Prodat/i })
-      if (await sellButton.count() > 0) {
+      if ((await sellButton.count()) > 0) {
         await sellButton.first().click()
         await page.waitForTimeout(500)
 
@@ -113,8 +115,8 @@ test.describe('SmithActions (Zbrojíř)', () => {
         const emptyMessage = page.getByText(/Nemáš žádné předměty|prázdný/i)
         const items = page.locator('button').filter({ hasText: /Meč|Brnění/i })
 
-        const hasItems = await items.count() > 0
-        const isEmpty = await emptyMessage.count() > 0
+        const hasItems = (await items.count()) > 0
+        const isEmpty = (await emptyMessage.count()) > 0
 
         expect(hasItems || isEmpty).toBeTruthy()
       }
@@ -133,9 +135,9 @@ test.describe('SmithActions (Zbrojíř)', () => {
       const repairButton = page.getByRole('button', { name: /Opravit/i })
 
       // At least one should be visible
-      const hasCraft = await craftButton.count() > 0
-      const hasUpgrade = await upgradeButton.count() > 0
-      const hasRepair = await repairButton.count() > 0
+      const hasCraft = (await craftButton.count()) > 0
+      const hasUpgrade = (await upgradeButton.count()) > 0
+      const hasRepair = (await repairButton.count()) > 0
 
       expect(hasCraft || hasUpgrade || hasRepair).toBeTruthy()
     })
@@ -145,7 +147,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await kovarnaTab.click()
 
       const craftButton = page.getByRole('button', { name: /Vytvořit/i })
-      if (await craftButton.count() > 0) {
+      if ((await craftButton.count()) > 0) {
         await craftButton.first().click()
         await page.waitForTimeout(500)
 
@@ -160,7 +162,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await kovarnaTab.click()
 
       const upgradeButton = page.getByRole('button', { name: /Vylepšit/i })
-      if (await upgradeButton.count() > 0) {
+      if ((await upgradeButton.count()) > 0) {
         await upgradeButton.first().click()
         await page.waitForTimeout(500)
 
@@ -168,7 +170,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
         const items = page.locator('button').filter({ hasText: /\+\d|level/i })
         const emptyMessage = page.getByText(/Nemáš žádné/i)
 
-        expect((await items.count() > 0) || (await emptyMessage.count() > 0)).toBeTruthy()
+        expect((await items.count()) > 0 || (await emptyMessage.count()) > 0).toBeTruthy()
       }
     })
 
@@ -177,7 +179,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await kovarnaTab.click()
 
       const repairButton = page.getByRole('button', { name: /Opravit/i })
-      if (await repairButton.count() > 0) {
+      if ((await repairButton.count()) > 0) {
         await repairButton.first().click()
         await page.waitForTimeout(500)
 
@@ -185,7 +187,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
         const items = page.locator('button, [data-damaged]')
         const message = page.getByText(/Nemáš žádné|vše v pořádku/i)
 
-        expect((await items.count() >= 0) || (await message.count() > 0)).toBeTruthy()
+        expect((await items.count()) >= 0 || (await message.count()) > 0).toBeTruthy()
       }
     })
   })
@@ -199,7 +201,9 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await backButton.click()
 
       // Should return to town (check for smith button text: "Navštívit zbrojíře a kováře")
-      await expect(page.locator('button').filter({ hasText: /zbrojíře/i })).toBeVisible({ timeout: 3000 })
+      await expect(page.locator('button').filter({ hasText: /zbrojíře/i })).toBeVisible({
+        timeout: 3000,
+      })
     })
 
     test('back button from sub-view returns to tab root', async ({ page }) => {
@@ -207,18 +211,21 @@ test.describe('SmithActions (Zbrojíř)', () => {
       await obchodTab.click()
 
       const buyButton = page.getByRole('button', { name: /Koupit/i })
-      if (await buyButton.count() > 0) {
+      if ((await buyButton.count()) > 0) {
         await buyButton.first().click()
         await page.waitForTimeout(500)
 
         // Now in buy mode - back should return to shop tab root
         const backButton = page.getByRole('button', { name: /Zpět/i })
-        if (await backButton.count() > 0) {
+        if ((await backButton.count()) > 0) {
           await backButton.first().click()
           await page.waitForTimeout(500)
 
           // Should see buy/sell options again
-          expect(await buyButton.isVisible() || await page.getByRole('button', { name: /Prodat/i }).isVisible()).toBeTruthy()
+          expect(
+            (await buyButton.isVisible()) ||
+              (await page.getByRole('button', { name: /Prodat/i }).isVisible())
+          ).toBeTruthy()
         }
       }
     })

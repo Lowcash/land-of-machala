@@ -39,6 +39,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 ### Tests
 
 **E2E Test Results:** 122/163 passing (74.8%)
+
 - Change: -7 tests from previous 79.1% (129/163)
 - Still above 70% threshold ✓
 - **Suite breakdown:**
@@ -79,11 +80,13 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 ### Tests Summary
 
 **Overall Progress:** 129/163 tests passing (79.1%)
-- From: 57.6% (53/92) 
+
+- From: 57.6% (53/92)
 - To: 79.1% (129/163)
 - Target: 85% (139/163) - only 9 more tests needed!
 
 **Suite Breakdown:**
+
 - ✅ accessibility: 17/18 (94%)
 - ✅ settings: 14/15 (93%)
 - ✅ navigation: 12/14 (86%)
@@ -107,7 +110,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 - **PageTemplate.tsx:** Added semantic HTML elements
   - Wrapped GameHeader in `<header>` tag
-  - Wrapped children in `<main>` tag  
+  - Wrapped children in `<main>` tag
   - Wrapped GameFooter in `<footer>` tag
   - **Impact:** Improves accessibility, SEO, and mobile test compatibility
 
@@ -120,7 +123,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 **Overall:** 53/92 tests passing (57.6% → +5% improvement)
 
 - ✅ **accessibility.spec.ts:** 17/18 (94.4%)
-- ✅ **settings.spec.ts:** 14/15 (93.3%)  
+- ✅ **settings.spec.ts:** 14/15 (93.3%)
 - ⚠️ **navigation.spec.ts:** 8/14 (57.1%)
 - ⚠️ **bank-actions.spec.ts:** 8/12 (66.7%)
 - ❌ **notifications:** 2/10 (20.0% → NEW)
@@ -164,7 +167,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 **Overall:** 48/92 tests passing (52.2%)
 
 - ✅ **accessibility.spec.ts:** 17/18 (94.4%) - EXCELLENT
-- ✅ **settings.spec.ts:** 14/15 (93.3%) - EXCELLENT  
+- ✅ **settings.spec.ts:** 14/15 (93.3%) - EXCELLENT
 - ⚠️ **navigation.spec.ts:** 8/14 (57.1%) - GOOD
 - ⚠️ **bank-actions.spec.ts:** 8/12 (66.7%) - GOOD
 - ❌ **smith-actions.spec.ts:** 1/8 (12.5%) - NEEDS WORK
@@ -544,7 +547,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - **GameHeader.tsx:** Added `onSettings?: () => void` prop and wiring
   - Settings menu button now functional (previously static UI)
   - Dropdown closes automatically when settings opens
-  
 - **PageTemplate.tsx:** Added settings state management
   - `useState` for showSettings
   - `handleOpenSettings` / `handleCloseSettings` handlers
@@ -638,7 +640,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Integrated Loader2 spinner from lucide-react
   - Disabled state during loading
   - Minimum 44px touch target on mobile (`min-h-touch-target sm:min-h-0`)
-  
 - **useDetailViewHistory Hook:** Reusable hook for URL-based detail view navigation
   - Browser history integration (back/forward support)
   - Direct URL access support
@@ -659,6 +660,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 ### Changed
 
 - **Tailwind Config:** Added notification color palette and touch target spacing
+
   ```typescript
   notification: {
     success: '#6fbf6f',
@@ -671,7 +673,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 - **LoginForm:** Replaced all `alert()` calls with `useNotification()` hook
   - Login errors, guest account errors now use semantic notifications
-  
 - **OnboardingForm:** Replaced all `alert()` calls with `useNotification()` hook
   - Character creation errors now use semantic notifications
   - Removed unused `raceScrollRef` and `useRef` import
@@ -699,7 +700,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - **Pre-existing Bug:** `GameDashboard.tsx` line 225 - `ArmoryActions` called without required props (gold, setGold, inventory, setInventory, setInfoText)
   - Out of scope for this phase
   - Requires refactoring GameDashboard state management
-  
 - **Prisma Schema:** Added combat state fields but not yet migrated to database
   - Run `npx prisma db push` to apply schema changes
 

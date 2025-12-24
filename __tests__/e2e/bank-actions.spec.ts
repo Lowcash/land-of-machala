@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { loginAsGuest } from './helpers'
 
 test.describe('BankActions', () => {
@@ -36,7 +36,9 @@ test.describe('BankActions', () => {
       await page.waitForTimeout(500)
 
       // Trezor content should be visible
-      await expect(page.getByText(/Uložené předměty|Trezor je prázdný/i).first()).toBeVisible({ timeout: 3000 })
+      await expect(page.getByText(/Uložené předměty|Trezor je prázdný/i).first()).toBeVisible({
+        timeout: 3000,
+      })
 
       // Switch back to Zlato
       await zlatoTab.click()
@@ -85,12 +87,14 @@ test.describe('BankActions', () => {
 
       // Click 50% button
       const fiftyButton = page.getByRole('button', { name: /50%/i })
-      if (await fiftyButton.count() > 0) {
+      if ((await fiftyButton.count()) > 0) {
         await fiftyButton.first().click()
 
         // Amount input should be filled
-        const amountInput = page.locator('input[type="number"], input[placeholder*="Částka"]').first()
-        if (await amountInput.count() > 0) {
+        const amountInput = page
+          .locator('input[type="number"], input[placeholder*="Částka"]')
+          .first()
+        if ((await amountInput.count()) > 0) {
           const value = await amountInput.inputValue()
           expect(parseInt(value) || 0).toBeGreaterThanOrEqual(0)
         }
@@ -104,7 +108,7 @@ test.describe('BankActions', () => {
 
       // Enter amount
       const amountInput = page.locator('input[type="number"], input[placeholder*="Částka"]').first()
-      if (await amountInput.count() > 0) {
+      if ((await amountInput.count()) > 0) {
         await amountInput.fill('10')
 
         // Click deposit
@@ -124,7 +128,7 @@ test.describe('BankActions', () => {
 
       // Enter amount
       const amountInput = page.locator('input[type="number"], input[placeholder*="Částka"]').first()
-      if (await amountInput.count() > 0) {
+      if ((await amountInput.count()) > 0) {
         await amountInput.fill('10')
 
         // Click withdraw
@@ -148,8 +152,8 @@ test.describe('BankActions', () => {
       const items = page.locator('[data-item], button').filter({ hasText: /Meč|Brnění|Předmět/i })
       const emptyMessage = page.getByText(/prázdný|Nemáš žádné|žádné předměty/i)
 
-      const hasItems = await items.count() > 0
-      const isEmpty = await emptyMessage.count() > 0
+      const hasItems = (await items.count()) > 0
+      const isEmpty = (await emptyMessage.count()) > 0
 
       expect(hasItems || isEmpty).toBeTruthy()
     })
@@ -161,7 +165,7 @@ test.describe('BankActions', () => {
 
       // Should show capacity (e.g., "0/100")
       const capacityText = page.getByText(/\d+\/\d+|Kapacita/i)
-      if (await capacityText.count() > 0) {
+      if ((await capacityText.count()) > 0) {
         await expect(capacityText.first()).toBeVisible()
       }
     })
@@ -175,7 +179,9 @@ test.describe('BankActions', () => {
       await backButton.click()
 
       // Should return to town (check for bank button text: "Jít do banky...")
-      await expect(page.locator('button').filter({ hasText: /banky/i })).toBeVisible({ timeout: 3000 })
+      await expect(page.locator('button').filter({ hasText: /banky/i })).toBeVisible({
+        timeout: 3000,
+      })
     })
   })
 })
