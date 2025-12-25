@@ -6,6 +6,88 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-25 23:34 - UI/UX Improvements Across All Pages
+
+**Type:** Added | Changed
+**Scope:** Skills, Inventory, PlayerStats, Character
+**Impact:** Better space usage, clearer visual hierarchy, persistent player info visibility
+
+### Added
+
+- **PlayerStats Component:** New header component displaying X,Y coordinates and gold
+  - Fetches data from `/api/character/[characterId]/stats` endpoint
+  - Auto-updates every 30 seconds
+  - Displayed in GameHeader when characterId provided
+  - Styled with medieval fantasy theme (gold coins, blue map pin)
+  
+- **API Endpoint:** `/api/character/[characterId]/stats`
+  - Returns `{ x, y, gold }` for authenticated character
+  - Uses `auth()` and `prisma` (Next.js 15+ pattern)
+  - Secure: validates ownership before returning data
+
+### Changed
+
+- **Skills Page:** Improved locked skill visibility
+  - Removed `opacity-50` that made skills look too dark/disabled
+  - Changed locked icon from dark `#8b6f47` to lighter `#d4a574`
+  - Changed locked text from `#8b7355` to `#d4a574` (more visible)
+  - Changed locked background from `bg-black/20` to `bg-black/40` (better contrast)
+  - Changed locked border from `border-[#8b6f47]/30` to `border-[#8b6f47]/50`
+  - Added hover states for locked skills
+  - Added `rounded-lg` and `shadow-lg` for selected skills
+
+- **Inventory Page:** Main grid layout with side panel
+  - Grid now `flex-1` (main focus) with 4-10 responsive columns
+    - Mobile: 4 cols, SM: 5, MD: 6, LG: 8, XL: 10
+  - Detail panel moved to right side (fixed `w-80`)
+  - Previously: sidebar on left (280-384px), detail on right (flex-1)
+  - Gold display enhanced: larger text, "gold" label, better visual hierarchy
+  - Grid spacing increased (`gap-3` for better touch targets)
+  - Selected item: `scale-105` and golden shadow for emphasis
+  - Equipped indicator: larger check icon (`h-3 w-3`)
+
+- **GameHeader:** Added characterId prop
+  - Passes through to PlayerStats component
+  - Displays coords/gold alongside title when characterId provided
+  - Layout adjusted: title section + PlayerStats in flex container
+
+- **PageTemplate:** Added characterId prop
+  - Forwards to GameHeader for PlayerStats display
+  - Enables persistent player info across all pages
+
+- **Character Page:** Pass characterId to template
+  - CharacterPanel now extracts and forwards character.id
+  - CharacterClient receives and uses characterId prop
+  - Enables PlayerStats in header
+
+### Technical Details
+
+- **Next.js 15+ API Routes:** Using `await params` pattern
+- **Auth:** Using `auth()` instead of deprecated `getServerSession()`
+- **Database:** Using `prisma` export (not `db`)
+- **Responsive Grid:** Tailwind breakpoints for inventory (sm/md/lg/xl)
+- **Performance:** PlayerStats polling at 30s intervals (configurable)
+
+### Files Changed
+
+- `components/features/Skills/SkillGrid.tsx` (colors, opacity, borders)
+- `components/features/Inventory/InventoryClient.tsx` (grid layout, column count)
+- `components/features/Game/GameHeader.tsx` (characterId prop, PlayerStats)
+- `components/features/Game/PlayerStats.tsx` (NEW - coord/gold display)
+- `components/layout/PageTemplate.tsx` (characterId prop forwarding)
+- `components/features/Character/CharacterClient.tsx` (receive/forward characterId)
+- `components/features/Character/CharacterPanel.tsx` (extract character.id)
+- `app/api/character/[characterId]/stats/route.ts` (NEW - API endpoint)
+
+### Tested
+
+- ✅ Build passes successfully
+- ✅ TypeScript validation passes
+- ✅ No ESLint errors
+- ✅ API route follows Next.js 15+ patterns
+
+---
+
 ## 2025-12-25 02:27 - Unified maxWidth Layout Across All Pages
 
 **Type:** Refactored
