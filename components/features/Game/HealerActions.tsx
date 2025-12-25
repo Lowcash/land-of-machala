@@ -54,11 +54,6 @@ export function HealerActions({
     <GameLayout>
       <GamePanel title="Léčitel">
         <div className="space-y-3">
-          <div className="flex items-center justify-between rounded border border-[#8b6f47] bg-black/60 p-3">
-            <span className="text-sm text-[#8b7355]">Tvé zlato:</span>
-            <span className="font-mono text-lg text-[#ffd700]">{gold}g</span>
-          </div>
-
           <div className="space-y-1.5">
             <ActionBtn onClick={onBack} icon={Home}>
               <span>Vrátit se do města</span>

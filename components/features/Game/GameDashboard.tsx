@@ -2,6 +2,7 @@
 
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { RouteTransition } from '@/components/layout/RouteTransition'
+import { moveCharacter } from '@/lib/actions/movement-actions'
 import {
   Beer,
   Building,
@@ -14,7 +15,7 @@ import {
   Trees,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { FishingGame, LockpickGame, MiningGame } from '../Minigames'
 import { BankActions } from './BankActions'
 import { CharacterBox } from './CharacterBox'
@@ -50,37 +51,40 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const [activeMinigame, setActiveMinigame] = useState<'fishing' | 'mining' | 'lockpick' | null>(
     null
   )
+  const [, startTransition] = useTransition()
 
   // Mock data for now - should come from props or query
   const [gold, setGold] = useState(character.gold || 0)
   const [activeBuffs, setActiveBuffs] = useState<any[]>([])
 
-  const handleMove = (direction: 'north' | 'south' | 'east' | 'west') => {
-    if (direction === 'north') setCurrentView('mountains')
-    else if (direction === 'south') setCurrentView('plains')
-    else if (direction === 'east') setCurrentView('desert')
-    else {
-      setInfoText(
-        'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.'
-      )
-    }
-  }
+  const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
+    startTransition(async () => {
+      const result = await moveCharacter(character.id, direction)
+      
+      if (!result.success) {
+        setInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
+        return
+      }
 
-  const handleExplore = () => {
-    const roll = Math.random()
-    if (roll < 0.6) {
-      router.push('/combat')
-    } else if (roll < 0.8) {
-      const foundGold = Math.floor(Math.random() * 20) + 10
-      setGold((g: number) => g + foundGold)
-      setInfoText(
-        `Při průzkumu jsi našel opuštěný tábor a v něm <span class="text-[#ffd700]">${foundGold} zlaťáků</span>!`
-      )
-    } else {
-      setInfoText(
-        'Procházíš krajinou, ale nenarazil jsi na nic zajímavého. Jen vítr šumí v korunách stromů.'
-      )
-    }
+      // Update view based on direction
+      if (direction === 'north') setCurrentView('mountains')
+      else if (direction === 'south') setCurrentView('plains')
+      else if (direction === 'east') setCurrentView('desert')
+      else {
+        setInfoText(
+          'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.'
+        )
+      }
+
+      // Random combat encounter
+      if (result.hasEncounter) {
+        router.push('/combat')
+      } else {
+        setInfoText(
+          `Procházíš krajinou na souřadnicích <span class="text-[#ffd700]">X: ${result.newX}, Y: ${result.newY}</span>. Prozatím jsi nenarazil na žádné nepřátele.`
+        )
+      }
+    })
   }
 
   const handleMinigameComplete = (rewards: any) => {
@@ -202,7 +206,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
           <div className="relative min-h-0 flex-1 px-3 pb-3">
             {currentView === 'town' && (
               <TownActions
-                onExplore={handleExplore}
                 onSmith={() => setCurrentView('smith')}
                 onBank={() => setCurrentView('bank')}
                 onHealer={() => setCurrentView('healer')}
