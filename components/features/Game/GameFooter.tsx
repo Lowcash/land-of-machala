@@ -16,10 +16,9 @@ export function GameFooter() {
   ]
 
   return (
-    <div className="z-100 border-t border-[#8b6f47] shadow-[0_-5px_20px_rgba(0,0,0,0.5)]">
-      <div className="mx-auto w-full max-w-lg px-4 py-2">
-        <div className="flex items-center justify-between">
-          {navItems.map((item) => {
+    <div className="w-full py-2">
+      <div className="mx-auto flex max-w-lg items-center justify-between px-4">
+        {navItems.map((item) => {
             const isActive = pathname === item.path
             const Icon = item.icon
 
@@ -59,6 +58,6 @@ export function GameFooter() {
           })}
         </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
+

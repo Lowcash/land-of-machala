@@ -73,35 +73,20 @@ export function PageTemplate({
 
   return (
     <RouteTransition>
-      <div
-        className="fixed inset-0 flex flex-col overflow-hidden bg-[#0a0806]"
-        style={{ fontFamily: 'var(--font-body)' }}
-      >
-        {/* Background with max-width constraint */}
+      {/* Full screen container */}
+      <div className="fixed inset-0 flex flex-col bg-[#0a0806]" style={{ fontFamily: 'var(--font-body)' }}>
+        
+        {/* Background layer (full width) */}
         {backgroundImage && (
-          <>
-            <div className="absolute inset-0 flex justify-center">
-              <div className="relative h-full w-full max-w-[2000px]">
-                <img src={backgroundImage} alt={title} className="h-full w-full object-cover" />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
-              </div>
-              {/* Black bars for ultra-wide screens */}
-              <div className="pointer-events-none absolute inset-y-0 right-0 left-0">
-                <div className="relative mx-auto h-full max-w-[2000px]">
-                  <div className="absolute inset-y-0 left-0 w-[calc((100vw-2000px)/2)] bg-black"></div>
-                  <div className="absolute inset-y-0 right-0 w-[calc((100vw-2000px)/2)] bg-black"></div>
-                </div>
-              </div>
-            </div>
-          </>
+          <div className="absolute inset-0">
+            <img src={backgroundImage} alt={title} className="h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
+          </div>
         )}
 
-        {/* Content Layer - centered with max-width */}
-        <div
-          className={`relative z-10 mx-auto flex w-full ${maxWidthClass} flex-col overflow-hidden`}
-        >
-          {/* Header */}
-          <header>
+        {/* Header - full width with dark background */}
+        <div className="relative z-20 w-full border-b border-[#8b6f47] bg-black/90">
+          <div className={`mx-auto ${maxWidthClass}`}>
             <GameHeader
               icon={icon}
               title={title}
@@ -110,15 +95,19 @@ export function PageTemplate({
               onBack={onBack || backUrl ? handleBack : undefined}
               onSettings={handleOpenSettings}
             />
-          </header>
+          </div>
+        </div>
 
-          {/* Main Content Area */}
-          <main className="flex-1 overflow-hidden">{children}</main>
+        {/* Main content - constrained width, full height */}
+        <main className={`relative z-10 mx-auto flex h-0 min-h-0 flex-1 w-full ${maxWidthClass} flex-col overflow-hidden`}>
+          {children}
+        </main>
 
-          {/* Footer */}
-          <footer>
+        {/* Footer - full width with dark background */}
+        <div className="relative z-20 w-full border-t border-[#8b6f47] bg-black/90">
+          <div className={`mx-auto ${maxWidthClass}`}>
             <GameFooter />
-          </footer>
+          </div>
         </div>
       </div>
 
