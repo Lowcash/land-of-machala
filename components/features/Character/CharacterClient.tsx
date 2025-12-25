@@ -1,5 +1,6 @@
 'use client'
 
+import { CharacterBox } from '@/components/features/Game/CharacterBox'
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { Tooltip } from '@/components/ui/CustomTooltip'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
@@ -7,14 +8,14 @@ import {
   Activity,
   Brain,
   Coins,
-  MapPin,
   Shield,
   Sparkles,
-  Sword,
   Swords,
   Trophy,
   User,
   Wind,
+  MapPin,
+  Sword,
 } from 'lucide-react'
 import { useRef, useState } from 'react'
 
@@ -74,7 +75,6 @@ export function CharacterClient({ characterId, character, inventory }: Character
   const dodgeChance = Math.min(5 + Math.floor(character.agility / 3), 40)
 
   const xpToNext = 1000 // This should ideally come from prop or calculation
-  const xpProgress = (character.experience / xpToNext) * 100
 
   // Achievements system (mock for now)
   const achievements = [
@@ -149,82 +149,30 @@ export function CharacterClient({ characterId, character, inventory }: Character
       <div className="relative flex flex-1 flex-col overflow-hidden">
         <ScrollIndicator targetRef={scrollRef} position="both" />
         <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto">
-          <div className="w-full space-y-4 p-3 sm:p-4">
-            {/* Top: Character Header & Vitals */}
-            <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-4 shadow-xl">
-              <div className="flex flex-col gap-4 md:flex-row md:items-center">
-                {/* Identity */}
-                <div className="flex items-center gap-4">
-                  <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-full border-3 border-[#ffd700] bg-gradient-to-br from-[#ffd700] via-[#d4a574] to-[#8b6f47] shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-                    <User className="h-8 w-8 text-white" />
-                  </div>
-                  <div>
-                    <h2
-                      className="text-2xl leading-none text-[#ffd700]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      {character.name}
-                    </h2>
-                    <div className="mt-1 flex items-center gap-2 text-sm text-[#d4a574]">
-                      <span>{character.race}</span>
-                      <span>•</span>
-                      <span>{character.class}</span>
-                      <span>•</span>
-                      <span className="font-bold text-[#ffd700]">Level {character.level}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Vitals Bars */}
-                <div className="flex-1 space-y-2 md:border-l md:border-[#8b6f47]/30 md:pl-6">
-                  {/* HP */}
-                  <div className="grid grid-cols-[40px_1fr_60px] items-center gap-2 text-xs">
-                    <span className="font-bold text-[#ff6b6b]">HP</span>
-                    <div className="h-2.5 overflow-hidden rounded-full border border-[#8b6f47] bg-black/60">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#ff6b6b] to-[#ff4444]"
-                        style={{ width: `${(character.hp / character.maxHp) * 100}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-right text-[#8b7355]">
-                      {character.hp}/{character.maxHp}
-                    </span>
-                  </div>
-                  {/* Mana */}
-                  <div className="grid grid-cols-[40px_1fr_60px] items-center gap-2 text-xs">
-                    <span className="font-bold text-[#69ccf0]">MP</span>
-                    <div className="h-2.5 overflow-hidden rounded-full border border-[#8b6f47] bg-black/60">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#69ccf0] to-[#5ba4c2]"
-                        style={{ width: `${(character.mana / character.maxMana) * 100}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-right text-[#8b7355]">
-                      {character.mana}/{character.maxMana}
-                    </span>
-                  </div>
-                  {/* XP */}
-                  <div className="grid grid-cols-[40px_1fr_60px] items-center gap-2 text-xs">
-                    <span className="font-bold text-[#ffd700]">XP</span>
-                    <div className="group relative h-2.5 overflow-hidden rounded-full border border-[#8b6f47] bg-black/60">
-                      <div
-                        className="h-full bg-gradient-to-r from-[#ffd700] to-[#ffed4e]"
-                        style={{ width: `${xpProgress}%` }}
-                      ></div>
-                      <div className="pointer-events-none absolute top-full left-1/2 z-10 mt-1 -translate-x-1/2 rounded border border-[#ffd700] bg-black/90 px-2 py-1 text-[10px] whitespace-nowrap text-[#ffd700] opacity-0 transition-opacity group-hover:opacity-100">
-                        {character.experience} / {xpToNext} XP
-                      </div>
-                    </div>
-                    <span className="text-right text-[#8b7355]">{Math.floor(xpProgress)}%</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="w-full space-y-3 p-3 sm:p-4">
+            {/* Top: Character Box - Compact & Consistent */}
+            <CharacterBox
+              name={character.name}
+              level={character.level}
+              hp={character.hp}
+              hpMax={character.maxHp}
+              mana={character.mana}
+              manaMax={character.maxMana}
+              xp={character.experience}
+              xpMax={xpToNext}
+              stats={{
+                strength: character.strength,
+                intelligence: character.intelligence,
+                agility: character.agility,
+                stamina: character.stamina,
+              }}
+              isEnemy={false}
+              resourceType="mana"
+            />
 
             {/* Main Grid Layout */}
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-12">
-              {/* Left Column: Stats (4 cols) */}
-              <div className="space-y-4 lg:col-span-4">
+            <div className="grid grid-cols-1 gap-3 lg:grid-cols-12">{/* Left Column: Stats (4 cols) */}
+              <div className="space-y-3 lg:col-span-4">
                 {/* Core Attributes */}
                 <div className="rounded-lg border-2 border-[#d4a574] bg-black/80 p-3 sm:p-4">
                   <h3
@@ -405,7 +353,7 @@ export function CharacterClient({ characterId, character, inventory }: Character
               </div>
 
               {/* Right Column: Equipment & Achievements (8 cols) */}
-              <div className="space-y-4 lg:col-span-8">
+              <div className="space-y-3 lg:col-span-8">
                 {/* Equipment */}
                 <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-3 shadow-lg sm:p-4">
                   <h3
