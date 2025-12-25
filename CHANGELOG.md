@@ -6,6 +6,50 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-26 00:10 - Movement System with X,Y Coordinates & Combat Encounters
+
+**Type:** Added
+**Scope:** Movement system, TownActions, GameDashboard, HealerActions
+**Impact:** Complete movement overhaul with coordinate tracking and random combat encounters
+
+### Added
+
+- **Movement System (`movement-actions.ts`):**
+  - Server action for directional movement (North, South, East, West)
+  - X,Y coordinate tracking in database (locationX, locationY)
+  - Direction deltas: North (+Y), South (-Y), East (+X), West (-X)
+  - Auto-saves coordinates after each move
+  - Revalidates paths for fresh data
+  
+- **Random Combat Encounters:**
+  - 60% chance of combat when moving outside town
+  - Automatic redirect to combat screen on encounter
+  - Feedback message shows coordinates when no encounter
+  
+### Changed
+
+- **TownActions Component:**
+  - Removed "rozhlédnout se" (explore) action
+  - Simplified to pure directional movement
+  - Removed onExplore prop from interface
+  
+- **HealerActions Component:**
+  - Removed gold display panel (now in header via PlayerStats)
+  - Cleaner, more focused interface
+  
+- **GameDashboard Component:**
+  - Integrated moveCharacter server action
+  - Async movement handling with useTransition
+  - Shows X,Y coordinates in feedback message
+  - Random encounter logic implemented
+
+### Technical Details
+
+- Uses Prisma for database updates
+- Server-side coordinate validation
+- Optimistic UI updates with revalidation
+- Error handling for failed movements
+
 ## 2025-12-26 00:00 - CharacterBox Complete Medieval Fantasy Redesign
 
 **Type:** Changed
