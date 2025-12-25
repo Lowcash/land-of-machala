@@ -343,27 +343,30 @@ export function LoginForm() {
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <Scroll className="h-5 w-5" />
-                  Novinky (v1.2.5)
+                  Nejnovější změny
                 </h4>
                 <ul className="space-y-2 text-sm text-[#d4a574]">
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
                     <span>
-                      Nový dungeon: <span className="text-[#ff6b6b]">Dračí doupě</span> pro level
-                      10+
+                      <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3 větvích (Combat, Defense, Magic)
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
-                    <span>15 nových achievementů a titulů</span>
+                    <span>
+                      <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier progrese s unlock požadavky
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
-                    <span>Balance změny pro mage class</span>
+                    <span>
+                      <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby (N/S/E/W) + náhodné souboje
+                    </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
-                    <span>Bug fixes a optimalizace výkonu</span>
+                    <span>Kompaktní CharacterBox redesign s medieval fantasy stylem</span>
                   </li>
                 </ul>
               </div>
@@ -375,7 +378,7 @@ export function LoginForm() {
               </div>
 
               <div className="pt-2 text-center">
-                <p className="text-xs text-[#8b7355]">Verze 1.2.5 • © 2025 Land of Machala</p>
+                <p className="text-xs text-[#8b7355]">Aktualizováno 26.12.2025 • © 2025 Land of Machala</p>
               </div>
             </div>
           </div>
