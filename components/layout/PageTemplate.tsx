@@ -23,6 +23,8 @@ interface PageTemplateProps {
   onBack?: () => void
   /** URL to navigate back to (alternative to onBack) */
   backUrl?: string
+  /** Show back button */
+  showBack?: boolean
   /** Max width constraint for content */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** Character ID for displaying player stats */
@@ -43,6 +45,7 @@ export function PageTemplate({
   onHelp,
   onBack,
   backUrl,
+  showBack = true,
   maxWidth = 'lg',
   characterId,
   children,
@@ -96,6 +99,7 @@ export function PageTemplate({
               subtitle={subtitle}
               onHelp={onHelp}
               onBack={onBack || backUrl ? handleBack : undefined}
+              showBack={showBack}
               onSettings={handleOpenSettings}
               characterId={characterId}
             />

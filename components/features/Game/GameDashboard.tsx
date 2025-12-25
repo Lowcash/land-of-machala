@@ -162,6 +162,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
         backgroundImage={viewData.bg}
         icon={viewData.icon}
         maxWidth="lg"
+        showBack={false}
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Player box at top - increased width for better visibility */}

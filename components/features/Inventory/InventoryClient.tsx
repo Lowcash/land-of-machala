@@ -11,10 +11,7 @@ import {
   ArrowLeft,
   Backpack,
   Check,
-  Coins,
-  Grid3x3,
   Heart,
-  List,
   Shield,
   Sparkles,
   Sword,
@@ -44,9 +41,8 @@ type InventoryClientProps = {
 
 export function InventoryClient({ initialInventory, gold }: InventoryClientProps) {
   const [inventory, setInventory] = useState(initialInventory)
-  const [currentGold, setCurrentGold] = useState(gold)
+  const [, setCurrentGold] = useState(gold)
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [isPending, startTransition] = useTransition()
   const scrollRef = useRef<HTMLDivElement>(null)
   const detailScrollRef = useRef<HTMLDivElement>(null)
@@ -209,85 +205,28 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
             selectedItem ? 'hidden md:flex' : 'flex'
           } flex-1 flex-col bg-black/70 backdrop-blur-sm`}
         >
-          {/* Toolbar */}
-          <div className="flex items-center justify-between border-b border-[#8b6f47] p-3">
-            <div className="flex items-center gap-2 rounded-lg border border-[#ffd700]/30 bg-black/40 px-3 py-1.5 shadow-md">
-              <Coins className="h-5 w-5 text-[#ffd700]" />
-              <span className="text-lg font-bold text-[#ffd700]">{currentGold}</span>
-              <span className="text-xs text-[#d4a574]">gold</span>
-            </div>
-            <div className="flex gap-1">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`rounded p-1.5 transition-colors ${
-                  viewMode === 'grid'
-                    ? 'bg-[#ffd700]/20 text-[#ffd700]'
-                    : 'text-[#8b7355] hover:bg-black/40 hover:text-[#d4a574]'
-                }`}
-              >
-                <Grid3x3 className="h-4 w-4" />
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`rounded p-1.5 transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-[#ffd700]/20 text-[#ffd700]'
-                    : 'text-[#8b7355] hover:bg-black/40 hover:text-[#d4a574]'
-                }`}
-              >
-                <List className="h-4 w-4" />
-              </button>
-            </div>
-          </div>
+          {/* Toolbar - removed, gold now in header */}
 
           {/* Inventory Grid/List */}
           <div className="relative flex flex-1 flex-col overflow-hidden">
             <ScrollIndicator targetRef={scrollRef} position="both" />
             <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
-              <div
-                className={
-                  viewMode === 'grid'
-                    ? 'grid grid-cols-4 gap-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10'
-                    : 'mx-auto max-w-2xl space-y-2'
-                }
-              >
+              <div className="grid grid-cols-5 gap-2 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12">
                 {filteredInventory.map((item) => {
                   const Icon = getIconFromName(item.iconName)
                   return (
                     <button
                       key={item.id}
                       onClick={() => handleSelectItem(item.id)}
-                      className={`group relative rounded-lg border-2 transition-all ${
+                      className={`group relative aspect-square rounded-lg border-2 p-2 transition-all ${
                         selectedItem === item.id
-                          ? 'border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.3)] scale-105'
+                          ? 'scale-105 border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.3)]'
                           : `bg-black/40 hover:bg-black/60 ${getRarityBorder(item.rarity)}`
-                      } ${viewMode === 'grid' ? 'aspect-square p-2' : 'flex items-center gap-3 p-3'}`}
+                      }`}
                     >
-                      <div
-                        className={`${
-                          viewMode === 'grid'
-                            ? 'flex h-full w-full items-center justify-center'
-                            : 'h-10 w-10 shrink-0'
-                        }`}
-                      >
-                        <Icon
-                          className={`${
-                            viewMode === 'grid' ? 'h-8 w-8' : 'h-full w-full'
-                          } ${getRarityColor(item.rarity)}`}
-                        />
+                      <div className="flex h-full w-full items-center justify-center">
+                        <Icon className={`h-8 w-8 ${getRarityColor(item.rarity)}`} />
                       </div>
-
-                      {viewMode === 'list' && (
-                        <div className="min-w-0 flex-1 text-left">
-                          <h3
-                            className={`truncate text-sm font-medium ${getRarityColor(item.rarity)}`}
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            {item.name}
-                          </h3>
-                          <p className="truncate text-xs text-[#8b7355]">{item.type}</p>
-                        </div>
-                      )}
 
                       {item.quantity > 1 && (
                         <div className="absolute right-1 bottom-1 rounded border border-[#8b6f47] bg-black/80 px-1.5 py-0.5 text-[10px] font-bold text-white">
