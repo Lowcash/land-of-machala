@@ -264,7 +264,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   }
 
   return (
-    <PageTemplate title="Souboj" icon={Swords} backgroundImage={forestBg} maxWidth="full">
+    <PageTemplate title="Souboj" icon={Swords} backgroundImage={forestBg} maxWidth="lg">
       <div className="flex w-full flex-1 gap-3 overflow-hidden p-3">
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Top: Combat Arena */}
@@ -373,11 +373,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
         </div>
       </div>
 
-      {panel === 'settings' && (
-        <SettingsPanel
-          onClose={() => setPanel(null)}
-        />
-      )}
+      {panel === 'settings' && <SettingsPanel onClose={() => setPanel(null)} />}
       {panel === 'help' && <HelpPanel onClose={() => setPanel(null)} />}
     </PageTemplate>
   )

@@ -4,11 +4,11 @@ test.describe('Onboarding Flow', () => {
   test('completes character creation', async ({ page }) => {
     // 1. Login as guest
     await page.goto('/login')
-    
+
     // Click guest button and wait for navigation
     await Promise.all([
       page.waitForURL(/\/onboarding/, { timeout: 30000 }),
-      page.getByRole('button', { name: 'Zkusit hru jako host (bez registrace)' }).click()
+      page.getByRole('button', { name: 'Zkusit hru jako host (bez registrace)' }).click(),
     ])
 
     // 3. Skip intro

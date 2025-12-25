@@ -1,9 +1,8 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { Volume2, VolumeX, Music, Zap, MessageSquare, Save, Eye, RotateCcw } from 'lucide-react'
-import { X } from 'lucide-react'
-import { useRef, useEffect, useState } from 'react'
+import { Eye, MessageSquare, Music, RotateCcw, Save, Volume2, VolumeX, X, Zap } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 
 interface SettingsPanelProps {
   onClose: () => void
@@ -179,7 +178,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
   )
 
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
@@ -192,13 +191,17 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
           className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-6"
         >
           <div className="mb-4 flex items-center justify-between">
-            <h2 id="settings-title" className="text-2xl text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
+            <h2
+              id="settings-title"
+              className="text-2xl text-[#ffd700]"
+              style={{ fontFamily: 'var(--font-medieval)' }}
+            >
               Nastavení
             </h2>
             <button
               onClick={onClose}
               aria-label="Zavřít nastavení"
-              className="text-[#d4a574] transition-colors hover:text-[#ffd700] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ffd700]"
+              className="text-[#d4a574] transition-colors hover:text-[#ffd700] focus-visible:ring-2 focus-visible:ring-[#ffd700] focus-visible:outline-none"
             >
               <X className="h-6 w-6" />
             </button>
@@ -293,7 +296,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             </div>
 
             {/* Info */}
-            <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-xs italic text-[#8b7355]">
+            <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-xs text-[#8b7355] italic">
               Nastavení se automaticky ukládají do paměti prohlížeče.
             </div>
           </div>

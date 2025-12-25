@@ -6,6 +6,49 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-25 02:27 - Unified maxWidth Layout Across All Pages
+
+**Type:** Refactored
+**Scope:** All game pages - consistent width constraint
+**Impact:** Unified visual consistency, prevents content from stretching on wide screens
+
+### Fixed
+
+- **Combat page:** Changed `maxWidth="full"` → `maxWidth="lg"`
+  - Previously stretched across entire screen width
+  - Now matches town and other pages (max-w-6xl / 1152px)
+  - Better visual consistency and readability
+  
+- **Character page:** Changed `maxWidth="xl"` → `maxWidth="lg"`
+  - Was wider than other pages (max-w-7xl)
+  - Now consistent with rest of app
+  
+- **All other pages:** Added explicit `maxWidth="lg"`
+  - Skills, Inventory, Map, Quests now explicitly set
+  - Previously relied on default, now explicitly defined
+  - Ensures consistency across entire app
+
+### Verified
+
+**All pages now use maxWidth="lg" (1152px max):**
+- ✅ `/game` (GameDashboard) - lg
+- ✅ `/character` - lg ← changed from xl
+- ✅ `/skills` - lg ← added explicitly
+- ✅ `/inventory` - lg ← added explicitly
+- ✅ `/map` - lg ← added explicitly
+- ✅ `/combat` - lg ← changed from full
+- ✅ `/quests` - lg ← added explicitly
+
+**Test Results:**
+- character + combat: 9/9 passing (100%) ✓
+- Build: ✅ Passes without errors
+
+**UX Impact:**
+- Postupně skládaný layout ✓
+- Jednotná šířka napříč systémem ✓
+- Boj se už neroztahuje do šířky ✓
+- Město zůstalo ok ✓
+
 ## 2025-12-25 00:12 - Layout Consistency Refactoring
 
 **Type:** Refactored

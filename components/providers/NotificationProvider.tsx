@@ -1,8 +1,8 @@
 'use client'
 
-import type { ReactNode } from 'react';
-import { createContext, useContext, useState, useCallback } from 'react'
-import { X, CheckCircle2, AlertCircle, AlertTriangle, Info } from 'lucide-react'
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
+import type { ReactNode } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 type NotificationVariant = 'success' | 'error' | 'warning' | 'info'
 
@@ -114,7 +114,9 @@ function NotificationItem({
         </div>
 
         <div className="flex-1 space-y-1">
-          <h4 className="font-fantasy text-sm font-semibold text-[#f5e6d3]">{notification.title}</h4>
+          <h4 className="font-fantasy text-sm font-semibold text-[#f5e6d3]">
+            {notification.title}
+          </h4>
           {notification.description && (
             <p className="text-xs text-[#f5e6d3]/80">{notification.description}</p>
           )}
@@ -150,18 +152,18 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
 
   const showNotification = useCallback((notification: Omit<Notification, 'id'>) => {
     const id = notificationId++
-    setNotifications(prev => [...prev, { ...notification, id }])
+    setNotifications((prev) => [...prev, { ...notification, id }])
   }, [])
 
   const removeNotification = useCallback((id: number) => {
-    setNotifications(prev => prev.filter(n => n.id !== id))
+    setNotifications((prev) => prev.filter((n) => n.id !== id))
   }, [])
 
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <div className="fixed right-4 top-20 z-[600] flex flex-col">
-        {notifications.map(notification => (
+      <div className="fixed top-20 right-4 z-[600] flex flex-col">
+        {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}
             notification={notification}

@@ -139,7 +139,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
       title={character.name}
       subtitle={`Level ${character.level} • ${character.race} ${character.class}`}
       icon={User}
-      maxWidth="xl"
+      maxWidth="lg"
       onHelp={() => setPanel('help')}
       backUrl="/game"
     >
@@ -226,7 +226,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                 {/* Core Attributes */}
                 <div className="rounded-lg border-2 border-[#d4a574] bg-black/80 p-3 sm:p-4">
                   <h3
-                    className="mb-3 flex items-center gap-2 text-sm sm:text-base text-[#ffd700]"
+                    className="mb-3 flex items-center gap-2 text-sm text-[#ffd700] sm:text-base"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Sparkles className="h-4 w-4" />
@@ -234,11 +234,11 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                   </h3>
                   <div className="grid grid-cols-2 gap-2 sm:gap-3">
                     <Tooltip content="Síla - Ovlivňuje fyzický útok">
-                      <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 sm:p-3 text-center transition-colors hover:border-[#d4a574]/50 min-h-touch-target sm:min-h-0">
+                      <div className="min-h-touch-target cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 text-center transition-colors hover:border-[#d4a574]/50 sm:min-h-0 sm:p-3">
                         <Sword className="mx-auto mb-1 h-5 w-5 text-[#ff6b6b]" />
                         <div className="text-[10px] text-[#8b7355] uppercase">Síla</div>
                         <div
-                          className="text-xl sm:text-2xl text-[#ffd700]"
+                          className="text-xl text-[#ffd700] sm:text-2xl"
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {character.strength}
@@ -246,11 +246,11 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                       </div>
                     </Tooltip>
                     <Tooltip content="Inteligence - Ovlivňuje magii">
-                      <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 sm:p-3 text-center transition-colors hover:border-[#d4a574]/50 min-h-touch-target sm:min-h-0">
+                      <div className="min-h-touch-target cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 text-center transition-colors hover:border-[#d4a574]/50 sm:min-h-0 sm:p-3">
                         <Brain className="mx-auto mb-1 h-5 w-5 text-[#b66bd4]" />
                         <div className="text-[10px] text-[#8b7355] uppercase">Inteligence</div>
                         <div
-                          className="text-xl sm:text-2xl text-[#ffd700]"
+                          className="text-xl text-[#ffd700] sm:text-2xl"
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {character.intelligence}
@@ -258,11 +258,11 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                       </div>
                     </Tooltip>
                     <Tooltip content="Obratnost - Ovlivňuje krit a vyhýbání">
-                      <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 sm:p-3 text-center transition-colors hover:border-[#d4a574]/50 min-h-touch-target sm:min-h-0">
+                      <div className="min-h-touch-target cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 text-center transition-colors hover:border-[#d4a574]/50 sm:min-h-0 sm:p-3">
                         <Wind className="mx-auto mb-1 h-5 w-5 text-[#ffd700]" />
                         <div className="text-[10px] text-[#8b7355] uppercase">Obratnost</div>
                         <div
-                          className="text-xl sm:text-2xl text-[#ffd700]"
+                          className="text-xl text-[#ffd700] sm:text-2xl"
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {character.agility}
@@ -270,11 +270,11 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                       </div>
                     </Tooltip>
                     <Tooltip content="Výdrž - Ovlivňuje HP a obranu">
-                      <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 sm:p-3 text-center transition-colors hover:border-[#d4a574]/50 min-h-touch-target sm:min-h-0">
+                      <div className="min-h-touch-target cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-2 text-center transition-colors hover:border-[#d4a574]/50 sm:min-h-0 sm:p-3">
                         <Activity className="mx-auto mb-1 h-5 w-5 text-[#69ccf0]" />
                         <div className="text-[10px] text-[#8b7355] uppercase">Výdrž</div>
                         <div
-                          className="text-xl sm:text-2xl text-[#ffd700]"
+                          className="text-xl text-[#ffd700] sm:text-2xl"
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {character.stamina}
@@ -287,7 +287,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                 {/* Combat Stats */}
                 <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-3 sm:p-4">
                   <h3
-                    className="mb-3 flex items-center gap-2 text-sm sm:text-base text-[#d4a574]"
+                    className="mb-3 flex items-center gap-2 text-sm text-[#d4a574] sm:text-base"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Swords className="h-4 w-4" />
@@ -346,7 +346,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                 {/* Resistances */}
                 <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-3 sm:p-4">
                   <h3
-                    className="mb-3 flex items-center gap-2 text-sm sm:text-base text-[#d4a574]"
+                    className="mb-3 flex items-center gap-2 text-sm text-[#d4a574] sm:text-base"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Shield className="h-4 w-4" />
@@ -405,9 +405,9 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
               {/* Right Column: Equipment & Achievements (8 cols) */}
               <div className="space-y-4 lg:col-span-8">
                 {/* Equipment */}
-                <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-3 sm:p-4 shadow-lg">
+                <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-3 shadow-lg sm:p-4">
                   <h3
-                    className="mb-4 flex items-center gap-2 text-sm sm:text-base text-[#ffd700]"
+                    className="mb-4 flex items-center gap-2 text-sm text-[#ffd700] sm:text-base"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Swords className="h-5 w-5" />
@@ -464,7 +464,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                 {/* Achievements */}
                 <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-3 sm:p-4">
                   <h3
-                    className="mb-3 flex items-center gap-2 text-sm sm:text-base text-[#d4a574]"
+                    className="mb-3 flex items-center gap-2 text-sm text-[#d4a574] sm:text-base"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Trophy className="h-4 w-4" />

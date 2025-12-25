@@ -148,7 +148,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
     startTransition(async () => {
       const itemToSell = inventory.find((i) => i.id === id)
       const sellPrice = itemToSell ? Math.floor((itemToSell.value || 10) * 0.5) : 0
-      
+
       const [result, err] = await sellItemAction({ inventoryItemId: id })
       if (err) {
         toast.error('Chyba při prodeji předmětu')
