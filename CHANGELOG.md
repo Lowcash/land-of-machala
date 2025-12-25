@@ -6,6 +6,343 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-26 00:37 - Login Page Real Changelog Content
+
+**Type:** Changed
+**Scope:** LoginForm component
+**Impact:** Login page now displays actual recent changes instead of hardcoded news
+
+### Changed
+
+- **Recent Updates Section:**
+  - Replaced hardcoded "v1.2.5" news with real CHANGELOG content
+  - Shows actual recent changes:
+    - Skills expansion: 19 skills in 3 trees (Combat, Defense, Magic)
+    - WoW-style talent system: 3-tier progression
+    - Movement system: Directional movement (N/S/E/W) + random combat encounters
+    - CharacterBox redesign: Compact medieval fantasy style
+
+- **Color Coding:**
+  - Combat features: `text-[#ff6b6b]` (red)
+  - Defense features: `text-[#69ccf0]` (blue)
+  - Magic features: `text-[#6fbf6f]` (green)
+
+- **Footer:**
+  - Updated timestamp: "Aktualizováno 26.12.2025"
+  - Removed "Verze 1.2.5" (no longer using version numbers)
+
+### Technical Details
+
+- Real-time reflection of development progress
+- Players immediately see what's new
+- Easier to maintain (no need to manually update version news)
+
+### Files Changed
+
+- `components/features/Auth/LoginForm.tsx`
+
+---
+
+## 2025-12-26 00:22 - Skills Expansion with WoW-Style Talent Trees
+
+**Type:** Added
+**Scope:** Skills system, seed data
+**Impact:** Expanded from 8 to 19 skills with complete 3-tier talent tree progression
+
+### Added
+
+- **Skill Trees Expansion:**
+  - **Combat Tree (6 skills):** Silný úder, Kritický zásah, Dvojitý úder, Přesný úder, Vířivý úder, Berserker
+  - **Defense Tree (6 skills):** Železná kůže, Úder štítem, Protiútok, Tvrdá hlava, Pevnost, Poslední vzdor
+  - **Magic Tree (7 skills):** Mana pool, Ohnivá koule, Magický štít, Arkánní síla, Časové zkreslení, Teleportace, Meteor
+  - Total: **19 skills** (increased from 8)
+
+- **Tier System:**
+  - **Tier 1 (Level 1):** Foundation skills (maxRank 5 for base stats, 3 for abilities)
+  - **Tier 2 (Level 3):** Advanced skills (requires 3 tree points, maxRank 1-3)
+  - **Tier 3 (Level 5):** Elite/Ultimate skills (requires 6 tree points, maxRank 1)
+
+- **Czech Localization:**
+  - All skill names translated: "Berserker", "Vířivý úder", "Pevnost", etc.
+  - Czech descriptions with game-specific terminology
+
+- **Progression Gates:**
+  - `requiredTreePoints` system for tier unlocking
+  - Level requirements (1, 3, 5 for tiers 1-3)
+  - Position system (X,Y) for future visual talent tree
+
+### Changed
+
+- **Seed Script:**
+  - Reorganized with clear tree sections and comments
+  - Added tier annotations for each skill group
+  - Updated log message: "Created 19 skills (Combat: 6, Defense: 6, Magic: 7)"
+
+### Technical Details
+
+- **Balanced Progression:**
+  - Base skills: maxRank 5 (gradual stat growth)
+  - Advanced skills: maxRank 3 (significant power boost)
+  - Elite skills: maxRank 1 (game-changing abilities)
+
+- **Tree Requirements:**
+  - Tier 2: Requires 3 points spent in tree
+  - Tier 3: Requires 6 points spent in tree
+  - Ensures players can't rush to endgame skills
+
+### Testing
+
+- Database reset successful
+- All 19 skills seeded correctly
+- Build passes without errors
+
+---
+
+## 2025-12-26 00:10 - Movement System with X,Y Coordinates & Combat Encounters
+
+**Type:** Added
+**Scope:** Movement system, TownActions, GameDashboard, HealerActions
+**Impact:** Complete movement overhaul with coordinate tracking and random combat encounters
+
+### Added
+
+- **Movement System (`movement-actions.ts`):**
+  - Server action for directional movement (North, South, East, West)
+  - X,Y coordinate tracking in database (locationX, locationY)
+  - Direction deltas: North (+Y), South (-Y), East (+X), West (-X)
+  - Auto-saves coordinates after each move
+  - Revalidates paths for fresh data
+  
+- **Random Combat Encounters:**
+  - 60% chance of combat when moving outside town
+  - Automatic redirect to combat screen on encounter
+  - Feedback message shows coordinates when no encounter
+  
+### Changed
+
+- **TownActions Component:**
+  - Removed "rozhlédnout se" (explore) action
+  - Simplified to pure directional movement
+  - Removed onExplore prop from interface
+  
+- **HealerActions Component:**
+  - Removed gold display panel (now in header via PlayerStats)
+  - Cleaner, more focused interface
+  
+- **GameDashboard Component:**
+  - Integrated moveCharacter server action
+  - Async movement handling with useTransition
+  - Shows X,Y coordinates in feedback message
+  - Random encounter logic implemented
+
+### Technical Details
+
+- Uses Prisma for database updates
+- Server-side coordinate validation
+- Optimistic UI updates with revalidation
+- Error handling for failed movements
+
+## 2025-12-26 00:00 - CharacterBox Complete Medieval Fantasy Redesign
+
+**Type:** Changed
+**Scope:** CharacterBox component
+**Impact:** Complete visual overhaul with medieval fantasy theme, addressing extreme user dissatisfaction
+
+### Changed
+
+- **CharacterBox Redesign (Complete Overhaul):**
+  - Size increased: `h-24` → `h-32` (33% larger)
+  - Width increased: `w-24` → `w-32` (portrait section)
+  - Medieval borders with ornamental corner decorations
+  - Gradient border system with amber/gold theme
+  - Parchment texture overlay for authenticity
+  - Magical glow pulse animations on hover
+  
+- **Portrait Frame:**
+  - Shield-style level emblem with ring glow effect
+  - Inner frame decoration (double border)
+  - Sepia filter on images for medieval aesthetic
+  - Smooth scale animations (125% on hover)
+  
+- **Vitals Bars Enhanced:**
+  - Bar height: `h-4` → `h-5` (25% larger, better visibility)
+  - HP bar: blood-red gradient with pulse on low health (<25%)
+  - Mana/Energy: magical glow effects with shadows
+  - Filled icons when resource is high (HP < 50%, Resource > 75%)
+  - Better gradients and drop shadows
+  
+- **Stats Display:**
+  - Compact border box with backdrop blur
+  - Colored stat icons with glow on hover
+  - Detailed tooltips explaining each stat
+  - Larger font sizes for better readability
+  
+- **Typography & Colors:**
+  - Amber/gold theme (replacing generic browns)
+  - Fantasy font family integration
+  - Drop shadows with colored glows
+  - Better contrast and readability
+
+## 2025-12-25 23:40 - CharacterBox Redesign (Medieval Fantasy Enhancement)
+
+**Type:** Changed
+**Scope:** CharacterBox component (GameDashboard, Combat)
+**Impact:** More engaging character display, better space usage, addresses user dissatisfaction
+
+### Changed
+
+- **CharacterBox Size:** Increased from `max-w-sm` (384px) to `max-w-md` (448px)
+  - Better visibility and proportions
+  - More space for enhanced visuals
+  
+- **Avatar Section Enhanced:**
+  - Height increased from `h-20` to `h-24` (20% larger)
+  - Width increased from `w-20` to `w-24`
+  - Image scale effect on hover (`scale-110`)
+  - Smoother grayscale transitions
+  - Gradient overlay on images
+  
+- **Tooltips Added:**
+  - HP bar: "Životy: X / Y"
+  - Mana/Energy bar: "Mana: X / Y" or "Energie: X / Y"
+  - XP bar: "Zkušenosti: X / Y"
+  - Each stat (Síla, Inteligence, Obratnost, Výdrž) with descriptions
+  
+- **Visual Effects Enhanced:**
+  - Hover glow: radial gradient effect (gold for player, red for enemy)
+  - Border animations: changes color on hover
+  - Shadow enhancements: `shadow-[0_0_40px_rgba(...)]`
+  - Animated background gradient
+  
+- **Bars Improved:**
+  - Height increased from `h-3.5` to `h-4`
+  - Icons added: Heart (HP), Zap (Mana/Energy)
+  - Better touch targets for mobile
+  - Enhanced hover states
+  
+- **XP Display:**
+  - Added Sparkles icon
+  - Percentage indicator: "X%"
+  - Wider bar (`w-16` from `w-12`)
+  - Tooltip with full XP values
+  
+- **Stats Row:**
+  - Icons enlarged from `h-3 w-3` to `h-3.5 w-3.5`
+  - Added drop-shadow to icons
+  - Hover scale effect (`scale-110`)
+  - Increased spacing from `gap-3` to `gap-4`
+  - Font size increased from `text-[9px]` to `text-[10px]`
+  
+- **Level Badge:**
+  - Font size increased from `text-[10px]` to `text-xs`
+  - Better shadow effects
+  - Enhanced border visibility
+
+### Technical Details
+
+- Added imports: `Heart`, `Sparkles`, `Zap` from lucide-react
+- Added CustomTooltip integration
+- Resource type label added (`resourceLabel` variable)
+- Gradient animations use CSS transitions
+- Radial gradient class: `bg-gradient-radial`
+
+### User Satisfaction
+
+- Addresses "extrémně nelíbí" feedback
+- More engaging medieval fantasy theme
+- Better readability and visual hierarchy
+- Interactive tooltips provide context
+- Professional polish with animations
+
+### Files Changed
+
+- `components/features/Game/CharacterBox.tsx` (major refactor: +45 lines enhanced features)
+- `components/features/Game/GameDashboard.tsx` (max-w-sm → max-w-md)
+
+---
+
+## 2025-12-25 23:34 - UI/UX Improvements Across All Pages
+
+**Type:** Added | Changed
+**Scope:** Skills, Inventory, PlayerStats, Character
+**Impact:** Better space usage, clearer visual hierarchy, persistent player info visibility
+
+### Added
+
+- **PlayerStats Component:** New header component displaying X,Y coordinates and gold
+  - Fetches data from `/api/character/[characterId]/stats` endpoint
+  - Auto-updates every 30 seconds
+  - Displayed in GameHeader when characterId provided
+  - Styled with medieval fantasy theme (gold coins, blue map pin)
+  
+- **API Endpoint:** `/api/character/[characterId]/stats`
+  - Returns `{ x, y, gold }` for authenticated character
+  - Uses `auth()` and `prisma` (Next.js 15+ pattern)
+  - Secure: validates ownership before returning data
+
+### Changed
+
+- **Skills Page:** Improved locked skill visibility
+  - Removed `opacity-50` that made skills look too dark/disabled
+  - Changed locked icon from dark `#8b6f47` to lighter `#d4a574`
+  - Changed locked text from `#8b7355` to `#d4a574` (more visible)
+  - Changed locked background from `bg-black/20` to `bg-black/40` (better contrast)
+  - Changed locked border from `border-[#8b6f47]/30` to `border-[#8b6f47]/50`
+  - Added hover states for locked skills
+  - Added `rounded-lg` and `shadow-lg` for selected skills
+
+- **Inventory Page:** Main grid layout with side panel
+  - Grid now `flex-1` (main focus) with 4-10 responsive columns
+    - Mobile: 4 cols, SM: 5, MD: 6, LG: 8, XL: 10
+  - Detail panel moved to right side (fixed `w-80`)
+  - Previously: sidebar on left (280-384px), detail on right (flex-1)
+  - Gold display enhanced: larger text, "gold" label, better visual hierarchy
+  - Grid spacing increased (`gap-3` for better touch targets)
+  - Selected item: `scale-105` and golden shadow for emphasis
+  - Equipped indicator: larger check icon (`h-3 w-3`)
+
+- **GameHeader:** Added characterId prop
+  - Passes through to PlayerStats component
+  - Displays coords/gold alongside title when characterId provided
+  - Layout adjusted: title section + PlayerStats in flex container
+
+- **PageTemplate:** Added characterId prop
+  - Forwards to GameHeader for PlayerStats display
+  - Enables persistent player info across all pages
+
+- **Character Page:** Pass characterId to template
+  - CharacterPanel now extracts and forwards character.id
+  - CharacterClient receives and uses characterId prop
+  - Enables PlayerStats in header
+
+### Technical Details
+
+- **Next.js 15+ API Routes:** Using `await params` pattern
+- **Auth:** Using `auth()` instead of deprecated `getServerSession()`
+- **Database:** Using `prisma` export (not `db`)
+- **Responsive Grid:** Tailwind breakpoints for inventory (sm/md/lg/xl)
+- **Performance:** PlayerStats polling at 30s intervals (configurable)
+
+### Files Changed
+
+- `components/features/Skills/SkillGrid.tsx` (colors, opacity, borders)
+- `components/features/Inventory/InventoryClient.tsx` (grid layout, column count)
+- `components/features/Game/GameHeader.tsx` (characterId prop, PlayerStats)
+- `components/features/Game/PlayerStats.tsx` (NEW - coord/gold display)
+- `components/layout/PageTemplate.tsx` (characterId prop forwarding)
+- `components/features/Character/CharacterClient.tsx` (receive/forward characterId)
+- `components/features/Character/CharacterPanel.tsx` (extract character.id)
+- `app/api/character/[characterId]/stats/route.ts` (NEW - API endpoint)
+
+### Tested
+
+- ✅ Build passes successfully
+- ✅ TypeScript validation passes
+- ✅ No ESLint errors
+- ✅ API route follows Next.js 15+ patterns
+
+---
+
 ## 2025-12-25 02:27 - Unified maxWidth Layout Across All Pages
 
 **Type:** Refactored
