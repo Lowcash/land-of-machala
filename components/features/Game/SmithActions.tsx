@@ -101,9 +101,30 @@ export function SmithActions({
 
   // FORGE (from BlacksmithActions)
   const craftItems = [
-    { name: 'Železný meč', price: 50, type: 'weapon', attack: 12, icon: Sword, desc: 'Základní zbraň. +12 Útok.' },
-    { name: 'Ocelová zbroj', price: 120, type: 'armor', defense: 15, icon: Shield, desc: 'Pevná zbroj. +15 Obrana.' },
-    { name: 'Válečné kladivo', price: 200, type: 'weapon', attack: 25, icon: Hammer, desc: 'Drtivá zbraň. +25 Útok.' },
+    {
+      name: 'Železný meč',
+      price: 50,
+      type: 'weapon',
+      attack: 12,
+      icon: Sword,
+      desc: 'Základní zbraň. +12 Útok.',
+    },
+    {
+      name: 'Ocelová zbroj',
+      price: 120,
+      type: 'armor',
+      defense: 15,
+      icon: Shield,
+      desc: 'Pevná zbroj. +15 Obrana.',
+    },
+    {
+      name: 'Válečné kladivo',
+      price: 200,
+      type: 'weapon',
+      attack: 25,
+      icon: Hammer,
+      desc: 'Drtivá zbraň. +25 Útok.',
+    },
   ]
 
   const handleCraft = (template: any) => {
@@ -183,7 +204,9 @@ export function SmithActions({
   }
 
   const repairableItems = inventory.filter(
-    (i) => (i.type === 'weapon' || i.type === 'armor') && (i.durability ?? 100) < (i.maxDurability ?? 100)
+    (i) =>
+      (i.type === 'weapon' || i.type === 'armor') &&
+      (i.durability ?? 100) < (i.maxDurability ?? 100)
   )
   const upgradeableItems = inventory.filter((i) => i.type === 'weapon' || i.type === 'armor')
 
@@ -226,7 +249,9 @@ export function SmithActions({
               <button
                 onClick={() => setTab('shop')}
                 className={`flex-1 rounded px-3 py-2 text-xs font-semibold transition-colors ${
-                  tab === 'shop' ? 'bg-[#8b6f47] text-[#f5e6d3]' : 'text-[#8b7355] hover:text-[#f5e6d3]'
+                  tab === 'shop'
+                    ? 'bg-[#8b6f47] text-[#f5e6d3]'
+                    : 'text-[#8b7355] hover:text-[#f5e6d3]'
                 }`}
               >
                 <Store className="mx-auto mb-1 h-4 w-4" />
@@ -235,7 +260,9 @@ export function SmithActions({
               <button
                 onClick={() => setTab('forge')}
                 className={`flex-1 rounded px-3 py-2 text-xs font-semibold transition-colors ${
-                  tab === 'forge' ? 'bg-[#8b6f47] text-[#f5e6d3]' : 'text-[#8b7355] hover:text-[#f5e6d3]'
+                  tab === 'forge'
+                    ? 'bg-[#8b6f47] text-[#f5e6d3]'
+                    : 'text-[#8b7355] hover:text-[#f5e6d3]'
                 }`}
               >
                 <Hammer className="mx-auto mb-1 h-4 w-4" />
@@ -304,7 +331,8 @@ export function SmithActions({
 
                 {shopMode === 'sell' && (
                   <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto">
-                    {inventory.filter((i) => i.type === 'weapon' || i.type === 'armor').length === 0 ? (
+                    {inventory.filter((i) => i.type === 'weapon' || i.type === 'armor').length ===
+                    0 ? (
                       <div className="p-4 text-center text-xs text-[#8b7355]">
                         Nemáš žádné vybavení k prodeji.
                       </div>
@@ -329,7 +357,9 @@ export function SmithActions({
                               <div className="flex gap-2 text-[10px] text-[#8b7355]">
                                 {item.attack && <span>Útok: +{item.attack}</span>}
                                 {item.defense && <span>Obrana: +{item.defense}</span>}
-                                {item.equipped && <span className="text-[#6fbf6f]">(Nasazeno)</span>}
+                                {item.equipped && (
+                                  <span className="text-[#6fbf6f]">(Nasazeno)</span>
+                                )}
                               </div>
                             </button>
                           )
@@ -387,7 +417,7 @@ export function SmithActions({
                 {forgeMode === 'repair' && (
                   <div className="space-y-2">
                     {repairableItems.length === 0 ? (
-                      <div className="p-4 text-center text-xs italic text-[#8b7355]">
+                      <div className="p-4 text-center text-xs text-[#8b7355] italic">
                         Všechna tvá výbava je v perfektním stavu.
                       </div>
                     ) : (
@@ -406,7 +436,7 @@ export function SmithActions({
                               <div className="relative">
                                 <item.icon className="h-8 w-8 text-[#8b7355]" />
                                 {item.equipped && (
-                                  <div className="absolute -right-1 -top-1 h-2 w-2 rounded-full bg-[#6fbf6f]"></div>
+                                  <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#6fbf6f]"></div>
                                 )}
                               </div>
                               <div>
@@ -453,7 +483,9 @@ export function SmithActions({
                               <div className="flex items-center gap-2">
                                 <item.icon className="h-6 w-6 text-[#ffd700]" />
                                 <div>
-                                  <div className="text-sm font-bold text-[#f5e6d3]">{item.name}</div>
+                                  <div className="text-sm font-bold text-[#f5e6d3]">
+                                    {item.name}
+                                  </div>
                                   <div className="flex gap-2 text-[10px] text-[#8b7355]">
                                     <span>Lvl {level}</span>
                                     {item.attack && (
@@ -498,7 +530,7 @@ export function SmithActions({
       </GamePanel>
 
       {message && (
-        <div className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-20 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
+        <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
           {message}
         </div>
       )}
@@ -506,7 +538,11 @@ export function SmithActions({
       <GamePanel title={tab === 'shop' ? 'Zbrojíř' : 'Mistr Kovář'}>
         <div className="flex gap-3 rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
           <div className="flex h-[40px] min-w-[40px] items-center justify-center rounded-full border border-[#8b6f47] bg-[#8b6f47]/20">
-            {tab === 'shop' ? <Shield className="h-5 w-5 text-[#f5e6d3]" /> : <Hammer className="h-5 w-5 text-[#f5e6d3]" />}
+            {tab === 'shop' ? (
+              <Shield className="h-5 w-5 text-[#f5e6d3]" />
+            ) : (
+              <Hammer className="h-5 w-5 text-[#f5e6d3]" />
+            )}
           </div>
           <div>
             {tab === 'shop'

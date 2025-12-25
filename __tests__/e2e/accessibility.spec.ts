@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 import { loginAsGuest } from './helpers'
 
 test.describe('Accessibility (A11y)', () => {
@@ -44,13 +44,13 @@ test.describe('Accessibility (A11y)', () => {
 
       // Open settings (via header menu if available)
       const settingsButton = page.locator('button').filter({ hasText: /Nastavení|Settings/i })
-      if (await settingsButton.count() > 0) {
+      if ((await settingsButton.count()) > 0) {
         await settingsButton.first().click()
         await page.waitForTimeout(500)
 
         // Settings panel should be open
         const settingsPanel = page.locator('[role="dialog"]')
-        if (await settingsPanel.count() > 0) {
+        if ((await settingsPanel.count()) > 0) {
           await expect(settingsPanel.first()).toBeVisible()
 
           // Press Escape
@@ -87,7 +87,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Focus on back button
       const backButton = page.getByRole('button', { name: /Zpět/i })
-      if (await backButton.count() > 0) {
+      if ((await backButton.count()) > 0) {
         await backButton.focus()
         await page.keyboard.press('Enter')
 
@@ -120,7 +120,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Back button should have label
       const backButton = page.getByRole('button', { name: /Zpět/i })
-      if (await backButton.count() > 0) {
+      if ((await backButton.count()) > 0) {
         const label = await backButton.first().getAttribute('aria-label')
         const text = await backButton.first().textContent()
 
@@ -133,7 +133,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Find settings/menu button in header
       const menuButton = page.locator('button[aria-haspopup], button[aria-expanded]')
-      if (await menuButton.count() > 0) {
+      if ((await menuButton.count()) > 0) {
         const hasPopup = await menuButton.first().getAttribute('aria-haspopup')
         const expanded = await menuButton.first().getAttribute('aria-expanded')
 
@@ -147,13 +147,13 @@ test.describe('Accessibility (A11y)', () => {
 
       // Open settings
       const settingsButton = page.locator('button').filter({ hasText: /Nastavení|Settings/i })
-      if (await settingsButton.count() > 0) {
+      if ((await settingsButton.count()) > 0) {
         await settingsButton.first().click()
         await page.waitForTimeout(500)
 
         // Should have dialog role
         const dialog = page.locator('[role="dialog"]')
-        if (await dialog.count() > 0) {
+        if ((await dialog.count()) > 0) {
           await expect(dialog.first()).toBeVisible()
 
           // Should have aria-modal
@@ -167,11 +167,11 @@ test.describe('Accessibility (A11y)', () => {
       await page.goto('/login')
 
       // Trigger notification (guest login)
-      await page.getByRole('button', { name: /Host jako/i }).click()
+      await page.getByRole('button', { name: /Zkusit hru jako host/i }).click()
 
       // Wait for notification
       const notification = page.locator('[role="alert"]')
-      if (await notification.count() > 0) {
+      if ((await notification.count()) > 0) {
         await expect(notification.first()).toBeVisible({ timeout: 5000 })
 
         // Check aria-live
@@ -190,7 +190,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Check if focus outline is visible
       const focused = page.locator(':focus')
-      if (await focused.count() > 0) {
+      if ((await focused.count()) > 0) {
         const outline = await focused.evaluate((el) => {
           const styles = window.getComputedStyle(el)
           return styles.outline || styles.boxShadow
@@ -205,8 +205,11 @@ test.describe('Accessibility (A11y)', () => {
       await page.goto('/game')
 
       // Open settings
-      const settingsButton = page.locator('button').filter({ hasText: /Nastavení|Settings/i }).first()
-      if (await settingsButton.count() > 0) {
+      const settingsButton = page
+        .locator('button')
+        .filter({ hasText: /Nastavení|Settings/i })
+        .first()
+      if ((await settingsButton.count()) > 0) {
         await settingsButton.click()
         await page.waitForTimeout(500)
 
@@ -248,7 +251,9 @@ test.describe('Accessibility (A11y)', () => {
         const ariaLabel = await img.getAttribute('aria-label')
 
         // Should have alt or aria-label (or be decorative)
-        expect(alt !== null || ariaLabel !== null || await img.getAttribute('aria-hidden') === 'true').toBeTruthy()
+        expect(
+          alt !== null || ariaLabel !== null || (await img.getAttribute('aria-hidden')) === 'true'
+        ).toBeTruthy()
       }
     })
 
@@ -257,7 +262,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Skill buttons should have accessible names
       const skillButtons = page.locator('button').filter({ hasText: /Základní útok|Silný úder/i })
-      if (await skillButtons.count() > 0) {
+      if ((await skillButtons.count()) > 0) {
         const text = await skillButtons.first().textContent()
         const label = await skillButtons.first().getAttribute('aria-label')
 
@@ -283,7 +288,7 @@ test.describe('Accessibility (A11y)', () => {
 
       // Check main heading
       const heading = page.getByText(/Postava|Jméno/i).first()
-      if (await heading.count() > 0) {
+      if ((await heading.count()) > 0) {
         const contrast = await heading.evaluate((el) => {
           const styles = window.getComputedStyle(el)
           const color = styles.color

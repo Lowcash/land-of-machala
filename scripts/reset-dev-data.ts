@@ -1,9 +1,9 @@
 /**
  * Reset Development Data
- * 
+ *
  * Wipes character data while preserving test users.
  * Use this when testing new UX changes from a fresh state.
- * 
+ *
  * Usage: npm run db:reset-dev
  */
 

@@ -67,7 +67,7 @@ export function SkillUpgradeButton({
 
   if (maxed) {
     return (
-      <div className="flex items-center justify-center gap-2 py-2 sm:py-3 text-[#6fbf6f]">
+      <div className="flex items-center justify-center gap-2 py-2 text-[#6fbf6f] sm:py-3">
         <Check className="h-4 w-4" />
         <span className="text-sm">Maximální level</span>
       </div>
@@ -78,7 +78,7 @@ export function SkillUpgradeButton({
     <button
       onClick={handleUpgrade}
       disabled={!canUpgrade || isUpgrading}
-      className={`w-full rounded border-2 py-2 sm:py-3 min-h-touch-target sm:min-h-0 transition-all ${
+      className={`min-h-touch-target w-full rounded border-2 py-2 transition-all sm:min-h-0 sm:py-3 ${
         canUpgrade && !isUpgrading
           ? 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700] hover:bg-[#ffd700]/30'
           : 'cursor-not-allowed border-[#8b6f47]/30 bg-black/40 text-[#8b7355]'

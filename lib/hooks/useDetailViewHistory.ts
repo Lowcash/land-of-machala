@@ -2,20 +2,17 @@ import { useEffect, useState } from 'react'
 
 /**
  * Custom hook for managing detail view state with browser history integration
- * 
+ *
  * @param items - Array of items to select from
  * @param paramName - URL parameter name (e.g., 'skillId', 'questId')
  * @returns Selected item state and update functions
- * 
+ *
  * @example
  * ```tsx
  * const { selectedItem, selectItem, clearSelection } = useDetailViewHistory(skills, 'skillId')
  * ```
  */
-export function useDetailViewHistory<T extends { id: string }>(
-  items: T[],
-  paramName: string
-) {
+export function useDetailViewHistory<T extends { id: string }>(items: T[], paramName: string) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
   // Sync state with URL on mount and back/forward navigation
@@ -24,7 +21,7 @@ export function useDetailViewHistory<T extends { id: string }>(
       const params = new URLSearchParams(window.location.search)
       const id = params.get(paramName)
 
-      if (id && items.find(item => item.id === id)) {
+      if (id && items.find((item) => item.id === id)) {
         setSelectedId(id)
       } else {
         setSelectedId(null)
@@ -68,7 +65,7 @@ export function useDetailViewHistory<T extends { id: string }>(
 
   return {
     selectedId,
-    selectedItem: items.find(item => item.id === selectedId) ?? null,
+    selectedItem: items.find((item) => item.id === selectedId) ?? null,
     selectItem,
     clearSelection,
     navigateBack,

@@ -77,11 +77,11 @@ export function LoginForm() {
       const response = await fetch('/api/auth/guest', {
         method: 'POST',
       })
-      
+
       if (!response.ok) {
         throw new Error('Failed to create guest account')
       }
-      
+
       const { email, password } = await response.json()
 
       // Sign in with guest credentials

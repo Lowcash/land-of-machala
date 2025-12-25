@@ -2,8 +2,8 @@
 
 import { ArrowLeft, Book, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import type { ReactNode} from 'react';
-import { useEffect, useRef, useState, isValidElement } from 'react'
+import type { ReactNode } from 'react'
+import { isValidElement, useEffect, useRef, useState } from 'react'
 
 interface GameHeaderProps {
   /** Icon to display */
@@ -129,7 +129,7 @@ export function GameHeader({
                 </button>
 
                 {showSettingsMenu && (
-                  <div 
+                  <div
                     className="absolute top-full right-0 z-[100] mt-1 w-48 rounded border border-[#d4a574] bg-black/95 shadow-2xl backdrop-blur-md"
                     role="menu"
                     aria-label="Menu nastavení"

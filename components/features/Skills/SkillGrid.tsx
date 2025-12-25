@@ -98,7 +98,7 @@ export function SkillGrid({
                   <button
                     key={skill.id}
                     onClick={() => setSelectedSkill(skill.id)}
-                    className={`rounded border-2 p-2 sm:p-3 text-left transition-all min-h-touch-target sm:min-h-0 ${
+                    className={`min-h-touch-target rounded border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
                       selectedSkill === skill.id
                         ? `${getCategoryBg(skill.category)} scale-105`
                         : skill.unlocked
