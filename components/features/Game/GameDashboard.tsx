@@ -7,12 +7,9 @@ import {
   Beer,
   Building,
   Cross,
-  Flame,
   Hammer,
   Home,
-  Mountain,
   ShoppingBag,
-  Trees,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
@@ -21,7 +18,6 @@ import { BankActions } from './BankActions'
 import { CharacterBox } from './CharacterBox'
 import { GuildHallActions } from './GuildHallActions'
 import { HealerActions } from './HealerActions'
-import { LocationActions } from './LocationActions'
 import { MarketActions } from './MarketActions'
 import { SmithActions } from './SmithActions'
 import { TavernActions } from './TavernActions'
@@ -35,9 +31,6 @@ type View =
   | 'tavern'
   | 'market'
   | 'guild_hall'
-  | 'mountains'
-  | 'plains'
-  | 'desert'
 
 interface GameDashboardProps {
   character: any // Replace with proper type
@@ -66,14 +59,12 @@ export function GameDashboard({ character }: GameDashboardProps) {
         return
       }
 
-      // Update view based on direction
-      if (direction === 'north') setCurrentView('mountains')
-      else if (direction === 'south') setCurrentView('plains')
-      else if (direction === 'east') setCurrentView('desert')
-      else {
-        setInfoText(
-          'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.'
-        )
+      // Direction descriptions
+      const directionTexts = {
+        north: 'Vydáváš se na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami.',
+        south: 'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů.',
+        east: 'Vydáváš se na <span class="text-[#ffd700]">východ</span> k <span class="text-[#ffa500]">vyprahlé poušti</span>. Písek šustí pod tvýma nohama a slunce pálí nemilosrdně.',
+        west: 'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.',
       }
 
       // Random combat encounter
@@ -81,7 +72,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
         router.push('/combat')
       } else {
         setInfoText(
-          `Procházíš krajinou na souřadnicích <span class="text-[#ffd700]">X: ${result.newX}, Y: ${result.newY}</span>. Prozatím jsi nenarazil na žádné nepřátele.`
+          `${directionTexts[direction]}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
         )
       }
     })
@@ -138,24 +129,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
       title: 'Hradová hala',
       icon: Building,
       desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
-    },
-    mountains: {
-      bg: '/assets/locations/mountains-background.jpg',
-      title: 'Horské průsmyky',
-      icon: Mountain,
-      desc: 'Vydáváš se směrem na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami. V dálce vidíš stezky vedoucí do hor. Možná bys měl být opatrný, kdo ví co se tu <span class="text-[#ff6b6b]">skrývá</span>...',
-    },
-    plains: {
-      bg: '/assets/locations/plains-background.jpg',
-      title: 'Zelené pláně',
-      icon: Trees,
-      desc: 'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů. Krajina se rozprostírá před tebou jako zelený koberec. Zdá se to klidné, ale může to být <span class="text-[#ff6b6b]">klamné</span>...',
-    },
-    desert: {
-      bg: '/assets/locations/desert-background.jpg',
-      title: 'Vyprahlá poušť',
-      icon: Flame,
-      desc: 'Vydáváš se na <span class="text-[#ffd700]">východ</span> k <span class="text-[#ffa500]">vyprahlé poušti</span>. Písek šustí pod tvýma nohama a slunce pálí nemilosrdně. Horko je skoro nesnesitelné. Kdo ví, jaká <span class="text-[#ff6b6b]">nebezpečí</span> se tu skrývají...',
     },
   }[currentView]
 
@@ -274,20 +247,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 inventory={[]}
                 setInventory={() => {}}
                 setInfoText={setInfoText}
-              />
-            )}
-            {(currentView === 'mountains' ||
-              currentView === 'plains' ||
-              currentView === 'desert') && (
-              <LocationActions
-                onBack={() => setCurrentView('town')}
-                onCombat={() => router.push('/combat')}
-                onMining={
-                  currentView === 'mountains' ? () => setActiveMinigame('mining') : undefined
-                }
-                onFishing={
-                  currentView === 'plains' ? () => setActiveMinigame('fishing') : undefined
-                }
               />
             )}
           </div>
