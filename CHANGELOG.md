@@ -6,6 +6,61 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-26 00:22 - Skills Expansion with WoW-Style Talent Trees
+
+**Type:** Added
+**Scope:** Skills system, seed data
+**Impact:** Expanded from 8 to 19 skills with complete 3-tier talent tree progression
+
+### Added
+
+- **Skill Trees Expansion:**
+  - **Combat Tree (6 skills):** Silný úder, Kritický zásah, Dvojitý úder, Přesný úder, Vířivý úder, Berserker
+  - **Defense Tree (6 skills):** Železná kůže, Úder štítem, Protiútok, Tvrdá hlava, Pevnost, Poslední vzdor
+  - **Magic Tree (7 skills):** Mana pool, Ohnivá koule, Magický štít, Arkánní síla, Časové zkreslení, Teleportace, Meteor
+  - Total: **19 skills** (increased from 8)
+
+- **Tier System:**
+  - **Tier 1 (Level 1):** Foundation skills (maxRank 5 for base stats, 3 for abilities)
+  - **Tier 2 (Level 3):** Advanced skills (requires 3 tree points, maxRank 1-3)
+  - **Tier 3 (Level 5):** Elite/Ultimate skills (requires 6 tree points, maxRank 1)
+
+- **Czech Localization:**
+  - All skill names translated: "Berserker", "Vířivý úder", "Pevnost", etc.
+  - Czech descriptions with game-specific terminology
+
+- **Progression Gates:**
+  - `requiredTreePoints` system for tier unlocking
+  - Level requirements (1, 3, 5 for tiers 1-3)
+  - Position system (X,Y) for future visual talent tree
+
+### Changed
+
+- **Seed Script:**
+  - Reorganized with clear tree sections and comments
+  - Added tier annotations for each skill group
+  - Updated log message: "Created 19 skills (Combat: 6, Defense: 6, Magic: 7)"
+
+### Technical Details
+
+- **Balanced Progression:**
+  - Base skills: maxRank 5 (gradual stat growth)
+  - Advanced skills: maxRank 3 (significant power boost)
+  - Elite skills: maxRank 1 (game-changing abilities)
+
+- **Tree Requirements:**
+  - Tier 2: Requires 3 points spent in tree
+  - Tier 3: Requires 6 points spent in tree
+  - Ensures players can't rush to endgame skills
+
+### Testing
+
+- Database reset successful
+- All 19 skills seeded correctly
+- Build passes without errors
+
+---
+
 ## 2025-12-26 00:10 - Movement System with X,Y Coordinates & Combat Encounters
 
 **Type:** Added
