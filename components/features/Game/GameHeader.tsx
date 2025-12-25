@@ -74,9 +74,8 @@ export function GameHeader({
   }, [])
 
   return (
-    <div className="z-[100] border-b border-[#8b6f47] bg-black/80 backdrop-blur-sm">
-      <div className="flex w-full items-center justify-between gap-3 px-3 py-2">
-        {/* Left - Title/Icon or Custom Content */}
+    <div className="flex w-full items-center justify-between gap-3 px-3 py-2">
+      {/* Left - Title/Icon or Custom Content */}
         {leftContent || (
           <div className="flex min-w-0 flex-1 items-center gap-2">
             {Icon &&
@@ -182,6 +181,5 @@ export function GameHeader({
           </div>
         )}
       </div>
-    </div>
-  )
-}
+    )
+  }
