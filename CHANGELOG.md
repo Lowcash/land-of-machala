@@ -6,6 +6,84 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-25 23:40 - CharacterBox Redesign (Medieval Fantasy Enhancement)
+
+**Type:** Changed
+**Scope:** CharacterBox component (GameDashboard, Combat)
+**Impact:** More engaging character display, better space usage, addresses user dissatisfaction
+
+### Changed
+
+- **CharacterBox Size:** Increased from `max-w-sm` (384px) to `max-w-md` (448px)
+  - Better visibility and proportions
+  - More space for enhanced visuals
+  
+- **Avatar Section Enhanced:**
+  - Height increased from `h-20` to `h-24` (20% larger)
+  - Width increased from `w-20` to `w-24`
+  - Image scale effect on hover (`scale-110`)
+  - Smoother grayscale transitions
+  - Gradient overlay on images
+  
+- **Tooltips Added:**
+  - HP bar: "Životy: X / Y"
+  - Mana/Energy bar: "Mana: X / Y" or "Energie: X / Y"
+  - XP bar: "Zkušenosti: X / Y"
+  - Each stat (Síla, Inteligence, Obratnost, Výdrž) with descriptions
+  
+- **Visual Effects Enhanced:**
+  - Hover glow: radial gradient effect (gold for player, red for enemy)
+  - Border animations: changes color on hover
+  - Shadow enhancements: `shadow-[0_0_40px_rgba(...)]`
+  - Animated background gradient
+  
+- **Bars Improved:**
+  - Height increased from `h-3.5` to `h-4`
+  - Icons added: Heart (HP), Zap (Mana/Energy)
+  - Better touch targets for mobile
+  - Enhanced hover states
+  
+- **XP Display:**
+  - Added Sparkles icon
+  - Percentage indicator: "X%"
+  - Wider bar (`w-16` from `w-12`)
+  - Tooltip with full XP values
+  
+- **Stats Row:**
+  - Icons enlarged from `h-3 w-3` to `h-3.5 w-3.5`
+  - Added drop-shadow to icons
+  - Hover scale effect (`scale-110`)
+  - Increased spacing from `gap-3` to `gap-4`
+  - Font size increased from `text-[9px]` to `text-[10px]`
+  
+- **Level Badge:**
+  - Font size increased from `text-[10px]` to `text-xs`
+  - Better shadow effects
+  - Enhanced border visibility
+
+### Technical Details
+
+- Added imports: `Heart`, `Sparkles`, `Zap` from lucide-react
+- Added CustomTooltip integration
+- Resource type label added (`resourceLabel` variable)
+- Gradient animations use CSS transitions
+- Radial gradient class: `bg-gradient-radial`
+
+### User Satisfaction
+
+- Addresses "extrémně nelíbí" feedback
+- More engaging medieval fantasy theme
+- Better readability and visual hierarchy
+- Interactive tooltips provide context
+- Professional polish with animations
+
+### Files Changed
+
+- `components/features/Game/CharacterBox.tsx` (major refactor: +45 lines enhanced features)
+- `components/features/Game/GameDashboard.tsx` (max-w-sm → max-w-md)
+
+---
+
 ## 2025-12-25 23:34 - UI/UX Improvements Across All Pages
 
 **Type:** Added | Changed
