@@ -164,8 +164,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
         maxWidth="lg"
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          {/* Player box at top - constrained width */}
-          <div className="w-full max-w-sm px-3 pt-3">
+          {/* Player box at top - increased width for better visibility */}
+          <div className="w-full max-w-md px-3 pt-3">
             <CharacterBox
               name={character.name}
               level={character.level}
