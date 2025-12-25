@@ -25,6 +25,8 @@ interface PageTemplateProps {
   backUrl?: string
   /** Max width constraint for content */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
+  /** Character ID for displaying player stats */
+  characterId?: string
   /** Main content */
   children: ReactNode
 }
@@ -42,6 +44,7 @@ export function PageTemplate({
   onBack,
   backUrl,
   maxWidth = 'lg',
+  characterId,
   children,
 }: PageTemplateProps) {
   const router = useRouter()
@@ -94,6 +97,7 @@ export function PageTemplate({
               onHelp={onHelp}
               onBack={onBack || backUrl ? handleBack : undefined}
               onSettings={handleOpenSettings}
+              characterId={characterId}
             />
           </div>
         </div>

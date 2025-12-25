@@ -31,6 +31,7 @@ type Item = {
 }
 
 interface CharacterClientProps {
+  characterId: string
   character: {
     name: string
     level: number
@@ -55,7 +56,7 @@ interface CharacterClientProps {
   inventory: Item[]
 }
 
-export function CharacterClient({ character, inventory }: CharacterClientProps) {
+export function CharacterClient({ characterId, character, inventory }: CharacterClientProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [, setPanel] = useState<'help' | null>(null)
   const equipped = inventory.filter((item) => item.equipped)
@@ -142,6 +143,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
       maxWidth="lg"
       onHelp={() => setPanel('help')}
       backUrl="/game"
+      characterId={characterId}
     >
       {/* Content - Scrollable Area */}
       <div className="relative flex flex-1 flex-col overflow-hidden">
