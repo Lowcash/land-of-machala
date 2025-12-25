@@ -19,7 +19,6 @@ import { ActionBtn, DirectionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
 
 interface TownActionsProps {
-  onExplore: () => void
   onSmith: () => void
   onBank: () => void
   onHealer: () => void
@@ -31,7 +30,6 @@ interface TownActionsProps {
 }
 
 export function TownActions({
-  onExplore,
   onSmith,
   onBank,
   onHealer,
@@ -104,9 +102,6 @@ export function TownActions({
                 </DirectionBtn>
                 <ActionBtn onClick={() => onMove('west')} icon={ArrowLeftIcon}>
                   Vydat se na <span className="text-[#ffd700]">západ</span> - temný les
-                </ActionBtn>
-                <ActionBtn onClick={onExplore} icon={Swords}>
-                  Jen se <span className="text-[#ffd700]">rozhlédnout</span> (Stojí energii)
                 </ActionBtn>
               </div>
             </>
