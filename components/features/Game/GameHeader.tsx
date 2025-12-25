@@ -4,6 +4,7 @@ import { ArrowLeft, Book, LogOut, Settings } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { isValidElement, useEffect, useRef, useState } from 'react'
+import { PlayerStats } from './PlayerStats'
 
 interface GameHeaderProps {
   /** Icon to display */
@@ -28,6 +29,8 @@ interface GameHeaderProps {
   onHelp?: () => void
   /** Callback when settings is clicked */
   onSettings?: () => void
+  /** Character ID for displaying player stats */
+  characterId?: string
 }
 
 /**
@@ -46,6 +49,7 @@ export function GameHeader({
   customMenuItems,
   onHelp,
   onSettings,
+  characterId,
 }: GameHeaderProps) {
   const router = useRouter()
   const [showSettingsMenu, setShowSettingsMenu] = useState(false)
@@ -76,8 +80,9 @@ export function GameHeader({
   return (
     <div className="flex w-full items-center justify-between gap-3 px-3 py-2">
       {/* Left - Title/Icon or Custom Content */}
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         {leftContent || (
-          <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex min-w-0 items-center gap-2">
             {Icon &&
               (isValidElement(Icon) ? (
                 <div className="h-5 w-5 shrink-0 text-[#ffd700] [&>svg]:h-full [&>svg]:w-full">
@@ -97,6 +102,10 @@ export function GameHeader({
             </div>
           </div>
         )}
+
+        {/* Player Stats */}
+        {characterId && <PlayerStats characterId={characterId} />}
+      </div>
 
         {/* Right - Back Button + Settings Menu or Custom Content */}
         {rightContent || (

@@ -16,6 +16,7 @@ export async function CharacterPanel() {
 
   // Map server data to client props
   const clientProps = {
+    characterId: character.id,
     character: {
       name: character.name,
       level: character.level,

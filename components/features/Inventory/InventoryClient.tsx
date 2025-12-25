@@ -203,16 +203,18 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
   return (
     <>
       <div className="flex w-full flex-1 overflow-hidden">
+        {/* Main Inventory Grid */}
         <div
           className={`${
             selectedItem ? 'hidden md:flex' : 'flex'
-          } w-full flex-col border-r border-[#8b6f47] bg-black/70 backdrop-blur-sm md:w-80 lg:w-96`}
+          } flex-1 flex-col bg-black/70 backdrop-blur-sm`}
         >
           {/* Toolbar */}
           <div className="flex items-center justify-between border-b border-[#8b6f47] p-3">
-            <div className="flex items-center gap-2 rounded border border-[#ffd700]/30 bg-black/40 px-3 py-1.5">
-              <Coins className="h-4 w-4 text-[#ffd700]" />
-              <span className="font-bold text-[#ffd700]">{currentGold}</span>
+            <div className="flex items-center gap-2 rounded-lg border border-[#ffd700]/30 bg-black/40 px-3 py-1.5 shadow-md">
+              <Coins className="h-5 w-5 text-[#ffd700]" />
+              <span className="text-lg font-bold text-[#ffd700]">{currentGold}</span>
+              <span className="text-xs text-[#d4a574]">gold</span>
             </div>
             <div className="flex gap-1">
               <button
@@ -241,9 +243,13 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
           {/* Inventory Grid/List */}
           <div className="relative flex flex-1 flex-col overflow-hidden">
             <ScrollIndicator targetRef={scrollRef} position="both" />
-            <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-3">
+            <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
               <div
-                className={viewMode === 'grid' ? 'grid grid-cols-4 gap-2' : 'flex flex-col gap-2'}
+                className={
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-4 gap-3 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10'
+                    : 'mx-auto max-w-2xl space-y-2'
+                }
               >
                 {filteredInventory.map((item) => {
                   const Icon = getIconFromName(item.iconName)
@@ -251,9 +257,9 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                     <button
                       key={item.id}
                       onClick={() => handleSelectItem(item.id)}
-                      className={`group relative rounded border transition-all ${
+                      className={`group relative rounded-lg border-2 transition-all ${
                         selectedItem === item.id
-                          ? 'border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.2)]'
+                          ? 'border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.3)] scale-105'
                           : `bg-black/40 hover:bg-black/60 ${getRarityBorder(item.rarity)}`
                       } ${viewMode === 'grid' ? 'aspect-square p-2' : 'flex items-center gap-3 p-3'}`}
                     >
@@ -291,7 +297,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
 
                       {item.equipped && (
                         <div className="absolute top-1 right-1 rounded-full bg-[#ffd700] p-0.5 text-black shadow-sm">
-                          <Check className="h-2.5 w-2.5" />
+                          <Check className="h-3 w-3" />
                         </div>
                       )}
                     </button>
@@ -302,9 +308,8 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
           </div>
         </div>
 
-        {/* Desktop Detail Panel */}
-        <div className="hidden flex-1 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm md:flex">
-          {selectedItem && selectedItemData ? (
+        {/* Desktop Detail Panel - Right Side */}
+        <div className="hidden w-80 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm md:flex">{selectedItem && selectedItemData ? (
             <div className="relative flex-1 overflow-hidden">
               <ScrollIndicator targetRef={detailScrollRef} position="both" />
               <div ref={detailScrollRef} className="scrollbar-custom h-full overflow-y-auto p-6">

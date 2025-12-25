@@ -98,12 +98,12 @@ export function SkillGrid({
                   <button
                     key={skill.id}
                     onClick={() => setSelectedSkill(skill.id)}
-                    className={`min-h-touch-target rounded border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
+                    className={`min-h-touch-target rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
                       selectedSkill === skill.id
-                        ? `${getCategoryBg(skill.category)} scale-105`
+                        ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
                         : skill.unlocked
-                          ? 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
-                          : 'border-[#8b6f47]/30 bg-black/20 opacity-50'
+                          ? 'border-[#8b6f47] bg-black/60 hover:border-[#d4a574] hover:bg-black/70'
+                          : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
                     }`}
                   >
                     <div className="mb-2 flex items-start gap-2">
@@ -113,12 +113,12 @@ export function SkillGrid({
                         {skill.unlocked ? (
                           <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
                         ) : (
-                          <Lock className="h-5 w-5 text-[#8b6f47]" />
+                          <Lock className="h-5 w-5 text-[#d4a574]" />
                         )}
                       </div>
                       <div className="min-w-0 flex-1">
                         <h3
-                          className={`truncate text-sm ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#8b7355]'}`}
+                          className={`truncate text-sm ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {skill.name}
