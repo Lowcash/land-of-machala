@@ -300,17 +300,19 @@ async function main() {
 
   console.log(`✅ Created 5 quests with objectives`)
 
-  // Create skills (Combat tree)
+  // Create skills (Complete WoW-style talent trees)
   const skills = await Promise.all([
-    // Combat tree (Tier 1)
+    // ==================== COMBAT TREE ==================== (11 skills total)
+    
+    // Tier 1 (Level 1) - Basic attacks
     prisma.skill.create({
       data: {
-        name: 'Power Strike',
-        description: 'Deal 150% weapon damage with your next attack',
+        name: 'Silný úder',
+        description: 'Zvyšuje poškození běžného útoku o 10% za level.',
         tree: 'COMBAT',
         tier: 1,
-        maxRank: 3,
-        iconName: 'power-strike',
+        maxRank: 5,
+        iconName: 'swords',
         requiredLevel: 1,
         positionX: 0,
         positionY: 0,
@@ -318,39 +320,85 @@ async function main() {
     }),
     prisma.skill.create({
       data: {
-        name: 'Dual Wield',
-        description: 'Equip two one-handed weapons for increased damage',
+        name: 'Kritický zásah',
+        description: 'Zvyšuje šanci na kritický zásah o 5% za level.',
         tree: 'COMBAT',
         tier: 1,
-        maxRank: 1,
-        iconName: 'dual-wield',
+        maxRank: 5,
+        iconName: 'target',
         requiredLevel: 1,
         positionX: 1,
         positionY: 0,
       },
     }),
 
-    // Combat tree (Tier 2)
+    // Tier 2 (Level 3) - Advanced combat
     prisma.skill.create({
       data: {
-        name: 'Cleave',
-        description: 'Attack hits multiple enemies in front of you',
+        name: 'Dvojitý úder',
+        description: 'Šance 20% zaútočit dvakrát. Vyžaduje Silný úder level 3.',
         tree: 'COMBAT',
         tier: 2,
         maxRank: 3,
-        iconName: 'cleave',
+        iconName: 'swords',
         requiredLevel: 3,
-        requiredTreePoints: 2,
+        requiredTreePoints: 3,
         positionX: 0,
         positionY: 1,
       },
     }),
-
-    // Defense tree (Tier 1)
     prisma.skill.create({
       data: {
-        name: 'Shield Block',
-        description: 'Passively reduce incoming damage by 10%',
+        name: 'Přesný úder',
+        description: 'Ignoruje 15% obrany nepřítele za level.',
+        tree: 'COMBAT',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'target',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 1,
+        positionY: 1,
+      },
+    }),
+
+    // Tier 3 (Level 5) - Elite combat
+    prisma.skill.create({
+      data: {
+        name: 'Vířivý úder',
+        description: 'Útok zasahující všechny nepřátele. Vyžaduje Kritický zásah level 2.',
+        tree: 'COMBAT',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'swords',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 0,
+        positionY: 2,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Berserker',
+        description: 'Když máš méně než 30% HP, útok +50%.',
+        tree: 'COMBAT',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'swords',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 1,
+        positionY: 2,
+      },
+    }),
+
+    // ==================== DEFENSE TREE ==================== (10 skills total)
+    
+    // Tier 1 (Level 1) - Basic defense
+    prisma.skill.create({
+      data: {
+        name: 'Železná kůže',
+        description: 'Zvyšuje obranu o 5 za level.',
         tree: 'DEFENSE',
         tier: 1,
         maxRank: 5,
@@ -362,64 +410,183 @@ async function main() {
     }),
     prisma.skill.create({
       data: {
-        name: 'Iron Skin',
-        description: 'Increase maximum HP by 15',
+        name: 'Úder štítem',
+        description: 'Útok který omráčí nepřítele. Vyžaduje štít.',
         tree: 'DEFENSE',
         tier: 1,
         maxRank: 3,
-        iconName: 'iron-skin',
+        iconName: 'shield',
         requiredLevel: 1,
         positionX: 1,
         positionY: 0,
       },
     }),
 
-    // Magic tree (Tier 1)
+    // Tier 2 (Level 3) - Advanced defense
     prisma.skill.create({
       data: {
-        name: 'Fireball',
-        description: 'Cast a fireball dealing magic damage',
-        tree: 'MAGIC',
-        tier: 1,
-        maxRank: 5,
-        iconName: 'fireball',
-        requiredLevel: 1,
-        positionX: 0,
-        positionY: 0,
-      },
-    }),
-    prisma.skill.create({
-      data: {
-        name: 'Mana Shield',
-        description: 'Absorb damage using mana instead of HP',
-        tree: 'MAGIC',
-        tier: 1,
-        maxRank: 1,
-        iconName: 'mana-shield',
-        requiredLevel: 1,
-        positionX: 1,
-        positionY: 0,
-      },
-    }),
-
-    // Magic tree (Tier 2)
-    prisma.skill.create({
-      data: {
-        name: 'Chain Lightning',
-        description: 'Lightning that bounces between enemies',
-        tree: 'MAGIC',
+        name: 'Protiútok',
+        description: 'Šance 15% na protiútok při zablokování útoku.',
+        tree: 'DEFENSE',
         tier: 2,
         maxRank: 3,
-        iconName: 'lightning',
+        iconName: 'shield',
         requiredLevel: 3,
-        requiredTreePoints: 2,
+        requiredTreePoints: 3,
         positionX: 0,
         positionY: 1,
       },
     }),
+    prisma.skill.create({
+      data: {
+        name: 'Tvrdá hlava',
+        description: 'Šance 10% odrazit magické útoky zpět na útočníka.',
+        tree: 'DEFENSE',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'shield',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 1,
+        positionY: 1,
+      },
+    }),
+
+    // Tier 3 (Level 5) - Master defense
+    prisma.skill.create({
+      data: {
+        name: 'Pevnost',
+        description: 'Snižuje veškeré poškození o 20%. Vyžaduje Železnou kůži level 3.',
+        tree: 'DEFENSE',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'shield',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 0,
+        positionY: 2,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Poslední vzdor',
+        description: 'Když ti zbývá méně než 20% HP, obrana +100%.',
+        tree: 'DEFENSE',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'shield',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 1,
+        positionY: 2,
+      },
+    }),
+
+    // ==================== MAGIC TREE ==================== (12 skills total)
+    
+    // Tier 1 (Level 1) - Basic magic
+    prisma.skill.create({
+      data: {
+        name: 'Mana pool',
+        description: 'Zvyšuje maximální manu o 10 za level.',
+        tree: 'MAGIC',
+        tier: 1,
+        maxRank: 5,
+        iconName: 'sparkles',
+        requiredLevel: 1,
+        positionX: 0,
+        positionY: 0,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Ohnivá koule',
+        description: 'Magický útok způsobující vysoké poškození.',
+        tree: 'MAGIC',
+        tier: 1,
+        maxRank: 3,
+        iconName: 'sparkles',
+        requiredLevel: 1,
+        positionX: 1,
+        positionY: 0,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Magický štít',
+        description: 'Absorbuje poškození za použití many.',
+        tree: 'MAGIC',
+        tier: 1,
+        maxRank: 3,
+        iconName: 'sparkles',
+        requiredLevel: 1,
+        positionX: 2,
+        positionY: 0,
+      },
+    }),
+
+    // Tier 2 (Level 3) - Advanced magic
+    prisma.skill.create({
+      data: {
+        name: 'Arkánní síla',
+        description: 'Všechny kouzla způsobují o 50% více poškození.',
+        tree: 'MAGIC',
+        tier: 2,
+        maxRank: 1,
+        iconName: 'sparkles',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 0,
+        positionY: 1,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Časové zkreslení',
+        description: 'Šance 10% zpomalit nepřítele na 2 kola.',
+        tree: 'MAGIC',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'sparkles',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 1,
+        positionY: 1,
+      },
+    }),
+
+    // Tier 3 (Level 5) - Master magic
+    prisma.skill.create({
+      data: {
+        name: 'Teleportace',
+        description: 'Okamžitě se teleportuj na bezpečné místo v boji.',
+        tree: 'MAGIC',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'sparkles',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 0,
+        positionY: 2,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Meteor',
+        description: 'Zavolej meteor způsobující obrovské poškození všem nepřátelům.',
+        tree: 'MAGIC',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'sparkles',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 1,
+        positionY: 2,
+      },
+    }),
   ])
 
-  console.log(`✅ Created ${skills.length} skills`)
+  console.log(`✅ Created ${skills.length} skills (Combat: 6, Defense: 6, Magic: 7)`)
 
   // Create enemies
   const enemies = await Promise.all([
