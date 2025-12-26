@@ -6,6 +6,56 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-26 22:49 - Combat UI Improvements
+
+**Type:** Changed
+**Scope:** CombatClient component (/combat page)
+**Impact:** Lepší uživatelská zkušenost, intuitivnější umístění lektvarů a úttěku
+
+### Changed
+
+- **Potions (Lektvary):**
+  - Přemístěny z collapse menu přímo do headeru (vedle "Bojové akce")
+  - Icon buttons s hover scale efekty (scale-110)
+  - Tooltips s názvem a efektem (+XX HP / +XX MP)
+  - Hover glow efekt: shadow-[0_0_10px_rgba(111,191,111,0.3)]
+  - Ihned viditelné, bez nutnosti rozbalování
+
+- **Flee Button (Útěk):**
+  - Přesunut do samostatného řádku pod obrany
+  - Celá šířka (col-span-2)
+  - Border top separator (konzistentnější umístění)
+  - Text: "Útěk z boje" + "50% šance na úspěch"
+
+- **Layout:**
+  - Odstraněno collapsible menu (ChevronRight)
+  - Jednodušší structure: Header (status + potions) + Grid (attacks + defenses) + Flee
+  - Lepší využití prostoru v headeru
+
+- **Background:**
+  - Forest background image (`/assets/locations/forest.jpg`)
+  - Již implementováno v PageTemplate
+
+- **Combat Log:**
+  - Stejný styl jako městský info panel
+  - Color-coded borders (border-l-2)
+  - Typy: playerAttack (#ffd700), enemyAttack (#ff6b6b), defend (#69ccf0), heal (#6fbf6f), mana (#c084fc)
+
+### Technical Details
+
+- Removed: `showPotions` state, ChevronRight collapse
+- Added: Icon tooltips via title attribute
+- Potions render: Flex row s gap-1 v headeru
+- Flee: Samostatný row s border-t separator
+- Background: Already working via PageTemplate prop
+
+### Files Changed
+
+- `components/features/Combat/CombatClient.tsx` (548 insertions, 53 deletions)
+- Backup created: `CombatClient.tsx.old`
+
+---
+
 ## 2025-12-26 22:45 - CharacterClient Medieval Fantasy Redesign
 
 **Type:** Changed
