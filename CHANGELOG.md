@@ -6,6 +6,63 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2025-12-26 22:45 - CharacterClient Medieval Fantasy Redesign
+
+**Type:** Changed
+**Scope:** CharacterClient component (/character page)
+**Impact:** Kompaktnější layout s lepším využitím prostoru, podle design repo stylu
+
+### Changed
+
+- **Character Profile Header:**
+  - Avatar & identity podle design repo (20x20 avatar, gradient border)
+  - HP/Mana/XP progress bary přímo v header karty
+  - Kompaktnější info row (Level badge, race, class)
+  - XP tooltip s chybějícími body do dalšího levelu
+
+- **Layout:**
+  - 2-column grid: Stats (4 cols) + Equipment (8 cols)
+  - Lepší využití prostoru na širokých obrazovkách
+  - Zachován responzivní design (mobile: 1 column)
+
+- **Attributes Section:**
+  - 2x2 grid pro core stats (Síla, Inteligence, Obratnost, Výdrž)
+  - Vylepšené tooltips s popisem účinku
+  - Hover efekty s border glow
+  - Menší velikost boxů (kompaktnější)
+
+- **Combat Stats:**
+  - Rozepsané hodnoty: "Základ X + výbava Y"
+  - Útok a Obrana v samostatných boxech s border
+  - Kritický zásah a Vyhýbání pod sebou
+
+- **Equipment Grid:**
+  - 3-5 slotů podle velikosti obrazovky
+  - Hover border změna (#8b6f47 → #ffd700)
+  - Slot name uppercase (lepší vizuální hierarchie)
+  - Statistiky pod čarou (útok/obrana)
+
+- **Achievements:**
+  - 2-column grid (responzivní → 1 column mobile)
+  - Unlocked: zlatý border + fialový background
+  - Locked: opacity 60%, šedý styl
+  - Icon v kruhu s background glow
+
+### Technical Details
+
+- Followed land-of-machala-design/Character.tsx patterns
+- Maintained PageTemplate wrapper (consistent header/footer)
+- ScrollIndicator for overflow content
+- All spacing reduced (p-3/4 instead of p-4/6)
+- Fantasy font applied consistently
+
+### Files Changed
+
+- `components/features/Character/CharacterClient.tsx` (671 insertions, 206 deletions)
+- Backup created: `CharacterClient.tsx.old`
+
+---
+
 ## 2025-12-26 00:37 - Login Page Real Changelog Content
 
 **Type:** Changed
