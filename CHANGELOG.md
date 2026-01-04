@@ -6,113 +6,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
-## 2025-12-26 22:49 - Combat UI Improvements
-
-**Type:** Changed
-**Scope:** CombatClient component (/combat page)
-**Impact:** Lepší uživatelská zkušenost, intuitivnější umístění lektvarů a úttěku
-
-### Changed
-
-- **Potions (Lektvary):**
-  - Přemístěny z collapse menu přímo do headeru (vedle "Bojové akce")
-  - Icon buttons s hover scale efekty (scale-110)
-  - Tooltips s názvem a efektem (+XX HP / +XX MP)
-  - Hover glow efekt: shadow-[0_0_10px_rgba(111,191,111,0.3)]
-  - Ihned viditelné, bez nutnosti rozbalování
-
-- **Flee Button (Útěk):**
-  - Přesunut do samostatného řádku pod obrany
-  - Celá šířka (col-span-2)
-  - Border top separator (konzistentnější umístění)
-  - Text: "Útěk z boje" + "50% šance na úspěch"
-
-- **Layout:**
-  - Odstraněno collapsible menu (ChevronRight)
-  - Jednodušší structure: Header (status + potions) + Grid (attacks + defenses) + Flee
-  - Lepší využití prostoru v headeru
-
-- **Background:**
-  - Forest background image (`/assets/locations/forest.jpg`)
-  - Již implementováno v PageTemplate
-
-- **Combat Log:**
-  - Stejný styl jako městský info panel
-  - Color-coded borders (border-l-2)
-  - Typy: playerAttack (#ffd700), enemyAttack (#ff6b6b), defend (#69ccf0), heal (#6fbf6f), mana (#c084fc)
-
-### Technical Details
-
-- Removed: `showPotions` state, ChevronRight collapse
-- Added: Icon tooltips via title attribute
-- Potions render: Flex row s gap-1 v headeru
-- Flee: Samostatný row s border-t separator
-- Background: Already working via PageTemplate prop
-
-### Files Changed
-
-- `components/features/Combat/CombatClient.tsx` (548 insertions, 53 deletions)
-- Backup created: `CombatClient.tsx.old`
-
----
-
-## 2025-12-26 22:45 - CharacterClient Medieval Fantasy Redesign
-
-**Type:** Changed
-**Scope:** CharacterClient component (/character page)
-**Impact:** Kompaktnější layout s lepším využitím prostoru, podle design repo stylu
-
-### Changed
-
-- **Character Profile Header:**
-  - Avatar & identity podle design repo (20x20 avatar, gradient border)
-  - HP/Mana/XP progress bary přímo v header karty
-  - Kompaktnější info row (Level badge, race, class)
-  - XP tooltip s chybějícími body do dalšího levelu
-
-- **Layout:**
-  - 2-column grid: Stats (4 cols) + Equipment (8 cols)
-  - Lepší využití prostoru na širokých obrazovkách
-  - Zachován responzivní design (mobile: 1 column)
-
-- **Attributes Section:**
-  - 2x2 grid pro core stats (Síla, Inteligence, Obratnost, Výdrž)
-  - Vylepšené tooltips s popisem účinku
-  - Hover efekty s border glow
-  - Menší velikost boxů (kompaktnější)
-
-- **Combat Stats:**
-  - Rozepsané hodnoty: "Základ X + výbava Y"
-  - Útok a Obrana v samostatných boxech s border
-  - Kritický zásah a Vyhýbání pod sebou
-
-- **Equipment Grid:**
-  - 3-5 slotů podle velikosti obrazovky
-  - Hover border změna (#8b6f47 → #ffd700)
-  - Slot name uppercase (lepší vizuální hierarchie)
-  - Statistiky pod čarou (útok/obrana)
-
-- **Achievements:**
-  - 2-column grid (responzivní → 1 column mobile)
-  - Unlocked: zlatý border + fialový background
-  - Locked: opacity 60%, šedý styl
-  - Icon v kruhu s background glow
-
-### Technical Details
-
-- Followed land-of-machala-design/Character.tsx patterns
-- Maintained PageTemplate wrapper (consistent header/footer)
-- ScrollIndicator for overflow content
-- All spacing reduced (p-3/4 instead of p-4/6)
-- Fantasy font applied consistently
-
-### Files Changed
-
-- `components/features/Character/CharacterClient.tsx` (671 insertions, 206 deletions)
-- Backup created: `CharacterClient.tsx.old`
-
----
-
 ## 2025-12-26 00:37 - Login Page Real Changelog Content
 
 **Type:** Changed
@@ -219,23 +112,20 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Direction deltas: North (+Y), South (-Y), East (+X), West (-X)
   - Auto-saves coordinates after each move
   - Revalidates paths for fresh data
-  
 - **Random Combat Encounters:**
   - 60% chance of combat when moving outside town
   - Automatic redirect to combat screen on encounter
   - Feedback message shows coordinates when no encounter
-  
+
 ### Changed
 
 - **TownActions Component:**
   - Removed "rozhlédnout se" (explore) action
   - Simplified to pure directional movement
   - Removed onExplore prop from interface
-  
 - **HealerActions Component:**
   - Removed gold display panel (now in header via PlayerStats)
   - Cleaner, more focused interface
-  
 - **GameDashboard Component:**
   - Integrated moveCharacter server action
   - Async movement handling with useTransition
@@ -264,26 +154,22 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Gradient border system with amber/gold theme
   - Parchment texture overlay for authenticity
   - Magical glow pulse animations on hover
-  
 - **Portrait Frame:**
   - Shield-style level emblem with ring glow effect
   - Inner frame decoration (double border)
   - Sepia filter on images for medieval aesthetic
   - Smooth scale animations (125% on hover)
-  
 - **Vitals Bars Enhanced:**
   - Bar height: `h-4` → `h-5` (25% larger, better visibility)
   - HP bar: blood-red gradient with pulse on low health (<25%)
   - Mana/Energy: magical glow effects with shadows
   - Filled icons when resource is high (HP < 50%, Resource > 75%)
   - Better gradients and drop shadows
-  
 - **Stats Display:**
   - Compact border box with backdrop blur
   - Colored stat icons with glow on hover
   - Detailed tooltips explaining each stat
   - Larger font sizes for better readability
-  
 - **Typography & Colors:**
   - Amber/gold theme (replacing generic browns)
   - Fantasy font family integration
@@ -301,45 +187,38 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - **CharacterBox Size:** Increased from `max-w-sm` (384px) to `max-w-md` (448px)
   - Better visibility and proportions
   - More space for enhanced visuals
-  
 - **Avatar Section Enhanced:**
   - Height increased from `h-20` to `h-24` (20% larger)
   - Width increased from `w-20` to `w-24`
   - Image scale effect on hover (`scale-110`)
   - Smoother grayscale transitions
   - Gradient overlay on images
-  
 - **Tooltips Added:**
   - HP bar: "Životy: X / Y"
   - Mana/Energy bar: "Mana: X / Y" or "Energie: X / Y"
   - XP bar: "Zkušenosti: X / Y"
   - Each stat (Síla, Inteligence, Obratnost, Výdrž) with descriptions
-  
 - **Visual Effects Enhanced:**
   - Hover glow: radial gradient effect (gold for player, red for enemy)
   - Border animations: changes color on hover
   - Shadow enhancements: `shadow-[0_0_40px_rgba(...)]`
   - Animated background gradient
-  
 - **Bars Improved:**
   - Height increased from `h-3.5` to `h-4`
   - Icons added: Heart (HP), Zap (Mana/Energy)
   - Better touch targets for mobile
   - Enhanced hover states
-  
 - **XP Display:**
   - Added Sparkles icon
   - Percentage indicator: "X%"
   - Wider bar (`w-16` from `w-12`)
   - Tooltip with full XP values
-  
 - **Stats Row:**
   - Icons enlarged from `h-3 w-3` to `h-3.5 w-3.5`
   - Added drop-shadow to icons
   - Hover scale effect (`scale-110`)
   - Increased spacing from `gap-3` to `gap-4`
   - Font size increased from `text-[9px]` to `text-[10px]`
-  
 - **Level Badge:**
   - Font size increased from `text-[10px]` to `text-xs`
   - Better shadow effects
@@ -381,7 +260,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Auto-updates every 30 seconds
   - Displayed in GameHeader when characterId provided
   - Styled with medieval fantasy theme (gold coins, blue map pin)
-  
 - **API Endpoint:** `/api/character/[characterId]/stats`
   - Returns `{ x, y, gold }` for authenticated character
   - Uses `auth()` and `prisma` (Next.js 15+ pattern)
@@ -462,11 +340,9 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Previously stretched across entire screen width
   - Now matches town and other pages (max-w-6xl / 1152px)
   - Better visual consistency and readability
-  
 - **Character page:** Changed `maxWidth="xl"` → `maxWidth="lg"`
   - Was wider than other pages (max-w-7xl)
   - Now consistent with rest of app
-  
 - **All other pages:** Added explicit `maxWidth="lg"`
   - Skills, Inventory, Map, Quests now explicitly set
   - Previously relied on default, now explicitly defined
@@ -475,6 +351,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 ### Verified
 
 **All pages now use maxWidth="lg" (1152px max):**
+
 - ✅ `/game` (GameDashboard) - lg
 - ✅ `/character` - lg ← changed from xl
 - ✅ `/skills` - lg ← added explicitly
@@ -484,10 +361,12 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - ✅ `/quests` - lg ← added explicitly
 
 **Test Results:**
+
 - character + combat: 9/9 passing (100%) ✓
 - Build: ✅ Passes without errors
 
 **UX Impact:**
+
 - Postupně skládaný layout ✓
 - Jednotná šířka napříč systémem ✓
 - Boj se už neroztahuje do šířky ✓

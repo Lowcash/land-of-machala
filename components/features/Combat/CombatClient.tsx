@@ -10,6 +10,7 @@ import { getIconFromName } from '@/lib/icons'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowLeft,
+  ChevronRight,
   Droplet,
   Shield,
   Sparkles,
@@ -211,6 +212,8 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
         { text: 'Zvedl jsi štít. Příští útok bude slabší.', type: 'defend' },
         ...prev,
       ])
+      // Logic for reducing next damage would go here (simplified for now)
+      // For visual feedback, just end turn
     } else if (type === 'dodge') {
       if (playerMana < 10) {
         setCombatLog((prev) => [{ text: 'Jsi příliš unavený na úhyb!', type: 'info' }, ...prev])
@@ -245,6 +248,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
     }
 
     setInventory((prev) => prev.filter((i) => i.id !== itemId))
+    // Potion doesn't end turn immediately? Usually it does.
     setTurn('enemy')
     handleEnemyTurn()
   }
@@ -258,8 +262,6 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
       handleEnemyTurn()
     }
   }
-
-  const potions = inventory.filter((i) => i.type === 'consumable')
 
   return (
     <PageTemplate title="Souboj" icon={Swords} backgroundImage={forestBg} maxWidth="lg">
@@ -364,7 +366,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
               onDefend={handleDefend}
               onUsePotion={handleUsePotion}
               onFlee={handleFlee}
-              potions={potions}
+              potions={inventory.filter((i) => i.type === 'consumable')}
               isPlayerTurn={turn === 'player'}
             />
           </GamePanel>
@@ -378,36 +380,16 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
 }
 
 function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPlayerTurn }: any) {
+  const [showPotions, setShowPotions] = useState(false)
+
   return (
     <div
       className={`flex h-full flex-col ${!isPlayerTurn ? 'pointer-events-none opacity-50' : ''}`}
     >
-      {/* Header Row: Status + Potions */}
-      <div className="mb-2 flex shrink-0 items-center justify-between gap-2">
+      <div className="mb-2 flex shrink-0 items-center justify-between">
         <span className="text-[10px] tracking-widest text-[#8b7355] uppercase">
           {isPlayerTurn ? 'Tvůj tah' : 'Tah nepřítele'}
         </span>
-        
-        {/* Potions - Directly in header */}
-        {potions.length > 0 && (
-          <div className="flex items-center gap-1">
-            <Droplet className="h-3 w-3 text-[#6fbf6f]" />
-            <span className="text-[10px] text-[#6fbf6f]">Lektvary:</span>
-            {potions.map((potion: Item) => {
-              const PotionIcon = getIconFromName(potion.iconName || '')
-              return (
-                <button
-                  key={potion.id}
-                  onClick={() => onUsePotion(potion.id)}
-                  className="flex h-7 w-7 items-center justify-center rounded border border-[#6fbf6f]/30 bg-black/40 text-[#6fbf6f] transition-all hover:scale-110 hover:border-[#6fbf6f] hover:bg-black/60 hover:shadow-[0_0_10px_rgba(111,191,111,0.3)]"
-                  title={`${potion.name} (${potion.healing ? `+${potion.healing} HP` : `+${potion.mana} MP`})`}
-                >
-                  <PotionIcon className="h-4 w-4" />
-                </button>
-              )
-            })}
-          </div>
-        )}
       </div>
 
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
@@ -449,10 +431,10 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
           </ActionBtn>
         </div>
 
-        {/* Defenses */}
+        {/* Defenses & Utility */}
         <div className="space-y-1">
           <div className="mb-1 pl-1 text-[10px] tracking-wider text-[#8b7355] uppercase">
-            Obrana
+            Obrana & Taktika
           </div>
           <ActionBtn
             onClick={() => onDefend('block')}
@@ -473,10 +455,9 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
               <span className="text-[10px] text-[#69ccf0]">-10 E</span>
             </div>
           </ActionBtn>
-        </div>
 
-        {/* Flee - Separate row below */}
-        <div className="col-span-1 sm:col-span-2 mt-1 border-t border-[#8b6f47]/30 pt-2">
+          <div className="mt-1 border-t border-[#8b6f47]/30 pt-2"></div>
+
           <ActionBtn
             onClick={onFlee}
             icon={ArrowLeft}
@@ -484,11 +465,50 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
             border="hover:border-[#d4a574]"
           >
             <div className="flex w-full justify-between">
-              <span>Útěk z boje</span>
-              <span className="text-[10px] opacity-70">50% šance na úspěch</span>
+              <span>Útěk</span>
+              <span className="text-[10px] opacity-70">50% šance</span>
             </div>
           </ActionBtn>
         </div>
+
+        {/* Potions Toggle */}
+        {potions.length > 0 && (
+          <div className="col-span-1 mt-1 space-y-1 border-t border-[#8b6f47]/30 pt-2 sm:col-span-2">
+            <button
+              onClick={() => setShowPotions(!showPotions)}
+              className="flex w-full items-center justify-between rounded border border-[#6fbf6f]/30 bg-black/40 px-3 py-1.5 text-xs text-[#6fbf6f] transition-colors hover:border-[#6fbf6f] hover:bg-black/60"
+            >
+              <div className="flex items-center gap-2">
+                <Droplet className="h-3 w-3" />
+                <span>Lektvary ({potions.length})</span>
+              </div>
+              <ChevronRight
+                className={`h-3 w-3 transition-transform ${showPotions ? 'rotate-90' : ''}`}
+              />
+            </button>
+
+            {showPotions && (
+              <div className="grid grid-cols-2 gap-2 border-l border-[#6fbf6f]/30 pl-2">
+                {potions.map((potion: Item) => (
+                  <ActionBtn
+                    key={potion.id}
+                    onClick={() => onUsePotion(potion.id)}
+                    icon={getIconFromName(potion.iconName || '')}
+                    color="text-[#6fbf6f]"
+                    border="hover:border-[#6fbf6f]"
+                  >
+                    <div className="flex w-full justify-between">
+                      <span>{potion.name}</span>
+                      <span className="text-[10px] opacity-70">
+                        {potion.healing ? `+${potion.healing} HP` : `+${potion.mana} MP`}
+                      </span>
+                    </div>
+                  </ActionBtn>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   )
