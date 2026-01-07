@@ -16,7 +16,6 @@ export async function POST() {
       data: {
         email,
         passwordHash: hashedPassword,
-        username: `host_${randomId}`,
         isGuest: true,
       },
     })
