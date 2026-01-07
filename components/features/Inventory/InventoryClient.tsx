@@ -1,21 +1,8 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import {
-  equipItemAction,
-  unequipItemAction,
-  useItemAction,
-} from '@/lib/actions/inventory'
-import {
-  ArrowLeft,
-  Backpack,
-  Check,
-  Heart,
-  Shield,
-  Sparkles,
-  Sword,
-  Zap,
-} from 'lucide-react'
+import { equipItemAction, unequipItemAction, useItemAction } from '@/lib/actions/inventory'
+import { ArrowLeft, Backpack, Check, Heart, Shield, Sparkles, Sword, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
@@ -238,7 +225,8 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
         </div>
 
         {/* Desktop Detail Panel - Right Side */}
-        <div className="hidden w-80 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm md:flex">{selectedItem && selectedItemData ? (
+        <div className="hidden w-80 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm md:flex">
+          {selectedItem && selectedItemData ? (
             <div className="relative flex-1 overflow-hidden">
               <ScrollIndicator targetRef={detailScrollRef} position="both" />
               <div ref={detailScrollRef} className="scrollbar-custom h-full overflow-y-auto p-6">
