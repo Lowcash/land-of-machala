@@ -12,13 +12,19 @@ type QuestClientProps = {
 }
 
 export function QuestClient({ quests, characterId }: QuestClientProps) {
+  // We need to parse dates back from strings if they were serialized
+  const hydratedQuests = quests.map(quest => ({
+    ...quest,
+    createdAt: new Date(quest.createdAt),
+  }))
+
   const [selectedQuest, setSelectedQuest] = useState<string | null>(null)
 
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search)
       const questId = params.get('questId')
-      if (questId && quests.find((q) => q.id === questId)) {
+      if (questId && hydratedQuests.find((q) => q.id === questId)) {
         setSelectedQuest(questId)
       } else {
         setSelectedQuest(null)
@@ -28,7 +34,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
     handlePopState()
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
-  }, [quests])
+  }, [hydratedQuests])
 
   const handleSelectQuest = (id: string | null) => {
     if (id) {
@@ -46,13 +52,13 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
     window.history.back()
   }
 
-  const selectedQuestData = quests.find((q) => q.id === selectedQuest)
+  const selectedQuestData = hydratedQuests.find((q) => q.id === selectedQuest)
 
   return (
     <>
       <div className="flex w-full flex-1 overflow-hidden">
         <QuestList
-          quests={quests}
+          quests={hydratedQuests}
           selectedQuest={selectedQuest}
           setSelectedQuest={handleSelectQuest}
         />

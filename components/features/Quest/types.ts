@@ -2,7 +2,8 @@ import type { Quest as PrismaQuest, QuestCategory, QuestStatus } from '@prisma/c
 
 export type { QuestCategory, QuestStatus }
 
-export type MergedQuest = PrismaQuest & {
+export type MergedQuest = Omit<PrismaQuest, 'createdAt'> & {
+  createdAt: Date | string
   objectives: Array<{
     id: string
     description: string
