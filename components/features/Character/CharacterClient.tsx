@@ -15,8 +15,8 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
   const equipped = inventory.filter((item) => item.equipped)
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto p-3 md:p-4">
-      <div className="mx-auto w-full max-w-6xl space-y-4">
+    <div className="flex h-full flex-col overflow-y-auto p-2 md:p-3">
+      <div className="mx-auto w-full max-w-6xl space-y-3">
         {/* Back to game link */}
         <Link
           href="/game"

@@ -278,7 +278,7 @@ export function LoginForm() {
               </div>
 
               {/* Mobile Info Accordion */}
-              <div className="scrollbar-custom max-h-[50vh] overflow-y-auto lg:hidden">
+              <div className="lg:hidden">
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="stats" className="border-[#8b6f47]">
                     <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
@@ -287,7 +287,7 @@ export function LoginForm() {
                         <span style={{ fontFamily: 'var(--font-fantasy)' }}>Statistiky serveru</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="mt-2 rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                    <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
                       <div className="grid grid-cols-2 gap-3">
                         <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
                           <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
@@ -324,7 +324,7 @@ export function LoginForm() {
                         <span style={{ fontFamily: 'var(--font-fantasy)' }}>Nejnovější změny</span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="mt-2 rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                    <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
                       <ul className="space-y-2 text-sm text-[#d4a574]">
                         <li className="flex items-start gap-2">
                           <span className="mt-1 text-[#ffd700]">•</span>

@@ -98,7 +98,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
               className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ffd700]"
             >
               <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
-              <span className="text-sm text-[#d4a574]">Zpět</span>
+              <span className="text-sm text-[#d4a574]">Zpět do questů</span>
            </button>
           </div>
 

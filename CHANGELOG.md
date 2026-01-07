@@ -6,6 +6,55 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-07 23:10 - UI/UX Improvements & Bug Fixes
+
+**Type:** Fixed, Changed  
+**Scope:** Inventory, Map, Skills, Quests, Login, Character, Achievements  
+**Impact:** Opraveny všechny reportované UI/UX problémy - lepší zobrazení dat, navigace a scrollování
+
+### Fixed
+
+- **Inventory Stats Display:** Opraveno zobrazování stats v detailu itemu
+  - Změna z `&&` na `!= null && > 0` kontrolu - stats s hodnotou 0 se už nezobrazí
+  - Opraveno pro desktop i mobile overlay
+  - Fix pro všechny stats: attack, defense, magic, speed, healing, mana
+- **Login Accordion Scrolling:** Opraveno scrollování v akordeon sekci
+  - Přidána max-h-[40vh] + overflow-y-auto na AccordionContent
+  - Scrollování funguje pro "Statistiky serveru" i "Nejnovější změny"
+  - Odebrána overflow-y-auto z wrapperu (způsobovala konflikt)
+
+### Changed
+
+- **Map Navigation:** Přidán "Zpět do hry" button na vrchol Map page
+  - Konzistentní se všemi ostatními stránkami
+  - Umístěn v border-b sekci před map canvas
+- **Skills Navigation:** Back button přesunut z levého panelu na vrchol
+  - Již součástí SkillGrid komponenty
+  - Stejné umístění jako ostatní stránky
+- **Mobile Contextual Back Buttons:** Přidány specifické texty pro každý detail
+  - Inventory: "Zpět do inventáře" (místo "Zpět")
+  - Quests: "Zpět do questů" (místo "Zpět")
+  - Skills: "Zpět do dovedností" (místo "Zpět")
+  - Map: "Zpět na mapu" (již existující)
+  - Implementováno přes nový backText prop v MobileOverlay komponentě
+- **Quest Actions:** Explicitní "Vzdát quest" text na abandon buttonu
+  - Změna z pure icon (X) na "X + Vzdát quest" text (skrytý na malých displejích)
+  - Lepší clarity co button dělá
+- **Character Page Spacing:** Kompaktnější layout na desktopu
+  - Spacing změna: space-y-4 → space-y-3
+  - Padding změna: p-3 md:p-4 → p-2 md:p-3
+  - Lepší využití prostoru bez ztráty čitelnosti
+
+### Notes
+
+- **Achievement Notifications:** Již správně centrované v max-w-6xl kontejneru (z předchozí úpravy)
+- **Register Page Link:** "Již máš účet? Přihlásit se zde" text je správně best-practices pattern (standard UX)
+- ✅ Build passes bez chyb
+- ✅ TypeScript type checks pass
+- ✅ Všechny kontextové navigační tlačítka fungují
+
+---
+
 ## 2026-01-07 22:52 - Navigation Overhaul & Contextual Back Links
 
 **Type:** Changed, Added  

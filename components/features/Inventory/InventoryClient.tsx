@@ -272,37 +272,37 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                     {/* Stats */}
                     <div className="space-y-2 rounded border border-[#8b6f47] bg-black/40 p-4">
                       <div className="grid gap-2">
-                        {selectedItemData.attack && selectedItemData.attack > 0 && (
+                        {selectedItemData.attack != null && selectedItemData.attack > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Útok:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.attack}</span>
                           </div>
                         )}
-                        {selectedItemData.defense && selectedItemData.defense > 0 && (
+                        {selectedItemData.defense != null && selectedItemData.defense > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Obrana:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.defense}</span>
                           </div>
                         )}
-                        {selectedItemData.magic && selectedItemData.magic > 0 && (
+                        {selectedItemData.magic != null && selectedItemData.magic > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Magie:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.magic}</span>
                           </div>
                         )}
-                        {selectedItemData.speed && selectedItemData.speed > 0 && (
+                        {selectedItemData.speed != null && selectedItemData.speed > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Rychlost:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.speed}</span>
                           </div>
                         )}
-                        {selectedItemData.healing && selectedItemData.healing > 0 && (
+                        {selectedItemData.healing != null && selectedItemData.healing > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Léčení:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.healing}</span>
                           </div>
                         )}
-                        {selectedItemData.mana && (
+                        {selectedItemData.mana != null && selectedItemData.mana > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Mana:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.mana}</span>
@@ -379,7 +379,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
               className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ffd700]"
             >
               <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
-              <span className="text-sm text-[#d4a574]">Zpět</span>
+              <span className="text-sm text-[#d4a574]">Zpět do inventáře</span>
             </button>
           </div>
 
@@ -411,37 +411,37 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
               {/* Stats */}
               <div className="space-y-2 rounded border border-[#8b6f47] bg-black/40 p-4">
                 <div className="grid gap-2">
-                  {selectedItemData.attack && (
+                  {selectedItemData.attack != null && selectedItemData.attack > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Útok:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.attack}</span>
                     </div>
                   )}
-                  {selectedItemData.defense && (
+                  {selectedItemData.defense != null && selectedItemData.defense > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Obrana:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.defense}</span>
                     </div>
                   )}
-                  {selectedItemData.magic && (
+                  {selectedItemData.magic != null && selectedItemData.magic > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Magie:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.magic}</span>
                     </div>
                   )}
-                  {selectedItemData.speed && (
+                  {selectedItemData.speed != null && selectedItemData.speed > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Rychlost:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.speed}</span>
                     </div>
                   )}
-                  {selectedItemData.healing && (
+                  {selectedItemData.healing != null && selectedItemData.healing > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Léčení:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.healing}</span>
                     </div>
                   )}
-                  {selectedItemData.mana && (
+                  {selectedItemData.mana != null && selectedItemData.mana > 0 && (
                     <div className="flex justify-between text-sm">
                       <span className="text-[#8b7355]">Mana:</span>
                       <span className="text-[#d4a574]">+{selectedItemData.mana}</span>

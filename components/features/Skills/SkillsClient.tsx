@@ -98,7 +98,7 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
 
       {/* Mobile detail overlay */}
       {selectedSkillData && (
-        <MobileOverlay isOpen={!!selectedSkill} title="Detail dovednosti" onClose={handleBack}>
+        <MobileOverlay isOpen={!!selectedSkill} title="Detail dovednosti" onClose={handleBack} backText="Zpět do dovedností">
           <SkillDetailContent
             skill={selectedSkillData}
             allSkills={skills}

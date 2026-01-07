@@ -113,10 +113,11 @@ export function QuestStartButton({ quest, characterId }: QuestStartButtonProps) 
         <button
           onClick={handleAbandonQuest}
           disabled={isLoading}
-          className="rounded border border-[#ff6b6b] bg-[#ff6b6b]/20 px-4 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex items-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/20 px-4 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
           title="Vzdát quest"
         >
           <X className="h-5 w-5" />
+          <span className="hidden sm:inline">Vzdát quest</span>
         </button>
       </div>
     )
