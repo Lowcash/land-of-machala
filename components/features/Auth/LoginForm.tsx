@@ -1,41 +1,42 @@
 'use client'
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { useNotification } from '@/components/providers/NotificationProvider'
-import { ArrowRight, Check, Lock, Scroll, Sparkles, Swords, User, Users } from 'lucide-react'
+import { Check, Lock, Mail, Scroll, Sparkles, Swords, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
+
+const FLAVOR_TEXTS = [
+  'Vstup do světa plného nebezpečí a dobrodružství...',
+  'Tvá legenda čeká na sepsání...',
+  'Machala volá své hrdiny...',
+  'Čest, sláva a zlato čekají na statečné...',
+]
 
 export function LoginForm() {
   const router = useRouter()
   const { showNotification } = useNotification()
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
 
-  const flavorTexts = [
-    'Vstup do světa plného nebezpečí a dobrodružství...',
-    'Tvá legenda čeká na sepsání...',
-    'Machala volá své hrdiny...',
-    'Čest, sláva a zlato čekají na statečné...',
-  ]
-
-  const [flavorText, setFlavorText] = useState(flavorTexts[0])
+  const [flavorText, setFlavorText] = useState(FLAVOR_TEXTS[0])
 
   useEffect(() => {
-    setFlavorText(flavorTexts[Math.floor(Math.random() * flavorTexts.length)])
+    setFlavorText(FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)])
   }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!username || !password || isLoading) return
+    if (!email || !password || isLoading) return
 
     setIsLoading(true)
     try {
       const { signIn } = await import('next-auth/react')
       const result = await signIn('credentials', {
-        email: username,
+        email,
         password,
         redirect: false,
       })
@@ -117,7 +118,7 @@ export function LoginForm() {
   return (
     <RouteTransition>
       <div
-        className="relative flex h-[100dvh] flex-col overflow-y-auto bg-[#0a0806]"
+        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -169,16 +170,18 @@ export function LoginForm() {
                       className="mb-2 block text-xs text-[#d4a574] sm:text-sm"
                       style={{ fontFamily: 'var(--font-fantasy)' }}
                     >
-                      Uživatelské jméno
+                      Email
                     </label>
                     <div className="relative">
-                      <User className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
+                      <Mail className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-[#8b7355]" />
                       <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Zadej jméno..."
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Zadej email..."
                         disabled={isLoading}
+                        autoComplete="email"
+                        autoCapitalize="none"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />
@@ -200,6 +203,7 @@ export function LoginForm() {
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Zadej heslo..."
                         disabled={isLoading}
+                        autoComplete="current-password"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />
@@ -231,22 +235,11 @@ export function LoginForm() {
 
                   <button
                     type="submit"
-                    disabled={!username || !password || isLoading}
-                    className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg border-2 py-3 transition-all duration-300 ${
-                      username && password && !isLoading
-                        ? 'border-[#ffd700] bg-gradient-to-br from-[#d4a574] via-[#8b6f47] to-[#6d5a3e] text-white shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffd700] hover:via-[#d4a574] hover:to-[#8b6f47] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
-                        : 'cursor-not-allowed border-[#8b6f47]/50 bg-black/40 text-[#8b7355] opacity-50'
-                    }`}
+                    disabled={!email || !password || isLoading}
+                    className="w-full rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-[#8b6f47] disabled:hover:bg-[#8b6f47]/10 disabled:hover:text-[#d4a574]"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
-                    <span className="relative z-10 text-base sm:text-lg">
-                      {isLoading ? 'Přihlašování...' : 'Přihlásit se'}
-                    </span>
-                    {!isLoading && (
-                      <ArrowRight
-                        className={`relative z-10 h-5 w-5 transition-transform ${username && password ? 'group-hover:translate-x-1' : ''}`}
-                      />
-                    )}
+                    {isLoading ? 'Přihlašování...' : 'Přihlásit se'}
                   </button>
                 </form>
 
@@ -267,7 +260,7 @@ export function LoginForm() {
                   <button
                     onClick={handleDemoMode}
                     disabled={isLoading}
-                    className="w-full rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-[#8b6f47] disabled:hover:bg-[#8b6f47]/10 disabled:hover:text-[#d4a574]"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     {isLoading ? 'Vytváření účtu...' : 'Zkusit hru jako host (bez registrace)'}
@@ -276,17 +269,94 @@ export function LoginForm() {
                   <button
                     onClick={handleRegister}
                     disabled={isLoading}
-                    className="w-full rounded-lg border-2 border-[#d4a574] py-2.5 text-center text-sm text-[#ffd700] transition-all hover:scale-[1.02] hover:bg-[#d4a574]/10 disabled:cursor-not-allowed disabled:opacity-50"
+                    className="w-full rounded-lg border-2 border-[#d4a574] py-2.5 text-center text-sm text-[#ffd700] transition-all hover:scale-[1.02] hover:bg-[#d4a574]/10 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:scale-100 disabled:hover:bg-transparent"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     Vytvořit nový účet
                   </button>
                 </div>
               </div>
+
+              {/* Mobile Info Accordion */}
+              <div className="scrollbar-custom max-h-[50vh] overflow-y-auto lg:hidden">
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="stats" className="border-[#8b6f47]">
+                    <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
+                      <div className="flex items-center gap-2">
+                        <Users className="h-4 w-4" />
+                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>Statistiky serveru</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="mt-2 rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                          <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
+                          <div className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            1,247
+                          </div>
+                        </div>
+                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                          <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
+                          <div className="text-lg text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            89
+                          </div>
+                        </div>
+                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                          <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
+                          <div className="text-lg text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            87
+                          </div>
+                        </div>
+                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                          <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
+                          <div className="text-lg text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            12k+
+                          </div>
+                        </div>
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+
+                  <AccordionItem value="updates" className="mt-3 border-[#8b6f47]">
+                    <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
+                      <div className="flex items-center gap-2">
+                        <Scroll className="h-4 w-4" />
+                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>Nejnovější změny</span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="mt-2 rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                      <ul className="space-y-2 text-sm text-[#d4a574]">
+                        <li className="flex items-start gap-2">
+                          <span className="mt-1 text-[#ffd700]">•</span>
+                          <span>
+                            <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3 větvích (Combat, Defense, Magic)
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="mt-1 text-[#ffd700]">•</span>
+                          <span>
+                            <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier progrese s unlock požadavky
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="mt-1 text-[#ffd700]">•</span>
+                          <span>
+                            <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby (N/S/E/W) + náhodné souboje
+                          </span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="mt-1 text-[#ffd700]">•</span>
+                          <span>Kompaktní CharacterBox redesign s medieval fantasy stylem</span>
+                        </li>
+                      </ul>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
             </div>
 
             {/* Right Column: Info & Stats */}
-            <div className="mx-auto hidden w-full max-w-md space-y-4 lg:block">
+            <div className="mx-auto hidden w-full max-w-md space-y-4 self-end lg:block">
               {/* Server Stats */}
               <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
                 <h3
@@ -349,19 +419,22 @@ export function LoginForm() {
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
                     <span>
-                      <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3 větvích (Combat, Defense, Magic)
+                      <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3
+                      větvích (Combat, Defense, Magic)
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
                     <span>
-                      <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier progrese s unlock požadavky
+                      <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier
+                      progrese s unlock požadavky
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
                     <span>
-                      <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby (N/S/E/W) + náhodné souboje
+                      <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby
+                      (N/S/E/W) + náhodné souboje
                     </span>
                   </li>
                   <li className="flex items-start gap-2">
@@ -378,7 +451,9 @@ export function LoginForm() {
               </div>
 
               <div className="pt-2 text-center">
-                <p className="text-xs text-[#8b7355]">Aktualizováno 26.12.2025 • © 2025 Land of Machala</p>
+                <p className="text-xs text-[#8b7355]">
+                  Aktualizováno 26.12.2025 • © {new Date().getFullYear()} Land of Machala
+                </p>
               </div>
             </div>
           </div>
