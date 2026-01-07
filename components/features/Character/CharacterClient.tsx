@@ -25,7 +25,7 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
           <ArrowLeft className="h-4 w-4" />
           Zpět do hry
         </Link>
-        
+
         {/* Character Visual - Full Width */}
         <div className="w-full">
           <CharacterBox
@@ -46,20 +46,20 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
             isEnemy={false}
           />
         </div>
-        
+
         {/* Content Grid - 2 columns on desktop, stacked on mobile */}
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           {/* Left Column: Stats */}
           <div>
             <CharacterDetailContent section="stats" character={character} equipped={equipped} />
           </div>
-          
+
           {/* Right Column: Equipment */}
           <div>
             <CharacterDetailContent section="equipment" character={character} equipped={equipped} />
           </div>
         </div>
-        
+
         {/* Achievements - Full Width */}
         <div>
           <CharacterDetailContent
@@ -72,4 +72,3 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
     </div>
   )
 }
-

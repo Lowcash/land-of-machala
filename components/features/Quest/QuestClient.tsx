@@ -13,7 +13,7 @@ type QuestClientProps = {
 
 export function QuestClient({ quests, characterId }: QuestClientProps) {
   // We need to parse dates back from strings if they were serialized
-  const hydratedQuests = quests.map(quest => ({
+  const hydratedQuests = quests.map((quest) => ({
     ...quest,
     createdAt: new Date(quest.createdAt),
   }))
@@ -99,7 +99,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
             >
               <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
               <span className="text-sm text-[#d4a574]">Zpět do questů</span>
-           </button>
+            </button>
           </div>
 
           <div className="scrollbar-custom flex-1 overflow-y-auto p-4">

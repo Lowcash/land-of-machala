@@ -158,17 +158,14 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - **Weapons:** Enchanted Battleaxe (Epic), Arcane Wand (Rare), Crossbow of Precision (Rare)
   - **Armor:** Dragon Scale Armor (Legendary), Shadow Cloak (Epic), Steel Gauntlets (Uncommon), Boots of Swiftness (Rare), Crown of Wisdom (Epic)
   - **Consumables:** Elixir of Strength (Uncommon), Scroll of Teleportation (Rare), Phoenix Feather (Legendary)
-  
 - **Skills - Stealth Tree (6 skills):**
   - Tier 1: Plížení (5 ranks), Kapsářství (3 ranks)
   - Tier 2: Jedový dýka (3 ranks), Zadní vchod (1 rank)
   - Tier 3: Zmizení (1 rank), Brutální útok (1 rank)
-  
 - **Skills - Crafting Tree (6 skills):**
   - Tier 1: Kovářství (5 ranks), Alchymie (5 ranks)
   - Tier 2: Runické enchantování (3 ranks), Mistrovská výroba (3 ranks)
   - Tier 3: Legendární kovář (1 rank), Elixír nesmrtelnosti (1 rank)
-  
 - **Skills - Magic Tree (1 nový):**
   - Mrazivý opar (Tier 2, zmrazí nepřítele na 1 kolo)
 
@@ -181,18 +178,15 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
     - 2-column grid: Stats (left) + Equipment (right) for better mobile stacking
     - Full-width Achievements at bottom
   - Removed SplitView dependency entirely from CharacterClient
-  
 - **Achievement Notifications - Repositioned:**
   - **OLD:** `fixed top-24 left-0 right-0` with `max-w-6xl` (notifications at screen edges)
   - **NEW:** `fixed inset-0` with centered flex, `mt-24`, `max-w-md` (centered in viewport)
   - Notifications now appear center-right instead of full-width right edge
-  
 - **CharacterBox - Medieval Enhancements:**
   - Added scrollwork decorations (small dots in all 4 corners)
   - Enhanced multi-layer shadows: `shadow-[0_8px_32px_rgba(139,111,71,0.4),0_0_64px_rgba(255,215,0,0.1)]`
   - Added paper grain texture overlay with `repeating-linear-gradient`
   - Larger corner decorations (h-10 w-10 from h-8 w-8)
-  
 - **Skills UI - New Categories:**
   - Added Stealth (Eye icon, green) and Crafting (Hammer icon, parchment) filters
   - Updated SkillCategoryFilter with 5 categories total
@@ -201,18 +195,18 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 ### Fixed
 
 - **Map Crash:** Added null handling for `createdAt`/`updatedAt` in dummy location data (`loc.createdAt || null`)
-- **Quest Type Errors:** 
+- **Quest Type Errors:**
   - Changed all `quest.type` → `quest.category` (schema uses category, not type)
   - Changed `quest.minLevel` → `quest.level`
   - Fixed MergedQuest type to omit `createdAt` and redefine as `Date | string`
   - Removed non-existent `updatedAt` from Quest model (only has `createdAt`)
 - **Quest Hydration:** Fixed createdAt hydration to always return Date (removed undefined)
-- **Build Errors:** 
+- **Build Errors:**
   - Removed unused SplitView import from CharacterClient
   - Removed unused `allQuestsError` and `allSkillsError` variables
   - Removed deprecated `utility` category from SkillGrid
   - Removed unused `Zap` and `Heart` icons from SkillCategoryFilter
-- **Schema Validation:** 
+- **Schema Validation:**
   - Removed invalid `fireResistance` field from Dragon Scale Armor seed
   - Fixed escaped quote in Crown of Wisdom description
 
@@ -237,11 +231,10 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Vylepšené gradienty pozadí (`from-[#1a1408] via-[#2a1f10] to-[#1a1408]`)
   - Level bubble má zlatý záři (`shadow-[0_0_10px_rgba(255,215,0,0.4)]`)
   - Gradient border u level badge pro lepší fantasy vzhled
-  
 - **Button Style Unification:**
   - Sjednoceny všechny buttony s `bg-black/60` pozadím pro lepší čitelnost
   - "Náhodná postava" button má konzistentní styl
-  - "Vstoupit do hry" button má konzistentní styl  
+  - "Vstoupit do hry" button má konzistentní styl
   - Všechny buttony mají jednotné hover efekty (`hover:border-[#ffd700] hover:bg-[#8b6f47]/20`)
 
 ### Added
@@ -346,7 +339,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Logout button styled with red hover (hover:border-[#ff6b6b])
   - Better mobile UX - no need to open menu to logout
 
-- **RegisterForm** ([app/(auth)/register/page.tsx](app/(auth)/register/page.tsx))
+- **RegisterForm** ([app/(auth)/register/page.tsx](<app/(auth)/register/page.tsx>))
   - Repositioned "Začni své dobrodružství" section
   - On mobile: Shows under form (smaller text, compact design)
   - On desktop: Shows in right column (original design)
@@ -374,7 +367,7 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Added `autoCapitalize="none"` to email input (prevents uppercase confusion)
   - Disabled hover effects on loading/disabled buttons
 
-- **RegisterForm** ([app/(auth)/register/page.tsx](app/(auth)/register/page.tsx))
+- **RegisterForm** ([app/(auth)/register/page.tsx](<app/(auth)/register/page.tsx>))
   - Changed `h-screen` to `h-[100dvh]` with `overflow-hidden` (full-screen without scroll)
   - Added `autoCapitalize="none"` to email input
   - Disabled hover effects on loading/disabled buttons

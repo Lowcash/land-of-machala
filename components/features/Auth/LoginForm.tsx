@@ -1,8 +1,13 @@
 'use client'
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { useNotification } from '@/components/providers/NotificationProvider'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion'
 import { Check, Lock, Mail, Scroll, Sparkles, Swords, Users } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -284,32 +289,46 @@ export function LoginForm() {
                     <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
                       <div className="flex items-center gap-2">
                         <Users className="h-4 w-4" />
-                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>Statistiky serveru</span>
+                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>
+                          Statistiky serveru
+                        </span>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
                       <div className="grid grid-cols-2 gap-3">
                         <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
                           <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
-                          <div className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                          <div
+                            className="text-lg text-[#ffd700]"
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
                             1,247
                           </div>
                         </div>
                         <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
                           <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
-                          <div className="text-lg text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                          <div
+                            className="text-lg text-[#ff6b6b]"
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
                             89
                           </div>
                         </div>
                         <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
                           <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
-                          <div className="text-lg text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                          <div
+                            className="text-lg text-[#6fbf6f]"
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
                             87
                           </div>
                         </div>
                         <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
                           <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
-                          <div className="text-lg text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                          <div
+                            className="text-lg text-[#69ccf0]"
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
                             12k+
                           </div>
                         </div>
@@ -329,19 +348,22 @@ export function LoginForm() {
                         <li className="flex items-start gap-2">
                           <span className="mt-1 text-[#ffd700]">•</span>
                           <span>
-                            <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3 větvích (Combat, Defense, Magic)
+                            <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills
+                            ve 3 větvích (Combat, Defense, Magic)
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="mt-1 text-[#ffd700]">•</span>
                           <span>
-                            <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier progrese s unlock požadavky
+                            <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier
+                            progrese s unlock požadavky
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="mt-1 text-[#ffd700]">•</span>
                           <span>
-                            <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby (N/S/E/W) + náhodné souboje
+                            <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby
+                            (N/S/E/W) + náhodné souboje
                           </span>
                         </li>
                         <li className="flex items-start gap-2">
