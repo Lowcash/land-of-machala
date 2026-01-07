@@ -1,7 +1,7 @@
 'use client'
 
 import { RouteTransition } from '@/components/layout/RouteTransition'
-import { ArrowRight, Lock, Mail, Sparkles, Swords } from 'lucide-react'
+import { Lock, Mail, Sparkles, Swords } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -52,7 +52,7 @@ export default function RegisterPage() {
   return (
     <RouteTransition>
       <div
-        className="flex h-screen flex-col overflow-y-auto bg-[#0a0806]"
+        className="flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -114,6 +114,7 @@ export default function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Zadej email..."
+                        autoCapitalize="none"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                         required
@@ -152,19 +153,10 @@ export default function RegisterPage() {
                   <button
                     type="submit"
                     disabled={loading || !email || !password}
-                    className={`group relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg border-2 py-3 transition-all duration-300 ${
-                      email && password && !loading
-                        ? 'border-[#ffd700] bg-gradient-to-br from-[#d4a574] via-[#8b6f47] to-[#6d5a3e] text-white shadow-[0_0_20px_rgba(255,215,0,0.3)] hover:from-[#ffd700] hover:via-[#d4a574] hover:to-[#8b6f47] hover:shadow-[0_0_30px_rgba(255,215,0,0.5)]'
-                        : 'cursor-not-allowed border-[#8b6f47]/50 bg-black/40 text-[#8b7355] opacity-50'
-                    }`}
+                    className="w-full rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:border-[#8b6f47] disabled:hover:bg-[#8b6f47]/10 disabled:hover:text-[#d4a574]"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
-                    <span className="relative z-10 text-base sm:text-lg">
-                      {loading ? 'Registruji...' : 'Vytvořit účet'}
-                    </span>
-                    <ArrowRight
-                      className={`relative z-10 h-5 w-5 transition-transform ${email && password && name && !loading ? 'group-hover:translate-x-1' : ''}`}
-                    />
+                    {loading ? 'Registruji...' : 'Vytvořit účet'}
                   </button>
                 </div>
               </form>
@@ -180,10 +172,26 @@ export default function RegisterPage() {
                   </Link>
                 </p>
               </div>
+
+              {/* Mobile Info - under form */}
+              <div className="mt-4 lg:hidden">
+                <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-3 shadow-xl backdrop-blur-md">
+                  <h3
+                    className="mb-2 flex items-center justify-center gap-2 text-sm text-[#ffd700]"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Začni své dobrodružství
+                  </h3>
+                  <p className="text-center text-xs leading-relaxed text-[#d4a574]">
+                    Registrací získáš přístup do světa Machala
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* Right Column: Info */}
-            <div className="mx-auto w-full max-w-md">
+            {/* Right Column: Info - desktop only */}
+            <div className="mx-auto hidden w-full max-w-md lg:block">
               <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
                 <h3
                   className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
