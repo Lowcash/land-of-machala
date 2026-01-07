@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { Home, Heart, ScrollText, FlaskConical, ChevronRight, Sparkles, Zap } from 'lucide-react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
+import { ServiceTable } from '@/components/ui/ServiceTable'
 
 interface HealerActionsProps {
   onBack: () => void
@@ -25,28 +26,67 @@ export function HealerActions({
   const [mode, setMode] = useState<'services' | 'talk'>('services')
   const [message, setMessage] = useState('')
 
-  const handleAction = (action: string, cost: number) => {
-    if (gold < cost) {
+  const services = [
+    {
+      id: 'heal',
+      name: 'Ošetření zranění',
+      description: 'Obnoví zdraví',
+      price: 50,
+      icon: Heart,
+      iconColor: 'text-[#6fbf6f]',
+      iconBg: 'bg-[#6fbf6f]/20',
+      action: 'Léčení',
+    },
+    {
+      id: 'str-buff',
+      name: 'Požehnání síly',
+      description: '+5 Síla (Do odpočinku)',
+      price: 100,
+      icon: Sparkles,
+      iconColor: 'text-[#ffd700]',
+      iconBg: 'bg-[#ffd700]/20',
+      action: 'Požehnání síly',
+    },
+    {
+      id: 'sta-buff',
+      name: 'Požehnání výdrže',
+      description: '+5 Stamina (Do odpočinku)',
+      price: 100,
+      icon: Sparkles,
+      iconColor: 'text-[#ffd700]',
+      iconBg: 'bg-[#ffd700]/20',
+      action: 'Požehnání ochrany',
+    },
+    {
+      id: 'antidote',
+      name: 'Protijed',
+      description: 'Vyléčí otravu',
+      price: 20,
+      icon: FlaskConical,
+      iconColor: 'text-[#69ccf0]',
+      iconBg: 'bg-[#69ccf0]/20',
+      action: 'Protijed',
+    },
+  ]
+
+  const handleService = (service: any) => {
+    if (gold < service.price) {
       setMessage('Nemáš dost zlata!')
       setTimeout(() => setMessage(''), 3000)
       return
     }
 
-    setGold((prev: number) => prev - cost)
+    setGold((prev: number) => prev - service.price)
 
-    if (action === 'Léčení') {
+    if (service.action === 'Léčení') {
       setInfoText('Léčitel ti vyčistil rány. Cítíš se lépe. (HP doplněno)')
-      // Note: Full HP restore logic should ideally be here or passed via prop,
-      // but for now we rely on the visual feedback and cost.
-      // To actually heal, we would need setHp prop.
-    } else if (action === 'Požehnání síly') {
+    } else if (service.action === 'Požehnání síly') {
       setActiveBuffs((prev: any[]) => [...prev, { name: 'Síla Býka', stat: 'strength', val: 5 }])
-    } else if (action === 'Požehnání ochrany') {
-      // Using Stamina because 'defense' is not a base stat in Game.tsx logic yet
+    } else if (service.action === 'Požehnání ochrany') {
       setActiveBuffs((prev: any[]) => [...prev, { name: 'Výdrž kance', stat: 'stamina', val: 5 }])
     }
 
-    setMessage(`Použil jsi službu: ${action} (-${cost}g)`)
+    setMessage(`Použil jsi službu: ${service.action} (-${service.price}g)`)
     setTimeout(() => setMessage(''), 3000)
   }
 
@@ -107,84 +147,40 @@ export function HealerActions({
         )}
 
         {mode === 'services' ? (
-          <div className="space-y-2">
-            <div className="group flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:bg-[#6fbf6f]/5">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full bg-[#6fbf6f]/20 p-2 text-[#6fbf6f]">
-                  <Heart className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm text-[#f5e6d3]">Ošetření zranění</div>
-                  <div className="text-[10px] text-[#8b7355]">Obnoví zdraví</div>
-                </div>
-              </div>
-              <button
-                onClick={() => handleAction('Léčení', 50)}
-                className="rounded border border-[#d4a574]/50 bg-[#8b6f47] px-3 py-1.5 text-xs text-white hover:border-[#ffd700] hover:bg-[#a8865d]"
-              >
-                50g
-              </button>
-            </div>
-
-            <div className="group flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:bg-[#ffd700]/5">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full bg-[#ffd700]/20 p-2 text-[#ffd700]">
-                  <Sparkles className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm text-[#f5e6d3]">Požehnání síly</div>
-                  <div className="text-[10px] text-[#8b7355]">+5 Síla (Do odpočinku)</div>
-                </div>
-              </div>
-              <button
-                onClick={() => handleAction('Požehnání síly', 100)}
-                className="rounded border border-[#d4a574]/50 bg-[#8b6f47] px-3 py-1.5 text-xs text-white hover:border-[#ffd700] hover:bg-[#a8865d]"
-              >
-                100g
-              </button>
-            </div>
-
-            <div className="group flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:bg-[#ffd700]/5">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full bg-[#ffd700]/20 p-2 text-[#ffd700]">
-                  <Sparkles className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm text-[#f5e6d3]">Požehnání výdrže</div>
-                  <div className="text-[10px] text-[#8b7355]">+5 Stamina (Do odpočinku)</div>
-                </div>
-              </div>
-              <button
-                onClick={() => handleAction('Požehnání ochrany', 100)}
-                className="rounded border border-[#d4a574]/50 bg-[#8b6f47] px-3 py-1.5 text-xs text-white hover:border-[#ffd700] hover:bg-[#a8865d]"
-              >
-                100g
-              </button>
-            </div>
-
-            <div className="group flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:bg-[#69ccf0]/5">
-              <div className="flex items-center gap-3">
-                <div className="rounded-full bg-[#69ccf0]/20 p-2 text-[#69ccf0]">
-                  <FlaskConical className="h-4 w-4" />
-                </div>
-                <div>
-                  <div className="text-sm text-[#f5e6d3]">Protijed</div>
-                  <div className="text-[10px] text-[#8b7355]">Vyléčí otravu</div>
-                </div>
-              </div>
-              <button
-                onClick={() => handleAction('Protijed', 20)}
-                className="rounded border border-[#d4a574]/50 bg-[#8b6f47] px-3 py-1.5 text-xs text-white hover:border-[#ffd700] hover:bg-[#a8865d]"
-              >
-                20g
-              </button>
-            </div>
-          </div>
+          <ServiceTable
+            items={services}
+            mode="cards"
+            columns={[
+              { key: 'name', label: 'Název' },
+              {
+                key: 'description',
+                label: 'Popis',
+                render: (item) => (
+                  <div>
+                    <div>{item.description}</div>
+                    <div className="mt-1 text-[#ffd700]">{item.price}g</div>
+                  </div>
+                ),
+              },
+            ]}
+            actions={[
+              {
+                label: 'Koupit',
+                onClick: handleService,
+                disabled: (item) => gold < item.price,
+              },
+            ]}
+            rowIcon={(item) => {
+              const Icon = item.icon
+              return <Icon className={`h-4 w-4 ${item.iconColor}`} />
+            }}
+            emptyMessage="Žádné služby k dispozici"
+          />
         ) : (
           <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
             <p className="text-sm text-[#d4a574] italic">
-              "Vítej, poutníku. Mé byliny jsou čerstvé a mé ruce pevné. Co tě trápí? Hledáš
-              uzdravení těla, nebo snad potřebuješ pomoc s něčím... složitějším?"
+              &quot;Vítej, poutníku. Mé byliny jsou čerstvé a mé ruce pevné. Co tě trápí? Hledáš
+              uzdravení těla, nebo snad potřebuješ pomoc s něčím... složitějším?&quot;
             </p>
             <div className="space-y-2">
               <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">

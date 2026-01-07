@@ -1,9 +1,10 @@
 'use client'
 
-import { Coins, Home, Shield, Store, Sword } from 'lucide-react'
+import { Coins, Home, Store } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
+import { ServiceTable } from '@/components/ui/ServiceTable'
 
 type ItemType = 'weapon' | 'armor' | 'consumable'
 
@@ -57,32 +58,32 @@ export function SmithActions({
 
   // ARMORY SHOP STOCK (from design repo)
   const stock = [
-    { name: 'Dřevěný meč', attack: 5, price: 50, type: 'weapon', icon: Sword },
-    { name: 'Železný meč', attack: 12, price: 150, type: 'weapon', icon: Sword },
-    { name: 'Dlouhý meč', attack: 15, price: 200, type: 'weapon', icon: Sword },
-    { name: 'Bojová sekera', attack: 18, price: 300, type: 'weapon', icon: Sword },
-    { name: 'Kožená zbroj', defense: 8, price: 100, type: 'armor', icon: Shield },
-    { name: 'Řetězová zbroj', defense: 15, price: 250, type: 'armor', icon: Shield },
-    { name: 'Ocelová zbroj', defense: 20, price: 400, type: 'armor', icon: Shield },
-    { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor', icon: Shield },
+    { name: 'Dřevěný meč', attack: 5, price: 50, type: 'weapon' },
+    { name: 'Železný meč', attack: 12, price: 150, type: 'weapon' },
+    { name: 'Dlouhý meč', attack: 15, price: 200, type: 'weapon' },
+    { name: 'Bojová sekera', attack: 18, price: 300, type: 'weapon' },
+    { name: 'Kožená zbroj', defense: 8, price: 100, type: 'armor' },
+    { name: 'Řetězová zbroj', defense: 15, price: 250, type: 'armor' },
+    { name: 'Ocelová zbroj', defense: 20, price: 400, type: 'armor' },
+    { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor' },
   ]
 
-  const handleBuy = (template: any) => {
-    if (gold < template.price) {
+  const handleBuy = (item: any) => {
+    if (gold < item.price) {
       showMessage('Nemáš dost zlata!')
       return
     }
-    setGold((g) => g - template.price)
+    setGold((g) => g - item.price)
     const newItem = {
-      ...template,
+      ...item,
       id: Math.max(0, ...inventory.map((i) => i.id)) + 1 + Math.floor(Math.random() * 1000),
       durability: 100,
       maxDurability: 100,
       level: 0,
     }
     setInventory((prev) => [...prev, newItem])
-    setInfoText(`Koupil jsi ${template.name}.`)
-    showMessage(`Koupeno: ${template.name}`)
+    setInfoText(`Koupil jsi ${item.name}.`)
+    showMessage(`Koupeno: ${item.name}`)
   }
 
   return (
@@ -120,64 +121,37 @@ export function SmithActions({
         {!selectedAction ? (
           <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
             <p className="py-4 text-center text-xs text-[#8b7355]">
-              Vyber předměty z batohu k prodeji zbrojíři.
+              Vyber akci z menu vlevo.
             </p>
           </div>
         ) : selectedAction === 'buy' ? (
-          <div className="relative flex max-h-full flex-col overflow-hidden rounded border border-[#8b6f47] bg-black/60">
-            <div className="scrollbar-custom overflow-y-auto">
-              <table className="w-full text-xs">
-                <thead className="sticky top-0 z-10 bg-black/80">
-                  <tr className="border-b border-[#8b6f47]">
-                    <th
-                      className="px-2 py-1.5 text-left text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Předmět
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-center text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Bonus
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-right text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Cena
-                    </th>
-                    <th
-                      className="px-2 py-1.5 text-right text-[#d4a574]"
-                      style={{ fontFamily: 'var(--font-fantasy)' }}
-                    >
-                      Akce
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {stock.map((item, idx) => (
-                    <tr key={idx} className="border-b border-[#8b6f47]/30 hover:bg-black/20">
-                      <td className="px-2 py-2 text-[#f5e6d3]">{item.name}</td>
-                      <td className="px-2 py-2 text-center">
-                        {item.attack && <span className="text-[#ff6b6b]">+{item.attack}</span>}
-                        {item.defense && <span className="text-[#69ccf0]">+{item.defense}</span>}
-                      </td>
-                      <td className="px-2 py-2 text-right text-[#ffd700]">{item.price}g</td>
-                      <td className="px-2 py-2 text-right">
-                        <button
-                          onClick={() => handleBuy(item)}
-                          className="rounded border border-[#ffd700] bg-gradient-to-r from-[#8b6f47] to-[#6d5a3e] px-2 py-1 text-xs text-white hover:from-[#a8865d] hover:to-[#a8865d]"
-                        >
-                          Koupit
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <ServiceTable
+            items={stock}
+            mode="table"
+            columns={[
+              { key: 'name', label: 'Předmět', align: 'left', render: (item) => <span className="text-[#f5e6d3]">{item.name}</span> },
+              {
+                key: 'stats',
+                label: 'Bonus',
+                align: 'center',
+                render: (item) => (
+                  <>
+                    {item.attack && <span className="text-[#ff6b6b]">+{item.attack}</span>}
+                    {item.defense && <span className="text-[#69ccf0]">+{item.defense}</span>}
+                  </>
+                ),
+              },
+              { key: 'price', label: 'Cena', align: 'right', render: (item) => <span className="text-[#ffd700]">{item.price}g</span> },
+            ]}
+            actions={[
+              {
+                label: 'Koupit',
+                onClick: handleBuy,
+                disabled: (item) => gold < item.price,
+              },
+            ]}
+            emptyMessage="Žádné předměty na prodej"
+          />
         ) : (
           <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
             <p className="py-4 text-center text-xs text-[#8b7355]">
