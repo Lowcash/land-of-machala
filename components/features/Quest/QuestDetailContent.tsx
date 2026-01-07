@@ -65,7 +65,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               >
                 {getCategoryName(quest.category)}
               </span>
-              <span className="text-xs text-[#8b7355]">Level {quest.level}</span>
+              <span className="text-xs text-[#8b7355]">Level {quest.level || 1}</span>
             </div>
             <h2
               className={`mb-2 text-2xl ${getCategoryColor(quest.category)}`}
