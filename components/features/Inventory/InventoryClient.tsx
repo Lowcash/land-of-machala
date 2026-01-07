@@ -3,7 +3,6 @@
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import {
   equipItemAction,
-  sellItemAction,
   unequipItemAction,
   useItemAction,
 } from '@/lib/actions/inventory'
@@ -17,6 +16,7 @@ import {
   Sword,
   Zap,
 } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import type { InventoryItemUI, ItemRarity } from './types'
@@ -36,12 +36,10 @@ function getIconFromName(iconName: string) {
 
 type InventoryClientProps = {
   initialInventory: InventoryItemUI[]
-  gold: number
 }
 
-export function InventoryClient({ initialInventory, gold }: InventoryClientProps) {
+export function InventoryClient({ initialInventory }: InventoryClientProps) {
   const [inventory, setInventory] = useState(initialInventory)
-  const [, setCurrentGold] = useState(gold)
   const [selectedItem, setSelectedItem] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -140,25 +138,6 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
     })
   }
 
-  const handleSell = async (id: string) => {
-    startTransition(async () => {
-      const itemToSell = inventory.find((i) => i.id === id)
-      const sellPrice = itemToSell ? Math.floor((itemToSell.value || 10) * 0.5) : 0
-
-      const [result, err] = await sellItemAction({ inventoryItemId: id })
-      if (err) {
-        toast.error('Chyba při prodeji předmětu')
-        return
-      }
-      if (result?.success) {
-        setInventory((prev) => prev.filter((i) => i.id !== id))
-        setCurrentGold((prev) => prev + sellPrice)
-        toast.success(`Předmět prodán za ${sellPrice} zlaťáků`)
-        handleSelectItem(null)
-      }
-    })
-  }
-
   const getRarityColor = (rarity: ItemRarity) => {
     switch (rarity) {
       case 'common':
@@ -205,6 +184,17 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
             selectedItem ? 'hidden md:flex' : 'flex'
           } flex-1 flex-col bg-black/70 backdrop-blur-sm`}
         >
+          {/* Back to game link */}
+          <div className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+            <Link
+              href="/game"
+              className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Zpět do hry
+            </Link>
+          </div>
+
           {/* Toolbar - removed, gold now in header */}
 
           {/* Inventory Grid/List */}
@@ -282,31 +272,31 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                     {/* Stats */}
                     <div className="space-y-2 rounded border border-[#8b6f47] bg-black/40 p-4">
                       <div className="grid gap-2">
-                        {selectedItemData.attack && (
+                        {selectedItemData.attack && selectedItemData.attack > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Útok:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.attack}</span>
                           </div>
                         )}
-                        {selectedItemData.defense && (
+                        {selectedItemData.defense && selectedItemData.defense > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Obrana:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.defense}</span>
                           </div>
                         )}
-                        {selectedItemData.magic && (
+                        {selectedItemData.magic && selectedItemData.magic > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Magie:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.magic}</span>
                           </div>
                         )}
-                        {selectedItemData.speed && (
+                        {selectedItemData.speed && selectedItemData.speed > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Rychlost:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.speed}</span>
                           </div>
                         )}
-                        {selectedItemData.healing && (
+                        {selectedItemData.healing && selectedItemData.healing > 0 && (
                           <div className="flex justify-between text-sm">
                             <span className="text-[#8b7355]">Léčení:</span>
                             <span className="text-[#d4a574]">+{selectedItemData.healing}</span>
@@ -353,13 +343,6 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                           {selectedItemData.equipped ? 'Sundat' : 'Nasadit'}
                         </button>
                       )}
-                      <button
-                        onClick={() => handleSell(selectedItemData.id)}
-                        disabled={isPending}
-                        className="w-full rounded border border-[#8b6f47] bg-black/40 px-4 py-2 text-[#8b7355] transition-colors hover:border-[#d4a574] hover:text-[#d4a574] disabled:opacity-50"
-                      >
-                        Prodat ({Math.floor(selectedItemData.value / 2)} zl.)
-                      </button>
                     </div>
                   </div>
                 </div>
@@ -367,7 +350,7 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
             </div>
           ) : (
             <div className="flex h-full w-full items-center justify-center">
-              <div className="text-center">
+              <div className="px-4 text-center">
                 <Backpack className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
                 <h3
                   className="mb-2 text-lg text-[#d4a574]"
@@ -497,13 +480,6 @@ export function InventoryClient({ initialInventory, gold }: InventoryClientProps
                     {selectedItemData.equipped ? 'Sundat' : 'Nasadit'}
                   </button>
                 )}
-                <button
-                  onClick={() => handleSell(selectedItemData.id)}
-                  disabled={isPending}
-                  className="w-full rounded border border-[#8b6f47] bg-black/40 px-4 py-2 text-[#8b7355] transition-colors hover:border-[#d4a574] hover:text-[#d4a574] disabled:opacity-50"
-                >
-                  Prodat ({Math.floor(selectedItemData.value / 2)} zl.)
-                </button>
               </div>
             </div>
           </div>
