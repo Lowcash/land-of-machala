@@ -14,7 +14,7 @@ model User {
   id           String      @id @default(cuid())
   email        String      @unique
   passwordHash String
-  username     String      @unique
+  username     String?     @unique
   isGuest      Boolean     @default(false)
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
@@ -318,6 +318,8 @@ enum SkillTree {
   COMBAT
   DEFENSE
   MAGIC
+  STEALTH
+  CRAFTING
 }
 
 model CharacterSkill {

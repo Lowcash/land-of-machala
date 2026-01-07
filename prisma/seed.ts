@@ -198,6 +198,147 @@ async function main() {
         iconName: 'crystal',
       },
     }),
+    
+    // Additional Weapons
+    prisma.item.create({
+      data: {
+        name: 'Enchanted Battleaxe',
+        description: 'A massive battleaxe crackling with lightning',
+        type: 'WEAPON',
+        rarity: 'EPIC',
+        value: 450,
+        slot: 'WEAPON',
+        iconName: 'axe',
+        strength: 22,
+        intelligence: 5,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Arcane Wand',
+        description: 'A wand pulsing with pure magical energy',
+        type: 'WEAPON',
+        rarity: 'RARE',
+        value: 320,
+        slot: 'WEAPON',
+        iconName: 'wand',
+        intelligence: 18,
+        agility: 3,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Crossbow of Precision',
+        description: 'Never misses its target',
+        type: 'WEAPON',
+        rarity: 'RARE',
+        value: 280,
+        slot: 'WEAPON',
+        iconName: 'crossbow',
+        strength: 10,
+        agility: 12,
+      },
+    }),
+    
+    // Additional Armor
+    prisma.item.create({
+      data: {
+        name: 'Dragon Scale Armor',
+        description: 'Forged from the scales of an ancient dragon',
+        type: 'ARMOR',
+        rarity: 'LEGENDARY',
+        value: 1200,
+        slot: 'CHEST',
+        iconName: 'armor',
+        stamina: 25,
+        strength: 10,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Shadow Cloak',
+        description: 'Grants the wearer enhanced stealth',
+        type: 'ARMOR',
+        rarity: 'EPIC',
+        value: 650,
+        slot: 'CHEST',
+        iconName: 'cloak',
+        agility: 15,
+        intelligence: 8,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Steel Gauntlets',
+        description: 'Heavy gauntlets that enhance grip strength',
+        type: 'ARMOR',
+        rarity: 'UNCOMMON',
+        value: 85,
+        slot: 'HANDS',
+        iconName: 'gloves',
+        strength: 5,
+        stamina: 3,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Boots of Swiftness',
+        description: 'Light as air, swift as wind',
+        type: 'ARMOR',
+        rarity: 'RARE',
+        value: 180,
+        slot: 'FEET',
+        iconName: 'boots',
+        agility: 10,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Crown of Wisdom',
+        description: "Enhances the wearer's mental clarity",
+        type: 'ARMOR',
+        rarity: 'EPIC',
+        value: 720,
+        slot: 'HEAD',
+        iconName: 'crown',
+        intelligence: 18,
+        stamina: 5,
+      },
+    }),
+    
+    // More Consumables
+    prisma.item.create({
+      data: {
+        name: 'Elixir of Strength',
+        description: 'Temporarily increases strength by 20%',
+        type: 'CONSUMABLE',
+        rarity: 'UNCOMMON',
+        value: 45,
+        iconName: 'elixir',
+        strength: 10,
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Scroll of Teleportation',
+        description: 'Instantly teleports you to a safe location',
+        type: 'CONSUMABLE',
+        rarity: 'RARE',
+        value: 150,
+        iconName: 'scroll',
+      },
+    }),
+    prisma.item.create({
+      data: {
+        name: 'Phoenix Feather',
+        description: 'Revives the user upon death',
+        type: 'CONSUMABLE',
+        rarity: 'LEGENDARY',
+        value: 1000,
+        iconName: 'feather',
+        healing: 999,
+      },
+    }),
   ])
 
   console.log(`✅ Created ${items.length} items`)
@@ -584,9 +725,203 @@ async function main() {
         positionY: 2,
       },
     }),
+    prisma.skill.create({
+      data: {
+        name: 'Mrazivý opar',
+        description: 'Zmrazí nepřítele na 1 kolo.',
+        tree: 'MAGIC',
+        tier: 2,
+        maxRank: 1,
+        iconName: 'sparkles',
+        requiredLevel: 3,
+        requiredTreePoints: 4,
+        positionX: 2,
+        positionY: 1,
+      },
+    }),
+
+    // ==================== STEALTH TREE ==================== (New)
+    
+    // Tier 1 (Level 1) - Basic stealth
+    prisma.skill.create({
+      data: {
+        name: 'Plížení',
+        description: 'Zvyšuje šanci vyhnout se útoku o 5% za level.',
+        tree: 'STEALTH',
+        tier: 1,
+        maxRank: 5,
+        iconName: 'eye-off',
+        requiredLevel: 1,
+        positionX: 0,
+        positionY: 0,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Kapsářství',
+        description: 'Šance 10% ukrást zlato od nepřítele po boji.',
+        tree: 'STEALTH',
+        tier: 1,
+        maxRank: 3,
+        iconName: 'coins',
+        requiredLevel: 1,
+        positionX: 1,
+        positionY: 0,
+      },
+    }),
+
+    // Tier 2 (Level 3) - Advanced stealth
+    prisma.skill.create({
+      data: {
+        name: 'Jedový dýka',
+        description: 'Útok dýkou způsobující poškození jedm po dobu 3 kol.',
+        tree: 'STEALTH',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'skull',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 0,
+        positionY: 1,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Zadní vchod',
+        description: 'První útok v boji má 100% šanci na kritický zásah.',
+        tree: 'STEALTH',
+        tier: 2,
+        maxRank: 1,
+        iconName: 'target',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 1,
+        positionY: 1,
+      },
+    }),
+
+    // Tier 3 (Level 5) - Master stealth
+    prisma.skill.create({
+      data: {
+        name: 'Zmizení',
+        description: 'Staneš se neviditelným na 2 kola. Nepřítel tě nemůže zasáhnout.',
+        tree: 'STEALTH',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'eye-off',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 0,
+        positionY: 2,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Brutální útok',
+        description: 'Útok ze zálohy způsobující 300% poškození.',
+        tree: 'STEALTH',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'skull',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 1,
+        positionY: 2,
+      },
+    }),
+
+    // ==================== CRAFTING TREE ==================== (New)
+    
+    // Tier 1 (Level 1) - Basic crafting
+    prisma.skill.create({
+      data: {
+        name: 'Kovářství',
+        description: 'Umožňuje vylepšovat zbraně a zbroj.',
+        tree: 'CRAFTING',
+        tier: 1,
+        maxRank: 5,
+        iconName: 'hammer',
+        requiredLevel: 1,
+        positionX: 0,
+        positionY: 0,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Alchymie',
+        description: 'Zvyšuje efekt lektvarů o 10% za level.',
+        tree: 'CRAFTING',
+        tier: 1,
+        maxRank: 5,
+        iconName: 'flask',
+        requiredLevel: 1,
+        positionX: 1,
+        positionY: 0,
+      },
+    }),
+
+    // Tier 2 (Level 3) - Advanced crafting
+    prisma.skill.create({
+      data: {
+        name: 'Runické enchantování',
+        description: 'Přidej magické vlastnosti předmětům.',
+        tree: 'CRAFTING',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'sparkles',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 0,
+        positionY: 1,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Mistrovská výroba',
+        description: 'Šance 15% vytvořit předmět vyšší kvality.',
+        tree: 'CRAFTING',
+        tier: 2,
+        maxRank: 3,
+        iconName: 'star',
+        requiredLevel: 3,
+        requiredTreePoints: 3,
+        positionX: 1,
+        positionY: 1,
+      },
+    }),
+
+    // Tier 3 (Level 5) - Master crafting
+    prisma.skill.create({
+      data: {
+        name: 'Legendární kovář',
+        description: 'Můžeš vytvořit legendární zbraň nebo zbroj.',
+        tree: 'CRAFTING',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'crown',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 0,
+        positionY: 2,
+      },
+    }),
+    prisma.skill.create({
+      data: {
+        name: 'Elixír nesmrtelnosti',
+        description: 'Vytvoř lektvar který tě jednou zachrání před smrtí.',
+        tree: 'CRAFTING',
+        tier: 3,
+        maxRank: 1,
+        iconName: 'heart',
+        requiredLevel: 5,
+        requiredTreePoints: 6,
+        positionX: 1,
+        positionY: 2,
+      },
+    }),
   ])
 
-  console.log(`✅ Created ${skills.length} skills (Combat: 6, Defense: 6, Magic: 7)`)
+  console.log(`✅ Created ${skills.length} skills (Combat: 6, Defense: 6, Magic: 8, Stealth: 6, Crafting: 6)`)
 
   // Create enemies
   const enemies = await Promise.all([
