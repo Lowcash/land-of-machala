@@ -1,6 +1,6 @@
 'use client'
 
-import { Heart, Shield, Sparkles, Swords, Zap } from 'lucide-react'
+import { Eye, Hammer, Shield, Sparkles, Swords } from 'lucide-react'
 import type { SkillCategory } from './types'
 
 type SkillCategoryFilterProps = {
@@ -13,11 +13,11 @@ export function SkillCategoryFilter({
   onSelectCategory,
 }: SkillCategoryFilterProps) {
   const categories: Array<{ id: SkillCategory; label: string; icon: any; color: string }> = [
-    { id: 'all', label: 'Všechny', icon: Zap, color: 'text-[#d4a574]' },
     { id: 'combat', label: 'Boj', icon: Swords, color: 'text-[#ff6b6b]' },
     { id: 'defense', label: 'Obrana', icon: Shield, color: 'text-[#69ccf0]' },
     { id: 'magic', label: 'Magie', icon: Sparkles, color: 'text-[#b66bd4]' },
-    { id: 'utility', label: 'Užitečné', icon: Heart, color: 'text-[#6fbf6f]' },
+    { id: 'stealth', label: 'Stealth', icon: Eye, color: 'text-[#6fbf6f]' },
+    { id: 'crafting', label: 'Řemeslo', icon: Hammer, color: 'text-[#d4a574]' },
   ]
 
   return (
