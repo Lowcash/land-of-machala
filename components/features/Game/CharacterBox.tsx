@@ -1,5 +1,4 @@
-import { Brain, Heart, Shield, Sparkles, Sword, User, Wind, Zap } from 'lucide-react'
-import { Tooltip } from '@/components/ui/CustomTooltip'
+import { Brain, Shield, Sword, User, Wind } from 'lucide-react'
 
 export function CharacterBox({
   name,
@@ -15,223 +14,146 @@ export function CharacterBox({
   image,
   resourceType = 'mana',
 }: any) {
-  const resourceColor =
-    resourceType === 'energy' ? 'from-amber-500 via-yellow-400 to-amber-300' : 'from-blue-600 via-blue-400 to-cyan-300'
-  const resourceLabel = resourceType === 'energy' ? 'Energie' : 'Mana'
-
   const hpPercent = Math.max(0, Math.min(100, (hp / hpMax) * 100))
   const resourcePercent = Math.max(0, Math.min(100, (mana / manaMax) * 100))
+  const xpPercent = xp && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
 
   return (
     <div
-      className={`group relative rounded-lg overflow-hidden shadow-2xl transition-all duration-300 select-none ${
+      className={`group relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ${
         isEnemy
-          ? 'bg-gradient-to-br from-red-950/90 via-black/95 to-red-900/80 border-2 border-red-800/70 hover:border-red-700 hover:shadow-[0_0_40px_rgba(220,38,38,0.5)]'
-          : 'bg-gradient-to-br from-amber-950/40 via-black/90 to-amber-900/30 border-2 border-amber-700/60 hover:border-amber-600 hover:shadow-[0_0_40px_rgba(217,119,6,0.4)]'
+          ? 'border-red-900 bg-red-950/60 shadow-[0_0_15px_rgba(220,38,38,0.2)]'
+          : 'border-[#8b6f47] bg-gradient-to-br from-[#1a1408] via-[#2a1f10] to-[#1a1408] shadow-[0_8px_32px_rgba(139,111,71,0.4),0_0_64px_rgba(255,215,0,0.1)]'
       }`}
     >
-      {/* Medieval ornamental corners */}
-      <div className="pointer-events-none absolute inset-0">
-        {/* Top corners */}
-        <div className="absolute top-1 left-1 h-6 w-6">
-          <div className="absolute top-0 left-0 h-full w-0.5 bg-gradient-to-b from-amber-400/60 via-amber-600/30 to-transparent" />
-          <div className="absolute top-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-400/60 via-amber-600/30 to-transparent" />
-        </div>
-        <div className="absolute top-1 right-1 h-6 w-6">
-          <div className="absolute top-0 right-0 h-full w-0.5 bg-gradient-to-b from-amber-400/60 via-amber-600/30 to-transparent" />
-          <div className="absolute top-0 right-0 w-full h-0.5 bg-gradient-to-l from-amber-400/60 via-amber-600/30 to-transparent" />
-        </div>
-        {/* Bottom corners */}
-        <div className="absolute bottom-1 left-1 h-6 w-6">
-          <div className="absolute bottom-0 left-0 h-full w-0.5 bg-gradient-to-t from-amber-400/60 via-amber-600/30 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-amber-400/60 via-amber-600/30 to-transparent" />
-        </div>
-        <div className="absolute bottom-1 right-1 h-6 w-6">
-          <div className="absolute bottom-0 right-0 h-full w-0.5 bg-gradient-to-t from-amber-400/60 via-amber-600/30 to-transparent" />
-          <div className="absolute bottom-0 right-0 w-full h-0.5 bg-gradient-to-l from-amber-400/60 via-amber-600/30 to-transparent" />
-        </div>
+      {/* Medieval Corner Decorations with Scrollwork */}
+      <div className="absolute top-0 left-0 h-10 w-10 border-l-2 border-t-2 border-[#d4a574]/40">
+        <div className="absolute top-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
       </div>
-
-      {/* Shield emblem background */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-[0.03]">
-        <Shield className="h-32 w-32 text-amber-500" />
+      <div className="absolute top-0 right-0 h-10 w-10 border-r-2 border-t-2 border-[#d4a574]/40">
+        <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
       </div>
+      <div className="absolute bottom-0 left-0 h-10 w-10 border-b-2 border-l-2 border-[#d4a574]/40">
+        <div className="absolute bottom-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
+      </div>
+      <div className="absolute bottom-0 right-0 h-10 w-10 border-b-2 border-r-2 border-[#d4a574]/40">
+        <div className="absolute bottom-1 right-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
+      </div>
+      
+      {/* Parchment Texture Overlay with Paper Grain */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.2)_100%)] opacity-50"></div>
+      <div className="absolute inset-0 opacity-[0.03]" style={{backgroundImage: 'repeating-linear-gradient(0deg, #000 0px, transparent 1px, transparent 2px, #000 3px)'}}></div>
 
-      {/* Parchment texture overlay */}
-      <div 
-        className="pointer-events-none absolute inset-0 opacity-[0.04] mix-blend-overlay" 
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E")`
-        }} 
-      />
-
-      <div className="relative z-10 flex h-24 items-stretch">
-        {/* Avatar Section */}
-        <div 
-          className={`relative w-24 shrink-0 border-r-2 ${
-            isEnemy ? 'border-red-900/60' : 'border-amber-800/50'
-          } bg-gradient-to-br ${
-            isEnemy ? 'from-red-950/80 via-black/85 to-red-900/60' : 'from-amber-950/50 via-black/75 to-amber-900/40'
-          } flex items-center justify-center overflow-hidden`}
-        >
-          {image ? (
-            <div className="relative h-full w-full">
-              <img 
-                src={image} 
-                alt={name} 
-                className="h-full w-full object-cover transition-all duration-700 group-hover:scale-110" 
-                style={{ filter: 'sepia(20%) contrast(108%) brightness(95%)' }} 
-              />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/70" />
-            </div>
-          ) : (
-            <User 
-              className={`h-14 w-14 ${
-                isEnemy ? 'text-red-600/40 group-hover:text-red-500/60' : 'text-amber-700/50 group-hover:text-amber-600/70'
-              } transition-colors`} 
-            />
-          )}
-          
-          {/* Level badge with medieval shield style */}
-          <div 
-            className={`absolute -top-1 -left-1 flex h-9 w-9 items-center justify-center rounded-full shadow-2xl transition-all duration-300 ${
-              isEnemy 
-                ? 'bg-gradient-to-br from-red-700 via-red-800 to-red-950 ring-2 ring-red-600/50 group-hover:ring-red-500/70' 
-                : 'bg-gradient-to-br from-amber-500 via-amber-700 to-amber-900 ring-2 ring-amber-400/60 group-hover:ring-amber-300/80'
+      <div className="flex p-3 sm:p-4">
+        {/* Avatar - Compacted */}
+        <div className="relative mr-4 shrink-0">
+          <div
+            className={`flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border-2 shadow-inner ${
+              isEnemy ? 'border-red-900 bg-red-950' : 'border-[#8b6f47] bg-black'
             }`}
           >
-            <span 
-              className="text-xs font-black text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" 
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {level}
-            </span>
+            {image ? (
+              <img
+                src={image}
+                alt={name}
+                className="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
+              />
+            ) : (
+              <User
+                className={`h-10 w-10 ${
+                  isEnemy ? 'text-red-500/70' : 'text-[#d4a574]/70'
+                }`}
+              />
+            )}
+          </div>
+          {/* Level Bubble - moved overlap with glow */}
+          <div
+            className={`absolute -bottom-2 -right-2 flex h-8 w-8 items-center justify-center rounded-full border-2 ${
+              isEnemy 
+                ? 'border-red-800 bg-red-950 text-red-200 shadow-[0_0_10px_rgba(220,38,38,0.5)]' 
+                : 'border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#5a4a2e] text-[#ffd700] shadow-[0_0_10px_rgba(255,215,0,0.4)]'
+            } font-bold text-sm`}
+          >
+            {level}
           </div>
         </div>
 
-        {/* Info Section */}
-        <div className="flex min-w-0 flex-1 flex-col justify-between p-3">
-          {/* Name & XP */}
-          <div>
-            <h3 
-              className={`mb-1.5 truncate text-lg font-black leading-none tracking-wide ${
-                isEnemy 
-                  ? 'text-red-400 drop-shadow-[0_0_8px_rgba(248,113,113,0.6)]' 
-                  : 'text-amber-400 drop-shadow-[0_0_8px_rgba(251,191,36,0.6)]'
-              } transition-all group-hover:tracking-wider`} 
-              style={{ fontFamily: 'var(--font-fantasy)' }}
+        {/* Info Column */}
+        <div className="flex min-w-0 flex-1 flex-col justify-center space-y-2">
+          {/* Name & Class */}
+          <div className="flex items-center justify-between">
+             <h3
+              className={`truncate text-lg font-bold leading-none tracking-wide ${
+                isEnemy ? 'text-red-400' : 'text-[#f5e6d3]'
+              }`}
+              style={{ fontFamily: 'var(--font-medieval)' }}
             >
               {name}
             </h3>
-            {!isEnemy && xp !== undefined && (
-              <Tooltip content={`Zkušenosti: ${xp.toLocaleString()} / ${xpMax.toLocaleString()}`}>
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5 text-amber-400 drop-shadow-[0_0_6px_rgba(251,191,36,0.7)]" />
-                  <div className="relative h-2 flex-1 overflow-hidden rounded-full border border-amber-900/60 bg-black/70 shadow-inner">
-                    <div 
-                      className="h-full bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-300 shadow-[0_0_8px_rgba(251,191,36,0.6)]" 
-                      style={{ width: `${(xp / xpMax) * 100}%` }} 
-                    />
-                  </div>
-                  <span className="font-mono text-xs font-bold text-amber-300 drop-shadow">
-                    {Math.floor((xp / xpMax) * 100)}%
-                  </span>
-                </div>
-              </Tooltip>
-            )}
           </div>
 
-          {/* Vitals */}
-          <div className="space-y-1.5">
-            <Tooltip content={`Životy: ${Math.round(hp)} / ${hpMax}`}>
-              <div className="group/hp relative h-5 overflow-hidden rounded border-2 border-red-950/80 bg-gradient-to-b from-black/80 to-black/60 shadow-lg">
-                <div 
-                  className="absolute inset-0 bg-gradient-to-r from-red-900 via-red-700 to-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)] transition-all duration-300" 
-                  style={{ width: `${hpPercent}%` }} 
-                />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-red-400/25 to-black/40" />
-                {hpPercent < 25 && (
-                  <div className="pointer-events-none absolute inset-0 animate-pulse bg-red-500/15" />
-                )}
-                <div className="pointer-events-none absolute inset-0 flex items-center px-2.5">
-                  <Heart 
-                    className="h-3.5 w-3.5 text-white drop-shadow-lg" 
-                    fill={hpPercent < 50 ? 'currentColor' : 'none'} 
-                  />
-                  <span 
-                    className="ml-2 text-xs font-black text-white drop-shadow-[0_1px_6px_rgba(0,0,0,1)]" 
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    {Math.round(hp)} / {hpMax}
-                  </span>
-                </div>
+          {/* Vitals Bars - Thicker and with Text */}
+          <div className="space-y-1.5 w-full">
+            {/* HP Bar */}
+            <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-red-900 via-red-700 to-red-600 transition-all duration-300"
+                style={{ width: `${hpPercent}%` }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
+                {Math.round(hp)} / {hpMax} HP
               </div>
-            </Tooltip>
+            </div>
 
-            <Tooltip content={`${resourceLabel}: ${Math.round(mana)} / ${manaMax}`}>
-              <div 
-                className={`relative h-5 overflow-hidden rounded border-2 ${
-                  resourceType === 'energy' ? 'border-amber-950/80' : 'border-blue-950/80'
-                } bg-gradient-to-b from-black/80 to-black/60 shadow-lg`}
-              >
-                <div 
-                  className={`absolute inset-0 bg-gradient-to-r ${resourceColor} shadow-[0_0_10px_rgba(59,130,246,0.5)] transition-all duration-300`} 
-                  style={{ width: `${resourcePercent}%` }} 
-                />
-                <div 
-                  className={`pointer-events-none absolute inset-0 bg-gradient-to-b ${
-                    resourceType === 'energy' ? 'from-amber-300/25' : 'from-blue-300/25'
-                  } to-black/40`} 
-                />
-                <div className="pointer-events-none absolute inset-0 flex items-center px-2.5">
-                  <Zap 
-                    className="h-3.5 w-3.5 text-white drop-shadow-lg" 
-                    fill={resourcePercent > 75 ? 'currentColor' : 'none'} 
-                  />
-                  <span 
-                    className="ml-2 text-xs font-black text-white drop-shadow-[0_1px_6px_rgba(0,0,0,1)]" 
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    {Math.round(mana)} / {manaMax}
-                  </span>
-                </div>
+            {/* Mana Bar */}
+            <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
+              <div
+                className={`absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 transition-all duration-300`}
+                style={{ width: `${resourcePercent}%` }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
+                 {Math.round(mana)} / {manaMax} {resourceType === 'energy' ? 'EN' : 'MP'}
               </div>
-            </Tooltip>
+            </div>
           </div>
-
-          {/* Stats - Compact version */}
-          {stats && !isEnemy && (
-            <div className="flex items-center justify-between gap-2 rounded border border-amber-900/30 bg-black/40 px-2 py-1.5 shadow-inner">
-              <Tooltip content={`Síla: ${stats.strength}`}>
-                <StatMini icon={Sword} val={stats.strength} color="text-red-400" />
-              </Tooltip>
-              <Tooltip content={`Inteligence: ${stats.intelligence}`}>
-                <StatMini icon={Brain} val={stats.intelligence} color="text-purple-400" />
-              </Tooltip>
-              <Tooltip content={`Obratnost: ${stats.agility}`}>
-                <StatMini icon={Wind} val={stats.agility} color="text-amber-400" />
-              </Tooltip>
-              <Tooltip content={`Výdrž: ${stats.stamina}`}>
-                <StatMini icon={Shield} val={stats.stamina} color="text-cyan-400" />
-              </Tooltip>
+          
+           {/* XP Bar - Tiny */}
+           {!isEnemy && xp !== undefined && (
+            <div className="mt-1 flex items-center gap-2 text-[9px] text-[#8b7355]">
+               <span className="font-bold">XP</span>
+               <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-black/40">
+                 <div 
+                   className="absolute inset-0 bg-[#d4a574]" 
+                   style={{ width: `${xpPercent}%` }}
+                 />
+               </div>
+               <span>{Math.floor(xpPercent)}%</span>
             </div>
           )}
         </div>
       </div>
+
+      {/* Stats - Horizontal Strip */}
+      {stats && !isEnemy && (
+        <div className="flex divide-x divide-[#8b6f47]/20 border-t border-[#8b6f47]/30 bg-[#120f0a]/50">
+          <StatItem icon={Sword} value={stats.strength} label="STR" color="text-red-400" />
+          <StatItem icon={Brain} value={stats.intelligence} label="INT" color="text-purple-400" />
+          <StatItem icon={Wind} value={stats.agility} label="AGI" color="text-yellow-400" />
+          <StatItem icon={Shield} value={stats.stamina} label="STA" color="text-blue-400" />
+        </div>
+      )}
     </div>
   )
 }
 
-function StatMini({ icon: Icon, val, color }: any) {
+function StatItem({ icon: Icon, value, label, color }: any) {
   return (
-    <div className="flex items-center gap-1 transition-all hover:scale-110">
-      <Icon className={`h-3.5 w-3.5 ${color} drop-shadow-md`} />
-      <span 
-        className="font-mono text-xs font-bold text-amber-200 drop-shadow" 
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        {val}
-      </span>
+    <div className="flex flex-1 flex-col items-center py-2 transition-colors hover:bg-white/5">
+      <span className={`mb-0.5 text-[10px] font-bold tracking-wider text-[#8b7355] uppercase`}>{label}</span>
+      <div className="flex items-center gap-1.5">
+        <Icon className={`h-3.5 w-3.5 ${color}`} />
+        <span className="text-sm font-medium text-[#d4a574]">{value}</span>
+      </div>
     </div>
   )
 }

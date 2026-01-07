@@ -322,7 +322,7 @@ export function OnboardingForm() {
 
     return (
       <div
-        className="relative flex h-screen flex-col bg-[#0a0806]"
+        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -351,7 +351,7 @@ export function OnboardingForm() {
                   key={idx}
                   onClick={() => handleStoryChoice(choice)}
                   disabled={isLoading}
-                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-sm text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-base md:text-lg"
+                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -381,7 +381,7 @@ export function OnboardingForm() {
   return (
     <RouteTransition>
       <div
-        className="relative flex h-screen flex-col bg-[#0a0806]"
+        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -393,8 +393,8 @@ export function OnboardingForm() {
         </div>
 
         {/* Content */}
-        <div className="scrollbar-custom relative z-10 flex flex-1 items-center justify-center overflow-y-auto p-2 sm:p-4">
-          <div className="my-4 w-full max-w-4xl sm:my-8">
+        <div className="scrollbar-custom relative z-10 flex min-h-0 flex-1 flex-col items-center overflow-y-auto p-2 sm:p-4">
+          <div className="my-auto w-full max-w-4xl py-4 sm:py-8">
             {/* Title */}
             <div className="mb-3 text-center sm:mb-6">
               <h1
@@ -435,7 +435,7 @@ export function OnboardingForm() {
                 {/* Random Generator */}
                 <button
                   onClick={randomizeCharacter}
-                  className="flex w-full items-center justify-center gap-2 rounded-lg border-2 border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] px-3 py-2 text-white shadow-xl transition-all hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d] sm:px-4 sm:py-3"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg border border-[#8b6f47] bg-black/60 px-3 py-2.5 text-center text-sm text-[#d4a574] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] sm:px-4 sm:py-3"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <Dices className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -845,26 +845,26 @@ export function OnboardingForm() {
             <button
               onClick={handleStart}
               disabled={!name.trim() || isLoading}
-              className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 py-3 shadow-2xl transition-all sm:gap-3 sm:py-4 ${
+              className={`flex w-full items-center justify-center gap-2 rounded-lg border py-3 transition-all sm:gap-3 sm:py-4 ${
                 name.trim() && !isLoading
-                  ? 'cursor-pointer border-[#ffd700] bg-gradient-to-r from-[#8b6f47] via-[#a8865d] to-[#8b6f47] hover:scale-105 hover:from-[#a8865d] hover:to-[#a8865d]'
-                  : 'cursor-not-allowed border-[#8b6f47] bg-black/60 opacity-50'
+                  ? 'cursor-pointer border-[#8b6f47] bg-black/60 text-[#d4a574] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700]'
+                  : 'cursor-not-allowed border-[#8b6f47] bg-black/80 text-[#8b7355] opacity-50'
               }`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               {isLoading ? (
                 <>
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#ffd700] border-t-transparent sm:h-6 sm:w-6" />
-                  <span className="text-sm text-white sm:text-base md:text-lg">
+                  <span className="text-sm sm:text-base md:text-lg">
                     Vytvářím hrdinu...
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="text-sm text-white sm:text-base md:text-lg">
+                  <span className="text-sm sm:text-base md:text-lg">
                     Vstoupit do hry
                   </span>
-                  <ArrowRight className="h-4 w-4 text-white sm:h-5 sm:w-5 md:h-6 md:w-6" />
+                  <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
                 </>
               )}
             </button>

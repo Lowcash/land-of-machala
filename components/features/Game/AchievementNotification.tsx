@@ -62,15 +62,15 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
 
   return (
     <div
-      className={`fixed top-20 right-4 z-[600] transition-all duration-300 ${
+      className={`pointer-events-auto mb-3 transition-all duration-300 ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
       }`}
     >
       <div
-        className={`bg-gradient-to-r ${colors.bg} max-w-md min-w-[320px] rounded-lg border-2 p-4 shadow-2xl backdrop-blur-md`}
+        className={`bg-gradient-to-r ${colors.bg} w-full max-w-sm rounded-lg border p-4 backdrop-blur-md`}
         style={{
           borderColor: colors.border,
-          boxShadow: `0 0 20px ${colors.glow}, 0 4px 6px rgba(0,0,0,0.3)`,
+          boxShadow: `0 0 15px ${colors.glow}, 0 4px 6px rgba(0,0,0,0.3)`,
         }}
       >
         <div className="flex items-start gap-3">
