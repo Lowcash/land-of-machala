@@ -6,6 +6,716 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-07 22:52 - Navigation Overhaul & Contextual Back Links
+
+**Type:** Changed, Added  
+**Scope:** Navigation pattern, GameHeader, Page templates  
+**Impact:** Odstraněna generická šipka zpět, přidány kontextuální "Zpět do hry" odkazy na každé stránce
+
+### Changed
+
+- **GameHeader Navigation:** Odstraněna generická šipka zpět (showBack, onBack props)
+  - Odstranění nekonzistentní navigace
+  - Zjednodušený header bez back button logiky
+- **PageTemplate Props:** Odstraněny onBack, backUrl, showBack props
+  - Komponenty: PageTemplate, všechny page soubory (map, skills, quests, inventory)
+- **Register Page Link:** Vrácen inline styl "Již máš účet? Přihlásit se zde" (uživatel preferuje tuto variantu před standalone tlačítkem)
+- **Achievement Notifications:** Změna z max-w-md na max-w-6xl
+  - Notifikace zarovnány do hlavního content area místo pravého okraje
+
+### Added
+
+- **Contextual Back Links:** Přidán "Zpět do hry" link na každou herní stránku
+  - Pattern: `<Link href="/game">` s ArrowLeft ikonou
+  - Umístění: Na vrcholu content area v shrink-0 border-b sekci
+  - Stránky: CharacterClient, SkillGrid, InventoryClient, QuestList
+  - Styling: text-[#d4a574] s hover na [#ffd700]
+
+### Tests
+
+- ✅ Build passes bez chyb
+- ✅ Všechny back linky konzistentní se stejným stylem
+- ✅ GameHeader bez zbytečných props
+- ✅ Achievement notifikace v max-w-6xl kontejneru
+
+---
+
+## 2026-01-07 22:07 - Additional UI/UX Polish & Responsive Fixes
+
+**Type:** Fixed, Changed  
+**Scope:** Auth UX, Onboarding, Skills Grid  
+**Impact:** Lepší UX navigace mezi login/register, opravené desktop zarovnání onboardingu, fix překrývání skills
+
+### Fixed
+
+- **Skills Grid Overlapping:** Odstraněno `justify-items-center`, přidáno `w-full` na button - items už se nepřekrývají
+- **Onboarding Desktop Alignment:** Přidáno `items-center` do flex containeru - obsah je centrován na desktopu i mobilu
+- **SSR Accordion:** Komponenta je již 'use client', SSR chyba neexistuje (LoginForm má 'use client' directive)
+
+### Changed
+
+- **Register Page UX:** Změněno "Již máš účet? Přihlásit se zde" na samostatný text + tlačítko pro konzistenci s login page
+  - Text: "Již máš účet?" (separátní)
+  - Tlačítko: "Přihlásit se" (stejný styl jako ostatní sekundární tlačítka)
+
+### Tests
+
+- ✅ Build passes bez chyb
+- ✅ Skills grid items mají správnou šířku
+- ✅ Onboarding centrován na desktopu
+- ✅ Register→Login UX konzistentní
+
+---
+
+## 2026-01-07 21:53 - UI/UX Polish & Mobile Fixes
+
+**Type:** Fixed, Changed  
+**Scope:** Auth pages, Onboarding, Character, Inventory, Quests  
+**Impact:** Opravené mobilní scrollování, kompaktnější layout, odstranění prodeje z inventáře, lepší UX pro questy
+
+### Fixed
+
+- **Login/Register Mobile Scroll:** Accordion sections nyní scrollují na mobilu (max-h-50vh overflow-auto)
+- **Onboarding Mobile Viewport:** Stránka začína nahoře a lze scrollovat (flex-col + overflow-y-auto)
+- **Inventory "000" Values:** Pouze statistiky > 0 se zobrazují (attack && attack > 0)
+- **Inventory Sell Button:** Odstraněno tlačítko "Prodat" - pouze nasadit/sundat/použít
+- **Quest Active State:** Přidán title="Vzdát quest" k tlačítku X pro aktivní questy
+
+### Changed
+
+- **Character Page Spacing:** Kompaktnější layout (p-3/p-4 místo p-4/p-6, gap-4 místo gap-6, max-w-6xl místo max-w-7xl)
+- **Code Cleanup:** Odstraněna nepoužívaná funkce handleSell, import sellItemAction, stav setCurrentGold
+
+### Tests
+
+- ✅ Build passes bez chyb
+- ✅ TypeScript compilation úspěšná
+- ✅ Login/register accordion scrollable na mobilu
+- ✅ Onboarding viewport správně umístěn
+- ✅ Inventory detail nezobrazuje "000"
+- ✅ Quest detail správně zobrazuje stav
+
+---
+
+## 2026-01-06 22:24 - Content Expansion & Character UX Redesign
+
+**Type:** Added, Changed, Fixed  
+**Scope:** Inventory, Skills, Character Layout, Achievements, Map, Quests  
+**Impact:** 12 nových items (weapons, armor, consumables), 13 nových skills (Stealth & Crafting trees), redesign Character page, vycentrované achievement notifikace, opravené quest & map crashes
+
+### Added
+
+- **Inventory Items (12 nových):**
+  - **Weapons:** Enchanted Battleaxe (Epic), Arcane Wand (Rare), Crossbow of Precision (Rare)
+  - **Armor:** Dragon Scale Armor (Legendary), Shadow Cloak (Epic), Steel Gauntlets (Uncommon), Boots of Swiftness (Rare), Crown of Wisdom (Epic)
+  - **Consumables:** Elixir of Strength (Uncommon), Scroll of Teleportation (Rare), Phoenix Feather (Legendary)
+  
+- **Skills - Stealth Tree (6 skills):**
+  - Tier 1: Plížení (5 ranks), Kapsářství (3 ranks)
+  - Tier 2: Jedový dýka (3 ranks), Zadní vchod (1 rank)
+  - Tier 3: Zmizení (1 rank), Brutální útok (1 rank)
+  
+- **Skills - Crafting Tree (6 skills):**
+  - Tier 1: Kovářství (5 ranks), Alchymie (5 ranks)
+  - Tier 2: Runické enchantování (3 ranks), Mistrovská výroba (3 ranks)
+  - Tier 3: Legendární kovář (1 rank), Elixír nesmrtelnosti (1 rank)
+  
+- **Skills - Magic Tree (1 nový):**
+  - Mrazivý opar (Tier 2, zmrazí nepřítele na 1 kolo)
+
+### Changed
+
+- **Character Page Layout - Major Redesign:**
+  - **OLD:** SplitView layout (confusing UX, unclear hierarchy)
+  - **NEW:** Grid-based layout with clear visual hierarchy:
+    - Full-width CharacterBox at top (scrollwork, shadows, paper texture)
+    - 2-column grid: Stats (left) + Equipment (right) for better mobile stacking
+    - Full-width Achievements at bottom
+  - Removed SplitView dependency entirely from CharacterClient
+  
+- **Achievement Notifications - Repositioned:**
+  - **OLD:** `fixed top-24 left-0 right-0` with `max-w-6xl` (notifications at screen edges)
+  - **NEW:** `fixed inset-0` with centered flex, `mt-24`, `max-w-md` (centered in viewport)
+  - Notifications now appear center-right instead of full-width right edge
+  
+- **CharacterBox - Medieval Enhancements:**
+  - Added scrollwork decorations (small dots in all 4 corners)
+  - Enhanced multi-layer shadows: `shadow-[0_8px_32px_rgba(139,111,71,0.4),0_0_64px_rgba(255,215,0,0.1)]`
+  - Added paper grain texture overlay with `repeating-linear-gradient`
+  - Larger corner decorations (h-10 w-10 from h-8 w-8)
+  
+- **Skills UI - New Categories:**
+  - Added Stealth (Eye icon, green) and Crafting (Hammer icon, parchment) filters
+  - Updated SkillCategoryFilter with 5 categories total
+  - Updated treeToCategory mapping in SkillsPanel
+
+### Fixed
+
+- **Map Crash:** Added null handling for `createdAt`/`updatedAt` in dummy location data (`loc.createdAt || null`)
+- **Quest Type Errors:** 
+  - Changed all `quest.type` → `quest.category` (schema uses category, not type)
+  - Changed `quest.minLevel` → `quest.level`
+  - Fixed MergedQuest type to omit `createdAt` and redefine as `Date | string`
+  - Removed non-existent `updatedAt` from Quest model (only has `createdAt`)
+- **Quest Hydration:** Fixed createdAt hydration to always return Date (removed undefined)
+- **Build Errors:** 
+  - Removed unused SplitView import from CharacterClient
+  - Removed unused `allQuestsError` and `allSkillsError` variables
+  - Removed deprecated `utility` category from SkillGrid
+  - Removed unused `Zap` and `Heart` icons from SkillCategoryFilter
+- **Schema Validation:** 
+  - Removed invalid `fireResistance` field from Dragon Scale Armor seed
+  - Fixed escaped quote in Crown of Wisdom description
+
+### Database
+
+- Updated Prisma schema: Added `STEALTH` and `CRAFTING` to SkillTree enum
+- Reseeded database: 25 items total (12 new), 32 skills total (13 new)
+
+---
+
+## 2026-01-06 15:00 - UI Polish & Medieval Fantasy Enhancements
+
+**Type:** Changed, Fixed, Added  
+**Scope:** CharacterBox, Buttons, Skills, Quests  
+**Impact:** Vylepšení medieval fantasy vzhledu, sjednocení button stylů, přidání více skills
+
+### Changed
+
+- **CharacterBox Medieval Fantasy Style:**
+  - Přidány ozdobné rohy (medieval corner decorations) pro všechny 4 rohy
+  - Přidána textura pergamenu (radial gradient overlay)
+  - Vylepšené gradienty pozadí (`from-[#1a1408] via-[#2a1f10] to-[#1a1408]`)
+  - Level bubble má zlatý záři (`shadow-[0_0_10px_rgba(255,215,0,0.4)]`)
+  - Gradient border u level badge pro lepší fantasy vzhled
+  
+- **Button Style Unification:**
+  - Sjednoceny všechny buttony s `bg-black/60` pozadím pro lepší čitelnost
+  - "Náhodná postava" button má konzistentní styl
+  - "Vstoupit do hry" button má konzistentní styl  
+  - Všechny buttony mají jednotné hover efekty (`hover:border-[#ffd700] hover:bg-[#8b6f47]/20`)
+
+### Added
+
+- **Skills Expansion:**
+  - Přidáno 10 dummy skills celkem (původně 5)
+  - Nové skills: Dvojitý Úder, Úder Štítem, Ledový Déšť, Berserker, Pevnost
+  - Lepší pokrytí všech tří stromů (Combat, Defense, Magic)
+
+### Fixed
+
+- **Quest Detail:**
+  - Opraveno použití `quest.category` → `quest.type` pro správné zobrazení typu
+  - Opraveno použití `quest.level` → `quest.minLevel` pro správné zobrazení levelu
+
+### Verified
+
+- **Skills Grid:** Již má `justify-items-center` - položky zarovnány na střed ✓
+- **File Cleanup:** Žádné nepoužívané soubory nenalezeny ✓
+
+---
+
+## 2026-01-06 14:30 - UI Polish, CharacterBox Redesign & Bug Fixes
+
+**Type:** Fixed, Changed  
+**Scope:** Character, Skills, Auth, Notifications  
+**Impact:** Visual improvements, crash fix, layout consistency
+
+### Changed
+
+- **CharacterBox:**
+  - Applied "Fantasy Cartoon" style as requested by user.
+  - Features thick borders, energetic gradients, and decorative corner accents.
+  - Replaced standard minimalist implementation with this stylized version in `CharacterBox.tsx`.
+- **UI Styling:**
+  - **Onboarding/Login:** Unified button styles to "minimalist golden/copper" (`border-[#8b6f47]`, `text-[#d4a574]`).
+  - **Character Page:** Constrained layout width to `lg` (was `full` causing stretch).
+- **Achievements:**
+  - **Notification Positioning:** Modified `AchievementNotification` to be static/relative and added a fixed container in `AchievementProvider`.
+  - Solves the "pop out on width" issue by constraining notifications to a specific layout-safe area (`fixed right-4 top-20`).
+
+### Fixed
+
+- **Skills Page Crash:**
+  - Fixed serialization error where React components (Icons) were passed from Server Component to Client Component in dummy data.
+  - Changed `icon: Icon` to `iconName: 'string'` in `SkillsPanel.tsx` dummy data.
+- **Quest & Map Page Crashes:**
+  - Fixed `Dates` serialization error in `QuestPanel` and `MapPanel`.
+  - Added manual `.toISOString()` serialization on Server Side and `new Date()` hydration on Client Side for `createdAt`/`updatedAt` fields.
+- **Copyright Year:** Updated static "2025" to dynamic JS date in `LoginForm`.
+- **Skills Filter:** Removed the "All" category filter from `SkillCategoryFilter` as requested.
+- **Unused Files:** Removed `components/features/Game/LocationActions.tsx`.
+
+---
+
+## 2026-01-04 19:30 - UI Polish & Empty State Handling
+
+**Type:** Fixed, Improved  
+**Scope:** Character, Skills, Quests, Inventory, Map  
+**Impact:** Improved empty state experience and mobile layouts
+
+### Changed
+
+- **Empty State Handling:**
+  - Injected illustrative dummy data into `SkillsPanel`, `QuestPanel`, `InventoryPanel`, and `MapPanel`.
+  - Ensures UI components are visible and testable even with empty database.
+  - Users now see "what could be there" instead of blank screens.
+
+- **Skills Page:**
+  - Removed "Všechny" (All) filter option.
+  - Default view focuses on specific categories (Combat, etc.).
+
+- **Character Page:**
+  - Refined `SplitView` usage in `CharacterClient`.
+  - Forced stacked layout on mobile (`flex-col md:flex-row`) to ensure visibility of all sections without tabs.
+  - Validated "Fantasy Cartoon" look for CharacterBox (thicker borders, punchier colors).
+
+- **Service UX:**
+  - Confirmed `ServiceTable` unification for Healer and Smith (Action/Buy modes).
+
+### Technical Details
+
+- Dummy data is injected at the Server Component level (`*Panel.tsx`) if the database returns empty arrays.
+- `CharacterClient` uses utility classes to override default `SplitView` behavior for specific mobile requirement ("no tabs").
+
+---
+
+## 2026-01-04 18:25 - Settings Menu Replaced with Logout Button
+
+**Type:** Changed  
+**Scope:** Game Header  
+**Impact:** Simplified UX, direct logout access without dropdown menu
+
+### Changed
+
+- **GameHeader** ([components/features/Game/GameHeader.tsx](components/features/Game/GameHeader.tsx))
+  - Removed Settings dropdown menu entirely
+  - Added direct Logout button in header (always visible)
+  - Removed `showSettings` and `customMenuItems` props
+  - Removed settings state management (useState, useRef, useEffect)
+  - Simplified component (~170 lines → ~120 lines)
+  - Logout button styled with red hover (hover:border-[#ff6b6b])
+  - Better mobile UX - no need to open menu to logout
+
+- **RegisterForm** ([app/(auth)/register/page.tsx](app/(auth)/register/page.tsx))
+  - Repositioned "Začni své dobrodružství" section
+  - On mobile: Shows under form (smaller text, compact design)
+  - On desktop: Shows in right column (original design)
+  - Prevents content overflow on small screens
+
+### Tests
+
+- ✅ Build passes without TypeScript errors
+- ✅ Logout button visible and functional in header
+- ✅ No settings dropdown menu rendering
+- ✅ Register page "Začni své dobrodružství" visible on mobile
+
+---
+
+## 2026-01-04 18:22 - UI/UX Fixes & Guild Hall Removal
+
+**Type:** Fixed, Changed, Removed  
+**Scope:** Auth Forms, Onboarding, Character Page, Game Components  
+**Impact:** Better mobile experience, removed unused features, fixed Server Component errors
+
+### Fixed
+
+- **LoginForm** ([components/features/Auth/LoginForm.tsx](components/features/Auth/LoginForm.tsx))
+  - Removed scroll on mobile (changed `overflow-y-auto` to no overflow)
+  - Added `autoCapitalize="none"` to email input (prevents uppercase confusion)
+  - Disabled hover effects on loading/disabled buttons
+
+- **RegisterForm** ([app/(auth)/register/page.tsx](app/(auth)/register/page.tsx))
+  - Changed `h-screen` to `h-[100dvh]` with `overflow-hidden` (full-screen without scroll)
+  - Added `autoCapitalize="none"` to email input
+  - Disabled hover effects on loading/disabled buttons
+
+- **OnboardingForm** ([components/features/Auth/OnboardingForm.tsx](components/features/Auth/OnboardingForm.tsx))
+  - Changed both screens from `h-screen` to `h-[100dvh]` with `overflow-hidden`
+  - Reduced tutorial choice text size on mobile (`text-xs sm:text-sm md:text-base`)
+  - Fixed viewport overflow issues
+
+- **CharacterPanel** ([components/features/Character/CharacterPanel.tsx](components/features/Character/CharacterPanel.tsx))
+  - Removed `icon={User}` prop to fix Server Component error
+  - Server Components cannot pass functions to Client Components
+
+### Removed
+
+- **GuildHallActions** - Deleted unused component file
+- **GameDashboard** ([components/features/Game/GameDashboard.tsx](components/features/Game/GameDashboard.tsx))
+  - Removed `guild_hall` from View type union
+  - Removed `guild_hall` from viewData object
+  - Removed `onGuildHall` prop from TownActions call
+  - Removed GuildHallActions rendering block
+  - Removed Building icon import, replaced with Landmark for Bank
+
+- **TownActions** ([components/features/Game/TownActions.tsx](components/features/Game/TownActions.tsx))
+  - Removed `onGuildHall` from interface
+  - Removed `onGuildHall` from props destructuring
+
+- **Game index** ([components/features/Game/index.ts](components/features/Game/index.ts))
+  - Removed GuildHallActions export
+
+### Tests
+
+- ✅ Build passes without TypeScript errors
+- ✅ All auth forms now full-screen on mobile without scroll
+- ✅ Email inputs prevent uppercase autocorrect
+- ✅ Disabled buttons no longer show hover effects
+- ✅ Onboarding tutorial fits on screen with smaller text
+- ✅ Character page no longer throws Server Component icon error
+- ✅ Guild Hall completely removed from codebase
+
+---
+
+## 2026-01-04 17:53 - Service Table Standardization
+
+**Type:** Changed, Refactored  
+**Scope:** Game Services (Smith, Healer), Component Library  
+**Impact:** Unified UX for all service locations, reduced duplication, easier maintenance
+
+### Changed
+
+- **SmithActions** (`components/features/Game/SmithActions.tsx`)
+  - Refactored to use ServiceTable component in `table` mode
+  - Removed manual table rendering (~70 lines → ~30 lines)
+  - Removed unused icon imports (Sword, Shield)
+  - Buy action now uses ServiceTable with configurable columns/actions
+  - Disabled state automatically handled based on gold amount
+
+- **HealerActions** (`components/features/Game/HealerActions.tsx`)
+  - Refactored to use ServiceTable component in `cards` mode
+  - Created structured services array with icons, colors, prices
+  - Removed manual card rendering (~130 lines → ~50 lines)
+  - Consolidated handleAction logic into handleService
+  - Price displayed in column render function
+  - Fixed React escaped entity warnings (quotes)
+
+### Added
+
+- **ServiceTable Component** (previously created, now applied)
+  - Table mode: Browse/purchase items (smith-style)
+  - Cards mode: Services with descriptions (healer-style)
+  - Automatic disabled state for actions
+  - Empty state handling
+  - Icon rendering support
+  - Configurable columns with custom render functions
+
+### Technical Details
+
+- Reduced SmithActions from 198 lines to ~130 lines (34% reduction)
+- Reduced HealerActions from 207 lines to ~150 lines (27% reduction)
+- Consistent button styles across both components
+- Automatic gold check for disabled state
+- Ready to apply to TavernActions, MarketActions, other services
+
+### Next Steps
+
+- Apply ServiceTable to remaining service locations (Tavern, Market)
+- Consider adding sorting/filtering to table mode
+- Add animation transitions when switching modes
+
+---
+
+## 2026-01-04 17:49 - Character Page Refactoring with SplitView Pattern
+
+**Type:** Changed, Added  
+**Scope:** Character Page UX, Component Architecture  
+**Impact:** Unified UX pattern across all game pages (Skills, Quests, Character, Inventory)
+
+### Changed
+
+- **Character Page** (`components/features/Character/`)
+  - Refactored from single-scroll layout to SplitView pattern (matching Skills/Quests pages)
+  - Split into 3 new components: `CharacterSections.tsx`, `CharacterDetailContent.tsx`, `types.ts`
+  - Character header (vitals, identity) now fixed at top
+  - Left sidebar: 3 clickable sections (Stats, Equipment, Achievements)
+  - Right panel: Detail view for selected section (desktop) / MobileOverlay (mobile)
+  - Added URL state management (?section=stats/equipment/achievements) for deep linking
+  - Browser back/forward navigation support
+
+- **Character Panel** (`CharacterPanel.tsx`)
+  - Wrapped in PageTemplate for consistent page structure
+  - Changed `maxWidth` from `lg` to `full` to accommodate SplitView
+  - Added error state with PageTemplate wrapper
+
+- **Character Page Route** (`app/(game)/character/page.tsx`)
+  - Added `export const dynamic = 'force-dynamic'` to prevent SSR prerendering issues
+
+### Added
+
+- **Unified Table Component** (`components/ui/ServiceTable.tsx`)
+  - Reusable table/cards component for game services (smith, healer, tavern)
+  - Two modes: `table` (browse/purchase) and `cards` (services with descriptions)
+  - Configurable columns, actions, icons
+  - Empty state handling
+  - Standardizes UX across all service locations
+
+- **TypeScript Types** (`components/features/Character/types.ts`)
+  - CharacterData interface
+  - CharacterItem interface
+
+### Technical Details
+
+- Reduced Character page from ~500 lines to 3 focused components (~150 lines each)
+- Consistent desktop/mobile experience across Skills/Quests/Character pages
+- URL-based state allows sharing direct links to character sections
+- Empty state prompts user to select a section (desktop only)
+
+### Next Steps
+
+- Apply ServiceTable component to SmithActions, HealerActions, TavernActions
+- Consider adding more achievement categories
+- Implement real achievement unlock logic (currently mock data)
+
+---
+
+## 2026-01-04 17:39 - Authentication Improvements & Code Cleanup
+
+**Type:** Changed, Removed  
+**Scope:** Auth, Game Features, Codebase Cleanup  
+**Impact:** Switched to email-based auth, removed unused features (minigames, crafting, workshop)
+
+### Changed
+
+- **Login System** (`components/features/Auth/LoginForm.tsx`)
+  - Changed from username to email authentication
+  - Updated input field from "Uživatelské jméno" to "Email"
+  - Changed icon from User to Mail
+  - Added autoComplete attributes (email, current-password)
+  - Updated signIn to use email directly instead of mapping username → email
+  - Better browser autofill support
+
+### Removed
+
+- **Minigames System** (Complete removal)
+  - Deleted `__tests__/e2e/minigames.spec.ts` (E2E tests)
+  - Deleted `components/features/Minigames/` folder entirely
+  - Removed minigames comment from GameDashboard
+
+- **Crafting & Workshop**
+  - Deleted `components/features/Panels/CraftingPanel.tsx`
+  - Deleted `components/features/Game/WorkshopActions.tsx`
+  - Removed WorkshopActions export from `components/features/Game/index.ts`
+  - Eliminated all onOpenCrafting, onOpenEnchanting references
+
+### Technical Details
+
+- Email validation now handled by HTML5 input type="email"
+- AutoComplete improves UX with browser password managers
+- Clean removal of ~500+ lines of unused minigame/crafting code
+- Production build passes successfully ✅
+
+### Notes
+
+- SSR Accordion error was pre-existing (Accordion already had 'use client')
+- Console errors from "vytvořit účet" redirect are Chrome extension errors, not app errors
+- Login/Register credential preservation - deferred for security review
+
+---
+
+## 2026-01-04 16:37 - UX/UI Consistency & Mobile Improvements
+
+**Type:** Fixed, Changed  
+**Scope:** Auth, UI/UX, Navigation, Mobile  
+**Impact:** Unified button styles, improved mobile landing page, streamlined settings, fixed padding issues
+
+### Changed
+
+- **Button Styles Unification**
+  - Changed login button style from large gradient (py-3, border-2) to consistent simple style (py-2.5, border)
+  - Matched login/register buttons to "host" and "create account" button style
+  - All auth buttons now use consistent size and styling (border, bg-[#8b6f47]/10, hover effects)
+  - Removed gradient and icon animations from login/register buttons
+
+- **Mobile Landing Page**
+  - Added Accordion component for Server Stats and Updates on mobile
+  - Stats and updates now expandable on small screens (hidden on desktop lg:hidden)
+  - Consistent full-screen experience without scroll
+  - Better information density on mobile
+
+- **Settings Removal**
+  - Removed Settings panel completely from navigation
+  - Removed onHelp and onSettings callbacks from GameHeader
+  - Settings menu now only shows "Logout" option
+  - Simplified navigation with single logout button in menu
+
+### Fixed
+
+- **Registration Page**
+  - Fixed GET /undefined 404 error caused by unused `name` variable reference
+  - Removed ArrowRight import (unused after button style change)
+  - Consistent button sizing with login page
+
+- **Inventory Padding**
+  - Added `px-4` padding to empty state section in InventoryClient
+  - Text no longer stuck to edges
+  - Better spacing for "Klikni na předmět..." message
+
+- **Import Cleanup**
+  - Removed unused ArrowRight import from LoginForm
+  - Removed unused Book import from GameHeader
+  - Removed unused onHelp, onSettings props from GameHeader interface
+  - Removed unused useState import from CharacterClient
+  - Removed SettingsPanel import from PageTemplate
+
+### Technical Details
+
+- All auth buttons now use: `rounded-lg border border-[#8b6f47] bg-[#8b6f47]/10 py-2.5`
+- Mobile accordion uses shadcn/ui Accordion component
+- Settings panel functionality removed, only logout remains
+- Build passes successfully ✅
+
+---
+
+## 2026-01-04 16:06 - Cleanup & Mobile UX Improvements
+
+**Type:** Fixed, Changed  
+**Scope:** Game Features, Auth, Mobile UX, Database Schema  
+**Impact:** Simplified codebase by removing unused features, improved mobile landing page experience, fixed guest authentication
+
+### Removed
+
+- **Minigames System** (`components/features/Game/GameDashboard.tsx`)
+  - Removed FishingGame, MiningGame, LockpickGame imports and logic
+  - Removed activeMinigame state and handleMinigameComplete handler
+  - Cleaned up unused imports from components/features/Minigames/
+
+### Fixed
+
+- **Guest Login** (`app/api/auth/guest/route.ts`, `prisma/schema.prisma`)
+  - Fixed Prisma P1017 error "Invalid user.create() invocation"
+  - Made username field optional in User model (`String?`)
+  - Removed username field from guest user creation
+  - Guest accounts now create with email, passwordHash, isGuest only
+  - Applied schema changes with `prisma db push`
+
+- **Mobile Landing Page** (`components/features/Auth/LoginForm.tsx`)
+  - Changed main container from `overflow-y-auto` to `overflow-hidden`
+  - Added `overflow-y-auto` to inner content wrapper
+  - Landing page now fills entire screen on mobile without scroll
+  - Fixed React Hook useEffect warning by moving flavorTexts to constant FLAVOR_TEXTS
+
+- **Build Errors** (TypeScript strict mode)
+  - Removed unused ReactNode import from StatDisplay.tsx
+  - Fixed useViewState goBack() undefined check
+  - Fixed useViewState resetToHome() undefined check
+  - Renamed CharacterClientRefactored.tsx to .tsx.example (example file, not production)
+
+### Technical Details
+
+- Minigames were only integrated in GameDashboard, no other dependencies found
+- Guest login now works correctly with temporary email/password credentials
+- Mobile UX improved with proper overflow handling for full-screen experience
+- Production build passes successfully ✅
+
+---
+
+## 2026-01-04 14:59 - Refactoring System: Reusable Layout Components
+
+**Type:** Added  
+**Scope:** Component Library, Architecture  
+**Impact:** Foundation for cleaner, more maintainable code structure across entire system
+
+### Added
+
+- **BasePanel Component** (`components/layout/BasePanel.tsx`)
+  - Unified panel structure with consistent styling
+  - Props: title, icon, scrollable, padding, border, bgOpacity
+  - Replaces 15-20 lines of repetitive panel code with 3 lines
+  - Automatic scroll indicators integration
+
+- **SplitView Component** (`components/layout/SplitView.tsx`)
+  - Desktop: Side-by-side layout (main + aside)
+  - Mobile: Full-width main, aside hidden (for overlays)
+  - Props: main, aside, asideWidth, hideMobileAside
+  - Used for Skills, Quests, Inventory, Map (list+detail pattern)
+
+- **ContentCard Component** (`components/layout/ContentCard.tsx`)
+  - Reusable card with variants: default, primary, success, warning, danger
+  - Props: variant, padding, hoverable, onClick
+  - Consistent border, background, hover effects
+  - Eliminates repeated rounded/border/bg patterns
+
+- **StatDisplay & ProgressBar** (`components/layout/StatDisplay.tsx`)
+  - StatDisplay: Flexible stat rendering (row, column, card layouts)
+  - ProgressBar: HP/Mana/XP bars with consistent styling
+  - Props: label, value, icon, color, tooltip, variant
+  - Reduces 10+ lines to 1 line for each stat
+
+- **MobileOverlay Component** (`components/layout/MobileOverlay.tsx`)
+  - Fullscreen detail view for mobile
+  - Consistent header with back button
+  - Props: isOpen, title, onClose, children
+  - Replaces 15+ lines of mobile overlay boilerplate
+
+- **State Management Hooks** (`lib/hooks/useGameState.ts`)
+  - `useGameResources()`: Gold, inventory, bank management (reduces prop drilling)
+  - `useInfoText()`: Info/notification messages (showError, showSuccess, showWarning)
+  - `useBuffs()`: Active buffs/debuffs management
+  - `useViewState()`: View navigation with history (navigateTo, goBack, resetToHome)
+
+- **Refactoring Guide** (`docs/REFACTORING_GUIDE.md`)
+  - Complete documentation of new component library
+  - Before/after examples for every component
+  - Migration steps for existing code
+  - Anti-patterns to avoid
+  - Benefits analysis (code reduction, maintainability)
+
+### Changed
+
+- **SkillsClient** - Refactored to use SplitView + MobileOverlay
+  - Before: ~100 lines with manual layout
+  - After: ~60 lines (-40% reduction)
+  - Cleaner split view pattern
+  - Consistent mobile overlay
+
+### Technical Details
+
+- **Code Reduction:** Average 20-30% fewer lines per component
+- **Nested Divs:** 5-7 levels → 2-3 levels max
+- **Reusability:** Single source of truth for layout patterns
+- **Type Safety:** Full TypeScript coverage with proper interfaces
+- **No Magic Numbers:** Constants for all multipliers, limits, defaults
+
+### Examples Created
+
+- **CharacterClientRefactored.tsx**: Complete refactoring example
+  - 518 lines → ~450 lines (-13%)
+  - Broken into 6 sub-components (Header, Attributes, Combat, Resistances, Equipment, Achievements)
+  - All magic numbers extracted to constants
+  - Uses BasePanel, ContentCard, StatDisplay, ProgressBar throughout
+
+### Files Changed
+
+- `components/layout/BasePanel.tsx` (new)
+- `components/layout/SplitView.tsx` (new)
+- `components/layout/ContentCard.tsx` (new)
+- `components/layout/StatDisplay.tsx` (new)
+- `components/layout/MobileOverlay.tsx` (new)
+- `components/layout/index.ts` (updated exports)
+- `lib/hooks/useGameState.ts` (new)
+- `components/features/Skills/SkillsClient.tsx` (refactored)
+- `components/features/Character/CharacterClientRefactored.tsx` (example)
+- `docs/REFACTORING_GUIDE.md` (new)
+
+### Next Steps
+
+- Apply refactoring to Quest, Inventory, Map components
+- Refactor GameDashboard to use useViewState hook
+- Update remaining action components (Bank, Smith, Healer) to use ContentCard
+- Consider creating ActionButton, ItemCard, and other domain-specific components
+
+### Benefits
+
+✅ **Maintainability:** Single source of truth for layouts  
+✅ **Consistency:** Standardized spacing, borders, colors  
+✅ **Developer Experience:** Faster development, less copy-paste  
+✅ **Code Quality:** Less duplication, better composition  
+✅ **Performance:** Smaller bundle (shared components)
+
+---
+
 ## 2025-12-26 00:37 - Login Page Real Changelog Content
 
 **Type:** Changed
