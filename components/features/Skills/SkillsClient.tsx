@@ -1,6 +1,7 @@
 'use client'
 
-import { ArrowLeft, TrendingUp } from 'lucide-react'
+import { MobileOverlay, SplitView } from '@/components/layout'
+import { TrendingUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { SkillDetailContent } from './SkillDetailContent'
 import { SkillGrid } from './SkillGrid'
@@ -50,74 +51,61 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
 
   const selectedSkillData = skills.find((s) => s.id === selectedSkill)
 
+  // Empty state for desktop sidebar
+  const emptyState = (
+    <div className="flex h-full items-center justify-center p-4">
+      <div className="text-center">
+        <TrendingUp className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
+        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          Vyber dovednost
+        </h3>
+        <p className="text-sm leading-relaxed text-[#8b7355]">
+          Klikni na dovednost v seznamu pro zobrazení detailů a možnost upgradu.
+        </p>
+      </div>
+    </div>
+  )
+
   return (
     <>
-      <div className="flex w-full flex-1 overflow-hidden">
-        <SkillGrid
-          skills={skills}
-          talentPoints={talentPoints}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          selectedSkill={selectedSkill}
-          setSelectedSkill={handleSelectSkill}
-        />
-
-        {/* Desktop detail panel */}
-        <div className="hidden w-80 border-l border-[#8b6f47] bg-black/70 p-4 backdrop-blur-sm md:block">
-          {selectedSkillData ? (
-            <SkillDetailContent
-              skill={selectedSkillData}
-              allSkills={skills}
-              talentPoints={talentPoints}
-              characterId={characterId}
-            />
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <div className="text-center">
-                <TrendingUp className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
-                <h3
-                  className="mb-2 text-lg text-[#d4a574]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  Vyber dovednost
-                </h3>
-                <p className="text-sm leading-relaxed text-[#8b7355]">
-                  Klikni na dovednost v seznamu pro zobrazení detailů a možnost upgradu.
-                </p>
-              </div>
+      <SplitView
+        main={
+          <SkillGrid
+            skills={skills}
+            talentPoints={talentPoints}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            selectedSkill={selectedSkill}
+            setSelectedSkill={handleSelectSkill}
+          />
+        }
+        aside={
+          selectedSkillData ? (
+            <div className="p-4">
+              <SkillDetailContent
+                skill={selectedSkillData}
+                allSkills={skills}
+                talentPoints={talentPoints}
+                characterId={characterId}
+              />
             </div>
-          )}
-        </div>
-      </div>
+          ) : (
+            emptyState
+          )
+        }
+        asideWidth="md"
+      />
 
-      {/* Mobile fullscreen overlay */}
-      {selectedSkill && selectedSkillData && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md md:hidden">
-          <div className="flex flex-shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-3 backdrop-blur-md">
-            <h2
-              className="text-base text-[#ffd700] sm:text-lg"
-              style={{ fontFamily: 'var(--font-medieval)' }}
-            >
-              Detail dovednosti
-            </h2>
-            <button
-              onClick={handleBack}
-              className="min-h-touch-target flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-2 transition-colors hover:border-[#ffd700] sm:min-h-0"
-            >
-              <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
-              <span className="text-sm text-[#d4a574]">Zpět</span>
-            </button>
-          </div>
-
-          <div className="scrollbar-custom flex-1 overflow-y-auto p-3 sm:p-4">
-            <SkillDetailContent
-              skill={selectedSkillData}
-              allSkills={skills}
-              talentPoints={talentPoints}
-              characterId={characterId}
-            />
-          </div>
-        </div>
+      {/* Mobile detail overlay */}
+      {selectedSkillData && (
+        <MobileOverlay isOpen={!!selectedSkill} title="Detail dovednosti" onClose={handleBack}>
+          <SkillDetailContent
+            skill={selectedSkillData}
+            allSkills={skills}
+            talentPoints={talentPoints}
+            characterId={characterId}
+          />
+        </MobileOverlay>
       )}
     </>
   )

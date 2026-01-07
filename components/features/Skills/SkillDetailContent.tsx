@@ -18,8 +18,10 @@ function getCategoryColor(category: SkillCategory) {
       return 'text-[#69ccf0]'
     case 'magic':
       return 'text-[#b66bd4]'
-    case 'utility':
+    case 'stealth':
       return 'text-[#6fbf6f]'
+    case 'crafting':
+      return 'text-[#d4a574]'
     default:
       return 'text-[#d4a574]'
   }
@@ -33,8 +35,10 @@ function getCategoryBg(category: SkillCategory) {
       return 'bg-[#69ccf0]/10 border-[#69ccf0]'
     case 'magic':
       return 'bg-[#b66bd4]/10 border-[#b66bd4]'
-    case 'utility':
+    case 'stealth':
       return 'bg-[#6fbf6f]/10 border-[#6fbf6f]'
+    case 'crafting':
+      return 'bg-[#d4a574]/10 border-[#d4a574]'
     default:
       return 'bg-black/40 border-[#8b6f47]'
   }
@@ -48,7 +52,10 @@ function getCategoryName(category: SkillCategory) {
       return 'Obrana'
     case 'magic':
       return 'Magie'
-    case 'utility':
+    case 'stealth':
+      return 'Stealth'
+    case 'crafting':
+      return 'Řemeslo'
       return 'Užitečné'
     default:
       return 'Všechny'
