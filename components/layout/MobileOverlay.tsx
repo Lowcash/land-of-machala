@@ -12,6 +12,8 @@ interface MobileOverlayProps {
   children: ReactNode
   /** Close handler */
   onClose: () => void
+  /** Custom back button text */
+  backText?: string
   /** Custom className */
   className?: string
 }
@@ -25,6 +27,7 @@ export function MobileOverlay({
   title,
   children,
   onClose,
+  backText = 'Zpět',
   className = '',
 }: MobileOverlayProps) {
   if (!isOpen) return null
@@ -47,7 +50,7 @@ export function MobileOverlay({
           aria-label="Zavřít"
         >
           <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
-          <span className="text-sm text-[#d4a574]">Zpět</span>
+          <span className="text-sm text-[#d4a574]">{backText}</span>
         </button>
       </div>
 

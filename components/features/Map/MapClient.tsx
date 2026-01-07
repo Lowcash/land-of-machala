@@ -1,5 +1,7 @@
 'use client'
 
+import { ArrowLeft } from 'lucide-react'
+import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { LocationDetails } from './LocationDetails'
 import { MapCanvas } from './MapCanvas'
@@ -60,7 +62,19 @@ export function MapClient({ locations }: MapClientProps) {
   }
 
   return (
-    <div className="flex w-full flex-1 flex-col overflow-hidden md:flex-row">
+    <div className="flex w-full flex-1 flex-col overflow-hidden">
+      {/* Back to game link */}
+      <div className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+        <Link
+          href="/game"
+          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Zpět do hry
+        </Link>
+      </div>
+
+      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
       {/* Map Canvas */}
       <div
         className={`${
@@ -102,6 +116,7 @@ export function MapClient({ locations }: MapClientProps) {
             </div>
           </div>
         )}
+      </div>
       </div>
     </div>
   )
