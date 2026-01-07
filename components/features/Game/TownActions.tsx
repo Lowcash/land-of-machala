@@ -24,7 +24,6 @@ interface TownActionsProps {
   onHealer: () => void
   onTavern: () => void
   onMarket: () => void
-  onGuildHall: () => void
   onMove: (direction: 'north' | 'south' | 'east' | 'west') => void
   setInfoText: (text: string | null) => void
 }

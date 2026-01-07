@@ -3,34 +3,18 @@
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { moveCharacter } from '@/lib/actions/movement-actions'
-import {
-  Beer,
-  Building,
-  Cross,
-  Hammer,
-  Home,
-  ShoppingBag,
-} from 'lucide-react'
+import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
-import { FishingGame, LockpickGame, MiningGame } from '../Minigames'
 import { BankActions } from './BankActions'
 import { CharacterBox } from './CharacterBox'
-import { GuildHallActions } from './GuildHallActions'
 import { HealerActions } from './HealerActions'
 import { MarketActions } from './MarketActions'
 import { SmithActions } from './SmithActions'
 import { TavernActions } from './TavernActions'
 import { TownActions } from './TownActions'
 
-type View =
-  | 'town'
-  | 'smith'
-  | 'bank'
-  | 'healer'
-  | 'tavern'
-  | 'market'
-  | 'guild_hall'
+type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
 
 interface GameDashboardProps {
   character: any // Replace with proper type
@@ -41,9 +25,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const [currentView, setCurrentView] = useState<View>('town')
   const [infoText, setInfoText] = useState<string | null>(null)
   const [isShaking] = useState(false)
-  const [activeMinigame, setActiveMinigame] = useState<'fishing' | 'mining' | 'lockpick' | null>(
-    null
-  )
   const [, startTransition] = useTransition()
 
   // Mock data for now - should come from props or query
@@ -53,7 +34,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
     startTransition(async () => {
       const result = await moveCharacter(character.id, direction)
-      
+
       if (!result.success) {
         setInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
         return
@@ -61,8 +42,10 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
       // Direction descriptions
       const directionTexts = {
-        north: 'Vydáváš se na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami.',
-        south: 'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů.',
+        north:
+          'Vydáváš se na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami.',
+        south:
+          'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů.',
         east: 'Vydáváš se na <span class="text-[#ffd700]">východ</span> k <span class="text-[#ffa500]">vyprahlé poušti</span>. Písek šustí pod tvýma nohama a slunce pálí nemilosrdně.',
         west: 'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.',
       }
@@ -76,15 +59,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
         )
       }
     })
-  }
-
-  const handleMinigameComplete = (rewards: any) => {
-    setActiveMinigame(null)
-    if (rewards) {
-      // Handle rewards (add to inventory/gold)
-      console.log('Minigame rewards:', rewards)
-      setInfoText('Získal jsi odměnu z minihry!')
-    }
   }
 
   const viewData = {
@@ -103,7 +77,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
     bank: {
       bg: '/assets/locations/bank-background.jpg',
       title: 'Banka',
-      icon: Building,
+      icon: Landmark,
       desc: 'Masivní <span class="text-[#ffd700]">trezor</span> za pultem vzbuzuje důvěru. Tvé cennosti budou v bezpečí za těmito silnými zdmi. Můžeš zde <span class="text-[#ffd700]">uložit</span> peníze i vzácné předměty, které nepoužíváš. Nebo si své uložené <span class="text-[#ffd700]">zlato</span> zase <span class="text-[#69ccf0]">vybrat</span>. Bankéř na tebe přátelsky pokývne.',
     },
     healer: {
@@ -124,12 +98,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
       icon: ShoppingBag,
       desc: 'Rušné tržiště plné kupců a obchodníků. Můžeš zde najít opravdu cokoliv, pokud máš dost zlata.',
     },
-    guild_hall: {
-      bg: '/assets/locations/city-background.jpg',
-      title: 'Hradová hala',
-      icon: Building,
-      desc: 'Žhavé uhlí a dunění kladiva vytváří hypnotickou melodii. Kovář umí vykovat zbraně a zbroje z materiálů.',
-    },
   }[currentView]
 
   return (
@@ -139,7 +107,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
         backgroundImage={viewData.bg}
         icon={viewData.icon}
         maxWidth="lg"
-        showBack={false}
+
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Player box at top - increased width for better visibility */}
@@ -184,7 +152,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onHealer={() => setCurrentView('healer')}
                 onTavern={() => setCurrentView('tavern')}
                 onMarket={() => setCurrentView('market')}
-                onGuildHall={() => setCurrentView('guild_hall')}
                 onMove={handleMove}
                 setInfoText={setInfoText}
               />
@@ -231,14 +198,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setInfoText={setInfoText}
               />
             )}
-            {currentView === 'guild_hall' && (
-              <GuildHallActions
-                onBack={() => setCurrentView('town')}
-                onOpenFactions={() => {}}
-                setInfoText={setInfoText}
-                playerReputation={0}
-              />
-            )}
             {currentView === 'market' && (
               <MarketActions
                 onBack={() => setCurrentView('town')}
@@ -251,25 +210,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
             )}
           </div>
         </div>
-
-        {/* Minigames */}
-        <FishingGame
-          isOpen={activeMinigame === 'fishing'}
-          onClose={() => setActiveMinigame(null)}
-          onCatch={(fish) => handleMinigameComplete(fish)}
-        />
-        <MiningGame
-          isOpen={activeMinigame === 'mining'}
-          onClose={() => setActiveMinigame(null)}
-          onComplete={(rewards) => handleMinigameComplete(rewards)}
-        />
-        <LockpickGame
-          isOpen={activeMinigame === 'lockpick'}
-          onClose={() => setActiveMinigame(null)}
-          difficulty="easy"
-          onSuccess={(reward) => handleMinigameComplete(reward)}
-          onFailure={() => setActiveMinigame(null)}
-        />
       </PageTemplate>
     </RouteTransition>
   )
