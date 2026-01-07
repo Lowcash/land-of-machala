@@ -1,7 +1,8 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { Check, Lock } from 'lucide-react'
+import { ArrowLeft, Check, Lock } from 'lucide-react'
+import Link from 'next/link'
 import { useRef } from 'react'
 import { getIconFromName } from './iconMap'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
@@ -24,8 +25,10 @@ function getCategoryColor(category: SkillCategory) {
       return 'text-[#69ccf0]'
     case 'magic':
       return 'text-[#b66bd4]'
-    case 'utility':
+    case 'stealth':
       return 'text-[#6fbf6f]'
+    case 'crafting':
+      return 'text-[#d4a574]'
     default:
       return 'text-[#d4a574]'
   }
@@ -39,8 +42,10 @@ function getCategoryBg(category: SkillCategory) {
       return 'bg-[#69ccf0]/10 border-[#69ccf0]'
     case 'magic':
       return 'bg-[#b66bd4]/10 border-[#b66bd4]'
-    case 'utility':
+    case 'stealth':
       return 'bg-[#6fbf6f]/10 border-[#6fbf6f]'
+    case 'crafting':
+      return 'bg-[#d4a574]/10 border-[#d4a574]'
     default:
       return 'bg-black/40 border-[#8b6f47]'
   }
@@ -63,6 +68,17 @@ export function SkillGrid({
 
   return (
     <>
+      {/* Back to game link */}
+      <div className="border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+        <Link
+          href="/game"
+          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Zpět do hry
+        </Link>
+      </div>
+      
       <SkillCategoryFilter
         selectedCategory={selectedCategory}
         onSelectCategory={setSelectedCategory}
@@ -98,7 +114,7 @@ export function SkillGrid({
                   <button
                     key={skill.id}
                     onClick={() => setSelectedSkill(skill.id)}
-                    className={`min-h-touch-target rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
+                    className={`w-full min-h-touch-target rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
                       selectedSkill === skill.id
                         ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
                         : skill.unlocked

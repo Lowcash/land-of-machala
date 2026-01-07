@@ -2,11 +2,8 @@
 
 import { GameFooter } from '@/components/features/Game/GameFooter'
 import { GameHeader } from '@/components/features/Game/GameHeader'
-import { SettingsPanel } from '@/components/features/Panels/SettingsPanel'
 import { RouteTransition } from '@/components/layout/RouteTransition'
-import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
-import { useState } from 'react'
 
 interface PageTemplateProps {
   /** Page title */
@@ -17,14 +14,6 @@ interface PageTemplateProps {
   icon?: any
   /** Background image */
   backgroundImage?: string
-  /** Callback when help is clicked */
-  onHelp?: () => void
-  /** Callback when back is clicked */
-  onBack?: () => void
-  /** URL to navigate back to (alternative to onBack) */
-  backUrl?: string
-  /** Show back button */
-  showBack?: boolean
   /** Max width constraint for content */
   maxWidth?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
   /** Character ID for displaying player stats */
@@ -42,17 +31,10 @@ export function PageTemplate({
   subtitle,
   icon,
   backgroundImage,
-  onHelp,
-  onBack,
-  backUrl,
-  showBack = true,
   maxWidth = 'lg',
   characterId,
   children,
 }: PageTemplateProps) {
-  const router = useRouter()
-  const [showSettings, setShowSettings] = useState(false)
-
   const maxWidthClass = {
     sm: 'max-w-4xl',
     md: 'max-w-5xl',
@@ -60,22 +42,6 @@ export function PageTemplate({
     xl: 'max-w-7xl',
     full: 'max-w-none',
   }[maxWidth]
-
-  const handleBack = () => {
-    if (onBack) {
-      onBack()
-    } else if (backUrl) {
-      router.push(backUrl as any)
-    }
-  }
-
-  const handleOpenSettings = () => {
-    setShowSettings(true)
-  }
-
-  const handleCloseSettings = () => {
-    setShowSettings(false)
-  }
 
   return (
     <RouteTransition>
@@ -97,10 +63,6 @@ export function PageTemplate({
               icon={icon}
               title={title}
               subtitle={subtitle}
-              onHelp={onHelp}
-              onBack={onBack || backUrl ? handleBack : undefined}
-              showBack={showBack}
-              onSettings={handleOpenSettings}
               characterId={characterId}
             />
           </div>
@@ -118,9 +80,6 @@ export function PageTemplate({
           </div>
         </div>
       </div>
-
-      {/* Settings Panel Overlay */}
-      {showSettings && <SettingsPanel onClose={handleCloseSettings} />}
     </RouteTransition>
   )
 }
