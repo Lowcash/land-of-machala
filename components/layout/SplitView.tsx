@@ -39,7 +39,7 @@ export function SplitView({
   return (
     <div className={`flex min-h-0 flex-1 overflow-hidden ${className}`}>
       {/* Main content - always visible */}
-      <div className="flex min-w-0 flex-1">{main}</div>
+      <div className="min-w-0 flex-1">{main}</div>
 
       {/* Aside - hidden on mobile by default */}
       <aside

@@ -18,7 +18,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
       <div className="space-y-3">
         {/* Player position */}
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#69ccf0]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#69ccf0]">
             <MapPin className="h-4 w-4 text-white" />
           </div>
           <div className="flex-1">
@@ -34,7 +34,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
             filters.showTowns ? 'border-[#d4a574]' : 'border-[#8b6f47] opacity-50'
           } bg-black/40 p-2 transition-all hover:bg-black/60`}
         >
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
             <Home className="h-4 w-4 text-[#ffd700]" />
           </div>
           <div className="flex-1 text-left">
@@ -50,7 +50,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
             filters.showWilderness ? 'border-[#d4a574]' : 'border-[#8b6f47] opacity-50'
           } bg-black/40 p-2 transition-all hover:bg-black/60`}
         >
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
             <Trees className="h-4 w-4 text-[#6fbf6f]" />
           </div>
           <div className="flex-1 text-left">
@@ -66,7 +66,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
             filters.showDungeons ? 'border-[#d4a574]' : 'border-[#8b6f47] opacity-50'
           } bg-black/40 p-2 transition-all hover:bg-black/60`}
         >
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
             <Castle className="h-4 w-4 text-[#ff6b6b]" />
           </div>
           <div className="flex-1 text-left">
@@ -82,7 +82,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
             filters.showLandmarks ? 'border-[#d4a574]' : 'border-[#8b6f47] opacity-50'
           } bg-black/40 p-2 transition-all hover:bg-black/60`}
         >
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e]">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
             <Mountain className="h-4 w-4 text-[#b66bd4]" />
           </div>
           <div className="flex-1 text-left">
@@ -93,7 +93,7 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
 
         {/* Locked */}
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-[#8b6f47] bg-black/60">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#8b6f47] bg-black/60">
             <Lock className="h-4 w-4 text-[#8b6f47]" />
           </div>
           <div className="flex-1">

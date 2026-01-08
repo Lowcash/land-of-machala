@@ -46,30 +46,29 @@ export function PageTemplate({
   return (
     <RouteTransition>
       {/* Full screen container */}
-      <div className="fixed inset-0 flex flex-col bg-[#0a0806]" style={{ fontFamily: 'var(--font-body)' }}>
-        
+      <div
+        className="fixed inset-0 flex flex-col bg-[#0a0806]"
+        style={{ fontFamily: 'var(--font-body)' }}
+      >
         {/* Background layer (full width) */}
         {backgroundImage && (
           <div className="absolute inset-0">
             <img src={backgroundImage} alt={title} className="h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60" />
+            <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-black/60" />
           </div>
         )}
 
         {/* Header - full width with dark background */}
         <div className="relative z-20 w-full border-b border-[#8b6f47] bg-black/90">
           <div className={`mx-auto ${maxWidthClass}`}>
-            <GameHeader
-              icon={icon}
-              title={title}
-              subtitle={subtitle}
-              characterId={characterId}
-            />
+            <GameHeader icon={icon} title={title} subtitle={subtitle} characterId={characterId} />
           </div>
         </div>
 
         {/* Main content - constrained width, full height */}
-        <main className={`relative z-10 mx-auto flex h-0 min-h-0 flex-1 w-full ${maxWidthClass} flex-col overflow-hidden`}>
+        <main
+          className={`relative z-10 mx-auto flex h-0 min-h-0 w-full flex-1 ${maxWidthClass} flex-col overflow-hidden`}
+        >
           {children}
         </main>
 

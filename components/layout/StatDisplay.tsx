@@ -112,7 +112,7 @@ export function ProgressBar({
     <div className={`grid grid-cols-[auto_1fr_auto] items-center gap-2 text-xs ${className}`}>
       {label && <span className="font-bold">{label}</span>}
       <div className="h-2.5 overflow-hidden rounded-full border border-[#8b6f47] bg-black/60">
-        <div className={`h-full bg-gradient-to-r ${color}`} style={{ width: `${percentage}%` }} />
+        <div className={`h-full bg-linear-to-r ${color}`} style={{ width: `${percentage}%` }} />
       </div>
       {showValues && (
         <span className="text-right text-[#8b7355]">

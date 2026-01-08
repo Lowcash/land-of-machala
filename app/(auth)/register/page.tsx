@@ -52,7 +52,7 @@ export default function RegisterPage() {
   return (
     <RouteTransition>
       <div
-        className="flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
+        className="flex h-dvh flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -60,7 +60,7 @@ export default function RegisterPage() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
         </div>
 
         {/* Content */}
@@ -71,8 +71,8 @@ export default function RegisterPage() {
               {/* Logo & Title */}
               <div className="mb-6 text-center sm:mb-8">
                 <div className="relative mb-4 inline-block">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
-                  <div className="relative rounded-full border-2 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
+                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
+                  <div className="relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
                     <Swords className="h-10 w-10 text-[#ffd700]" />
                   </div>
                 </div>
@@ -115,6 +115,8 @@ export default function RegisterPage() {
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Zadej email..."
                         autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck="false"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                         required
@@ -209,7 +211,9 @@ export default function RegisterPage() {
 
             {/* Mobile Footer */}
             <div className="mt-4 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
-              <p className="text-xs text-[#8b7355]">Verze 2.0 • © 2025 Land of Machala</p>
+              <p className="text-xs text-[#8b7355]">
+                Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+              </p>
             </div>
           </div>
         </div>

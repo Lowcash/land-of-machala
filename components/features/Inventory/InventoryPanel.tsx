@@ -36,49 +36,49 @@ export async function InventoryPanel() {
   }))
 
   if (inventory.length === 0) {
-     inventory = [
-        {
-           id: 'dummy-inv-1',
-           name: 'Rezavý Meč',
-           type: 'weapon',
-           rarity: 'common',
-           iconName: 'sword',
-           slot: 'right_hand',
-           equipped: true,
-           value: 10,
-           level: 1,
-           description: 'Starý, ale stále ostrý meč.',
-           quantity: 1,
-           attack: 5
-        },
-        {
-           id: 'dummy-inv-2',
-           name: 'Léčivý Lektvar',
-           type: 'consumable',
-           rarity: 'common',
-           iconName: 'flask',
-           equipped: false,
-           value: 20,
-           level: 1,
-           description: 'Obnoví 50 zdraví.',
-           quantity: 3,
-           healing: 50
-        },
-        {
-           id: 'dummy-inv-3',
-           name: 'Kožená Zbroj',
-           type: 'armor',
-           rarity: 'uncommon',
-           iconName: 'shield',
-           slot: 'chest',
-           equipped: false,
-           value: 50,
-           level: 2,
-           description: 'Základní ochrana pro dobrodruhy.',
-           quantity: 1,
-           defense: 10
-        }
-     ] as any
+    inventory = [
+      {
+        id: 'dummy-inv-1',
+        name: 'Rezavý Meč',
+        type: 'weapon',
+        rarity: 'common',
+        iconName: 'sword',
+        slot: 'right_hand',
+        equipped: true,
+        value: 10,
+        level: 1,
+        description: 'Starý, ale stále ostrý meč.',
+        quantity: 1,
+        attack: 5,
+      },
+      {
+        id: 'dummy-inv-2',
+        name: 'Léčivý Lektvar',
+        type: 'consumable',
+        rarity: 'common',
+        iconName: 'flask',
+        equipped: false,
+        value: 20,
+        level: 1,
+        description: 'Obnoví 50 zdraví.',
+        quantity: 3,
+        healing: 50,
+      },
+      {
+        id: 'dummy-inv-3',
+        name: 'Kožená Zbroj',
+        type: 'armor',
+        rarity: 'uncommon',
+        iconName: 'shield',
+        slot: 'chest',
+        equipped: false,
+        value: 50,
+        level: 2,
+        description: 'Základní ochrana pro dobrodruhy.',
+        quantity: 1,
+        defense: 10,
+      },
+    ] as any
   }
 
   return <InventoryClient initialInventory={inventory} />

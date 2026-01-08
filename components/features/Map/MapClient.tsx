@@ -63,8 +63,8 @@ export function MapClient({ locations }: MapClientProps) {
 
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
-      {/* Back to game link */}
-      <div className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+      {/* Sticky Back Navigation */}
+      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
         <Link
           href="/game"
           className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
@@ -79,7 +79,7 @@ export function MapClient({ locations }: MapClientProps) {
         <div
           className={`${
             selectedLocation ? 'hidden md:flex' : 'flex-1'
-          } relative min-h-[300px] flex-1 overflow-hidden bg-gradient-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510] md:min-h-0`}
+          } relative min-h-75 flex-1 overflow-hidden bg-linear-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510] md:min-h-0`}
         >
           <MapCanvas
             locations={locations}
@@ -107,7 +107,7 @@ export function MapClient({ locations }: MapClientProps) {
               onClose={() => handleSelectLocation(null)}
             />
           ) : (
-            <div className="mb-6 flex min-h-[120px] items-center justify-center border-b border-[#8b6f47] pb-6">
+            <div className="mb-6 flex min-h-30 items-center justify-center border-b border-[#8b6f47] pb-6">
               <div className="text-center">
                 <div className="mb-2 text-4xl">🗺️</div>
                 <h3

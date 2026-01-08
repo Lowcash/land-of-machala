@@ -21,7 +21,18 @@ export function SkillCategoryFilter({
   ]
 
   return (
-    <div className="flex w-16 flex-col gap-2 border-r border-[#8b6f47] bg-black/60 p-2 backdrop-blur-sm md:w-20">
+    <div className="flex gap-2 overflow-x-auto border-b border-[#8b6f47] bg-black/60 p-2 backdrop-blur-sm md:w-full md:flex-col md:gap-3 md:border-b-0 md:p-4">
+      <button
+        onClick={() => onSelectCategory('all')}
+        className={`shrink-0 rounded border-2 px-4 py-2 text-sm transition-all md:w-full md:text-left ${
+          selectedCategory === 'all'
+            ? 'border-[#ffd700] bg-[#8b6f47]/30 text-[#ffd700]'
+            : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
+        }`}
+        style={{ fontFamily: 'var(--font-fantasy)' }}
+      >
+        Vše
+      </button>
       {categories.map((cat) => {
         const Icon = cat.icon
         const isActive = selectedCategory === cat.id
@@ -30,16 +41,16 @@ export function SkillCategoryFilter({
           <button
             key={cat.id}
             onClick={() => onSelectCategory(cat.id)}
-            className={`flex aspect-square w-full flex-col items-center justify-center gap-1 rounded border-2 transition-all ${
+            className={`flex shrink-0 items-center gap-2 rounded border-2 px-4 py-2 transition-all md:w-full ${
               isActive
                 ? 'border-[#ffd700] bg-[#8b6f47]/30'
                 : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
             }`}
-            title={cat.label}
           >
-            <Icon className={`h-5 w-5 md:h-6 md:w-6 ${isActive ? 'text-[#ffd700]' : cat.color}`} />
+            <Icon className={`h-4 w-4 md:h-5 md:w-5 ${isActive ? 'text-[#ffd700]' : cat.color}`} />
             <span
-              className={`hidden text-[10px] md:block ${isActive ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
+              className={`text-sm ${isActive ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+              style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               {cat.label}
             </span>

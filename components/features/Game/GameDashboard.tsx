@@ -107,7 +107,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
         backgroundImage={viewData.bg}
         icon={viewData.icon}
         maxWidth="lg"
-
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
           {/* Player box at top - increased width for better visibility */}
@@ -136,7 +135,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
           >
             <div className="scrollbar-custom h-full overflow-y-auto">
               <div
-                className="mx-auto max-w-2xl animate-[fadeInWave_0.6s_ease-out] py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
+                className="animate-fade-in-wave mx-auto max-w-2xl py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
                 key={infoText || viewData.desc}
                 dangerouslySetInnerHTML={{ __html: infoText || viewData.desc }}
               />

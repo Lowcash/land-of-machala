@@ -51,7 +51,7 @@ export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalP
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
       {/* Modal */}
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-yellow-600/40 bg-gradient-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
+      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-yellow-600/40 bg-linear-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
         {/* Header with event type indicator */}
         <div className={`border-b-2 ${getTypeColor()} px-6 py-4`}>
           <div className="flex items-center gap-3">

@@ -96,7 +96,7 @@ export function ServiceTable({
                               className={`rounded border px-2 py-1 text-xs transition-colors ${
                                 action.variant === 'secondary'
                                   ? 'border-[#8b6f47] bg-black/60 text-[#d4a574] hover:border-[#d4a574] hover:bg-black/80'
-                                  : 'border-[#ffd700] bg-gradient-to-r from-[#8b6f47] to-[#6d5a3e] text-white hover:from-[#a8865d] hover:to-[#a8865d]'
+                                  : 'border-[#ffd700] bg-linear-to-r from-[#8b6f47] to-[#6d5a3e] text-white hover:from-[#a8865d] hover:to-[#a8865d]'
                               } ${isDisabled ? 'cursor-not-allowed opacity-50' : ''}`}
                             >
                               {action.label}
@@ -126,7 +126,7 @@ export function ServiceTable({
           >
             <div className="flex items-center gap-3">
               {rowIcon && (
-                <div className="rounded-full bg-gradient-to-br from-[#ffd700]/20 to-[#8b6f47]/20 p-2">
+                <div className="rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 p-2">
                   {rowIcon(item)}
                 </div>
               )}
@@ -134,9 +134,13 @@ export function ServiceTable({
                 {columns.map((col, colIdx) => (
                   <div key={col.key}>
                     {colIdx === 0 ? (
-                      <div className="text-sm text-[#f5e6d3]">{col.render ? col.render(item) : item[col.key]}</div>
+                      <div className="text-sm text-[#f5e6d3]">
+                        {col.render ? col.render(item) : item[col.key]}
+                      </div>
                     ) : (
-                      <div className="text-[10px] text-[#8b7355]">{col.render ? col.render(item) : item[col.key]}</div>
+                      <div className="text-[10px] text-[#8b7355]">
+                        {col.render ? col.render(item) : item[col.key]}
+                      </div>
                     )}
                   </div>
                 ))}

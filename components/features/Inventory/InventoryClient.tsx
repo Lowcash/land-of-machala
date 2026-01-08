@@ -172,7 +172,8 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
           } flex-1 flex-col bg-black/70 backdrop-blur-sm`}
         >
           {/* Back to game link */}
-          <div className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+          {/* Sticky Back Navigation */}
+          <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
             <Link
               href="/game"
               className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
@@ -358,7 +359,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
       {/* Mobile Fullscreen Overlay */}
       {selectedItem && selectedItemData && (
         <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md md:hidden">
-          <div className="flex flex-shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-2 backdrop-blur-md">
+          <div className="flex shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-2 backdrop-blur-md">
             <h2 className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
               Detail předmětu
             </h2>

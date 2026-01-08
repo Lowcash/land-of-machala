@@ -17,17 +17,19 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
   return (
     <div className="flex h-full flex-col overflow-y-auto p-2 md:p-3">
       <div className="mx-auto w-full max-w-6xl space-y-3">
-        {/* Back to game link */}
-        <Link
-          href="/game"
-          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Zpět do hry
-        </Link>
+        {/* Sticky Back Navigation */}
+        <div className="sticky top-0 z-30 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
+          <Link
+            href="/game"
+            className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Zpět do hry
+          </Link>
+        </div>
 
-        {/* Character Visual - Full Width */}
-        <div className="w-full">
+        {/* Mobile: Sticky Character Box */}
+        <div className="sticky top-14.25 z-10 w-full px-4 md:hidden">
           <CharacterBox
             name={character.name}
             level={character.level}
@@ -47,26 +49,49 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
           />
         </div>
 
-        {/* Content Grid - 2 columns on desktop, stacked on mobile */}
-        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-          {/* Left Column: Stats */}
+        {/* Desktop: First Row - CharacterBox + Stats/Resistances */}
+        <div className="hidden grid-cols-2 gap-4 md:grid">
+          <div>
+            <CharacterBox
+              name={character.name}
+              level={character.level}
+              hp={character.hp}
+              hpMax={character.maxHp}
+              mana={character.mana}
+              manaMax={character.maxMana}
+              xp={character.experience}
+              xpMax={1000}
+              stats={{
+                strength: character.strength,
+                intelligence: character.intelligence,
+                agility: character.agility,
+                stamina: character.stamina,
+              }}
+              isEnemy={false}
+            />
+          </div>
           <div>
             <CharacterDetailContent section="stats" character={character} equipped={equipped} />
           </div>
+        </div>
 
-          {/* Right Column: Equipment */}
+        {/* Mobile: Stats Section */}
+        <div className="md:hidden">
+          <CharacterDetailContent section="stats" character={character} equipped={equipped} />
+        </div>
+
+        {/* Second Row - Equipment + Achievements */}
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <div>
             <CharacterDetailContent section="equipment" character={character} equipped={equipped} />
           </div>
-        </div>
-
-        {/* Achievements - Full Width */}
-        <div>
-          <CharacterDetailContent
-            section="achievements"
-            character={character}
-            equipped={equipped}
-          />
+          <div>
+            <CharacterDetailContent
+              section="achievements"
+              character={character}
+              equipped={equipped}
+            />
+          </div>
         </div>
       </div>
     </div>
