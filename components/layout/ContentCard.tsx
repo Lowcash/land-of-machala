@@ -19,7 +19,7 @@ interface ContentCardProps {
 
 const VARIANT_CLASSES = {
   default: 'border-[#8b6f47] bg-black/60',
-  primary: 'border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70',
+  primary: 'border-[#d4a574] bg-linear-to-br from-black/90 to-black/70',
   success: 'border-[#6fbf6f]/50 bg-black/70',
   warning: 'border-[#ffd700]/50 bg-black/70',
   danger: 'border-[#ff6b6b]/50 bg-black/70',

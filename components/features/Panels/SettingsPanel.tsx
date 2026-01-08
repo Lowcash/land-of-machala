@@ -179,7 +179,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-100 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-title"
@@ -188,7 +188,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
         <ScrollIndicator targetRef={scrollRef} position="both" />
         <div
           ref={scrollRef}
-          className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/90 to-black/70 p-6"
+          className="max-h-[80vh] overflow-y-auto rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/90 to-black/70 p-6"
         >
           <div className="mb-4 flex items-center justify-between">
             <h2

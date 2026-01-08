@@ -73,8 +73,8 @@ export function QuestList({ quests, selectedQuest, setSelectedQuest }: QuestList
     <div
       className={`${selectedQuest ? 'hidden md:flex' : 'flex'} w-full flex-col border-r border-[#8b6f47] bg-black/70 backdrop-blur-sm md:w-80 lg:w-96`}
     >
-      {/* Back to game link */}
-      <div className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+      {/* Sticky Back Navigation */}
+      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
         <Link
           href="/game"
           className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
@@ -126,7 +126,7 @@ export function QuestList({ quests, selectedQuest, setSelectedQuest }: QuestList
               {/* Progress bar */}
               <div className="mt-2 h-1 overflow-hidden rounded-full bg-black/60">
                 <div
-                  className={`h-full bg-gradient-to-r ${
+                  className={`h-full bg-linear-to-r ${
                     quest.category === 'MAIN'
                       ? 'from-[#ffd700] to-[#ffed4e]'
                       : quest.category === 'SIDE'

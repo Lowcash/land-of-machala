@@ -28,8 +28,15 @@ export async function QuestPanel() {
       minLevel: 1,
       rewards: { xp: 100, gold: 50 },
       objectives: [
-        { id: 'obj-1', description: 'Zabij 5 Krys', target: 5, current: 0, completed: false, order: 1 }
-      ]
+        {
+          id: 'obj-1',
+          description: 'Zabij 5 Krys',
+          target: 5,
+          current: 0,
+          completed: false,
+          order: 1,
+        },
+      ],
     },
     {
       id: 'dummy-q2',
@@ -39,8 +46,15 @@ export async function QuestPanel() {
       minLevel: 3,
       rewards: { xp: 200, gold: 100, items: ['Starý Amulet'] },
       objectives: [
-        { id: 'obj-2', description: 'Najdi Amulet', target: 1, current: 0, completed: false, order: 1 }
-      ]
+        {
+          id: 'obj-2',
+          description: 'Najdi Amulet',
+          target: 1,
+          current: 0,
+          completed: false,
+          order: 1,
+        },
+      ],
     },
     {
       id: 'dummy-q3',
@@ -50,14 +64,21 @@ export async function QuestPanel() {
       minLevel: 5,
       rewards: { xp: 150, gold: 75 },
       objectives: [
-        { id: 'obj-3', description: 'Ulov 10 Vlků', target: 10, current: 3, completed: false, order: 1 }
-      ]
-    }
+        {
+          id: 'obj-3',
+          description: 'Ulov 10 Vlků',
+          target: 10,
+          current: 3,
+          completed: false,
+          order: 1,
+        },
+      ],
+    },
   ]
 
   let allQuests = allQuestsResult?.quests || []
   if (allQuests.length === 0) {
-      allQuests = dummyQuests as any
+    allQuests = dummyQuests as any
   }
 
   const character = characterResult.character

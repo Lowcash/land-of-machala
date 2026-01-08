@@ -178,7 +178,7 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
             <button
               onClick={rollDice}
               disabled={gameState === 'rolling' || gold < betAmount}
-              className="w-full rounded border border-[#ffe4b5] bg-gradient-to-r from-[#ffd700] to-[#b8860b] py-3 font-bold tracking-wider text-black uppercase transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:grayscale"
+              className="w-full rounded border border-[#ffe4b5] bg-linear-to-r from-[#ffd700] to-[#b8860b] py-3 font-bold tracking-wider text-black uppercase transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:grayscale"
             >
               {gameState === 'rolling' ? 'Kostky se kutálí...' : 'Hodit kostkami'}
             </button>

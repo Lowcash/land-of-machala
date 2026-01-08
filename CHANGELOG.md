@@ -6,6 +6,196 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-08 20:58 - Major UI/UX Refactor & Prisma 7 Migration
+
+**Type:** Fixed, Changed, Added  
+**Scope:** Prisma, Skills, Character, Auth, Notifications, Navigation, Z-index  
+**Impact:** Migrace na Prisma 7, vylepšená responzivita napříč stránkami, opravené layouty, konzistentní navigace
+
+### Fixed
+
+- **Prisma 7 Migration:**
+  - Odstraněn `url` z `datasource db` v schema.prisma (deprecated v Prisma 7)
+  - Vytvořen `prisma/prisma.config.ts` s konfigurací datasource
+  - Database URL nyní definována v config souboru místo schema
+
+- **Skills Page Layout:**
+  - **Desktop:** SkillCategoryFilter vlevo (sidebar), Strom dovedností vpravo
+  - **Mobile:** SkillCategoryFilter nahoře (sticky horizontal scroll), Strom pod ním
+  - Kategorie nyní zobrazují ikony + text místo jen ikon
+  - Přidána kategorie "Vše" pro zobrazení všech dovedností
+  - Sidebar na desktopu má šířku 192-224px (w-48/w-56)
+
+- **Character Page Desktop Layout:**
+  - **První řádek:** CharacterBox + Statistiky/Odolnosti (2 sloupce)
+  - **Druhý řádek:** Nasazená výbava + Úspěchy (2 sloupce)
+  - **Mobile:** Sticky CharacterBox nahoře, pak Stats, pak Equipment + Achievements
+  - Responzivní grid s breakpointem na `md` (768px)
+
+- **Navigation Background & Z-index:**
+  - Přidán background `bg-black/95 backdrop-blur-sm` na Character page "Zpět do hry"
+  - Zvýšen z-index všech "Zpět do hry" linků z `z-10` na `z-30`
+  - Opraveno skrývání navigace za GameHeader (který má `z-20`)
+  - Sticky navigation nyní viditelná přes všechny stránky (Skills, Quest, Inventory, Map, Character)
+
+- **Email Input Uppercase Fix:**
+  - Přidány atributy `autoCorrect="off"` a `spellCheck="false"` k email inputům
+  - Prevence iOS auto-kapitalizace na LoginForm a register/page
+  - Již měly `autoCapitalize="none"`, nyní ještě robustnější
+
+- **Toast Notifications Position:**
+  - Změněno z `w-full right-0` na `w-auto right-4`
+  - Notifikace nyní vpravo od obsahu místo přes celou viewport
+  - Desktop: 420px max-width, vpravo s marginem
+  - Mobile: Plná šířka nahoře
+
+### Changed
+
+- **SkillCategoryFilter Component:**
+  - Změněn layout z `flex-col w-16` (ikony only) na responzivní design
+  - **Mobile:** Horizontal scroll s plnými názvy kategorií
+  - **Desktop:** Vertikální seznam s ikonami + textem
+  - Přidán button "Vše" jako výchozí kategorie
+  - Font family: var(--font-fantasy)
+
+- **CharacterClient Component:**
+  - Rozděleno na mobile a desktop varianty
+  - Desktop: 2 řádky x 2 sloupce grid
+  - Mobile: Vertikální stack se sticky CharacterBox
+  - Eliminována duplicita zobrazení statistik
+
+### Technical
+
+- **Files Modified (13):**
+  - `prisma/schema.prisma` - Odstraněn url
+  - `prisma/prisma.config.ts` - Nový config soubor (ADDED)
+  - `SkillGrid.tsx` - Responzivní layout, z-index fix
+  - `SkillCategoryFilter.tsx` - Kompletní přepis layoutu
+  - `CharacterClient.tsx` - Desktop 2-row grid, mobile stack
+  - `QuestList.tsx` - Z-index z-30
+  - `InventoryClient.tsx` - Z-index z-30
+  - `MapClient.tsx` - Z-index z-30
+  - `LoginForm.tsx` - Email input atributy
+  - `register/page.tsx` - Email input atributy
+  - `toast.tsx` - Position vpravo od main
+
+- **Z-index Hierarchy:**
+  - GameHeader: z-20
+  - Sticky back navigation: z-30 (nad headerem)
+  - Sticky category filters: z-10
+  - Toast notifications: z-100
+
+### TODO
+
+- **Combat Page Refactor (Not Completed):**
+  - Změnit layout na 2 sloupce (jako ve městě)
+  - Odstranit "tvůj tah" indikátor
+  - Info sekce stejná jako ve městě
+  - Mobile: Accordion sekce (útok, obrana, lektvary, útěk)
+  - Přidat CharacterBox pro nepřítele s stats (str, int, agi, sta)
+  - Mobile: Nepřítel box pod hráč box
+
+---
+
+## 2026-01-08 19:46 - UI/UX Enhancements & Onboarding Mobile Improvements
+
+**Type:** Fixed, Changed  
+**Scope:** Onboarding, Character, Skills, Quest, Inventory, Map, Quest Button  
+**Impact:** Vylepšená mobilní UX s accordion, opravené sticky navigace, vizuální konzistence napříč stránkami
+
+### Fixed
+
+- **Onboarding Mobile:** Přidán accordion pro výběr rasy a povolání na mobilních zařízeních (<md)
+  - Rasa a povolání se na mobilu zobrazují v rozbalovacím menu (Radix Accordion)
+  - Na desktopu zůstává původní 3-sloupcový grid layout
+  - Předchází SSR/CSR hydration mismatch pomocí `isMounted` stavu
+  - Header accordionu zobrazuje aktuální výběr (např. "Vyber svou rasu (Člověk)")
+- **Sticky Navigation Headers:** Všechny "Zpět do hry" odkazy jsou nyní sticky
+  - Skills page: Sticky header (top-0) + sticky category filter (top-[57px])
+  - Quest page: Sticky back link (top-0)
+  - Inventory page: Sticky back link (top-0)
+  - Map page: Sticky back link (top-0)
+  - Character page: Sticky back link (top-0) + sticky CharacterBox (top-8)
+  - Použití `backdrop-blur-sm` pro vizuální oddělení od pozadí
+  - Z-index: 10 pro správné vrstvení nad obsahem
+
+- **Character Page Fixes:**
+  - Skryta sekce "Atributy" (statistiky nyní zobrazeny pouze v CharacterBox)
+  - Opraveno vertikální zarovnání textu v sekci "Úspěchy" (přidáno `flex-col`)
+  - CharacterBox je nyní sticky (top-8) pro lepší přehled při scrollování
+
+- **Quest Button:** Již implementováno - zobrazuje "Vzdát quest" pro aktivní questy místo "Přijmout quest"
+
+- **Copyright Year:** Aktualizován rok 2025 → 2026 v LoginForm a register/page
+
+### Changed
+
+- **Tailwind CSS Shortcuts:**
+  - `duration-[5000ms]` → `duration-5000` (AchievementNotification)
+  - `md:max-w-[420px]` → `md:max-w-105` (toast)
+- **Grid Layout:** OnboardingForm grid změněn z `lg:grid-cols-3` na `md:grid-cols-3` pro lepší responsivitu
+
+### Added
+
+- **Dependencies:** Import `ChevronDown` ikony (lucide-react) pro accordion indikátor
+- **State Management:** `isMounted` state pro předcházení SSR/CSR mismatch v OnboardingForm
+
+### Technical
+
+- **Files Modified (12):**
+  - `AchievementNotification.tsx` - Duration optimalizace
+  - `toast.tsx` - Max-width optimalizace
+  - `LoginForm.tsx` - SSR hydration fix + rok update
+  - `register/page.tsx` - Dynamický rok
+  - `SkillGrid.tsx` - Sticky header + filter
+  - `QuestList.tsx` - Sticky header
+  - `InventoryClient.tsx` - Sticky header
+  - `MapClient.tsx` - Sticky header
+  - `CharacterDetailContent.tsx` - Hidden Atributy, flex-col fix
+  - `CharacterClient.tsx` - Sticky layout
+  - `OnboardingForm.tsx` - Mobile accordion + responsive grid
+
+---
+
+## 2026-01-08 17:41 - Tailwind CSS Optimizations
+
+**Type:** Changed  
+**Scope:** Tailwind CSS, All Components  
+**Impact:** Optimalizace Tailwind tříd pro kratší a čitelnější kód napříč celou aplikací
+
+### Changed
+
+- **Tailwind CSS Classes:** Optimalizovány všechny Tailwind třídy na kratší syntaxi
+  - `h-[100dvh]` → `h-dvh` (3 soubory: LoginForm, OnboardingForm, register/page)
+  - `bg-gradient-to-*` → `bg-linear-to-*` (všechny směry: b, r, br, t)
+  - `flex-shrink-0` → `shrink-0` (všechny komponenty)
+  - `h-[60px]` → `h-15`, `sm:h-[70px]` → `sm:h-17.5`
+  - `min-h-[60px]` → `min-h-15`, `min-h-[70px]` → `min-h-17.5`
+  - `h-[120px]` → `h-30`, `min-h-[120px]` → `min-h-30`
+  - `min-h-[300px]` → `min-h-75`
+  - `max-h-[252px]` → `max-h-63`
+  - `min-w-[64px]` → `min-w-16`
+  - `z-[100]` → `z-100`, `z-[600]` → `z-600`
+  - `animate-[fadeInWave_0.6s_ease-out]` → `animate-fade-in-wave`
+
+### Fixed
+
+- **Components Updated (40+ files):**
+  - Auth: LoginForm, OnboardingForm, register/page
+  - Combat: CombatClient
+  - Character: CharacterBox, CharacterDetailContent, CharacterSections
+  - Game: GameDashboard, GameFooter, AchievementNotification, TavernActions, RandomEventModal
+  - Inventory: InventoryClient
+  - Map: MapClient, MapCanvas, MapLegend
+  - Quest: QuestClient, QuestList, QuestDetailContent
+  - Skills: SkillGrid, SkillDetailContent
+  - Panels: SettingsPanel, HelpPanel
+  - Providers: NotificationProvider, AchievementProvider
+  - Layout: GameLayout, PageTemplate, ContentCard, StatDisplay
+  - UI: toast, ScrollIndicator, ServiceTable
+
+---
+
 ## 2026-01-07 23:10 - UI/UX Improvements & Bug Fixes
 
 **Type:** Fixed, Changed  

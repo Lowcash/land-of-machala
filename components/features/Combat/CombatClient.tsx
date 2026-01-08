@@ -310,7 +310,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
           </div>
 
           {/* Middle: Combat Log */}
-          <div className="relative h-[120px] shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
+          <div className="relative h-30 shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
             <AnimatePresence>
               {floatingDamage.map((dmg) => (
                 <motion.div

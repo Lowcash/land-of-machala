@@ -3,11 +3,13 @@
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { useNotification } from '@/components/providers/NotificationProvider'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import * as Accordion from '@radix-ui/react-accordion'
 import {
   Activity,
   ArrowRight,
   BookOpen,
   Brain,
+  ChevronDown,
   Dices,
   Droplet,
   Heart,
@@ -24,7 +26,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 type Race = 'human' | 'dwarf' | 'elf' | 'orc' | 'halfling' | 'dragonborn'
 type Class = 'warrior' | 'mage' | 'rogue' | 'paladin' | 'ranger' | 'necromancer'
@@ -50,8 +52,13 @@ export function OnboardingForm() {
   const [race, setRace] = useState<Race>('human')
   const [characterClass, setCharacterClass] = useState<Class>('warrior')
   const [isLoading, setIsLoading] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   const classScrollRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
 
   const storySteps: StoryStep[] = [
     {
@@ -322,7 +329,7 @@ export function OnboardingForm() {
 
     return (
       <div
-        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
+        className="relative flex h-dvh flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -330,7 +337,7 @@ export function OnboardingForm() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/assets//locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/90 to-black/95"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/90 to-black/95"></div>
         </div>
 
         {/* Story Content */}
@@ -381,7 +388,7 @@ export function OnboardingForm() {
   return (
     <RouteTransition>
       <div
-        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
+        className="relative flex h-dvh flex-col overflow-hidden bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -389,7 +396,7 @@ export function OnboardingForm() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
         </div>
 
         {/* Content */}
@@ -411,7 +418,7 @@ export function OnboardingForm() {
               </p>
             </div>
 
-            <div className="mb-3 grid gap-2 sm:mb-4 sm:gap-4 lg:grid-cols-3">
+            <div className="mb-3 grid gap-2 sm:mb-4 sm:gap-4 md:grid-cols-3">
               {/* Left: Name + Random */}
               <div className="space-y-2 sm:space-y-4">
                 {/* Name Input */}
@@ -557,24 +564,317 @@ export function OnboardingForm() {
                 </div>
               </div>
 
+              {/* Mobile: Race & Class in Accordion */}
+              {isMounted && (
+                <div className="md:hidden">
+                  <Accordion.Root type="single" collapsible defaultValue="race">
+                    {/* Race Accordion Item */}
+                    <Accordion.Item
+                      value="race"
+                      className="mb-2 overflow-hidden rounded-lg border border-[#d4a574] bg-black/80 backdrop-blur-sm"
+                    >
+                      <Accordion.Header>
+                        <Accordion.Trigger className="group flex w-full items-center justify-between p-3 text-sm text-[#ffd700] transition-colors hover:bg-[#8b6f47]/20 sm:p-4 sm:text-base">
+                          <span style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            Vyber svou rasu ({selectedRace.name})
+                          </span>
+                          <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180 sm:h-5 sm:w-5" />
+                        </Accordion.Trigger>
+                      </Accordion.Header>
+                      <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
+                        <div className="p-3 sm:p-4">
+                          <div className="mb-2 grid grid-cols-3 gap-1.5 sm:gap-2">
+                            {races.map((r) => {
+                              const Icon = r.icon
+                              return (
+                                <button
+                                  key={r.id}
+                                  onClick={() => setRace(r.id)}
+                                  className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-17.5 sm:gap-1 sm:p-3 ${
+                                    race === r.id
+                                      ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                                      : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
+                                  }`}
+                                >
+                                  <Icon
+                                    className={`h-4 w-4 sm:h-5 sm:w-5 ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                                  />
+                                  <span
+                                    className={`text-[10px] sm:text-xs ${race === r.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                                  >
+                                    {r.name}
+                                  </span>
+                                </button>
+                              )
+                            })}
+                          </div>
+                          <div className="max-h-48 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
+                            <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
+                              {selectedRace.desc}
+                            </p>
+                            <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
+                              <p
+                                className="mb-1.5 text-[10px] text-[#ffd700]"
+                                style={{ fontFamily: 'var(--font-fantasy)' }}
+                              >
+                                Bonusy rasy:
+                              </p>
+                              <div className="grid grid-cols-2 gap-x-2 gap-y-0.5 text-[9px] sm:text-[10px]">
+                                <div className="flex items-center gap-1">
+                                  <Heart className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                                  <span className="text-[#d4a574]">{selectedRace.stats.hp} HP</span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Droplet className="h-2.5 w-2.5 text-[#69ccf0]" />
+                                  <span className="text-[#d4a574]">
+                                    {selectedRace.stats.mana} MP
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                                  <span className="text-[#d4a574]">
+                                    {selectedRace.stats.strength} Síla
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
+                                  <span className="text-[#d4a574]">
+                                    {selectedRace.stats.intelligence} Intel.
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
+                                  <span className="text-[#d4a574]">
+                                    {selectedRace.stats.agility} Obrat.
+                                  </span>
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
+                                  <span className="text-[#d4a574]">
+                                    {selectedRace.stats.stamina} Výdrž
+                                  </span>
+                                </div>
+                              </div>
+                              <p className="mt-2 text-[9px] text-[#8b7355] italic sm:text-[10px]">
+                                {selectedRace.bonuses}
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+
+                    {/* Class Accordion Item */}
+                    <Accordion.Item
+                      value="class"
+                      className="overflow-hidden rounded-lg border border-[#d4a574] bg-black/80 backdrop-blur-sm"
+                    >
+                      <Accordion.Header>
+                        <Accordion.Trigger className="group flex w-full items-center justify-between p-3 text-sm text-[#ffd700] transition-colors hover:bg-[#8b6f47]/20 sm:p-4 sm:text-base">
+                          <span style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            Vyber své povolání ({selectedClass.name})
+                          </span>
+                          <ChevronDown className="h-4 w-4 transition-transform group-data-[state=open]:rotate-180 sm:h-5 sm:w-5" />
+                        </Accordion.Trigger>
+                      </Accordion.Header>
+                      <Accordion.Content className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden">
+                        <div className="p-3 sm:p-4">
+                          <div className="mb-2 grid grid-cols-3 gap-1.5 sm:gap-2">
+                            {classes.map((c) => {
+                              const Icon = c.icon
+                              return (
+                                <button
+                                  key={c.id}
+                                  onClick={() => setCharacterClass(c.id)}
+                                  className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-17.5 sm:gap-1 sm:p-3 ${
+                                    characterClass === c.id
+                                      ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                                      : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
+                                  }`}
+                                >
+                                  <Icon
+                                    className={`h-4 w-4 sm:h-5 sm:w-5 ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                                  />
+                                  <span
+                                    className={`text-[10px] sm:text-xs ${characterClass === c.id ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+                                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                                  >
+                                    {c.name}
+                                  </span>
+                                </button>
+                              )
+                            })}
+                          </div>
+                          <div className="max-h-48 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2 sm:p-3">
+                            <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
+                              {selectedClass.desc}
+                            </p>
+                            <div className="mb-2">
+                              <span
+                                className={`inline-block rounded border px-2 py-0.5 text-[9px] sm:text-[10px] ${
+                                  ['mage', 'necromancer'].includes(selectedClass.id)
+                                    ? 'border-[#c084fc] bg-[#c084fc]/20 text-[#c084fc]'
+                                    : ['warrior', 'paladin'].includes(selectedClass.id)
+                                      ? 'border-[#ff6b6b] bg-[#ff6b6b]/20 text-[#ff6b6b]'
+                                      : 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700]'
+                                }`}
+                                style={{ fontFamily: 'var(--font-fantasy)' }}
+                              >
+                                {['mage', 'necromancer'].includes(selectedClass.id)
+                                  ? 'Kouzlící'
+                                  : ['warrior', 'paladin'].includes(selectedClass.id)
+                                    ? 'Tank'
+                                    : 'Hybrid'}
+                              </span>
+                            </div>
+                            <div className="space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
+                              <p
+                                className="mb-1 text-[10px] text-[#ffd700]"
+                                style={{ fontFamily: 'var(--font-fantasy)' }}
+                              >
+                                Bonusy povolání:
+                              </p>
+                              {selectedClass.statMod.strength !== 0 && (
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                                    <div className="flex items-center gap-1">
+                                      <Sword className="h-2.5 w-2.5 text-[#ff6b6b]" />
+                                      <span className="text-[#d4a574]">Síla</span>
+                                    </div>
+                                    <span
+                                      className={
+                                        selectedClass.statMod.strength > 0
+                                          ? 'text-[#6fbf6f]'
+                                          : 'text-[#ff6b6b]'
+                                      }
+                                    >
+                                      {selectedClass.statMod.strength > 0 ? '+' : ''}
+                                      {selectedClass.statMod.strength}
+                                    </span>
+                                  </div>
+                                  <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                                    <div
+                                      className={`h-full ${selectedClass.statMod.strength > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                                      style={{
+                                        width: `${Math.abs(selectedClass.statMod.strength) * 8}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectedClass.statMod.intelligence !== 0 && (
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                                    <div className="flex items-center gap-1">
+                                      <Brain className="h-2.5 w-2.5 text-[#c084fc]" />
+                                      <span className="text-[#d4a574]">Inteligence</span>
+                                    </div>
+                                    <span
+                                      className={
+                                        selectedClass.statMod.intelligence > 0
+                                          ? 'text-[#6fbf6f]'
+                                          : 'text-[#ff6b6b]'
+                                      }
+                                    >
+                                      {selectedClass.statMod.intelligence > 0 ? '+' : ''}
+                                      {selectedClass.statMod.intelligence}
+                                    </span>
+                                  </div>
+                                  <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                                    <div
+                                      className={`h-full ${selectedClass.statMod.intelligence > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                                      style={{
+                                        width: `${Math.abs(selectedClass.statMod.intelligence) * 8}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectedClass.statMod.agility !== 0 && (
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                                    <div className="flex items-center gap-1">
+                                      <Wind className="h-2.5 w-2.5 text-[#ffd700]" />
+                                      <span className="text-[#d4a574]">Obratnost</span>
+                                    </div>
+                                    <span
+                                      className={
+                                        selectedClass.statMod.agility > 0
+                                          ? 'text-[#6fbf6f]'
+                                          : 'text-[#ff6b6b]'
+                                      }
+                                    >
+                                      {selectedClass.statMod.agility > 0 ? '+' : ''}
+                                      {selectedClass.statMod.agility}
+                                    </span>
+                                  </div>
+                                  <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                                    <div
+                                      className={`h-full ${selectedClass.statMod.agility > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                                      style={{
+                                        width: `${Math.abs(selectedClass.statMod.agility) * 8}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
+                              {selectedClass.statMod.stamina !== 0 && (
+                                <div className="space-y-0.5">
+                                  <div className="flex items-center justify-between text-[9px] sm:text-[10px]">
+                                    <div className="flex items-center gap-1">
+                                      <Activity className="h-2.5 w-2.5 text-[#69ccf0]" />
+                                      <span className="text-[#d4a574]">Výdrž</span>
+                                    </div>
+                                    <span
+                                      className={
+                                        selectedClass.statMod.stamina > 0
+                                          ? 'text-[#6fbf6f]'
+                                          : 'text-[#ff6b6b]'
+                                      }
+                                    >
+                                      {selectedClass.statMod.stamina > 0 ? '+' : ''}
+                                      {selectedClass.statMod.stamina}
+                                    </span>
+                                  </div>
+                                  <div className="h-1 overflow-hidden rounded-full bg-black/60">
+                                    <div
+                                      className={`h-full ${selectedClass.statMod.stamina > 0 ? 'bg-[#6fbf6f]' : 'bg-[#ff6b6b]'}`}
+                                      style={{
+                                        width: `${Math.abs(selectedClass.statMod.stamina) * 8}%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </Accordion.Content>
+                    </Accordion.Item>
+                  </Accordion.Root>
+                </div>
+              )}
+
+              {/* Desktop: Race & Class in Grid */}
               {/* Middle: Race */}
-              <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
+              <div className="hidden h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4 md:flex">
                 <h3
-                  className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
+                  className="mb-2 shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   Vyber svou rasu
                 </h3>
-                <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
+                <div className="mb-2 grid shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
                   {races.map((r) => {
                     const Icon = r.icon
                     return (
                       <button
                         key={r.id}
                         onClick={() => setRace(r.id)}
-                        className={`flex h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-[70px] sm:gap-1 sm:p-3 ${
+                        className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-17.5 sm:gap-1 sm:p-3 ${
                           race === r.id
-                            ? 'scale-105 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
                             : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                         }`}
                       >
@@ -637,28 +937,28 @@ export function OnboardingForm() {
                     </p>
                   </div>
                   {/* Scroll hint gradient */}
-                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-linear-to-t from-black/60 to-transparent"></div>
                 </div>
               </div>
 
               {/* Right: Class */}
-              <div className="flex h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4">
+              <div className="hidden h-full min-h-0 flex-col rounded-lg border border-[#d4a574] bg-black/80 p-3 backdrop-blur-sm sm:p-4 md:flex">
                 <h3
-                  className="mb-2 flex-shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
+                  className="mb-2 shrink-0 text-center text-sm text-[#ffd700] sm:mb-3 sm:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   Vyber své povolání
                 </h3>
-                <div className="mb-2 grid flex-shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
+                <div className="mb-2 grid shrink-0 grid-cols-3 gap-1.5 sm:mb-3 sm:gap-2">
                   {classes.map((c) => {
                     const Icon = c.icon
                     return (
                       <button
                         key={c.id}
                         onClick={() => setCharacterClass(c.id)}
-                        className={`flex min-h-[60px] flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-[70px] sm:gap-1 sm:p-3 ${
+                        className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-17.5 sm:gap-1 sm:p-3 ${
                           characterClass === c.id
-                            ? 'scale-105 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
                             : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                         }`}
                       >
@@ -679,7 +979,7 @@ export function OnboardingForm() {
                   <ScrollIndicator targetRef={classScrollRef} position="both" />
                   <div
                     ref={classScrollRef}
-                    className="scrollbar-custom h-full max-h-[252px] overflow-y-auto p-2 sm:p-3"
+                    className="scrollbar-custom h-full max-h-63 overflow-y-auto p-2 sm:p-3"
                   >
                     <p className="mb-2 text-[10px] leading-relaxed text-[#d4a574] sm:text-xs">
                       {selectedClass.desc}
@@ -836,7 +1136,7 @@ export function OnboardingForm() {
                     </div>
                   </div>
                   {/* Scroll hint gradient */}
-                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-gradient-to-t from-black/60 to-transparent"></div>
+                  <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-8 rounded-b bg-linear-to-t from-black/60 to-transparent"></div>
                 </div>
               </div>
             </div>
@@ -855,15 +1155,11 @@ export function OnboardingForm() {
               {isLoading ? (
                 <>
                   <div className="h-5 w-5 animate-spin rounded-full border-2 border-[#ffd700] border-t-transparent sm:h-6 sm:w-6" />
-                  <span className="text-sm sm:text-base md:text-lg">
-                    Vytvářím hrdinu...
-                  </span>
+                  <span className="text-sm sm:text-base md:text-lg">Vytvářím hrdinu...</span>
                 </>
               ) : (
                 <>
-                  <span className="text-sm sm:text-base md:text-lg">
-                    Vstoupit do hry
-                  </span>
+                  <span className="text-sm sm:text-base md:text-lg">Vstoupit do hry</span>
                   <ArrowRight className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6" />
                 </>
               )}

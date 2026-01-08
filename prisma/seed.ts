@@ -198,7 +198,7 @@ async function main() {
         iconName: 'crystal',
       },
     }),
-    
+
     // Additional Weapons
     prisma.item.create({
       data: {
@@ -239,7 +239,7 @@ async function main() {
         agility: 12,
       },
     }),
-    
+
     // Additional Armor
     prisma.item.create({
       data: {
@@ -305,7 +305,7 @@ async function main() {
         stamina: 5,
       },
     }),
-    
+
     // More Consumables
     prisma.item.create({
       data: {
@@ -444,7 +444,7 @@ async function main() {
   // Create skills (Complete WoW-style talent trees)
   const skills = await Promise.all([
     // ==================== COMBAT TREE ==================== (11 skills total)
-    
+
     // Tier 1 (Level 1) - Basic attacks
     prisma.skill.create({
       data: {
@@ -534,7 +534,7 @@ async function main() {
     }),
 
     // ==================== DEFENSE TREE ==================== (10 skills total)
-    
+
     // Tier 1 (Level 1) - Basic defense
     prisma.skill.create({
       data: {
@@ -624,7 +624,7 @@ async function main() {
     }),
 
     // ==================== MAGIC TREE ==================== (12 skills total)
-    
+
     // Tier 1 (Level 1) - Basic magic
     prisma.skill.create({
       data: {
@@ -741,7 +741,7 @@ async function main() {
     }),
 
     // ==================== STEALTH TREE ==================== (New)
-    
+
     // Tier 1 (Level 1) - Basic stealth
     prisma.skill.create({
       data: {
@@ -831,7 +831,7 @@ async function main() {
     }),
 
     // ==================== CRAFTING TREE ==================== (New)
-    
+
     // Tier 1 (Level 1) - Basic crafting
     prisma.skill.create({
       data: {
@@ -921,7 +921,9 @@ async function main() {
     }),
   ])
 
-  console.log(`✅ Created ${skills.length} skills (Combat: 6, Defense: 6, Magic: 8, Stealth: 6, Crafting: 6)`)
+  console.log(
+    `✅ Created ${skills.length} skills (Combat: 6, Defense: 6, Magic: 8, Stealth: 6, Crafting: 6)`
+  )
 
   // Create enemies
   const enemies = await Promise.all([

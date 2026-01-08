@@ -68,8 +68,8 @@ export function SkillGrid({
 
   return (
     <>
-      {/* Back to game link */}
-      <div className="border-b border-[#8b6f47] bg-black/40 px-4 py-3">
+      {/* Sticky Back Navigation */}
+      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
         <Link
           href="/game"
           className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
@@ -78,32 +78,46 @@ export function SkillGrid({
           Zpět do hry
         </Link>
       </div>
-      
-      <SkillCategoryFilter
-        selectedCategory={selectedCategory}
-        onSelectCategory={setSelectedCategory}
-      />
 
-      <div className="relative flex flex-1 flex-col overflow-hidden">
-        <ScrollIndicator targetRef={scrollRef} position="both" />
-        <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
-          <div className="mx-auto max-w-7xl">
-            <div className="mb-4 text-center">
-              <h2
-                className="mb-1 text-2xl text-[#ffd700]"
-                style={{ fontFamily: 'var(--font-medieval)' }}
-              >
-                Strom dovedností
-              </h2>
-              <p className="text-sm text-[#d4a574]">
-                Dostupné body: <span className="text-[#ffd700]">{talentPoints}</span> • Naučeno:{' '}
-                <span className="text-[#ffd700]">
-                  {totalSkillsLearned}/{skills.length}
-                </span>
-              </p>
-            </div>
+      {/* Mobile: Sticky Category Filter */}
+      <div className="sticky top-14.25 z-10 shrink-0 md:hidden">
+        <SkillCategoryFilter
+          selectedCategory={selectedCategory}
+          onSelectCategory={setSelectedCategory}
+        />
+      </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      {/* Desktop: Side-by-side layout */}
+      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
+        {/* Left: Category Filter (Desktop only) */}
+        <div className="hidden shrink-0 border-r border-[#8b6f47] bg-black/60 md:block md:w-48 lg:w-56">
+          <SkillCategoryFilter
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
+        </div>
+
+        {/* Right: Skills Grid */}
+        <div className="relative flex flex-1 flex-col overflow-hidden">
+          <ScrollIndicator targetRef={scrollRef} position="both" />
+          <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
+            <div className="mx-auto max-w-7xl">
+              <div className="mb-4 text-center">
+                <h2
+                  className="mb-1 text-2xl text-[#ffd700]"
+                  style={{ fontFamily: 'var(--font-medieval)' }}
+                >
+                  Strom dovedností
+                </h2>
+                <p className="text-sm text-[#d4a574]">
+                  Dostupné body: <span className="text-[#ffd700]">{talentPoints}</span> • Naučeno:{' '}
+                  <span className="text-[#ffd700]">
+                    {totalSkillsLearned}/{skills.length}
+                  </span>
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
               {filteredSkills.map((skill) => {
                 const Icon = getIconFromName(skill.iconName)
                 const maxed = skill.currentLevel >= skill.maxRank
@@ -114,7 +128,7 @@ export function SkillGrid({
                   <button
                     key={skill.id}
                     onClick={() => setSelectedSkill(skill.id)}
-                    className={`w-full min-h-touch-target rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
+                    className={`min-h-touch-target w-full rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
                       selectedSkill === skill.id
                         ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
                         : skill.unlocked
@@ -124,7 +138,7 @@ export function SkillGrid({
                   >
                     <div className="mb-2 flex items-start gap-2">
                       <div
-                        className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex flex-shrink-0 items-center justify-center`}
+                        className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
                       >
                         {skill.unlocked ? (
                           <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
@@ -152,7 +166,7 @@ export function SkillGrid({
                           key={i}
                           className={`h-1.5 flex-1 rounded-full ${
                             i < skill.currentLevel
-                              ? `bg-gradient-to-r ${
+                              ? `bg-linear-to-r ${
                                   skill.category === 'combat'
                                     ? 'from-[#ff6b6b] to-[#ff8b8b]'
                                     : skill.category === 'defense'
@@ -185,6 +199,7 @@ export function SkillGrid({
                   </button>
                 )
               })}
+              </div>
             </div>
           </div>
         </div>

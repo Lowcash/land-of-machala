@@ -1,11 +1,11 @@
 'use client'
 
-import type { ReactNode } from 'react';
-import { createContext, useContext, useState, useCallback } from 'react'
 import {
   AchievementNotification,
   type Achievement,
 } from '@/components/features/Game/AchievementNotification'
+import type { ReactNode } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 interface AchievementContextType {
   showAchievement: (achievement: Omit<Achievement, 'id'>) => void
@@ -37,7 +37,7 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
     <AchievementContext.Provider value={{ showAchievement, achievements }}>
       {children}
       {/* Render achievement notifications - positioned in content area */}
-      <div className="pointer-events-none fixed inset-0 z-[600] flex items-start justify-center">
+      <div className="pointer-events-none fixed inset-0 z-600 flex items-start justify-center">
         <div className="mt-24 flex w-full max-w-6xl flex-col items-end gap-2 px-4">
           {notifications.map((achievement) => (
             <AchievementNotification

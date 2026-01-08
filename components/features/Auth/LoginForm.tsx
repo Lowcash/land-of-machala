@@ -26,11 +26,13 @@ export function LoginForm() {
   const [password, setPassword] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
 
   const [flavorText, setFlavorText] = useState(FLAVOR_TEXTS[0])
 
   useEffect(() => {
     setFlavorText(FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)])
+    setIsMounted(true)
   }, [])
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -123,7 +125,7 @@ export function LoginForm() {
   return (
     <RouteTransition>
       <div
-        className="relative flex h-[100dvh] flex-col overflow-hidden bg-[#0a0806]"
+        className="relative flex h-dvh flex-col overflow-auto bg-[#0a0806]"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background */}
@@ -131,7 +133,7 @@ export function LoginForm() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
         </div>
 
         {/* Content */}
@@ -142,8 +144,8 @@ export function LoginForm() {
               {/* Logo & Title */}
               <div className="mb-6 text-center sm:mb-8">
                 <div className="relative mb-4 inline-block">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
-                  <div className="relative rounded-full border-2 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
+                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
+                  <div className="relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
                     <Swords className="h-10 w-10 text-[#ffd700]" />
                   </div>
                 </div>
@@ -187,6 +189,8 @@ export function LoginForm() {
                         disabled={isLoading}
                         autoComplete="email"
                         autoCapitalize="none"
+                        autoCorrect="off"
+                        spellCheck="false"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />
@@ -250,14 +254,14 @@ export function LoginForm() {
 
                 {/* Divider */}
                 <div className="my-6 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
                   <span
                     className="text-xs text-[#8b7355]"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     NEBO
                   </span>
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
                 </div>
 
                 {/* Other Actions */}
@@ -284,96 +288,100 @@ export function LoginForm() {
 
               {/* Mobile Info Accordion */}
               <div className="lg:hidden">
-                <Accordion type="single" collapsible className="w-full">
-                  <AccordionItem value="stats" className="border-[#8b6f47]">
-                    <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
-                      <div className="flex items-center gap-2">
-                        <Users className="h-4 w-4" />
-                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>
-                          Statistiky serveru
-                        </span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-                          <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
-                          <div
-                            className="text-lg text-[#ffd700]"
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            1,247
+                {isMounted && (
+                  <Accordion type="single" collapsible className="w-full">
+                    <AccordionItem value="stats" className="border-[#8b6f47]">
+                      <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
+                        <div className="flex items-center gap-2">
+                          <Users className="h-4 w-4" />
+                          <span style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            Statistiky serveru
+                          </span>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                        <div className="grid grid-cols-2 gap-3">
+                          <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                            <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
+                            <div
+                              className="text-lg text-[#ffd700]"
+                              style={{ fontFamily: 'var(--font-fantasy)' }}
+                            >
+                              1,247
+                            </div>
+                          </div>
+                          <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                            <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
+                            <div
+                              className="text-lg text-[#ff6b6b]"
+                              style={{ fontFamily: 'var(--font-fantasy)' }}
+                            >
+                              89
+                            </div>
+                          </div>
+                          <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                            <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
+                            <div
+                              className="text-lg text-[#6fbf6f]"
+                              style={{ fontFamily: 'var(--font-fantasy)' }}
+                            >
+                              87
+                            </div>
+                          </div>
+                          <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+                            <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
+                            <div
+                              className="text-lg text-[#69ccf0]"
+                              style={{ fontFamily: 'var(--font-fantasy)' }}
+                            >
+                              12k+
+                            </div>
                           </div>
                         </div>
-                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-                          <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
-                          <div
-                            className="text-lg text-[#ff6b6b]"
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            89
-                          </div>
-                        </div>
-                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-                          <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
-                          <div
-                            className="text-lg text-[#6fbf6f]"
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            87
-                          </div>
-                        </div>
-                        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-                          <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
-                          <div
-                            className="text-lg text-[#69ccf0]"
-                            style={{ fontFamily: 'var(--font-fantasy)' }}
-                          >
-                            12k+
-                          </div>
-                        </div>
-                      </div>
-                    </AccordionContent>
-                  </AccordionItem>
+                      </AccordionContent>
+                    </AccordionItem>
 
-                  <AccordionItem value="updates" className="mt-3 border-[#8b6f47]">
-                    <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
-                      <div className="flex items-center gap-2">
-                        <Scroll className="h-4 w-4" />
-                        <span style={{ fontFamily: 'var(--font-fantasy)' }}>Nejnovější změny</span>
-                      </div>
-                    </AccordionTrigger>
-                    <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
-                      <ul className="space-y-2 text-sm text-[#d4a574]">
-                        <li className="flex items-start gap-2">
-                          <span className="mt-1 text-[#ffd700]">•</span>
-                          <span>
-                            <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills
-                            ve 3 větvích (Combat, Defense, Magic)
+                    <AccordionItem value="updates" className="mt-3 border-[#8b6f47]">
+                      <AccordionTrigger className="rounded-lg border border-[#8b6f47] bg-black/80 px-4 py-3 text-[#ffd700] hover:bg-[#8b6f47]/10">
+                        <div className="flex items-center gap-2">
+                          <Scroll className="h-4 w-4" />
+                          <span style={{ fontFamily: 'var(--font-fantasy)' }}>
+                            Nejnovější změny
                           </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="mt-1 text-[#ffd700]">•</span>
-                          <span>
-                            <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier
-                            progrese s unlock požadavky
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="mt-1 text-[#ffd700]">•</span>
-                          <span>
-                            <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby
-                            (N/S/E/W) + náhodné souboje
-                          </span>
-                        </li>
-                        <li className="flex items-start gap-2">
-                          <span className="mt-1 text-[#ffd700]">•</span>
-                          <span>Kompaktní CharacterBox redesign s medieval fantasy stylem</span>
-                        </li>
-                      </ul>
-                    </AccordionContent>
-                  </AccordionItem>
-                </Accordion>
+                        </div>
+                      </AccordionTrigger>
+                      <AccordionContent className="mt-2 max-h-[40vh] overflow-y-auto rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+                        <ul className="space-y-2 text-sm text-[#d4a574]">
+                          <li className="flex items-start gap-2">
+                            <span className="mt-1 text-[#ffd700]">•</span>
+                            <span>
+                              <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19
+                              skills ve 3 větvích (Combat, Defense, Magic)
+                            </span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="mt-1 text-[#ffd700]">•</span>
+                            <span>
+                              <span className="text-[#69ccf0]">WoW-style talent systém:</span>{' '}
+                              3-tier progrese s unlock požadavky
+                            </span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="mt-1 text-[#ffd700]">•</span>
+                            <span>
+                              <span className="text-[#ff6b6b]">Movement systém:</span> Směrové
+                              pohyby (N/S/E/W) + náhodné souboje
+                            </span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="mt-1 text-[#ffd700]">•</span>
+                            <span>Kompaktní CharacterBox redesign s medieval fantasy stylem</span>
+                          </li>
+                        </ul>
+                      </AccordionContent>
+                    </AccordionItem>
+                  </Accordion>
+                )}
               </div>
             </div>
 
@@ -474,7 +482,7 @@ export function LoginForm() {
 
               <div className="pt-2 text-center">
                 <p className="text-xs text-[#8b7355]">
-                  Aktualizováno 26.12.2025 • © {new Date().getFullYear()} Land of Machala
+                  Aktualizováno 08.01.2026 • © {new Date().getFullYear()} Land of Machala
                 </p>
               </div>
             </div>

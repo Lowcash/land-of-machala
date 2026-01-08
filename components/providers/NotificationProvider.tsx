@@ -96,7 +96,7 @@ function NotificationItem({
       aria-atomic="true"
       className={`relative mb-3 w-80 overflow-hidden rounded-lg border-2 backdrop-blur-md transition-all duration-300 ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      } bg-gradient-to-br ${config.bgGradient}`}
+      } bg-linear-to-br ${config.bgGradient}`}
       style={{
         borderColor: config.borderColor,
         boxShadow: `0 0 20px ${config.glowColor}, 0 4px 6px rgba(0,0,0,0.3)`,
@@ -104,7 +104,7 @@ function NotificationItem({
     >
       <div className="flex items-start gap-3 p-4">
         <div
-          className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full border-2"
+          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2"
           style={{
             borderColor: config.borderColor,
             boxShadow: `0 0 12px ${config.glowColor}`,
@@ -127,7 +127,7 @@ function NotificationItem({
             setIsVisible(false)
             setTimeout(onClose, 300)
           }}
-          className="flex-shrink-0 text-[#f5e6d3]/60 transition-colors hover:text-[#f5e6d3]"
+          className="shrink-0 text-[#f5e6d3]/60 transition-colors hover:text-[#f5e6d3]"
           aria-label="Zavřít oznámení"
         >
           <X className="h-4 w-4" />
@@ -162,7 +162,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <div className="fixed top-20 right-4 z-[600] flex flex-col">
+      <div className="fixed top-20 right-4 z-600 flex flex-col">
         {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}

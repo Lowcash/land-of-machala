@@ -5,19 +5,7 @@
 
 'use client'
 
-import { Tooltip } from '@/components/ui/CustomTooltip'
-import {
-  Activity,
-  Brain,
-  Coins,
-  MapPin,
-  Shield,
-  Sparkles,
-  Sword,
-  Swords,
-  Trophy,
-  Wind,
-} from 'lucide-react'
+import { Coins, MapPin, Shield, Swords, Trophy } from 'lucide-react'
 import type { CharacterData } from './types'
 
 type SectionType = 'stats' | 'equipment' | 'achievements'
@@ -107,66 +95,7 @@ export function CharacterDetailContent({
   if (section === 'stats') {
     return (
       <div className="space-y-4">
-        {/* Core Attributes */}
-        <div className="rounded-lg border-2 border-[#d4a574] bg-black/80 p-4">
-          <h3
-            className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            <Sparkles className="h-4 w-4" />
-            Atributy
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            <Tooltip content="Síla - Ovlivňuje fyzický útok">
-              <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-center transition-colors hover:border-[#d4a574]/50">
-                <Sword className="mx-auto mb-1 h-5 w-5 text-[#ff6b6b]" />
-                <div className="text-[10px] text-[#8b7355] uppercase">Síla</div>
-                <div
-                  className="text-2xl text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {character.strength}
-                </div>
-              </div>
-            </Tooltip>
-            <Tooltip content="Inteligence - Ovlivňuje magii">
-              <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-center transition-colors hover:border-[#d4a574]/50">
-                <Brain className="mx-auto mb-1 h-5 w-5 text-[#b66bd4]" />
-                <div className="text-[10px] text-[#8b7355] uppercase">Inteligence</div>
-                <div
-                  className="text-2xl text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {character.intelligence}
-                </div>
-              </div>
-            </Tooltip>
-            <Tooltip content="Obratnost - Ovlivňuje krit a vyhýbání">
-              <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-center transition-colors hover:border-[#d4a574]/50">
-                <Wind className="mx-auto mb-1 h-5 w-5 text-[#ffd700]" />
-                <div className="text-[10px] text-[#8b7355] uppercase">Obratnost</div>
-                <div
-                  className="text-2xl text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {character.agility}
-                </div>
-              </div>
-            </Tooltip>
-            <Tooltip content="Výdrž - Ovlivňuje HP a obranu">
-              <div className="cursor-help rounded border border-[#8b6f47]/30 bg-black/40 p-3 text-center transition-colors hover:border-[#d4a574]/50">
-                <Activity className="mx-auto mb-1 h-5 w-5 text-[#69ccf0]" />
-                <div className="text-[10px] text-[#8b7355] uppercase">Výdrž</div>
-                <div
-                  className="text-2xl text-[#ffd700]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {character.stamina}
-                </div>
-              </div>
-            </Tooltip>
-          </div>
-        </div>
+        {/* Atributy section hidden - stats are in CharacterBox */}
 
         {/* Combat Stats */}
         <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4">
@@ -263,7 +192,7 @@ export function CharacterDetailContent({
 
   if (section === 'equipment') {
     return (
-      <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-4 shadow-lg">
+      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
         <h3
           className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
           style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -345,7 +274,7 @@ export function CharacterDetailContent({
                   className={`h-4 w-4 ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
                 />
               </div>
-              <div className="flex min-w-0 flex-1">
+              <div className="flex min-w-0 flex-1 flex-col">
                 <h4
                   className={`text-sm font-bold ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
                 >

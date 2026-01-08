@@ -121,9 +121,9 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               {quest.objectives.map((objective) => (
                 <div key={objective.id} className="flex items-start gap-2">
                   {objective.completed ? (
-                    <CheckCircle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#6fbf6f]" />
+                    <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#6fbf6f]" />
                   ) : (
-                    <Circle className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#8b7355]" />
+                    <Circle className="mt-0.5 h-4 w-4 shrink-0 text-[#8b7355]" />
                   )}
                   <div className="flex-1">
                     <p
@@ -187,7 +187,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-black/60">
                 <div
-                  className={`h-full bg-gradient-to-r ${
+                  className={`h-full bg-linear-to-r ${
                     quest.category === 'MAIN'
                       ? 'from-[#ffd700] to-[#ffed4e]'
                       : quest.category === 'SIDE'
