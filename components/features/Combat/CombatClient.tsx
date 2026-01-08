@@ -10,6 +10,7 @@ import { getIconFromName } from '@/lib/icons'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ArrowLeft,
+  ChevronDown,
   ChevronRight,
   Droplet,
   Shield,
@@ -266,10 +267,11 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   return (
     <PageTemplate title="Souboj" icon={Swords} backgroundImage={forestBg} maxWidth="lg">
       <div className="flex w-full flex-1 gap-3 overflow-hidden p-3">
-        <div className="flex min-w-0 flex-1 flex-col gap-3">
-          {/* Top: Combat Arena */}
-          <div className="flex items-center justify-between gap-2 py-2 sm:gap-4">
-            <div className="max-w-sm min-w-0 flex-1">
+        {/* Desktop: 2-column layout */}
+        <div className="hidden md:flex md:flex-1 md:gap-4">
+          {/* Left Column: Player + Actions */}
+          <div className="flex flex-1 flex-col gap-3">
+            <div className="shrink-0">
               <CharacterBox
                 name={character.name}
                 level={character.level}
@@ -283,13 +285,72 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
               />
             </div>
 
-            <div className="flex shrink-0 flex-col items-center justify-center">
-              <div className="flex h-8 w-8 animate-pulse items-center justify-center rounded-full border-2 border-[#ff4444] bg-[#8b2f2f] shadow-[0_0_15px_rgba(255,68,68,0.5)] sm:h-10 sm:w-10">
-                <Swords className="h-4 w-4 text-white sm:h-5 sm:w-5" />
+            {/* Combat Log */}
+            <div className="relative h-40 shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
+              <AnimatePresence>
+                {floatingDamage.map((dmg) => (
+                  <motion.div
+                    key={dmg.id}
+                    initial={{ y: 0, opacity: 1 }}
+                    animate={{ y: -50, opacity: 0 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 1.5, ease: 'easeOut' }}
+                    className="pointer-events-none absolute z-50 text-2xl font-bold will-change-transform"
+                    style={{
+                      left: dmg.isPlayer ? '25%' : '75%',
+                      top: '50%',
+                      color: dmg.text ? '#ffd700' : '#ff6b6b',
+                      textShadow: '0 0 10px rgba(0,0,0,0.8)',
+                      fontFamily: 'var(--font-fantasy)',
+                    }}
+                  >
+                    {dmg.text || `-${dmg.damage}`}
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+              <div className="scrollbar-custom h-full space-y-1.5 overflow-y-auto p-3">
+                {combatLog.map((log, idx) => {
+                  const colors = {
+                    playerAttack: 'text-[#ffd700] border-l-[#ffd700]',
+                    enemyAttack: 'text-[#ff6b6b] border-l-[#ff6b6b]',
+                    defend: 'text-[#69ccf0] border-l-[#69ccf0]',
+                    heal: 'text-[#6fbf6f] border-l-[#6fbf6f]',
+                    mana: 'text-[#c084fc] border-l-[#c084fc]',
+                    info: 'text-[#8b7355] border-l-[#8b7355]',
+                    start: 'text-[#f5e6d3] border-l-[#d4a574]',
+                  }
+                  const colorClass =
+                    colors[log.type as keyof typeof colors] || 'text-[#f5e6d3] border-l-[#8b6f47]'
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`rounded-lg border-l-2 px-3 py-1.5 text-xs sm:text-sm ${colorClass} bg-black/60 backdrop-blur-sm`}
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
+                    >
+                      {log.text}
+                    </div>
+                  )
+                })}
               </div>
             </div>
 
-            <div className="max-w-sm min-w-0 flex-1">
+            {/* Combat Actions */}
+            <GamePanel title="Bojové akce" className="flex-1">
+              <CombatActions
+                onAttack={handleAttack}
+                onDefend={handleDefend}
+                onUsePotion={handleUsePotion}
+                onFlee={handleFlee}
+                potions={inventory.filter((i) => i.type === 'consumable')}
+                isPlayerTurn={turn === 'player'}
+              />
+            </GamePanel>
+          </div>
+
+          {/* Right Column: Enemy + Stats */}
+          <div className="flex w-80 flex-col gap-3">
+            <div className="shrink-0">
               <CharacterBox
                 name={wolfEnemy.name}
                 level={wolfEnemy.level}
@@ -307,10 +368,82 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                 image={wolfEnemyImage}
               />
             </div>
-          </div>
 
-          {/* Middle: Combat Log */}
-          <div className="relative h-30 shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
+            {/* Enemy Stats Panel */}
+            <GamePanel title="Statistiky nepřítele" className="flex-1">
+              <div className="space-y-3">
+                <div className="grid grid-cols-2 gap-2">
+                  <StatDisplay label="Útok" value={wolfEnemy.attack} color="text-[#ff6b6b]" />
+                  <StatDisplay label="Obrana" value={wolfEnemy.defense} color="text-[#69ccf0]" />
+                  <StatDisplay label="Úroveň" value={wolfEnemy.level} color="text-[#ffd700]" />
+                  <StatDisplay
+                    label="HP"
+                    value={`${enemyHp}/${wolfEnemy.maxHp}`}
+                    color="text-[#6fbf6f]"
+                  />
+                </div>
+
+                <div className="border-t border-[#8b6f47]/30 pt-3">
+                  <div className="text-xs text-[#8b7355]">
+                    <p className="mb-2">
+                      <span className="text-[#d4a574]">Typ:</span> Zvíře
+                    </p>
+                    <p className="mb-2">
+                      <span className="text-[#d4a574]">Slabost:</span> Oheň
+                    </p>
+                    <p>
+                      <span className="text-[#d4a574]">Odolnost:</span> Fyzický útok
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </GamePanel>
+          </div>
+        </div>
+
+        {/* Mobile: Accordion layout */}
+        <div className="flex flex-1 flex-col gap-3 md:hidden">
+          <MobileAccordionSection title="Tvá postava">
+            <CharacterBox
+              name={character.name}
+              level={character.level}
+              hp={playerHp}
+              hpMax={character.maxHp}
+              mana={playerMana}
+              manaMax={character.maxMana}
+              stats={stats}
+              isEnemy={false}
+              resourceType={resourceType}
+            />
+          </MobileAccordionSection>
+
+          <MobileAccordionSection title="Nepřítel" defaultOpen>
+            <div className="space-y-3">
+              <CharacterBox
+                name={wolfEnemy.name}
+                level={wolfEnemy.level}
+                hp={enemyHp}
+                hpMax={wolfEnemy.maxHp}
+                mana={0}
+                manaMax={100}
+                stats={{
+                  strength: wolfEnemy.attack,
+                  intelligence: 2,
+                  agility: 15,
+                  stamina: wolfEnemy.defense,
+                }}
+                isEnemy={true}
+                image={wolfEnemyImage}
+              />
+              <div className="grid grid-cols-2 gap-2 rounded-lg border border-[#8b6f47] bg-black/40 p-3">
+                <StatDisplay label="Útok" value={wolfEnemy.attack} color="text-[#ff6b6b]" />
+                <StatDisplay label="Obrana" value={wolfEnemy.defense} color="text-[#69ccf0]" />
+              </div>
+            </div>
+          </MobileAccordionSection>
+
+          {/* Combat Log - always visible */}
+          <div className="relative h-32 shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
             <AnimatePresence>
               {floatingDamage.map((dmg) => (
                 <motion.div
@@ -349,7 +482,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                 return (
                   <div
                     key={idx}
-                    className={`rounded-lg border-l-2 px-3 py-1.5 text-xs sm:text-sm ${colorClass} bg-black/60 backdrop-blur-sm`}
+                    className={`rounded-lg border-l-2 px-3 py-1.5 text-xs ${colorClass} bg-black/60 backdrop-blur-sm`}
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     {log.text}
@@ -359,7 +492,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
             </div>
           </div>
 
-          {/* Bottom: Combat Actions */}
+          {/* Combat Actions */}
           <GamePanel title="Bojové akce" className="flex-1">
             <CombatActions
               onAttack={handleAttack}
@@ -386,12 +519,6 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
     <div
       className={`flex h-full flex-col ${!isPlayerTurn ? 'pointer-events-none opacity-50' : ''}`}
     >
-      <div className="mb-2 flex shrink-0 items-center justify-between">
-        <span className="text-[10px] tracking-widest text-[#8b7355] uppercase">
-          {isPlayerTurn ? 'Tvůj tah' : 'Tah nepřítele'}
-        </span>
-      </div>
-
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
         {/* Attacks */}
         <div className="space-y-1">
@@ -510,6 +637,54 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+function StatDisplay({
+  label,
+  value,
+  color,
+}: {
+  label: string
+  value: string | number
+  color: string
+}) {
+  return (
+    <div className="rounded-lg border border-[#8b6f47]/50 bg-black/40 p-2">
+      <div className="text-[10px] uppercase tracking-wider text-[#8b7355]">{label}</div>
+      <div className={`text-lg font-bold ${color}`} style={{ fontFamily: 'var(--font-fantasy)' }}>
+        {value}
+      </div>
+    </div>
+  )
+}
+
+function MobileAccordionSection({
+  title,
+  children,
+  defaultOpen = false,
+}: {
+  title: string
+  children: React.ReactNode
+  defaultOpen?: boolean
+}) {
+  const [isOpen, setIsOpen] = useState(defaultOpen)
+
+  return (
+    <div className="shrink-0 overflow-hidden rounded-lg border-2 border-[#8b6f47] bg-black/80 shadow-xl backdrop-blur-md">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-black/60"
+      >
+        <span className="text-sm font-bold text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          {title}
+        </span>
+        <ChevronDown
+          className={`h-4 w-4 text-[#d4a574] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {isOpen && <div className="border-t border-[#8b6f47]/50 p-3">{children}</div>}
     </div>
   )
 }

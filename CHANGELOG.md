@@ -6,6 +6,51 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-08 21:11 - Combat Page 2-Column Refactor
+
+**Type:** Changed  
+**Scope:** Combat  
+**Impact:** Completely redesigned combat layout with desktop 2-column view and mobile accordion, removed turn indicator
+
+### Changed
+
+- **Combat Page Layout Refactor:**
+  - **Desktop (md+):** 2-column layout
+    - **Left column:** Player CharacterBox + Combat Log + Combat Actions
+    - **Right column:** Enemy CharacterBox + Enemy Stats panel (width: 320px)
+  - **Mobile:** Accordion view with collapsible sections
+    - "Tvá postava" (collapsible)
+    - "Nepřítel" (default open with stats)
+    - Combat Log (always visible)
+    - Combat Actions (always visible)
+  - Removed "Tvůj tah" / "Tah nepřítele" indicator from CombatActions
+  - Added `StatDisplay` component for enemy stats (Útok, Obrana, Úroveň, HP)
+  - Added `MobileAccordionSection` component for mobile layout
+  - Enemy stats panel shows: Type, Weakness, Resistance info
+  - Combat Log height reduced on desktop (h-40 vs h-30)
+  - Cleaner visual hierarchy with dedicated space for each element
+
+- **Files changed:** 1 file (CombatClient.tsx, +200 lines refactored)
+
+---
+
+## 2026-01-08 21:09 - SkillGrid JSX Structure Fix
+
+**Type:** Fixed  
+**Scope:** Skills  
+**Impact:** Fixed build-blocking parse error in SkillGrid component
+
+### Fixed
+
+- **SkillGrid Parse Error:**
+  - Added missing closing `</div>` tag for grid container (line 119)
+  - Fixed JSX structure causing "Expression expected" error at line 206
+  - Build now passes successfully with proper tag nesting
+
+- **Files changed:** 1 file (SkillGrid.tsx)
+
+---
+
 ## 2026-01-08 20:58 - Major UI/UX Refactor & Prisma 7 Migration
 
 **Type:** Fixed, Changed, Added  
