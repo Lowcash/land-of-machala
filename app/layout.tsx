@@ -2,6 +2,7 @@ import { GameBackgroundWrapper } from '@/components/layout/GameBackgroundWrapper
 import { AchievementProvider } from '@/components/providers/AchievementProvider'
 import { NotificationProvider } from '@/components/providers/NotificationProvider'
 import { Toaster } from '@/components/ui/toaster'
+import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
 import './globals.css'
@@ -48,6 +49,7 @@ export default function RootLayout({
             <Toaster />
           </AchievementProvider>
         </NotificationProvider>
+        <Analytics />
       </body>
     </html>
   )

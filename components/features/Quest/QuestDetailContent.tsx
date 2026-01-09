@@ -1,7 +1,9 @@
+import { toast } from '@/components/ui/use-toast'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { CheckCircle, Circle, Coins, MapPin, User, Zap } from 'lucide-react'
-import { useRef } from 'react'
-import { QuestStartButton } from './QuestStartButton'
+import { abandonQuestAction } from '@/lib/actions/quest'
+import { CheckCircle, Circle, Coins, MapPin, User, X, Zap } from 'lucide-react'
+import { useRouter } from 'next/navigation'
+import { useRef, useState } from 'react'
 import type { MergedQuest, QuestCategory } from './types'
 
 type QuestDetailContentProps = {
@@ -50,6 +52,45 @@ function getCategoryName(category: QuestCategory) {
 
 export function QuestDetailContent({ quest, characterId }: QuestDetailContentProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
+  const [showAbandonModal, setShowAbandonModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleAbandonQuest = async () => {
+    if (isLoading) return
+    setIsLoading(true)
+
+    try {
+      const [result, error] = await abandonQuestAction({
+        characterId,
+        questId: quest.id,
+      })
+
+      if (error) {
+        toast({
+          variant: 'error',
+          title: 'Chyba při opuštění questu',
+          description: error.message || 'Nepodařilo se opustit quest',
+        })
+      } else if (result?.success) {
+        toast({
+          variant: 'success',
+          title: 'Quest opuštěn',
+          description: `Opustil jsi quest "${quest.title}"`,
+        })
+        setShowAbandonModal(false)
+        router.refresh()
+      }
+    } catch (err) {
+      toast({
+        variant: 'error',
+        title: 'Chyba',
+        description: 'Něco se pokazilo při opouštění questu',
+      })
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">
@@ -202,10 +243,65 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
             </div>
           )}
 
-          {/* Action button */}
-          <QuestStartButton quest={quest} characterId={characterId} />
+          {/* Action button - only show for ACTIVE quests */}
+          {quest.characterStatus === 'ACTIVE' && (
+            <button
+              onClick={() => setShowAbandonModal(true)}
+              className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/20 py-3 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/30"
+            >
+              <X className="h-5 w-5" />
+              <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                Vzdát quest
+              </span>
+            </button>
+          )}
+
+          {/* Completed badge */}
+          {quest.characterStatus === 'COMPLETED' && (
+            <div className="flex items-center justify-center gap-2 rounded border border-[#6fbf6f]/50 bg-[#6fbf6f]/10 py-3 text-[#6fbf6f]">
+              <CheckCircle className="h-5 w-5" />
+              <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                Quest dokončen!
+              </span>
+            </div>
+          )}
         </div>
       </div>
+
+      {/* Abandon Confirmation Modal */}
+      {showAbandonModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="mx-4 w-full max-w-md rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/95 to-black/80 p-6 shadow-2xl">
+            <h3
+              className="mb-4 text-xl text-[#ffd700]"
+              style={{ fontFamily: 'var(--font-medieval)' }}
+            >
+              Opravdu chceš vzdát quest?
+            </h3>
+            <p className="mb-6 text-sm text-[#d4a574]">
+              Quest "{quest.title}" bude odstraněn z tvé deníku a veškerý postup bude ztracen.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowAbandonModal(false)}
+                disabled={isLoading}
+                className="flex-1 rounded border border-[#8b6f47] bg-black/60 py-3 text-sm text-[#d4a574] transition-colors hover:border-[#d4a574] hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                Zrušit
+              </button>
+              <button
+                onClick={handleAbandonQuest}
+                disabled={isLoading}
+                className="flex-1 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/20 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                {isLoading ? 'Opouštím...' : 'Ano, vzdát quest'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
