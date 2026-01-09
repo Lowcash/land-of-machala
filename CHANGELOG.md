@@ -6,6 +6,62 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-09 20:23 - UI Compactness & Mobile Optimization
+
+**Type:** Changed  
+**Scope:** Character, Skills, Mobile UX  
+**Impact:** More compact layouts, better mobile experience, improved readability
+
+### Changed
+
+- **Character Page - Compact Stats Panel:**
+  - Reduced padding: p-4 → p-3
+  - Smaller headings: text-base → text-sm, h-5 → h-4
+  - Tighter spacing: mb-4 → mb-3, space-y-2 → space-y-1.5
+  - Compact stat rows: px-3 py-2 → px-2 py-1.5
+  - Smaller font sizes: text-sm → text-xs, text-[9px] → text-[8px]
+  - Reduced divider margin: my-4 → my-2.5
+  - Compact resistances: px-2 py-1 → px-1.5 py-0.5, text-xs → text-[10px]
+  - **Result:** Stats panel now matches CharacterBox height while showing all info
+
+- **Skills Page - Text Wrapping Fix:**
+  - Skill name: line-clamp-2 → truncate with title tooltip
+  - Font size: text-sm → text-xs
+  - Level text: "Level X/Y" → "Lvl X/Y" with text-[10px] and whitespace-nowrap
+  - **Result:** No more text wrapping, cleaner skill cards
+
+- **Mobile Skill Filter - Compact Layout:**
+  - Reduced padding: p-2 → px-2 py-1.5 (mobile only, desktop unchanged)
+  - Smaller gaps: gap-2 → gap-1.5
+  - Compact buttons: border-2 px-4 py-2 → border px-3 py-1.5 (mobile)
+  - Smaller text: text-sm → text-xs (mobile only)
+  - Smaller icons: h-4 w-4 → h-3 w-3 (mobile)
+  - Responsive design: Desktop keeps original sizes
+  - **Result:** Less scrolling needed on mobile, all filters visible
+
+- **Mobile Detail Screens:**
+  - Quest detail: Already uses `fixed inset-0 z-50` overlay ✓
+  - Skills detail: Already uses MobileOverlay component ✓
+  - **No changes needed:** Both properly overlay header without gaps
+
+- **Prisma 7 Migration:**
+  - **Decision:** Keep Prisma 6.19.1 (latest stable v6)
+  - Prisma 7 still in beta, major version upgrade
+  - v6 is production-ready, no blocking issues
+  - Migration deferred until v7 stable release
+
+- **Version Footer Placement:**
+  - **Best Practice Confirmed:** Consistent placement across login/register/onboarding
+  - Standard pattern: Footer at bottom of auth pages
+  - No changes needed
+
+- **Files changed:** 3 files
+  - `components/features/Character/CharacterDetailContent.tsx` - Compact stats
+  - `components/features/Skills/SkillGrid.tsx` - Text wrapping fix
+  - `components/features/Skills/SkillCategoryFilter.tsx` - Mobile filter compact
+
+---
+
 ## 2026-01-09 19:59 - UI Polish & UX Improvements
 
 **Type:** Added, Changed  

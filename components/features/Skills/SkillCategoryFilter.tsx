@@ -21,10 +21,10 @@ export function SkillCategoryFilter({
   ]
 
   return (
-    <div className="flex gap-2 overflow-x-auto border-b border-[#8b6f47] bg-black/60 p-2 backdrop-blur-sm md:w-full md:flex-col md:gap-3 md:border-b-0 md:p-4">
+    <div className="flex gap-1.5 overflow-x-auto border-b border-[#8b6f47] bg-black/60 px-2 py-1.5 backdrop-blur-sm md:w-full md:flex-col md:gap-3 md:border-b-0 md:p-4">
       <button
         onClick={() => onSelectCategory('all')}
-        className={`shrink-0 rounded border-2 px-4 py-2 text-sm transition-all md:w-full md:text-left ${
+        className={`shrink-0 rounded border px-3 py-1.5 text-xs transition-all md:w-full md:border-2 md:px-4 md:py-2 md:text-sm md:text-left ${
           selectedCategory === 'all'
             ? 'border-[#ffd700] bg-[#8b6f47]/30 text-[#ffd700]'
             : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
@@ -41,15 +41,15 @@ export function SkillCategoryFilter({
           <button
             key={cat.id}
             onClick={() => onSelectCategory(cat.id)}
-            className={`flex shrink-0 items-center gap-2 rounded border-2 px-4 py-2 transition-all md:w-full ${
+            className={`flex shrink-0 items-center gap-1.5 rounded border px-3 py-1.5 text-xs transition-all md:w-full md:gap-2 md:border-2 md:px-4 md:py-2 ${
               isActive
                 ? 'border-[#ffd700] bg-[#8b6f47]/30'
                 : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
             }`}
           >
-            <Icon className={`h-4 w-4 md:h-5 md:w-5 ${isActive ? 'text-[#ffd700]' : cat.color}`} />
+            <Icon className={`h-3 w-3 md:h-4 md:w-4 ${isActive ? 'text-[#ffd700]' : cat.color}`} />
             <span
-              className={`text-sm ${isActive ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
+              className={`text-xs md:text-sm ${isActive ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               {cat.label}
