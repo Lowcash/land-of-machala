@@ -94,17 +94,17 @@ export function CharacterDetailContent({
 
   if (section === 'stats') {
     return (
-      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
+      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
         {/* Combat Stats */}
-        <div className="mb-4">
+        <div className="mb-3">
           <h3
-            className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
+            className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
-            <Swords className="h-5 w-5" />
+            <Swords className="h-4 w-4" />
             Bojové statistiky
           </h3>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-1.5 text-xs">
             <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
               <span className="text-[#8b7355]">Útok</span>
               <div className="text-right">
@@ -116,18 +116,18 @@ export function CharacterDetailContent({
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
               <span className="text-[#8b7355]">Obrana</span>
               <div className="text-right">
                 <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                   {totalDefense}
                 </span>
-                <div className="text-[9px] text-[#8b7355]">
+                <div className="text-[8px] text-[#8b7355]">
                   ({Math.floor(baseDefense)} + {equipmentDefense})
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-between px-2">
+            <div className="flex items-center justify-between px-1.5 py-1">
               <span className="text-[#8b7355]">Kritický zásah</span>
               <span className="text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {critChance}%
@@ -143,43 +143,43 @@ export function CharacterDetailContent({
         </div>
 
         {/* Divider */}
-        <div className="my-4 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+        <div className="my-2.5 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
 
         {/* Resistances */}
         <div>
           <h3
-            className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
+            className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
-            <Shield className="h-5 w-5" />
+            <Shield className="h-4 w-4" />
             Odolnosti
           </h3>
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-2 gap-1.5 text-[10px]">
             <div className="flex items-center justify-between rounded bg-black/40 px-2 py-1">
               <span className="text-[#8b7355]">Fyzická</span>
               <span className="text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.physicalResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded bg-black/40 px-2 py-1">
+            <div className="flex items-center justify-between rounded bg-black/40 px-1.5 py-0.5">
               <span className="text-[#8b7355]">Magická</span>
               <span className="text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.magicalResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded bg-black/40 px-2 py-1">
+            <div className="flex items-center justify-between rounded bg-black/40 px-1.5 py-0.5">
               <span className="text-[#8b7355]">Oheň</span>
               <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.fireResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded bg-black/40 px-2 py-1">
+            <div className="flex items-center justify-between rounded bg-black/40 px-1.5 py-0.5">
               <span className="text-[#8b7355]">Chlad</span>
               <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.coldResistance}%
               </span>
             </div>
-            <div className="col-span-2 flex items-center justify-between rounded bg-black/40 px-2 py-1">
+            <div className="col-span-2 flex items-center justify-between rounded bg-black/40 px-1.5 py-0.5">
               <span className="text-[#8b7355]">Jed</span>
               <span className="text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.poisonResistance}%
