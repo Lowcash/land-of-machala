@@ -210,7 +210,7 @@ export default function RegisterPage() {
             </div>
 
             {/* Mobile Footer */}
-            <div className="mt-4 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
+            <div className="col-span-full border-t border-[#8b6f47]/30 pt-4 text-center lg:col-span-1">
               <p className="text-xs text-[#8b7355]">
                 Verze 2.0 • © {new Date().getFullYear()} Land of Machala
               </p>

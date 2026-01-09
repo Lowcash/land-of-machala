@@ -6,6 +6,59 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-09 19:59 - UI Polish & UX Improvements
+
+**Type:** Added, Changed  
+**Scope:** Analytics, Auth, Character, Skills, Quests  
+**Impact:** Vercel Analytics integration, version footers, improved character stats layout, better skill readability, enhanced quest abandonment UX
+
+### Added
+
+- **Vercel Analytics:**
+  - Installed `@vercel/analytics` package
+  - Integrated Analytics component in root layout
+  - Automatic page view tracking for all routes
+
+- **Version Footer:**
+  - Added "Verze 2.0 • © {year} Land of Machala" to login page (desktop + mobile)
+  - Added version footer to register page (all viewports)
+  - Added version footer to onboarding page
+  - Consistent branding across auth pages
+
+- **Quest Abandon Modal:**
+  - Removed QuestStartButton component (replaced with inline logic)
+  - Added confirmation modal for quest abandonment
+  - Modal shows quest title and warns about progress loss
+  - Cancel/Confirm buttons with loading states
+  - Only active quests show "Vzdát quest" button
+  - Completed quests show read-only badge
+
+### Changed
+
+- **Character Page - Stats & Resistances:**
+  - Merged "Bojové statistiky" and "Odolnosti" into single unified panel
+  - Panel matches CharacterBox styling (border-2, gradient background)
+  - Divider line between Combat Stats and Resistances sections
+  - Positioned on first row next to CharacterBox (desktop)
+  - Mobile: Same layout, stacked vertically
+
+- **Skills Page - Text Overflow:**
+  - Changed skill name from `truncate` (1 line) to `line-clamp-2` (2 lines max)
+  - Added `leading-tight` for better spacing on multi-line names
+  - Long skill names now fully readable without horizontal overflow
+  - Maintains consistent card height
+
+- **Files changed:** 7 files
+  - `app/layout.tsx` - Analytics integration
+  - `components/features/Auth/LoginForm.tsx` - Version footer
+  - `app/(auth)/register/page.tsx` - Version footer visibility
+  - `components/features/Auth/OnboardingForm.tsx` - Version footer
+  - `components/features/Character/CharacterDetailContent.tsx` - Merged stats panel
+  - `components/features/Skills/SkillGrid.tsx` - Line-clamp fix
+  - `components/features/Quest/QuestDetailContent.tsx` - Abandon modal
+
+---
+
 ## 2026-01-08 21:11 - Combat Page 2-Column Refactor
 
 **Type:** Changed  

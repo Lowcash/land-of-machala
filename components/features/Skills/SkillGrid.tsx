@@ -148,7 +148,7 @@ export function SkillGrid({
                       </div>
                       <div className="min-w-0 flex-1">
                         <h3
-                          className={`truncate text-sm ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
+                          className={`line-clamp-2 text-sm leading-tight ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                           style={{ fontFamily: 'var(--font-fantasy)' }}
                         >
                           {skill.name}

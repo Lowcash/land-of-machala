@@ -1165,6 +1165,13 @@ export function OnboardingForm() {
               )}
             </button>
           </div>
+
+          {/* Version Footer */}
+          <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
+            <p className="text-xs text-[#8b7355]">
+              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+            </p>
+          </div>
         </div>
       </div>
     </RouteTransition>

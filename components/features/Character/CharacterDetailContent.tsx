@@ -94,16 +94,14 @@ export function CharacterDetailContent({
 
   if (section === 'stats') {
     return (
-      <div className="space-y-4">
-        {/* Atributy section hidden - stats are in CharacterBox */}
-
+      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
         {/* Combat Stats */}
-        <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+        <div className="mb-4">
           <h3
-            className="mb-3 flex items-center gap-2 text-base text-[#d4a574]"
+            className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
-            <Swords className="h-4 w-4" />
+            <Swords className="h-5 w-5" />
             Bojové statistiky
           </h3>
           <div className="space-y-2 text-sm">
@@ -144,13 +142,16 @@ export function CharacterDetailContent({
           </div>
         </div>
 
+        {/* Divider */}
+        <div className="my-4 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+
         {/* Resistances */}
-        <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4">
+        <div>
           <h3
-            className="mb-3 flex items-center gap-2 text-base text-[#d4a574]"
+            className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
-            <Shield className="h-4 w-4" />
+            <Shield className="h-5 w-5" />
             Odolnosti
           </h3>
           <div className="grid grid-cols-2 gap-2 text-xs">

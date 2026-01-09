@@ -477,12 +477,13 @@ export function LoginForm() {
               {/* Quote/Lore */}
               <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
                 &quot;V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění
-                jako ti před tebou?&quot; hidden lg:block
+                jako ti před tebou?&quot;
               </div>
 
+              {/* Version Footer */}
               <div className="pt-2 text-center">
                 <p className="text-xs text-[#8b7355]">
-                  Aktualizováno 08.01.2026 • © {new Date().getFullYear()} Land of Machala
+                  Verze 2.0 • © {new Date().getFullYear()} Land of Machala
                 </p>
               </div>
             </div>
