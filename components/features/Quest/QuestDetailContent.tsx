@@ -1,5 +1,5 @@
-import { toast } from '@/components/ui/use-toast'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { toast } from '@/components/ui/use-toast'
 import { abandonQuestAction } from '@/lib/actions/quest'
 import { CheckCircle, Circle, Coins, MapPin, User, X, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'

@@ -118,87 +118,89 @@ export function SkillGrid({
               </div>
 
               <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-              {filteredSkills.map((skill) => {
-                const Icon = getIconFromName(skill.iconName)
-                const maxed = skill.currentLevel >= skill.maxRank
-                const canUpgrade =
-                  skill.unlocked && skill.currentLevel < skill.maxRank && talentPoints >= skill.cost
+                {filteredSkills.map((skill) => {
+                  const Icon = getIconFromName(skill.iconName)
+                  const maxed = skill.currentLevel >= skill.maxRank
+                  const canUpgrade =
+                    skill.unlocked &&
+                    skill.currentLevel < skill.maxRank &&
+                    talentPoints >= skill.cost
 
-                return (
-                  <button
-                    key={skill.id}
-                    onClick={() => setSelectedSkill(skill.id)}
-                    className={`min-h-touch-target w-full rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
-                      selectedSkill === skill.id
-                        ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
-                        : skill.unlocked
-                          ? 'border-[#8b6f47] bg-black/60 hover:border-[#d4a574] hover:bg-black/70'
-                          : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
-                    }`}
-                  >
-                    <div className="mb-2 flex items-start gap-2">
-                      <div
-                        className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
-                      >
-                        {skill.unlocked ? (
-                          <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
-                        ) : (
-                          <Lock className="h-5 w-5 text-[#d4a574]" />
-                        )}
-                      </div>
-                      <div className="min-w-0 flex-1">
-                        <h3
-                          className={`truncate text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
-                          style={{ fontFamily: 'var(--font-fantasy)' }}
-                        >
-                          {skill.name}
-                        </h3>
-                        <p className="text-xs text-[#8b7355]">
-                          Level {skill.currentLevel}/{skill.maxRank}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Level dots */}
-                    <div className="mb-2 flex gap-1">
-                      {Array.from({ length: skill.maxRank }).map((_, i) => (
+                  return (
+                    <button
+                      key={skill.id}
+                      onClick={() => setSelectedSkill(skill.id)}
+                      className={`min-h-touch-target w-full rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
+                        selectedSkill === skill.id
+                          ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
+                          : skill.unlocked
+                            ? 'border-[#8b6f47] bg-black/60 hover:border-[#d4a574] hover:bg-black/70'
+                            : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
+                      }`}
+                    >
+                      <div className="mb-2 flex items-start gap-2">
                         <div
-                          key={i}
-                          className={`h-1.5 flex-1 rounded-full ${
-                            i < skill.currentLevel
-                              ? `bg-linear-to-r ${
-                                  skill.category === 'combat'
-                                    ? 'from-[#ff6b6b] to-[#ff8b8b]'
-                                    : skill.category === 'defense'
-                                      ? 'from-[#69ccf0] to-[#89dcff]'
-                                      : skill.category === 'magic'
-                                        ? 'from-[#b66bd4] to-[#d68bf4]'
-                                        : 'from-[#6fbf6f] to-[#8fdf8f]'
-                                }`
-                              : 'bg-black/60'
-                          }`}
-                        />
-                      ))}
-                    </div>
-
-                    {maxed && skill.unlocked && (
-                      <div className="flex items-center gap-1 text-[10px] text-[#6fbf6f]">
-                        <Check className="h-3 w-3" />
-                        <span>Maximální level</span>
+                          className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
+                        >
+                          {skill.unlocked ? (
+                            <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
+                          ) : (
+                            <Lock className="h-5 w-5 text-[#d4a574]" />
+                          )}
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <h3
+                            className={`truncate text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
+                            style={{ fontFamily: 'var(--font-fantasy)' }}
+                          >
+                            {skill.name}
+                          </h3>
+                          <p className="text-xs text-[#8b7355]">
+                            Level {skill.currentLevel}/{skill.maxRank}
+                          </p>
+                        </div>
                       </div>
-                    )}
 
-                    {!maxed && skill.unlocked && (
-                      <div className="text-[10px] text-[#8b7355]">
-                        Cena:{' '}
-                        <span className={canUpgrade ? 'text-[#ffd700]' : 'text-[#ff6b6b]'}>
-                          {skill.cost} bodů
-                        </span>
+                      {/* Level dots */}
+                      <div className="mb-2 flex gap-1">
+                        {Array.from({ length: skill.maxRank }).map((_, i) => (
+                          <div
+                            key={i}
+                            className={`h-1.5 flex-1 rounded-full ${
+                              i < skill.currentLevel
+                                ? `bg-linear-to-r ${
+                                    skill.category === 'combat'
+                                      ? 'from-[#ff6b6b] to-[#ff8b8b]'
+                                      : skill.category === 'defense'
+                                        ? 'from-[#69ccf0] to-[#89dcff]'
+                                        : skill.category === 'magic'
+                                          ? 'from-[#b66bd4] to-[#d68bf4]'
+                                          : 'from-[#6fbf6f] to-[#8fdf8f]'
+                                  }`
+                                : 'bg-black/60'
+                            }`}
+                          />
+                        ))}
                       </div>
-                    )}
-                  </button>
-                )
-              })}
+
+                      {maxed && skill.unlocked && (
+                        <div className="flex items-center gap-1 text-[10px] text-[#6fbf6f]">
+                          <Check className="h-3 w-3" />
+                          <span>Maximální level</span>
+                        </div>
+                      )}
+
+                      {!maxed && skill.unlocked && (
+                        <div className="text-[10px] text-[#8b7355]">
+                          Cena:{' '}
+                          <span className={canUpgrade ? 'text-[#ffd700]' : 'text-[#ff6b6b]'}>
+                            {skill.cost} bodů
+                          </span>
+                        </div>
+                      )}
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
