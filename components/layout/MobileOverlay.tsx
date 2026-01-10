@@ -34,7 +34,7 @@ export function MobileOverlay({
 
   return (
     <div
-      className={`fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md md:hidden ${className}`}
+      className={`fixed inset-0 z-50 flex flex-col bg-black/95 pt-11.75 backdrop-blur-md md:hidden ${className}`}
     >
       {/* Header */}
       <div className="flex shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-3 backdrop-blur-md">

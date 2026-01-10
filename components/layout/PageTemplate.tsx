@@ -67,7 +67,7 @@ export function PageTemplate({
 
         {/* Main content - constrained width, full height */}
         <main
-          className={`relative z-10 mx-auto flex h-0 min-h-0 w-full flex-1 ${maxWidthClass} flex-col overflow-hidden pt-11.75 md:pt-0`}
+          className={`relative z-10 mx-auto flex h-0 min-h-0 w-full flex-1 ${maxWidthClass} flex-col overflow-hidden md:pt-0`}
         >
           {children}
         </main>
