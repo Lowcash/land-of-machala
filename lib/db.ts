@@ -1,12 +1,10 @@
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
+  // Prisma 7 with MySQL uses binary query engine by default
+  // Empty object is valid for standard database connections
   return new PrismaClient({
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL,
-      },
-    },
+    log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 }
 

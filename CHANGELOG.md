@@ -6,6 +6,53 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-10 19:19 - Prisma Version Downgrade
+
+**Type:** Fixed  
+**Scope:** Database / Dependencies  
+**Impact:** Critical - Resolved login/authentication blocker
+
+### Fixed
+
+- **Prisma:** Downgraded from v7.2.0 to v6.19.1 to fix `PrismaClientConstructorValidationError`
+  - Prisma v7.2.0 introduced breaking changes requiring driver adapters for MySQL
+  - Error: "Using engine type 'client' requires either 'adapter' or 'accelerateUrl'"
+  - Prisma v6.19.1 works with standard MySQL connections via query engine binary
+- **Schema:** Added missing `url = env("DATABASE_URL")` to datasource block
+  - Required for Prisma v6 schema validation
+
+### Dependencies
+
+- `@prisma/client`: 7.2.0 → 6.19.1
+- `prisma`: 7.2.0 → 6.19.1
+
+### Tested
+
+- Guest auth endpoint returns valid credentials (200 OK)
+- Database connection works via standard MySQL protocol
+- No adapter/accelerateUrl required
+
+---
+
+## 2026-01-10 19:04 - Prisma Configuration Fix
+
+**Type:** Fixed  
+**Scope:** Database, Infrastructure  
+**Impact:** Resolved PrismaClient initialization errors preventing guest login and build process
+
+### Fixed
+
+- **Prisma Configuration:**
+  - Removed invalid `datasources` option from `PrismaClient()` constructor in `lib/db.ts`
+  - Deleted `prisma/prisma.config.ts` file (not required in Prisma 7.2.0)
+  - PrismaClient now initializes with default options (reads from `schema.prisma`)
+  - Resolved "Unknown property datasources" error during builds
+  - Guest login API endpoint now functional
+
+- **Files changed:** 2 files (`lib/db.ts`, `prisma/prisma.config.ts` deleted)
+
+---
+
 ## 2026-01-09 19:59 - UI Polish & UX Improvements
 
 **Type:** Added, Changed  

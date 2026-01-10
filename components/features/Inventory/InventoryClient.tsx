@@ -358,7 +358,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
 
       {/* Mobile Fullscreen Overlay */}
       {selectedItem && selectedItemData && (
-        <div className="fixed inset-0 z-50 flex flex-col bg-black/95 backdrop-blur-md md:hidden">
+        <div className="fixed inset-0 z-50 flex flex-col bg-black/95 pt-11.75 backdrop-blur-md md:hidden">
           <div className="flex shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-2 backdrop-blur-md">
             <h2 className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-medieval)' }}>
               Detail předmětu
