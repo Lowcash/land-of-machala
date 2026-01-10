@@ -247,11 +247,11 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
           {quest.characterStatus === 'ACTIVE' && (
             <button
               onClick={() => setShowAbandonModal(true)}
-              className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/20 py-3 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/30"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/10 py-2 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/20"
             >
-              <X className="h-5 w-5" />
-              <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                Vzdát quest
+              <X className="h-4 w-4" />
+              <span className="text-xs" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                Zahodit
               </span>
             </button>
           )}

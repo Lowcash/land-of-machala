@@ -481,7 +481,7 @@ export function LoginForm() {
               </div>
 
               {/* Version Footer */}
-              <div className="pt-2 text-center">
+              <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
                 <p className="text-xs text-[#8b7355]">
                   Verze 2.0 • © {new Date().getFullYear()} Land of Machala
                 </p>

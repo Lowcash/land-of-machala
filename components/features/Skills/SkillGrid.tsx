@@ -150,12 +150,11 @@ export function SkillGrid({
                         <h3
                           className={`truncate text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                           style={{ fontFamily: 'var(--font-fantasy)' }}
-                          title={skill.name}
                         >
                           {skill.name}
                         </h3>
-                        <p className="text-[10px] text-[#8b7355] whitespace-nowrap">
-                          Lvl {skill.currentLevel}/{skill.maxRank}
+                        <p className="text-xs text-[#8b7355]">
+                          Level {skill.currentLevel}/{skill.maxRank}
                         </p>
                       </div>
                     </div>
