@@ -24,7 +24,7 @@ export function SkillCategoryFilter({
     <div className="grid grid-cols-3 gap-2 border-b border-[#8b6f47] bg-black/60 p-2 backdrop-blur-sm md:flex md:w-full md:flex-col md:gap-3 md:border-b-0 md:p-4">
       <button
         onClick={() => onSelectCategory('all')}
-        className={`w-full rounded border-2 px-2 py-2 text-xs transition-all md:px-4 md:text-sm md:text-left ${
+        className={`w-full rounded border-2 px-2 py-2 text-xs transition-all md:px-4 md:text-left md:text-sm ${
           selectedCategory === 'all'
             ? 'border-[#ffd700] bg-[#8b6f47]/30 text-[#ffd700]'
             : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
@@ -47,7 +47,9 @@ export function SkillCategoryFilter({
                 : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
             }`}
           >
-            <Icon className={`h-3.5 w-3.5 md:h-5 md:w-5 ${isActive ? 'text-[#ffd700]' : cat.color}`} />
+            <Icon
+              className={`h-3.5 w-3.5 md:h-5 md:w-5 ${isActive ? 'text-[#ffd700]' : cat.color}`}
+            />
             <span
               className={`text-xs md:text-sm ${isActive ? 'text-[#ffd700]' : 'text-[#d4a574]'}`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
