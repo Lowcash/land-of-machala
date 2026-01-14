@@ -78,7 +78,7 @@ export async function InventoryPanel() {
         quantity: 1,
         defense: 10,
       },
-    ] as any
+    ] as InventoryItemUI[]
   }
 
   return <InventoryClient initialInventory={inventory} />

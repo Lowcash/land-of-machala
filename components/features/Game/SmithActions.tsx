@@ -1,10 +1,12 @@
 'use client'
 
+import { ServiceTable } from '@/components/ui/ServiceTable'
 import { Coins, Home, Store } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
-import { ServiceTable } from '@/components/ui/ServiceTable'
+
+import type { LucideIcon } from 'lucide-react'
 
 type ItemType = 'weapon' | 'armor' | 'consumable'
 
@@ -12,7 +14,7 @@ interface Item {
   id: number
   name: string
   type: ItemType
-  icon: any
+  icon: LucideIcon
   price?: number
   attack?: number
   defense?: number
@@ -29,6 +31,14 @@ interface Item {
   intelligence?: number
   agility?: number
   stamina?: number
+}
+
+interface StockItem {
+  name: string
+  attack?: number
+  defense?: number
+  price: number
+  type: string
 }
 
 interface SmithActionsProps {
@@ -68,7 +78,7 @@ export function SmithActions({
     { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor' },
   ]
 
-  const handleBuy = (item: any) => {
+  const handleBuy = (item: StockItem) => {
     if (gold < item.price) {
       showMessage('Nemáš dost zlata!')
       return
@@ -120,16 +130,19 @@ export function SmithActions({
       <GamePanel title="Zbrojíř">
         {!selectedAction ? (
           <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
-            <p className="py-4 text-center text-xs text-[#8b7355]">
-              Vyber akci z menu vlevo.
-            </p>
+            <p className="py-4 text-center text-xs text-[#8b7355]">Vyber akci z menu vlevo.</p>
           </div>
         ) : selectedAction === 'buy' ? (
           <ServiceTable
             items={stock}
             mode="table"
             columns={[
-              { key: 'name', label: 'Předmět', align: 'left', render: (item) => <span className="text-[#f5e6d3]">{item.name}</span> },
+              {
+                key: 'name',
+                label: 'Předmět',
+                align: 'left',
+                render: (item) => <span className="text-[#f5e6d3]">{item.name}</span>,
+              },
               {
                 key: 'stats',
                 label: 'Bonus',
@@ -141,7 +154,12 @@ export function SmithActions({
                   </>
                 ),
               },
-              { key: 'price', label: 'Cena', align: 'right', render: (item) => <span className="text-[#ffd700]">{item.price}g</span> },
+              {
+                key: 'price',
+                label: 'Cena',
+                align: 'right',
+                render: (item) => <span className="text-[#ffd700]">{item.price}g</span>,
+              },
             ]}
             actions={[
               {
@@ -162,7 +180,7 @@ export function SmithActions({
       </GamePanel>
 
       {message && (
-        <div className="animate-in fade-in slide-in-from-top-4 fixed left-1/2 top-20 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
+        <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
           {message}
         </div>
       )}

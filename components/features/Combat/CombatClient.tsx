@@ -26,6 +26,20 @@ import { useState } from 'react'
 type Panel = 'inventory' | 'character' | 'skills' | 'quests' | 'map' | 'settings' | 'help' | null
 type ItemType = 'weapon' | 'armor' | 'consumable'
 
+interface CharacterStats {
+  name: string
+  level: number
+  hp: number
+  maxHp: number
+  mana: number
+  maxMana: number
+  strength: number
+  intelligence: number
+  agility: number
+  stamina: number
+  class: string
+}
+
 interface Item {
   id: number
   name: string
@@ -46,19 +60,7 @@ interface Item {
 }
 
 interface CombatClientProps {
-  character: {
-    name: string
-    level: number
-    hp: number
-    maxHp: number
-    mana: number
-    maxMana: number
-    strength: number
-    intelligence: number
-    agility: number
-    stamina: number
-    class: string
-  }
+  character: CharacterStats
   inventory: Item[]
 }
 
@@ -512,7 +514,23 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   )
 }
 
-function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPlayerTurn }: any) {
+interface CombatActionsProps {
+  onAttack: (type: 'quick' | 'heavy' | 'magic') => void
+  onDefend: (type: 'block' | 'dodge') => void
+  onFlee: () => void
+  onUsePotion: (itemId: number) => void
+  potions: Item[]
+  isPlayerTurn: boolean
+}
+
+function CombatActions({
+  onAttack,
+  onDefend,
+  onFlee,
+  onUsePotion,
+  potions,
+  isPlayerTurn,
+}: CombatActionsProps) {
   const [showPotions, setShowPotions] = useState(false)
 
   return (
@@ -641,18 +659,16 @@ function CombatActions({ onAttack, onDefend, onFlee, onUsePotion, potions, isPla
   )
 }
 
-function StatDisplay({
-  label,
-  value,
-  color,
-}: {
+interface StatDisplayProps {
   label: string
   value: string | number
   color: string
-}) {
+}
+
+function StatDisplay({ label, value, color }: StatDisplayProps) {
   return (
     <div className="rounded-lg border border-[#8b6f47]/50 bg-black/40 p-2">
-      <div className="text-[10px] uppercase tracking-wider text-[#8b7355]">{label}</div>
+      <div className="text-[10px] tracking-wider text-[#8b7355] uppercase">{label}</div>
       <div className={`text-lg font-bold ${color}`} style={{ fontFamily: 'var(--font-fantasy)' }}>
         {value}
       </div>
@@ -677,7 +693,10 @@ function MobileAccordionSection({
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-black/60"
       >
-        <span className="text-sm font-bold text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+        <span
+          className="text-sm font-bold text-[#d4a574]"
+          style={{ fontFamily: 'var(--font-fantasy)' }}
+        >
           {title}
         </span>
         <ChevronDown

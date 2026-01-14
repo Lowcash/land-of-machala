@@ -3,13 +3,15 @@
 import { Trophy, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import type { LucideIcon } from 'lucide-react'
+
 type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
 export interface Achievement {
   id: number
   title: string
   description: string
-  icon?: any
+  icon?: LucideIcon
   rarity: AchievementRarity
 }
 

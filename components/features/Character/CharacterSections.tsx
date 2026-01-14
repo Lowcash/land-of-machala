@@ -7,10 +7,12 @@
 
 import { Sparkles, Swords, Trophy } from 'lucide-react'
 
+import type { CharacterItem } from './types'
+
 type SectionType = 'stats' | 'equipment' | 'achievements'
 
 interface CharacterSectionsProps {
-  equipped: any[]
+  equipped: CharacterItem[]
   selectedSection: SectionType | null
   setSelectedSection: (section: SectionType | null) => void
 }

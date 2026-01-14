@@ -2,13 +2,14 @@
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { equipItemAction, unequipItemAction, useItemAction } from '@/lib/actions/inventory'
+import type { LucideIcon } from 'lucide-react'
 import { ArrowLeft, Backpack, Check, Heart, Shield, Sparkles, Sword, Zap } from 'lucide-react'
 import Link from 'next/link'
 import { useEffect, useRef, useState, useTransition } from 'react'
 import { toast } from 'sonner'
 import type { InventoryItemUI, ItemRarity } from './types'
 
-const ICON_MAP: Record<string, any> = {
+const ICON_MAP: Record<string, LucideIcon> = {
   sword: Sword,
   shield: Shield,
   heart: Heart,
@@ -17,7 +18,7 @@ const ICON_MAP: Record<string, any> = {
   backpack: Backpack,
 }
 
-function getIconFromName(iconName: string) {
+function getIconFromName(iconName: string): LucideIcon {
   return ICON_MAP[(iconName || '').toLowerCase()] || Sparkles
 }
 
@@ -106,22 +107,23 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
   }
 
   const handleUse = async (id: string) => {
-    startTransition(async () => {
-      const [result, err] = await useItemAction({ inventoryItemId: id })
-      if (err) {
-        toast.error('Chyba při použití předmětu')
-        return
-      }
-      if (result) {
-        setInventory((prev) => {
-          const item = prev.find((i) => i.id === id)
-          if (item && item.quantity > 1) {
-            return prev.map((i) => (i.id === id ? { ...i, quantity: i.quantity - 1 } : i))
-          }
-          return prev.filter((i) => i.id !== id)
-        })
-        toast.success('Předmět použit')
-      }
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [result] = await useItemAction({ inventoryItemId: id })
+
+    if (!result) {
+      toast.error('Chyba při použití předmětu')
+      return
+    }
+
+    startTransition(() => {
+      setInventory((prev) => {
+        const item = prev.find((i) => i.id === id)
+        if (item && item.quantity > 1) {
+          return prev.map((i) => (i.id === id ? { ...i, quantity: i.quantity - 1 } : i))
+        }
+        return prev.filter((i) => i.id !== id)
+      })
+      toast.success('Předmět použit')
     })
   }
 
@@ -300,7 +302,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                       </div>
                       <div className="border-t border-[#8b6f47]/50 pt-2">
                         <p className="text-sm text-[#8b7355] italic">
-                          "{selectedItemData.description}"
+                          &quot;{selectedItemData.description}&quot;
                         </p>
                       </div>
                     </div>
@@ -438,7 +440,9 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
                   )}
                 </div>
                 <div className="border-t border-[#8b6f47]/50 pt-2">
-                  <p className="text-sm text-[#8b7355] italic">"{selectedItemData.description}"</p>
+                  <p className="text-sm text-[#8b7355] italic">
+                    &quot;{selectedItemData.description}&quot;
+                  </p>
                 </div>
               </div>
 

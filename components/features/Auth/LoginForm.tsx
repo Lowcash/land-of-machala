@@ -476,8 +476,8 @@ export function LoginForm() {
 
               {/* Quote/Lore */}
               <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
-                &quot;V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění
-                jako ti před tebou?&quot;
+                V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako
+                ti před tebou?
               </div>
 
               {/* Version Footer */}

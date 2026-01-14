@@ -2,6 +2,11 @@
 
 import { useCallback, useState } from 'react'
 
+interface Item {
+  id: string
+  [key: string]: unknown
+}
+
 /**
  * Unified hook for managing game resources (gold, inventory, bank items)
  * Reduces prop drilling and consolidates state management
@@ -9,8 +14,8 @@ import { useCallback, useState } from 'react'
 export function useGameResources(initialGold: number = 0) {
   const [gold, setGold] = useState(initialGold)
   const [bankGold, setBankGold] = useState(0)
-  const [inventory, setInventory] = useState<any[]>([])
-  const [bankItems, setBankItems] = useState<any[]>([])
+  const [inventory, setInventory] = useState<Item[]>([])
+  const [bankItems, setBankItems] = useState<Item[]>([])
 
   const addGold = useCallback((amount: number) => {
     setGold((prev) => prev + amount)
@@ -51,7 +56,7 @@ export function useGameResources(initialGold: number = 0) {
     [bankGold]
   )
 
-  const addItem = useCallback((item: any) => {
+  const addItem = useCallback((item: Item) => {
     setInventory((prev) => [...prev, item])
   }, [])
 
@@ -148,13 +153,18 @@ export function useInfoText(initialText: string | null = null) {
   }
 }
 
+interface Buff {
+  id: string
+  [key: string]: unknown
+}
+
 /**
  * Hook for managing active buffs/debuffs
  */
-export function useBuffs(initialBuffs: any[] = []) {
-  const [activeBuffs, setActiveBuffs] = useState<any[]>(initialBuffs)
+export function useBuffs(initialBuffs: Buff[] = []) {
+  const [activeBuffs, setActiveBuffs] = useState<Buff[]>(initialBuffs)
 
-  const addBuff = useCallback((buff: any) => {
+  const addBuff = useCallback((buff: Buff) => {
     setActiveBuffs((prev) => [...prev, buff])
   }, [])
 

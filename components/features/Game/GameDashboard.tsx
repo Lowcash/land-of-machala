@@ -16,8 +16,28 @@ import { TownActions } from './TownActions'
 
 type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
 
+interface CharacterData {
+  id: string
+  name: string
+  level: number
+  hp: number
+  maxHp: number
+  mana: number
+  maxMana: number
+  xp: number
+  xpToNextLevel: number
+  gold: number
+  class: string
+  stats: {
+    strength: number
+    intelligence: number
+    agility: number
+    stamina: number
+  }
+}
+
 interface GameDashboardProps {
-  character: any // Replace with proper type
+  character: CharacterData
 }
 
 export function GameDashboard({ character }: GameDashboardProps) {
@@ -28,8 +48,14 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const [, startTransition] = useTransition()
 
   // Mock data for now - should come from props or query
+  interface Buff {
+    name: string
+    stat: string
+    val: number
+  }
+
   const [gold, setGold] = useState(character.gold || 0)
-  const [activeBuffs, setActiveBuffs] = useState<any[]>([])
+  const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
 
   const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
     startTransition(async () => {

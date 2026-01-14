@@ -54,7 +54,7 @@ export function SkillUpgradeButton({
         // Refresh the page to show updated data
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       showNotification({
         variant: 'error',
         title: 'Chyba',

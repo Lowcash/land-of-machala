@@ -1,5 +1,6 @@
 'use client'
 
+import type { LucideIcon } from 'lucide-react'
 import { LogOut } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
@@ -8,7 +9,7 @@ import { PlayerStats } from './PlayerStats'
 
 interface GameHeaderProps {
   /** Icon to display */
-  icon?: any
+  icon?: LucideIcon | ReactNode
   /** Main title */
   title: string
   /** Subtitle (optional) */
@@ -65,20 +66,20 @@ export function GameHeader({
         {characterId && <PlayerStats characterId={characterId} />}
       </div>
 
-        {/* Right - Logout or Custom Content */}
-        {rightContent || (
-          <div className="flex items-center gap-2">
-            {/* Logout Button */}
-            <button
-              onClick={() => router.push('/login')}
-              aria-label="Odhlásit se z hry"
-              className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/10 focus-visible:ring-2 focus-visible:ring-[#ff6b6b]"
-            >
-              <LogOut className="h-4 w-4 text-[#ff6b6b]" />
-              <span className="hidden text-sm text-[#ff6b6b] sm:inline">Odhlásit</span>
-            </button>
-          </div>
-        )}
-      </div>
-    )
-  }
+      {/* Right - Logout or Custom Content */}
+      {rightContent || (
+        <div className="flex items-center gap-2">
+          {/* Logout Button */}
+          <button
+            onClick={() => router.push('/login')}
+            aria-label="Odhlásit se z hry"
+            className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/10 focus-visible:ring-2 focus-visible:ring-[#ff6b6b]"
+          >
+            <LogOut className="h-4 w-4 text-[#ff6b6b]" />
+            <span className="hidden text-sm text-[#ff6b6b] sm:inline">Odhlásit</span>
+          </button>
+        </div>
+      )}
+    </div>
+  )
+}

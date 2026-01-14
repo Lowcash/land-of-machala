@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import {
   Axe,
   Beer,
@@ -39,7 +40,7 @@ import {
   Zap,
 } from 'lucide-react'
 
-export const iconMap: Record<string, any> = {
+export const iconMap: Record<string, LucideIcon> = {
   axe: Axe,
   beer: Beer,
   book: Book,

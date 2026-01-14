@@ -3,6 +3,8 @@
 import { GameFooter } from '@/components/features/Game/GameFooter'
 import { GameHeader } from '@/components/features/Game/GameHeader'
 import { RouteTransition } from '@/components/layout/RouteTransition'
+import type { LucideIcon } from 'lucide-react'
+import Image from 'next/image'
 import type { ReactNode } from 'react'
 
 interface PageTemplateProps {
@@ -11,7 +13,7 @@ interface PageTemplateProps {
   /** Subtitle (optional) */
   subtitle?: string
   /** Icon component */
-  icon?: any
+  icon?: LucideIcon | ReactNode
   /** Background image */
   backgroundImage?: string
   /** Max width constraint for content */
@@ -53,7 +55,7 @@ export function PageTemplate({
         {/* Background layer (full width) */}
         {backgroundImage && (
           <div className="absolute inset-0">
-            <img src={backgroundImage} alt={title} className="h-full w-full object-cover" />
+            <Image src={backgroundImage} alt={title} fill className="object-cover" priority />
             <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-black/60" />
           </div>
         )}
