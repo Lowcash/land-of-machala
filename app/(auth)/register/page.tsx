@@ -89,9 +89,13 @@ export default function RegisterPage() {
 
                 <div className="mb-2 flex items-center justify-center gap-2">
                   <Sparkles className="h-3 w-3 text-[#d4a574]" />
-                  <p className="text-sm text-[#d4a574] sm:text-base">Vytvoř si nový účet</p>
+                  <p className="text-sm text-[#d4a574] sm:text-base">Textová fantasy hra</p>
                   <Sparkles className="h-3 w-3 text-[#d4a574]" />
                 </div>
+
+                <p className="mt-2 text-xs text-[#8b7355] italic sm:text-sm">
+                  Vytvoř si účet a začni své dobrodružství...
+                </p>
               </div>
 
               {/* Register Form */}
@@ -183,29 +187,26 @@ export default function RegisterPage() {
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <Sparkles className="h-4 w-4" />
-                    Začni své dobrodružství
+                    Co tě čeká
                   </h3>
                   <p className="text-center text-xs leading-relaxed text-[#d4a574]">
-                    Registrací získáš přístup do světa Machala, kde můžeš vytvořit svého hrdinu,
-                    bojovat s monstry a získávat legendární předměty.
+                    Vytvořit svého hrdinu, bojovat s monstry, plnit questy a odhalovat příběh
+                    země Machala.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* Right Column: Info - desktop only */}
-            <div className="mx-auto hidden w-full max-w-md space-y-4 self-end lg:block">
+            <div className="mx-auto hidden w-full max-w-md space-y-4 lg:block">
               <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
                 <h3
                   className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <Sparkles className="h-5 w-5" />
-                  Začni své dobrodružství
+                  Co tě čeká
                 </h3>
-                <p className="mb-3 text-sm leading-relaxed text-[#d4a574]">
-                  Registrací získáš přístup do světa Machala, kde můžeš:
-                </p>
                 <ul className="space-y-2 text-sm text-[#d4a574]">
                   <li className="flex items-start gap-2">
                     <span className="mt-1 text-[#ffd700]">•</span>
@@ -224,6 +225,11 @@ export default function RegisterPage() {
                     <span>Rozvíjet dovednosti ve 3 větvích talentů</span>
                   </li>
                 </ul>
+              </div>
+
+              {/* Quote/Lore - matching login page */}
+              <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
+                &quot;Tvá cesta začíná zde. Vstup do světa Machala a staň se legendou.&quot;
               </div>
 
               {/* Version Footer */}
