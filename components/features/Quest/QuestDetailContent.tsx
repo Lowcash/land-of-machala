@@ -204,18 +204,19 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
                   <span className="text-sm text-[#f5e6d3]">{quest.rewardGold} zlatých</span>
                 </div>
               )}
-              {quest.rewards.map((reward) =>
-                reward.item ? (
-                  <div
-                    key={reward.id}
-                    className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/40 px-3 py-2"
-                  >
-                    <span className="text-sm text-[#69ccf0]">
-                      {reward.quantity}x {reward.item.name}
-                    </span>
-                  </div>
-                ) : null
-              )}
+              {Array.isArray(quest.rewards) &&
+                quest.rewards.map((reward) =>
+                  reward.item ? (
+                    <div
+                      key={reward.id}
+                      className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/40 px-3 py-2"
+                    >
+                      <span className="text-sm text-[#69ccf0]">
+                        {reward.quantity}x {reward.item.name}
+                      </span>
+                    </div>
+                  ) : null
+                )}
             </div>
           </div>
 
