@@ -76,12 +76,12 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
         toast({
           variant: 'success',
           title: 'Quest opuštěn',
-          description: `Opustil jsi quest "${quest.title}"`,
+          description: `Opustil jsi quest &quot;${quest.title}&quot;`,
         })
         setShowAbandonModal(false)
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       toast({
         variant: 'error',
         title: 'Chyba',
@@ -279,7 +279,8 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               Opravdu chceš vzdát quest?
             </h3>
             <p className="mb-6 text-sm text-[#d4a574]">
-              Quest "{quest.title}" bude odstraněn z tvé deníku a veškerý postup bude ztracen.
+              Quest &quot;{quest.title}&quot; bude odstraněn z tvé deníku a veškerý postup bude
+              ztracen.
             </p>
             <div className="flex gap-3">
               <button

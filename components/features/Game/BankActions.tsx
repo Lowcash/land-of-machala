@@ -1,7 +1,7 @@
 'use client'
 
+import { ArrowDownToLine, ArrowUpFromLine, Backpack, Coins, Home } from 'lucide-react'
 import { useState } from 'react'
-import { Home, Backpack, Coins, ArrowDownToLine, ArrowUpFromLine } from 'lucide-react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
 
@@ -11,7 +11,6 @@ interface Item {
   type: string
   value?: number
   equipped?: boolean
-  [key: string]: any
 }
 
 interface BankActionsProps {
@@ -21,9 +20,9 @@ interface BankActionsProps {
   bankGold: number
   setBankGold: (val: number | ((p: number) => number)) => void
   bankItems: Item[]
-  setBankItems: (items: any) => void
+  setBankItems: (items: Item[]) => void
   inventory: Item[]
-  setInventory: (items: any) => void
+  setInventory: (items: Item[]) => void
 }
 
 export function BankActions({
@@ -110,7 +109,9 @@ export function BankActions({
             <button
               onClick={() => setTab('gold')}
               className={`flex-1 rounded px-3 py-2 text-xs font-semibold transition-colors ${
-                tab === 'gold' ? 'bg-[#8b6f47] text-[#f5e6d3]' : 'text-[#8b7355] hover:text-[#f5e6d3]'
+                tab === 'gold'
+                  ? 'bg-[#8b6f47] text-[#f5e6d3]'
+                  : 'text-[#8b7355] hover:text-[#f5e6d3]'
               }`}
             >
               <Coins className="mx-auto mb-1 h-4 w-4" />
@@ -119,7 +120,9 @@ export function BankActions({
             <button
               onClick={() => setTab('items')}
               className={`flex-1 rounded px-3 py-2 text-xs font-semibold transition-colors ${
-                tab === 'items' ? 'bg-[#8b6f47] text-[#f5e6d3]' : 'text-[#8b7355] hover:text-[#f5e6d3]'
+                tab === 'items'
+                  ? 'bg-[#8b6f47] text-[#f5e6d3]'
+                  : 'text-[#8b7355] hover:text-[#f5e6d3]'
               }`}
             >
               <Backpack className="mx-auto mb-1 h-4 w-4" />
@@ -208,9 +211,9 @@ export function BankActions({
               {/* Bank Items */}
               <div>
                 <div className="mb-1 text-xs text-[#d4a574]">Uložené v bance:</div>
-                <div className="scrollbar-custom max-h-[150px] overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2">
+                <div className="scrollbar-custom max-h-37.5 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2">
                   {bankItems.length === 0 ? (
-                    <div className="p-2 text-xs italic text-[#8b7355]">Prázdný trezor</div>
+                    <div className="p-2 text-xs text-[#8b7355] italic">Prázdný trezor</div>
                   ) : (
                     bankItems.map((item) => (
                       <div
@@ -233,9 +236,11 @@ export function BankActions({
               {/* Inventory Items */}
               <div>
                 <div className="mb-1 text-xs text-[#d4a574]">V batohu (k uložení):</div>
-                <div className="scrollbar-custom max-h-[150px] overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2">
+                <div className="scrollbar-custom max-h-37.5 overflow-y-auto rounded border border-[#8b6f47] bg-black/60 p-2">
                   {inventory.filter((i) => !i.equipped).length === 0 ? (
-                    <div className="p-2 text-xs italic text-[#8b7355]">Žádné předměty k uložení</div>
+                    <div className="p-2 text-xs text-[#8b7355] italic">
+                      Žádné předměty k uložení
+                    </div>
                   ) : (
                     inventory
                       .filter((i) => !i.equipped)
@@ -263,7 +268,7 @@ export function BankActions({
 
       <GamePanel title="Bankéř">
         <div className="flex gap-3 rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
-          <div className="flex h-[40px] min-w-[40px] items-center justify-center rounded-full border border-[#8b6f47] bg-[#8b6f47]/20">
+          <div className="flex h-10 min-w-10 items-center justify-center rounded-full border border-[#8b6f47] bg-[#8b6f47]/20">
             <Coins className="h-5 w-5 text-[#f5e6d3]" />
           </div>
           <div>

@@ -92,6 +92,10 @@ export default function RegisterPage() {
                   <p className="text-sm text-[#d4a574] sm:text-base">Vytvoř si nový účet</p>
                   <Sparkles className="h-3 w-3 text-[#d4a574]" />
                 </div>
+
+                <p className="mt-2 text-xs text-[#8b7355] italic sm:text-sm">
+                  Tvá legenda čeká na sepsání...
+                </p>
               </div>
 
               {/* Register Form */}
@@ -224,6 +228,12 @@ export default function RegisterPage() {
                     <span>Rozvíjet dovednosti ve 3 větvích talentů</span>
                   </li>
                 </ul>
+              </div>
+
+              {/* Quote/Lore */}
+              <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
+                V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako
+                ti před tebou?
               </div>
 
               {/* Version Footer */}

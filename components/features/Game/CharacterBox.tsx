@@ -1,4 +1,25 @@
 import { Brain, Shield, Sword, User, Wind } from 'lucide-react'
+import Image from 'next/image'
+
+interface CharacterBoxProps {
+  name: string
+  level: number
+  hp: number
+  hpMax: number
+  mana: number
+  manaMax: number
+  stats?: {
+    strength: number
+    intelligence: number
+    agility: number
+    stamina: number
+  }
+  isEnemy: boolean
+  xp?: number
+  xpMax?: number
+  image?: string
+  resourceType?: 'mana' | 'energy'
+}
 
 export function CharacterBox({
   name,
@@ -13,7 +34,7 @@ export function CharacterBox({
   xpMax,
   image,
   resourceType = 'mana',
-}: any) {
+}: CharacterBoxProps) {
   const hpPercent = Math.max(0, Math.min(100, (hp / hpMax) * 100))
   const resourcePercent = Math.max(0, Math.min(100, (mana / manaMax) * 100))
   const xpPercent = xp && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
@@ -59,9 +80,11 @@ export function CharacterBox({
             }`}
           >
             {image ? (
-              <img
+              <Image
                 src={image}
                 alt={name}
+                width={80}
+                height={80}
                 className="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
               />
             ) : (
@@ -145,7 +168,14 @@ export function CharacterBox({
   )
 }
 
-function StatItem({ icon: Icon, value, label, color }: any) {
+interface StatItemProps {
+  icon: typeof Sword
+  value: number
+  label: string
+  color: string
+}
+
+function StatItem({ icon: Icon, value, label, color }: StatItemProps) {
   return (
     <div className="flex flex-1 flex-col items-center py-2 transition-colors hover:bg-white/5">
       <span className={`mb-0.5 text-[10px] font-bold tracking-wider text-[#8b7355] uppercase`}>

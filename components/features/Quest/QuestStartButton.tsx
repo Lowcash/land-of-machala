@@ -37,12 +37,12 @@ export function QuestStartButton({ quest, characterId }: QuestStartButtonProps) 
         toast({
           variant: 'success',
           title: 'Quest přijat!',
-          description: `Začal jsi quest "${quest.title}"`,
+          description: `Začal jsi quest &quot;${quest.title}&quot;`,
         })
 
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       toast({
         variant: 'error',
         title: 'Chyba',
@@ -74,12 +74,12 @@ export function QuestStartButton({ quest, characterId }: QuestStartButtonProps) 
         toast({
           variant: 'success',
           title: 'Quest opuštěn',
-          description: `Opustil jsi quest "${quest.title}"`,
+          description: `Opustil jsi quest &quot;${quest.title}&quot;`,
         })
 
         router.refresh()
       }
-    } catch (err) {
+    } catch {
       toast({
         variant: 'error',
         title: 'Chyba',

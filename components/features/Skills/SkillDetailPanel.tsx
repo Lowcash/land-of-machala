@@ -1,7 +1,13 @@
 'use client'
 
+interface Skill {
+  id: string
+  name: string
+  description?: string
+}
+
 interface SkillDetailPanelProps {
-  skill: any // We'll type this properly later
+  skill: Skill | null
 }
 
 export function SkillDetailPanel({ skill }: SkillDetailPanelProps) {

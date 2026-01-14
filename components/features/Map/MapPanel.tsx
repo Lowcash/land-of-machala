@@ -2,6 +2,19 @@ import { prisma } from '@/lib/db'
 import { Suspense } from 'react'
 import { MapClient } from './MapClient'
 
+interface Location {
+  id: string
+  name: string
+  description: string
+  type: string
+  level: number
+  x: number
+  y: number
+  image: string
+  createdAt?: Date | string | null
+  updatedAt?: Date | string | null
+}
+
 async function getLocations() {
   const locations = await prisma.location.findMany({
     orderBy: [{ level: 'asc' }, { name: 'asc' }],
@@ -45,10 +58,10 @@ export async function MapPanel() {
         y: 1,
         image: '/assets/locations/ruins.jpg',
       },
-    ] as any
+    ] as Location[]
   }
 
-  const serializedLocations = locations.map((loc: any) => ({
+  const serializedLocations = locations.map((loc: Location) => ({
     ...loc,
     createdAt: loc.createdAt?.toISOString ? loc.createdAt.toISOString() : loc.createdAt || null,
     updatedAt: loc.updatedAt?.toISOString ? loc.updatedAt.toISOString() : loc.updatedAt || null,

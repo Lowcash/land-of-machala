@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export function serializeCharacter(character: any) {
   if (!character) return null
 

@@ -20,6 +20,8 @@ export interface CharacterData {
   reputation: number
 }
 
+import type { LucideIcon } from 'lucide-react'
+
 export interface CharacterItem {
   id: string
   name: string
@@ -29,5 +31,5 @@ export interface CharacterItem {
   damage?: number
   value: number
   equipped?: boolean
-  icon?: any
+  icon?: LucideIcon
 }

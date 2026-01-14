@@ -185,8 +185,9 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
           </div>
         ) : (
           <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
-            Hlasitý smích a cinkání hrnků naplňuje tavernu "U Zlomeného meče". Je to jediné místo,
-            kde se v tomhle městě dá opravdu odpočinout a načerpat novou energii na další výpravy.
+            Hlasitý smích a cinkání hrnčků naplněuje tavernu &quot;U Zlomeného meče&quot;. Je to
+            jediné místo, kde se v tomhle městě dá opravdu odpočinout a načerpat novou energii na
+            další výpravy.
           </div>
         )}
       </GamePanel>

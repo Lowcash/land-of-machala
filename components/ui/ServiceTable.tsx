@@ -5,41 +5,46 @@
 
 'use client'
 
-import { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 export type ServiceTableMode = 'table' | 'cards'
 
-interface ServiceTableColumn {
+interface BaseItem {
+  id?: string | number
+  [key: string]: unknown
+}
+
+interface ServiceTableColumn<T = BaseItem> {
   key: string
   label: string
   align?: 'left' | 'center' | 'right'
-  render?: (item: any) => ReactNode
+  render?: (item: T) => ReactNode
 }
 
-interface ServiceTableAction {
+interface ServiceTableAction<T = BaseItem> {
   label: string
-  onClick: (item: any) => void
+  onClick: (item: T) => void
   variant?: 'primary' | 'secondary'
-  disabled?: (item: any) => boolean
+  disabled?: (item: T) => boolean
 }
 
-interface ServiceTableProps {
-  items: any[]
-  columns: ServiceTableColumn[]
-  actions?: ServiceTableAction[]
+interface ServiceTableProps<T extends BaseItem = BaseItem> {
+  items: T[]
+  columns: Array<ServiceTableColumn<T>>
+  actions?: Array<ServiceTableAction<T>>
   mode?: ServiceTableMode
   emptyMessage?: string
-  rowIcon?: (item: any) => ReactNode
+  rowIcon?: (item: T) => ReactNode
 }
 
-export function ServiceTable({
+export function ServiceTable<T extends BaseItem = BaseItem>({
   items,
   columns,
   actions = [],
   mode = 'table',
   emptyMessage = 'Žádné položky k zobrazení',
   rowIcon,
-}: ServiceTableProps) {
+}: ServiceTableProps<T>) {
   if (items.length === 0) {
     return (
       <div className="rounded border border-[#8b6f47] bg-black/60 p-3">

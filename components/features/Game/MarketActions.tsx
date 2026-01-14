@@ -21,11 +21,13 @@ import { GameLayout, GamePanel } from './GameLayout'
 
 type ItemType = 'weapon' | 'armor' | 'consumable'
 
+import type { LucideIcon } from 'lucide-react'
+
 interface Item {
   id: number
   name: string
   type: ItemType
-  icon: any
+  icon: LucideIcon
   price?: number
   attack?: number
   defense?: number
@@ -264,7 +266,7 @@ export function MarketActions({
             )}
 
             {mode === 'buy' && (
-              <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto">
+              <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
                 {stock.map((item) => {
                   const price = getPrice(item, true)
                   const haggleState = haggledItems[item.id]
@@ -313,7 +315,7 @@ export function MarketActions({
             )}
 
             {mode === 'sell' && (
-              <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto">
+              <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
                 {inventory.length === 0 ? (
                   <div className="p-4 text-center text-xs text-[#8b7355]">
                     Tvůj batoh je prázdný.

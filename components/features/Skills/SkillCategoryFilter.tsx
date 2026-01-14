@@ -1,5 +1,6 @@
 'use client'
 
+import type { LucideIcon } from 'lucide-react'
 import { Eye, Hammer, Shield, Sparkles, Swords } from 'lucide-react'
 import type { SkillCategory } from './types'
 
@@ -12,7 +13,7 @@ export function SkillCategoryFilter({
   selectedCategory,
   onSelectCategory,
 }: SkillCategoryFilterProps) {
-  const categories: Array<{ id: SkillCategory; label: string; icon: any; color: string }> = [
+  const categories: Array<{ id: SkillCategory; label: string; icon: LucideIcon; color: string }> = [
     { id: 'combat', label: 'Boj', icon: Swords, color: 'text-[#ff6b6b]' },
     { id: 'defense', label: 'Obrana', icon: Shield, color: 'text-[#69ccf0]' },
     { id: 'magic', label: 'Magie', icon: Sparkles, color: 'text-[#b66bd4]' },

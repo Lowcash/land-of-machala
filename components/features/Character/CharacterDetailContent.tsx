@@ -6,14 +6,14 @@
 'use client'
 
 import { Coins, MapPin, Shield, Swords, Trophy } from 'lucide-react'
-import type { CharacterData } from './types'
+import type { CharacterData, CharacterItem } from './types'
 
 type SectionType = 'stats' | 'equipment' | 'achievements'
 
 interface CharacterDetailContentProps {
   section: SectionType
   character: CharacterData
-  equipped: any[]
+  equipped: CharacterItem[]
 }
 
 export function CharacterDetailContent({

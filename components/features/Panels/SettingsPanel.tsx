@@ -103,17 +103,14 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
     setShowTutorial(true)
   }
 
-  const ToggleSetting = ({
-    label,
-    value,
-    onChange,
-    icon: Icon,
-  }: {
+  interface ToggleSettingProps {
     label: string
     value: boolean
     onChange: (val: boolean) => void
-    icon: any
-  }) => (
+    icon: typeof Volume2
+  }
+
+  const ToggleSetting = ({ label, value, onChange, icon: Icon }: ToggleSettingProps) => (
     <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-3">
       <div className="flex items-center gap-2">
         <Icon className="h-4 w-4 text-[#d4a574]" />
@@ -135,6 +132,16 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
     </div>
   )
 
+  interface SliderSettingProps {
+    label: string
+    value: number
+    onChange: (val: number) => void
+    min: number
+    max: number
+    icon: typeof Zap
+    labels: string[]
+  }
+
   const SliderSetting = ({
     label,
     value,
@@ -143,15 +150,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
     max,
     icon: Icon,
     labels,
-  }: {
-    label: string
-    value: number
-    onChange: (val: number) => void
-    min: number
-    max: number
-    icon: any
-    labels: string[]
-  }) => (
+  }: SliderSettingProps) => (
     <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
       <div className="mb-2 flex items-center gap-2">
         <Icon className="h-4 w-4 text-[#d4a574]" />

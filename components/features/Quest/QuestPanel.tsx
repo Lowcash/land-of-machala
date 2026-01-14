@@ -76,9 +76,27 @@ export async function QuestPanel() {
     },
   ]
 
+  interface Quest {
+    id: string
+    title: string
+    description: string
+    type: string
+    minLevel: number
+    rewards: { xp: number; gold: number; items?: string[] }
+    objectives: Array<{
+      id: string
+      description: string
+      target: number
+      current: number
+      completed: boolean
+      order: number
+    }>
+    createdAt?: Date
+  }
+
   let allQuests = allQuestsResult?.quests || []
   if (allQuests.length === 0) {
-    allQuests = dummyQuests as any
+    allQuests = dummyQuests as Quest[]
   }
 
   const character = characterResult.character

@@ -170,11 +170,29 @@ export async function SkillsPanel() {
     },
   ]
 
-  let allSkills = allSkillsResult?.skills || []
+  interface Skill {
+    id: string
+    name: string
+    description: string
+    category: string
+    iconName: string
+    isPassive: boolean
+    manaCost: number
+    cooldown: number
+    damage: number
+    currentRank: number
+    maxRank: number
+    requiredLevel: number
+    requiredTreePoints: number
+    x: number
+    y: number
+  }
+
+  let allSkills: Skill[] = allSkillsResult?.skills || []
 
   // If no skills found, use dummy skills
   if (allSkills.length === 0) {
-    allSkills = dummySkills as any
+    allSkills = dummySkills as Skill[]
   }
 
   const character = characterResult.character

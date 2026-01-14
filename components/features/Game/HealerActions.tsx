@@ -1,17 +1,36 @@
 'use client'
 
+import { ServiceTable } from '@/components/ui/ServiceTable'
+import { ChevronRight, FlaskConical, Heart, Home, ScrollText, Sparkles, Zap } from 'lucide-react'
 import { useState } from 'react'
-import { Home, Heart, ScrollText, FlaskConical, ChevronRight, Sparkles, Zap } from 'lucide-react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
-import { ServiceTable } from '@/components/ui/ServiceTable'
+
+import type { LucideIcon } from 'lucide-react'
+
+interface Buff {
+  name: string
+  stat: string
+  val: number
+}
+
+interface Service {
+  id: string
+  name: string
+  description: string
+  price: number
+  icon: LucideIcon
+  iconColor: string
+  iconBg: string
+  action: string
+}
 
 interface HealerActionsProps {
   onBack: () => void
   gold: number
   setGold: (gold: number | ((prev: number) => number)) => void
-  activeBuffs: any[]
-  setActiveBuffs: (buffs: any) => void
+  activeBuffs: Buff[]
+  setActiveBuffs: (buffs: Buff[] | ((prev: Buff[]) => Buff[])) => void
   setInfoText: (text: string) => void
 }
 
@@ -69,7 +88,7 @@ export function HealerActions({
     },
   ]
 
-  const handleService = (service: any) => {
+  const handleService = (service: Service) => {
     if (gold < service.price) {
       setMessage('Nemáš dost zlata!')
       setTimeout(() => setMessage(''), 3000)
@@ -81,9 +100,9 @@ export function HealerActions({
     if (service.action === 'Léčení') {
       setInfoText('Léčitel ti vyčistil rány. Cítíš se lépe. (HP doplněno)')
     } else if (service.action === 'Požehnání síly') {
-      setActiveBuffs((prev: any[]) => [...prev, { name: 'Síla Býka', stat: 'strength', val: 5 }])
+      setActiveBuffs((prev) => [...prev, { name: 'Síla Býka', stat: 'strength', val: 5 }])
     } else if (service.action === 'Požehnání ochrany') {
-      setActiveBuffs((prev: any[]) => [...prev, { name: 'Výdrž kance', stat: 'stamina', val: 5 }])
+      setActiveBuffs((prev) => [...prev, { name: 'Výdrž kance', stat: 'stamina', val: 5 }])
     }
 
     setMessage(`Použil jsi službu: ${service.action} (-${service.price}g)`)

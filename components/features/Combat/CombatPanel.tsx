@@ -1,10 +1,30 @@
 import { getMyCharacterAction } from '@/lib/actions/character'
 import { CombatClient } from './CombatClient'
 
-export async function CombatPanel() {
-  const [characterData, err] = await getMyCharacterAction()
+interface InventoryItem {
+  id: string
+  item: {
+    name: string
+    type: string
+    iconName: string
+    strength: number
+    stamina: number
+    magic?: number
+    speed?: number
+    healing?: number
+    mana?: number
+    slot?: string
+    intelligence?: number
+    agility?: number
+  }
+  equipped: boolean
+  isEquipped: boolean
+}
 
-  if (err || !characterData?.character) {
+export async function CombatPanel() {
+  const [characterData] = await getMyCharacterAction()
+
+  if (!characterData?.character) {
     return (
       <div className="flex h-full items-center justify-center text-[#d4a574]">
         Načítání postavy selhalo nebo postava neexistuje.
@@ -15,7 +35,7 @@ export async function CombatPanel() {
   const { character } = characterData
 
   // Map inventory items to the format expected by CombatClient
-  const inventory = character.inventory.map((invItem: any) => ({
+  const inventory = character.inventory.map((invItem: InventoryItem) => ({
     id: invItem.id,
     name: invItem.item.name,
     type: invItem.item.type.toLowerCase(),

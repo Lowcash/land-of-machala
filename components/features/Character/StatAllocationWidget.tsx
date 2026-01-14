@@ -29,7 +29,7 @@ export function StatAllocationWidget({ characterId, talentPoints }: StatAllocati
         toast.success(`+1 ${stat}`)
         window.location.reload() // Refresh to show new stats
       }
-    } catch (error) {
+    } catch {
       toast.error('Nepodařilo se přidat atribut')
     } finally {
       setIsAllocating(false)
