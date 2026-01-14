@@ -6,6 +6,109 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-14 22:39 - Container Width for Toast Notifications
+
+**Type:** Changed  
+**Scope:** UI Components  
+**Impact:** Toast notifications now display within a centered container (max-w-5xl) instead of spanning full viewport width, matching the design pattern from massage-website
+
+### Changed
+
+- **Toast Component:**
+  - Applied `max-w-5xl mx-auto` container pattern to `ToastViewport`
+  - Added centered positioning with `left-1/2 -translate-x-1/2`
+  - Removed desktop-only right positioning (`sm:right-4`)
+  - Toast notifications now align consistently across all screen sizes
+
+## 2026-01-14 21:34 - Critical Fixes: Database Schema, Linting, and UX Improvements
+
+**Type:** Fixed, Changed  
+**Scope:** Database, Auth UI, Linting, CI/CD  
+**Impact:** Resolved database connection issues, fixed all linter errors, improved auth page UX consistency
+
+### Fixed
+
+- **Prisma Schema:**
+  - Added missing `url = env("DATABASE_URL")` to datasource block
+  - Fixed P2021 error: "table `users` does not exist in current database"
+  - Successfully deployed schema to database with `prisma db push`
+  - All tables now created and accessible
+
+- **ESLint Errors (50+ errors → 0 errors):**
+  - Replaced all `any` types with proper TypeScript interfaces
+  - Removed unused variables (`error`, `err`) from catch blocks
+  - Escaped all quotes in JSX text (`"` → `&quot;`)
+  - Replaced `<img>` with Next.js `<Image />` component (3 instances)
+  - Fixed React Hooks violation in InventoryClient (server action false positive)
+  - Converted test script to ES modules (.js → .mjs)
+  - **24 files cleaned**, all production code now passes strict ESLint
+
+- **CI/CD Workflow:**
+  - Fixed GitHub Actions workflow to use `npm run db:generate` (was `prisma:generate`)
+  - All CI checks now properly generate Prisma Client before type-checking and building
+  - Cloud agent PRs will now pass lint and type-check gates
+
+### Changed
+
+- **Auth Page UX Consistency:**
+  - **Register page:** Added flavor text ("Tvá legenda čeká na sepsání...")
+  - **Register page:** Added lore quote for brand consistency with login page
+  - **Both pages:** Removed `self-end` alignment from right column (centered vertically)
+  - **Both pages:** Info boxes now align with form boxes at same vertical position
+  - **Login page:** Removed escaped quotes from lore quote (cleaner code)
+- **UX Pattern Rationale:**
+  - Login page: Social proof (stats, updates) + lore quote (re-engagement)
+  - Register page: Value proposition (benefits list) + lore quote (conversion)
+  - Different content serves different user intents - this is good UX design
+
+### Files Changed
+
+- `prisma/schema.prisma` - Added DATABASE_URL
+- `app/(auth)/register/page.tsx` - Vertical alignment + flavor text + lore quote
+- `components/features/Auth/LoginForm.tsx` - Vertical alignment + quote cleanup
+- `.github/workflows/ci.yml` - Fixed Prisma generate command
+- `scripts/test-full-flow.js` → `scripts/test-full-flow.mjs` - ES modules
+- 24 component files - TypeScript type safety improvements
+
+### Tested
+
+- ✅ Database tables created successfully
+- ✅ Guest auth endpoint works (200 OK)
+- ✅ All ESLint checks pass (`npm run lint`)
+- ✅ All Prettier checks pass (`npm run format`)
+- ✅ CI workflow commands validated
+
+### How to Avoid CI Failures with Cloud Agent
+
+**Problem:** Cloud agent creates PRs that fail "Lint & Format Check" and "TypeScript Type Check"
+
+**Solution:**
+
+1. **Before merging PR:** Always run locally:
+
+   ```bash
+   npm run lint        # Must pass with 0 errors
+   npm run format      # Auto-fix formatting
+   npx tsc --noEmit    # Type check
+   ```
+
+2. **If cloud agent PR fails CI:**
+   - Pull the PR branch locally: `git checkout <pr-branch>`
+   - Run fix commands above
+   - Commit and push fixes: `git commit -am "fix: linting and type errors" && git push`
+   - PR will re-run CI checks and should now pass
+
+3. **Prevention:** Add pre-commit hooks (already configured via Husky):
+   - Husky runs lint-staged on every commit
+   - Catches errors before they reach GitHub
+
+4. **Best Practice:** Configure cloud agent with explicit instructions:
+   - "Run npm run lint after all changes"
+   - "Fix all TypeScript errors before completing"
+   - "Verify build passes with npm run build"
+
+---
+
 ## 2026-01-10 19:19 - Prisma Version Downgrade
 
 **Type:** Fixed  
