@@ -94,7 +94,7 @@ export function CharacterDetailContent({
 
   if (section === 'stats') {
     return (
-      <div className="rounded-lg border border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
+      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
         {/* Combat Stats */}
         <div className="mb-3">
           <h3
