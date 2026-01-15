@@ -6,6 +6,31 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-15 16:51 - UX Enhancements: Dynamic Content and Improved Notifications
+
+**Type:** Changed, Fixed  
+**Scope:** Auth Pages, CI/CD, Achievement System  
+**Impact:** Enhanced user experience with dynamic hero text, longer achievement notifications, and fixed CI warnings
+
+### Changed
+
+- **Auth Pages (Login/Register):**
+  - Added dynamic hero text rotation with 5 unique variants
+  - Hero text now randomizes on each page visit for variety
+  - Added version footer to mobile login page for consistency with desktop
+  - Confirmed `autoCapitalize="none"` is correct for email/password inputs (prevents mobile keyboard auto-capitalization)
+
+- **Achievement Notifications:**
+  - Increased display duration from 5s to 8s for better readability
+  - Applied container pattern (max-w-5xl) matching toast notifications
+  - Centered positioning ensures consistent alignment across screen sizes
+
+### Fixed
+
+- **CI/CD:**
+  - Fixed CODECOV_TOKEN context warning by using `token` input instead of `env`
+  - Codecov action now properly authenticates without warnings
+
 ## 2026-01-14 22:39 - Container Width for Toast Notifications
 
 **Type:** Changed  
