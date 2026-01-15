@@ -150,13 +150,14 @@ export function SkillGrid({
                         </div>
                         <div className="min-w-0 flex-1">
                           <h3
-                            className={`line-clamp-2 text-xs leading-tight ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
+                            className={`line-clamp-2 text-[10px] leading-tight sm:text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                             style={{ fontFamily: 'var(--font-fantasy)' }}
+                            title={skill.name}
                           >
                             {skill.name}
                           </h3>
-                          <p className="text-xs text-[#8b7355]">
-                            Level {skill.currentLevel}/{skill.maxRank}
+                          <p className="text-[9px] text-[#8b7355] sm:text-xs">
+                            Lvl {skill.currentLevel}/{skill.maxRank}
                           </p>
                         </div>
                       </div>

@@ -96,43 +96,39 @@ export function CharacterDetailContent({
     return (
       <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
         {/* Combat Stats */}
-        <div className="mb-3">
+        <div className="mb-2">
           <h3
-            className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
+            className="mb-1.5 flex items-center gap-2 text-xs text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             <Swords className="h-4 w-4" />
             Bojové statistiky
           </h3>
-          <div className="grid grid-cols-2 gap-2 text-xs">
+          <div className="grid grid-cols-2 gap-1.5 text-xs">
             <div className="rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
               <div className="flex items-center justify-between">
-                <span className="text-[#8b7355]">Útok</span>
-                <div className="text-right">
-                  <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                    {totalAttack}
-                  </span>
-                </div>
+                <span className="text-[10px] text-[#8b7355]">Útok</span>
+                <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                  {totalAttack}
+                </span>
               </div>
             </div>
             <div className="rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
               <div className="flex items-center justify-between">
-                <span className="text-[#8b7355]">Obrana</span>
-                <div className="text-right">
-                  <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                    {totalDefense}
-                  </span>
-                </div>
+                <span className="text-[10px] text-[#8b7355]">Obrana</span>
+                <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                  {totalDefense}
+                </span>
               </div>
             </div>
             <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[#8b7355]">Crit</span>
+              <span className="text-[10px] text-[#8b7355]">Crit</span>
               <span className="text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {critChance}%
               </span>
             </div>
             <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[#8b7355]">Dodge</span>
+              <span className="text-[10px] text-[#8b7355]">Dodge</span>
               <span className="text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {dodgeChance}%
               </span>
@@ -141,12 +137,12 @@ export function CharacterDetailContent({
         </div>
 
         {/* Divider */}
-        <div className="mb-3 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+        <div className="mb-2 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
 
         {/* Resistances */}
         <div>
           <h3
-            className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
+            className="mb-1.5 flex items-center gap-2 text-xs text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             <Shield className="h-4 w-4" />
@@ -154,31 +150,31 @@ export function CharacterDetailContent({
           </h3>
           <div className="grid grid-cols-3 gap-1.5 text-[10px]">
             <div className="flex flex-col items-center rounded bg-black/40 p-1">
-              <span className="mb-0.5 text-[#8b7355]">Fyz.</span>
+              <span className="mb-0.5 text-[8px] text-[#8b7355]">Fyz.</span>
               <span className="text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.physicalResistance}%
               </span>
             </div>
             <div className="flex flex-col items-center rounded bg-black/40 p-1">
-              <span className="mb-0.5 text-[#8b7355]">Mag.</span>
+              <span className="mb-0.5 text-[8px] text-[#8b7355]">Mag.</span>
               <span className="text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.magicalResistance}%
               </span>
             </div>
             <div className="flex flex-col items-center rounded bg-black/40 p-1">
-              <span className="mb-0.5 text-[#8b7355]">Oheň</span>
+              <span className="mb-0.5 text-[8px] text-[#8b7355]">Oheň</span>
               <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.fireResistance}%
               </span>
             </div>
             <div className="flex flex-col items-center rounded bg-black/40 p-1">
-              <span className="mb-0.5 text-[#8b7355]">Chlad</span>
+              <span className="mb-0.5 text-[8px] text-[#8b7355]">Chlad</span>
               <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.coldResistance}%
               </span>
             </div>
             <div className="col-span-2 flex flex-col items-center rounded bg-black/40 p-1">
-              <span className="mb-0.5 text-[#8b7355]">Jed</span>
+              <span className="mb-0.5 text-[8px] text-[#8b7355]">Jed</span>
               <span className="text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.poisonResistance}%
               </span>
@@ -191,15 +187,15 @@ export function CharacterDetailContent({
 
   if (section === 'equipment') {
     return (
-      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
+      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
         <h3
-          className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
+          className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
           style={{ fontFamily: 'var(--font-fantasy)' }}
         >
           <Swords className="h-5 w-5" />
           Nasazená výbava
         </h3>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 gap-2">
           {equipped.map((item) => {
             const Icon = item.icon || Shield
             return (
