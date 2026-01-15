@@ -4,7 +4,7 @@ import { RouteTransition } from '@/components/layout/RouteTransition'
 import { Lock, Mail, Sparkles, Swords } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export default function RegisterPage() {
   const router = useRouter()
@@ -12,6 +12,21 @@ export default function RegisterPage() {
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [heroText, setHeroText] = useState('')
+
+  const heroTexts = [
+    'V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako ti před tebou?',
+    'Tvá cesta začíná právě teď. Každé rozhodnutí formuje tvůj osud.',
+    'Machala volá své hrdiny. Odpovíš na volání?',
+    'Nebezpečí číhá za každým rohem, ale s odvahou přichází sláva.',
+    'Dávné legendy praví o hrdinech, kteří změnili osud světa. Tvůj příběh začíná zde.',
+  ]
+
+  // Set random hero text on mount
+  useEffect(() => {
+    setHeroText(heroTexts[Math.floor(Math.random() * heroTexts.length)])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -232,8 +247,7 @@ export default function RegisterPage() {
 
               {/* Quote/Lore */}
               <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
-                V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako
-                ti před tebou?
+                {heroText}
               </div>
 
               {/* Version Footer */}

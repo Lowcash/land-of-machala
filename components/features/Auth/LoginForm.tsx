@@ -12,6 +12,14 @@ import { Check, Lock, Mail, Scroll, Sparkles, Swords, Users } from 'lucide-react
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+const HERO_TEXTS = [
+  'V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako ti před tebou?',
+  'Tvá cesta začíná právě teď. Každé rozhodnutí formuje tvůj osud.',
+  'Machala volá své hrdiny. Odpovíš na volání?',
+  'Nebezpečí číhá za každým rohem, ale s odvahou přichází sláva.',
+  'Dávné legendy praví o hrdinech, kteří změnili osud světa. Tvůj příběh začíná zde.',
+]
+
 const FLAVOR_TEXTS = [
   'Vstup do světa plného nebezpečí a dobrodružství...',
   'Tvá legenda čeká na sepsání...',
@@ -29,9 +37,11 @@ export function LoginForm() {
   const [isMounted, setIsMounted] = useState(false)
 
   const [flavorText, setFlavorText] = useState(FLAVOR_TEXTS[0])
+  const [heroText, setHeroText] = useState(HERO_TEXTS[0])
 
   useEffect(() => {
     setFlavorText(FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)])
+    setHeroText(HERO_TEXTS[Math.floor(Math.random() * HERO_TEXTS.length)])
     setIsMounted(true)
   }, [])
 
@@ -476,8 +486,7 @@ export function LoginForm() {
 
               {/* Quote/Lore */}
               <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
-                V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako
-                ti před tebou?
+                {heroText}
               </div>
 
               {/* Version Footer */}
@@ -486,6 +495,13 @@ export function LoginForm() {
                   Verze 2.0 • © {new Date().getFullYear()} Land of Machala
                 </p>
               </div>
+            </div>
+
+            {/* Mobile Footer */}
+            <div className="col-span-full border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
+              <p className="text-xs text-[#8b7355]">
+                Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+              </p>
             </div>
           </div>
         </div>

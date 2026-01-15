@@ -36,9 +36,9 @@ export function AchievementProvider({ children }: { children: ReactNode }) {
   return (
     <AchievementContext.Provider value={{ showAchievement, achievements }}>
       {children}
-      {/* Render achievement notifications - positioned in content area */}
-      <div className="pointer-events-none fixed inset-0 z-600 flex items-start justify-center">
-        <div className="mt-24 flex w-full max-w-6xl flex-col items-end gap-2 px-4">
+      {/* Render achievement notifications - positioned in content container */}
+      <div className="pointer-events-none fixed top-0 left-1/2 z-600 flex -translate-x-1/2 items-start justify-end">
+        <div className="mt-24 flex w-full max-w-5xl flex-col items-end gap-2 px-4">
           {notifications.map((achievement) => (
             <AchievementNotification
               key={achievement.id}
