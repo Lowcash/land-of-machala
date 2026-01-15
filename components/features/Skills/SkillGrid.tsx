@@ -138,7 +138,7 @@ export function SkillGrid({
                             : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
                       }`}
                     >
-                      <div className="mb-2 flex items-start gap-2">
+                      <div className="mb-2 flex flex-col items-center gap-1.5">
                         <div
                           className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
                         >
@@ -148,7 +148,7 @@ export function SkillGrid({
                             <Lock className="h-5 w-5 text-[#d4a574]" />
                           )}
                         </div>
-                        <div className="min-w-0 flex-1">
+                        <div className="w-full text-center">
                           <h3
                             className={`line-clamp-2 text-[10px] leading-tight sm:text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                             style={{ fontFamily: 'var(--font-fantasy)' }}

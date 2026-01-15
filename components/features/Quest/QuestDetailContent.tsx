@@ -217,6 +217,11 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
                     </div>
                   ) : null
                 )}
+              {(!quest.rewardXp || quest.rewardXp === 0) &&
+                (!quest.rewardGold || quest.rewardGold === 0) &&
+                (!Array.isArray(quest.rewards) || quest.rewards.length === 0) && (
+                  <p className="text-sm text-[#8b7355] italic">Žádné odměny</p>
+                )}
             </div>
           </div>
 
@@ -244,15 +249,15 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
             </div>
           )}
 
-          {/* Action button - only show for ACTIVE quests */}
+          {/* Action button - show for ACTIVE quests at bottom */}
           {quest.characterStatus === 'ACTIVE' && (
             <button
               onClick={() => setShowAbandonModal(true)}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/10 py-2 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/20"
+              className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/10 py-3 text-[#ff6b6b] transition-all hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/20"
             >
               <X className="h-4 w-4" />
-              <span className="text-xs" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                Zahodit
+              <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                Vzdát quest
               </span>
             </button>
           )}

@@ -25,6 +25,8 @@ function getLocationIcon(type: LocationType) {
       return Trees
     case 'LANDMARK':
       return Mountain
+    default:
+      return MapPin
   }
 }
 
@@ -38,6 +40,8 @@ function getLocationColor(type: LocationType) {
       return 'text-[#6fbf6f]'
     case 'LANDMARK':
       return 'text-[#b66bd4]'
+    default:
+      return 'text-[#d4a574]'
   }
 }
 
