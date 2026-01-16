@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
 const prismaClientSingleton = () => {
-  // Prisma 7 configuration for MySQL
+  // Prisma 7: DATABASE_URL is read from environment automatically
   return new PrismaClient({
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })

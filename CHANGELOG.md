@@ -6,19 +6,20 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
-## 2026-01-16 21:20 - Prisma 7 Configuration and Form Fixes
+## 2026-01-16 22:00 - Revert to Prisma 6 and Fix Configuration
 
 **Type:** Fixed  
 **Scope:** Database, CI, Forms  
-**Impact:** Fixed Prisma 7 adapter error, CODECOV_TOKEN warning, and form autoCapitalize
+**Impact:** Reverted Prisma 7 to 6.19.1 due to adapter requirements, fixed all authentication issues
 
 ### Fixed
 
-- **Database (prisma.config.ts, schema.prisma):**
-  - Created `prisma.config.ts` with datasource URL configuration for Prisma 7
-  - Removed deprecated `url` property from schema.prisma datasource
-  - Fixed "requires either adapter or accelerateUrl" error in PrismaClient constructor
-  - Prisma 7 now correctly reads DATABASE_URL from environment via config file
+- **Database (Prisma downgrade):**
+  - Reverted from Prisma 7.2.0 to 6.19.1
+  - Prisma 7 requires adapter or accelerateUrl for MySQL which complicates setup
+  - Prisma 6 works out of the box with standard DATABASE_URL configuration
+  - Added url back to datasource in schema.prisma for Prisma 6 compatibility
+  - Guest login endpoint now works correctly ✅
 
 - **CI/CD (ci.yml):**
   - Fixed CODECOV_TOKEN warning "Context access might be invalid"
@@ -29,6 +30,12 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
   - Added `autoCapitalize="none"` to password input fields
   - Prevents mobile keyboards from auto-capitalizing passwords
   - Both email and password fields now have consistent autocomplete behavior
+
+### Technical Notes
+
+- Prisma 7 breaking change: requires `adapter` (e.g., PrismaMySQLAdapter) or `accelerateUrl`
+- For standard MySQL connections, Prisma 6 is more straightforward
+- Future upgrade to Prisma 7 will require adapter setup
 
 ---
 
