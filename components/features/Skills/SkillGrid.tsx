@@ -117,7 +117,7 @@ export function SkillGrid({
                 </p>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-2 xl:grid-cols-3">
                 {filteredSkills.map((skill) => {
                   const Icon = getIconFromName(skill.iconName)
                   const maxed = skill.currentLevel >= skill.maxRank
@@ -130,7 +130,7 @@ export function SkillGrid({
                     <button
                       key={skill.id}
                       onClick={() => setSelectedSkill(skill.id)}
-                      className={`min-h-touch-target w-full rounded-lg border-2 p-2 text-left transition-all sm:min-h-0 sm:p-3 ${
+                      className={`min-h-touch-target w-full rounded-lg border-2 p-4 text-left transition-all sm:min-h-0 ${
                         selectedSkill === skill.id
                           ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
                           : skill.unlocked
@@ -138,26 +138,26 @@ export function SkillGrid({
                             : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
                       }`}
                     >
-                      <div className="mb-2 flex items-start gap-2">
+                      <div className="mb-3 flex items-center gap-3">
                         <div
-                          className={`h-10 w-10 rounded-full ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
+                          className={`h-14 w-14 rounded-lg ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
                         >
                           {skill.unlocked ? (
-                            <Icon className={`h-5 w-5 ${getCategoryColor(skill.category)}`} />
+                            <Icon className={`h-7 w-7 ${getCategoryColor(skill.category)}`} />
                           ) : (
-                            <Lock className="h-5 w-5 text-[#d4a574]" />
+                            <Lock className="h-7 w-7 text-[#d4a574]" />
                           )}
                         </div>
                         <div className="min-w-0 flex-1">
                           <h3
-                            className={`line-clamp-2 text-[10px] leading-tight sm:text-xs ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
+                            className={`truncate text-base leading-tight ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
                             style={{ fontFamily: 'var(--font-fantasy)' }}
                             title={skill.name}
                           >
                             {skill.name}
                           </h3>
-                          <p className="text-[9px] text-[#8b7355] sm:text-xs">
-                            Lvl {skill.currentLevel}/{skill.maxRank}
+                          <p className="mt-0.5 text-xs text-[#8b7355]">
+                            Level {skill.currentLevel}/{skill.maxRank}
                           </p>
                         </div>
                       </div>

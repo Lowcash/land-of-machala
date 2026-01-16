@@ -58,9 +58,8 @@ export function SmithActions({
   setInventory,
   setInfoText,
 }: SmithActionsProps) {
-  const [mode, setMode] = useState<'services' | 'weapons' | 'armor' | 'items' | 'talk'>(
-    'services'
-  )
+  const [mode, setMode] = useState<'shop' | 'talk'>('shop')
+  const [shopCategory, setShopCategory] = useState<'weapons' | 'armor' | 'items'>('weapons')
   const [message, setMessage] = useState('')
 
   const showMessage = (msg: string) => {
@@ -69,22 +68,112 @@ export function SmithActions({
   }
 
   const weapons = [
-    { name: 'Dřevěný meč', attack: 5, price: 50, type: 'weapon' },
-    { name: 'Železný meč', attack: 12, price: 150, type: 'weapon' },
-    { name: 'Dlouhý meč', attack: 15, price: 200, type: 'weapon' },
-    { name: 'Bojová sekera', attack: 18, price: 300, type: 'weapon' },
+    {
+      name: 'Dřevěný meč',
+      attack: 5,
+      price: 50,
+      type: 'weapon',
+      icon: Swords,
+      iconColor: 'text-[#8b7355]',
+      iconBg: 'bg-[#8b7355]/20',
+      description: 'Základní zbraň pro začátečníky',
+    },
+    {
+      name: 'Železný meč',
+      attack: 12,
+      price: 150,
+      type: 'weapon',
+      icon: Swords,
+      iconColor: 'text-[#d4a574]',
+      iconBg: 'bg-[#d4a574]/20',
+      description: 'Spolehlivý meč z kvalitní oceli',
+    },
+    {
+      name: 'Dlouhý meč',
+      attack: 15,
+      price: 200,
+      type: 'weapon',
+      icon: Swords,
+      iconColor: 'text-[#ff6b6b]',
+      iconBg: 'bg-[#ff6b6b]/20',
+      description: 'Ostré, vyvážené ostří',
+    },
+    {
+      name: 'Bojová sekera',
+      attack: 18,
+      price: 300,
+      type: 'weapon',
+      icon: Swords,
+      iconColor: 'text-[#ff6b6b]',
+      iconBg: 'bg-[#ff6b6b]/20',
+      description: 'Devastující síla v boji',
+    },
   ]
 
   const armor = [
-    { name: 'Kožená zbroj', defense: 8, price: 100, type: 'armor' },
-    { name: 'Řetězová zbroj', defense: 15, price: 250, type: 'armor' },
-    { name: 'Ocelová zbroj', defense: 20, price: 400, type: 'armor' },
-    { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor' },
+    {
+      name: 'Kožená zbroj',
+      defense: 8,
+      price: 100,
+      type: 'armor',
+      icon: Shield,
+      iconColor: 'text-[#8b7355]',
+      iconBg: 'bg-[#8b7355]/20',
+      description: 'Lehká ochrana pro rychlé bojovníky',
+    },
+    {
+      name: 'Řetězová zbroj',
+      defense: 15,
+      price: 250,
+      type: 'armor',
+      icon: Shield,
+      iconColor: 'text-[#69ccf0]',
+      iconBg: 'bg-[#69ccf0]/20',
+      description: 'Solidní ochrana proti zbraním',
+    },
+    {
+      name: 'Ocelová zbroj',
+      defense: 20,
+      price: 400,
+      type: 'armor',
+      icon: Shield,
+      iconColor: 'text-[#69ccf0]',
+      iconBg: 'bg-[#69ccf0]/20',
+      description: 'Těžká ochrana pro válečníky',
+    },
+    {
+      name: 'Platová zbroj',
+      defense: 25,
+      price: 600,
+      type: 'armor',
+      icon: Shield,
+      iconColor: 'text-[#ffd700]',
+      iconBg: 'bg-[#ffd700]/20',
+      description: 'Nejlepší možná ochrana',
+    },
   ]
 
   const items = [
-    { name: 'Brousek', attack: 2, price: 30, type: 'consumable' },
-    { name: 'Opravná sada', defense: 2, price: 30, type: 'consumable' },
+    {
+      name: 'Brousek',
+      attack: 2,
+      price: 30,
+      type: 'consumable',
+      icon: Package,
+      iconColor: 'text-[#d4a574]',
+      iconBg: 'bg-[#d4a574]/20',
+      description: 'Naostří tvou zbraň',
+    },
+    {
+      name: 'Opravná sada',
+      defense: 2,
+      price: 30,
+      type: 'consumable',
+      icon: Package,
+      iconColor: 'text-[#d4a574]',
+      iconBg: 'bg-[#d4a574]/20',
+      description: 'Opraví poškozenou zbroj',
+    },
   ]
 
   const handleBuy = (item: StockItem) => {
@@ -106,7 +195,7 @@ export function SmithActions({
   }
 
   const getCurrentStock = () => {
-    switch (mode) {
+    switch (shopCategory) {
       case 'weapons':
         return weapons
       case 'armor':
@@ -128,42 +217,12 @@ export function SmithActions({
             </ActionBtn>
             <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
               <ActionBtn
-                onClick={() => setMode('services')}
+                onClick={() => setMode('shop')}
                 icon={Store}
-                className={mode === 'services' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
+                className={mode === 'shop' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
               >
                 <span className="flex w-full items-center justify-between">
-                  <span>Služby</span>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-                </span>
-              </ActionBtn>
-              <ActionBtn
-                onClick={() => setMode('weapons')}
-                icon={Swords}
-                className={mode === 'weapons' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <span>Zbraně</span>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-                </span>
-              </ActionBtn>
-              <ActionBtn
-                onClick={() => setMode('armor')}
-                icon={Shield}
-                className={mode === 'armor' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <span>Zbroje</span>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-                </span>
-              </ActionBtn>
-              <ActionBtn
-                onClick={() => setMode('items')}
-                icon={Package}
-                className={mode === 'items' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <span>Předměty</span>
+                  <span>Služby, zbraně, zbroje a předměty</span>
                   <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
                 </span>
               </ActionBtn>
@@ -182,19 +241,7 @@ export function SmithActions({
         </div>
       </GamePanel>
 
-      <GamePanel
-        title={
-          mode === 'services'
-            ? 'Služby zbrojíře'
-            : mode === 'weapons'
-              ? 'Zbraně'
-              : mode === 'armor'
-                ? 'Zbroje'
-                : mode === 'items'
-                  ? 'Předměty'
-                  : 'Rozhovor'
-        }
-      >
+      <GamePanel title={mode === 'shop' ? 'Obchod zbrojíře' : 'Rozhovor'}>
         {message && (
           <div className="mb-3 flex items-center gap-2 rounded border border-[#6fbf6f] bg-[#6fbf6f]/20 p-2 text-xs text-[#6fbf6f]">
             <Store className="h-4 w-4" />
@@ -202,63 +249,93 @@ export function SmithActions({
           </div>
         )}
 
-        {mode === 'services' ? (
-          <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-            <p className="text-sm text-[#d4a574] italic">
-              &quot;Vítej u mé výhně! Nabízím kvalitní zbraně, pevné zbroje a užitečné předměty.
-              Co tě zajímá?&quot;
-            </p>
-            <div className="grid gap-2 text-xs">
+        {mode === 'shop' ? (
+          <>
+            {/* Category tabs */}
+            <div className="mb-4 flex gap-2">
               <button
-                onClick={() => setMode('weapons')}
-                className="w-full border border-[#8b6f47]/30 bg-black/40 p-3 text-left transition-colors hover:border-[#ffd700] hover:bg-black/60"
+                onClick={() => setShopCategory('weapons')}
+                className={`flex flex-1 items-center justify-center gap-2 rounded border px-3 py-2 text-xs transition-all ${
+                  shopCategory === 'weapons'
+                    ? 'border-[#ffd700] bg-[#ffd700]/10 text-[#ffd700]'
+                    : 'border-[#8b6f47]/30 bg-black/40 text-[#d4a574] hover:border-[#ffd700] hover:bg-black/60'
+                }`}
               >
-                <div className="flex items-center gap-2">
-                  <Swords className="h-4 w-4 text-[#ff6b6b]" />
-                  <div>
-                    <div className="text-[#f5e6d3]">Zbraně</div>
-                    <div className="text-[10px] text-[#8b7355]">
-                      Meče, sekery a další útočné výbava
-                    </div>
-                  </div>
-                </div>
+                <Swords className="h-4 w-4" />
+                <span>Zbraně</span>
               </button>
               <button
-                onClick={() => setMode('armor')}
-                className="w-full border border-[#8b6f47]/30 bg-black/40 p-3 text-left transition-colors hover:border-[#ffd700] hover:bg-black/60"
+                onClick={() => setShopCategory('armor')}
+                className={`flex flex-1 items-center justify-center gap-2 rounded border px-3 py-2 text-xs transition-all ${
+                  shopCategory === 'armor'
+                    ? 'border-[#ffd700] bg-[#ffd700]/10 text-[#ffd700]'
+                    : 'border-[#8b6f47]/30 bg-black/40 text-[#d4a574] hover:border-[#ffd700] hover:bg-black/60'
+                }`}
               >
-                <div className="flex items-center gap-2">
-                  <Shield className="h-4 w-4 text-[#69ccf0]" />
-                  <div>
-                    <div className="text-[#f5e6d3]">Zbroje</div>
-                    <div className="text-[10px] text-[#8b7355]">
-                      Kožená, řetězová a platová ochrana
-                    </div>
-                  </div>
-                </div>
+                <Shield className="h-4 w-4" />
+                <span>Zbroje</span>
               </button>
               <button
-                onClick={() => setMode('items')}
-                className="w-full border border-[#8b6f47]/30 bg-black/40 p-3 text-left transition-colors hover:border-[#ffd700] hover:bg-black/60"
+                onClick={() => setShopCategory('items')}
+                className={`flex flex-1 items-center justify-center gap-2 rounded border px-3 py-2 text-xs transition-all ${
+                  shopCategory === 'items'
+                    ? 'border-[#ffd700] bg-[#ffd700]/10 text-[#ffd700]'
+                    : 'border-[#8b6f47]/30 bg-black/40 text-[#d4a574] hover:border-[#ffd700] hover:bg-black/60'
+                }`}
               >
-                <div className="flex items-center gap-2">
-                  <Package className="h-4 w-4 text-[#d4a574]" />
-                  <div>
-                    <div className="text-[#f5e6d3]">Předměty</div>
-                    <div className="text-[10px] text-[#8b7355]">Brousky, opravné sady a další</div>
-                  </div>
-                </div>
+                <Package className="h-4 w-4" />
+                <span>Předměty</span>
               </button>
             </div>
-          </div>
-        ) : mode === 'talk' ? (
+
+            {/* Shop items */}
+            <ServiceTable
+              items={getCurrentStock()}
+              mode="cards"
+              columns={[
+                { key: 'name', label: 'Název' },
+                {
+                  key: 'description',
+                  label: 'Popis',
+                  render: (item) => (
+                    <div>
+                      <div className="mb-1 text-xs">
+                        {item.attack && <span className="text-[#ff6b6b]">Útok +{item.attack}</span>}
+                        {item.defense && (
+                          <span className="text-[#69ccf0]">Obrana +{item.defense}</span>
+                        )}
+                      </div>
+                      <div className="text-[10px] text-[#8b7355]">{item.description}</div>
+                      <div className="mt-1 text-[#ffd700]">{item.price}g</div>
+                    </div>
+                  ),
+                },
+              ]}
+              actions={[
+                {
+                  label: 'Koupit',
+                  onClick: handleBuy,
+                  disabled: (item) => gold < item.price,
+                },
+              ]}
+              rowIcon={(item) => {
+                const Icon = item.icon
+                return <Icon className={`h-4 w-4 ${item.iconColor}`} />
+              }}
+              emptyMessage="Žádné předměty na prodej"
+            />
+          </>
+        ) : (
           <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
             <p className="text-sm text-[#d4a574] italic">
               &quot;Jsem zdejší kovář a zbrojíř. Mé výrobky jsou nejlepší v širém okolí. Co chceš
               vědět?&quot;
             </p>
             <div className="space-y-2">
-              <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
+              <button
+                onClick={() => setMode('shop')}
+                className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]"
+              >
                 &gt; Potřebuji novou zbroj (Zpět k nabídce)
               </button>
               <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
@@ -269,44 +346,6 @@ export function SmithActions({
               </button>
             </div>
           </div>
-        ) : (
-          <ServiceTable
-            items={getCurrentStock()}
-            mode="table"
-            columns={[
-              {
-                key: 'name',
-                label: 'Předmět',
-                align: 'left',
-                render: (item) => <span className="text-[#f5e6d3]">{item.name}</span>,
-              },
-              {
-                key: 'stats',
-                label: 'Bonus',
-                align: 'center',
-                render: (item) => (
-                  <>
-                    {item.attack && <span className="text-[#ff6b6b]">+{item.attack}</span>}
-                    {item.defense && <span className="text-[#69ccf0]">+{item.defense}</span>}
-                  </>
-                ),
-              },
-              {
-                key: 'price',
-                label: 'Cena',
-                align: 'right',
-                render: (item) => <span className="text-[#ffd700]">{item.price}g</span>,
-              },
-            ]}
-            actions={[
-              {
-                label: 'Koupit',
-                onClick: handleBuy,
-                disabled: (item) => gold < item.price,
-              },
-            ]}
-            emptyMessage="Žádné předměty na prodej"
-          />
         )}
       </GamePanel>
     </GameLayout>

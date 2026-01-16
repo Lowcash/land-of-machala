@@ -12,8 +12,8 @@ test.describe('SmithActions (Zbrojíř)', () => {
     // Scroll down to ensure smith button is visible
     await page.evaluate(() => window.scrollBy(0, 200))
 
-    // Navigate to smith (text: "Navštívit zbrojíře a kováře pro zbraně")
-    const smithButton = page.locator('button').filter({ hasText: /zbrojíře a kováře/i })
+    // Navigate to smith (text: "Navštívit zbrojíře pro zbraně")
+    const smithButton = page.locator('button').filter({ hasText: /zbrojíře/i })
     await smithButton.click()
   })
 
@@ -200,7 +200,7 @@ test.describe('SmithActions (Zbrojíř)', () => {
 
       await backButton.click()
 
-      // Should return to town (check for smith button text: "Navštívit zbrojíře a kováře")
+      // Should return to town (check for smith button text: "Navštívit zbrojíře")
       await expect(page.locator('button').filter({ hasText: /zbrojíře/i })).toBeVisible({
         timeout: 3000,
       })

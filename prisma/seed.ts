@@ -343,97 +343,128 @@ async function main() {
 
   console.log(`✅ Created ${items.length} items`)
 
-  // Create sample quests with objectives
+  // Create sample quests with objectives and rewards
   await prisma.quest.create({
     data: {
-      title: 'Welcome to Machala',
-      description: 'Begin your adventure by exploring the starting town and meeting the locals.',
+      title: 'Vítej v Machale',
+      description: 'Začni své dobrodružství prozkoumáním města a setkáním s místními.',
       category: 'MAIN',
       level: 1,
-      giver: 'Village Elder',
-      location: 'Starting Town',
-      story: 'You have arrived in the mystical Land of Machala. Adventure awaits!',
+      giver: 'Starosta města',
+      location: 'Hlavní náměstí',
+      story:
+        'Přišel jsi do mystické Země Machaly. Starosta tě vítá a prosí, abys se seznámil s městem a jeho obyvateli. Tvá cesta začíná zde, dobrodruhu!',
       rewardGold: STARTING_GOLD,
       rewardXp: XP_PER_LEVEL / 2,
       objectives: {
         create: [
-          { description: 'Talk to the blacksmith', target: 1, order: 0 },
-          { description: 'Visit the tavern', target: 1, order: 1 },
-          { description: 'Explore the market', target: 1, order: 2 },
+          { description: 'Promluv se zbrojířem', target: 1, order: 0 },
+          { description: 'Navštiv tavernu', target: 1, order: 1 },
+          { description: 'Prozkoumej trh', target: 1, order: 2 },
+        ],
+      },
+      rewards: {
+        create: [{ itemId: items[0].id, quantity: 1 }],
+      },
+    },
+  })
+
+  const _quest2 = await prisma.quest.create({
+    data: {
+      title: 'Problém s krysami',
+      description: 'Sklepení taverny je zamořené obřími krysami. Zlikviduj je!',
+      category: 'SIDE',
+      level: 1,
+      giver: 'Majitel taverny',
+      location: 'Sklepení taverny',
+      story:
+        '"Ty bestie mi požírají všechny zásoby! Potřebuji někoho statečného, kdo by je vyhnal. Slyšel jsem, že jsi nový v městě - máš zájem si na nich vyzkoušet svoje schopnosti?"',
+      rewardGold: 30,
+      rewardXp: 50,
+      objectives: {
+        create: [{ description: 'Poraz 5 krys', target: 5, order: 0 }],
+      },
+      rewards: {
+        create: [
+          { itemId: items[8].id, quantity: 2 }, // Health potions
         ],
       },
     },
   })
 
-  await prisma.quest.create({
+  const _quest3 = await prisma.quest.create({
     data: {
-      title: 'Rat Problem',
-      description: 'The tavern cellar is infested with giant rats. Clear them out!',
-      category: 'SIDE',
-      level: 1,
-      giver: 'Tavern Keeper',
-      location: 'Tavern Cellar',
-      rewardGold: 30,
-      rewardXp: 50,
-      objectives: {
-        create: [{ description: 'Defeat 5 rats', target: 5, order: 0 }],
-      },
-    },
-  })
-
-  await prisma.quest.create({
-    data: {
-      title: 'Lost Amulet',
-      description: 'Find the lost amulet hidden somewhere in the nearby ruins.',
+      title: 'Ztracený amulet',
+      description: 'Najdi ztracený amulet ukrytý někde v nedalekých ruinách.',
       category: 'SIDE',
       level: 2,
-      giver: 'Mysterious Stranger',
-      location: 'Ancient Ruins',
+      giver: 'Záhadný cizinec',
+      location: 'Starobylé ruiny',
+      story:
+        '"Před mnoha lety jsem ztratil cenný amulet v těchto ruinách. Má nesmírnou sentimentální hodnotu - patřil mé babičce. Pokud mi jej najdeš, štědře tě odměním."',
       rewardGold: 100,
       rewardXp: 150,
       objectives: {
         create: [
-          { description: 'Search the ruins', target: 1, order: 0 },
-          { description: 'Find the amulet', target: 1, order: 1 },
+          { description: 'Prozkoumej ruiny', target: 1, order: 0 },
+          { description: 'Najdi amulet', target: 1, order: 1 },
         ],
+      },
+      rewards: {
+        create: [{ itemId: items[2].id, quantity: 1 }],
       },
     },
   })
 
-  await prisma.quest.create({
+  const _quest4 = await prisma.quest.create({
     data: {
-      title: 'Defeat the Goblin King',
-      description: 'The goblin king terrorizes the nearby forest. Defeat him and bring peace!',
+      title: 'Poraz krále goblinů',
+      description: 'Král goblinů terorizuje nedaleký les. Poraz ho a přines mír!',
       category: 'MAIN',
       level: 3,
-      giver: 'Captain of the Guard',
-      location: 'Goblin Camp',
-      story: 'Goblins have been raiding our supply caravans. Their king must be stopped.',
+      giver: 'Kapitán stráže',
+      location: 'Gobliní tábor',
+      story:
+        '"Goblini přepadávají naše zásobovací karavany. Jejich král je krutý a mocný. Potřebujeme někoho dostatečně statečného, aby ho porazil. Jsi ten pravý, dobrodruhu?"',
       rewardGold: 200,
       rewardXp: XP_PER_LEVEL * 2,
       objectives: {
         create: [
-          { description: 'Defeat goblin warriors', target: 10, order: 0 },
-          { description: 'Defeat the Goblin King', target: 1, order: 1 },
+          { description: 'Poraz gobliní válečníky', target: 10, order: 0 },
+          { description: 'Poraz krále goblinů', target: 1, order: 1 },
+        ],
+      },
+      rewards: {
+        create: [
+          { itemId: items[1].id, quantity: 1 }, // Steel Sword
+          { itemId: items[9].id, quantity: 3 }, // Mana potions
         ],
       },
     },
   })
 
-  await prisma.quest.create({
+  const _quest5 = await prisma.quest.create({
     data: {
-      title: 'Bandit Camp',
-      description: 'A group of bandits has set up camp near the trade route. Eliminate them.',
+      title: 'Tábor banditů',
+      description: 'Skupina banditů si postavila tábor poblíž obchodní cesty. Eliminuj je.',
       category: 'DAILY',
       level: 4,
-      giver: 'Merchant Guild',
-      location: 'Trade Route',
+      giver: 'Kupecká guilda',
+      location: 'Obchodní cesta',
+      story:
+        '"Tito banditi ohrožují naše obchodní cesty už příliš dlouho. Musíme je zastavit dřív, než způsobí ještě větší škody. Vyčisti jejich tábor a získej zpět ukradené zboží."',
       rewardGold: 250,
       rewardXp: 300,
       objectives: {
         create: [
-          { description: 'Clear the bandit camp', target: 8, order: 0 },
-          { description: 'Recover stolen goods', target: 1, order: 1 },
+          { description: 'Vyčisti tábor banditů', target: 8, order: 0 },
+          { description: 'Získej zpět ukradené zboží', target: 1, order: 1 },
+        ],
+      },
+      rewards: {
+        create: [
+          { itemId: items[3].id, quantity: 1 }, // Chainmail Armor
+          { itemId: items[8].id, quantity: 5 }, // Health potions
         ],
       },
     },

@@ -38,12 +38,12 @@ export function SplitView({
 }: SplitViewProps) {
   return (
     <div className={`flex min-h-0 flex-1 overflow-hidden ${className}`}>
-      {/* Main content - always visible */}
-      <div className="min-w-0 flex-1">{main}</div>
+      {/* Main content - always visible, with overflow handling */}
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">{main}</div>
 
       {/* Aside - hidden on mobile by default */}
       <aside
-        className={` ${hideMobileAside ? 'hidden md:block' : 'block'} ${ASIDE_WIDTH_CLASSES[asideWidth]} shrink-0 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm`}
+        className={` ${hideMobileAside ? 'hidden md:block' : 'block'} ${ASIDE_WIDTH_CLASSES[asideWidth]} flex shrink-0 flex-col overflow-hidden border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm`}
       >
         {aside}
       </aside>

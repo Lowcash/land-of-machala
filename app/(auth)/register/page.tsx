@@ -24,7 +24,8 @@ export default function RegisterPage() {
 
   // Set random hero text on mount
   useEffect(() => {
-    setHeroText(heroTexts[Math.floor(Math.random() * heroTexts.length)])
+    const randomIndex = Math.floor(Math.random() * heroTexts.length)
+    setHeroText(heroTexts[randomIndex]!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

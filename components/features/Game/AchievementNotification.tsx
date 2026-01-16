@@ -27,11 +27,11 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
     // Fade in
     setTimeout(() => setIsVisible(true), 100)
 
-    // Auto-close after 8 seconds
+    // Auto-close after 15 seconds
     const timer = setTimeout(() => {
       setIsVisible(false)
       setTimeout(onClose, 300)
-    }, 8000)
+    }, 15000)
 
     return () => clearTimeout(timer)
   }, [onClose])

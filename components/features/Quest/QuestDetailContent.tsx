@@ -95,7 +95,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">
       <ScrollIndicator targetRef={scrollRef} position="both" />
-      <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
+      <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto">
         <div className="mx-auto max-w-2xl">
           {/* Quest header */}
           <div className="mb-4">
@@ -248,11 +248,11 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
           {quest.characterStatus === 'ACTIVE' && (
             <button
               onClick={() => setShowAbandonModal(true)}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/10 py-2 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/20"
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/10 py-3 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/20"
             >
               <X className="h-4 w-4" />
-              <span className="text-xs" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                Zahodit
+              <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                Vzdát quest
               </span>
             </button>
           )}

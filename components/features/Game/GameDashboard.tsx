@@ -92,7 +92,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
       bg: '/assets/locations/city-background.jpg',
       title: 'Město Machala',
       icon: Home,
-      desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře a kováře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
+      desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
     },
     smith: {
       bg: '/assets/locations/armory-background.jpg',

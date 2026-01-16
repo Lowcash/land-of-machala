@@ -6,6 +6,67 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-16 21:15 - UI/UX Improvements Completion
+
+**Type:** Fixed, Changed  
+**Scope:** Tutorial, Achievements, Character, Skills, Map, Navigation  
+**Impact:** Completed all UI/UX improvement tasks - compact layouts, consistent navigation, fixed gradients
+
+### Fixed
+
+- **Tutorial (OnboardingForm):**
+  - Added min-height constraint to story heading container to prevent button jumping
+  - Used `min-h-[120px] flex items-center justify-center` to stabilize layout
+  - Buttons now stay in fixed position when story text changes length
+
+- **Map (MapCanvas):**
+  - Fixed invalid Tailwind class `bg-linear-to-br` → `bg-gradient-to-br`
+  - Location icons now display correctly with proper gradient backgrounds
+
+- **Register Page:**
+  - Fixed TypeScript strict mode error with heroText array access
+  - Added non-null assertion operator for safe constant array access
+
+### Changed
+
+- **Achievements (AchievementNotification):**
+  - Increased display duration from 12 seconds to 15 seconds
+  - Improved readability with longer notification visibility
+
+- **Character Stats (CharacterDetailContent):**
+  - Added `max-h-[280px]` constraint to match CharacterBox height
+  - Compacted section spacing from `mb-2` to `flex-1` for equal distribution
+  - Reduced divider margins from `my-2` to `my-1.5`
+  - Improved visual consistency between left and right panels
+
+- **Skills (SkillGrid):**
+  - Redesigned grid layout from 3/4 columns to 2/3 columns for wider cards
+  - Increased padding from `p-3` to `p-4` for better spacing
+  - Enlarged skill icons from `h-12 w-12` to `h-14 w-14` (icon `h-6 w-6` to `h-7 w-7`)
+  - Changed text from `line-clamp-2 text-sm` to `truncate text-base` with title tooltip
+  - Improved readability and reduced cramped feeling
+
+- **Map Navigation (LocationDetails):**
+  - Made "Zpět na mapu" button consistent with sticky header pattern
+  - Added `sticky top-0 z-30` container with border and backdrop blur
+  - Matches navigation UX across all game screens
+
+### Verified
+
+- **Forms (Login/Register):**
+  - Confirmed autoCapitalize="none" already set on email/password inputs
+  - No uppercase transformation issues present
+
+- **Navigation Buttons:**
+  - Verified "Zpět do hry" buttons already use consistent sticky header pattern
+  - All game screens use identical navigation component structure
+
+- **Quest Content:**
+  - Verified quests already have complete content (giver, location, story, rewards, abandon button)
+  - No empty quest content issues found
+
+---
+
 ## 2026-01-16 21:08 - Prisma 7 Upgrade and TypeScript Fixes
 
 **Type:** Changed, Fixed  

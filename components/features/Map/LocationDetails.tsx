@@ -47,15 +47,17 @@ export function LocationDetails({ location, onClose }: LocationDetailsProps) {
   return (
     <div className="relative flex h-full flex-col overflow-hidden">
       <ScrollIndicator targetRef={scrollRef} position="both" />
-      <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-4 overflow-y-auto p-4">
+      <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-4 overflow-y-auto">
         {/* Back button (mobile only) */}
-        <button
-          onClick={onClose}
-          className="mb-2 flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700] md:hidden"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Zpět na mapu
-        </button>
+        <div className="sticky top-0 z-30 mb-2 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm md:hidden">
+          <button
+            onClick={onClose}
+            className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na mapu
+          </button>
+        </div>
 
         {/* Location header */}
         <div>
