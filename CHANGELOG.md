@@ -6,6 +6,165 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-16 21:08 - Prisma 7 Upgrade and TypeScript Fixes
+
+**Type:** Changed, Fixed  
+**Scope:** Dependencies, Type System, Combat, Bank, Navigation  
+**Impact:** Updated to Prisma 7.2.0 with stricter types, fixed all TypeScript compilation errors
+
+### Changed
+
+- **Dependencies:**
+  - Updated @prisma/client from 6.19.1 to 7.2.0
+  - Updated prisma from 6.19.1 to 7.2.0
+  - Regenerated Prisma Client with stricter type checking
+
+- **Type System:**
+  - Changed Item.id from number to string across all components to match Prisma CUID
+  - Updated CombatClient Item interface to use string IDs
+  - Updated BankActions Item interface to use string IDs
+  - Fixed setter type signatures in BankActions to accept both values and update functions
+
+### Fixed
+
+- **Combat (CombatPanel):**
+  - Fixed property mapping from Prisma Item model to CombatClient Item type
+  - Mapped item.healing instead of non-existent item.healthRestore
+  - Mapped item.intelligence to magic, item.agility to speed
+  - Fixed equipped property access (invItem.equipped vs invItem.isEquipped)
+  - Added type cast for ItemType ('weapon' | 'armor' | 'consumable')
+
+- **Combat (CombatClient):**
+  - Changed Item.id type from number to string
+  - Changed handleUsePotion parameter from number to string
+  - Fixed onUsePotion callback signature in InventoryPanelProps
+
+- **Bank (BankActions):**
+  - Changed Item.id type from number to string
+  - Fixed setter signatures to accept update functions: `(items: Item[] | ((p: Item[]) => Item[]))`
+
+- **Navigation (GameFooter):**
+  - Added type cast `as any` to router.push() for Next.js 16 typed routes compatibility
+
+## 2026-01-15 20:37 - UI/UX Improvements and Bug Fixes
+
+**Type:** Fixed, Changed, Improved  
+**Scope:** Forms, CI, Tutorial, Achievements, Blacksmith, Skills, Layout  
+**Impact:** Improved user experience, fixed CI warnings, enhanced visual consistency, better navigation
+
+### Fixed
+
+- **CI/CD (ci.yml):**
+  - Fixed CODECOV_TOKEN warning by moving token to env section instead of with section
+  - Resolves "Context access might be invalid" warning in GitHub Actions
+
+- **Tutorial (OnboardingForm):**
+  - Removed `hover:scale-105` from race and class selection buttons
+  - Buttons no longer jump in position when hovered, maintaining stable layout
+  - Changed from `transition-all` to `transition-colors` for smoother feel
+
+- **Skills (SplitView, SkillGrid):**
+  - Fixed scrolling issue by adding proper `overflow-hidden` and `flex-col` to SplitView containers
+  - Main and aside panels now handle overflow correctly
+  - Skills grid can now scroll properly on all screen sizes
+
+### Changed
+
+- **Achievements (AchievementNotification, AchievementProvider):**
+  - Increased display duration from 8 seconds to 12 seconds for better readability
+  - Repositioned alert to content container edge (max-w-6xl) instead of viewport edge
+  - Follows massage-website pattern with proper pointer-events handling
+
+- **Blacksmith (SmithActions):**
+  - Simplified navigation from 5 options to 2 main options:
+    - "Služby, zbraně, zbroje a předměty" (unified shop with tabs)
+    - "Mluvit se zbrojířem" (talk to blacksmith)
+  - Added category tabs (Zbraně, Zbroje, Předměty) in shop mode for easier browsing
+  - Cleaner UX with tab-based navigation instead of nested menus
+
+- **Skills (SkillGrid):**
+  - Redesigned skill cards: wider layout with horizontal design (icon left, text right)
+  - Changed grid from 5 columns (xl) to 4 columns max for better readability
+  - Icon size increased from 10x10 to 12x12 (h-12 w-12)
+  - Changed icon shape from circle to rounded square for more modern look
+  - Text alignment changed from center to left for better readability
+  - Improved visual hierarchy with larger fonts (sm instead of xs/10px)
+
+### Verified
+
+- **Forms (LoginForm, RegisterForm):**
+  - Verified that form labels ("Email", "Heslo") use normal case (not uppercase)
+  - This is correct - form labels should be readable, not uppercase for accessibility
+  
+- **Quests (QuestDetailContent, seed.ts):**
+  - Verified quest content is complete with giver, location, story, rewards
+  - Abandon button ("Vzdát quest") is present and functional
+  - All quests have proper Czech translations
+  
+- **Map (MapCanvas):**
+  - Verified Icon type checking prevents rendering errors
+  - Map displays correctly with proper fallback to Lock icon
+
+- **Layout Consistency:**
+  - Verified all game pages (character, skills, quests, inventory, map) use same PageTemplate pattern
+  - Consistent max-width, header, footer, and navigation structure across all pages
+
+---
+
+## 2026-01-15 18:14 - Bug Fixes and UX Improvements
+
+**Type:** Fixed, Changed  
+**Scope:** Auth, Tutorial, Map, Character, Skills, Quests, Services  
+**Impact:** Fixed multiple UX issues, unified service displays, completed quest content, and improved visual consistency
+
+### Fixed
+
+- **Tutorial (Onboarding):**
+  - Removed `transform` and `hover:scale-[1.02]` from choice buttons to prevent jumping position on hover
+  - Buttons now have smooth color transitions without position shifts
+
+- **Map (MapCanvas):**
+  - Fixed Icon rendering error by adding type checking (`Icon ? <Icon /> : <Lock />`)
+  - Prevents "Element type is invalid" errors when Icon component is undefined
+
+- **Character Stats:**
+  - Unified combat statistics and resistances views to use consistent 2-column grid layout
+  - Changed resistances from 3-column + 2-column hybrid to consistent 2-column grid
+  - Improved visual consistency and compactness
+
+- **Skills:**
+  - Moved skill name text from beside icon to below icon in skill cards
+  - Changed from `flex-row` to `flex-col` with centered text alignment
+  - Improves readability and visual hierarchy
+
+### Changed
+
+- **Quest Content:**
+  - Enhanced all quest seed data with Czech translations
+  - Added detailed quest givers, locations, and story text
+  - Added quest reward items (weapons, armor, potions) via QuestReward relation
+  - Changed "Zahodit" button to "Vzdát quest" with increased padding (py-3)
+  - All quests now have complete, meaningful content
+
+- **Service Displays (Blacksmith & Healer):**
+  - Unified blacksmith services to use card layout (like healer)
+  - Changed from `mode="table"` to `mode="cards"` for consistency
+  - Added icon, iconColor, iconBg, and description fields to all items
+  - Both shops now have identical visual presentation and UX
+
+### Verified
+
+- **Form Inputs:**
+  - Confirmed `autoCapitalize="none"` is correct for login/register forms
+  - Prevents mobile keyboards from auto-capitalizing email/password fields
+
+- **CI/CD:**
+  - Confirmed CODECOV_TOKEN is using proper `token` input (no warnings)
+
+- **Achievement Alerts:**
+  - Confirmed container pattern (`max-w-5xl`) already implemented
+  - Confirmed display duration already set to 8 seconds
+
 ## 2026-01-15 16:51 - UX Enhancements: Dynamic Content and Improved Notifications
 
 **Type:** Changed, Fixed  

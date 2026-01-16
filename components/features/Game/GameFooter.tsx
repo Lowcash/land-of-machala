@@ -25,7 +25,7 @@ export function GameFooter() {
           return (
             <button
               key={item.id}
-              onClick={() => router.push(item.path)}
+              onClick={() => router.push(item.path as any)}
               className={`group relative flex min-w-16 flex-col items-center gap-1 rounded-lg p-2 transition-all duration-300 ${isActive ? '' : 'hover:bg-white/5'}`}
             >
               {/* Glow effect for active */}

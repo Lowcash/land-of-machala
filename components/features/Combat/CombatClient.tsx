@@ -41,7 +41,7 @@ interface CharacterStats {
 }
 
 interface Item {
-  id: number
+  id: string
   name: string
   type: ItemType
   iconName?: string
@@ -230,7 +230,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
     handleEnemyTurn()
   }
 
-  const handleUsePotion = (itemId: number) => {
+  const handleUsePotion = (itemId: string) => {
     if (turn !== 'player') return
     const potion = inventory.find((i) => i.id === itemId)
     if (!potion) return
@@ -518,7 +518,7 @@ interface CombatActionsProps {
   onAttack: (type: 'quick' | 'heavy' | 'magic') => void
   onDefend: (type: 'block' | 'dodge') => void
   onFlee: () => void
-  onUsePotion: (itemId: number) => void
+  onUsePotion: (itemId: string) => void
   potions: Item[]
   isPlayerTurn: boolean
 }

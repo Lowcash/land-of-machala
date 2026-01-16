@@ -6,7 +6,7 @@ import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
 
 interface Item {
-  id: number
+  id: string
   name: string
   type: string
   value?: number
@@ -20,9 +20,9 @@ interface BankActionsProps {
   bankGold: number
   setBankGold: (val: number | ((p: number) => number)) => void
   bankItems: Item[]
-  setBankItems: (items: Item[]) => void
+  setBankItems: (items: Item[] | ((p: Item[]) => Item[])) => void
   inventory: Item[]
-  setInventory: (items: Item[]) => void
+  setInventory: (items: Item[] | ((p: Item[]) => Item[])) => void
 }
 
 export function BankActions({
