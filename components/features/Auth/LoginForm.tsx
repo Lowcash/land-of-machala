@@ -223,6 +223,7 @@ export function LoginForm() {
                         placeholder="Zadej heslo..."
                         disabled={isLoading}
                         autoComplete="current-password"
+                        autoCapitalize="none"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                       />

@@ -6,6 +6,32 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-16 21:20 - Prisma 7 Configuration and Form Fixes
+
+**Type:** Fixed  
+**Scope:** Database, CI, Forms  
+**Impact:** Fixed Prisma 7 adapter error, CODECOV_TOKEN warning, and form autoCapitalize
+
+### Fixed
+
+- **Database (prisma.config.ts, schema.prisma):**
+  - Created `prisma.config.ts` with datasource URL configuration for Prisma 7
+  - Removed deprecated `url` property from schema.prisma datasource
+  - Fixed "requires either adapter or accelerateUrl" error in PrismaClient constructor
+  - Prisma 7 now correctly reads DATABASE_URL from environment via config file
+
+- **CI/CD (ci.yml):**
+  - Fixed CODECOV_TOKEN warning "Context access might be invalid"
+  - Moved token from `with:` parameter to `env:` block
+  - Follows GitHub Actions best practices for secret handling
+
+- **Forms (LoginForm, RegisterPage):**
+  - Added `autoCapitalize="none"` to password input fields
+  - Prevents mobile keyboards from auto-capitalizing passwords
+  - Both email and password fields now have consistent autocomplete behavior
+
+---
+
 ## 2026-01-16 21:15 - UI/UX Improvements Completion
 
 **Type:** Fixed, Changed  

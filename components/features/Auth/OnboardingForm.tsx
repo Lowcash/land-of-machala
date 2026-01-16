@@ -346,7 +346,7 @@ export function OnboardingForm() {
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
             <h1
-              className="min-h-[120px] flex items-center justify-center text-xl leading-relaxed text-[#d4a574] italic sm:min-h-[100px] sm:text-2xl"
+              className="flex min-h-30 items-center justify-center text-xl leading-relaxed text-[#d4a574] italic sm:min-h-25 sm:text-2xl"
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               &quot;{currentStory.text}&quot;

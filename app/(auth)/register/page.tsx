@@ -158,6 +158,7 @@ export default function RegisterPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Zadej heslo (min. 6 znaků)..."
+                        autoCapitalize="none"
                         className="w-full rounded-lg border-2 border-[#8b6f47] bg-black/60 py-2.5 pr-3 pl-10 text-sm text-[#ffd700] transition-colors placeholder:text-[#8b7355] focus:border-[#ffd700] focus:outline-none sm:py-3 sm:text-base"
                         style={{ fontFamily: 'var(--font-fantasy)' }}
                         required
