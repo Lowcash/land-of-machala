@@ -54,7 +54,7 @@ export function ScrollIndicator({
       {/* Top fade indicator */}
       {showTop && (position === 'top' || position === 'both') && (
         <div
-          className={`pointer-events-none absolute top-0 right-0 left-0 z-10 h-12 bg-linear-to-b from-black/80 via-black/40 to-transparent ${className}`}
+          className={`pointer-events-none absolute top-0 right-0 left-0 z-10 h-12 bg-gradient-to-b from-black/80 via-black/40 to-transparent ${className}`}
         >
           <div className="flex h-full items-center justify-center">
             <ChevronDown className="h-4 w-4 rotate-180 animate-bounce text-[#ffd700]" />
@@ -65,7 +65,7 @@ export function ScrollIndicator({
       {/* Bottom fade indicator */}
       {showBottom && (position === 'bottom' || position === 'both') && (
         <div
-          className={`pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-12 bg-linear-to-t from-black/80 via-black/40 to-transparent ${className}`}
+          className={`pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-12 bg-gradient-to-t from-black/80 via-black/40 to-transparent ${className}`}
         >
           <div className="flex h-full items-center justify-center">
             <ChevronDown className="h-4 w-4 animate-bounce text-[#ffd700]" />

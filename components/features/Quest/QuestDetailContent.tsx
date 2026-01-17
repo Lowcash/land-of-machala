@@ -229,7 +229,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               </div>
               <div className="h-2 overflow-hidden rounded-full bg-black/60">
                 <div
-                  className={`h-full bg-linear-to-r ${
+                  className={`h-full bg-gradient-to-r ${
                     quest.category === 'MAIN'
                       ? 'from-[#ffd700] to-[#ffed4e]'
                       : quest.category === 'SIDE'
@@ -272,7 +272,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
       {/* Abandon Confirmation Modal */}
       {showAbandonModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-md rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/95 to-black/80 p-6 shadow-2xl">
+          <div className="mx-4 w-full max-w-md rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/95 to-black/80 p-6 shadow-2xl">
             <h3
               className="mb-4 text-xl text-[#ffd700]"
               style={{ fontFamily: 'var(--font-medieval)' }}

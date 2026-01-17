@@ -114,7 +114,7 @@ export function TownActions({
             Navštívit <span className="text-[#ffd700]">léčitele</span> pro pomoc a léčení
           </ActionBtn>
           <ActionBtn onClick={onSmith} icon={Hammer}>
-            Navštívit <span className="text-[#ffd700]">zbrojíře</span> pro zbraně
+            Navštívit <span className="text-[#ffd700]">zbrojíře a kováře</span> pro zbraně
           </ActionBtn>
           <ActionBtn onClick={onBank} icon={Building}>
             Jít do <span className="text-[#ffd700]">banky</span> a uložit cennosti

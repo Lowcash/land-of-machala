@@ -1,8 +1,9 @@
 import { PrismaClient } from '@prisma/client'
+import { adapter } from '../prisma/prisma.config'
 
 const prismaClientSingleton = () => {
-  // Prisma 7: DATABASE_URL is read from environment automatically
   return new PrismaClient({
+    adapter,
     log: process.env.NODE_ENV === 'development' ? ['error', 'warn'] : ['error'],
   })
 }

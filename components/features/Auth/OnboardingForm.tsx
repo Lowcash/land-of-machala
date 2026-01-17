@@ -346,7 +346,7 @@ export function OnboardingForm() {
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
             <h1
-              className="flex min-h-30 items-center justify-center text-xl leading-relaxed text-[#d4a574] italic sm:min-h-25 sm:text-2xl"
+              className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               &quot;{currentStory.text}&quot;
@@ -358,7 +358,7 @@ export function OnboardingForm() {
                   key={idx}
                   onClick={() => handleStoryChoice(choice)}
                   disabled={isLoading}
-                  className="group w-full rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
+                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <span className="flex items-center justify-center gap-3">
@@ -590,10 +590,10 @@ export function OnboardingForm() {
                                 <button
                                   key={r.id}
                                   onClick={() => setRace(r.id)}
-                                  className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-colors sm:h-17.5 sm:gap-1 sm:p-3 ${
+                                  className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-17.5 sm:gap-1 sm:p-3 ${
                                     race === r.id
-                                      ? 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                                      : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#ffd700] hover:bg-[#8b6f47]/20'
+                                      ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                                      : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                                   }`}
                                 >
                                   <Icon
@@ -687,10 +687,10 @@ export function OnboardingForm() {
                                 <button
                                   key={c.id}
                                   onClick={() => setCharacterClass(c.id)}
-                                  className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-colors sm:min-h-17.5 sm:gap-1 sm:p-3 ${
+                                  className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-17.5 sm:gap-1 sm:p-3 ${
                                     characterClass === c.id
-                                      ? 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                                      : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#ffd700] hover:bg-[#8b6f47]/20'
+                                      ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                                      : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                                   }`}
                                 >
                                   <Icon
@@ -872,10 +872,10 @@ export function OnboardingForm() {
                       <button
                         key={r.id}
                         onClick={() => setRace(r.id)}
-                        className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-colors sm:h-17.5 sm:gap-1 sm:p-3 ${
+                        className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-17.5 sm:gap-1 sm:p-3 ${
                           race === r.id
-                            ? 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                            : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#ffd700] hover:bg-[#8b6f47]/20'
+                            ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                         }`}
                       >
                         <Icon
@@ -956,10 +956,10 @@ export function OnboardingForm() {
                       <button
                         key={c.id}
                         onClick={() => setCharacterClass(c.id)}
-                        className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-colors sm:min-h-17.5 sm:gap-1 sm:p-3 ${
+                        className={`flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-17.5 sm:gap-1 sm:p-3 ${
                           characterClass === c.id
-                            ? 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
-                            : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#ffd700] hover:bg-[#8b6f47]/20'
+                            ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
+                            : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
                         }`}
                       >
                         <Icon
@@ -1164,6 +1164,13 @@ export function OnboardingForm() {
                 </>
               )}
             </button>
+          </div>
+
+          {/* Version Footer */}
+          <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
+            <p className="text-xs text-[#8b7355]">
+              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+            </p>
           </div>
         </div>
       </div>

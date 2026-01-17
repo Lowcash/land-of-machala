@@ -10,7 +10,16 @@ export default async function GamePage() {
     redirect('/login')
   }
 
-  const character = await getCharacterByUserId(session.user.id)
+  // Wrap database call in try-catch to prevent crashes from connection issues
+  let character
+  try {
+    character = await getCharacterByUserId(session.user.id)
+  } catch (error) {
+    console.error('Database error fetching character:', error)
+    // Redirect to login if database connection fails
+    redirect('/login')
+  }
+
   if (!character) {
     redirect('/onboarding')
   }

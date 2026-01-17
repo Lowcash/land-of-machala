@@ -6,6 +6,50 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-17 13:42 - Critical Fixes and Project Setup Improvements
+
+**Type:** Fixed  
+**Scope:** Authentication, Database Setup, CI/CD, Documentation  
+**Impact:** Fixed app crash on logout, added Docker PostgreSQL setup, cleaned up project documentation
+
+### Fixed
+
+- **Authentication crash (app/(game)/game/page.tsx):**
+  - Wrapped `getCharacterByUserId()` in try-catch to prevent Prisma connection errors
+  - App now redirects gracefully to /login instead of crashing when user is logged out
+  - Prevents "Connection terminated unexpectedly" error
+
+- **CI/CD warning (.github/workflows/ci.yml):**
+  - Fixed CODECOV_TOKEN context access warning
+  - Moved token from `env:` to `with:` parameter (correct placement for codecov-action@v4)
+
+### Added
+
+- **Docker PostgreSQL setup:**
+  - Created `docker-compose.yml` for local PostgreSQL 16 development
+  - Created `.dockerignore` for optimized builds
+  - Created `docs/DATABASE_SETUP.md` with complete setup guide
+  - Includes health checks, volume persistence, and troubleshooting
+
+- **Documentation:**
+  - Created `docs/FILES_EXPLAINED.md` explaining all project files/folders
+  - Answers: .husky (git hooks), playwright-report (test HTML), test-results (test artifacts)
+  - Clarifies which files to keep, gitignore, or delete
+
+### Changed
+
+- **TODOS.md cleanup:**
+  - Removed 8 completed tasks (moved to CHANGELOG)
+  - Simplified to 3 essential HIGH priority tasks
+  - Added critical "Start PostgreSQL Database" task with setup steps
+  - Reduced from ~200 lines to ~80 lines (60% reduction)
+
+### Notes
+
+- **Login/Register UPPERCASE question:** Forms are correctly configured with `autoCapitalize="none"` on inputs (prevents iOS from capitalizing email). Labels use normal capitalization "Email" and "Heslo" (not UPPERCASE). This is the correct implementation ✅
+
+---
+
 ## 2026-01-16 22:00 - Revert to Prisma 6 and Fix Configuration
 
 **Type:** Fixed  
@@ -189,12 +233,10 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - **Forms (LoginForm, RegisterForm):**
   - Verified that form labels ("Email", "Heslo") use normal case (not uppercase)
   - This is correct - form labels should be readable, not uppercase for accessibility
-  
 - **Quests (QuestDetailContent, seed.ts):**
   - Verified quest content is complete with giver, location, story, rewards
   - Abandon button ("Vzdát quest") is present and functional
   - All quests have proper Czech translations
-  
 - **Map (MapCanvas):**
   - Verified Icon type checking prevents rendering errors
   - Map displays correctly with proper fallback to Lock icon

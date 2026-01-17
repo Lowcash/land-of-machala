@@ -44,7 +44,7 @@ export function CharacterBox({
       className={`group relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ${
         isEnemy
           ? 'border-red-900 bg-red-950/60 shadow-[0_0_15px_rgba(220,38,38,0.2)]'
-          : 'border-[#8b6f47] bg-linear-to-br from-[#1a1408] via-[#2a1f10] to-[#1a1408] shadow-[0_8px_32px_rgba(139,111,71,0.4),0_0_64px_rgba(255,215,0,0.1)]'
+          : 'border-[#8b6f47] bg-gradient-to-br from-[#1a1408] via-[#2a1f10] to-[#1a1408] shadow-[0_8px_32px_rgba(139,111,71,0.4),0_0_64px_rgba(255,215,0,0.1)]'
       }`}
     >
       {/* Medieval Corner Decorations with Scrollwork */}
@@ -96,7 +96,7 @@ export function CharacterBox({
             className={`absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full border-2 ${
               isEnemy
                 ? 'border-red-800 bg-red-950 text-red-200 shadow-[0_0_10px_rgba(220,38,38,0.5)]'
-                : 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#5a4a2e] text-[#ffd700] shadow-[0_0_10px_rgba(255,215,0,0.4)]'
+                : 'border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#5a4a2e] text-[#ffd700] shadow-[0_0_10px_rgba(255,215,0,0.4)]'
             } text-sm font-bold`}
           >
             {level}
@@ -122,7 +122,7 @@ export function CharacterBox({
             {/* HP Bar */}
             <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
               <div
-                className="absolute inset-0 bg-linear-to-r from-red-900 via-red-700 to-red-600 transition-all duration-300"
+                className="absolute inset-0 bg-gradient-to-r from-red-900 via-red-700 to-red-600 transition-all duration-300"
                 style={{ width: `${hpPercent}%` }}
               />
               <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
@@ -133,7 +133,7 @@ export function CharacterBox({
             {/* Mana Bar */}
             <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
               <div
-                className={`absolute inset-0 bg-linear-to-r from-blue-900 via-blue-700 to-blue-500 transition-all duration-300`}
+                className={`absolute inset-0 bg-gradient-to-r from-blue-900 via-blue-700 to-blue-500 transition-all duration-300`}
                 style={{ width: `${resourcePercent}%` }}
               />
               <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">

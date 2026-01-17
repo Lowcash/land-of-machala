@@ -60,7 +60,7 @@ function NotificationItem({
   const [progress, setProgress] = useState(100)
   const config = variantConfig[notification.variant]
   const Icon = config.icon
-  const duration = notification.duration ?? 5000
+  const duration = notification.duration ?? 8000 // Increased from 5000ms to 8000ms
 
   // Fade in
   useState(() => {
@@ -96,7 +96,7 @@ function NotificationItem({
       aria-atomic="true"
       className={`relative mb-3 w-80 overflow-hidden rounded-lg border-2 backdrop-blur-md transition-all duration-300 ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      } bg-linear-to-br ${config.bgGradient}`}
+      } bg-gradient-to-br ${config.bgGradient}`}
       style={{
         borderColor: config.borderColor,
         boxShadow: `0 0 20px ${config.glowColor}, 0 4px 6px rgba(0,0,0,0.3)`,

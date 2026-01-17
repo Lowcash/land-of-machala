@@ -41,7 +41,7 @@ export function GameLayout({
           <div className="absolute inset-0 flex justify-center">
             <div className="relative h-full w-full max-w-500">
               <Image src={backgroundImage} alt="" fill className="object-cover" priority />
-              <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-black/60"></div>
+              <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/60"></div>
             </div>
             {/* Black bars for ultra-wide screens */}
             <div className="pointer-events-none absolute inset-y-0 right-0 left-0">

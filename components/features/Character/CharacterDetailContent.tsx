@@ -94,7 +94,7 @@ export function CharacterDetailContent({
 
   if (section === 'stats') {
     return (
-      <div className="flex h-full max-h-70 flex-col rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
+      <div className="flex h-full max-h-70 flex-col rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-3 shadow-lg">
         {/* Combat Stats - Compact */}
         <div className="flex-1">
           <h3
@@ -133,7 +133,7 @@ export function CharacterDetailContent({
         </div>
 
         {/* Divider - smaller */}
-        <div className="my-1.5 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+        <div className="my-1.5 h-px bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
 
         {/* Resistances - Compact */}
         <div className="flex-1">
@@ -183,7 +183,7 @@ export function CharacterDetailContent({
 
   if (section === 'equipment') {
     return (
-      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
+      <div className="rounded-lg border-2 border-[#d4a574] bg-gradient-to-br from-black/80 to-black/60 p-3 shadow-lg">
         <h3
           className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
           style={{ fontFamily: 'var(--font-fantasy)' }}
