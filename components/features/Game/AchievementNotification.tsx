@@ -69,7 +69,7 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
       }`}
     >
       <div
-        className={`bg-gradient-to-r ${colors.bg} w-full max-w-sm rounded-lg border p-4 backdrop-blur-md`}
+        className={`bg-linear-to-r ${colors.bg} w-full max-w-sm rounded-lg border p-4 backdrop-blur-md`}
         style={{
           borderColor: colors.border,
           boxShadow: `0 0 15px ${colors.glow}, 0 4px 6px rgba(0,0,0,0.3)`,

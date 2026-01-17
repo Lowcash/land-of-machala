@@ -6,6 +6,31 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-17 14:56 - Tailwind Gradient Syntax & Smith Dialogue
+
+**Type:** Changed  
+**Scope:** Styling, Smith UI, Notifications  
+**Impact:** All gradients use bg-linear-to-\* syntax, smith has dialogue option like healer, notifications centered on page
+
+### Changed
+
+- **Tailwind gradient classes:**
+  - Replaced all `bg-gradient-to-*` with `bg-linear-to-*` across entire codebase
+  - Updated visual parity test to expect new syntax
+  - Affected: 30+ files (CharacterBox, SkillGrid, QuestDetail, MapLegend, ServiceTable, etc.)
+- **SmithActions enhancements:**
+  - Added "Mluvit se zbrojířem" option (matches Healer pattern)
+  - Smith now has dialogue system for quests and special orders
+  - Removed "& Kovárna" from title (now just "Zbrojíř")
+  - Updated GameDashboard description to mention dialogue option
+
+- **NotificationProvider layout:**
+  - Changed from fixed right position to centered with max-w-6xl
+  - Notifications now align with page container width
+  - Better visual consistency across all screen sizes
+
+---
+
 ## 2026-01-17 14:15 - UX/UI Polish & Onboarding Improvements
 
 **Type:** Changed  
@@ -17,7 +42,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 - **OnboardingForm tutorial:**
   - Fixed jumping buttons during intro story by adding min-height to headline container
   - Removed version footer from character creation flow for cleaner UX
-  
 - **NotificationProvider:**
   - Disabled auto-close functionality - notifications now stay until manually dismissed
   - Removed progress bar (no longer needed without auto-dismiss)

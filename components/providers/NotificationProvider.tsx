@@ -77,7 +77,7 @@ function NotificationItem({
       aria-atomic="true"
       className={`relative mb-3 w-80 overflow-hidden rounded-lg border-2 backdrop-blur-md transition-all duration-300 ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      } bg-gradient-to-br ${config.bgGradient}`}
+      } bg-linear-to-br ${config.bgGradient}`}
       style={{
         borderColor: config.borderColor,
         boxShadow: `0 0 20px ${config.glowColor}, 0 4px 6px rgba(0,0,0,0.3)`,
@@ -130,7 +130,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <div className="fixed top-20 right-4 z-600 flex flex-col">
+      <div className="fixed top-20 left-1/2 z-600 flex w-full max-w-6xl -translate-x-1/2 flex-col items-end px-4">
         {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}

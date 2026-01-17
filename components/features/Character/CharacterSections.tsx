@@ -79,7 +79,7 @@ export function CharacterSections({
               <button
                 key={section.id}
                 onClick={() => setSelectedSection(section.id)}
-                className={`group flex w-full items-center justify-between rounded border-2 bg-gradient-to-r from-black/80 to-black/60 p-3 text-left transition-all ${
+                className={`group flex w-full items-center justify-between rounded border-2 bg-linear-to-r from-black/80 to-black/60 p-3 text-left transition-all ${
                   isSelected
                     ? 'border-[#ffd700] bg-[#ffd700]/10 shadow-[0_0_15px_rgba(255,215,0,0.15)]'
                     : 'border-[#8b6f47] hover:border-[#d4a574] hover:bg-black/90'

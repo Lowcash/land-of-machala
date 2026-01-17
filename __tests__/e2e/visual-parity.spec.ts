@@ -68,15 +68,15 @@ test.describe('Visual Parity - Auth Pages', () => {
 })
 
 test.describe('Visual Parity - Gradient Classes', () => {
-  test('All gradient classes should use bg-gradient-to-* syntax (NOT bg-linear-to-*)', async ({
+  test('All gradient classes should use bg-linear-to-* syntax (NOT bg-gradient-to-*)', async ({
     page,
   }) => {
     await page.goto('/login')
     await page.waitForTimeout(500)
 
-    // Check that no old bg-linear-to-* classes exist in rendered HTML
-    const linearGradients = page.locator('[class*="bg-linear-to"]')
-    const count = await linearGradients.count()
+    // Check that no old bg-gradient-to-* classes exist in rendered HTML
+    const gradientClasses = page.locator('[class*="bg-gradient-to"]')
+    const count = await gradientClasses.count()
 
     expect(count).toBe(0)
   })
@@ -92,7 +92,7 @@ test.describe('Visual Parity - Gradient Classes', () => {
     await expect(submitButton).toBeVisible()
 
     const classes = await submitButton.getAttribute('class')
-    expect(classes).toContain('bg-gradient-to')
+    expect(classes).toContain('bg-linear-to')
   })
 })
 

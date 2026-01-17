@@ -143,7 +143,7 @@ export function LoginForm() {
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ backgroundImage: 'url(/assets/locations/city-background.jpg)' }}
         >
-          <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/75 to-black/90"></div>
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90"></div>
         </div>
 
         {/* Content */}
@@ -154,8 +154,8 @@ export function LoginForm() {
               {/* Logo & Title */}
               <div className="mb-6 text-center sm:mb-8">
                 <div className="relative mb-4 inline-block">
-                  <div className="absolute inset-0 rounded-full bg-gradient-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
-                  <div className="relative rounded-full border-2 border-[#ffd700] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
+                  <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl"></div>
+                  <div className="relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] p-4 shadow-2xl">
                     <Swords className="h-10 w-10 text-[#ffd700]" />
                   </div>
                 </div>
@@ -265,14 +265,14 @@ export function LoginForm() {
 
                 {/* Divider */}
                 <div className="my-6 flex items-center gap-4">
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
                   <span
                     className="text-xs text-[#8b7355]"
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     NEBO
                   </span>
-                  <div className="h-px flex-1 bg-gradient-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+                  <div className="h-px flex-1 bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
                 </div>
 
                 {/* Other Actions */}

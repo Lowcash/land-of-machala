@@ -169,7 +169,7 @@ export function SkillGrid({
                             key={i}
                             className={`h-1.5 flex-1 rounded-full ${
                               i < skill.currentLevel
-                                ? `bg-gradient-to-r ${
+                                ? `bg-linear-to-r ${
                                     skill.category === 'combat'
                                       ? 'from-[#ff6b6b] to-[#ff8b8b]'
                                       : skill.category === 'defense'

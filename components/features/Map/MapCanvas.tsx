@@ -128,7 +128,7 @@ export function MapCanvas({
             <div
               className={`relative flex h-full w-full items-center justify-center rounded-full ${
                 isUnlocked
-                  ? 'border-2 border-[#d4a574] bg-gradient-to-br from-[#8b6f47] to-[#6d5a3e]'
+                  ? 'border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]'
                   : 'border-2 border-[#8b6f47] bg-black/60'
               } ${isSelected ? 'border-[#ffd700] shadow-lg shadow-[#ffd700]/50' : ''}`}
             >

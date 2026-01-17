@@ -96,9 +96,9 @@ export function GameDashboard({ character }: GameDashboardProps) {
     },
     smith: {
       bg: '/assets/locations/armory-background.jpg',
-      title: 'Zbrojíř & Kovárna',
+      title: 'Zbrojíř',
       icon: Hammer,
-      desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> k prodeji, zatímco kovář v zadní části může <span class="text-[#ffd700]">vykovat</span> nové předměty nebo <span class="text-[#69ccf0]">opravit a vylepšit</span> tvou výbavu. Oheň v kovárně plane a kladivo je připravené.',
+      desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> k prodeji. V zadní části dílny můžeš s ním také <span class="text-[#69ccf0]">promluvit</span> o zakázkách a speciálních předmětech. Oheň v dílně plane a kladivo je připravené.',
     },
     bank: {
       bg: '/assets/locations/bank-background.jpg',

@@ -345,7 +345,7 @@ export function OnboardingForm() {
           <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
-            <div className="min-h-[120px] sm:min-h-[96px]">
+            <div className="min-h-30 sm:min-h-24">
               <h1
                 className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
                 style={{ fontFamily: 'var(--font-fantasy)' }}
