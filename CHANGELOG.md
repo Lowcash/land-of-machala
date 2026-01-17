@@ -6,6 +6,32 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-17 14:15 - UX/UI Polish & Onboarding Improvements
+
+**Type:** Changed  
+**Scope:** Onboarding, Notifications, Smith UI  
+**Impact:** Tutorial buttons stable, notifications require manual close, smith shop matches healer style
+
+### Changed
+
+- **OnboardingForm tutorial:**
+  - Fixed jumping buttons during intro story by adding min-height to headline container
+  - Removed version footer from character creation flow for cleaner UX
+  
+- **NotificationProvider:**
+  - Disabled auto-close functionality - notifications now stay until manually dismissed
+  - Removed progress bar (no longer needed without auto-dismiss)
+  - Users have full control over when to close alerts
+
+- **SmithActions UI:**
+  - Changed from table mode to cards mode (matches Healer UI pattern)
+  - Added icons (Sword for weapons, Shield for armor) with color coding
+  - Added descriptions for each item
+  - Unified stats display (attack/defense + price) in card layout
+  - Consistent UX across all shop interfaces
+
+---
+
 ## 2026-01-17 13:56 - Database Setup Complete & UX Improvements
 
 **Type:** Fixed  

@@ -345,12 +345,14 @@ export function OnboardingForm() {
           <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
-            <h1
-              className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              &quot;{currentStory.text}&quot;
-            </h1>
+            <div className="min-h-[120px] sm:min-h-[96px]">
+              <h1
+                className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                &quot;{currentStory.text}&quot;
+              </h1>
+            </div>
 
             <div className="mt-8 space-y-3">
               {currentStory.choices.map((choice, idx) => (
@@ -1164,13 +1166,6 @@ export function OnboardingForm() {
                 </>
               )}
             </button>
-          </div>
-
-          {/* Version Footer */}
-          <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
-            <p className="text-xs text-[#8b7355]">
-              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
-            </p>
           </div>
         </div>
       </div>

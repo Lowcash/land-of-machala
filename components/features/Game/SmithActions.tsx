@@ -1,7 +1,7 @@
 'use client'
 
 import { ServiceTable } from '@/components/ui/ServiceTable'
-import { Coins, Home, Store } from 'lucide-react'
+import { Coins, Home, Shield, Store, Sword } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn } from './ActionBtn'
 import { GameLayout, GamePanel } from './GameLayout'
@@ -68,14 +68,70 @@ export function SmithActions({
 
   // ARMORY SHOP STOCK (from design repo)
   const stock = [
-    { name: 'Dřevěný meč', attack: 5, price: 50, type: 'weapon' },
-    { name: 'Železný meč', attack: 12, price: 150, type: 'weapon' },
-    { name: 'Dlouhý meč', attack: 15, price: 200, type: 'weapon' },
-    { name: 'Bojová sekera', attack: 18, price: 300, type: 'weapon' },
-    { name: 'Kožená zbroj', defense: 8, price: 100, type: 'armor' },
-    { name: 'Řetězová zbroj', defense: 15, price: 250, type: 'armor' },
-    { name: 'Ocelová zbroj', defense: 20, price: 400, type: 'armor' },
-    { name: 'Platová zbroj', defense: 25, price: 600, type: 'armor' },
+    { 
+      name: 'Dřevěný meč', 
+      attack: 5, 
+      price: 50, 
+      type: 'weapon',
+      description: 'Základní zbraň pro začátečníky',
+      icon: Sword,
+    },
+    { 
+      name: 'Železný meč', 
+      attack: 12, 
+      price: 150, 
+      type: 'weapon',
+      description: 'Spolehlivý meč z tvrdého železa',
+      icon: Sword,
+    },
+    { 
+      name: 'Dlouhý meč', 
+      attack: 15, 
+      price: 200, 
+      type: 'weapon',
+      description: 'Delší dosah, větší síla',
+      icon: Sword,
+    },
+    { 
+      name: 'Bojová sekera', 
+      attack: 18, 
+      price: 300, 
+      type: 'weapon',
+      description: 'Brutální zbraň s masivním úderem',
+      icon: Sword,
+    },
+    { 
+      name: 'Kožená zbroj', 
+      defense: 8, 
+      price: 100, 
+      type: 'armor',
+      description: 'Lehká ochrana pro rychlé bojovníky',
+      icon: Shield,
+    },
+    { 
+      name: 'Řetězová zbroj', 
+      defense: 15, 
+      price: 250, 
+      type: 'armor',
+      description: 'Kovové kroužky poskytují solidní ochranu',
+      icon: Shield,
+    },
+    { 
+      name: 'Ocelová zbroj', 
+      defense: 20, 
+      price: 400, 
+      type: 'armor',
+      description: 'Odolná pancéřová výstroj',
+      icon: Shield,
+    },
+    { 
+      name: 'Platová zbroj', 
+      defense: 25, 
+      price: 600, 
+      type: 'armor',
+      description: 'Nejlepší ochrana pro opravdové hrdiny',
+      icon: Shield,
+    },
   ]
 
   const handleBuy = (item: StockItem) => {
@@ -135,30 +191,22 @@ export function SmithActions({
         ) : selectedAction === 'buy' ? (
           <ServiceTable
             items={stock}
-            mode="table"
+            mode="cards"
             columns={[
+              { key: 'name', label: 'Název' },
               {
-                key: 'name',
-                label: 'Předmět',
-                align: 'left',
-                render: (item) => <span className="text-[#f5e6d3]">{item.name}</span>,
-              },
-              {
-                key: 'stats',
-                label: 'Bonus',
-                align: 'center',
+                key: 'description',
+                label: 'Popis',
                 render: (item) => (
-                  <>
-                    {item.attack && <span className="text-[#ff6b6b]">+{item.attack}</span>}
-                    {item.defense && <span className="text-[#69ccf0]">+{item.defense}</span>}
-                  </>
+                  <div>
+                    <div>{item.description}</div>
+                    <div className="mt-1 flex items-center gap-2">
+                      {item.attack && <span className="text-[#ff6b6b]">Útok: +{item.attack}</span>}
+                      {item.defense && <span className="text-[#69ccf0]">Obrana: +{item.defense}</span>}
+                      <span className="text-[#ffd700]">{item.price}g</span>
+                    </div>
+                  </div>
                 ),
-              },
-              {
-                key: 'price',
-                label: 'Cena',
-                align: 'right',
-                render: (item) => <span className="text-[#ffd700]">{item.price}g</span>,
               },
             ]}
             actions={[
@@ -168,6 +216,10 @@ export function SmithActions({
                 disabled: (item) => gold < item.price,
               },
             ]}
+            rowIcon={(item) => {
+              const Icon = item.icon
+              return <Icon className={`h-4 w-4 ${item.type === 'weapon' ? 'text-[#ff6b6b]' : 'text-[#69ccf0]'}`} />
+            }}
             emptyMessage="Žádné předměty na prodej"
           />
         ) : (

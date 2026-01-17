@@ -57,37 +57,18 @@ function NotificationItem({
   onClose: () => void
 }) {
   const [isVisible, setIsVisible] = useState(false)
-  const [progress, setProgress] = useState(100)
   const config = variantConfig[notification.variant]
   const Icon = config.icon
-  const duration = notification.duration ?? 8000 // Increased from 5000ms to 8000ms
 
   // Fade in
   useState(() => {
     setTimeout(() => setIsVisible(true), 100)
   })
 
-  // Progress bar animation
-  useState(() => {
-    const startTime = Date.now()
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime
-      const remaining = Math.max(0, 100 - (elapsed / duration) * 100)
-      setProgress(remaining)
-    }, 16)
-
-    return () => clearInterval(interval)
-  })
-
-  // Auto-dismiss
-  useState(() => {
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-      setTimeout(onClose, 300)
-    }, duration)
-
-    return () => clearTimeout(timer)
-  })
+  const handleClose = () => {
+    setIsVisible(false)
+    setTimeout(onClose, 300)
+  }
 
   return (
     <div
@@ -123,26 +104,13 @@ function NotificationItem({
         </div>
 
         <button
-          onClick={() => {
-            setIsVisible(false)
-            setTimeout(onClose, 300)
-          }}
+          onClick={handleClose}
           className="shrink-0 text-[#f5e6d3]/60 transition-colors hover:text-[#f5e6d3]"
           aria-label="Zavřít oznámení"
         >
           <X className="h-4 w-4" />
         </button>
       </div>
-
-      {/* Progress bar */}
-      <div
-        className="h-1 transition-all duration-100 ease-linear"
-        style={{
-          width: `${progress}%`,
-          backgroundColor: config.borderColor,
-          boxShadow: `0 0 8px ${config.glowColor}`,
-        }}
-      />
     </div>
   )
 }
