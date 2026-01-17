@@ -6,6 +6,58 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-17 13:56 - Database Setup Complete & UX Improvements
+
+**Type:** Fixed  
+**Scope:** Database, Notifications, CI/CD, Dependencies  
+**Impact:** PostgreSQL running via Docker, database fully seeded, notifications stay visible longer
+
+### Fixed
+
+- **Prisma version compatibility:**
+  - Downgraded from Prisma 7.2.0 to 6.19.1 (adapter setup more stable)
+  - Added `url` property to datasource in schema.prisma (required for Prisma 6)
+  - Added `db:migrate` script to package.json for easier migrations
+
+- **Database configuration:**
+  - Updated DATABASE_URL from MySQL to PostgreSQL
+  - Created `prisma/prisma.config.ts` for adapter configuration
+  - PostgreSQL now running via Docker on localhost:5432
+  - Database fully migrated and seeded with test data
+
+- **CI/CD warning (.github/workflows/ci.yml):**
+  - Fixed "Context access might be invalid: CODECOV_TOKEN" warning
+  - Added check for empty secret: `secrets.CODECOV_TOKEN != ''`
+
+- **Code quality:**
+  - Removed `as any` type assertion in GameFooter.tsx (cleaner type safety)
+
+### Changed
+
+- **Notification duration:**
+  - Increased from 5 seconds to 8 seconds (60% longer)
+  - Users have more time to read alert messages
+
+### Added
+
+- **Docker PostgreSQL setup:**
+  - Created `docker-compose.yml` for local PostgreSQL 16 development
+  - Created `.dockerignore` for optimized Docker builds
+  - Created `docs/DATABASE_SETUP.md` with complete setup guide
+
+### Notes
+
+- **Gradient class names:** `bg-gradient-to-*` is CORRECT Tailwind CSS v4 syntax ✅
+  - `bg-linear-to-*` is NOT a valid Tailwind class
+  - No changes needed - project already uses correct syntax
+
+- **Login/Register UPPERCASE:** Forms correctly use `autoCapitalize="none"` ✅
+  - This is a **feature** preventing iOS from capitalizing email/password input
+  - Best practice for login forms (prevents user errors)
+  - Labels "Email" and "Heslo" use normal capitalization (correct)
+
+---
+
 ## 2026-01-17 13:42 - Critical Fixes and Project Setup Improvements
 
 **Type:** Fixed  
