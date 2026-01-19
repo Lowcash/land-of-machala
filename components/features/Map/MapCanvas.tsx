@@ -1,13 +1,23 @@
 'use client'
 
-import { Castle, Home, Lock, MapPin, Mountain, Trees } from 'lucide-react'
+import { AlertCircle, Castle, HelpCircle, Home, Lock, MapPin, Mountain, Skull, Trees } from 'lucide-react'
 import type { Location, LocationType } from './types'
+
+interface QuestMarker {
+  locationId: string
+  type: 'giver' | 'turnin'
+  questId: string
+}
 
 interface MapCanvasProps {
   locations: Location[]
   playerPosition: { x: number; y: number }
   selectedLocation: Location | null
   onSelectLocation: (location: Location) => void
+  discoveredLocations?: string[]
+  questMarkers?: QuestMarker[]
+  deathLocation?: { x: number; y: number; expiresAt: string } | null
+  isDebug?: boolean
 }
 
 const MIN_X = 50
@@ -25,10 +35,12 @@ function getLocationIcon(type: LocationType) {
       return Trees
     case 'LANDMARK':
       return Mountain
+    default:
+      return MapPin
   }
 }
 
-function getLocationColor(type: LocationType) {
+function getLocationColor(type: LocationType | string) {
   switch (type) {
     case 'TOWN':
       return 'text-[#ffd700]'
@@ -38,6 +50,8 @@ function getLocationColor(type: LocationType) {
       return 'text-[#6fbf6f]'
     case 'LANDMARK':
       return 'text-[#b66bd4]'
+    default:
+      return 'text-[#d4a574]'
   }
 }
 
@@ -46,17 +60,21 @@ export function MapCanvas({
   playerPosition,
   selectedLocation,
   onSelectLocation,
+  discoveredLocations = [],
+  questMarkers = [],
+  deathLocation,
+  isDebug = false,
 }: MapCanvasProps) {
   // Convert absolute coordinates to percentage
   const toPercent = (x: number, y: number) => ({
-    x: ((x - MIN_X) / (MAX_X - MIN_X)) * 100,
-    y: ((y - MIN_Y) / (MAX_Y - MIN_Y)) * 100,
+    x: Math.max(0, Math.min(100, ((x - MIN_X) / (MAX_X - MIN_X)) * 100)),
+    y: Math.max(0, Math.min(100, ((y - MIN_Y) / (MAX_Y - MIN_Y)) * 100)),
   })
 
   const playerPercent = toPercent(playerPosition.x, playerPosition.y)
 
   return (
-    <div className="relative h-full w-full p-8">
+    <div className="relative h-full w-full p-8 select-none">
       {/* Decorative grid */}
       <div
         className="absolute inset-0"
@@ -67,10 +85,18 @@ export function MapCanvas({
           opacity: 0.1,
         }}
       ></div>
+      
+      {/* Coordinates Display */}
+      <div className="absolute top-2 right-2 z-50 rounded bg-black/80 px-2 py-1 text-xs font-mono text-[#ffd700] border border-[#d4a574]">
+        X: {playerPosition.x} Y: {playerPosition.y}
+      </div>
 
       {/* Roads connecting to player position */}
       <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 1 }}>
         {locations.map((loc) => {
+          const isDiscovered = discoveredLocations.includes(loc.id) || isDebug
+          if (!isDiscovered) return null
+          
           const locPercent = toPercent(loc.positionX, loc.positionY)
           return (
             <line
@@ -94,13 +120,33 @@ export function MapCanvas({
         style={{
           left: `${playerPercent.x}%`,
           top: `${playerPercent.y}%`,
-          zIndex: 10,
+          zIndex: 50,
         }}
       >
         <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-white bg-[#69ccf0] shadow-lg">
           <MapPin className="h-4 w-4 text-white" />
         </div>
+        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black/70 px-2 py-0.5 text-[10px] text-[#69ccf0] font-bold">
+          Jsi zde
+        </div>
       </div>
+
+       {/* Loot Pile Marker */}
+      {deathLocation && (
+         <div
+           className="absolute -mt-4 -ml-4 h-8 w-8 animate-bounce cursor-pointer"
+           style={{
+             left: `${toPercent(deathLocation.x, deathLocation.y).x}%`,
+             top: `${toPercent(deathLocation.x, deathLocation.y).y}%`,
+             zIndex: 45,
+           }}
+           title={`Smrt - Expirace: ${new Date(deathLocation.expiresAt).toLocaleDateString()}`}
+         >
+           <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-[#ff6b6b] bg-black/80 shadow-lg shadow-[#ff6b6b]/50">
+             <Skull className="h-5 w-5 text-[#ff6b6b]" />
+           </div>
+         </div>
+       )}
 
       {/* Locations */}
       {locations.map((location) => {
@@ -108,7 +154,16 @@ export function MapCanvas({
         const color = getLocationColor(location.type)
         const percent = toPercent(location.positionX, location.positionY)
         const isSelected = selectedLocation?.id === location.id
-        const isUnlocked = location.level <= 5 // Simple unlock logic (levels 1-5 unlocked)
+        const isDiscovered = discoveredLocations.includes(location.id) || isDebug
+        const isUnlocked = location.level <= 100 // Access logic handled by server actions mainly
+        
+        const activeQuest = questMarkers.find(q => q.locationId === location.id)
+
+        if (!isDiscovered && !isDebug) {
+             // Fog of war placeholder (optional, or just don't render)
+             // For now, only render discovered
+             return null; 
+        }
 
         return (
           <button
@@ -117,11 +172,10 @@ export function MapCanvas({
             disabled={!isUnlocked}
             className={`absolute -mt-6 -ml-6 h-12 w-12 transition-all ${
               isUnlocked ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed opacity-40'
-            } ${isSelected ? 'scale-125' : ''}`}
+            } ${isSelected ? 'scale-125 z-40' : 'z-20'}`}
             style={{
               left: `${percent.x}%`,
               top: `${percent.y}%`,
-              zIndex: isSelected ? 20 : 5,
             }}
             title={location.name}
           >
@@ -137,17 +191,32 @@ export function MapCanvas({
               ) : (
                 <Lock className="h-6 w-6 text-[#8b6f47]" />
               )}
+              
+              {/* Quest Marker Overlay */}
+              {activeQuest && (
+                <div className="absolute -top-2 -right-2 z-50 animate-bounce">
+                  {activeQuest.type === 'giver' ? (
+                     <AlertCircle className="h-5 w-5 fill-black text-[#ffd700]" />
+                  ) : (
+                     <HelpCircle className="h-5 w-5 fill-black text-[#ffd700]" />
+                  )}
+                </div>
+              )}
+
+              {/* Level Badge */}
               {location.level > 1 && (
                 <span
-                  className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#8b6f47] bg-[#ff6b6b] text-[10px] text-white"
+                  className="absolute -bottom-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#8b6f47] bg-[#ff6b6b] text-[10px] text-white"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   {location.level}
                 </span>
               )}
             </div>
+            
+            {/* Name Label */}
             <div
-              className="mt-1 text-center text-[10px] whitespace-nowrap text-[#d4a574]"
+              className={`mt-1 text-center text-[10px] whitespace-nowrap px-1 rounded bg-black/40 backdrop-blur-sm ${isSelected ? 'text-[#ffd700] font-bold' : 'text-[#d4a574]'}`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               {location.name}

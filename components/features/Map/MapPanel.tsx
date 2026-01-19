@@ -1,75 +1,70 @@
+import { getLocationsByServer, getQuestMarkersForCharacter } from '@/lib/actions/location'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { Suspense } from 'react'
 import { MapClient } from './MapClient'
+import { Location } from './types'
 
-interface Location {
-  id: string
-  name: string
-  description: string
-  type: string
-  level: number
-  x: number
-  y: number
-  image: string
-  createdAt?: Date | string | null
-  updatedAt?: Date | string | null
-}
+async function getCharacterMapData() {
+  const session = await auth()
+  if (!session?.user?.id) return null
 
-async function getLocations() {
-  const locations = await prisma.location.findMany({
-    orderBy: [{ level: 'asc' }, { name: 'asc' }],
+  const character = await prisma.character.findFirst({
+    where: { userId: session.user.id },
+    select: {
+      id: true,
+      serverId: true,
+      discoveredLocations: true,
+      deathLocation: true,
+      // Add other needed fields
+    }
   })
 
-  return locations
+  return character
 }
 
 export async function MapPanel() {
-  let locations = await getLocations()
+  const character = await getCharacterMapData()
+  
+  // Default fallback if no character (e.g. creating one)
+  const serverId = character?.serverId || 'default'
+  
+  const [locations, questMarkers] = await Promise.all([
+    getLocationsByServer(serverId),
+    character ? getQuestMarkersForCharacter(character.id) : []
+  ])
 
-  if (locations.length === 0) {
-    locations = [
-      {
-        id: 'dummy-loc-1',
-        name: 'Město Machala',
-        description: 'Hlavní město království. Bezpečné útočiště pro všechny dobrodruhy.',
-        type: 'TOWN',
-        level: 1,
-        x: 0,
-        y: 0,
-        image: '/assets/locations/city.jpg', // Assuming assets exist or path is handled
-      },
-      {
-        id: 'dummy-loc-2',
-        name: 'Temný Les',
-        description: 'Les plný nebezpečných stvůr a tajemství.',
-        type: 'FOREST',
-        level: 3,
-        x: 1,
-        y: 0,
-        image: '/assets/locations/forest.jpg',
-      },
-      {
-        id: 'dummy-loc-3',
-        name: 'Staré Ruiny',
-        description: 'Rozpadlé zdi kdysi mocné pevnosti.',
-        type: 'DUNGEON',
-        level: 5,
-        x: 2,
-        y: 1,
-        image: '/assets/locations/ruins.jpg',
-      },
-    ] as Location[]
-  }
+  // Process discovered locations
+  // Ensure it's an array of strings
+  const discoveredLocations = Array.isArray(character?.discoveredLocations) 
+    ? character?.discoveredLocations as string[] 
+    : []
 
-  const serializedLocations = locations.map((loc: Location) => ({
-    ...loc,
-    createdAt: loc.createdAt?.toISOString ? loc.createdAt.toISOString() : loc.createdAt || null,
-    updatedAt: loc.updatedAt?.toISOString ? loc.updatedAt.toISOString() : loc.updatedAt || null,
+  // Process death location
+  const deathLocation = character?.deathLocation as any // Type assertion for JSON field
+
+  const serializedLocations: Location[] = locations.map((loc) => ({
+    id: loc.id,
+    name: loc.name,
+    description: loc.description,
+    type: loc.type as any, // Cast to LocationType
+    level: loc.level,
+    positionX: loc.positionX,
+    positionY: loc.positionY
   }))
+  
+  // Check for debug mode from env
+  const isDebug = process.env.NEXT_PUBLIC_DEBUG_MAP === 'true'
 
   return (
-    <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
-      <MapClient locations={serializedLocations} />
+    <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání mapy...</div>}>
+      <MapClient 
+        locations={serializedLocations} 
+        discoveredLocations={discoveredLocations}
+        questMarkers={questMarkers}
+        deathLocation={deathLocation}
+        isDebug={isDebug}
+      />
     </Suspense>
   )
 }
