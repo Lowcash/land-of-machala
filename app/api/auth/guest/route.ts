@@ -12,7 +12,7 @@ export async function POST() {
     const hashedPassword = await hash(password, 12)
 
     // Create guest user
-    await prisma.user.create({
+    const user = await prisma.user.create({
       data: {
         email,
         passwordHash: hashedPassword,
@@ -23,6 +23,7 @@ export async function POST() {
     return NextResponse.json({
       email,
       password,
+      userId: user.id
     })
   } catch (error) {
     console.error('Guest login error:', error)
