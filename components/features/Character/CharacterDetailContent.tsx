@@ -94,84 +94,86 @@ export function CharacterDetailContent({
 
   if (section === 'stats') {
     return (
-      <div className="flex h-full max-h-70 flex-col rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
-        {/* Combat Stats - Compact */}
-        <div className="flex-1">
+      <div className="flex h-full flex-col gap-4 overflow-y-auto scrollbar-custom rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
+        {/* Combat Stats - Clear and Readable */}
+        <div>
           <h3
-            className="mb-1.5 flex items-center gap-2 text-xs text-[#ffd700]"
+            className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             <Swords className="h-4 w-4" />
             Bojové statistiky
           </h3>
-          <div className="grid grid-cols-2 gap-1.5 text-xs">
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Útok</span>
-              <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          <div className="space-y-2">
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+              <span className="text-sm text-[#8b7355]">Útok</span>
+              <span className="text-base font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {totalAttack}
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Obrana</span>
-              <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+              <span className="text-sm text-[#8b7355]">Obrana</span>
+              <span className="text-base font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {totalDefense}
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Crit</span>
-              <span className="text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {critChance}%
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Dodge</span>
-              <span className="text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {dodgeChance}%
-              </span>
+            <div className="grid grid-cols-2 gap-2">
+              <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                <span className="text-xs text-[#8b7355]">Crit</span>
+                <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                  {critChance}%
+                </span>
+              </div>
+              <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                <span className="text-xs text-[#8b7355]">Dodge</span>
+                <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                  {dodgeChance}%
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Divider - smaller */}
-        <div className="my-1.5 h-px bg-linear-to-r from-transparent via-[#8b6f47] to-transparent"></div>
+        {/* Divider */}
+        <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
 
-        {/* Resistances - Compact */}
-        <div className="flex-1">
+        {/* Resistances - Clear and Readable */}
+        <div>
           <h3
-            className="mb-1.5 flex items-center gap-2 text-xs text-[#ffd700]"
+            className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             <Shield className="h-4 w-4" />
             Odolnosti
           </h3>
-          <div className="grid grid-cols-2 gap-1.5 text-xs">
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Fyz.</span>
-              <span className="text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+              <span className="text-xs text-[#8b7355]">Fyzická</span>
+              <span className="text-sm font-bold text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.physicalResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Mag.</span>
-              <span className="text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+              <span className="text-xs text-[#8b7355]">Magická</span>
+              <span className="text-sm font-bold text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.magicalResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Oheň</span>
-              <span className="text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+              <span className="text-xs text-[#8b7355]">Oheň</span>
+              <span className="text-sm font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.fireResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Chlad</span>
-              <span className="text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+              <span className="text-xs text-[#8b7355]">Chlad</span>
+              <span className="text-sm font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.coldResistance}%
               </span>
             </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-              <span className="text-[10px] text-[#8b7355]">Jed</span>
-              <span className="text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+              <span className="text-xs text-[#8b7355]">Jed</span>
+              <span className="text-sm font-bold text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 {character.poisonResistance}%
               </span>
             </div>
