@@ -1,9 +1,9 @@
 'use client'
 
-import { BedDouble, Beer, ChevronRight, Dices, Home, ScrollText, X } from 'lucide-react'
+import { BedDouble, Beer, ChevronRight, Dices, Home, ScrollText } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn } from './ActionBtn'
-import { GameLayout, GamePanel } from './GameLayout'
+import { GamePanel } from './GameLayout'
 
 interface TavernActionsProps {
   onBack: () => void
@@ -78,46 +78,12 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
     </div>
   )
 
-  return (
-    <GameLayout>
-      <GamePanel title="Akce">
-        <div className="space-y-1.5">
-          <ActionBtn
-            onClick={activeTab === 'gamble' ? () => setActiveTab('menu') : onBack}
-            icon={activeTab === 'gamble' ? ChevronRight : Home}
-          >
-            <span>{activeTab === 'gamble' ? 'Zpět k baru' : 'Vrátit se do města'}</span>
-          </ActionBtn>
-
-          {activeTab === 'menu' && (
-            <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-              <ActionBtn onClick={() => {}} icon={Beer}>
-                Koupit <span className="text-[#ffd700]">pivo</span> (5g)
-              </ActionBtn>
-              <ActionBtn onClick={onRest} icon={BedDouble}>
-                <span className="text-[#ffd700]">Odpočinout si</span> (10g)
-              </ActionBtn>
-              <ActionBtn onClick={handleRumors} icon={ScrollText}>
-                Koupit rundu a <span className="text-[#ffd700]">zvědět drby</span> (5g)
-              </ActionBtn>
-              <ActionBtn onClick={() => setActiveTab('gamble')} icon={Dices}>
-                Hrát <span className="text-[#ffd700]">kostky</span>
-              </ActionBtn>
-            </div>
-          )}
-        </div>
-      </GamePanel>
-
-      <GamePanel title={activeTab === 'gamble' ? 'Kostky' : 'Taverna'}>
-        {activeTab === 'gamble' ? (
-          <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47] bg-black/60 p-4">
+  const renderDiceGame = () => (
+     <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47] bg-black/60 p-4">
             <div className="mb-2 flex w-full items-center justify-between text-xs text-[#8b7355]">
               <span>
                 Tvé zlato: <span className="text-[#ffd700]">{gold}g</span>
               </span>
-              <button onClick={() => setActiveTab('menu')}>
-                <X className="h-4 w-4 hover:text-white" />
-              </button>
             </div>
 
             <div className="flex w-full items-center justify-center gap-8 rounded border border-[#8b6f47]/30 bg-black/40 p-4">
@@ -183,14 +149,62 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
               {gameState === 'rolling' ? 'Kostky se kutálí...' : 'Hodit kostkami'}
             </button>
           </div>
-        ) : (
-          <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
-            Hlasitý smích a cinkání hrnčků naplněuje tavernu &quot;U Zlomeného meče&quot;. Je to
-            jediné místo, kde se v tomhle městě dá opravdu odpočinout a načerpat novou energii na
-            další výpravy.
-          </div>
-        )}
-      </GamePanel>
-    </GameLayout>
+  )
+
+  const subsections = activeTab === 'gamble' ? [
+     {
+         title: 'KOSTKY',
+         content: renderDiceGame(),
+         defaultOpen: true
+     }
+  ] : [
+     {
+         title: 'NÁPOJE A ODPOČINEK',
+         content: (
+            <div className="space-y-1.5 pt-2">
+              <ActionBtn onClick={() => {}} icon={Beer}>
+                Koupit <span className="text-[#ffd700]">pivo</span> (5g)
+              </ActionBtn>
+              <ActionBtn onClick={onRest} icon={BedDouble}>
+                <span className="text-[#ffd700]">Odpočinout si</span> (10g)
+              </ActionBtn>
+              <ActionBtn onClick={handleRumors} icon={ScrollText}>
+                Koupit rundu a <span className="text-[#ffd700]">zvědět drby</span> (5g)
+              </ActionBtn>
+              <ActionBtn onClick={() => setActiveTab('gamble')} icon={Dices}>
+                Hrát <span className="text-[#ffd700]">kostky</span>
+              </ActionBtn>
+            </div>
+         ),
+         defaultOpen: true
+     },
+     {
+         title: 'ATMOSFÉRA',
+         content: (
+            <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
+                Hlasitý smích a cinkání hrnčků naplněuje tavernu &quot;U Zlomeného meče&quot;. Je to
+                jediné místo, kde se v tomhle městě dá opravdu odpočinout a načerpat novou energii na
+                další výpravy.
+            </div>
+         ),
+         defaultOpen: true
+     }
+  ]
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+           <ActionBtn
+            onClick={activeTab === 'gamble' ? () => setActiveTab('menu') : onBack}
+            icon={activeTab === 'gamble' ? ChevronRight : Home}
+            small
+            className="w-auto"
+          >
+            <span>{activeTab === 'gamble' ? 'Zpět k baru' : 'Vrátit se do města'}</span>
+          </ActionBtn>
+      </div>
+
+      <GamePanel title={activeTab === 'gamble' ? 'Kostky' : 'Taverna'} subsections={subsections} />
+    </div>
   )
 }

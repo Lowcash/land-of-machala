@@ -1,22 +1,22 @@
 'use client'
 
 import {
-  ArrowDown,
-  ArrowLeft as ArrowLeftIcon,
-  ArrowRight,
-  ArrowUp,
-  Beer,
-  Building,
-  Cross,
-  Hammer,
-  Home,
-  ScrollText,
-  ShoppingBag,
-  Swords,
+    ArrowDown,
+    ArrowLeft as ArrowLeftIcon,
+    ArrowRight,
+    ArrowUp,
+    Beer,
+    Building,
+    Cross,
+    Hammer,
+    Home,
+    ScrollText,
+    ShoppingBag,
+    Swords,
 } from 'lucide-react'
 import { useState } from 'react'
 import { ActionBtn, DirectionBtn } from './ActionBtn'
-import { GameLayout, GamePanel } from './GameLayout'
+import { GamePanel } from './GameLayout'
 
 interface TownActionsProps {
   onSmith: () => void
@@ -62,80 +62,88 @@ export function TownActions({
     const randomRumor = rumors[Math.floor(Math.random() * rumors.length)]
     if (randomRumor) setInfoText(randomRumor)
   }
-
-  return (
-    <GameLayout>
-      <GamePanel title={showDirections ? 'Kam se vydat?' : 'Co chceš dělat?'}>
-        <div className="space-y-1.5">
+  
+  const subsections = [
+    {
+       title: showDirections ? 'CESTOVÁNÍ' : 'MĚSTO A OKOLÍ',
+       content: (
+          <div className="max-h-[35vh] overflow-y-auto pr-2 scrollbar-custom">
           {!showDirections ? (
-            <ActionBtn onClick={handleShowDirections} icon={Swords}>
-              Opustit město a <span className="text-[#ffd700]">prozkoumat okolí</span>
-            </ActionBtn>
+             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+               {/* Left Column - Town Services */}
+               <div className="space-y-2">
+                 <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Služby</div>
+                 <ActionBtn onClick={onHealer} icon={Cross}>
+                    Léčitel
+                 </ActionBtn>
+                 <ActionBtn onClick={onSmith} icon={Hammer}>
+                    Zbrojíř
+                 </ActionBtn>
+                 <ActionBtn onClick={onBank} icon={Building}>
+                    Banka
+                 </ActionBtn>
+                 <ActionBtn onClick={onTavern} icon={Beer}>
+                    Taverna
+                 </ActionBtn>
+                 <ActionBtn onClick={onMarket} icon={ShoppingBag}>
+                    Tržiště
+                 </ActionBtn>
+               </div>
+
+               {/* Right Column - Exploration & Info */}
+               <div className="space-y-2">
+                 <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Průzkum</div>
+                 <ActionBtn onClick={handleShowDirections} icon={Swords}>
+                   <span className="text-[#ffd700]">Prozkoumat okolí</span>
+                 </ActionBtn>
+                 <ActionBtn onClick={handleBulletinBoard} icon={ScrollText}>
+                   Městská nástěnka
+                 </ActionBtn>
+               </div>
+             </div>
           ) : (
             <>
-              <ActionBtn onClick={handleStayInTown} icon={Home}>
-                <span>Zůstat ve městě</span>
-              </ActionBtn>
+              <div className="mb-4">
+                 <ActionBtn onClick={handleStayInTown} icon={Home}>
+                    <span>Zůstat ve městě</span>
+                 </ActionBtn>
+              </div>
 
-              <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                 <DirectionBtn
                   onClick={() => onMove('north')}
                   icon={ArrowUp}
                   image="/assets/locations/mountains-background.jpg"
                 >
-                  Vydat se na <span className="text-[#ffd700]">sever</span> - horské průsmyky
+                  <span className="text-[#ffd700]">Sever</span> - Hory
                 </DirectionBtn>
                 <DirectionBtn
                   onClick={() => onMove('south')}
                   icon={ArrowDown}
                   image="/assets/locations/plains-background.jpg"
                 >
-                  Vydat se na <span className="text-[#ffd700]">jih</span> - zelené pláně
+                  <span className="text-[#ffd700]">Jih</span> - Pláně
                 </DirectionBtn>
                 <DirectionBtn
                   onClick={() => onMove('east')}
                   icon={ArrowRight}
                   image="/assets/locations/desert-background.jpg"
                 >
-                  Vydat se na <span className="text-[#ffd700]">východ</span> - vyprahlá poušť
+                   <span className="text-[#ffd700]">Východ</span> - Poušť
                 </DirectionBtn>
                 <ActionBtn onClick={() => onMove('west')} icon={ArrowLeftIcon}>
-                  Vydat se na <span className="text-[#ffd700]">západ</span> - temný les
+                   <span className="text-[#ffd700]">Západ</span> - Les
                 </ActionBtn>
               </div>
             </>
           )}
         </div>
-      </GamePanel>
+       ),
+       defaultOpen: true
+    }
+  ]
 
-      <GamePanel title="Místa ve městě">
-        <div className="space-y-1.5">
-          <ActionBtn onClick={onHealer} icon={Cross}>
-            Navštívit <span className="text-[#ffd700]">léčitele</span> pro pomoc a léčení
-          </ActionBtn>
-          <ActionBtn onClick={onSmith} icon={Hammer}>
-            Navštívit <span className="text-[#ffd700]">zbrojíře</span> pro zbraně
-          </ActionBtn>
-          <ActionBtn onClick={onBank} icon={Building}>
-            Jít do <span className="text-[#ffd700]">banky</span> a uložit cennosti
-          </ActionBtn>
-          <ActionBtn onClick={onTavern} icon={Beer}>
-            Navštívit <span className="text-[#ffd700]">tavernu</span> a odpočinout si
-          </ActionBtn>
-          <ActionBtn onClick={onMarket} icon={ShoppingBag}>
-            Prozkoumat <span className="text-[#ffd700]">tržiště</span> a obchodovat
-          </ActionBtn>
-          {/* <ActionBtn onClick={onGuildHall} icon={Users}>
-            Vstoupit do <span className="text-[#ffd700]">cechovní síně</span>
-          </ActionBtn> */}
-
-          <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
-            <ActionBtn onClick={handleBulletinBoard} icon={ScrollText}>
-              Přečíst si <span className="text-[#ffd700]">městskou vývěsku</span>
-            </ActionBtn>
-          </div>
-        </div>
-      </GamePanel>
-    </GameLayout>
+  return (
+      <GamePanel title="Město Machala" subsections={subsections} />
   )
 }

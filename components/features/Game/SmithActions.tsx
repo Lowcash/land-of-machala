@@ -1,12 +1,10 @@
 'use client'
 
 import { ServiceTable } from '@/components/ui/ServiceTable'
-import { Coins, Home, MessageSquare, Shield, Store, Sword } from 'lucide-react'
-import { useState } from 'react'
-import { ActionBtn } from './ActionBtn'
-import { GameLayout, GamePanel } from './GameLayout'
-
 import type { LucideIcon } from 'lucide-react'
+import { ArrowLeft, Shield, Sword } from 'lucide-react'
+import { useState } from 'react'
+import { GamePanel } from './GameLayout'
 
 type ItemType = 'weapon' | 'armor' | 'consumable'
 
@@ -22,15 +20,6 @@ interface Item {
   maxDurability?: number
   level?: number
   equipped?: boolean
-  magic?: number
-  speed?: number
-  healing?: number
-  mana?: number
-  slot?: string
-  strength?: number
-  intelligence?: number
-  agility?: number
-  stamina?: number
 }
 
 interface StockItem {
@@ -39,6 +28,8 @@ interface StockItem {
   defense?: number
   price: number
   type: string
+  description?: string
+  icon: LucideIcon
 }
 
 interface SmithActionsProps {
@@ -58,7 +49,6 @@ export function SmithActions({
   setInventory,
   setInfoText,
 }: SmithActionsProps) {
-  const [selectedAction, setSelectedAction] = useState<'buy' | 'sell' | 'talk' | null>(null)
   const [message, setMessage] = useState('')
 
   const showMessage = (msg: string) => {
@@ -93,14 +83,6 @@ export function SmithActions({
       icon: Sword,
     },
     {
-      name: 'Bojová sekera',
-      attack: 18,
-      price: 300,
-      type: 'weapon',
-      description: 'Brutální zbraň s masivním úderem',
-      icon: Sword,
-    },
-    {
       name: 'Kožená zbroj',
       defense: 8,
       price: 100,
@@ -124,14 +106,6 @@ export function SmithActions({
       description: 'Odolná pancéřová výstroj',
       icon: Shield,
     },
-    {
-      name: 'Platová zbroj',
-      defense: 25,
-      price: 600,
-      type: 'armor',
-      description: 'Nejlepší ochrana pro opravdové hrdiny',
-      icon: Shield,
-    },
   ]
 
   const handleBuy = (item: StockItem) => {
@@ -146,59 +120,19 @@ export function SmithActions({
       durability: 100,
       maxDurability: 100,
       level: 0,
+      type: item.type as ItemType // Cast
     }
     setInventory((prev) => [...prev, newItem])
     setInfoText(`Koupil jsi ${item.name}.`)
     showMessage(`Koupeno: ${item.name}`)
   }
 
-  return (
-    <GameLayout>
-      <GamePanel title="Akce">
-        <div className="space-y-1.5">
-          <ActionBtn onClick={onBack} icon={Home}>
-            <span>Vrátit se do města</span>
-          </ActionBtn>
-
-          <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-            <ActionBtn
-              onClick={() => setSelectedAction('buy')}
-              icon={Store}
-              className={selectedAction === 'buy' ? 'border-[#ffd700] bg-black/60' : ''}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>Koupit zbraně a zbroje</span>
-              </span>
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => setSelectedAction('sell')}
-              icon={Coins}
-              className={selectedAction === 'sell' ? 'border-[#ffd700] bg-black/60' : ''}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>Prodat předměty</span>
-              </span>
-            </ActionBtn>
-            <ActionBtn
-              onClick={() => setSelectedAction('talk')}
-              icon={MessageSquare}
-              className={selectedAction === 'talk' ? 'border-[#ffd700] bg-black/60' : ''}
-            >
-              <span className="flex w-full items-center justify-between">
-                <span>Mluvit se zbrojířem</span>
-              </span>
-            </ActionBtn>
-          </div>
-        </div>
-      </GamePanel>
-
-      <GamePanel title="Zbrojíř">
-        {!selectedAction ? (
-          <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
-            <p className="py-4 text-center text-xs text-[#8b7355]">Vyber akci z menu vlevo.</p>
-          </div>
-        ) : selectedAction === 'buy' ? (
-          <ServiceTable
+  const subsections = [
+    {
+       title: 'ZBRANĚ A ZBROJE',
+       content: (
+          <div>
+            <ServiceTable
             items={stock}
             mode="cards"
             columns={[
@@ -206,7 +140,7 @@ export function SmithActions({
               {
                 key: 'description',
                 label: 'Popis',
-                render: (item) => (
+                render: (item: StockItem) => (
                   <div>
                     <div>{item.description}</div>
                     <div className="mt-1 flex items-center gap-2">
@@ -224,10 +158,10 @@ export function SmithActions({
               {
                 label: 'Koupit',
                 onClick: handleBuy,
-                disabled: (item) => gold < item.price,
+                disabled: (item: StockItem) => gold < item.price,
               },
             ]}
-            rowIcon={(item) => {
+            rowIcon={(item: StockItem) => {
               const Icon = item.icon
               return (
                 <Icon
@@ -237,43 +171,60 @@ export function SmithActions({
             }}
             emptyMessage="Žádné předměty na prodej"
           />
-        ) : selectedAction === 'sell' ? (
-          <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
-            <p className="py-4 text-center text-xs text-[#8b7355]">
-              Vyber předměty z batohu k prodeji zbrojíři.
-            </p>
           </div>
-        ) : selectedAction === 'talk' ? (
-          <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-            <p className="text-sm text-[#d4a574] italic">
-              &quot;Vítej u mé dílny, dobrodruhu. Hledáš kvalitní zbraně a zbroje? Nebo tě možná
-              zajímá speciální zakázka? Pokud máš dost zlata a správné materiály, můžu ti vykovat
-              něco výjimečného.&quot;
-            </p>
-            <div className="space-y-2">
-              <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
-                &gt; Slyšel jsem o speciálních zakázkách (Quest)
-              </button>
-              <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
-                &gt; Co potřebuješ pro výrobu legendárního meče?
-              </button>
-              <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
-                &gt; Jaké materiály nabízíš? (Zpět k obchodu)
-              </button>
-            </div>
-          </div>
-        ) : (
-          <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
-            <p className="py-4 text-center text-xs text-[#8b7355]">Vyber akci z menu vlevo.</p>
-          </div>
-        )}
-      </GamePanel>
-
+       ),
+       defaultOpen: true
+    },
+    {
+        title: 'PRODEJ',
+        content: (
+             <div className="rounded border border-[#8b6f47] bg-black/60 p-3">
+                <p className="py-4 text-center text-xs text-[#8b7355]">
+                  Vyber předměty z batohu k prodeji zbrojíři (Funkce bude dostupná po propojení s inventářem).
+                </p>
+             </div>
+        )
+    },
+    {
+        title: 'ROZHOVOR',
+        content: (
+           <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
+             <p className="text-sm text-[#d4a574] italic">
+               &quot;Vítej u mé dílny, dobrodruhu. Hledáš kvalitní zbraně a zbroje? Pokud máš dost zlata a správné materiály, můžu ti vykovat
+               něco výjimečného.&quot;
+             </p>
+             <div className="space-y-2">
+               <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
+                 &gt; Slyšel jsem o speciálních zakázkách (Quest)
+               </button>
+               <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
+                 &gt; Co potřebuješ pro výrobu legendárního meče?
+               </button>
+             </div>
+           </div>
+        )
+    }
+  ]
+  
+  return (
+    <div className="space-y-4">
+       <div className="flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Zpět do města
+        </button>
+      </div>
+      
       {message && (
         <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
           {message}
         </div>
       )}
-    </GameLayout>
+
+      <GamePanel title="Zbrojíř" subsections={subsections} />
+    </div>
   )
 }

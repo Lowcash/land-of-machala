@@ -1,10 +1,9 @@
 'use client'
 
 import { ServiceTable } from '@/components/ui/ServiceTable'
-import { ChevronRight, FlaskConical, Heart, Home, ScrollText, Sparkles, Zap } from 'lucide-react'
+import { ArrowLeft, FlaskConical, Heart, Sparkles, Zap } from 'lucide-react'
 import { useState } from 'react'
-import { ActionBtn } from './ActionBtn'
-import { GameLayout, GamePanel } from './GameLayout'
+import { GamePanel } from './GameLayout'
 
 import type { LucideIcon } from 'lucide-react'
 
@@ -42,7 +41,6 @@ export function HealerActions({
   setActiveBuffs,
   setInfoText,
 }: HealerActionsProps) {
-  const [mode, setMode] = useState<'services' | 'talk'>('services')
   const [message, setMessage] = useState('')
 
   const services = [
@@ -109,64 +107,32 @@ export function HealerActions({
     setTimeout(() => setMessage(''), 3000)
   }
 
-  return (
-    <GameLayout>
-      <GamePanel title="Léčitel">
-        <div className="space-y-3">
-          <div className="space-y-1.5">
-            <ActionBtn onClick={onBack} icon={Home}>
-              <span>Vrátit se do města</span>
-            </ActionBtn>
-            <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-              <ActionBtn
-                onClick={() => setMode('services')}
-                icon={Heart}
-                className={mode === 'services' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <span>Služby a lektvary</span>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-                </span>
-              </ActionBtn>
-              <ActionBtn
-                onClick={() => setMode('talk')}
-                icon={ScrollText}
-                className={mode === 'talk' ? 'border-[#ffd700] bg-[#ffd700]/10' : ''}
-              >
-                <span className="flex w-full items-center justify-between">
-                  <span>Mluvit s léčitelem</span>
-                  <ChevronRight className="h-3.5 w-3.5 text-[#8b7355]" />
-                </span>
-              </ActionBtn>
-            </div>
-          </div>
-        </div>
-      </GamePanel>
-
-      <GamePanel title={mode === 'services' ? 'Nabídka služeb' : 'Rozhovor'}>
-        {message && (
-          <div className="mb-3 flex items-center gap-2 rounded border border-[#6fbf6f] bg-[#6fbf6f]/20 p-2 text-xs text-[#6fbf6f]">
-            <Sparkles className="h-4 w-4" />
-            {message}
-          </div>
-        )}
-
-        {activeBuffs.length > 0 && (
-          <div className="mb-3 rounded border border-[#ffd700]/30 bg-[#ffd700]/10 p-2">
-            <div className="mb-1 text-[10px] tracking-wide text-[#ffd700] uppercase">
-              Aktivní požehnání
-            </div>
+  const subsections = [
+    ...(activeBuffs.length > 0 ? [{
+      title: 'AKTIVNÍ POŽEHNÁNÍ',
+      content: (
+        <div className="rounded border border-[#ffd700]/30 bg-[#ffd700]/10 p-2">
             {activeBuffs.map((b, i) => (
               <div key={i} className="flex items-center gap-2 text-xs text-[#f5e6d3]">
                 <Zap className="h-3 w-3 text-[#ffd700]" />
                 {b.name} (+{b.val} {b.stat})
               </div>
             ))}
-          </div>
-        )}
-
-        {mode === 'services' ? (
-          <ServiceTable
+        </div>
+      ),
+      defaultOpen: true
+    }] : []),
+    {
+      title: 'SLUŽBY A LEKTVARY',
+      content: (
+        <div>
+           {message && (
+              <div className="mb-3 flex items-center gap-2 rounded border border-[#6fbf6f] bg-[#6fbf6f]/20 p-2 text-xs text-[#6fbf6f]">
+                <Sparkles className="h-4 w-4" />
+                {message}
+              </div>
+           )}
+           <ServiceTable
             items={services}
             mode="cards"
             columns={[
@@ -174,7 +140,7 @@ export function HealerActions({
               {
                 key: 'description',
                 label: 'Popis',
-                render: (item) => (
+                render: (item: Service) => (
                   <div>
                     <div>{item.description}</div>
                     <div className="mt-1 text-[#ffd700]">{item.price}g</div>
@@ -186,16 +152,22 @@ export function HealerActions({
               {
                 label: 'Koupit',
                 onClick: handleService,
-                disabled: (item) => gold < item.price,
+                disabled: (item: Service) => gold < item.price,
               },
             ]}
-            rowIcon={(item) => {
+            rowIcon={(item: Service) => {
               const Icon = item.icon
               return <Icon className={`h-4 w-4 ${item.iconColor}`} />
             }}
             emptyMessage="Žádné služby k dispozici"
           />
-        ) : (
+        </div>
+      ),
+      defaultOpen: true
+    },
+    {
+      title: 'ROZHOVOR',
+      content: (
           <div className="space-y-4 rounded border border-[#8b6f47] bg-black/60 p-4">
             <p className="text-sm text-[#d4a574] italic">
               &quot;Vítej, poutníku. Mé byliny jsou čerstvé a mé ruce pevné. Co tě trápí? Hledáš
@@ -208,13 +180,26 @@ export function HealerActions({
               <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
                 &gt; Kde najdu vzácné ingredience?
               </button>
-              <button className="w-full border-b border-[#8b6f47]/30 p-2 text-left text-xs text-[#8b7355] transition-colors hover:bg-white/5 hover:text-[#ffd700]">
-                &gt; Potřebuji jen ošetřit (Zpět k službám)
-              </button>
             </div>
           </div>
-        )}
-      </GamePanel>
-    </GameLayout>
+      ),
+      defaultOpen: false
+    }
+  ]
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+        >
+          <ArrowLeft className="h-4 w-4" />
+          Zpět do města
+        </button>
+      </div>
+      
+      <GamePanel title="Léčitel" subsections={subsections} />
+    </div>
   )
 }

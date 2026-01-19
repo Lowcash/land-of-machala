@@ -1,27 +1,26 @@
 'use client'
 
+import type { LucideIcon } from 'lucide-react'
 import {
-  ArrowLeft,
-  ArrowRight,
-  Coins,
-  EyeOff,
-  Home,
-  MessageSquare,
-  Package,
-  ShoppingBag,
-  Skull,
-  Store,
-  ThumbsDown,
-  ThumbsUp,
-  Users,
+    ArrowLeft,
+    ArrowRight,
+    Coins,
+    EyeOff,
+    Home,
+    MessageSquare,
+    Package,
+    ShoppingBag,
+    Skull,
+    Store,
+    ThumbsDown,
+    ThumbsUp,
+    Users,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ActionBtn } from './ActionBtn'
-import { GameLayout, GamePanel } from './GameLayout'
+import { GamePanel } from './GameLayout'
 
 type ItemType = 'weapon' | 'armor' | 'consumable'
-
-import type { LucideIcon } from 'lucide-react'
 
 interface Item {
   id: number
@@ -35,15 +34,8 @@ interface Item {
   maxDurability?: number
   level?: number
   equipped?: boolean
-  magic?: number
-  speed?: number
   healing?: number
   mana?: number
-  slot?: string
-  strength?: number
-  intelligence?: number
-  agility?: number
-  stamina?: number
 }
 
 interface MarketActionsProps {
@@ -128,7 +120,6 @@ export function MarketActions({
     if (haggledItems[item.id]) return
 
     // Base chance 40% + random factor.
-    // In future this could use Charisma stat.
     const roll = Math.random()
     const success = roll > 0.4
 
@@ -204,36 +195,10 @@ export function MarketActions({
     }
   }
 
-  return (
-    <GameLayout>
-      <GamePanel
-        title={
-          mode === 'default'
-            ? 'Tržiště'
-            : mode === 'buy'
-              ? 'Nákup zboží'
-              : mode === 'sell'
-                ? 'Prodej'
-                : 'Černý trh'
-        }
-      >
-        <div className="space-y-1.5">
-          <div className="mb-2 flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 p-2">
-            <ActionBtn
-              onClick={mode === 'default' ? onBack : () => setMode('default')}
-              icon={mode === 'default' ? Home : ArrowLeft}
-            >
-              <span>{mode === 'default' ? 'Vrátit se do města' : 'Zpět na náměstí'}</span>
-            </ActionBtn>
-            <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
-              <Coins className="h-4 w-4" />
-              {gold}
-            </div>
-          </div>
-
-          <div className="mt-2 space-y-1.5 border-t border-[#8b6f47]/30 pt-2">
-            {mode === 'default' && (
-              <>
+  const renderContent = () => {
+    if (mode === 'default') {
+        return (
+             <div className="space-y-2">
                 <ActionBtn onClick={() => setMode('buy')} icon={Store}>
                   Prohlédnout <span className="text-[#ffd700]">zboží</span>
                 </ActionBtn>
@@ -262,10 +227,12 @@ export function MarketActions({
                     )}
                   </span>
                 </ActionBtn>
-              </>
-            )}
+              </div>
+        )
+    }
 
-            {mode === 'buy' && (
+    if (mode === 'buy') {
+        return (
               <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
                 {stock.map((item) => {
                   const price = getPrice(item, true)
@@ -312,9 +279,11 @@ export function MarketActions({
                   )
                 })}
               </div>
-            )}
+        )
+    }
 
-            {mode === 'sell' && (
+    if (mode === 'sell') {
+        return (
               <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
                 {inventory.length === 0 ? (
                   <div className="p-4 text-center text-xs text-[#8b7355]">
@@ -367,9 +336,11 @@ export function MarketActions({
                   })
                 )}
               </div>
-            )}
+        )
+    }
 
-            {mode === 'blackmarket' && (
+    if (mode === 'blackmarket') {
+        return (
               <div className="space-y-2 rounded border border-[#b66bd4]/30 bg-[#0a050a] p-2">
                 <div className="mb-2 flex items-center justify-center gap-2 text-center text-xs font-bold tracking-wider text-[#b66bd4] uppercase">
                   <Skull className="h-3 w-3" />
@@ -392,29 +363,69 @@ export function MarketActions({
                   </button>
                 ))}
               </div>
-            )}
-          </div>
-        </div>
-      </GamePanel>
+        )
+    }
+    return null
+  }
+
+  const subsections = [
+    {
+        title: 'TRŽNICE',
+        content: renderContent(),
+        defaultOpen: true
+    },
+    {
+        title: 'ATMOSFÉRA',
+        content: (
+            <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
+              {mode === 'blackmarket' ? (
+                <span className="text-[#b66bd4]">
+                  Vzduch je zde těžký a páchne po levném koření a strachu. Postavy v kápích si tě měří
+                  nedůvěřivým pohledem. Zde seženěš to, co je jinde zakázané.
+                </span>
+              ) : (
+                'Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.'
+              )}
+            </div>
+        ),
+        defaultOpen: true
+    }
+  ]
+
+  const getTitle = () => {
+    switch (mode) {
+        case 'default': return 'Tržiště'
+        case 'buy': return 'Nákup zboží'
+        case 'sell': return 'Prodej'
+        case 'blackmarket': return 'Černý trh'
+    }
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+           <ActionBtn
+              onClick={mode === 'default' ? onBack : () => setMode('default')}
+              icon={mode === 'default' ? Home : ArrowLeft}
+              small
+              className="w-auto"
+            >
+              <span>{mode === 'default' ? 'Vrátit se do města' : 'Zpět na náměstí'}</span>
+            </ActionBtn>
+            
+            <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
+              <Coins className="h-4 w-4" />
+              {gold}
+            </div>
+      </div>
 
       {message && (
-        <div className="animate-in fade-in slide-in-from-top-4 pointer-events-none fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
+        <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
           {message}
         </div>
       )}
 
-      <GamePanel title="Atmosféra">
-        <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
-          {mode === 'blackmarket' ? (
-            <span className="text-[#b66bd4]">
-              Vzduch je zde těžký a páchne po levném koření a strachu. Postavy v kápích si tě měří
-              nedůvěřivým pohledem. Zde seženěš to, co je jinde zakázané.
-            </span>
-          ) : (
-            'Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.'
-          )}
-        </div>
-      </GamePanel>
-    </GameLayout>
+      <GamePanel title={getTitle()} subsections={subsections} />
+    </div>
   )
 }

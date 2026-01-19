@@ -9,6 +9,7 @@ interface ActionBtnProps {
   small?: boolean
   color?: string
   border?: string
+  disabled?: boolean
 }
 
 export function ActionBtn({
@@ -19,11 +20,13 @@ export function ActionBtn({
   small = false,
   color = 'text-[#d4a574]',
   border = 'hover:border-[#ffd700]',
+  disabled = false,
 }: ActionBtnProps) {
   return (
     <button
       onClick={onClick}
-      className={`flex ${small ? 'min-h-9 px-2 py-1.5 text-xs' : 'min-h-11 px-3 py-2.5 text-xs sm:text-sm'} w-full items-center gap-2 rounded-lg border-2 border-[#8b6f47]/50 bg-black/60 text-left ${color} shadow-md transition-all duration-300 ${border} hover:bg-black/80 hover:text-[#ffd700] hover:shadow-xl ${className} `}
+      disabled={disabled}
+      className={`flex ${small ? 'min-h-9 px-2 py-1.5 text-xs' : 'min-h-11 px-3 py-2.5 text-xs sm:text-sm'} w-full items-center gap-2 rounded-lg border-2 border-[#8b6f47]/50 bg-black/60 text-left ${color} shadow-md transition-all duration-300 ${disabled ? 'opacity-50 cursor-not-allowed' : `${border} hover:bg-black/80 hover:text-[#ffd700] hover:shadow-xl`} ${className} `}
       style={{ fontFamily: 'var(--font-fantasy)' }}
     >
       <Icon className="h-4 w-4 shrink-0" />
