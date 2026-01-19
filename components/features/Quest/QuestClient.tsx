@@ -1,6 +1,7 @@
 'use client'
 
 import { MobileOverlay } from '@/components/layout/MobileOverlay'
+import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { Scroll } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { QuestDetailContent } from './QuestDetailContent'
@@ -56,7 +57,10 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
   const selectedQuestData = hydratedQuests.find((q) => q.id === selectedQuest)
 
   return (
-    <>
+    <div className="flex h-full w-full flex-col overflow-hidden">
+        {/* Sticky Back Navigation */}
+        <PageHeaderWithBack href="/game" label="Zpět do hry" />
+
       <div className="flex w-full flex-1 overflow-hidden">
         <QuestList
           quests={hydratedQuests}
@@ -79,7 +83,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
                   Vyber quest
                 </h3>
                 <p className="text-sm leading-relaxed text-[#8b7355]">
-                  Klikni na quest v seznamu pro zobrazen?detailů a postuu.
+                  Klikni na quest v seznamu pro zobrazení detailů a postupu.
                 </p>
               </div>
             </div>
@@ -98,6 +102,6 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
           <QuestDetailContent quest={selectedQuestData} characterId={characterId} />
         </MobileOverlay>
       )}
-    </>
+    </div>
   )
 }

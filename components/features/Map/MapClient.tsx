@@ -1,7 +1,6 @@
 'use client'
 
-import { ArrowLeft } from 'lucide-react'
-import Link from 'next/link'
+import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { useEffect, useState } from 'react'
 import { LocationDetails } from './LocationDetails'
 import { MapCanvas } from './MapCanvas'
@@ -11,9 +10,19 @@ const PLAYER_POSITION = { x: 100, y: 100 } // Starting Town position
 
 interface MapClientProps {
   locations: Location[]
+  discoveredLocations?: string[]
+  questMarkers?: any[]
+  deathLocation?: any
+  isDebug?: boolean
 }
 
-export function MapClient({ locations }: MapClientProps) {
+export function MapClient({ 
+  locations,
+  discoveredLocations,
+  questMarkers,
+  deathLocation,
+  isDebug 
+}: MapClientProps) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
 
   // Handle browser back button
@@ -64,15 +73,7 @@ export function MapClient({ locations }: MapClientProps) {
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
       {/* Sticky Back Navigation */}
-      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
-        <Link
-          href="/game"
-          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Zpět do hry
-        </Link>
-      </div>
+      <PageHeaderWithBack href="/game" label="Zpět do hry" />
 
       <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
         {/* Map Canvas */}
@@ -86,6 +87,10 @@ export function MapClient({ locations }: MapClientProps) {
             playerPosition={PLAYER_POSITION}
             selectedLocation={selectedLocation}
             onSelectLocation={handleSelectLocation}
+            discoveredLocations={discoveredLocations}
+            questMarkers={questMarkers}
+            deathLocation={deathLocation}
+            isDebug={isDebug}
           />
         </div>
 
