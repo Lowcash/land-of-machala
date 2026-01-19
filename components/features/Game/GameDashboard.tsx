@@ -27,6 +27,7 @@ interface CharacterData {
   xp: number
   xpToNextLevel: number
   gold: number
+  bankGold?: number
   class: string
   stats: {
     strength: number
@@ -34,6 +35,7 @@ interface CharacterData {
     agility: number
     stamina: number
   }
+  inventory?: any[]
 }
 
 interface GameDashboardProps {
@@ -56,6 +58,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
   const [gold, setGold] = useState(character.gold || 0)
   const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
+  
+  const [inventory, setInventory] = useState(character.inventory || [])
 
   const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
     startTransition(async () => {
@@ -78,7 +82,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
       // Random combat encounter
       if (result.hasEncounter) {
-        router.push('/combat')
+        // Force refresh to trigger CombatClient check in GamePage
+        router.refresh()
       } else {
         setInfoText(
           `${directionTexts[direction]}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
@@ -186,8 +191,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onBack={() => setCurrentView('town')}
                 gold={gold}
                 setGold={setGold}
-                inventory={[]}
-                setInventory={() => {}}
+                inventory={inventory as any}
+                setInventory={setInventory as any}
                 setInfoText={setInfoText}
               />
             )}
@@ -195,13 +200,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
               <BankActions
                 onBack={() => setCurrentView('town')}
                 gold={gold}
-                setGold={setGold}
-                bankGold={0}
-                setBankGold={() => {}}
-                bankItems={[]}
-                setBankItems={() => {}}
-                inventory={[]}
-                setInventory={() => {}}
+                balance={character.bankGold || 0}
+                characterId={character.id}
               />
             )}
             {currentView === 'healer' && (
@@ -228,8 +228,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onBack={() => setCurrentView('town')}
                 gold={gold}
                 setGold={setGold}
-                inventory={[]}
-                setInventory={() => {}}
+                inventory={inventory as any}
+                setInventory={setInventory as any}
                 setInfoText={setInfoText}
               />
             )}
