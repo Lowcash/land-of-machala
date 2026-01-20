@@ -6,21 +6,19 @@
 'use client'
 
 import { Coins, MapPin, Shield, Swords, Trophy } from 'lucide-react'
+import { useState } from 'react'
 import type { CharacterData, CharacterItem } from './types'
 
 type SectionType = 'stats' | 'equipment' | 'achievements'
 
-interface CharacterDetailContentProps {
-  section: SectionType
-  character: CharacterData
-  equipped: CharacterItem[]
-}
+
 
 export function CharacterDetailContent({
-  section,
   character,
   equipped,
-}: CharacterDetailContentProps) {
+}: { character: CharacterData; equipped: CharacterItem[] }) {
+  const [activeTab, setActiveTab] = useState<SectionType>('stats')
+
   // Calculate derived stats
   const baseAttack = character.strength * 2
   const equipmentAttack = equipped.reduce((sum, item) => sum + (item.attack || item.damage || 0), 0)
@@ -92,195 +90,206 @@ export function CharacterDetailContent({
     return names[slot] || slot
   }
 
-  if (section === 'stats') {
-    return (
-      <div className="flex h-full flex-col gap-4 overflow-y-auto scrollbar-custom rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
-        {/* Combat Stats - Clear and Readable */}
-        <div>
-          <h3
-            className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
+  const tabs = [
+    { id: 'stats', label: 'Statistiky', icon: Swords },
+    { id: 'equipment', label: 'Výbava', icon: Shield },
+    { id: 'achievements', label: 'Úspěchy', icon: Trophy },
+  ] as const
+
+  return (
+    <div className="flex flex-col h-full max-h-[600px] overflow-hidden rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 shadow-lg">
+      {/* Tabs */}
+      <div className="flex border-b border-[#8b6f47]">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={`flex flex-1 items-center justify-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
+              activeTab === tab.id
+                ? 'bg-[#8b6f47]/20 text-[#ffd700]'
+                : 'text-[#8b7355] hover:bg-[#8b6f47]/10 hover:text-[#d4a574]'
+            }`}
             style={{ fontFamily: 'var(--font-fantasy)' }}
           >
-            <Swords className="h-4 w-4" />
-            Bojové statistiky
-          </h3>
+            <tab.icon className={`h-4 w-4 ${activeTab === tab.id ? 'text-[#ffd700]' : ''}`} />
+            <span className="hidden sm:inline">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+
+      <div className="flex-1 overflow-y-auto p-4 scrollbar-custom">
+        {activeTab === 'stats' && (
+          <div className="space-y-4">
+            {/* Combat Stats */}
+            <div>
+              <h3
+                className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                <Swords className="h-4 w-4" />
+                Bojové statistiky
+              </h3>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                  <span className="text-sm text-[#8b7355]">Útok</span>
+                  <span className="text-base font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {totalAttack}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                  <span className="text-sm text-[#8b7355]">Obrana</span>
+                  <span className="text-base font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {totalDefense}
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                    <span className="text-xs text-[#8b7355]">Crit</span>
+                    <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                      {critChance}%
+                    </span>
+                  </div>
+                  <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
+                    <span className="text-xs text-[#8b7355]">Dodge</span>
+                    <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                      {dodgeChance}%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
+
+            {/* Resistances */}
+            <div>
+              <h3
+                className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                <Shield className="h-4 w-4" />
+                Odolnosti
+              </h3>
+              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+                  <span className="text-xs text-[#8b7355]">Fyzická</span>
+                  <span className="text-sm font-bold text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {character.physicalResistance}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+                  <span className="text-xs text-[#8b7355]">Magická</span>
+                  <span className="text-sm font-bold text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {character.magicalResistance}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+                  <span className="text-xs text-[#8b7355]">Oheň</span>
+                  <span className="text-sm font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {character.fireResistance}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+                  <span className="text-xs text-[#8b7355]">Chlad</span>
+                  <span className="text-sm font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {character.coldResistance}%
+                  </span>
+                </div>
+                <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
+                  <span className="text-xs text-[#8b7355]">Jed</span>
+                  <span className="text-sm font-bold text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+                    {character.poisonResistance}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'equipment' && (
+          <div className="grid grid-cols-2 gap-2">
+            {equipped.map((item) => {
+              const Icon = item.icon || Shield
+              return (
+                <div
+                  key={item.id}
+                  className="group relative flex flex-col items-center rounded-lg border-2 border-[#8b6f47] bg-black/60 p-3 transition-all hover:border-[#ffd700] hover:bg-black/80"
+                >
+                  <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg border-2 border-[#8b6f47] bg-black/40 shadow-inner transition-colors group-hover:border-[#d4a574]">
+                    <Icon className="h-6 w-6 text-[#d4a574] group-hover:text-[#ffd700]" />
+                  </div>
+                  <h4
+                    className="mb-1 w-full truncate text-center text-xs text-[#f5e6d3]"
+                    style={{ fontFamily: 'var(--font-fantasy)' }}
+                  >
+                    {item.name}
+                  </h4>
+                  <p className="mb-2 text-[10px] tracking-wider text-[#8b7355] uppercase">
+                    {getSlotName(item.slot || '')}
+                  </p>
+                  <div className="w-full space-y-0.5 border-t border-[#8b6f47]/30 pt-1">
+                    {(item.attack || item.damage) && (
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-[#8b7355]">Útok</span>
+                        <span className="text-[#ff6b6b]">+{item.attack || item.damage}</span>
+                      </div>
+                    )}
+                    {item.defense && (
+                      <div className="flex items-center justify-between text-[10px]">
+                        <span className="text-[#8b7355]">Obrana</span>
+                        <span className="text-[#69ccf0]">+{item.defense}</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )
+            })}
+            {equipped.length === 0 && (
+              <div className="col-span-full py-8 text-center text-sm text-[#8b7355] italic">
+                Žádná nasazená výbava
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'achievements' && (
           <div className="space-y-2">
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
-              <span className="text-sm text-[#8b7355]">Útok</span>
-              <span className="text-base font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {totalAttack}
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
-              <span className="text-sm text-[#8b7355]">Obrana</span>
-              <span className="text-base font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {totalDefense}
-              </span>
-            </div>
-            <div className="grid grid-cols-2 gap-2">
-              <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
-                <span className="text-xs text-[#8b7355]">Crit</span>
-                <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                  {critChance}%
-                </span>
-              </div>
-              <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-2">
-                <span className="text-xs text-[#8b7355]">Dodge</span>
-                <span className="text-sm font-bold text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                  {dodgeChance}%
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
-
-        {/* Resistances - Clear and Readable */}
-        <div>
-          <h3
-            className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            <Shield className="h-4 w-4" />
-            Odolnosti
-          </h3>
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
-              <span className="text-xs text-[#8b7355]">Fyzická</span>
-              <span className="text-sm font-bold text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {character.physicalResistance}%
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
-              <span className="text-xs text-[#8b7355]">Magická</span>
-              <span className="text-sm font-bold text-[#b66bd4]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {character.magicalResistance}%
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
-              <span className="text-xs text-[#8b7355]">Oheň</span>
-              <span className="text-sm font-bold text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {character.fireResistance}%
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
-              <span className="text-xs text-[#8b7355]">Chlad</span>
-              <span className="text-sm font-bold text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {character.coldResistance}%
-              </span>
-            </div>
-            <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-3 py-1.5">
-              <span className="text-xs text-[#8b7355]">Jed</span>
-              <span className="text-sm font-bold text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-                {character.poisonResistance}%
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  }
-
-  if (section === 'equipment') {
-    return (
-      <div className="rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-3 shadow-lg">
-        <h3
-          className="mb-3 flex items-center gap-2 text-sm text-[#ffd700]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Swords className="h-5 w-5" />
-          Nasazená výbava
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          {equipped.map((item) => {
-            const Icon = item.icon || Shield
-            return (
-              <div
-                key={item.id}
-                className="group relative flex flex-col items-center rounded-lg border-2 border-[#8b6f47] bg-black/60 p-3 transition-all hover:border-[#ffd700] hover:bg-black/80"
-              >
-                <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-lg border-2 border-[#8b6f47] bg-black/40 shadow-inner transition-colors group-hover:border-[#d4a574]">
-                  <Icon className="h-6 w-6 text-[#d4a574] group-hover:text-[#ffd700]" />
-                </div>
-                <h4
-                  className="mb-1 w-full truncate text-center text-xs text-[#f5e6d3]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {item.name}
-                </h4>
-                <p className="mb-2 text-[10px] tracking-wider text-[#8b7355] uppercase">
-                  {getSlotName(item.slot || '')}
-                </p>
-                <div className="w-full space-y-0.5 border-t border-[#8b6f47]/30 pt-1">
-                  {(item.attack || item.damage) && (
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-[#8b7355]">Útok</span>
-                      <span className="text-[#ff6b6b]">+{item.attack || item.damage}</span>
-                    </div>
-                  )}
-                  {item.defense && (
-                    <div className="flex items-center justify-between text-[10px]">
-                      <span className="text-[#8b7355]">Obrana</span>
-                      <span className="text-[#69ccf0]">+{item.defense}</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )
-          })}
-          {equipped.length === 0 && (
-            <div className="col-span-full py-8 text-center text-sm text-[#8b7355] italic">
-              Žádná nasazená výbava
-            </div>
-          )}
-        </div>
-      </div>
-    )
-  }
-
-  if (section === 'achievements') {
-    return (
-      <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4">
-        <h3
-          className="mb-3 flex items-center gap-2 text-base text-[#d4a574]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Trophy className="h-4 w-4" />
-          Úspěchy ({achievements.filter((a) => a.unlocked).length}/{achievements.length})
-        </h3>
-        <div className="space-y-2">
-          {achievements.map((achievement) => (
-            <div
-              key={achievement.id}
-              className={`flex items-start gap-3 rounded border p-3 ${
-                achievement.unlocked
-                  ? 'border-[#ffd700]/30 bg-[#ffd700]/5'
-                  : 'border-[#8b6f47]/30 bg-black/40 opacity-60'
-              }`}
+            <h3
+              className="mb-3 flex items-center gap-2 text-base text-[#d4a574]"
+              style={{ fontFamily: 'var(--font-fantasy)' }}
             >
+              <Trophy className="h-4 w-4" />
+              Úspěchy ({achievements.filter((a) => a.unlocked).length}/{achievements.length})
+            </h3>
+            {achievements.map((achievement) => (
               <div
-                className={`mt-0.5 rounded-full p-1 ${achievement.unlocked ? 'bg-[#ffd700]/20' : 'bg-black/40'}`}
+                key={achievement.id}
+                className={`flex items-start gap-3 rounded border p-3 ${
+                  achievement.unlocked
+                    ? 'border-[#ffd700]/30 bg-[#ffd700]/5'
+                    : 'border-[#8b6f47]/30 bg-black/40 opacity-60'
+                }`}
               >
-                <achievement.icon
-                  className={`h-4 w-4 ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
-                />
-              </div>
-              <div className="flex min-w-0 flex-1 flex-col">
-                <h4
-                  className={`text-sm font-bold ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
+                <div
+                  className={`mt-0.5 rounded-full p-1 ${achievement.unlocked ? 'bg-[#ffd700]/20' : 'bg-black/40'}`}
                 >
-                  {achievement.name}
-                </h4>
-                <p className="text-xs text-[#8b7355]">{achievement.description}</p>
+                  <achievement.icon
+                    className={`h-4 w-4 ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
+                  />
+                </div>
+                <div className="flex min-w-0 flex-1 flex-col">
+                  <h4
+                    className={`text-sm font-bold ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
+                  >
+                    {achievement.name}
+                  </h4>
+                  <p className="text-xs text-[#8b7355]">{achievement.description}</p>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
-    )
-  }
-
-  return null
+    </div>
+  )
 }
