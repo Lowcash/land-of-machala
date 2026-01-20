@@ -6,6 +6,39 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 ---
 
+## 2026-01-20 00:30 - UI/UX Refactoring & Consistency
+
+**Type:** Refactor, UX  
+**Scope:** Onboarding, City Actions, Character, Map, Navigation  
+**Impact:** Unified UI patterns, fixed layout issues, improved responsiveness, and settled navigation consistency.
+
+### Changed
+
+- **Onboarding:**
+  - Fixed button jumping/layout shift by enforcing fixed height for choice buttons and story text.
+  
+- **City Actions & Services:**
+  - Removed "super headings" from Bank, Smith, Healer, Tavern, and Market panels to match unified design.
+  - Aligned `TownActions` content to the bottom of the panel for better reachability.
+  - Implemented consistent alert behavior (shake + timeout) for `TownActions` messages.
+
+- **Character Page:**
+  - Refactored `CharacterDetailContent` into a single, tabbed component (Stats, Equipment, Achievements).
+  - Simplified `CharacterClient` layout to render details once, preventing duplication.
+  - Optimized responsive layout for desktop (grid) and mobile (stack).
+
+- **Navigation & Layout:**
+  - Centralized "Zpět do hry" button logic in `PageTemplate` / `GameHeader`.
+  - Removed duplicate local back buttons from `SkillGrid`, `QuestList`, and `InventoryClient`.
+  - Enhanced `SplitView` vertical divider visibility for better section separation.
+  - Fixed scrolling behavior in main game views (`skills`, `quests`, `inventory`).
+
+- **Map:**
+  - Added demo locations (Cave, Ruins, Forest, Lake) to `MapPanel` to enrich the map experience.
+  - Verified map interaction and clickability.
+
+---
+
 ## 2026-01-17 14:56 - Tailwind Gradient Syntax & Smith Dialogue
 
 **Type:** Changed  
