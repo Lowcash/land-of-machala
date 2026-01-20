@@ -70,7 +70,7 @@ export function SkillGrid({
 
 
       {/* Mobile: Sticky Category Filter */}
-      <div className="sticky top-14.25 z-10 shrink-0 md:hidden">
+      <div className="sticky z-10 shrink-0 md:hidden">
         <SkillCategoryFilter
           selectedCategory={selectedCategory}
           onSelectCategory={setSelectedCategory}
