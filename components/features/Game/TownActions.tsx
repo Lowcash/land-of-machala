@@ -63,13 +63,46 @@ export function TownActions({
     if (randomRumor) setInfoText(randomRumor)
   }
   
-  const subsections = [
-    {
-       title: showDirections ? 'CESTOVÁNÍ' : 'MĚSTO A OKOLÍ',
-       content: (
-          <div className="max-h-[35vh] overflow-y-auto pr-2 scrollbar-custom">
-          {!showDirections ? (
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+  return (
+    <GamePanel>
+      <div className="flex min-h-full flex-col justify-end gap-4">
+        {showDirections ? (
+           <>
+              <div className="mb-4">
+                 <ActionBtn onClick={handleStayInTown} icon={Home}>
+                    <span>Zůstat ve městě</span>
+                 </ActionBtn>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-1">
+                <DirectionBtn
+                  onClick={() => onMove('north')}
+                  icon={ArrowUp}
+                  image="/assets/locations/mountains-background.jpg"
+                >
+                  <span className="text-[#ffd700]">Sever</span> - Hory
+                </DirectionBtn>
+                <DirectionBtn
+                  onClick={() => onMove('south')}
+                  icon={ArrowDown}
+                  image="/assets/locations/plains-background.jpg"
+                >
+                  <span className="text-[#ffd700]">Jih</span> - Pláně
+                </DirectionBtn>
+                <DirectionBtn
+                  onClick={() => onMove('east')}
+                  icon={ArrowRight}
+                  image="/assets/locations/desert-background.jpg"
+                >
+                  <span className="text-[#ffd700]">Východ</span> - Poušť
+                </DirectionBtn>
+                <ActionBtn onClick={() => onMove('west')} icon={ArrowLeftIcon}>
+                   <span className="text-[#ffd700]">Západ</span> - Les
+                </ActionBtn>
+              </div>
+            </>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pb-1">
                {/* Left Column - Town Services */}
                <div className="space-y-2">
                  <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Služby</div>
@@ -101,49 +134,8 @@ export function TownActions({
                  </ActionBtn>
                </div>
              </div>
-          ) : (
-            <>
-              <div className="mb-4">
-                 <ActionBtn onClick={handleStayInTown} icon={Home}>
-                    <span>Zůstat ve městě</span>
-                 </ActionBtn>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <DirectionBtn
-                  onClick={() => onMove('north')}
-                  icon={ArrowUp}
-                  image="/assets/locations/mountains-background.jpg"
-                >
-                  <span className="text-[#ffd700]">Sever</span> - Hory
-                </DirectionBtn>
-                <DirectionBtn
-                  onClick={() => onMove('south')}
-                  icon={ArrowDown}
-                  image="/assets/locations/plains-background.jpg"
-                >
-                  <span className="text-[#ffd700]">Jih</span> - Pláně
-                </DirectionBtn>
-                <DirectionBtn
-                  onClick={() => onMove('east')}
-                  icon={ArrowRight}
-                  image="/assets/locations/desert-background.jpg"
-                >
-                   <span className="text-[#ffd700]">Východ</span> - Poušť
-                </DirectionBtn>
-                <ActionBtn onClick={() => onMove('west')} icon={ArrowLeftIcon}>
-                   <span className="text-[#ffd700]">Západ</span> - Les
-                </ActionBtn>
-              </div>
-            </>
-          )}
-        </div>
-       ),
-       defaultOpen: true
-    }
-  ]
-
-  return (
-      <GamePanel title="Město Machala" subsections={subsections} />
+        )}
+      </div>
+    </GamePanel>
   )
 }

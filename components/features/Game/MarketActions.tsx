@@ -392,26 +392,27 @@ export function MarketActions({
     }
   ]
 
-  const getTitle = () => {
-    switch (mode) {
-        case 'default': return 'Tržiště'
-        case 'buy': return 'Nákup zboží'
-        case 'sell': return 'Prodej'
-        case 'blackmarket': return 'Černý trh'
-    }
-  }
+
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-           <ActionBtn
-              onClick={mode === 'default' ? onBack : () => setMode('default')}
-              icon={mode === 'default' ? Home : ArrowLeft}
-              small
-              className="w-auto"
-            >
-              <span>{mode === 'default' ? 'Vrátit se do města' : 'Zpět na náměstí'}</span>
-            </ActionBtn>
+           <button
+             onClick={mode === 'default' ? onBack : () => setMode('default')}
+             className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+           >
+             {mode === 'default' ? (
+                <>
+                  <Home className="h-4 w-4" />
+                  Vrátit se do města
+                </>
+             ) : (
+                <>
+                  <ArrowLeft className="h-4 w-4" />
+                  Zpět na náměstí
+                </>
+             )}
+           </button>
             
             <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
               <Coins className="h-4 w-4" />
@@ -425,7 +426,7 @@ export function MarketActions({
         </div>
       )}
 
-      <GamePanel title={getTitle()} subsections={subsections} />
+      <GamePanel subsections={subsections} />
     </div>
   )
 }

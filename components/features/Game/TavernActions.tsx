@@ -194,17 +194,25 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-           <ActionBtn
-            onClick={activeTab === 'gamble' ? () => setActiveTab('menu') : onBack}
-            icon={activeTab === 'gamble' ? ChevronRight : Home}
-            small
-            className="w-auto"
-          >
-            <span>{activeTab === 'gamble' ? 'Zpět k baru' : 'Vrátit se do města'}</span>
-          </ActionBtn>
+        <button
+          onClick={activeTab === 'gamble' ? () => setActiveTab('menu') : onBack}
+          className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+        >
+          {activeTab === 'gamble' ? (
+             <>
+               <ChevronRight className="h-4 w-4 rotate-180" />
+               Zpět k baru
+             </>
+          ) : (
+             <>
+               <Home className="h-4 w-4" />
+               Vrátit se do města
+             </>
+          )}
+        </button>
       </div>
 
-      <GamePanel title={activeTab === 'gamble' ? 'Kostky' : 'Taverna'} subsections={subsections} />
+      <GamePanel subsections={subsections} />
     </div>
   )
 }

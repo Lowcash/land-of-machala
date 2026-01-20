@@ -135,7 +135,7 @@ export function BankActions({ balance, gold, characterId, onBack }: BankActionsP
         </button>
       </div>
 
-      <GamePanel title="Banka" subsections={subsections} />
+      <GamePanel subsections={subsections} />
     </div>
   )
 }

@@ -199,7 +199,7 @@ export function HealerActions({
         </button>
       </div>
       
-      <GamePanel title="Léčitel" subsections={subsections} />
+      <GamePanel subsections={subsections} />
     </div>
   )
 }

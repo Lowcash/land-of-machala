@@ -224,7 +224,7 @@ export function SmithActions({
         </div>
       )}
 
-      <GamePanel title="Zbrojíř" subsections={subsections} />
+      <GamePanel subsections={subsections} />
     </div>
   )
 }
