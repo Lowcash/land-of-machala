@@ -2,7 +2,7 @@
 
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import type { ReactNode } from 'react'
-import { createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useEffect, useState } from 'react'
 
 type NotificationVariant = 'success' | 'error' | 'warning' | 'info'
 
@@ -64,6 +64,15 @@ function NotificationItem({
   useState(() => {
     setTimeout(() => setIsVisible(true), 100)
   })
+
+  // Auto close
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      handleClose()
+    }, notification.duration || 5000)
+
+    return () => clearTimeout(timer)
+  }, [notification.duration])
 
   const handleClose = () => {
     setIsVisible(false)

@@ -5,7 +5,12 @@ import { Suspense } from 'react'
 
 export default function InventoryPage() {
   return (
-    <PageTemplate title="Inventář" icon={<Backpack />} maxWidth="lg">
+    <PageTemplate
+      title="Inventář"
+      icon={<Backpack />}
+      maxWidth="lg"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <InventoryPanel />
       </Suspense>

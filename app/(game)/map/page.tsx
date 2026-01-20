@@ -7,7 +7,12 @@ export const dynamic = 'force-dynamic'
 
 export default function MapPage() {
   return (
-    <PageTemplate title="Mapa" icon={<MapIcon />} maxWidth="lg">
+    <PageTemplate
+      title="Mapa"
+      icon={<MapIcon />}
+      maxWidth="lg"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <MapPanel />
       </Suspense>

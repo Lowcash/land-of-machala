@@ -7,7 +7,12 @@ export const dynamic = 'force-dynamic'
 
 export default function QuestsPage() {
   return (
-    <PageTemplate title="Questy" icon={<ScrollText />} maxWidth="lg">
+    <PageTemplate
+      title="Questy"
+      icon={<ScrollText />}
+      maxWidth="lg"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+    >
       <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
         <QuestPanel />
       </Suspense>

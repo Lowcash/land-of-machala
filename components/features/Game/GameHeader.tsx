@@ -1,7 +1,8 @@
 'use client'
 
 import type { LucideIcon } from 'lucide-react'
-import { LogOut } from 'lucide-react'
+import { ArrowLeft, LogOut } from 'lucide-react'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { isValidElement } from 'react'
@@ -20,6 +21,11 @@ interface GameHeaderProps {
   rightContent?: ReactNode
   /** Character ID for displaying player stats */
   characterId?: string
+  /** Back link configuration */
+  backLink?: {
+    href: string
+    label?: string
+  }
 }
 
 /**
@@ -33,6 +39,7 @@ export function GameHeader({
   leftContent,
   rightContent,
   characterId,
+  backLink,
 }: GameHeaderProps) {
   const router = useRouter()
 
@@ -42,13 +49,26 @@ export function GameHeader({
       <div className="flex min-w-0 flex-1 items-center gap-4">
         {leftContent || (
           <div className="flex min-w-0 items-center gap-2">
+            {backLink && (
+               <Link 
+                 href={backLink.href as any}
+                 className="flex items-center gap-2 text-sm text-[#d4a574] hover:text-[#ffd700] mr-2"
+               >
+                  <ArrowLeft className="h-4 w-4" />
+                  <span className="hidden sm:inline">{backLink.label || 'Zpět'}</span>
+               </Link>
+            )}
+            
             {Icon &&
               (isValidElement(Icon) ? (
                 <div className="h-5 w-5 shrink-0 text-[#ffd700] [&>svg]:h-full [&>svg]:w-full">
                   {Icon}
                 </div>
               ) : (
-                <Icon className="h-5 w-5 shrink-0 text-[#ffd700]" />
+                (() => {
+                  const LucideIcon = Icon as LucideIcon
+                  return <LucideIcon className="h-5 w-5 shrink-0 text-[#ffd700]" />
+                })()
               ))}
             <div className="min-w-0">
               <h1

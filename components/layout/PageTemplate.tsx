@@ -22,6 +22,8 @@ interface PageTemplateProps {
   characterId?: string
   /** Main content */
   children: ReactNode
+  /** Back link configuration */
+  backLink?: { href: string; label?: string }
 }
 
 /**
@@ -36,6 +38,7 @@ export function PageTemplate({
   maxWidth = 'lg',
   characterId,
   children,
+  backLink,
 }: PageTemplateProps) {
   const maxWidthClass = {
     sm: 'max-w-4xl',
@@ -63,7 +66,13 @@ export function PageTemplate({
         {/* Header - full width with dark background */}
         <div className="relative z-20 w-full border-b border-[#8b6f47] bg-black/90">
           <div className={`mx-auto ${maxWidthClass}`}>
-            <GameHeader icon={icon} title={title} subtitle={subtitle} characterId={characterId} />
+            <GameHeader 
+              icon={icon} 
+              title={title} 
+              subtitle={subtitle} 
+              characterId={characterId} 
+              backLink={backLink}
+            />
           </div>
         </div>
 
