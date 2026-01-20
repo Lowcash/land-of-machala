@@ -46,7 +46,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const router = useRouter()
   const [currentView, setCurrentView] = useState<View>('town')
   const [infoText, setInfoText] = useState<string | null>(null)
-  const [isShaking] = useState(false)
+  const [isShaking, setIsShaking] = useState(false)
   const [, startTransition] = useTransition()
 
   // Mock data for now - should come from props or query
@@ -61,12 +61,37 @@ export function GameDashboard({ character }: GameDashboardProps) {
   
   const [inventory, setInventory] = useState(character.inventory || [])
 
+  const handleSetInfoText = (text: string | null) => {
+    if (!text) {
+      setInfoText(null)
+      setIsShaking(false)
+      return
+    }
+
+    setInfoText(text)
+
+    // Check for error/warning indicators in the text to trigger alert behavior
+    // Assuming red text or warning emojis indicate an alert
+    const isAlert = text.includes('text-[#ff6b6b]') || text.includes('⚠️') || text.includes('Chyba')
+
+    if (isAlert) {
+      setIsShaking(true)
+      // Auto-close alert after 3 seconds
+      setTimeout(() => {
+        setInfoText(null)
+        setIsShaking(false)
+      }, 3000)
+    } else {
+      setIsShaking(false)
+    }
+  }
+
   const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
     startTransition(async () => {
       const result = await moveCharacter(character.id, direction)
 
       if (!result.success) {
-        setInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
+        handleSetInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
         return
       }
 
@@ -85,7 +110,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
         // Force refresh to trigger CombatClient check in GamePage
         router.refresh()
       } else {
-        setInfoText(
+        handleSetInfoText(
           `${directionTexts[direction]}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
         )
       }
@@ -161,7 +186,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
           {/* Central Info Panel */}
           <div
-            className={`mx-3 shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 p-4 backdrop-blur-sm transition-colors ${isShaking ? 'shake border-[#ff4444]' : ''}`}
+            className={`mx-3 shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 p-4 backdrop-blur-sm transition-colors ${isShaking ? 'animate-shake border-[#ff4444]' : ''}`}
             style={{ height: '140px' }}
           >
             <div className="scrollbar-custom h-full overflow-y-auto">
@@ -183,7 +208,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onTavern={() => setCurrentView('tavern')}
                 onMarket={() => setCurrentView('market')}
                 onMove={handleMove}
-                setInfoText={setInfoText}
+                setInfoText={handleSetInfoText}
               />
             )}
             {currentView === 'smith' && (
@@ -193,7 +218,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setGold={setGold}
                 inventory={inventory as any}
                 setInventory={setInventory as any}
-                setInfoText={setInfoText}
+                setInfoText={handleSetInfoText}
               />
             )}
             {currentView === 'bank' && (
@@ -211,7 +236,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setGold={setGold}
                 activeBuffs={activeBuffs}
                 setActiveBuffs={setActiveBuffs}
-                setInfoText={setInfoText}
+                setInfoText={handleSetInfoText}
               />
             )}
             {currentView === 'tavern' && (
@@ -220,7 +245,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onRest={() => {}}
                 gold={gold}
                 setGold={setGold}
-                setInfoText={setInfoText}
+                setInfoText={handleSetInfoText}
               />
             )}
             {currentView === 'market' && (
@@ -230,7 +255,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 setGold={setGold}
                 inventory={inventory as any}
                 setInventory={setInventory as any}
-                setInfoText={setInfoText}
+                setInfoText={handleSetInfoText}
               />
             )}
           </div>
