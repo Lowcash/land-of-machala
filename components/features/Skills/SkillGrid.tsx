@@ -1,8 +1,7 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { ArrowLeft, Check, Lock } from 'lucide-react'
-import Link from 'next/link'
+import { Check, Lock } from 'lucide-react'
 import { useRef } from 'react'
 import { getIconFromName } from './iconMap'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
@@ -68,16 +67,7 @@ export function SkillGrid({
 
   return (
     <>
-      {/* Sticky Back Navigation */}
-      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
-        <Link
-          href="/game"
-          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Zpět do hry
-        </Link>
-      </div>
+
 
       {/* Mobile: Sticky Category Filter */}
       <div className="sticky top-14.25 z-10 shrink-0 md:hidden">

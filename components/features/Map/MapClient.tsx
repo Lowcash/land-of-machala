@@ -1,6 +1,5 @@
 'use client'
 
-import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { useEffect, useState } from 'react'
 import { LocationDetails } from './LocationDetails'
 import { MapCanvas } from './MapCanvas'
@@ -73,7 +72,7 @@ export function MapClient({
   return (
     <div className="flex w-full flex-1 flex-col overflow-hidden">
       {/* Sticky Back Navigation */}
-      <PageHeaderWithBack href="/game" label="Zpět do hry" />
+
 
       <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
         {/* Map Canvas */}

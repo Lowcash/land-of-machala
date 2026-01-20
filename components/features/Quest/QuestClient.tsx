@@ -1,7 +1,6 @@
 'use client'
 
 import { MobileOverlay } from '@/components/layout/MobileOverlay'
-import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { Scroll } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { QuestDetailContent } from './QuestDetailContent'
@@ -58,8 +57,7 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
 
   return (
     <div className="flex h-full w-full flex-col overflow-hidden">
-        {/* Sticky Back Navigation */}
-        <PageHeaderWithBack href="/game" label="Zpět do hry" />
+
 
       <div className="flex w-full flex-1 overflow-hidden">
         <QuestList

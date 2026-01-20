@@ -1,8 +1,7 @@
 'use client'
 
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
-import { ArrowLeft, CheckCircle, Circle, Star } from 'lucide-react'
-import Link from 'next/link'
+import { CheckCircle, Circle, Star } from 'lucide-react'
 import { useRef } from 'react'
 import type { MergedQuest, QuestCategory, QuestStatus } from './types'
 
@@ -73,16 +72,7 @@ export function QuestList({ quests, selectedQuest, setSelectedQuest }: QuestList
     <div
       className={`${selectedQuest ? 'hidden md:flex' : 'flex'} w-full flex-col border-r border-[#8b6f47] bg-black/70 backdrop-blur-sm md:w-80 lg:w-96`}
     >
-      {/* Sticky Back Navigation */}
-      <div className="sticky top-0 z-30 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm">
-        <Link
-          href="/game"
-          className="inline-flex items-center gap-2 text-sm text-[#d4a574] transition-colors hover:text-[#ffd700]"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Zpět do hry
-        </Link>
-      </div>
+
 
       {/* Quest list */}
       <div className="relative flex flex-1 flex-col overflow-hidden">

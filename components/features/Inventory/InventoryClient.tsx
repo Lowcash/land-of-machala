@@ -1,6 +1,5 @@
 'use client'
 
-import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { equipItemAction, unequipItemAction, useItemAction } from '@/lib/actions/inventory'
 import type { LucideIcon } from 'lucide-react'
@@ -174,8 +173,7 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
           } flex-1 flex-col bg-black/70 backdrop-blur-sm`}
         >
           {/* Back to game link */}
-          {/* Sticky Back Navigation */}
-          <PageHeaderWithBack href="/game" label="Zpět do hry" />
+
 
           {/* Toolbar - removed, gold now in header */}
 

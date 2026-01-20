@@ -1,7 +1,6 @@
 'use client'
 
 import { MobileOverlay, SplitView } from '@/components/layout'
-import { PageHeaderWithBack } from '@/components/ui/PageHeaderWithBack'
 import { TrendingUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { SkillDetailContent } from './SkillDetailContent'
@@ -71,7 +70,7 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
     <div className="flex h-full flex-col overflow-hidden">
       {/* Sticky Back Navigation */}
       {/* Sticky Back Navigation */}
-      <PageHeaderWithBack href="/game" label="Zpět do hry" />
+
 
       <div className="flex-1 overflow-hidden">
       <SplitView
