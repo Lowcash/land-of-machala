@@ -1,6 +1,6 @@
 'use client'
 
-import { MobileOverlay, SplitView } from '@/components/layout'
+import { MobileOverlay, PageTemplate, SplitView } from '@/components/layout'
 import { TrendingUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { SkillDetailContent } from './SkillDetailContent'
@@ -67,9 +67,11 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
   )
 
   return (
-    <div className="flex h-full flex-col overflow-hidden">
-      {/* Sticky Back Navigation */}
-      {/* Sticky Back Navigation */}
+    <PageTemplate
+      title="Dovednosti"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+      icon={<TrendingUp className="h-6 w-6" />}
+    >
 
 
       <div className="flex-1 overflow-hidden">
@@ -118,6 +120,6 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
           />
         </MobileOverlay>
       )}
-    </div>
+    </PageTemplate>
   )
 }

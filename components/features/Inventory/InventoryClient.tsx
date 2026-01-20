@@ -1,5 +1,6 @@
 'use client'
 
+import { PageTemplate } from '@/components/layout/PageTemplate'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import { equipItemAction, unequipItemAction, useItemAction } from '@/lib/actions/inventory'
 import type { LucideIcon } from 'lucide-react'
@@ -164,7 +165,11 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
   const filteredInventory = inventory
 
   return (
-    <>
+    <PageTemplate
+      title="Inventář"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+      icon={<Backpack className="h-6 w-6" />}
+    >
       <div className="flex w-full flex-1 overflow-hidden">
         {/* Main Inventory Grid */}
         <div
@@ -468,6 +473,6 @@ export function InventoryClient({ initialInventory }: InventoryClientProps) {
           </div>
         </div>
       )}
-    </>
+    </PageTemplate>
   )
 }

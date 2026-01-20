@@ -1,6 +1,7 @@
 'use client'
 
 import { MobileOverlay } from '@/components/layout/MobileOverlay'
+import { PageTemplate } from '@/components/layout/PageTemplate'
 import { Scroll } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { QuestDetailContent } from './QuestDetailContent'
@@ -56,7 +57,11 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
   const selectedQuestData = hydratedQuests.find((q) => q.id === selectedQuest)
 
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden">
+    <PageTemplate
+      title="Denik Úkolů"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+      icon={<Scroll className="h-6 w-6" />}
+    >
 
 
       <div className="flex w-full flex-1 overflow-hidden">
@@ -100,6 +105,6 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
           <QuestDetailContent quest={selectedQuestData} characterId={characterId} />
         </MobileOverlay>
       )}
-    </div>
+    </PageTemplate>
   )
 }
