@@ -5,25 +5,25 @@ import { useNotification } from '@/components/providers/NotificationProvider'
 import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
 import * as Accordion from '@radix-ui/react-accordion'
 import {
-  Activity,
-  ArrowRight,
-  BookOpen,
-  Brain,
-  ChevronDown,
-  Dices,
-  Droplet,
-  Heart,
-  Shield as ShieldIcon,
-  SkipForward,
-  Skull,
-  Sparkles,
-  Sword,
-  Swords,
-  Target,
-  User,
-  Wand2,
-  Wind,
-  Zap,
+    Activity,
+    ArrowRight,
+    BookOpen,
+    Brain,
+    ChevronDown,
+    Dices,
+    Droplet,
+    Heart,
+    Shield as ShieldIcon,
+    SkipForward,
+    Skull,
+    Sparkles,
+    Sword,
+    Swords,
+    Target,
+    User,
+    Wand2,
+    Wind,
+    Zap,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
@@ -345,7 +345,7 @@ export function OnboardingForm() {
           <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
-            <div className="min-h-30 sm:min-h-24">
+            <div className="flex min-h-32 flex-col justify-center sm:min-h-28">
               <h1
                 className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
                 style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -360,14 +360,14 @@ export function OnboardingForm() {
                   key={idx}
                   onClick={() => handleStoryChoice(choice)}
                   disabled={isLoading}
-                  className="group w-full transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
+                  className="group w-full min-h-[4rem] transform rounded-lg border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
                   style={{ fontFamily: 'var(--font-fantasy)' }}
                 >
                   <span className="flex items-center justify-center gap-3">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full border border-[#8b6f47] text-xs text-[#8b7355] group-hover:border-[#ffd700] group-hover:text-[#ffd700]">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#8b6f47] text-xs text-[#8b7355] group-hover:border-[#ffd700] group-hover:text-[#ffd700]">
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    {choice.text}
+                    <span>{choice.text}</span>
                   </span>
                 </button>
               ))}
@@ -592,7 +592,7 @@ export function OnboardingForm() {
                                 <button
                                   key={r.id}
                                   onClick={() => setRace(r.id)}
-                                  className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-17.5 sm:gap-1 sm:p-3 ${
+                                  className={`flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-20 sm:gap-1 sm:p-3 ${
                                     race === r.id
                                       ? 'scale-105 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-lg'
                                       : 'border-[#8b6f47]/50 bg-black/40 hover:scale-105 hover:border-[#ffd700]'
