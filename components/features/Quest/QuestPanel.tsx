@@ -24,9 +24,9 @@ export async function QuestPanel() {
       id: 'dummy-q1',
       title: 'Krysí problém',
       description: 'Hostinský si stěžuje na krysy ve sklepě. Pomoc mu je vyhubit.',
-      type: 'MAIN',
+      category: 'MAIN',
       minLevel: 1,
-      rewards: { xp: 100, gold: 50 },
+      rewards: [], // Simplified for dummy
       objectives: [
         {
           id: 'obj-1',
@@ -35,16 +35,19 @@ export async function QuestPanel() {
           current: 0,
           completed: false,
           order: 1,
+          questId: 'dummy-q1',
         },
       ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       id: 'dummy-q2',
       title: 'Ztracený amulet',
       description: 'Najdi starý rodinný amulet ztracený v lese.',
-      type: 'SIDE',
+      category: 'SIDE',
       minLevel: 3,
-      rewards: { xp: 200, gold: 100, items: ['Starý Amulet'] },
+      rewards: [],
       objectives: [
         {
           id: 'obj-2',
@@ -53,16 +56,19 @@ export async function QuestPanel() {
           current: 0,
           completed: false,
           order: 1,
+          questId: 'dummy-q2',
         },
       ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
     {
       id: 'dummy-q3',
       title: 'Denní lov: VLCI',
       description: 'Vlci se přemnožili. Sniž jejich stavy.',
-      type: 'DAILY',
+      category: 'DAILY',
       minLevel: 5,
-      rewards: { xp: 150, gold: 75 },
+      rewards: [],
       objectives: [
         {
           id: 'obj-3',
@@ -71,32 +77,19 @@ export async function QuestPanel() {
           current: 3,
           completed: false,
           order: 1,
+          questId: 'dummy-q3',
         },
       ],
+      createdAt: new Date(),
+      updatedAt: new Date(),
     },
   ]
 
-  interface Quest {
-    id: string
-    title: string
-    description: string
-    type: string
-    minLevel: number
-    rewards: { xp: number; gold: number; items?: string[] }
-    objectives: Array<{
-      id: string
-      description: string
-      target: number
-      current: number
-      completed: boolean
-      order: number
-    }>
-    createdAt?: Date
-  }
+
 
   let allQuests = allQuestsResult?.quests || []
   if (allQuests.length === 0) {
-    allQuests = dummyQuests as Quest[]
+    allQuests = dummyQuests as any[]
   }
 
   const character = characterResult.character

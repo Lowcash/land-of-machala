@@ -369,7 +369,7 @@ async function main() {
     },
   })
 
-  const _quest2 = await prisma.quest.create({
+  await prisma.quest.create({
     data: {
       title: 'Problém s krysami',
       description: 'Sklepení taverny je zamořené obřími krysami. Zlikviduj je!',
@@ -392,7 +392,7 @@ async function main() {
     },
   })
 
-  const _quest3 = await prisma.quest.create({
+  await prisma.quest.create({
     data: {
       title: 'Ztracený amulet',
       description: 'Najdi ztracený amulet ukrytý někde v nedalekých ruinách.',
@@ -416,7 +416,7 @@ async function main() {
     },
   })
 
-  const _quest4 = await prisma.quest.create({
+  await prisma.quest.create({
     data: {
       title: 'Poraz krále goblinů',
       description: 'Král goblinů terorizuje nedaleký les. Poraz ho a přines mír!',
@@ -443,7 +443,7 @@ async function main() {
     },
   })
 
-  const _quest5 = await prisma.quest.create({
+  await prisma.quest.create({
     data: {
       title: 'Tábor banditů',
       description: 'Skupina banditů si postavila tábor poblíž obchodní cesty. Eliminuj je.',

@@ -2,19 +2,17 @@
 
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { RouteTransition } from '@/components/layout/RouteTransition'
-import { moveCharacter } from '@/lib/actions/movement-actions'
-import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 import { BankActions } from './BankActions'
 import { CharacterBox } from './CharacterBox'
+import { viewData, type View } from './config/viewData'
 import { HealerActions } from './HealerActions'
+import { useGameMove } from './hooks/useGameMove'
+import type { MarketItem } from './Market/types'
 import { MarketActions } from './MarketActions'
 import { SmithActions } from './SmithActions'
 import { TavernActions } from './TavernActions'
 import { TownActions } from './TownActions'
-
-type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
 
 interface CharacterData {
   id: string
@@ -35,7 +33,7 @@ interface CharacterData {
     agility: number
     stamina: number
   }
-  inventory?: any[]
+  inventory?: MarketItem[] // refined type
 }
 
 interface GameDashboardProps {
@@ -43,11 +41,9 @@ interface GameDashboardProps {
 }
 
 export function GameDashboard({ character }: GameDashboardProps) {
-  const router = useRouter()
   const [currentView, setCurrentView] = useState<View>('town')
   const [infoText, setInfoText] = useState<string | null>(null)
   const [isShaking, setIsShaking] = useState(false)
-  const [, startTransition] = useTransition()
 
   // Mock data for now - should come from props or query
   interface Buff {
@@ -58,8 +54,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
 
   const [gold, setGold] = useState(character.gold || 0)
   const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
-  
-  const [inventory, setInventory] = useState(character.inventory || [])
+  const [inventory, setInventory] = useState<MarketItem[]>(character.inventory || [])
 
   const handleSetInfoText = (text: string | null) => {
     if (!text) {
@@ -71,12 +66,10 @@ export function GameDashboard({ character }: GameDashboardProps) {
     setInfoText(text)
 
     // Check for error/warning indicators in the text to trigger alert behavior
-    // Assuming red text or warning emojis indicate an alert
     const isAlert = text.includes('text-[#ff6b6b]') || text.includes('⚠️') || text.includes('Chyba')
 
     if (isAlert) {
       setIsShaking(true)
-      // Auto-close alert after 3 seconds
       setTimeout(() => {
         setInfoText(null)
         setIsShaking(false)
@@ -86,86 +79,24 @@ export function GameDashboard({ character }: GameDashboardProps) {
     }
   }
 
-  const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
-    startTransition(async () => {
-      const result = await moveCharacter(character.id, direction)
+  const { handleMove } = useGameMove({
+    characterId: character.id,
+    handleSetInfoText,
+  })
 
-      if (!result.success) {
-        handleSetInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
-        return
-      }
-
-      // Direction descriptions
-      const directionTexts = {
-        north:
-          'Vydáváš se na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami.',
-        south:
-          'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů.',
-        east: 'Vydáváš se na <span class="text-[#ffd700]">východ</span> k <span class="text-[#ffa500]">vyprahlé poušti</span>. Písek šustí pod tvýma nohama a slunce pálí nemilosrdně.',
-        west: 'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.',
-      }
-
-      // Random combat encounter
-      if (result.hasEncounter) {
-        // Force refresh to trigger CombatClient check in GamePage
-        router.refresh()
-      } else {
-        handleSetInfoText(
-          `${directionTexts[direction]}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
-        )
-      }
-    })
-  }
-
-  const viewData = {
-    town: {
-      bg: '/assets/locations/city-background.jpg',
-      title: 'Město Machala',
-      icon: Home,
-      desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
-    },
-    smith: {
-      bg: '/assets/locations/armory-background.jpg',
-      title: 'Zbrojíř',
-      icon: Hammer,
-      desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> k prodeji. V zadní části dílny můžeš s ním také <span class="text-[#69ccf0]">promluvit</span> o zakázkách a speciálních předmětech. Oheň v dílně plane a kladivo je připravené.',
-    },
-    bank: {
-      bg: '/assets/locations/bank-background.jpg',
-      title: 'Banka',
-      icon: Landmark,
-      desc: 'Masivní <span class="text-[#ffd700]">trezor</span> za pultem vzbuzuje důvěru. Tvé cennosti budou v bezpečí za těmito silnými zdmi. Můžeš zde <span class="text-[#ffd700]">uložit</span> peníze i vzácné předměty, které nepoužíváš. Nebo si své uložené <span class="text-[#ffd700]">zlato</span> zase <span class="text-[#69ccf0]">vybrat</span>. Bankéř na tebe přátelsky pokývne.',
-    },
-    healer: {
-      bg: '/assets/locations/healer-background.jpg',
-      title: 'Léčitel',
-      icon: Cross,
-      desc: 'Bylinková vůně a tichá atmosféra tě okamžitě uklidňují. Léčitel může <span class="text-[#6fbf6f]">uzdravit</span> tvá zranění a prodává účinné <span class="text-[#6fbf6f]">lektvary</span>. Na policích vidíš desítky lahviček s různobarevnými tekutinami. Možná pro tebe má i nějaký zajímavý <span class="text-[#ffd700]">quest</span>.',
-    },
-    tavern: {
-      bg: '/assets/tavern-background.jpg',
-      title: 'Taverna',
-      icon: Beer,
-      desc: 'Hlasitý smích a zvuk cinkajících hrnků naplňuje prostornou tavernu. Za barem stojí hostinský a čepuje pivo pro hladové dobrodruhy.',
-    },
-    market: {
-      bg: '/assets/market-background.jpg',
-      title: 'Tržiště',
-      icon: ShoppingBag,
-      desc: 'Rušné tržiště plné kupců a obchodníků. Můžeš zde najít opravdu cokoliv, pokud máš dost zlata.',
-    },
-  }[currentView]
+  // Get current view data
+  const currentViewData = viewData[currentView]
 
   return (
     <RouteTransition>
       <PageTemplate
-        title={viewData.title}
-        backgroundImage={viewData.bg}
-        icon={viewData.icon}
+        title={currentViewData.title}
+        backgroundImage={currentViewData.bg}
+        icon={currentViewData.icon}
         maxWidth="lg"
       >
         <div className="flex min-w-0 flex-1 flex-col gap-3">
-          {/* Player box at top - increased width for better visibility */}
+          {/* Player box at top */}
           <div className="w-full max-w-md px-3 pt-3">
             <CharacterBox
               name={character.name}
@@ -192,8 +123,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
             <div className="scrollbar-custom h-full overflow-y-auto">
               <div
                 className="animate-fade-in-wave mx-auto max-w-2xl py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
-                key={infoText || viewData.desc}
-                dangerouslySetInnerHTML={{ __html: infoText || viewData.desc }}
+                key={infoText || currentViewData.desc}
+                dangerouslySetInnerHTML={{ __html: infoText || currentViewData.desc }}
               />
             </div>
           </div>
@@ -216,7 +147,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onBack={() => setCurrentView('town')}
                 gold={gold}
                 setGold={setGold}
-                inventory={inventory as any}
+                inventory={inventory as any} // Cast remains as SmithActions is not refactored yet
                 setInventory={setInventory as any}
                 setInfoText={handleSetInfoText}
               />
@@ -253,8 +184,8 @@ export function GameDashboard({ character }: GameDashboardProps) {
                 onBack={() => setCurrentView('town')}
                 gold={gold}
                 setGold={setGold}
-                inventory={inventory as any}
-                setInventory={setInventory as any}
+                inventory={inventory}
+                setInventory={setInventory}
                 setInfoText={handleSetInfoText}
               />
             )}

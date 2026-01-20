@@ -1,5 +1,5 @@
-import { CombatPanel } from '@/components/features/Combat/CombatPanel'
+import { redirect } from 'next/navigation'
 
 export default function CombatPage() {
-  return <CombatPanel />
+  redirect('/game')
 }

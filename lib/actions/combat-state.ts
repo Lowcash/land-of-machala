@@ -23,7 +23,7 @@ export async function startCombat(characterId: string, enemyId: string | null = 
              where: { level: { lte: character.level + 2, gte: Math.max(1, character.level - 2) } }
         })
         if (enemies.length > 0) {
-            targetEnemyId = enemies[Math.floor(Math.random() * enemies.length)].id
+            targetEnemyId = enemies[Math.floor(Math.random() * enemies.length)]!.id
         }
     }
     

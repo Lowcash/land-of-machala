@@ -1,57 +1,25 @@
 'use client'
 
-import type { LucideIcon } from 'lucide-react'
 import {
     ArrowLeft,
-    ArrowRight,
     Coins,
     EyeOff,
     Home,
-    MessageSquare,
     Package,
     ShoppingBag,
     Skull,
     Store,
-    ThumbsDown,
-    ThumbsUp,
     Users,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { ActionBtn } from './ActionBtn'
 import { GamePanel } from './GameLayout'
-
-type ItemType = 'weapon' | 'armor' | 'consumable'
-
-interface Item {
-  id: number
-  name: string
-  type: ItemType
-  icon: LucideIcon
-  price?: number
-  attack?: number
-  defense?: number
-  durability?: number
-  maxDurability?: number
-  level?: number
-  equipped?: boolean
-  healing?: number
-  mana?: number
-}
-
-interface MarketActionsProps {
-  onBack: () => void
-  gold: number
-  setGold: (val: number | ((prev: number) => number)) => void
-  inventory: Item[]
-  setInventory: (val: Item[] | ((prev: Item[]) => Item[])) => void
-  setInfoText: (text: string) => void
-}
-
-interface HaggleState {
-  price: number
-  success: boolean
-  attempted: boolean
-}
+// Import new sub-components and types
+import { BlackMarket } from './Market/MarketBlackMarket'
+import { MarketBuy } from './Market/MarketBuy'
+import { MarketSell } from './Market/MarketSell'
+import type { MarketActionsProps, MarketItem } from './Market/types'
+import { useHaggle } from './Market/useHaggle'
 
 export function MarketActions({
   onBack,
@@ -62,27 +30,31 @@ export function MarketActions({
   setInfoText,
 }: MarketActionsProps) {
   const [mode, setMode] = useState<'default' | 'buy' | 'sell' | 'blackmarket'>('default')
-  const [stock, setStock] = useState<Item[]>([])
-  const [blackMarketStock, setBlackMarketStock] = useState<Item[]>([])
+  const [stock, setStock] = useState<MarketItem[]>([])
+  const [blackMarketStock, setBlackMarketStock] = useState<MarketItem[]>([])
   const [isNight, setIsNight] = useState(false)
   const [bribed, setBribed] = useState(false)
   const [message, setMessage] = useState('')
 
-  // Track haggling per item ID
-  const [haggledItems, setHaggledItems] = useState<Record<number, HaggleState>>({})
-
-  // Set isNight only on client side to avoid hydration error
-  useEffect(() => {
-    setIsNight(Math.random() > 0.5)
-  }, [])
   const showMessage = (msg: string) => {
     setMessage(msg)
     setTimeout(() => setMessage(''), 3000)
   }
 
+  // Use the custom hook for haggle logic
+  const { haggledItems, handleHaggle, getPrice } = useHaggle({
+    setInfoText,
+    showMessage,
+  })
+
+  // Set isNight only on client side to avoid hydration error
+  useEffect(() => {
+    setIsNight(Math.random() > 0.5)
+  }, [])
+
   useEffect(() => {
     // Generate daily stock
-    const generateStock = (): Item[] => [
+    const generateStock = (): MarketItem[] => [
       {
         id: 101,
         name: 'Lektvar zdraví',
@@ -97,7 +69,7 @@ export function MarketActions({
       { id: 105, name: 'Cestovní chléb', type: 'consumable', icon: Package, price: 5, healing: 5 },
     ]
 
-    const generateBlackStock = (): Item[] => [
+    const generateBlackStock = (): MarketItem[] => [
       { id: 201, name: 'Jed zmije', type: 'consumable', icon: Skull, price: 150 },
       { id: 202, name: 'Kradený prsten', type: 'consumable', icon: EyeOff, price: 80 },
       { id: 203, name: 'Temný elixír', type: 'consumable', icon: Skull, price: 200 },
@@ -107,46 +79,7 @@ export function MarketActions({
     setBlackMarketStock(generateBlackStock())
   }, [])
 
-  const getPrice = (item: Item, buying: boolean) => {
-    const basePrice = buying ? item.price || 0 : Math.floor((item.price || 10) * 0.5)
-    const haggle = haggledItems[item.id]
-    if (haggle) return haggle.price
-    return basePrice
-  }
-
-  const handleHaggle = (item: Item, buying: boolean, e: React.MouseEvent) => {
-    e.stopPropagation()
-
-    if (haggledItems[item.id]) return
-
-    // Base chance 40% + random factor.
-    const roll = Math.random()
-    const success = roll > 0.4
-
-    const currentPrice = getPrice(item, buying)
-    let newPrice = currentPrice
-
-    if (success) {
-      // Buying: Lower price. Selling: Higher price.
-      const factor = buying ? 0.8 : 1.2
-      newPrice = Math.floor(currentPrice * factor)
-      setInfoText(buying ? 'Uspěls! Cena šla dolů.' : 'Skvělé! Zaplatí víc.')
-      showMessage('Úspěšné smlouvání!')
-    } else {
-      // Buying: Higher price (annoyed). Selling: Lower price (lowball).
-      const factor = buying ? 1.15 : 0.85
-      newPrice = Math.floor(currentPrice * factor)
-      setInfoText("Obchodník se naštval. 'Tohle je moje poslední nabídka!'")
-      showMessage('Neúspěch!')
-    }
-
-    setHaggledItems((prev) => ({
-      ...prev,
-      [item.id]: { price: newPrice, success, attempted: true },
-    }))
-  }
-
-  const handleBuy = (item: Item) => {
+  const handleBuy = (item: MarketItem) => {
     const finalPrice = getPrice(item, true)
     if (gold < finalPrice) {
       showMessage('Nemáš dost zlata!')
@@ -155,7 +88,7 @@ export function MarketActions({
     setGold((g) => g - finalPrice)
 
     // Create a new instance
-    const newItem = {
+    const newItem: MarketItem = {
       ...item,
       id: Math.max(0, ...inventory.map((i) => i.id)) + 1 + Math.floor(Math.random() * 1000),
     }
@@ -165,7 +98,7 @@ export function MarketActions({
     showMessage(`Koupeno: ${item.name}`)
   }
 
-  const handleSell = (item: Item) => {
+  const handleSell = (item: MarketItem) => {
     const finalPrice = getPrice(item, false)
     setGold((g) => g + finalPrice)
     setInventory((prev) => prev.filter((i) => i.id !== item.id))
@@ -197,227 +130,115 @@ export function MarketActions({
 
   const renderContent = () => {
     if (mode === 'default') {
-        return (
-             <div className="space-y-2">
-                <ActionBtn onClick={() => setMode('buy')} icon={Store}>
-                  Prohlédnout <span className="text-[#ffd700]">zboží</span>
-                </ActionBtn>
-                <ActionBtn onClick={() => setMode('sell')} icon={ShoppingBag}>
-                  Prodat <span className="text-[#69ccf0]">předměty</span>
-                </ActionBtn>
-                <ActionBtn
-                  onClick={() => showMessage('Obchodníci si jen špitají o počasí.')}
-                  icon={Users}
-                >
-                  Mluvit s <span className="text-[#ffd700]">obchodníky</span>
-                </ActionBtn>
-                <ActionBtn
-                  onClick={enterBlackMarket}
-                  icon={EyeOff}
-                  className={isNight || bribed ? 'border-[#b66bd4] bg-[#b66bd4]/10' : 'opacity-70'}
-                >
-                  <span className="flex w-full items-center justify-between">
-                    <span>
-                      Hledat <span className="text-[#b66bd4]">Černý trh</span>
-                    </span>
-                    {isNight ? (
-                      <span className="rounded bg-[#b66bd4] px-1 text-[10px] text-black">NOC</span>
-                    ) : (
-                      <span className="text-[10px] text-[#8b7355]">DEN</span>
-                    )}
-                  </span>
-                </ActionBtn>
-              </div>
-        )
+      return (
+        <div className="space-y-2">
+          <ActionBtn onClick={() => setMode('buy')} icon={Store}>
+            Prohlédnout <span className="text-[#ffd700]">zboží</span>
+          </ActionBtn>
+          <ActionBtn onClick={() => setMode('sell')} icon={ShoppingBag}>
+            Prodat <span className="text-[#69ccf0]">předměty</span>
+          </ActionBtn>
+          <ActionBtn onClick={() => showMessage('Obchodníci si jen špitají o počasí.')} icon={Users}>
+            Mluvit s <span className="text-[#ffd700]">obchodníky</span>
+          </ActionBtn>
+          <ActionBtn
+            onClick={enterBlackMarket}
+            icon={EyeOff}
+            className={isNight || bribed ? 'border-[#b66bd4] bg-[#b66bd4]/10' : 'opacity-70'}
+          >
+            <span className="flex w-full items-center justify-between">
+              <span>
+                Hledat <span className="text-[#b66bd4]">Černý trh</span>
+              </span>
+              {isNight ? (
+                <span className="rounded bg-[#b66bd4] px-1 text-[10px] text-black">NOC</span>
+              ) : (
+                <span className="text-[10px] text-[#8b7355]">DEN</span>
+              )}
+            </span>
+          </ActionBtn>
+        </div>
+      )
     }
 
     if (mode === 'buy') {
-        return (
-              <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
-                {stock.map((item) => {
-                  const price = getPrice(item, true)
-                  const haggleState = haggledItems[item.id]
-
-                  return (
-                    <div
-                      key={item.id}
-                      onClick={() => handleBuy(item)}
-                      className="group relative w-full cursor-pointer rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all hover:border-[#ffd700]"
-                    >
-                      <div className="mb-1 flex items-start justify-between">
-                        <span className="flex items-center gap-2 text-sm font-bold text-[#f5e6d3] group-hover:text-[#ffd700]">
-                          <item.icon className="h-4 w-4" />
-                          {item.name}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          {!haggleState && (
-                            <button
-                              onClick={(e) => handleHaggle(item, true, e)}
-                              className="rounded p-1 text-[#d4a574] transition-colors hover:bg-[#ffd700]/20 hover:text-[#ffd700]"
-                              title="Smlouvat"
-                            >
-                              <MessageSquare className="h-3 w-3" />
-                            </button>
-                          )}
-                          <span
-                            className={`font-mono text-xs ${haggleState ? (haggleState.success ? 'text-green-400' : 'text-red-400') : 'text-[#ffd700]'}`}
-                          >
-                            {price}g
-                          </span>
-                        </div>
-                      </div>
-                      {haggleState && (
-                        <div className="absolute top-1 right-16">
-                          {haggleState.success ? (
-                            <ThumbsUp className="h-3 w-3 text-green-500/50" />
-                          ) : (
-                            <ThumbsDown className="h-3 w-3 text-red-500/50" />
-                          )}
-                        </div>
-                      )}
-                    </div>
-                  )
-                })}
-              </div>
-        )
+      return (
+        <MarketBuy
+          stock={stock}
+          handleBuy={handleBuy}
+          handleHaggle={handleHaggle}
+          getPrice={getPrice}
+          haggledItems={haggledItems}
+        />
+      )
     }
 
     if (mode === 'sell') {
-        return (
-              <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
-                {inventory.length === 0 ? (
-                  <div className="p-4 text-center text-xs text-[#8b7355]">
-                    Tvůj batoh je prázdný.
-                  </div>
-                ) : (
-                  inventory.map((item) => {
-                    const price = getPrice(item, false)
-                    const haggleState = haggledItems[item.id]
-
-                    return (
-                      <div
-                        key={item.id}
-                        onClick={() => handleSell(item)}
-                        className="group relative w-full cursor-pointer rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all hover:border-[#69ccf0]"
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="relative">
-                              <item.icon className="h-5 w-5 text-[#8b7355]" />
-                              {item.equipped && (
-                                <div className="absolute -top-1 -right-1 h-2 w-2 rounded-full bg-[#6fbf6f]"></div>
-                              )}
-                            </div>
-                            <div>
-                              <div className="text-sm text-[#f5e6d3]">{item.name}</div>
-                              <div className="text-[10px] text-[#8b7355]">{item.type}</div>
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            {!haggleState && (
-                              <button
-                                onClick={(e) => handleHaggle(item, false, e)}
-                                className="rounded p-1 text-[#8b7355] transition-colors hover:bg-[#69ccf0]/20 hover:text-[#69ccf0]"
-                                title="Smlouvat o ceně"
-                              >
-                                <MessageSquare className="h-3 w-3" />
-                              </button>
-                            )}
-                            <div
-                              className={`flex items-center gap-1 font-mono text-xs ${haggleState ? (haggleState.success ? 'text-green-400' : 'text-red-400') : 'text-[#69ccf0]'}`}
-                            >
-                              <ArrowRight className="h-3 w-3" />
-                              {price}g
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })
-                )}
-              </div>
-        )
+      return (
+        <MarketSell
+          inventory={inventory}
+          handleSell={handleSell}
+          handleHaggle={handleHaggle}
+          getPrice={getPrice}
+          haggledItems={haggledItems}
+        />
+      )
     }
 
     if (mode === 'blackmarket') {
-        return (
-              <div className="space-y-2 rounded border border-[#b66bd4]/30 bg-[#0a050a] p-2">
-                <div className="mb-2 flex items-center justify-center gap-2 text-center text-xs font-bold tracking-wider text-[#b66bd4] uppercase">
-                  <Skull className="h-3 w-3" />
-                  Nelegální zboží
-                  <Skull className="h-3 w-3" />
-                </div>
-                {blackMarketStock.map((item) => (
-                  <button
-                    key={item.id}
-                    onClick={() => handleBuy(item)}
-                    className="group w-full rounded border border-[#b66bd4]/30 bg-black/80 p-2 text-left transition-all hover:border-[#b66bd4]"
-                  >
-                    <div className="mb-1 flex items-start justify-between">
-                      <span className="flex items-center gap-2 text-sm font-bold text-[#dcd0ff] group-hover:text-[#b66bd4]">
-                        <item.icon className="h-4 w-4" />
-                        {item.name}
-                      </span>
-                      <span className="text-xs text-[#b66bd4]">{item.price}g</span>
-                    </div>
-                  </button>
-                ))}
-              </div>
-        )
+      return <BlackMarket stock={blackMarketStock} handleBuy={handleBuy} />
     }
     return null
   }
 
   const subsections = [
     {
-        title: 'TRŽNICE',
-        content: renderContent(),
-        defaultOpen: true
+      title: 'TRŽNICE',
+      content: renderContent(),
+      defaultOpen: true,
     },
     {
-        title: 'ATMOSFÉRA',
-        content: (
-            <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
-              {mode === 'blackmarket' ? (
-                <span className="text-[#b66bd4]">
-                  Vzduch je zde těžký a páchne po levném koření a strachu. Postavy v kápích si tě měří
-                  nedůvěřivým pohledem. Zde seženěš to, co je jinde zakázané.
-                </span>
-              ) : (
-                'Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.'
-              )}
-            </div>
-        ),
-        defaultOpen: true
-    }
+      title: 'ATMOSFÉRA',
+      content: (
+        <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
+          {mode === 'blackmarket' ? (
+            <span className="text-[#b66bd4]">
+              Vzduch je zde těžký a páchne po levném koření a strachu. Postavy v kápích si tě měří
+              nedůvěřivým pohledem. Zde seženěš to, co je jinde zakázané.
+            </span>
+          ) : (
+            'Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.'
+          )}
+        </div>
+      ),
+      defaultOpen: true,
+    },
   ]
-
-
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-           <button
-             onClick={mode === 'default' ? onBack : () => setMode('default')}
-             className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
-           >
-             {mode === 'default' ? (
-                <>
-                  <Home className="h-4 w-4" />
-                  Vrátit se do města
-                </>
-             ) : (
-                <>
-                  <ArrowLeft className="h-4 w-4" />
-                  Zpět na náměstí
-                </>
-             )}
-           </button>
-            
-            <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
-              <Coins className="h-4 w-4" />
-              {gold}
-            </div>
+        <button
+          onClick={mode === 'default' ? onBack : () => setMode('default')}
+          className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+        >
+          {mode === 'default' ? (
+            <>
+              <Home className="h-4 w-4" />
+              Vrátit se do města
+            </>
+          ) : (
+            <>
+              <ArrowLeft className="h-4 w-4" />
+              Zpět na náměstí
+            </>
+          )}
+        </button>
+
+        <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
+          <Coins className="h-4 w-4" />
+          {gold}
+        </div>
       </div>
 
       {message && (

@@ -5,7 +5,7 @@ import { CharacterBox } from '@/components/features/Game/CharacterBox'
 import { GamePanel } from '@/components/features/Game/GameLayout'
 import { PageTemplate } from '@/components/layout'
 import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
-import { performCombatActionAction, useCombatItemAction } from '@/lib/actions/combat'
+import { useCombatItemAction as combatItemAction, performCombatActionAction } from '@/lib/actions/combat'
 import { endCombat } from '@/lib/actions/combat-state'
 import { useActivityLog } from '@/lib/hooks/useActivityLog'
 import { getIconFromName } from '@/lib/icons'
@@ -29,7 +29,7 @@ interface CombatClientProps {
 export function CombatClient({ character, inventory: initialInventory }: CombatClientProps) {
   const router = useRouter()
   const [playerHp, setPlayerHp] = useState(character.combatPlayerHp || character.hp)
-  const [playerMana, setPlayerMana] = useState(character.mana)
+  const [playerMana] = useState(character.mana)
   const [enemyHp, setEnemyHp] = useState(character.combatEnemyHp || 100)
   const [isPending, startTransition] = useTransition()
   
@@ -43,12 +43,12 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
     ...character.currentEnemy 
   }
 
-  const handleAction = async (action: 'attack' | 'defend' | 'special' | 'flee', type?: string) => {
+  const handleAction = async (action: 'attack' | 'defend' | 'special' | 'flee', _type?: string) => {
     startTransition(async () => {
       try {
         if (action === 'flee') {
            const result = await endCombat(character.id, 'flee')
-           if (result.success) {
+           if (result?.success) {
              router.push('/game')
            } else {
              toast.error('Útěk se nezdařil!')
@@ -88,7 +88,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
     })
   }
 
-  const [inventory, setInventory] = useState(initialInventory)
+  const [inventory] = useState(initialInventory)
   const potions = inventory.filter(i => i.type === 'CONSUMABLE' || i.type === 'consumable')
 
   // No changes to subsections definition needed, just the layout below
@@ -171,7 +171,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
              <ActionBtn
                key={potion.id}
                onClick={async () => {
-                 const [res, err] = await useCombatItemAction({ characterId: character.id, itemId: potion.id })
+                 const [_res, err] = await combatItemAction({ characterId: character.id, itemId: potion.id })
                  if (!err) {
                     toast.success('Lektvar použit')
                  }

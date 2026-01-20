@@ -85,7 +85,8 @@ export function ServiceTable<T extends BaseItem = BaseItem>({
                 <tr key={idx} className="border-b border-[#8b6f47]/30 hover:bg-black/20">
                   {columns.map((col) => (
                     <td key={col.key} className={`px-2 py-2 text-${col.align || 'left'}`}>
-                      {col.render ? col.render(item) : item[col.key]}
+                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                      {col.render ? col.render(item) : (item[col.key] as any)}
                     </td>
                   ))}
                   {actions.length > 0 && (
@@ -140,11 +141,13 @@ export function ServiceTable<T extends BaseItem = BaseItem>({
                   <div key={col.key}>
                     {colIdx === 0 ? (
                       <div className="text-sm text-[#f5e6d3]">
-                        {col.render ? col.render(item) : item[col.key]}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {col.render ? col.render(item) : (item[col.key] as any)}
                       </div>
                     ) : (
                       <div className="text-[10px] text-[#8b7355]">
-                        {col.render ? col.render(item) : item[col.key]}
+                        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                        {col.render ? col.render(item) : (item[col.key] as any)}
                       </div>
                     )}
                   </div>

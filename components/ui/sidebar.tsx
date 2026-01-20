@@ -15,7 +15,7 @@ import { Separator } from './separator'
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from './sheet'
 import { Skeleton } from './skeleton'
 import { useIsMobile } from './use-mobile'
-import { cn } from './utils'
+import { cn } from '@/lib/utils'
 
 const SIDEBAR_COOKIE_NAME = 'sidebar_state'
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7

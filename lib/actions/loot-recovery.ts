@@ -1,6 +1,7 @@
 'use server'
 
 import { prisma } from '@/lib/db'
+import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { logActivity } from './activity-log'
 
@@ -34,7 +35,7 @@ export async function cleanExpiredLootPiles(characterId: string) {
         await prisma.character.update({
             where: { id: characterId },
             data: {
-                deathLocation: null,
+                deathLocation: Prisma.DbNull,
                 lootExpirationNotifications: notifications
             }
         })
@@ -85,7 +86,7 @@ export async function recoverLoot(characterId: string) {
         await prisma.character.update({
             where: { id: characterId },
             data: {
-                deathLocation: null,
+                deathLocation: Prisma.DbNull,
                 gold: character.gold + (deathLoc.gold || 0)
             }
         })

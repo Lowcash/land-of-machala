@@ -1,10 +1,12 @@
 import { getMyCharacterAction } from '@/lib/actions/character'
 import { getAllSkillsAction, getCharacterSkillsAction } from '@/lib/actions/skill'
+import type { Skill } from '@prisma/client'
 import { SkillsClient } from './SkillsClient'
-import type { SkillCategory } from './types'
+import type { MergedSkill, SkillCategory } from './types'
 
-function treeToCategory(tree: string): SkillCategory {
-  switch (tree) {
+function treeToCategory(tree: string | any): SkillCategory {
+  const treeStr = String(tree)
+  switch (treeStr) {
     case 'COMBAT':
       return 'combat'
     case 'DEFENSE':
@@ -36,8 +38,8 @@ export async function SkillsPanel() {
     )
   }
 
-  // Define dummy skills in case fetch fails or returns empty
-  const dummySkills = [
+  // Define dummy skills with correct Prisma shape
+  const dummySkills: any[] = [
     {
       id: 'dummy-1',
       name: 'Mocný Úder',
@@ -47,9 +49,11 @@ export async function SkillsPanel() {
       tier: 1,
       maxRank: 5,
       requiredLevel: 1,
+      requiredSkillId: null,
       requiredTreePoints: 0,
-      x: 0,
-      y: 0,
+      positionX: 0,
+      positionY: 0,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-2',
@@ -60,9 +64,11 @@ export async function SkillsPanel() {
       tier: 1,
       maxRank: 3,
       requiredLevel: 2,
+      requiredSkillId: null,
       requiredTreePoints: 0,
-      x: 1,
-      y: 0,
+      positionX: 1,
+      positionY: 0,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-3',
@@ -73,9 +79,11 @@ export async function SkillsPanel() {
       tier: 2,
       maxRank: 3,
       requiredLevel: 5,
+      requiredSkillId: null,
       requiredTreePoints: 3,
-      x: 2,
-      y: 1,
+      positionX: 2,
+      positionY: 1,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-4',
@@ -86,9 +94,11 @@ export async function SkillsPanel() {
       tier: 2,
       maxRank: 3,
       requiredLevel: 6,
+      requiredSkillId: null,
       requiredTreePoints: 3,
-      x: 3,
-      y: 1,
+      positionX: 3,
+      positionY: 1,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-5',
@@ -99,9 +109,11 @@ export async function SkillsPanel() {
       tier: 3,
       maxRank: 1,
       requiredLevel: 10,
+      requiredSkillId: null,
       requiredTreePoints: 6,
-      x: 2,
-      y: 2,
+      positionX: 2,
+      positionY: 2,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-6',
@@ -112,9 +124,11 @@ export async function SkillsPanel() {
       tier: 2,
       maxRank: 3,
       requiredLevel: 4,
+      requiredSkillId: null,
       requiredTreePoints: 3,
-      x: 0,
-      y: 1,
+      positionX: 0,
+      positionY: 1,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-7',
@@ -125,9 +139,11 @@ export async function SkillsPanel() {
       tier: 2,
       maxRank: 3,
       requiredLevel: 5,
+      requiredSkillId: null,
       requiredTreePoints: 3,
-      x: 1,
-      y: 1,
+      positionX: 1,
+      positionY: 1,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-8',
@@ -138,9 +154,11 @@ export async function SkillsPanel() {
       tier: 3,
       maxRank: 1,
       requiredLevel: 12,
+      requiredSkillId: null,
       requiredTreePoints: 6,
-      x: 3,
-      y: 2,
+      positionX: 3,
+      positionY: 2,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-9',
@@ -151,9 +169,11 @@ export async function SkillsPanel() {
       tier: 3,
       maxRank: 1,
       requiredLevel: 15,
+      requiredSkillId: null,
       requiredTreePoints: 6,
-      x: 0,
-      y: 2,
+      positionX: 0,
+      positionY: 2,
+      createdAt: new Date(),
     },
     {
       id: 'dummy-10',
@@ -164,35 +184,20 @@ export async function SkillsPanel() {
       tier: 3,
       maxRank: 1,
       requiredLevel: 14,
+      requiredSkillId: null,
       requiredTreePoints: 6,
-      x: 1,
-      y: 2,
+      positionX: 1,
+      positionY: 2,
+      createdAt: new Date(),
     },
   ]
 
-  interface Skill {
-    id: string
-    name: string
-    description: string
-    category: string
-    iconName: string
-    isPassive: boolean
-    manaCost: number
-    cooldown: number
-    damage: number
-    currentRank: number
-    maxRank: number
-    requiredLevel: number
-    requiredTreePoints: number
-    x: number
-    y: number
-  }
 
-  let allSkills: Skill[] = allSkillsResult?.skills || []
+  let allSkills: Skill[] = (allSkillsResult?.skills as unknown as Skill[]) || []
 
   // If no skills found, use dummy skills
   if (allSkills.length === 0) {
-    allSkills = dummySkills as Skill[]
+    allSkills = dummySkills as unknown as Skill[]
   }
 
   const character = characterResult.character
@@ -208,7 +213,7 @@ export async function SkillsPanel() {
   const characterSkills = characterSkillsResult?.skills || []
 
   // Merge all skills with character progress
-  const mergedSkills = allSkills.map((skill) => {
+  const mergedSkills: MergedSkill[] = allSkills.map((skill) => {
     const characterSkill = characterSkills.find((cs) => cs.skillId === skill.id)
     const category = treeToCategory(skill.tree)
 

@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation'
 
 export default async function GamePage() {
   const session = await auth()
-  if (!session?.user) redirect('/auth/login')
+  if (!session?.user) redirect('/login')
 
   const character = await prisma.character.findFirst({
     where: { userId: session.user.id },
@@ -21,7 +21,7 @@ export default async function GamePage() {
     },
   })
 
-  if (!character) redirect('/create-character')
+  if (!character) redirect('/onboarding')
 
   // Combat Check
   if (character.inCombat) {
