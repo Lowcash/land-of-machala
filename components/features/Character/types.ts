@@ -18,6 +18,7 @@ export interface CharacterData {
   coldResistance: number
   poisonResistance: number
   reputation: number
+  gold: number
 }
 
 import type { LucideIcon } from 'lucide-react'

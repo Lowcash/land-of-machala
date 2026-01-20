@@ -1,5 +1,6 @@
 'use client'
 
+import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import { useState } from 'react'
@@ -112,25 +113,25 @@ export function GameDashboard({ character }: GameDashboardProps) {
               resourceType={
                 character.class === 'warrior' || character.class === 'rogue' ? 'energy' : 'mana'
               }
+              gold={gold}
+              locationName={currentViewData.title}
             />
           </div>
 
           {/* Central Info Panel */}
-          <div
-            className={`mx-3 shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 p-4 backdrop-blur-sm transition-colors ${isShaking ? 'animate-shake border-[#ff4444]' : ''}`}
-            style={{ height: '140px' }}
+          {/* Central Info Panel */}
+          <InfoLogPanel
+            className={`mx-3 h-[140px] shrink-0 bg-black/60 transition-colors ${isShaking ? 'animate-shake' : ''}`}
           >
-            <div className="scrollbar-custom h-full overflow-y-auto">
-              <div
-                className="animate-fade-in-wave mx-auto max-w-2xl py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
-                key={infoText || currentViewData.desc}
-                dangerouslySetInnerHTML={{ __html: infoText || currentViewData.desc }}
-              />
-            </div>
-          </div>
+            <div
+              className="animate-fade-in-wave mx-auto max-w-2xl py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
+              key={infoText || currentViewData.desc}
+              dangerouslySetInnerHTML={{ __html: infoText || currentViewData.desc }}
+            />
+          </InfoLogPanel>
 
           {/* Actions */}
-          <div className="relative min-h-0 flex-1 px-3 pb-3">
+          <div className="relative flex min-h-0 flex-1 items-end px-3 pb-3">
             {currentView === 'town' && (
               <TownActions
                 onSmith={() => setCurrentView('smith')}

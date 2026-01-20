@@ -1,8 +1,8 @@
 'use client'
 
 import { ActionBtn } from '@/components/features/Game/ActionBtn'
+import { ActionsLayout } from '@/components/features/Game/ActionsLayout'
 import { CharacterBox } from '@/components/features/Game/CharacterBox'
-import { GamePanel } from '@/components/features/Game/GameLayout'
 import { PageTemplate } from '@/components/layout'
 import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
 import { useCombatItemAction as combatItemAction, performCombatActionAction } from '@/lib/actions/combat'
@@ -92,105 +92,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   const potions = inventory.filter(i => i.type === 'CONSUMABLE' || i.type === 'consumable')
 
   // No changes to subsections definition needed, just the layout below
-  const combatSubsections = [
-    {
-      title: 'ÚTOK',
-      content: (
-        <div className="space-y-1">
-          <ActionBtn
-            onClick={() => handleAction('attack', 'quick')}
-            icon={Zap}
-            color="text-[#ffd700]"
-            border="hover:border-[#ffd700]"
-            disabled={isPending}
-          >
-            <div className="flex w-full justify-between">
-              <span>Rychlý útok</span>
-              <span className="text-[10px] opacity-70">Základní</span>
-            </div>
-          </ActionBtn>
-          <ActionBtn
-            onClick={() => handleAction('attack', 'heavy')} 
-            icon={Target}
-            color="text-[#ff6b6b]"
-            border="hover:border-[#ff6b6b]"
-            disabled={isPending}
-          >
-            <div className="flex w-full justify-between">
-              <span>Silný úder</span>
-              <span className="text-[10px] text-[#ff6b6b]">Vysoké poškození</span>
-            </div>
-          </ActionBtn>
-          <ActionBtn
-            onClick={() => handleAction('special')}
-            icon={Sparkles}
-            color="text-[#b66bd4]"
-            border="hover:border-[#b66bd4]"
-            disabled={isPending}
-          >
-            <div className="flex w-full justify-between">
-              <span>Speciální schopnost</span>
-              <span className="text-[10px] text-[#b66bd4]">-Mana</span>
-            </div>
-          </ActionBtn>
-        </div>
-      ),
-      defaultOpen: true
-    },
-    {
-      title: 'OBRANA & TAKTIKA',
-      content: (
-        <div className="space-y-1">
-          <ActionBtn
-            onClick={() => handleAction('defend', 'block')}
-            icon={Shield}
-            color="text-[#69ccf0]"
-            border="hover:border-[#69ccf0]"
-            disabled={isPending}
-          >
-            <span>Obrana</span> (Sníží poškození)
-          </ActionBtn>
-          <ActionBtn
-            onClick={() => handleAction('flee')}
-            icon={ArrowLeft}
-            color="text-[#8b7355]"
-            border="hover:border-[#d4a574]"
-            disabled={isPending}
-          >
-             <span>Útěk</span>
-          </ActionBtn>
-        </div>
-      ),
-      defaultOpen: true
-    },
-    {
-      title: `LEKTVARY (${potions.length})`,
-      content: (
-        <div className="grid grid-cols-2 gap-2">
-          {potions.map((potion: any) => (
-             <ActionBtn
-               key={potion.id}
-               onClick={async () => {
-                 const [_res, err] = await combatItemAction({ characterId: character.id, itemId: potion.id })
-                 if (!err) {
-                    toast.success('Lektvar použit')
-                 }
-               }}
-               icon={getIconFromName(potion.iconName || 'potion')}
-               color="text-[#6fbf6f]"
-               border="hover:border-[#6fbf6f]"
-               disabled={isPending}
-             >
-                {potion.name}
-             </ActionBtn>
-          ))}
-          {potions.length === 0 && <div className="text-xs text-[#8b7355] italic col-span-2">Žádné lektvary</div>}
-        </div>
-      ),
-      collapsible: true,
-      defaultOpen: false
-    }
-  ]
+
 
   return (
     <PageTemplate title="Souboj" icon={Swords} backgroundImage="/assets/locations/forest.jpg" maxWidth="lg">
@@ -234,7 +136,99 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
 
         {/* Actions - Bottom */}
         <div className="relative min-h-0 flex-1 px-3 pb-3">
-           <GamePanel title="Akce" subsections={combatSubsections} />
+          <ActionsLayout
+            showDirections={false}
+            onToggleDirections={() => {}}
+            exploration={
+               <div className="space-y-4">
+                  <div className="space-y-1">
+                    <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Obrana & Taktika</div>
+                    <ActionBtn
+                        onClick={() => handleAction('defend', 'block')}
+                        icon={Shield}
+                        color="text-[#69ccf0]"
+                        border="hover:border-[#69ccf0]"
+                        disabled={isPending}
+                    >
+                        <span>Obrana</span> <span className="text-xs opacity-70">(Sníží poškození)</span>
+                    </ActionBtn>
+                    <ActionBtn
+                        onClick={() => handleAction('flee')}
+                        icon={ArrowLeft}
+                        color="text-[#8b7355]"
+                        border="hover:border-[#d4a574]"
+                        disabled={isPending}
+                    >
+                        <span>Útěk</span>
+                    </ActionBtn>
+                  </div>
+                  
+                  <div className="space-y-1">
+                     <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Lektvary ({potions.length})</div>
+                     <div className="grid grid-cols-2 gap-2">
+                        {potions.map((potion: any) => (
+                            <ActionBtn
+                            key={potion.id}
+                            onClick={async () => {
+                                const [_res, err] = await combatItemAction({ characterId: character.id, itemId: potion.id })
+                                if (!err) {
+                                    toast.success('Lektvar použit')
+                                }
+                            }}
+                            icon={getIconFromName(potion.iconName || 'potion')}
+                            color="text-[#6fbf6f]"
+                            border="hover:border-[#6fbf6f]"
+                            disabled={isPending}
+                            >
+                                {potion.name}
+                            </ActionBtn>
+                        ))}
+                    </div>
+                    {potions.length === 0 && <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>}
+                  </div>
+               </div>
+            }
+          >
+             <div className="space-y-1">
+                 <div className="text-xs font-bold text-[#ffd700] uppercase tracking-wider mb-1">Útok</div>
+                <ActionBtn
+                    onClick={() => handleAction('attack', 'quick')}
+                    icon={Zap}
+                    color="text-[#ffd700]"
+                    border="hover:border-[#ffd700]"
+                    disabled={isPending}
+                >
+                    <div className="flex w-full justify-between items-center">
+                    <span>Rychlý útok</span>
+                    <span className="text-[10px] opacity-70">Základní</span>
+                    </div>
+                </ActionBtn>
+                <ActionBtn
+                    onClick={() => handleAction('attack', 'heavy')} 
+                    icon={Target}
+                    color="text-[#ff6b6b]"
+                    border="hover:border-[#ff6b6b]"
+                    disabled={isPending}
+                >
+                    <div className="flex w-full justify-between items-center">
+                    <span>Silný úder</span>
+                    <span className="text-[10px] text-[#ff6b6b]">Vysoké poškození</span>
+                    </div>
+                </ActionBtn>
+                <ActionBtn
+                    onClick={() => handleAction('special')}
+                    icon={Sparkles}
+                    color="text-[#b66bd4]"
+                    border="hover:border-[#b66bd4]"
+                    disabled={isPending}
+                >
+                    <div className="flex w-full justify-between items-center">
+                    <span>Speciální schopnost</span>
+                    <span className="text-[10px] text-[#b66bd4]">-Mana</span>
+                    </div>
+                </ActionBtn>
+             </div>
+          </ActionsLayout>
         </div>
       </div>
     </PageTemplate>

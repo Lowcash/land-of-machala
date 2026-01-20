@@ -1,4 +1,4 @@
-import { Brain, Shield, Sword, User, Wind } from 'lucide-react'
+import { Brain, Coins, MapPin, Shield, Sword, User, Wind } from 'lucide-react'
 import Image from 'next/image'
 
 interface CharacterBoxProps {
@@ -19,6 +19,8 @@ interface CharacterBoxProps {
   xpMax?: number
   image?: string
   resourceType?: 'mana' | 'energy'
+  gold?: number
+  locationName?: string
 }
 
 export function CharacterBox({
@@ -34,10 +36,12 @@ export function CharacterBox({
   xpMax,
   image,
   resourceType = 'mana',
+  gold,
+  locationName,
 }: CharacterBoxProps) {
   const hpPercent = Math.max(0, Math.min(100, (hp / hpMax) * 100))
   const resourcePercent = Math.max(0, Math.min(100, (mana / manaMax) * 100))
-  const xpPercent = xp && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
+  const xpPercent = xp !== undefined && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
 
   return (
     <div
@@ -140,28 +144,48 @@ export function CharacterBox({
                 {Math.round(mana)} / {manaMax} {resourceType === 'energy' ? 'EN' : 'MP'}
               </div>
             </div>
-          </div>
 
-          {/* XP Bar - Tiny */}
-          {!isEnemy && xp !== undefined && (
-            <div className="mt-1 flex items-center gap-2 text-[9px] text-[#8b7355]">
-              <span className="font-bold">XP</span>
-              <div className="relative h-1.5 flex-1 overflow-hidden rounded-full bg-black/40">
-                <div className="absolute inset-0 bg-[#d4a574]" style={{ width: `${xpPercent}%` }} />
+            {/* XP Bar - Prominent */}
+            {!isEnemy && xp !== undefined && (
+              <div className="relative h-3 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
+                <div
+                  className="absolute inset-0 bg-linear-to-r from-[#8b6f47] via-[#d4a574] to-[#ffd700] transition-all duration-300"
+                  style={{ width: `${xpPercent}%` }}
+                />
+                <div className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-black/80 shadow-white/50 drop-shadow-sm">
+                  {Math.round(xpPercent)}% XP
+                </div>
               </div>
-              <span>{Math.floor(xpPercent)}%</span>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       </div>
 
       {/* Stats - Horizontal Strip */}
-      {stats && !isEnemy && (
+      {stats && (
         <div className="flex divide-x divide-[#8b6f47]/20 border-t border-[#8b6f47]/30 bg-[#120f0a]/50">
           <StatItem icon={Sword} value={stats.strength} label="STR" color="text-red-400" />
           <StatItem icon={Brain} value={stats.intelligence} label="INT" color="text-purple-400" />
           <StatItem icon={Wind} value={stats.agility} label="AGI" color="text-yellow-400" />
           <StatItem icon={Shield} value={stats.stamina} label="STA" color="text-blue-400" />
+        </div>
+      )}
+
+      {/* Money & Location Footer (for Player) */}
+      {!isEnemy && (gold !== undefined || locationName) && (
+        <div className="flex items-center justify-between border-t border-[#8b6f47]/30 bg-black/40 px-3 py-1.5 text-xs text-[#d4a574]">
+          {locationName && (
+            <div className="flex items-center gap-1.5">
+              <MapPin className="h-3.5 w-3.5 text-[#8b7355]" />
+              <span style={{ fontFamily: 'var(--font-fantasy)' }}>{locationName}</span>
+            </div>
+          )}
+          {gold !== undefined && (
+            <div className="flex items-center gap-1.5 font-bold text-[#ffd700]">
+              <Coins className="h-3.5 w-3.5" />
+              <span>{gold} zl</span>
+            </div>
+          )}
         </div>
       )}
     </div>

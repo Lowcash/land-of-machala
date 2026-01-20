@@ -72,9 +72,6 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
       backLink={{ href: '/game', label: 'Zpět do hry' }}
       icon={<TrendingUp className="h-6 w-6" />}
     >
-
-
-      <div className="flex-1 overflow-hidden">
       <SplitView
         main={
           <SkillGrid
@@ -102,7 +99,6 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
         }
         asideWidth="md"
       />
-      </div>
 
       {/* Mobile detail overlay */}
       {selectedSkillData && (

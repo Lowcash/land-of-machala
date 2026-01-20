@@ -26,7 +26,7 @@ export function GamePanel({ title, children, className = '', subsections }: Pane
 
   return (
     <div
-      className={`relative flex min-h-0 flex-col rounded-lg border-2 border-[#8b6f47] bg-black/80 p-3 shadow-xl backdrop-blur-md sm:p-4 ${className}`}
+      className={`relative flex min-h-0 w-full flex-col rounded-lg border-2 border-[#8b6f47] bg-black/80 p-3 shadow-xl backdrop-blur-md sm:p-4 ${className}`}
     >
       {title && (
         <h3 className="mb-3 shrink-0 text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
@@ -38,7 +38,7 @@ export function GamePanel({ title, children, className = '', subsections }: Pane
         <ScrollIndicator targetRef={scrollRef} position="both" />
         <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto">
           {children}
-          
+
           {subsections && (
             <div className="flex flex-col gap-4">
               {subsections.map((section, idx) => (
@@ -64,7 +64,7 @@ function PanelSection({ section, isLast }: { section: Subsection; isLast: boolea
           isCollapsible ? 'cursor-pointer hover:opacity-80' : 'cursor-default'
         }`}
       >
-        <span className="text-[10px] tracking-wider text-[#8b7355] uppercase font-bold">
+        <span className="text-[10px] font-bold tracking-wider text-[#8b7355] uppercase">
           {section.title}
         </span>
         {isCollapsible && (
@@ -75,7 +75,7 @@ function PanelSection({ section, isLast }: { section: Subsection; isLast: boolea
           />
         )}
       </button>
-      
+
       {isOpen && <div className="mt-2">{section.content}</div>}
     </div>
   )

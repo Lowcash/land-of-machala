@@ -1,18 +1,10 @@
 'use client'
 
-import {
-    ArrowLeft,
-    Coins,
-    EyeOff,
-    Home,
-    Package,
-    ShoppingBag,
-    Skull,
-    Store,
-    Users,
-} from 'lucide-react'
+import { ArrowLeft, EyeOff, Package, ShoppingBag, Skull, Store, Users } from 'lucide-react'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 import { ActionBtn } from './ActionBtn'
+import { ActionsLayout } from './ActionsLayout'
 import { GamePanel } from './GameLayout'
 // Import new sub-components and types
 import { BlackMarket } from './Market/MarketBlackMarket'
@@ -34,11 +26,9 @@ export function MarketActions({
   const [blackMarketStock, setBlackMarketStock] = useState<MarketItem[]>([])
   const [isNight, setIsNight] = useState(false)
   const [bribed, setBribed] = useState(false)
-  const [message, setMessage] = useState('')
 
   const showMessage = (msg: string) => {
-    setMessage(msg)
-    setTimeout(() => setMessage(''), 3000)
+    toast.success(msg)
   }
 
   // Use the custom hook for haggle logic
@@ -82,7 +72,7 @@ export function MarketActions({
   const handleBuy = (item: MarketItem) => {
     const finalPrice = getPrice(item, true)
     if (gold < finalPrice) {
-      showMessage('Nemáš dost zlata!')
+      toast.error('Nemáš dost zlata!')
       return
     }
     setGold((g) => g - finalPrice)
@@ -123,7 +113,7 @@ export function MarketActions({
           setInfoText('Strážný shrábl měšec a poodstoupil. Cesta do podsvětí je volná.')
         }
       } else {
-        showMessage('Je zavřeno a nemáš na úplatek.')
+        toast.error('Je zavřeno a nemáš na úplatek.')
       }
     }
   }
@@ -138,7 +128,10 @@ export function MarketActions({
           <ActionBtn onClick={() => setMode('sell')} icon={ShoppingBag}>
             Prodat <span className="text-[#69ccf0]">předměty</span>
           </ActionBtn>
-          <ActionBtn onClick={() => showMessage('Obchodníci si jen špitají o počasí.')} icon={Users}>
+          <ActionBtn
+            onClick={() => showMessage('Obchodníci si jen špitají o počasí.')}
+            icon={Users}
+          >
             Mluvit s <span className="text-[#ffd700]">obchodníky</span>
           </ActionBtn>
           <ActionBtn
@@ -191,63 +184,70 @@ export function MarketActions({
     return null
   }
 
-  const subsections = [
-    {
-      title: 'TRŽNICE',
-      content: renderContent(),
-      defaultOpen: true,
-    },
-    {
-      title: 'ATMOSFÉRA',
-      content: (
-        <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
-          {mode === 'blackmarket' ? (
-            <span className="text-[#b66bd4]">
-              Vzduch je zde těžký a páchne po levném koření a strachu. Postavy v kápích si tě měří
-              nedůvěřivým pohledem. Zde seženěš to, co je jinde zakázané.
-            </span>
-          ) : (
-            'Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.'
-          )}
-        </div>
-      ),
-      defaultOpen: true,
-    },
-  ]
-
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <button
-          onClick={mode === 'default' ? onBack : () => setMode('default')}
-          className="flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+      {mode === 'default' ? (
+        <ActionsLayout
+          title="Tržiště"
+          onBack={onBack}
+          showDirections={false}
+          onToggleDirections={() => {}}
+          exploration={
+            <div className="space-y-4">
+              <div className="flex items-center gap-2 rounded border border-[#ffd700]/30 bg-[#ffd700]/10 p-3 text-[#ffd700]">
+                <span className="text-xs tracking-wider text-[#8b7355] uppercase">Tvé zlato:</span>
+                <span className="font-bold">{gold}g</span>
+              </div>
+              <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs leading-relaxed text-[#8b7355]">
+                Křik trhovců se mísí s bečením ovcí a cinkáním mincí. Vůně čerstvého pečiva bojuje
+                se zápachem ryb. Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného.
+              </div>
+            </div>
+          }
         >
-          {mode === 'default' ? (
-            <>
-              <Home className="h-4 w-4" />
-              Vrátit se do města
-            </>
-          ) : (
-            <>
-              <ArrowLeft className="h-4 w-4" />
-              Zpět na náměstí
-            </>
-          )}
-        </button>
-
-        <div className="flex items-center gap-2 px-3 font-mono text-[#ffd700]">
-          <Coins className="h-4 w-4" />
-          {gold}
-        </div>
-      </div>
-
-      {message && (
-        <div className="animate-in fade-in slide-in-from-top-4 fixed top-20 left-1/2 z-50 -translate-x-1/2 rounded bg-[#ffd700]/90 px-4 py-2 text-sm font-bold text-black shadow-lg">
-          {message}
-        </div>
+          <div className="space-y-2">
+            <ActionBtn onClick={() => setMode('buy')} icon={Store}>
+              Prohlédnout <span className="text-[#ffd700]">zboží</span>
+            </ActionBtn>
+            <ActionBtn onClick={() => setMode('sell')} icon={ShoppingBag}>
+              Prodat <span className="text-[#69ccf0]">předměty</span>
+            </ActionBtn>
+            <ActionBtn
+              onClick={() => showMessage('Obchodníci si jen špitají o počasí.')}
+              icon={Users}
+            >
+              Mluvit s <span className="text-[#ffd700]">obchodníky</span>
+            </ActionBtn>
+            <ActionBtn
+              onClick={enterBlackMarket}
+              icon={EyeOff}
+              className={isNight || bribed ? 'border-[#b66bd4] bg-[#b66bd4]/10' : 'opacity-70'}
+            >
+              <span className="flex w-full items-center justify-between">
+                <span>
+                  Hledat <span className="text-[#b66bd4]">Černý trh</span>
+                </span>
+                {isNight ? (
+                  <span className="rounded bg-[#b66bd4] px-1 text-[10px] text-black">NOC</span>
+                ) : (
+                  <span className="text-[10px] text-[#8b7355]">DEN</span>
+                )}
+              </span>
+            </ActionBtn>
+          </div>
+        </ActionsLayout>
+      ) : (
+        <GamePanel title={mode === 'buy' ? 'NÁKUP' : mode === 'sell' ? 'PRODEJ' : 'ČERNÝ TRH'}>
+          <button
+            onClick={() => setMode('default')}
+            className="mb-4 flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Zpět na náměstí
+          </button>
+          {renderContent()}
+        </GamePanel>
       )}
-
-      <GamePanel subsections={subsections} />
     </div>
   )
 }
