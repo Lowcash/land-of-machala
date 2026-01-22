@@ -1,4 +1,4 @@
-import { OnboardingForm } from '@/components/features/Auth/OnboardingForm'
+import { Onboarding } from '@/components/features/Auth'
 import { getMyCharacterAction } from '@/lib/actions/character'
 import { redirect } from 'next/navigation'
 
@@ -9,5 +9,5 @@ export default async function OnboardingPage() {
     redirect('/game')
   }
 
-  return <OnboardingForm />
+  return <Onboarding />
 }

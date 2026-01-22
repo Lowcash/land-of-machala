@@ -46,7 +46,12 @@ export async function getUserByUsername(username: string) {
   })
 }
 
-export async function createUser(data: { email: string; username: string; password: string }) {
+export async function createUser(data: {
+  email: string
+  username: string
+  password: string
+  isGuest?: boolean
+}) {
   const passwordHash = await hash(data.password, 12)
 
   return await prisma.user.create({
@@ -54,6 +59,7 @@ export async function createUser(data: { email: string; username: string; passwo
       email: data.email,
       username: data.username,
       passwordHash,
+      isGuest: data.isGuest ?? false,
     },
   })
 }

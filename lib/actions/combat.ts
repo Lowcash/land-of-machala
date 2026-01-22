@@ -1,14 +1,21 @@
 'use server'
 
-import { addExperience, getCharacter, updateCharacterResources } from '@/entity/character'
+import {
+  addExperience,
+  getCharacter,
+  getCharacterByUserId,
+  updateCharacterResources,
+} from '@/entity/character'
 import {
   calculateAttackDamage,
   calculateCombatDamage,
   calculateDefense,
   calculateExperienceReward,
   calculateGoldReward,
+  getCharacterCombatState,
   getRandomEnemy,
   isCriticalHit,
+  updateCharacterCombatState,
 } from '@/entity/combat'
 import { getEquippedItems } from '@/entity/inventory'
 import { auth } from '@/lib/auth'
@@ -252,7 +259,7 @@ export const performCombatActionAction = createServerAction()
     }
   })
 
-export const useCombatItemAction = createServerAction()
+export const performUseItemAction = createServerAction()
   .input(useItemSchema)
   .handler(async ({ input }) => {
     const session = await auth()
@@ -279,8 +286,6 @@ export const useCombatItemAction = createServerAction()
  * Combat State Management for SSR
  */
 
-import { prisma } from '@/lib/db'
-
 const startCombatSchema = z.object({
   enemyId: z.string(),
   enemyHp: z.number(),
@@ -301,22 +306,16 @@ export const startCombatState = createServerAction()
     const session = await auth()
     if (!session?.user?.id) throw new Error('Unauthorized')
 
-    const character = await prisma.character.findFirst({
-      where: { userId: session.user.id },
-    })
-
+    const character = await getCharacterByUserId(session.user.id)
     if (!character) throw new Error('Character not found')
 
-    await prisma.character.update({
-      where: { id: character.id },
-      data: {
-        inCombat: true,
-        combatEnemyId: input.enemyId,
-        combatTurn: 'player',
-        combatPlayerHp: character.hp,
-        combatEnemyHp: input.enemyHp,
-        currentView: 'combat',
-      },
+    await updateCharacterCombatState(character.id, {
+      inCombat: true,
+      combatEnemyId: input.enemyId,
+      combatTurn: 'player',
+      combatPlayerHp: character.hp,
+      combatEnemyHp: input.enemyHp,
+      currentView: 'combat',
     })
 
     return { success: true }
@@ -331,20 +330,15 @@ export const updateCombatState = createServerAction()
     const session = await auth()
     if (!session?.user?.id) throw new Error('Unauthorized')
 
-    const character = await prisma.character.findFirst({
-      where: { userId: session.user.id },
-    })
+    const character = await getCharacterByUserId(session.user.id)
 
     if (!character) throw new Error('Character not found')
     if (!character.inCombat) throw new Error('Not in combat')
 
-    await prisma.character.update({
-      where: { id: character.id },
-      data: {
-        combatPlayerHp: input.playerHp,
-        combatEnemyHp: input.enemyHp,
-        combatTurn: input.turn,
-      },
+    await updateCharacterCombatState(character.id, {
+      combatPlayerHp: input.playerHp,
+      combatEnemyHp: input.enemyHp,
+      combatTurn: input.turn,
     })
 
     return { success: true }
@@ -357,22 +351,17 @@ export const endCombatState = createServerAction().handler(async () => {
   const session = await auth()
   if (!session?.user?.id) throw new Error('Unauthorized')
 
-  const character = await prisma.character.findFirst({
-    where: { userId: session.user.id },
-  })
+  const character = await getCharacterByUserId(session.user.id)
 
   if (!character) throw new Error('Character not found')
 
-  await prisma.character.update({
-    where: { id: character.id },
-    data: {
-      inCombat: false,
-      combatEnemyId: null,
-      combatTurn: null,
-      combatPlayerHp: null,
-      combatEnemyHp: null,
-      currentView: 'town',
-    },
+  await updateCharacterCombatState(character.id, {
+    inCombat: false,
+    combatEnemyId: null,
+    combatTurn: null,
+    combatPlayerHp: null,
+    combatEnemyHp: null,
+    currentView: 'town',
   })
 
   return { success: true }
@@ -385,17 +374,13 @@ export async function getCombatState() {
   const session = await auth()
   if (!session?.user?.id) return null
 
-  const character = await prisma.character.findFirst({
-    where: { userId: session.user.id },
-    select: {
-      inCombat: true,
-      combatEnemyId: true,
-      combatTurn: true,
-      combatPlayerHp: true,
-      combatEnemyHp: true,
-      currentView: true,
-    },
-  })
+  const character = await getCharacterByUserId(session.user.id)
+  if (!character) return null
 
-  return character
+  // Using getCharacterCombatState would be cleaner but we already have the character object here
+  // However, getCharacterByUserId might not select combat fields, let's double check.
+  // Actually, getCharacterByUserId usually returns the whole character.
+  // But to be safe and use our new API:
+
+  return await getCharacterCombatState(character.id)
 }

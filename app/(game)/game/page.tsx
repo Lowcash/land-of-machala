@@ -1,46 +1,26 @@
 import { CombatClient } from '@/components/features/Combat/CombatClient'
-import { GameDashboard } from '@/components/features/Game/GameDashboard'
-import { cleanExpiredLootPiles } from '@/lib/actions/loot-recovery'
+import { GameDashboard } from '@/components/features/Game'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { getGamePageData } from '@/lib/loaders/game-loader'
 import { redirect } from 'next/navigation'
 
 export default async function GamePage() {
   const session = await auth()
-  if (!session?.user) redirect('/login')
+  if (!session?.user?.id) redirect('/login')
 
-  const character = await prisma.character.findFirst({
-    where: { userId: session.user.id },
-    include: {
-      inventory: {
-        include: { item: true },
-      },
-      skills: {
-        include: { skill: true },
-      },
-    },
-  })
+  const data = await getGamePageData(session.user.id)
+  if (!data) redirect('/onboarding')
 
-  if (!character) redirect('/onboarding')
+  const { character, dashboardData } = data
 
-  // Combat Check
   if (character.inCombat) {
-    return <CombatClient character={character} inventory={character.inventory.map((i: any) => ({...i.item, ...i}))} />
+    return (
+      <CombatClient
+        character={character as any}
+        inventory={character.inventory.map((i: any) => ({ ...i.item, ...i }))}
+      />
+    )
   }
 
-  // Clean expired loot if any
-  await cleanExpiredLootPiles(character.id)
-
-  // Transform character data to match GameDashboard interface
-  const characterWithStats = {
-      ...character,
-      stats: {
-          strength: character.strength,
-          intelligence: character.intelligence,
-          agility: character.agility,
-          stamina: character.stamina
-      }
-  }
-
-  return <GameDashboard character={characterWithStats as any} />
+  return <GameDashboard character={dashboardData as any} />
 }

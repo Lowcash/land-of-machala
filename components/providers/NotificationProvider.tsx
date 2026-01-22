@@ -60,6 +60,11 @@ function NotificationItem({
   const config = variantConfig[notification.variant]
   const Icon = config.icon
 
+  const handleClose = useCallback(() => {
+    setIsVisible(false)
+    setTimeout(onClose, 300)
+  }, [onClose])
+
   // Fade in
   useState(() => {
     setTimeout(() => setIsVisible(true), 100)
@@ -72,12 +77,7 @@ function NotificationItem({
     }, notification.duration || 5000)
 
     return () => clearTimeout(timer)
-  }, [notification.duration])
-
-  const handleClose = () => {
-    setIsVisible(false)
-    setTimeout(onClose, 300)
-  }
+  }, [notification.duration, handleClose])
 
   return (
     <div

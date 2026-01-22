@@ -1,6 +1,6 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 import { useRef } from 'react'
 
 interface LogEntry {

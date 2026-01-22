@@ -2,7 +2,7 @@
 
 import { createUser, getUser, getUserByUsername } from '@/entity/user'
 import { auth, signIn, signOut } from '@/lib/auth'
-import { hash } from 'bcryptjs'
+import { randomBytes } from 'crypto'
 import { z } from 'zod'
 import { createServerAction } from 'zsa'
 
@@ -22,7 +22,8 @@ const registerSchema = z.object({
     .string()
     .min(3, 'Username must be at least 3 characters')
     .max(20, 'Username must be at most 20 characters')
-    .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores'),
+    .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores')
+    .optional(),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 })
 
@@ -67,16 +68,17 @@ export const registerAction = createServerAction()
       throw new Error('Email already registered')
     }
 
-    const existingUsername = await getUserByUsername(username)
+    const finalUsername = (username || email.split('@')[0]) as string
+
+    const existingUsername = await getUserByUsername(finalUsername)
     if (existingUsername) {
       throw new Error('Username already taken')
     }
 
-    const hashedPassword = await hash(password, 10)
     const user = await createUser({
       email,
-      username,
-      password: hashedPassword,
+      username: finalUsername,
+      password,
     })
 
     // Sign in the newly created user
@@ -103,6 +105,27 @@ export const registerAction = createServerAction()
 export const logoutAction = createServerAction().handler(async () => {
   await signOut({ redirect: false })
   return { success: true }
+})
+
+export const createGuestAccountAction = createServerAction().handler(async () => {
+  // Generate random credentials
+  const randomId = randomBytes(4).toString('hex')
+  const email = `guest_${randomId}@example.com`
+  const password = randomBytes(8).toString('hex')
+
+  // Create guest user
+  const user = await createUser({
+    email,
+    username: `Guest_${randomId}`,
+    password,
+    isGuest: true,
+  })
+
+  return {
+    email,
+    password,
+    userId: user.id,
+  }
 })
 
 export async function getCurrentUserId(): Promise<string | null> {

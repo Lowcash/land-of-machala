@@ -1,29 +1,28 @@
 'use client'
 
-import { ActionBtn } from '@/components/features/Game/ActionBtn'
-import { ActionsLayout } from '@/components/features/Game/ActionsLayout'
-import { CharacterBox } from '@/components/features/Game/CharacterBox'
+import { ActionsLayout, CharacterBox } from '@/components/features/Game'
 import { PageTemplate } from '@/components/layout'
 import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
-import { useCombatItemAction as combatItemAction, performCombatActionAction } from '@/lib/actions/combat'
+import { GameButton } from '@/components/ui/game/GameButton'
+import { performCombatActionAction, performUseItemAction } from '@/lib/actions/combat'
 import { endCombat } from '@/lib/actions/combat-state'
 import { useActivityLog } from '@/lib/hooks/useActivityLog'
 import { getIconFromName } from '@/lib/icons'
-import {
-    ArrowLeft,
-    Shield,
-    Sparkles,
-    Swords,
-    Target,
-    Zap
-} from 'lucide-react'
+import { ArrowLeft, Shield, Sparkles, Swords, Target, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState, useTransition } from 'react'
-import { toast } from 'sonner'; // Assuming sonner is used for toasts, or use window.alert/console
+import { toast } from 'sonner'
+import type { CharacterData, CharacterItem } from '../Character/Shared/types'
 
 interface CombatClientProps {
-  character: any
-  inventory: any[]
+  character: CharacterData & {
+    combatPlayerHp?: number
+    combatEnemyHp?: number
+    combatEnemyId?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    currentEnemy?: any
+  }
+  inventory: CharacterItem[]
 }
 
 export function CombatClient({ character, inventory: initialInventory }: CombatClientProps) {
@@ -32,35 +31,37 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   const [playerMana] = useState(character.mana)
   const [enemyHp, setEnemyHp] = useState(character.combatEnemyHp || 100)
   const [isPending, startTransition] = useTransition()
-  
-  // Use activity log hook
-  const { logs } = useActivityLog(character.id, 2000)
 
+  // Use activity log hook
+  const { logs } = useActivityLog(character.id as unknown as string, 2000)
+
+  // Ensure robust enemy data
   const enemy = {
     name: 'Nepřítel',
-    level: character.level, 
-    maxHp: character.combatEnemyHp ? 100 : 100, // Should be passed safely
-    ...character.currentEnemy 
+    level: character.level,
+    maxHp: character.combatEnemyHp ? 100 : 100,
+    ...character.currentEnemy,
   }
 
   const handleAction = async (action: 'attack' | 'defend' | 'special' | 'flee', _type?: string) => {
     startTransition(async () => {
       try {
         if (action === 'flee') {
-           const result = await endCombat(character.id, 'flee')
-           if (result?.success) {
-             router.push('/game')
-           } else {
-             toast.error('Útěk se nezdařil!')
-           }
-           return
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const result = await endCombat(character.id as any, 'flee')
+          if (result?.success) {
+            router.push('/game')
+          } else {
+            toast.error('Útěk se nezdařil!')
+          }
+          return
         }
 
         const [data, err] = await performCombatActionAction({
           characterId: character.id,
           enemyId: character.combatEnemyId || 'enemy',
           enemyCurrentHp: enemyHp,
-          action: action as any
+          action,
         })
 
         if (err) {
@@ -69,17 +70,19 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
         }
 
         if (data) {
-          setPlayerHp(data.playerHp)
-          setEnemyHp(data.enemyHp)
-          
+          setPlayerHp(data.playerHp || 0)
+          setEnemyHp(data.enemyHp || 0)
+
           if (data.result === 'victory') {
-             await endCombat(character.id, 'victory')
-             toast.success('Vítězství!')
-             router.push('/game')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await endCombat(character.id as any, 'victory')
+            toast.success('Vítězství!')
+            router.push('/game')
           } else if (data.result === 'defeat') {
-             await endCombat(character.id, 'defeat')
-             toast.error('Porážka!')
-             router.push('/game')
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            await endCombat(character.id as any, 'defeat')
+            toast.error('Porážka!')
+            router.push('/game')
           }
         }
       } catch (error) {
@@ -89,50 +92,63 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   }
 
   const [inventory] = useState(initialInventory)
-  const potions = inventory.filter(i => i.type === 'CONSUMABLE' || i.type === 'consumable')
-
-  // No changes to subsections definition needed, just the layout below
-
+  const potions = inventory.filter((i) => i.type === 'CONSUMABLE' || i.type === 'consumable')
 
   return (
-    <PageTemplate title="Souboj" icon={Swords} backgroundImage="/assets/locations/forest.jpg" maxWidth="lg">
+    <PageTemplate
+      title="Souboj"
+      icon={Swords}
+      backgroundImage="/assets/locations/forest.jpg"
+      maxWidth="lg"
+    >
       <div className="flex min-w-0 flex-1 flex-col gap-3">
         {/* Top Section - Player and Enemy */}
         <div className="grid w-full grid-cols-1 gap-3 px-3 pt-3 md:grid-cols-2">
-             {/* Player Stats */}
-             <div className="w-full">
-               <CharacterBox
-                 name={character.name}
-                 level={character.level}
-                 hp={playerHp}
-                 hpMax={character.maxHp}
-                 mana={playerMana}
-                 manaMax={character.maxMana}
-                 stats={character}
-                 isEnemy={false}
-               />
-             </div>
+          {/* Player Stats */}
+          <div className="w-full">
+            <CharacterBox
+              name={character.name}
+              level={character.level}
+              hp={playerHp ?? character.hp}
+              hpMax={character.maxHp}
+              mana={playerMana}
+              manaMax={character.maxMana}
+              stats={{
+                strength: character.strength,
+                intelligence: character.intelligence,
+                agility: character.agility,
+                stamina: character.stamina,
+              }}
+              isEnemy={false}
+            />
+          </div>
 
-             {/* Enemy Stats */}
-             <div className="w-full">
-               <CharacterBox
-                 name={enemy.name}
-                 level={enemy.level}
-                 hp={enemyHp}
-                 hpMax={enemy.maxHp} 
-                 mana={0}
-                 manaMax={100}
-                 stats={{ ...character, strength: 10, defense: 5 }} 
-                 isEnemy={true}
-                 image="/assets/enemies/wolf.png"
-               />
-             </div>
+          {/* Enemy Stats */}
+          <div className="w-full">
+            <CharacterBox
+              name={enemy.name}
+              level={enemy.level}
+              hp={enemyHp ?? 100}
+              hpMax={enemy.maxHp}
+              mana={0}
+              manaMax={100}
+              stats={{
+                strength: character.strength, // Placeholder
+                intelligence: character.intelligence,
+                agility: character.agility,
+                stamina: 5, // Placeholder
+              }}
+              isEnemy={true}
+              image="/assets/enemies/wolf.png"
+            />
+          </div>
         </div>
 
         {/* Combat Log - Middle */}
-        <div className="mx-3 shrink-0 overflow-hidden rounded border border-[#d4a574]/50 bg-black/70 p-4 backdrop-blur-sm" style={{ height: '140px' }}>
-          <InfoLogPanel logs={logs} className="h-full" />
-        </div>
+        <InfoLogPanel
+          logs={logs}
+          className="mx-3 h-[140px] shrink-0 rounded border border-[#d4a574]/50 bg-black/60 p-4 backdrop-blur-sm"
+        />
 
         {/* Actions - Bottom */}
         <div className="relative min-h-0 flex-1 px-3 pb-3">
@@ -140,94 +156,105 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
             showDirections={false}
             onToggleDirections={() => {}}
             exploration={
-               <div className="space-y-4">
-                  <div className="space-y-1">
-                    <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Obrana & Taktika</div>
-                    <ActionBtn
-                        onClick={() => handleAction('defend', 'block')}
-                        icon={Shield}
-                        color="text-[#69ccf0]"
-                        border="hover:border-[#69ccf0]"
-                        disabled={isPending}
-                    >
-                        <span>Obrana</span> <span className="text-xs opacity-70">(Sníží poškození)</span>
-                    </ActionBtn>
-                    <ActionBtn
-                        onClick={() => handleAction('flee')}
-                        icon={ArrowLeft}
-                        color="text-[#8b7355]"
-                        border="hover:border-[#d4a574]"
-                        disabled={isPending}
-                    >
-                        <span>Útěk</span>
-                    </ActionBtn>
+              <div className="space-y-4">
+                <div className="space-y-1">
+                  <div className="mb-1 text-xs font-bold tracking-wider text-[#8b7355] uppercase">
+                    Obrana & Taktika
                   </div>
-                  
-                  <div className="space-y-1">
-                     <div className="text-xs font-bold text-[#8b7355] uppercase tracking-wider mb-1">Lektvary ({potions.length})</div>
-                     <div className="grid grid-cols-2 gap-2">
-                        {potions.map((potion: any) => (
-                            <ActionBtn
-                            key={potion.id}
-                            onClick={async () => {
-                                const [_res, err] = await combatItemAction({ characterId: character.id, itemId: potion.id })
-                                if (!err) {
-                                    toast.success('Lektvar použit')
-                                }
-                            }}
-                            icon={getIconFromName(potion.iconName || 'potion')}
-                            color="text-[#6fbf6f]"
-                            border="hover:border-[#6fbf6f]"
-                            disabled={isPending}
-                            >
-                                {potion.name}
-                            </ActionBtn>
-                        ))}
-                    </div>
-                    {potions.length === 0 && <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>}
+                  <div className="space-y-2">
+                    <GameButton
+                      onClick={() => handleAction('defend', 'block')}
+                      icon={Shield}
+                      variant="secondary"
+                      isLoading={isPending}
+                      className="w-full"
+                    >
+                      <span>Obrana</span>{' '}
+                      <span className="ml-2 text-xs opacity-70">(Sníží poškození)</span>
+                    </GameButton>
+                    <GameButton
+                      onClick={() => handleAction('flee')}
+                      icon={ArrowLeft}
+                      variant="ghost"
+                      isLoading={isPending}
+                      className="w-full text-[#8b7355] hover:text-[#d4a574]"
+                    >
+                      <span>Útěk</span>
+                    </GameButton>
                   </div>
-               </div>
+                </div>
+
+                <div className="space-y-1">
+                  <div className="mb-1 text-xs font-bold tracking-wider text-[#8b7355] uppercase">
+                    Lektvary ({potions.length})
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {potions.map((potion) => (
+                      <GameButton
+                        key={potion.id}
+                        onClick={async () => {
+                          const [_res, err] = await performUseItemAction({
+                            characterId: character.id,
+                            itemId: potion.id,
+                          })
+                          if (!err) {
+                            toast.success('Lektvar použit')
+                          }
+                        }}
+                        icon={getIconFromName(potion.iconName || 'potion')}
+                        variant="outline"
+                        isLoading={isPending}
+                        size="sm"
+                        className="border-game-success/50 text-game-success hover:border-game-success"
+                      >
+                        {potion.name}
+                      </GameButton>
+                    ))}
+                  </div>
+                  {potions.length === 0 && (
+                    <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>
+                  )}
+                </div>
+              </div>
             }
           >
-             <div className="space-y-1">
-                 <div className="text-xs font-bold text-[#ffd700] uppercase tracking-wider mb-1">Útok</div>
-                <ActionBtn
-                    onClick={() => handleAction('attack', 'quick')}
-                    icon={Zap}
-                    color="text-[#ffd700]"
-                    border="hover:border-[#ffd700]"
-                    disabled={isPending}
+            <div className="space-y-1">
+              <div className="text-game-gold mb-1 text-xs font-bold tracking-wider uppercase">
+                Útok
+              </div>
+              <div className="space-y-2">
+                <GameButton
+                  onClick={() => handleAction('attack', 'quick')}
+                  icon={Zap}
+                  variant="primary"
+                  isLoading={isPending}
+                  className="w-full justify-between"
                 >
-                    <div className="flex w-full justify-between items-center">
-                    <span>Rychlý útok</span>
-                    <span className="text-[10px] opacity-70">Základní</span>
-                    </div>
-                </ActionBtn>
-                <ActionBtn
-                    onClick={() => handleAction('attack', 'heavy')} 
-                    icon={Target}
-                    color="text-[#ff6b6b]"
-                    border="hover:border-[#ff6b6b]"
-                    disabled={isPending}
+                  <span>Rychlý útok</span>
+                  <span className="text-[10px] opacity-70">Základní</span>
+                </GameButton>
+                <GameButton
+                  onClick={() => handleAction('attack', 'heavy')}
+                  icon={Target}
+                  variant="danger"
+                  isLoading={isPending}
+                  className="w-full justify-between"
                 >
-                    <div className="flex w-full justify-between items-center">
-                    <span>Silný úder</span>
-                    <span className="text-[10px] text-[#ff6b6b]">Vysoké poškození</span>
-                    </div>
-                </ActionBtn>
-                <ActionBtn
-                    onClick={() => handleAction('special')}
-                    icon={Sparkles}
-                    color="text-[#b66bd4]"
-                    border="hover:border-[#b66bd4]"
-                    disabled={isPending}
+                  <span>Silný úder</span>
+                  <span className="text-[10px]">Vysoké poškození</span>
+                </GameButton>
+                <GameButton
+                  onClick={() => handleAction('special')}
+                  icon={Sparkles}
+                  variant="secondary"
+                  isLoading={isPending}
+                  className="border-game-magic text-game-magic hover:bg-game-magic/10 w-full justify-between"
                 >
-                    <div className="flex w-full justify-between items-center">
-                    <span>Speciální schopnost</span>
-                    <span className="text-[10px] text-[#b66bd4]">-Mana</span>
-                    </div>
-                </ActionBtn>
-             </div>
+                  <span>Speciální schopnost</span>
+                  <span className="text-[10px] opacity-70">-Mana</span>
+                </GameButton>
+              </div>
+            </div>
           </ActionsLayout>
         </div>
       </div>

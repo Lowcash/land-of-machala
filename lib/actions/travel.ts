@@ -19,13 +19,14 @@ export async function travelToLocation(characterId: string, locationId: string) 
     })
 
     if (!location) throw new Error('Lokace nenalezena')
-    if (location.level > character.level) throw new Error(`Lokace vyžaduje úroveň ${location.level}`)
+    if (location.level > character.level)
+      throw new Error(`Lokace vyžaduje úroveň ${location.level}`)
 
     // Calculate distance and cost
     const dx = character.locationX - location.positionX
     const dy = character.locationY - location.positionY
     const distance = Math.sqrt(dx * dx + dy * dy)
-    
+
     // Energy handling removed from DB (per error msg previously), assuming Stamina or just free for now?
     // Wait, Plan says "energy cost formula". But DB push warn said "dropping column energy".
     // I need to check if Character has "energy" or "stamina".
@@ -36,10 +37,10 @@ export async function travelToLocation(characterId: string, locationId: string) 
     // Given the breaking change warning, it seems "energy" was removed.
     // I will skip energy cost for now OR use Mana if appropriate, OR just validation.
     // Plan: "Math.ceil(distance / 10), minimum 1...".
-    
+
     // Check if enemies present (random encounter logic is in movement-actions, but travel might skip it or trigger it?)
     // Plan: "triggers 60% combat encounter ONLY if destination isSafeZone=false".
-    
+
     // Update position
     await prisma.character.update({
       where: { id: characterId },
@@ -47,28 +48,25 @@ export async function travelToLocation(characterId: string, locationId: string) 
         locationX: location.positionX,
         locationY: location.positionY,
         currentView: 'town', // Or map?
-      }
+      },
     })
 
-    await logActivity(
-      characterId,
-      'travel',
-      `Cestoval jsi do: ${location.name}`,
-      { locationId, distance }
-    )
+    await logActivity(characterId, 'travel', `Cestoval jsi do: ${location.name}`, {
+      locationId,
+      distance,
+    })
 
     await discoverNearbyLocations(characterId)
 
     // Combat check
     if (!location.isSafeZone && Math.random() < 0.6) {
-       // Trigger combat
-       const { startCombat } = await import('./combat-state')
-       await startCombat(characterId)
+      // Trigger combat
+      const { startCombat } = await import('./combat-state')
+      await startCombat(characterId)
     }
 
     revalidatePath('/game')
     return { success: true }
-
   } catch (error: any) {
     console.error('Travel error:', error)
     return { success: false, error: error.message }

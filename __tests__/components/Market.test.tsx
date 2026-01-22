@@ -1,37 +1,52 @@
-import { BlackMarket } from '@/components/features/Game/Market/MarketBlackMarket'
-import { MarketBuy } from '@/components/features/Game/Market/MarketBuy'
-import { MarketSell } from '@/components/features/Game/Market/MarketSell'
+import { BlackMarket } from '@/components/features/Game/Locations/Market/MarketBlackMarket'
+import { MarketBuy } from '@/components/features/Game/Locations/Market/MarketBuy'
+import { MarketSell } from '@/components/features/Game/Locations/Market/MarketSell'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Shield, Sword } from 'lucide-react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
 // Mock icons
 vi.mock('lucide-react', async () => {
-    const actual = await vi.importActual('lucide-react');
-    return {
-        ...actual as any,
-        Sword: (props: any) => <svg data-testid="icon-sword" {...props} />,
-        Shield: (props: any) => <svg data-testid="icon-shield" {...props} />,
-    };
-});
+  const actual = await vi.importActual('lucide-react')
+  return {
+    ...(actual as object),
+    Sword: (props: object) => <div data-testid="icon-sword" {...props} />,
+    Shield: (props: object) => <div data-testid="icon-shield" {...props} />,
+  }
+})
 
 describe('Market Components', () => {
   const mockStock = [
-    { id: 1, name: 'Test Sword', price: 100, type: 'weapon', icon: Sword, description: 'desc' },
+    {
+      id: 1,
+      name: 'Test Sword',
+      price: 100,
+      type: 'weapon',
+      icon: Sword,
+      description: 'desc',
+      attack: 10,
+      rarity: 'common',
+    },
   ]
   const mockInventory = [
-    { id: 2, name: 'My Shield', price: 50, type: 'armor', icon: Shield, description: 'desc', equipped: false, quantity: 1, rarity: 'common' }, // quantity/rarity added to satisfy interface if needed, but MarketItem might be simpler
+    {
+      id: 2,
+      name: 'My Shield',
+      price: 50,
+      type: 'armor',
+      icon: Shield,
+      description: 'desc',
+      equipped: false,
+      quantity: 1,
+      rarity: 'common',
+      defense: 5,
+    },
   ]
-  
-  // MarketItem interface from code:
-  // id, name, type, icon, price, attack, defense, durability, maxDurability, level, equipped
-  // Does it have quantity/rarity? MarketSell uses item.type, item.name, item.price.
-  // The interface defines price.
-  
+
   const mockHandleBuy = vi.fn()
   const mockHandleSell = vi.fn()
   const mockHandleHaggle = vi.fn()
-  const mockGetPrice = vi.fn((item, buying) => buying ? item.price : item.price / 2)
+  const mockGetPrice = vi.fn((item, buying) => (buying ? item.price : item.price / 2))
 
   afterEach(() => {
     vi.clearAllMocks()
@@ -40,30 +55,30 @@ describe('Market Components', () => {
   describe('MarketBuy', () => {
     it('renders stock items correctly', () => {
       render(
-        <MarketBuy 
-          stock={mockStock as any}
+        <MarketBuy
+          stock={mockStock as unknown as any[]} // Keeping cast for now as strict type matching for tests can be verbose, but removing 'any' from other places
           handleBuy={mockHandleBuy}
           handleHaggle={mockHandleHaggle}
           getPrice={mockGetPrice}
           haggledItems={{}}
         />
       )
-      
+
       expect(screen.getByText('Test Sword')).toBeDefined()
       expect(screen.getByText('100g')).toBeDefined()
     })
 
     it('calls handleBuy when clicked', () => {
       render(
-        <MarketBuy 
-            stock={mockStock as any}
-            handleBuy={mockHandleBuy}
-            handleHaggle={mockHandleHaggle}
-            getPrice={mockGetPrice}
-            haggledItems={{}}
+        <MarketBuy
+          stock={mockStock as unknown as any[]}
+          handleBuy={mockHandleBuy}
+          handleHaggle={mockHandleHaggle}
+          getPrice={mockGetPrice}
+          haggledItems={{}}
         />
       )
-      
+
       fireEvent.click(screen.getByText('Test Sword').closest('div')!)
       expect(mockHandleBuy).toHaveBeenCalledWith(mockStock[0])
     })
@@ -72,15 +87,15 @@ describe('Market Components', () => {
   describe('MarketSell', () => {
     it('renders inventory items correctly', () => {
       render(
-        <MarketSell 
-            inventory={mockInventory as any}
-            handleSell={mockHandleSell}
-            handleHaggle={mockHandleHaggle}
-            getPrice={mockGetPrice}
-            haggledItems={{}}
+        <MarketSell
+          inventory={mockInventory as unknown as any[]}
+          handleSell={mockHandleSell}
+          handleHaggle={mockHandleHaggle}
+          getPrice={mockGetPrice}
+          haggledItems={{}}
         />
       )
-      
+
       expect(screen.getByText('My Shield')).toBeDefined()
       expect(screen.getByText('25g')).toBeDefined() // 50 / 2
     })
@@ -88,10 +103,12 @@ describe('Market Components', () => {
 
   describe('BlackMarket', () => {
     it('renders black market items', () => {
-        const bmStock = [{ id: 3, name: 'Poison', price: 666, icon: Sword, type: 'misc' }]
-        render(<BlackMarket stock={bmStock as any} handleBuy={mockHandleBuy} />)
-        expect(screen.getByText('Poison')).toBeDefined()
-        expect(screen.getByText('666g')).toBeDefined()
+      const bmStock = [
+        { id: 3, name: 'Poison', price: 666, icon: Sword, type: 'misc', description: 'Deadly' },
+      ]
+      render(<BlackMarket stock={bmStock as unknown as any[]} handleBuy={mockHandleBuy} />)
+      expect(screen.getByText('Poison')).toBeDefined()
+      expect(screen.getByText('666g')).toBeDefined()
     })
   })
 })

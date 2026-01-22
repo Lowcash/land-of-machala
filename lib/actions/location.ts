@@ -42,19 +42,19 @@ export async function getQuestMarkersForCharacter(characterId: string) {
   try {
     const character = await prisma.character.findUnique({
       where: { id: characterId },
-      include: { 
+      include: {
         quests: {
           where: { status: { in: ['AVAILABLE', 'ACTIVE'] } },
-          include: { quest: true }
-        }
-      }
+          include: { quest: true },
+        },
+      },
     })
 
     if (!character) return []
 
     // TODO: Implement actual quest tracking
     // For now, return empty array
-    return [] 
+    return []
   } catch (error) {
     console.error('Failed to get quest markers:', error)
     return []

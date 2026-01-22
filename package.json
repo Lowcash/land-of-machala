@@ -19,7 +19,6 @@
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts",
-    "db:reset-dev": "tsx scripts/reset-dev-data.ts",
     "db:studio": "prisma studio",
     "prepare": "husky"
   },

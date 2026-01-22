@@ -1,7 +1,6 @@
 'use client'
 
-import { GameFooter } from '@/components/features/Game/GameFooter'
-import { GameHeader } from '@/components/features/Game/GameHeader'
+import { GameFooter, GameHeader } from '@/components/features/Game'
 import { RouteTransition } from '@/components/layout/RouteTransition'
 import type { LucideIcon } from 'lucide-react'
 import Image from 'next/image'
@@ -52,7 +51,7 @@ export function PageTemplate({
     <RouteTransition>
       {/* Full screen container */}
       <div
-        className="fixed inset-0 flex flex-col bg-[#0a0806]"
+        className="bg-game-wood-dark fixed inset-0 flex flex-col"
         style={{ fontFamily: 'var(--font-body)' }}
       >
         {/* Background layer (full width) */}
@@ -64,13 +63,13 @@ export function PageTemplate({
         )}
 
         {/* Header - full width with dark background */}
-        <div className="relative z-20 w-full border-b border-[#8b6f47] bg-black/90">
+        <div className="border-game-copper relative z-20 w-full border-b bg-black/90">
           <div className={`mx-auto ${maxWidthClass}`}>
-            <GameHeader 
-              icon={icon} 
-              title={title} 
-              subtitle={subtitle} 
-              characterId={characterId} 
+            <GameHeader
+              icon={icon}
+              title={title}
+              subtitle={subtitle}
+              characterId={characterId}
               backLink={backLink}
             />
           </div>
@@ -84,7 +83,7 @@ export function PageTemplate({
         </main>
 
         {/* Footer - full width with dark background */}
-        <div className="relative z-20 w-full border-t border-[#8b6f47] bg-black/90">
+        <div className="border-game-copper relative z-20 w-full border-t bg-black/90">
           <div className={`mx-auto ${maxWidthClass}`}>
             <GameFooter />
           </div>

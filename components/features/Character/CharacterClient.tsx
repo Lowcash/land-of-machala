@@ -1,11 +1,12 @@
 'use client'
 
-import { CharacterBox } from '@/components/features/Game/CharacterBox'
+import { CharacterBox } from '@/components/features/Game'
 import { Coins, MapPin, Shield, Swords, Trophy } from 'lucide-react'
-import { AchievementList } from './AchievementList'
-import { CharacterDetailContent } from './CharacterDetailContent'
-import { EquipmentList } from './EquipmentList'
-import type { CharacterData, CharacterItem } from './types'
+import { AchievementList } from './Achievements/AchievementList'
+import { EquipmentList } from './Equipment/EquipmentList'
+import { StatsPanel } from './Profile/StatsPanel'
+import { CharacterData, CharacterItem } from './Shared/types'
+import { calculateDerivedStats } from './Shared/utils'
 
 interface CharacterClientProps {
   character: CharacterData
@@ -14,17 +15,9 @@ interface CharacterClientProps {
 
 export function CharacterClient({ character, inventory }: CharacterClientProps) {
   const equipped = inventory.filter((item) => item.equipped)
+  const stats = calculateDerivedStats(character, inventory)
 
-  // Calculate derived stats for the CharacterDetailContent
-  const baseAttack = character.strength * 2
-  const equipmentAttack = equipped.reduce((sum, item) => sum + (item.attack || item.damage || 0), 0)
-  const totalAttack = baseAttack + equipmentAttack
-
-  const baseDefense = character.stamina * 1.5
-  const equipmentDefense = equipped.reduce((sum, item) => sum + (item.defense || 0), 0)
-  const totalDefense = Math.floor(baseDefense + equipmentDefense)
-
-  // Mock achievments for now (moved from Content)
+  // Mock achievements
   const achievements = [
     {
       id: 1,
@@ -72,10 +65,10 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
 
   return (
     <div className="flex h-full flex-col overflow-hidden">
-      <div className="flex-1 overflow-y-auto md:p-3">
+      <div className="scrollbar-custom flex-1 overflow-y-auto md:p-3">
         <div className="mx-auto w-full max-w-7xl space-y-3">
           {/* Mobile: Sticky Character Box */}
-          <div className="sticky top-0 z-20 w-full bg-black/80 px-4 py-2 backdrop-blur-sm md:static md:hidden md:bg-transparent md:p-0">
+          <div className="sticky top-0 z-20 w-full bg-black/80 px-4 py-2 backdrop-blur-sm md:hidden">
             <CharacterBox
               name={character.name}
               level={character.level}
@@ -121,10 +114,10 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
                 />
               </div>
               <div className="min-h-0 flex-1 px-4 md:px-0">
-                <CharacterDetailContent
+                <StatsPanel
                   character={character}
-                  totalAttack={totalAttack}
-                  totalDefense={totalDefense}
+                  totalAttack={stats.totalAttack}
+                  totalDefense={stats.totalDefense}
                 />
               </div>
             </div>

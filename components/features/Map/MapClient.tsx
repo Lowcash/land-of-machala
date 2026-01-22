@@ -1,9 +1,9 @@
-'use client'
-
+import { PageTemplate, SplitView } from '@/components/layout'
+import { Map, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { LocationDetails } from './LocationDetails'
-import { MapCanvas } from './MapCanvas'
-import type { Location } from './types'
+import { MapCanvas } from './Canvas/MapCanvas'
+import { LocationDetails } from './Detail/LocationDetails'
+import type { Location } from './Shared/types'
 
 const PLAYER_POSITION = { x: 100, y: 100 } // Starting Town position
 
@@ -12,15 +12,13 @@ interface MapClientProps {
   discoveredLocations?: string[]
   questMarkers?: any[]
   deathLocation?: any
-  isDebug?: boolean
 }
 
-export function MapClient({ 
+export function MapClient({
   locations,
   discoveredLocations,
   questMarkers,
   deathLocation,
-  isDebug 
 }: MapClientProps) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
 
@@ -69,65 +67,54 @@ export function MapClient({
     }
   }
 
+  // Empty state for sidebar
+  const emptyState = (
+    <div className="flex h-full items-center justify-center p-4">
+      <div className="text-center">
+        <Map className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
+        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          Vyber místo
+        </h3>
+        <p className="text-sm leading-relaxed text-[#8b7355]">
+          Klikni na lokaci na mapě pro zobrazení detailů.
+        </p>
+      </div>
+    </div>
+  )
+
   return (
-    <div className="flex w-full flex-1 flex-col overflow-hidden">
-      {/* Sticky Back Navigation */}
-
-
-      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
-        {/* Map Canvas */}
-        <div
-          className={`${
-            selectedLocation ? 'hidden md:flex' : 'flex-1'
-          } relative min-h-75 flex-1 overflow-hidden bg-linear-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510] md:min-h-0`}
-        >
-          <MapCanvas
-            locations={locations}
-            playerPosition={PLAYER_POSITION}
-            selectedLocation={selectedLocation}
-            onSelectLocation={handleSelectLocation}
-            discoveredLocations={discoveredLocations}
-            questMarkers={questMarkers}
-            deathLocation={deathLocation}
-            isDebug={isDebug}
-          />
-        </div>
-
-        {/* Mobile Details */}
-        {selectedLocation && (
-          <div className="w-full overflow-y-auto border-l border-[#8b6f47] bg-black/90 p-4 backdrop-blur-md md:hidden">
-            <LocationDetails
-              location={selectedLocation}
-              onClose={() => handleSelectLocation(null)}
+    <PageTemplate
+      title="Mapa světa"
+      backLink={{ href: '/game', label: 'Zpět do hry' }}
+      icon={<MapPin className="h-6 w-6" />}
+      maxWidth="full"
+    >
+      <SplitView
+        main={
+          <div className="relative h-full min-h-[500px] w-full bg-linear-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510]">
+            <MapCanvas
+              locations={locations}
+              playerPosition={PLAYER_POSITION}
+              selectedLocation={selectedLocation}
+              onSelectLocation={handleSelectLocation}
+              discoveredLocations={discoveredLocations}
+              questMarkers={questMarkers}
+              deathLocation={deathLocation}
             />
           </div>
-        )}
-
-        {/* Desktop Sidebar */}
-        <div className="scrollbar-custom hidden w-80 overflow-y-auto border-l border-[#8b6f47] bg-black/90 p-4 backdrop-blur-md md:block">
-          {selectedLocation ? (
+        }
+        aside={
+          selectedLocation ? (
             <LocationDetails
               location={selectedLocation}
               onClose={() => handleSelectLocation(null)}
             />
           ) : (
-            <div className="mb-6 flex min-h-30 items-center justify-center border-b border-[#8b6f47] pb-6">
-              <div className="text-center">
-                <div className="mb-2 text-4xl">🗺️</div>
-                <h3
-                  className="mb-2 text-lg text-[#d4a574]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  Vyber místo
-                </h3>
-                <p className="text-sm leading-relaxed text-[#8b7355]">
-                  Klikni na lokaci na mapě pro zobrazení detailů.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+            emptyState
+          )
+        }
+        asideWidth="md"
+      />
+    </PageTemplate>
   )
 }

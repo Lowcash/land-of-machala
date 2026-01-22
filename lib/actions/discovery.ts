@@ -8,26 +8,26 @@ export async function discoverNearbyLocations(characterId: string) {
   try {
     const character = await prisma.character.findUnique({
       where: { id: characterId },
-      select: { 
-        id: true, 
-        serverId: true, 
-        locationX: true, 
-        locationY: true, 
-        discoveredLocations: true 
-      }
+      select: {
+        id: true,
+        serverId: true,
+        locationX: true,
+        locationY: true,
+        discoveredLocations: true,
+      },
     })
 
     if (!character) return
 
     const serverLocations = await prisma.location.findMany({
       where: { serverId: character.serverId },
-      select: { id: true, name: true, positionX: true, positionY: true, discoveryRadius: true }
+      select: { id: true, name: true, positionX: true, positionY: true, discoveryRadius: true },
     })
 
-    let discovered = Array.isArray(character.discoveredLocations) 
-      ? (character.discoveredLocations as string[]) 
+    const discovered = Array.isArray(character.discoveredLocations)
+      ? (character.discoveredLocations as string[])
       : []
-    
+
     let newDiscoveries = false
 
     for (const loc of serverLocations) {
@@ -40,24 +40,20 @@ export async function discoverNearbyLocations(characterId: string) {
       if (distance <= (loc.discoveryRadius || 5)) {
         discovered.push(loc.id)
         newDiscoveries = true
-        
-        await logActivity(
-          characterId,
-          'discovery',
-          `Objevil jsi nové místo: ${loc.name}`,
-          { locationId: loc.id }
-        )
+
+        await logActivity(characterId, 'discovery', `Objevil jsi nové místo: ${loc.name}`, {
+          locationId: loc.id,
+        })
       }
     }
 
     if (newDiscoveries) {
       await prisma.character.update({
         where: { id: characterId },
-        data: { discoveredLocations: discovered }
+        data: { discoveredLocations: discovered },
       })
       revalidatePath('/game')
     }
-
   } catch (error) {
     console.error('Discovery error:', error)
   }

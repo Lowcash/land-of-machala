@@ -43,7 +43,7 @@ export function SplitView({
 
       {/* Aside - hidden on mobile by default */}
       <aside
-        className={` ${hideMobileAside ? 'hidden md:block' : 'block'} ${ASIDE_WIDTH_CLASSES[asideWidth]} flex shrink-0 flex-col overflow-hidden border-l border-[#d4a574]/50 bg-black/70 backdrop-blur-sm shadow-[-5px_0_15px_rgba(0,0,0,0.5)]`}
+        className={` ${hideMobileAside ? 'hidden md:block' : 'block'} ${ASIDE_WIDTH_CLASSES[asideWidth]} border-game-gold-muted/50 flex shrink-0 flex-col overflow-hidden border-l bg-black/70 shadow-[-5px_0_15px_rgba(0,0,0,0.5)] backdrop-blur-sm`}
       >
         {aside}
       </aside>

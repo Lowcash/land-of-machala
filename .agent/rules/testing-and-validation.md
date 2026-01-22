@@ -17,4 +17,3 @@ All tests pass.
 Linting, type checks, and builds (where applicable) succeed.
 
 No console or debug logging remains in production code.
-

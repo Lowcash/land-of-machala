@@ -150,3 +150,36 @@ export function calculateGoldReward(baseGold: number, variance = 0.2): number {
   const randomFactor = 1 + (Math.random() * variance * 2 - variance)
   return Math.floor(baseGold * randomFactor)
 }
+
+// -- State Management --
+
+export async function updateCharacterCombatState(
+  characterId: string,
+  data: {
+    inCombat?: boolean
+    combatEnemyId?: string | null
+    combatTurn?: 'player' | 'enemy' | null
+    combatPlayerHp?: number | null
+    combatEnemyHp?: number | null
+    currentView?: string
+  }
+) {
+  return await prisma.character.update({
+    where: { id: characterId },
+    data,
+  })
+}
+
+export async function getCharacterCombatState(characterId: string) {
+  return await prisma.character.findUnique({
+    where: { id: characterId },
+    select: {
+      inCombat: true,
+      combatEnemyId: true,
+      combatTurn: true,
+      combatPlayerHp: true,
+      combatEnemyHp: true,
+      currentView: true,
+    },
+  })
+}

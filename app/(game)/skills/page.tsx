@@ -1,21 +1,29 @@
-import { SkillsPanel } from '@/components/features/Skills/SkillsPanel'
+import { SkillsClient } from '@/components/features/Skills'
 import { PageTemplate } from '@/components/layout/PageTemplate'
+import { getSkillsPageData } from '@/lib/loaders/skills-loader'
 import { Zap } from 'lucide-react'
-import { Suspense } from 'react'
+import { redirect } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
 
-export default function SkillsPage() {
+export default async function SkillsPage() {
+  const data = await getSkillsPageData()
+
+  if (!data) redirect('/onboarding')
+
   return (
     <PageTemplate
       title="Dovednosti"
       icon={<Zap />}
       maxWidth="lg"
       backLink={{ href: '/game', label: 'Zpět do hry' }}
+      characterId={data.characterId}
     >
-      <Suspense fallback={<div className="p-8 text-center text-[#d4a574]">Načítání...</div>}>
-        <SkillsPanel />
-      </Suspense>
+      <SkillsClient
+        skills={data.skills}
+        talentPoints={data.talentPoints}
+        characterId={data.characterId}
+      />
     </PageTemplate>
   )
 }

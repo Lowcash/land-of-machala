@@ -1,12 +1,12 @@
 'use client'
 
-import { MobileOverlay } from '@/components/layout/MobileOverlay'
+import { MobileOverlay, SplitView } from '@/components/layout'
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { Scroll } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { QuestDetailContent } from './QuestDetailContent'
-import { QuestList } from './QuestList'
-import type { MergedQuest } from './types'
+import { QuestDetailContent } from './Detail/QuestDetailContent'
+import { QuestList } from './List/QuestList'
+import type { MergedQuest } from './Shared/types'
 
 type QuestClientProps = {
   quests: MergedQuest[]
@@ -56,52 +56,48 @@ export function QuestClient({ quests, characterId }: QuestClientProps) {
 
   const selectedQuestData = hydratedQuests.find((q) => q.id === selectedQuest)
 
+  // Empty state for desktop sidebar
+  const emptyState = (
+    <div className="flex h-full items-center justify-center p-4">
+      <div className="text-center">
+        <Scroll className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
+        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+          Vyber quest
+        </h3>
+        <p className="text-sm leading-relaxed text-[#8b7355]">
+          Klikni na quest v seznamu pro zobrazení detailů a postupu.
+        </p>
+      </div>
+    </div>
+  )
+
   return (
     <PageTemplate
       title="Denik Úkolů"
       backLink={{ href: '/game', label: 'Zpět do hry' }}
       icon={<Scroll className="h-6 w-6" />}
     >
-
-
-      <div className="flex w-full flex-1 overflow-hidden">
-        <QuestList
-          quests={hydratedQuests}
-          selectedQuest={selectedQuest}
-          setSelectedQuest={handleSelectQuest}
-        />
-
-        {/* Desktop detail panel */}
-        <div className="hidden flex-1 border-l border-[#8b6f47] bg-black/70 backdrop-blur-sm md:flex">
-          {selectedQuest && selectedQuestData ? (
+      <SplitView
+        main={
+          <QuestList
+            quests={hydratedQuests}
+            selectedQuest={selectedQuest}
+            onSelectQuest={handleSelectQuest}
+          />
+        }
+        aside={
+          selectedQuestData ? (
             <QuestDetailContent quest={selectedQuestData} characterId={characterId} />
           ) : (
-            <div className="flex h-full w-full items-center justify-center">
-              <div className="text-center">
-                <Scroll className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
-                <h3
-                  className="mb-2 text-lg text-[#d4a574]"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  Vyber quest
-                </h3>
-                <p className="text-sm leading-relaxed text-[#8b7355]">
-                  Klikni na quest v seznamu pro zobrazení detailů a postupu.
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
+            emptyState
+          )
+        }
+        asideWidth="lg"
+      />
 
-      {/* Mobile fullscreen overlay */}
+      {/* Mobile detail overlay */}
       {selectedQuestData && (
-        <MobileOverlay
-          isOpen={!!selectedQuest}
-          title="Detail questu"
-          onClose={handleBack}
-          backText="Zpět do questů"
-        >
+        <MobileOverlay isOpen={!!selectedQuest} title="Detail questu" onClose={handleBack}>
           <QuestDetailContent quest={selectedQuestData} characterId={characterId} />
         </MobileOverlay>
       )}

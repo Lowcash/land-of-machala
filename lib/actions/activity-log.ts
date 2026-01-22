@@ -28,7 +28,7 @@ export async function logActivity(
         global,
       },
     })
-    
+
     revalidatePath('/game')
   } catch (error) {
     console.error('Failed to log activity:', error)
@@ -41,8 +41,16 @@ export async function getCharacterActivityLog(characterId: string, limit: number
       where: {
         OR: [
           { characterId },
-          { global: true, serverId: (await prisma.character.findUnique({ where: { id: characterId }, select: { serverId: true } }))?.serverId }
-        ]
+          {
+            global: true,
+            serverId: (
+              await prisma.character.findUnique({
+                where: { id: characterId },
+                select: { serverId: true },
+              })
+            )?.serverId,
+          },
+        ],
       },
       orderBy: { timestamp: 'desc' },
       take: limit,
@@ -51,8 +59,8 @@ export async function getCharacterActivityLog(characterId: string, limit: number
         timestamp: true,
         message: true,
         type: true,
-        metadata: true
-      }
+        metadata: true,
+      },
     })
   } catch (error) {
     console.error('Failed to get activity log:', error)

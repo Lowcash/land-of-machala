@@ -228,3 +228,24 @@ export const restoreManaAction = createServerAction()
     const updated = await restoreMana(input.characterId, input.amount)
     return { character: updated }
   })
+
+export const getCharacterStatsAction = createServerAction()
+  .input(z.object({ characterId: z.string() }))
+  .handler(async ({ input }) => {
+    const session = await auth()
+    if (!session?.user?.id) {
+      throw new Error('Not authenticated')
+    }
+    const userId = session.user.id
+
+    const character = await getCharacter(input.characterId)
+    if (!character || character.userId !== userId) {
+      throw new Error('Character not found or unauthorized')
+    }
+
+    return {
+      x: character.locationX,
+      y: character.locationY,
+      gold: character.gold,
+    }
+  })

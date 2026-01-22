@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 

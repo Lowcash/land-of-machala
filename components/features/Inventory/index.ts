@@ -1,0 +1,1 @@
+export { InventoryClient } from './InventoryClient'

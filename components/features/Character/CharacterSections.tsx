@@ -7,7 +7,7 @@
 
 import { Sparkles, Swords, Trophy } from 'lucide-react'
 
-import type { CharacterItem } from './types'
+import type { CharacterItem } from './Shared/types'
 
 type SectionType = 'stats' | 'equipment' | 'achievements'
 

@@ -6,6 +6,14 @@
 
 ### Fixed
 
+- **Refactoring Cleanup:**
+  - Removed deprecated and unused legacy components in `components/features/Game`.
+  - Removed deprecated `MapLegend` and `MapCanvas` as map has been refactored.
+  - Removed outdated `StatDisplay` and `ContentCard` from `components/layout`.
+  - Removed unused scripts and legacy test scripts.
+  - Cleaned up various feature folders (`Skills`, `Quest`, `Inventory`) to remove legacy code.
+  - Updated `components/features/Game/index.ts` to export new structure.
+
 - **Skills Feature:**
   - Renamed `onSelectCategory` to `onSelectCategoryAction` in `SkillGrid` and `SkillCategoryFilter`.
   - Renamed `onSelectSkill` to `onSelectSkillAction` in `SkillGrid`.

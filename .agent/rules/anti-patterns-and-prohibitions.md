@@ -4,7 +4,7 @@ trigger: always_on
 
 Do not introduce magic numbers; use named constants instead.
 
-Do not use fallback flags (such as *_AVAILABLE) to hide missing dependencies; fail fast and surface problems explicitly.
+Do not use fallback flags (such as \*\_AVAILABLE) to hide missing dependencies; fail fast and surface problems explicitly.
 
 Avoid god classes or components with too many responsibilities; favor smaller units with clear roles.
 

@@ -1,6 +1,6 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/ScrollIndicator'
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 import type { LucideIcon } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { useRef } from 'react'

@@ -1,0 +1,118 @@
+'use client'
+
+import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
+import { PageTemplate } from '@/components/layout/PageTemplate'
+import { RouteTransition } from '@/components/layout/RouteTransition'
+import { useState } from 'react'
+import type { CharacterData as BaseCharacterData } from '../../Character/Shared/types'
+import type { MarketItem } from '../Locations/Market/types'
+import { viewData } from '../Shared/config/viewData'
+import { useGameMove } from '../Shared/hooks/useGameMove'
+import { useGameView } from '../Shared/hooks/useGameView'
+import { useInfoLog } from '../Shared/hooks/useInfoLog'
+import { ActionsArea } from './ActionsArea'
+import { CharacterBox } from './CharacterBox'
+
+interface CharacterData extends BaseCharacterData {
+  xpToNextLevel: number
+  bankGold?: number
+  stats: {
+    strength: number
+    intelligence: number
+    agility: number
+    stamina: number
+  }
+  inventory?: MarketItem[]
+}
+
+interface GameDashboardProps {
+  character: CharacterData
+}
+
+interface Buff {
+  name: string
+  stat: string
+  val: number
+}
+
+export function GameDashboard({ character }: GameDashboardProps) {
+  const { currentView, goToView, goBack } = useGameView('town')
+  const { infoText, isShaking, handleSetInfoText } = useInfoLog()
+
+  // Local state for game interactions
+  const [gold, setGold] = useState(character.gold || 0)
+  const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
+  const [inventory, setInventory] = useState<MarketItem[]>(character.inventory || [])
+
+  const { handleMove } = useGameMove({
+    characterId: character.id,
+    handleSetInfoText,
+  })
+
+  // Get current view data
+  const currentViewData = viewData[currentView]
+
+  return (
+    <RouteTransition>
+      <PageTemplate
+        title={currentViewData.title}
+        backgroundImage={currentViewData.bg}
+        icon={currentViewData.icon}
+        maxWidth="lg"
+      >
+        <div className="flex min-w-0 flex-1 flex-col gap-3">
+          {/* Player box at top */}
+          <div className="w-full max-w-md px-3 pt-3">
+            <CharacterBox
+              name={character.name}
+              level={character.level}
+              hp={character.hp}
+              hpMax={character.maxHp}
+              mana={character.mana}
+              manaMax={character.maxMana}
+              xp={character.experience}
+              xpMax={character.xpToNextLevel}
+              stats={character.stats}
+              isEnemy={false}
+              resourceType={
+                character.class === 'warrior' || character.class === 'rogue' ? 'energy' : 'mana'
+              }
+              gold={gold}
+              locationName={currentViewData.title}
+            />
+          </div>
+
+          {/* Central Info Panel */}
+          <InfoLogPanel
+            className={`mx-3 h-[140px] shrink-0 bg-black/60 transition-colors ${
+              isShaking ? 'animate-shake' : ''
+            }`}
+          >
+            <div
+              className="animate-fade-in-wave mx-auto max-w-2xl py-1 text-center text-sm leading-relaxed text-[#f5e6d3]"
+              key={infoText || currentViewData.desc}
+              dangerouslySetInnerHTML={{ __html: infoText || currentViewData.desc }}
+            />
+          </InfoLogPanel>
+
+          {/* Actions Area */}
+          <ActionsArea
+            currentView={currentView}
+            goBack={goBack}
+            goToView={goToView}
+            gold={gold}
+            setGold={setGold}
+            inventory={inventory}
+            setInventory={setInventory}
+            activeBuffs={activeBuffs}
+            setActiveBuffs={setActiveBuffs}
+            handleSetInfoText={handleSetInfoText}
+            handleMove={handleMove}
+            characterId={character.id}
+            bankGold={character.bankGold || 0}
+          />
+        </div>
+      </PageTemplate>
+    </RouteTransition>
+  )
+}

@@ -39,37 +39,39 @@ export async function moveCharacter(
     // Random combat encounter (40% chance when outside town)
     const encounterChance = Math.random()
     const hasEncounter = encounterChance < 0.4
-    
-    if (hasEncounter) {
-        // Need to fetch full character to get level
-        const fullChar = await prisma.character.findUnique({ where: { id: characterId } })
-        
-        if (fullChar) {
-             const enemy = await prisma.enemy.findFirst({
-                 where: { level: { lte: Math.max(1, fullChar.level + 2), gte: Math.max(1, fullChar.level - 2) } },
-             }) || await prisma.enemy.findFirst()
 
-             if (enemy) {
-                 await prisma.character.update({
-                    where: { id: characterId },
-                    data: {
-                        inCombat: true,
-                        combatEnemyId: enemy.id,
-                        combatTurn: 'player',
-                        combatPlayerHp: fullChar.hp,
-                        combatEnemyHp: enemy.maxHp,
-                        currentView: 'combat'
-                    }
-                 })
-                 
-                 revalidatePath('/game')
-                 return { success: true, newX, newY, hasEncounter: true }
-             }
+    if (hasEncounter) {
+      // Need to fetch full character to get level
+      const fullChar = await prisma.character.findUnique({ where: { id: characterId } })
+
+      if (fullChar) {
+        const enemy =
+          (await prisma.enemy.findFirst({
+            where: {
+              level: { lte: Math.max(1, fullChar.level + 2), gte: Math.max(1, fullChar.level - 2) },
+            },
+          })) || (await prisma.enemy.findFirst())
+
+        if (enemy) {
+          await prisma.character.update({
+            where: { id: characterId },
+            data: {
+              inCombat: true,
+              combatEnemyId: enemy.id,
+              combatTurn: 'player',
+              combatPlayerHp: fullChar.hp,
+              combatEnemyHp: enemy.maxHp,
+              currentView: 'combat',
+            },
+          })
+
+          revalidatePath('/game')
+          return { success: true, newX, newY, hasEncounter: true }
         }
+      }
     }
 
     revalidatePath('/game')
-    revalidatePath(`/api/character/${characterId}/stats`)
 
     return {
       success: true,

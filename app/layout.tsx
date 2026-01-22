@@ -1,5 +1,4 @@
 import { GameBackgroundWrapper } from '@/components/layout/GameBackgroundWrapper'
-import { AchievementProvider } from '@/components/providers/AchievementProvider'
 import { NotificationProvider } from '@/components/providers/NotificationProvider'
 import { Toaster } from '@/components/ui/toaster'
 import { Analytics } from '@vercel/analytics/next'
@@ -44,10 +43,8 @@ export default function RootLayout({
     >
       <body className="font-body text-game-fg bg-black antialiased">
         <NotificationProvider>
-          <AchievementProvider>
-            <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
-            <Toaster />
-          </AchievementProvider>
+          <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
+          <Toaster />
         </NotificationProvider>
         <Analytics />
       </body>
