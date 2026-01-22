@@ -3,9 +3,9 @@
 import { MobileOverlay, PageTemplate, SplitView } from '@/components/layout'
 import { TrendingUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { SkillDetailContent } from './SkillDetailContent'
-import { SkillGrid } from './SkillGrid'
-import type { MergedSkill, SkillCategory } from './types'
+import { SkillDetailContent } from './Detail/SkillDetailContent'
+import { SkillGrid } from './Grid/SkillGrid'
+import type { MergedSkill, SkillCategory } from './Shared/types'
 
 type SkillsClientProps = {
   skills: MergedSkill[]
@@ -78,9 +78,9 @@ export function SkillsClient({ skills, talentPoints, characterId }: SkillsClient
             skills={skills}
             talentPoints={talentPoints}
             selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
+            onSelectCategoryAction={setSelectedCategory}
             selectedSkill={selectedSkill}
-            setSelectedSkill={handleSelectSkill}
+            onSelectSkillAction={handleSelectSkill}
           />
         }
         aside={

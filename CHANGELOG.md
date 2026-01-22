@@ -1,4 +1,49 @@
-# Changelog
+## 2026-01-22 12:10 - Fix Serializable Props for Skills Feature
+
+**Type:** Fixed  
+**Scope:** Skills  
+**Impact:** Resolved Next.js client component serialization warnings for event handlers in Skills feature.
+
+### Fixed
+
+- **Skills Feature:**
+  - Renamed `onSelectCategory` to `onSelectCategoryAction` in `SkillGrid` and `SkillCategoryFilter`.
+  - Renamed `onSelectSkill` to `onSelectSkillAction` in `SkillGrid`.
+  - Updated `SkillsClient` to use the renamed action props.
+  - Follows Next.js naming convention to indicate Server Action compatibility (even if passed as client-side handlers) to satisfy the serializable props linter.
+
+---
+
+## [2026-01-20] - Component Refactoring & Simplification
+
+### Added
+
+- `lib/game/onboardingData.ts`: Shared constants for character creation story, races, and classes.
+- `components/features/Auth/components/IntroStory.tsx`: Extracted story logic for Onboarding.
+- `components/features/Auth/components/OnboardingPrimitives.tsx`: Extracted stat display for Onboarding.
+- `components/features/Auth/components/SelectionComponents.tsx`: Extracted Race and Class selectors.
+- `components/features/Inventory/inventoryUtils.ts`: Shared inventory helper functions.
+- `components/features/Inventory/components/ItemDetailView.tsx`: Extracted item detail UI.
+- `components/features/Game/hooks/useInfoLog.ts`: Custom hook for game event logging and UI feedback.
+- `components/features/Game/components/ActionsArea.tsx`: Extracted town/action navigation logic.
+- `components/features/Panels/components/SettingsPrimitives.tsx`: Extracted settings UI components.
+
+### Changed
+
+- `LoginForm.tsx`: Reduced file size by 75%, moved sub-sections to components.
+- `OnboardingForm.tsx`: Reduced file size by 80%, modularized character creation steps.
+- `InventoryClient.tsx`: Simplified item viewing logic by extracting detail view.
+- `GameDashboard.tsx`: Simplified state management and main action area rendering.
+- `SettingsPanel.tsx`: Extracted reusable UI primitives for settings.
+- `app/(game)/game/page.tsx`: Fixed character data mapping for GameDashboard.
+- `app/(game)/character/page.tsx`: Fixed missing character ID in props.
+
+### Fixed
+
+- TypeScript error in `LoginForm` regarding optional `flavorText`.
+- Lint errors in `GameDashboard` related to view type safety.
+- `reputation` field in `CharacterData` now correctly marked as optional.
+- Production build errors related to character data transformation.
 
 All notable changes to this project are documented here.
 
@@ -16,7 +61,6 @@ Format: **YYYY-MM-DD HH:MM** - [Task description]
 
 - **Onboarding:**
   - Fixed button jumping/layout shift by enforcing fixed height for choice buttons and story text.
-  
 - **City Actions & Services:**
   - Removed "super headings" from Bank, Smith, Healer, Tavern, and Market panels to match unified design.
   - Aligned `TownActions` content to the bottom of the panel for better reachability.
