@@ -1,3 +1,35 @@
+## 2026-01-23 01:10 - UI Standardization & Layout Refactor
+
+**Type:** Refactor  
+**Scope:** UI Components, Layouts, Game Features  
+**Impact:** Unified component naming, standard UI usage, and cleaner project structure.
+
+### Refactored
+
+- **Layout Standardization:**
+  - Renamed `PageTemplate` → `PageLayout`
+  - Renamed `SplitView` → `SplitLayout`
+  - Renamed `RouteTransition` → `TransitionLayout`
+  - Inlined `GameLayout` logic directly into `app/(game)/layout.tsx` (removed strict dependency)
+
+- **Game Features:**
+  - Renamed `GameActionsPanel` → `GameActions` and moved to `features/Game/components`
+  - Moved `GameHeader` and `GameFooter` to `features/Game/components`
+  - Refactored `TavernActions` to use new `Slider` component and `Button` links instead of raw HTML
+  - Refactored `CharacterBox` to use standard `Progress` component with custom gradients
+
+- **UI Components:**
+  - Created `components/ui/slider.tsx` (Radix UI wrapper)
+  - Updated `components/ui/progress.tsx` to accept `indicatorClassName` for custom styling
+  - Deleted unused/legacy components: `GameCard`, `GameButton`, `MobileOverlay`, `InfoLogPanel`
+
+### Verified
+
+- Global `Sonner` toaster is correctly placed in `app/layout.tsx`
+- All game routes (`/combat`, `/map`, `/tavern`) use standardized layouts and imports
+
+---
+
 ## 2026-01-22 12:10 - Fix Serializable Props for Skills Feature
 
 **Type:** Fixed  
