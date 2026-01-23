@@ -1,10 +1,9 @@
 'use client'
 
-import { BasePanel } from '@/components/layout/BasePanel'
-import { GameButton } from '@/components/ui/game/GameButton'
+import { Button } from '@/components/ui/button'
+import { GamePanel } from '@/components/ui/game/GamePanel'
 import { BedDouble, Beer, ChevronRight, Dices, ScrollText } from 'lucide-react'
 import { useState } from 'react'
-import { ActionsLayout } from '../Layout/ActionsLayout'
 
 interface TavernActionsProps {
   onBack: () => void
@@ -124,15 +123,14 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
           <span className="text-[#8b7355]">Sázka:</span>
           <span className="text-[#ffd700]">{betAmount}g</span>
         </div>
-        <input
-          type="range"
-          min="10"
+        <Slider
+          defaultValue={[betAmount]}
           max={Math.min(gold, 500)}
-          step="10"
-          value={betAmount}
-          onChange={(e) => setBetAmount(Number(e.target.value))}
+          min={10}
+          step={10}
+          onValueChange={(val) => setBetAmount(val[0])}
           disabled={gameState === 'rolling'}
-          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-[#8b6f47]/30 accent-[#ffd700]"
+          className="py-4"
         />
         <div className="flex justify-between text-[10px] text-[#8b7355]">
           <span>10g</span>
@@ -140,31 +138,33 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
         </div>
       </div>
 
-      <GameButton
+      <Button
+        variant="game-primary"
         onClick={rollDice}
         disabled={gameState === 'rolling' || gold < betAmount}
-        className="w-full border-[#ffe4b5] bg-linear-to-r from-[#ffd700] to-[#b8860b] py-3 font-bold tracking-wider text-black uppercase transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:grayscale"
+        className="w-full justify-center border-[#ffe4b5] bg-linear-to-r from-[#ffd700] to-[#b8860b] py-3 font-bold tracking-wider text-black uppercase transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:grayscale"
       >
         {gameState === 'rolling' ? 'Kostky se kutálí...' : 'Hodit kostkami'}
-      </GameButton>
+      </Button>
     </div>
   )
 
   return (
     <>
       {activeTab === 'gamble' ? (
-        <BasePanel title="KOSTKY" icon={Dices} className="bg-black/80 shadow-xl backdrop-blur-md">
-          <button
+        <GamePanel title="KOSTKY" icon={Dices} className="bg-black/80 shadow-xl backdrop-blur-md">
+          <Button
+            variant="link"
             onClick={() => setActiveTab('menu')}
-            className="mb-4 flex items-center gap-2 text-sm text-[#8b7355] transition-colors hover:text-[#d4a574]"
+            className="mb-4 h-auto p-0 text-sm text-[#8b7355] hover:text-[#d4a574] hover:no-underline"
           >
-            <ChevronRight className="h-4 w-4 rotate-180" />
+            <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
             Zpět k baru
-          </button>
+          </Button>
           {renderDiceGame()}
-        </BasePanel>
+        </GamePanel>
       ) : (
-        <ActionsLayout
+        <GameActions
           title="Taverna"
           onBack={onBack}
           showDirections={false}
@@ -184,20 +184,60 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
           }
         >
           <div className="space-y-1.5 pt-2">
-            <GameButton onClick={() => {}} icon={Beer} className="w-full">
-              Koupit <span className="text-[#ffd700]">pivo</span> (5g)
-            </GameButton>
-            <GameButton onClick={onRest} icon={BedDouble} className="w-full">
-              <span className="text-[#ffd700]">Odpočinout si</span> (10g)
-            </GameButton>
-            <GameButton onClick={handleRumors} icon={ScrollText} className="w-full">
-              Koupit rundu a <span className="text-[#ffd700]">zvědět drby</span> (5g)
-            </GameButton>
-            <GameButton onClick={() => setActiveTab('gamble')} icon={Dices} className="w-full">
-              Hrát <span className="text-[#ffd700]">kostky</span>
-            </GameButton>
+            <Button
+              variant="game-secondary"
+              onClick={() => {}}
+              className="w-full justify-between"
+              size="game-lg"
+            >
+              <div className="flex items-center gap-3">
+                <Beer className="h-5 w-5 text-[#ffd700]" />
+                <span>
+                  Koupit <span className="text-[#ffd700]">pivo</span> (5g)
+                </span>
+              </div>
+            </Button>
+            <Button
+              variant="game-secondary"
+              onClick={onRest}
+              className="w-full justify-between"
+              size="game-lg"
+            >
+              <div className="flex items-center gap-3">
+                <BedDouble className="h-5 w-5 text-[#ffd700]" />
+                <span>
+                  <span className="text-[#ffd700]">Odpočinout si</span> (10g)
+                </span>
+              </div>
+            </Button>
+            <Button
+              variant="game-secondary"
+              onClick={handleRumors}
+              className="w-full justify-between"
+              size="game-lg"
+            >
+              <div className="flex items-center gap-3">
+                <ScrollText className="h-5 w-5 text-[#ffd700]" />
+                <span>
+                  Koupit rundu a <span className="text-[#ffd700]">zvědět drby</span> (5g)
+                </span>
+              </div>
+            </Button>
+            <Button
+              variant="game-secondary"
+              onClick={() => setActiveTab('gamble')}
+              className="w-full justify-between"
+              size="game-lg"
+            >
+              <div className="flex items-center gap-3">
+                <Dices className="h-5 w-5 text-[#ffd700]" />
+                <span>
+                  Hrát <span className="text-[#ffd700]">kostky</span>
+                </span>
+              </div>
+            </Button>
           </div>
-        </ActionsLayout>
+        </GameActions>
       )}
     </>
   )

@@ -1,8 +1,11 @@
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+'use client'
+
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { abandonQuestAction } from '@/lib/actions/quest'
 import { CheckCircle, Circle, Coins, MapPin, User, X, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { toast } from 'sonner'
 import type { MergedQuest, QuestCategory } from '../Shared/types'
 
@@ -51,7 +54,6 @@ function getCategoryName(category: QuestCategory) {
 }
 
 export function QuestDetailContent({ quest, characterId }: QuestDetailContentProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -88,9 +90,8 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
 
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">
-      <ScrollIndicator targetRef={scrollRef} position="both" />
-      <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto">
-        <div className="mx-auto max-w-2xl">
+      <ScrollArea className="h-full">
+        <div className="mx-auto max-w-2xl p-4">
           {/* Quest header */}
           <div className="mb-4">
             <div className="mb-2 flex items-center gap-2">
@@ -221,19 +222,8 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
                 <span>Postup questu</span>
                 <span>{quest.progress}%</span>
               </div>
-              <div className="h-2 overflow-hidden rounded-full bg-black/60">
-                <div
-                  className={`h-full bg-linear-to-r ${
-                    quest.category === 'MAIN'
-                      ? 'from-[#ffd700] to-[#ffed4e]'
-                      : quest.category === 'SIDE'
-                        ? 'from-[#69ccf0] to-[#89dcff]'
-                        : quest.category === 'DAILY'
-                          ? 'from-[#6fbf6f] to-[#8fdf8f]'
-                          : 'from-[#b66bd4] to-[#d68bf4]'
-                  } transition-all`}
-                  style={{ width: `${quest.progress}%` }}
-                />
+              <div className="h-2">
+                <Progress value={quest.progress} className="h-2 bg-black/60" />
               </div>
             </div>
           )}
@@ -261,7 +251,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
             </div>
           )}
         </div>
-      </div>
+      </ScrollArea>
 
       {/* Abandon Confirmation Modal */}
       {showAbandonModal && (

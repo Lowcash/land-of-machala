@@ -1,121 +1,53 @@
 'use client'
 
-import { MobileOverlay, PageTemplate, SplitView } from '@/components/layout'
-import { TrendingUp } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { SkillDetailContent } from './Detail/SkillDetailContent'
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { SplitLayout } from '@/components/layout'
+import { BookOpen } from 'lucide-react'
+import { useState } from 'react'
+import type { CharacterData, MergedSkill, SkillCategory } from '../Character/Shared/types'
+import { SkillDetail } from './Detail/SkillDetail'
 import { SkillGrid } from './Grid/SkillGrid'
-import type { MergedSkill, SkillCategory } from './Shared/types'
 
-type SkillsClientProps = {
+interface SkillsClientProps {
+  character: CharacterData
   skills: MergedSkill[]
-  talentPoints: number
-  characterId: string
 }
 
-export function SkillsClient({ skills, talentPoints, characterId }: SkillsClientProps) {
-  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('combat')
-  const [selectedSkill, setSelectedSkill] = useState<string | null>(null)
+export function SkillsClient({ character, skills }: SkillsClientProps) {
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('all')
+  const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null)
 
-  useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search)
-      const skillId = params.get('skillId')
-      if (skillId && skills.find((s) => s.id === skillId)) {
-        setSelectedSkill(skillId)
-      } else {
-        setSelectedSkill(null)
-      }
-    }
-
-    handlePopState()
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [skills])
-
-  const handleSelectSkill = (id: string | null) => {
-    if (id) {
-      setSelectedSkill(id)
-      window.history.pushState({ skillId: id }, '', `?skillId=${id}`)
-    } else {
-      setSelectedSkill(null)
-      const url = new URL(window.location.href)
-      url.searchParams.delete('skillId')
-      window.history.pushState({}, '', url.toString())
-    }
-  }
-
-  const handleBack = () => {
-    window.history.back()
-  }
-
-  const selectedSkillData = skills.find((s) => s.id === selectedSkill)
-
-  // Empty state for desktop sidebar
-  const emptyState = (
-    <div className="flex h-full items-center justify-center p-4">
-      <div className="text-center">
-        <TrendingUp className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
-        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          Vyber dovednost
-        </h3>
-        <p className="text-sm leading-relaxed text-[#8b7355]">
-          Klikni na dovednost v seznamu pro zobrazení detailů a možnost upgradu.
-        </p>
-      </div>
-    </div>
-  )
+  const selectedSkill = skills.find((s) => s.id === selectedSkillId) || null
 
   return (
-    <PageTemplate
-      title="Dovednosti"
-      backLink={{ href: '/game', label: 'Zpět do hry' }}
-      icon={<TrendingUp className="h-6 w-6" />}
+    <PageLayout
+      header={<GameHeader title="Dovednosti" icon={BookOpen} />}
+      footer={<GameFooter />}
+      backgroundImage="/assets/locations/forest.jpg"
+      showInfoLog={false}
     >
-      <SplitView
+      <SplitLayout
+        asideWidth="lg"
+        hideMobileAside={!selectedSkillId}
         main={
           <SkillGrid
             skills={skills}
-            talentPoints={talentPoints}
+            talentPoints={character.talentPoints}
             selectedCategory={selectedCategory}
             onSelectCategoryAction={setSelectedCategory}
-            selectedSkill={selectedSkill}
-            onSelectSkillAction={handleSelectSkill}
+            selectedSkill={selectedSkillId}
+            onSelectSkillAction={setSelectedSkillId}
           />
         }
         aside={
-          selectedSkillData ? (
-            <div className="p-4">
-              <SkillDetailContent
-                skill={selectedSkillData}
-                allSkills={skills}
-                talentPoints={talentPoints}
-                characterId={characterId}
-              />
-            </div>
-          ) : (
-            emptyState
-          )
-        }
-        asideWidth="md"
-      />
-
-      {/* Mobile detail overlay */}
-      {selectedSkillData && (
-        <MobileOverlay
-          isOpen={!!selectedSkill}
-          title="Detail dovednosti"
-          onClose={handleBack}
-          backText="Zpět do dovedností"
-        >
-          <SkillDetailContent
-            skill={selectedSkillData}
-            allSkills={skills}
-            talentPoints={talentPoints}
-            characterId={characterId}
+          <SkillDetail
+            skill={selectedSkill}
+            onClose={() => setSelectedSkillId(null)}
+            characterId={character.id}
+            talentPoints={character.talentPoints}
           />
-        </MobileOverlay>
-      )}
+        }
+      />
     </PageTemplate>
   )
 }

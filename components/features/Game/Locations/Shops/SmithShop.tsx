@@ -1,6 +1,5 @@
 'use client'
 
-import { Typography } from '@/components/ui/typography'
 import { SMITH_STOCK } from '@/lib/game/data'
 import { LucideIcon } from 'lucide-react'
 import { toast } from 'sonner'
@@ -61,7 +60,9 @@ export function SmithShop({ onBack, gold, setGold, inventory, setInventory }: Sm
 
   const customContent = (
     <div className="space-y-2">
-      <Typography variant="h4">Speciální zakázky</Typography>
+      <h4 className="font-medieval text-game-copper-muted scroll-m-20 text-xl font-semibold tracking-tight">
+        Speciální zakázky
+      </h4>
       <div className="flex flex-col gap-1">
         <button className="text-game-copper-muted hover:text-game-gold text-left text-sm transition-colors">
           &gt; Slyšel jsem o speciálních mečích (Quest)

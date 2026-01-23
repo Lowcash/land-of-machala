@@ -1,11 +1,11 @@
 'use client'
 
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 interface ScrollIndicatorProps {
-  targetRef: React.RefObject<HTMLElement | null>
-  position?: 'top' | 'bottom' | 'both'
+  targetRef: React.RefObject<HTMLElement>
+  position?: 'top' | 'bottom' | 'both' | 'left' | 'right'
   className?: string
 }
 
@@ -16,62 +16,81 @@ export function ScrollIndicator({
 }: ScrollIndicatorProps) {
   const [showTop, setShowTop] = useState(false)
   const [showBottom, setShowBottom] = useState(false)
+  const [showLeft, setShowLeft] = useState(false)
+  const [showRight, setShowRight] = useState(false)
 
   useEffect(() => {
     const element = targetRef.current
     if (!element) return
 
-    const checkScroll = () => {
-      const { scrollTop, scrollHeight, clientHeight } = element
-      const isAtTop = scrollTop === 0
-      const isAtBottom = Math.abs(scrollHeight - clientHeight - scrollTop) < 5
-      const hasOverflow = scrollHeight > clientHeight
+    const handleScroll = () => {
+      const { scrollTop, scrollHeight, clientHeight, scrollLeft, scrollWidth, clientWidth } =
+        element
 
-      if (position === 'top' || position === 'both') {
-        setShowTop(hasOverflow && !isAtTop && scrollTop > 5)
-      }
+      // Vertical
+      setShowTop(scrollTop > 10)
+      setShowBottom(scrollHeight - scrollTop - clientHeight > 10)
 
-      if (position === 'bottom' || position === 'both') {
-        setShowBottom(hasOverflow && !isAtBottom)
-      }
+      // Horizontal
+      setShowLeft(scrollLeft > 10)
+      setShowRight(scrollWidth - scrollLeft - clientWidth > 10)
     }
 
-    checkScroll()
-    element.addEventListener('scroll', checkScroll)
-
-    // Also check on resize
-    const resizeObserver = new ResizeObserver(checkScroll)
-    resizeObserver.observe(element)
+    element.addEventListener('scroll', handleScroll)
+    // Initial check
+    handleScroll()
+    // Check on resize too
+    window.addEventListener('resize', handleScroll)
 
     return () => {
-      element.removeEventListener('scroll', checkScroll)
-      resizeObserver.disconnect()
+      element.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('resize', handleScroll)
     }
-  }, [targetRef, position])
+  }, [targetRef])
 
   return (
     <>
-      {/* Top fade indicator */}
-      {showTop && (position === 'top' || position === 'both') && (
-        <div
-          className={`pointer-events-none absolute top-0 right-0 left-0 z-10 h-12 bg-linear-to-b from-black/80 via-black/40 to-transparent ${className}`}
-        >
-          <div className="flex h-full items-center justify-center">
-            <ChevronDown className="h-4 w-4 rotate-180 animate-bounce text-[#ffd700]" />
+      <div className={`pointer-events-none absolute inset-0 z-20 ${className}`}>
+        {/* Top Gradient & Icon */}
+        {(position === 'top' || position === 'both') && (
+          <div
+            className={`absolute top-0 right-0 left-0 flex h-12 items-start justify-center bg-linear-to-b from-black/80 to-transparent pt-1 transition-opacity duration-300 ${
+              showTop ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <ChevronUp className="animate-bounce text-[#ffd700]" />
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Bottom fade indicator */}
-      {showBottom && (position === 'bottom' || position === 'both') && (
-        <div
-          className={`pointer-events-none absolute right-0 bottom-0 left-0 z-10 h-12 bg-linear-to-t from-black/80 via-black/40 to-transparent ${className}`}
-        >
-          <div className="flex h-full items-center justify-center">
-            <ChevronDown className="h-4 w-4 animate-bounce text-[#ffd700]" />
+        {/* Bottom Gradient & Icon */}
+        {(position === 'bottom' || position === 'both') && (
+          <div
+            className={`absolute right-0 bottom-0 left-0 flex h-12 items-end justify-center bg-linear-to-t from-black/80 to-transparent pb-1 transition-opacity duration-300 ${
+              showBottom ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <ChevronDown className="animate-bounce text-[#ffd700]" />
           </div>
-        </div>
-      )}
+        )}
+
+        {/* Left Gradient & Icon (for horizontal) */}
+        {(position === 'left' || position === 'both') && showLeft && (
+          <div
+            className={`absolute top-0 bottom-0 left-0 flex w-12 items-center justify-start bg-linear-to-r from-black/80 to-transparent pl-1 transition-opacity duration-300`}
+          >
+            <ChevronLeft className="animate-bounce text-[#ffd700]" />
+          </div>
+        )}
+
+        {/* Right Gradient & Icon (for horizontal) */}
+        {(position === 'right' || position === 'both') && showRight && (
+          <div
+            className={`absolute top-0 right-0 bottom-0 flex w-12 items-center justify-end bg-linear-to-l from-black/80 to-transparent pr-1 transition-opacity duration-300`}
+          >
+            <ChevronRight className="animate-bounce text-[#ffd700]" />
+          </div>
+        )}
+      </div>
     </>
   )
 }

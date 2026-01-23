@@ -1,6 +1,5 @@
 'use client'
 
-import { Typography } from '@/components/ui/typography'
 import { HEALER_SERVICES } from '@/lib/game/data'
 import { Zap } from 'lucide-react'
 import { toast } from 'sonner'
@@ -55,12 +54,9 @@ export function HealerShop({
     <div className="space-y-4">
       {activeBuffs.length > 0 ? (
         <div className="bg-game-gold/10 border-game-gold/20 rounded border p-3">
-          <Typography
-            variant="small"
-            className="text-game-gold mb-2 block tracking-wider uppercase"
-          >
+          <small className="text-game-gold font-body mb-2 block text-sm leading-none font-medium tracking-wider uppercase">
             Aktivní požehnání
-          </Typography>
+          </small>
           {activeBuffs.map((b, i) => (
             <div key={i} className="text-game-fg flex items-center gap-2 text-xs">
               <Zap className="text-game-gold h-3 w-3" />
@@ -69,9 +65,9 @@ export function HealerShop({
           ))}
         </div>
       ) : (
-        <Typography variant="muted" className="italic">
+        <p className="font-body text-muted-foreground text-sm italic">
           Léčitel míchá byliny a tiše si brouká. Vůně heřmánku je uklidňující.
-        </Typography>
+        </p>
       )}
 
       <div className="border-game-copper/20 flex flex-col gap-1 border-t pt-2">

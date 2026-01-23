@@ -1,8 +1,8 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+import { Progress } from '@/components/ui/progress'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { CheckCircle, Circle, Star } from 'lucide-react'
-import { useRef } from 'react'
 import type { MergedQuest, QuestCategory, QuestStatus } from '../Shared/types'
 
 type QuestListProps = {
@@ -64,8 +64,6 @@ function getStatusIcon(status: QuestStatus | null) {
 }
 
 export function QuestList({ quests, selectedQuest, onSelectQuest }: QuestListProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-
   const filteredQuests = quests
 
   return (
@@ -74,61 +72,73 @@ export function QuestList({ quests, selectedQuest, onSelectQuest }: QuestListPro
     >
       {/* Quest list */}
       <div className="relative flex flex-1 flex-col overflow-hidden">
-        <ScrollIndicator targetRef={scrollRef} position="both" />
-        <div ref={scrollRef} className="scrollbar-custom flex-1 space-y-2 overflow-y-auto p-3">
-          {filteredQuests.map((quest) => (
-            <button
-              key={quest.id}
-              onClick={() => onSelectQuest(quest.id)}
-              className={`w-full rounded border p-3 text-left transition-all ${
-                selectedQuest === quest.id
-                  ? 'border-[#ffd700] bg-black/60'
-                  : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
-              }`}
-            >
-              <div className="mb-2 flex items-start gap-2">
-                {getStatusIcon(quest.characterStatus)}
-                <div className="min-w-0 flex-1">
-                  <h3
-                    className={`mb-1 truncate text-sm ${getCategoryColor(quest.category)}`}
+        <ScrollArea className="h-full">
+          <div className="flex-1 space-y-2 p-3">
+            {filteredQuests.map((quest) => (
+              <button
+                key={quest.id}
+                onClick={() => onSelectQuest(quest.id)}
+                className={`w-full rounded border p-3 text-left transition-all ${
+                  selectedQuest === quest.id
+                    ? 'border-[#ffd700] bg-black/60'
+                    : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
+                }`}
+              >
+                <div className="mb-2 flex items-start gap-2">
+                  {getStatusIcon(quest.characterStatus)}
+                  <div className="min-w-0 flex-1">
+                    <h3
+                      className={`mb-1 truncate text-sm ${getCategoryColor(quest.category)}`}
+                      style={{ fontFamily: 'var(--font-fantasy)' }}
+                    >
+                      {quest.title}
+                    </h3>
+                    <p className="line-clamp-2 text-xs text-[#8b7355]">{quest.description}</p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span
+                    className={`rounded px-2 py-0.5 text-[10px] ${getCategoryBadge(quest.category)}`}
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
-                    {quest.title}
-                  </h3>
-                  <p className="line-clamp-2 text-xs text-[#8b7355]">{quest.description}</p>
+                    {getCategoryName(quest.category)}
+                  </span>
+                  <span className="text-[10px] text-[#8b7355]">Lvl {quest.level}</span>
+                  <span className="ml-auto text-[10px] text-[#8b7355]">
+                    {quest.objectives.filter((o) => o.completed).length}/{quest.objectives.length}
+                  </span>
                 </div>
-              </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <span
-                  className={`rounded px-2 py-0.5 text-[10px] ${getCategoryBadge(quest.category)}`}
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {getCategoryName(quest.category)}
-                </span>
-                <span className="text-[10px] text-[#8b7355]">Lvl {quest.level}</span>
-                <span className="ml-auto text-[10px] text-[#8b7355]">
-                  {quest.objectives.filter((o) => o.completed).length}/{quest.objectives.length}
-                </span>
-              </div>
 
-              {/* Progress bar */}
-              <div className="mt-2 h-1 overflow-hidden rounded-full bg-black/60">
-                <div
-                  className={`h-full bg-linear-to-r ${
-                    quest.category === 'MAIN'
-                      ? 'from-[#ffd700] to-[#ffed4e]'
-                      : quest.category === 'SIDE'
-                        ? 'from-[#69ccf0] to-[#89dcff]'
-                        : quest.category === 'DAILY'
-                          ? 'from-[#6fbf6f] to-[#8fdf8f]'
-                          : 'from-[#b66bd4] to-[#d68bf4]'
-                  } transition-all`}
-                  style={{ width: `${quest.progress}%` }}
-                />
-              </div>
-            </button>
-          ))}
-        </div>
+                {/* Progress bar */}
+                <div className="mt-2">
+                  <Progress value={quest.progress} className="h-1 bg-black/60" />
+                  {/* Note: Colors are currently handled by Progress indicator if we passed classNames, 
+                      but standard Progress component uses `bg-primary` for indicator.
+                      If we want dynamic colors (Gold/Blue/Green/Purple), we might need to inline style the indicator
+                      or extend Progress to accept color variants. 
+                      For now, let's use a simple Progress usage or wrapped one.
+                      
+                      Actually, shadcn Progress renders two divs. The inner one has `bg-primary`.
+                      To customize color per quest category, we can wrap or modify.
+                      
+                      Let's stick to standard Progress for now to accomplish standardization goal.
+                      If color is critical, we can add `indicatorClassName` or similar to our Progress component 
+                      or just style it via CSS variables or utility overrides if supported.
+                      
+                      The default shadcn Progress doesn't expose indicator className easily unless modified.
+                      Our `ui/progress.tsx` (viewed in Step 254) uses `bg-primary`.
+                      
+                      We *could* just rely on the primary color for all quests for consistency, 
+                      or we can modify `ui/progress.tsx` to allow custom colors.
+                      
+                      Given the "Standardization" goal, using a single color is arguably BETTER UX than rainbow colors.
+                      Let's try standardizing first.
+                  */}
+                </div>
+              </button>
+            ))}
+          </div>
+        </ScrollArea>
       </div>
     </div>
   )

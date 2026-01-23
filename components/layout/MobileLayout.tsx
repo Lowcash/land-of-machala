@@ -3,7 +3,7 @@
 import { ArrowLeft } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-interface MobileOverlayProps {
+interface MobileLayoutProps {
   /** Is overlay visible */
   isOpen: boolean
   /** Title text */
@@ -22,14 +22,14 @@ interface MobileOverlayProps {
  * Mobile fullscreen overlay for detail views
  * Replaces repeated fixed inset-0 patterns
  */
-export function MobileOverlay({
+export function MobileLayout({
   isOpen,
   title,
   children,
   onClose,
   backText = 'Zpět',
   className = '',
-}: MobileOverlayProps) {
+}: MobileLayoutProps) {
   if (!isOpen) return null
 
   return (

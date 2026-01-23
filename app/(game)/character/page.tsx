@@ -1,4 +1,5 @@
 import { Character } from '@/components/features/Character'
+import { GameFooter, GameHeader } from '@/components/features/Game'
 import { PageTemplate } from '@/components/layout/PageTemplate'
 import { getCharacterPageData } from '@/lib/loaders/character-loader'
 import { User } from 'lucide-react'
@@ -11,10 +12,15 @@ export default async function CharacterPage() {
   if (!data) {
     return (
       <PageTemplate
-        title="Hrdina"
-        icon={<User />}
+        header={
+          <GameHeader
+            title="Hrdina"
+            icon={User}
+            backLink={{ href: '/game', label: 'Zpět do hry' }}
+          />
+        }
+        footer={<GameFooter />}
         maxWidth="lg"
-        backLink={{ href: '/game', label: 'Zpět do hry' }}
       >
         <div className="p-8 text-center text-[#d4a574]">
           Nebyla nalezena postava. Prosím vytvořte si novou postavu.
@@ -25,11 +31,16 @@ export default async function CharacterPage() {
 
   return (
     <PageTemplate
-      title="Hrdina"
-      icon={<User />}
+      header={
+        <GameHeader
+          title="Hrdina"
+          icon={User}
+          characterId={data.characterId}
+          backLink={{ href: '/game', label: 'Zpět do hry' }}
+        />
+      }
+      footer={<GameFooter />}
       maxWidth="lg"
-      backLink={{ href: '/game', label: 'Zpět do hry' }}
-      characterId={data.characterId}
     >
       <Character character={data.clientProps.character} inventory={data.clientProps.inventory} />
     </PageTemplate>

@@ -1,8 +1,7 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { GameButton } from '@/components/ui/game/GameButton'
-import { Typography } from '@/components/ui/typography'
 import { ArrowLeft, EyeOff, ShoppingBag, Store } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
@@ -108,7 +107,9 @@ export function MarketShop({
           >
             <ArrowLeft className="h-4 w-4" /> Zpět
           </button>
-          <Typography variant="h3">Nákup na trhu</Typography>
+          <h3 className="font-medieval text-game-gold-muted scroll-m-20 text-2xl font-semibold tracking-tight">
+            Nákup na trhu
+          </h3>
         </div>
         <MarketBuy
           stock={stock}
@@ -131,7 +132,9 @@ export function MarketShop({
           >
             <ArrowLeft className="h-4 w-4" /> Zpět
           </button>
-          <Typography variant="h3">Prodej předmětů</Typography>
+          <h3 className="font-medieval text-game-gold-muted scroll-m-20 text-2xl font-semibold tracking-tight">
+            Prodej předmětů
+          </h3>
         </div>
         <MarketSell
           inventory={inventory}
@@ -154,9 +157,9 @@ export function MarketShop({
           >
             <ArrowLeft className="h-4 w-4" /> Zpět do bezpečí
           </button>
-          <Typography variant="h3" className="text-purple-500">
+          <h3 className="font-medieval scroll-m-20 text-2xl font-semibold tracking-tight text-purple-500">
             Černý Trh
-          </Typography>
+          </h3>
         </div>
         <BlackMarket stock={blackMarketStock} handleBuy={handleBuy} />
       </div>
@@ -168,7 +171,9 @@ export function MarketShop({
     <div className="grid h-full gap-6 p-4 md:grid-cols-12">
       {/* Narrative Section */}
       <div className="flex flex-col gap-4 md:col-span-4">
-        <Typography variant="h2">Centrální Tržiště</Typography>
+        <h2 className="border-game-copper/20 font-medieval text-game-gold scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+          Centrální Tržiště
+        </h2>
         <Card variant="muted" className="p-4 text-sm italic">
           "Křik trhovců se mísí s bečením ovcí. Vůně čerstvého pečiva bojuje se zápachem ryb.
           Tržiště nikdy nespí... tedy, kromě noci, kdy se mění v něco jiného."
@@ -181,31 +186,49 @@ export function MarketShop({
 
       {/* Actions Grid */}
       <div className="grid auto-rows-min grid-cols-1 gap-4 md:col-span-8 md:grid-cols-2">
-        <GameButton onClick={() => setMode('buy')} icon={Store} className="h-24">
-          Prohlédnout <span className="text-game-gold">zboží</span>
-        </GameButton>
-        <GameButton onClick={() => setMode('sell')} icon={ShoppingBag} className="h-24">
-          Prodat <span className="text-game-info">předměty</span>
-        </GameButton>
-
-        <GameButton
-          onClick={enterBlackMarket}
-          icon={EyeOff}
-          className={`h-24 md:col-span-2 ${isNight || bribed ? 'border-purple-500/50 text-purple-300' : 'opacity-70 grayscale'}`}
+        <Button
+          variant="game-primary"
+          onClick={() => setMode('buy')}
+          className="h-24 gap-2 text-lg"
         >
-          <span className="flex flex-col items-center">
-            <span>Podezřelá ulička</span>
-            <span className="text-xs opacity-60">
-              {isNight ? 'Je noc...' : 'Je den (Strážný hlídá)'}
-            </span>
+          <Store className="h-6 w-6" />
+          <span>
+            Prohlédnout <span className="text-game-gold">zboží</span>
           </span>
-        </GameButton>
+        </Button>
+        <Button
+          variant="game-primary"
+          onClick={() => setMode('sell')}
+          className="h-24 gap-2 text-lg"
+        >
+          <ShoppingBag className="h-6 w-6" />
+          <span>
+            Prodat <span className="text-game-info">předměty</span>
+          </span>
+        </Button>
+
+        <Button
+          variant="game-primary"
+          onClick={enterBlackMarket}
+          className={`h-24 gap-2 md:col-span-2 ${isNight || bribed ? 'border-purple-500/50 text-purple-300' : 'opacity-70 grayscale'}`}
+        >
+          <div className="flex items-center gap-3">
+            <EyeOff className="h-6 w-6" />
+            <span className="flex flex-col items-start">
+              <span className="text-lg">Podezřelá ulička</span>
+              <span className="text-xs font-normal opacity-60">
+                {isNight ? 'Je noc...' : 'Je den (Strážný hlídá)'}
+              </span>
+            </span>
+          </div>
+        </Button>
       </div>
 
       <div className="md:col-span-12">
-        <GameButton onClick={onBack} icon={ArrowLeft} variant="outline" className="w-full">
+        <Button variant="outline" onClick={onBack} className="w-full gap-2">
+          <ArrowLeft className="h-4 w-4" />
           Zpět na náměstí
-        </GameButton>
+        </Button>
       </div>
     </div>
   )

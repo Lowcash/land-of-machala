@@ -16,6 +16,23 @@ This is a **Next.js 16 App Router** project with:
 - `package.json` with Next.js, React, Prisma
 - Server Components default
 - TypeScript strict mode
+- **Tailwind CSS v4**
+
+### Data Architecture
+
+- **Single Source of Truth:** `lib/game/*-data.ts` files contain static game data (races, classes, items). Do NOT hardcode this data in components.
+- **Database:** Prisma + PostgreSQL for dynamic user data (characters, inventory).
+- **Server Actions Policy:**
+  - Use **Server Actions** (`lib/actions/*`) for ALL data fetching and mutations where possible.
+  - Do **NOT** create new API routes (`app/api/*`) unless absolutely necessary (e.g., webhooks).
+  - Use `zsa` for type-safe server actions.
+
+### Component Architecture
+
+- **GameLayout (`components/layout/GameLayout.tsx`)**: The outer application shell. Handles the viewport, background image/color, and global overlays.
+- **PageTemplate (`components/layout/PageTemplate.tsx`)**: The standard page structure used INSIDE `GameLayout`. Handles Header, Main Content, Footer, and Side Panels (Info/Log).
+- **Client Components (`*Client.tsx`)**: Feature containers (Page Roots) that manage local state and interaction.
+- **Providers (`*Provider.tsx`)**: Global context providers (Notification, Auth, Theme).
 
 ### Feature Development Workflow
 
@@ -84,14 +101,6 @@ git push origin main --tags
 # Auto-deploy to machala.com (Vercel)
 ```
 
-### Environment Variables by Branch
-
-| Branch    | Environment    | Database      | URL                 |
-| --------- | -------------- | ------------- | ------------------- |
-| `dev`     | Development    | Local Docker  | localhost:3000      |
-| `staging` | Pre-production | Staging DB    | staging.machala.com |
-| `main`    | Production     | Production DB | machala.com         |
-
 ---
 
 ## 🧪 Testing Strategy
@@ -116,7 +125,31 @@ git push origin main --tags
 - Styling (CSS classes, responsive breakpoints)
 - Third-party integrations (Radix UI components)
 
-### Testing Layers
+## 📏 Coding Standards
+
+### Core Principles
+
+- **DRY (Don't Repeat Yourself):** Extract common logic into hooks or utility functions.
+- **SOLID:** Ensure components have a single responsibility.
+- **KISS (Keep It Simple, Stupid):** Avoid over-engineering.
+
+### Implementation Guidelines
+
+- **UI Components:** ALWAYS use components from `@/components/ui/*`. DO NOT create local `ui/` folders within features unless it's a highly specific, non-reusable component.
+- **Layouts:** Use `components/layout/PageTemplate.tsx` for consistent page structure (Header, Footer, Background). Avoid inventing new layout wrappers for standard pages.
+- **Styling:** Use `tailwind.config.ts` tokens (e.g., `text-game-gold`, `bg-game-wood`) instead of hardcoded hex values.
+- **Naming:**
+  - Files: `PascalCase.tsx` for components, `camelCase.ts` for utilities.
+  - Folders: `PascalCase` for component groups, `kebab-case` for structural directories.
+- **Comments:** No "todo" comments in production code. Use `local/TODOS.md` instead.
+
+### Clean Code
+
+- Remove unused imports and variables.
+- Use named constants for magic numbers.
+- Ensure strict typing (no `any`).
+
+## 🧪 Testing Strategy
 
 #### 1. Unit Tests (Vitest)
 
@@ -341,7 +374,7 @@ npm run dev
 
 ```bash
 # Type check
-npm run type-check
+npx tsc --noEmit
 
 # Linting
 npm run lint
@@ -411,7 +444,7 @@ git commit -m "feat(character): add skill tree UI
 
 ```bash
 # 1. Type check
-npm run type-check
+npx tsc --noEmit
 
 # 2. Lint & fix
 npm run lint
@@ -452,7 +485,7 @@ If any check fails → commit is blocked.
 npm run prisma:generate
 
 # Full type check
-npm run type-check
+npx tsc --noEmit
 ```
 
 ### Issue: Tests Failing in CI but Pass Locally

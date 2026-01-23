@@ -1,13 +1,11 @@
 'use client'
 
 import { Card } from '@/components/ui/card'
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
-import { ServiceTable } from '@/components/ui/service-table'
-import { Typography } from '@/components/ui/typography'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 import type { LucideIcon } from 'lucide-react'
 import { ArrowLeft } from 'lucide-react'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { toast } from 'sonner'
 
 export interface ShopItem {
@@ -18,6 +16,7 @@ export interface ShopItem {
   icon?: LucideIcon
   type?: string
   // Dynamic properties for flexible item types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any
 }
 
@@ -30,6 +29,7 @@ export interface ShopInterfaceProps {
   onBack: () => void
   backgroundImage?: string
   // Optional customizations
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   itemColumns?: any[]
   renderItem?: (item: ShopItem) => React.ReactNode
   customContent?: React.ReactNode
@@ -43,12 +43,9 @@ export function ShopInterface({
   items,
   onBuy,
   onBack,
-  itemColumns,
   customContent,
   quote,
 }: ShopInterfaceProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     // Optional: could emit info text here if passed as prop,
     // but we can also display it in the UI directly
@@ -77,9 +74,9 @@ export function ShopInterface({
             >
               <ArrowLeft className="text-game-gold-muted h-5 w-5" />
             </button>
-            <Typography variant="h3" className="text-game-gold">
+            <h3 className="font-medieval text-game-gold scroll-m-20 text-2xl font-semibold tracking-tight">
               {title}
-            </Typography>
+            </h3>
           </div>
 
           <div className="border-game-copper/20 text-game-copper-muted rounded border bg-black/40 p-3 text-sm italic">
@@ -92,9 +89,9 @@ export function ShopInterface({
           </div>
 
           {quote && (
-            <Typography variant="muted" className="mt-auto text-center italic">
+            <p className="text-muted-foreground font-body mt-auto text-center text-sm italic">
               {quote}
-            </Typography>
+            </p>
           )}
         </Card>
 
@@ -111,45 +108,69 @@ export function ShopInterface({
         className="flex h-[500px] flex-col overflow-hidden md:col-span-8 md:h-auto lg:col-span-9"
       >
         <div className="border-game-copper/20 flex items-center justify-between border-b bg-black/20 p-3">
-          <Typography variant="h4" className="text-game-copper-muted">
+          <h4 className="font-medieval text-game-copper-muted scroll-m-20 text-xl font-semibold tracking-tight">
             Nabídka zboží
-          </Typography>
+          </h4>
           <div className="text-game-copper-muted text-xs tracking-wider uppercase">
             {items.length} předmětů
           </div>
         </div>
 
         <div className="relative min-h-0 flex-1">
-          <ScrollIndicator targetRef={scrollRef} />
-          <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto p-4">
-            <ServiceTable
-              items={items}
-              mode="cards"
-              columns={
-                itemColumns || [
-                  { key: 'name', label: 'Předmět' },
-                  {
-                    key: 'price',
-                    label: 'Cena',
-                    render: (item: any) => <span className="text-game-gold">{item.price}g</span>,
-                  },
-                ]
-              }
-              actions={[
-                {
-                  label: 'Koupit',
-                  onClick: handleBuy,
-                  disabled: (item: any) => gold < item.price,
-                },
-              ]}
-              rowIcon={(item: any) => {
-                if (!item.icon) return null
-                const Icon = item.icon
-                return <Icon className={cn('h-4 w-4', item.iconColor || 'text-game-gold-muted')} />
-              }}
-              emptyMessage="Obchodník momentálně nic nenabízí."
-            />
-          </div>
+          <ScrollArea className="h-full">
+            <div className="h-full p-4">
+              {items.length === 0 ? (
+                <div className="py-8 text-center text-sm text-[#8b7355] italic">
+                  Obchodník momentálně nic nenabízí.
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                  {items.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <div
+                        key={item.id || item.name}
+                        className="group border-game-copper/30 hover:border-game-gold flex flex-col justify-between rounded border bg-black/40 p-3 transition-colors hover:bg-black/60"
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            {Icon && (
+                              <div className="bg-game-gold/5 flex h-8 w-8 items-center justify-center rounded border border-[#8b6f47]/30">
+                                <Icon
+                                  className={cn('h-4 w-4', item.iconColor || 'text-game-gold')}
+                                />
+                              </div>
+                            )}
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium text-[#f5e6d3]">
+                                {item.name}
+                              </span>
+                              {item.description && (
+                                <span className="text-[10px] text-[#8b7355]">
+                                  {item.description}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="mt-3 flex items-center justify-between border-t border-[#8b6f47]/20 pt-2">
+                          <span className="text-game-gold font-bold">{item.price}g</span>
+                          <button
+                            onClick={() => handleBuy(item)}
+                            disabled={gold < item.price}
+                            className="hover:bg-game-gold/20 rounded px-2 py-1 text-xs font-bold text-[#d4a574] uppercase transition-colors hover:text-[#ffd700] disabled:cursor-not-allowed disabled:opacity-50 disabled:grayscale disabled:hover:bg-transparent"
+                          >
+                            Koupit
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+            </div>
+          </ScrollArea>
         </div>
       </Card>
     </div>

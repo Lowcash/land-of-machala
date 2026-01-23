@@ -1,8 +1,7 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Check, Lock } from 'lucide-react'
-import { useRef } from 'react'
 import { getIconFromName } from '../Shared/iconMap'
 import type { MergedSkill, SkillCategory } from '../Shared/types'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
@@ -63,8 +62,6 @@ export function SkillGrid({
 
   const totalSkillsLearned = skills.filter((s) => s.currentLevel > 0).length
 
-  const scrollRef = useRef<HTMLDivElement>(null)
-
   return (
     <>
       {/* Mobile: Sticky Category Filter */}
@@ -87,9 +84,8 @@ export function SkillGrid({
 
         {/* Right: Skills Grid */}
         <div className="relative flex flex-1 flex-col overflow-hidden">
-          <ScrollIndicator targetRef={scrollRef} position="both" />
-          <div ref={scrollRef} className="scrollbar-custom flex-1 overflow-y-auto p-4">
-            <div className="mx-auto max-w-7xl">
+          <ScrollArea className="h-full">
+            <div className="mx-auto max-w-7xl p-4">
               <div className="mb-4 text-center">
                 <h2
                   className="mb-1 text-2xl text-[#ffd700]"
@@ -192,7 +188,7 @@ export function SkillGrid({
                 })}
               </div>
             </div>
-          </div>
+          </ScrollArea>
         </div>
       </div>
     </>

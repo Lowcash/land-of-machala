@@ -3,11 +3,11 @@
 import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 
-interface RouteTransitionProps {
+interface TransitionLayoutProps {
   children: ReactNode
 }
 
-export function RouteTransition({ children }: RouteTransitionProps) {
+export function TransitionLayout({ children }: TransitionLayoutProps) {
   return (
     <motion.div
       animate={{ opacity: 1 }}

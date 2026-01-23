@@ -1,11 +1,5 @@
 'use client'
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion'
 import { Sparkles } from 'lucide-react'
 import { Brand } from '../Shared/Brand'
 import { Layout } from '../Shared/Layout'
@@ -27,20 +21,16 @@ export function Register() {
           {/* Mobile Info Accordion */}
           <div className="lg:hidden">
             {isMounted && (
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="info" className="border-game-copper">
-                  <AccordionTrigger className="border-game-copper text-game-gold hover:bg-game-copper/10 rounded-lg border bg-black/80 px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="h-4 w-4" />
-                      <span className="font-fantasy">Začni své dobrodružství</span>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent className="border-game-copper text-game-gold-muted mt-2 rounded-lg border bg-black/80 p-4 text-xs leading-relaxed">
-                    Registrací získáš přístup do světa Machala, kde můžeš vytvořit svého hrdinu,
-                    bojovat s monstry a získávat legendární předměty.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <details className="w-full">
+                <summary className="border-game-copper text-game-gold hover:bg-game-copper/10 flex cursor-pointer list-none items-center gap-2 rounded-lg border bg-black/80 px-4 py-3">
+                  <Sparkles className="h-4 w-4" />
+                  <span className="font-fantasy">Začni své dobrodružství</span>
+                </summary>
+                <div className="border-game-copper text-game-gold-muted mt-2 rounded-lg border bg-black/80 p-4 text-xs leading-relaxed">
+                  Registrací získáš přístup do světa Machala, kde můžeš vytvořit svého hrdinu,
+                  bojovat s monstry a získávat legendární předměty.
+                </div>
+              </details>
             )}
           </div>
         </div>

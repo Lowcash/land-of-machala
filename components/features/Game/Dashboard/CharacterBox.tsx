@@ -1,3 +1,4 @@
+import { Progress } from '@/components/ui/progress'
 import { Brain, Coins, MapPin, Shield, Sword, User, Wind } from 'lucide-react'
 import Image from 'next/image'
 
@@ -124,10 +125,11 @@ export function CharacterBox({
           {/* Vitals Bars - Thicker and with Text */}
           <div className="w-full space-y-1.5">
             {/* HP Bar */}
-            <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
-              <div
-                className="absolute inset-0 bg-linear-to-r from-red-900 via-red-700 to-red-600 transition-all duration-300"
-                style={{ width: `${hpPercent}%` }}
+            <div className="relative">
+              <Progress
+                value={hpPercent}
+                className="h-4 rounded bg-black/80 ring-1 ring-white/10"
+                indicatorClassName="bg-linear-to-r from-red-900 via-red-700 to-red-600"
               />
               <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
                 {Math.round(hp)} / {hpMax} HP
@@ -135,10 +137,11 @@ export function CharacterBox({
             </div>
 
             {/* Mana Bar */}
-            <div className="relative h-4 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
-              <div
-                className={`absolute inset-0 bg-linear-to-r from-blue-900 via-blue-700 to-blue-500 transition-all duration-300`}
-                style={{ width: `${resourcePercent}%` }}
+            <div className="relative">
+              <Progress
+                value={resourcePercent}
+                className="h-4 rounded bg-black/80 ring-1 ring-white/10"
+                indicatorClassName="bg-linear-to-r from-blue-900 via-blue-700 to-blue-500"
               />
               <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
                 {Math.round(mana)} / {manaMax} {resourceType === 'energy' ? 'EN' : 'MP'}
@@ -147,10 +150,11 @@ export function CharacterBox({
 
             {/* XP Bar - Prominent */}
             {!isEnemy && xp !== undefined && (
-              <div className="relative h-3 w-full overflow-hidden rounded bg-black/80 ring-1 ring-white/10">
-                <div
-                  className="absolute inset-0 bg-linear-to-r from-[#8b6f47] via-[#d4a574] to-[#ffd700] transition-all duration-300"
-                  style={{ width: `${xpPercent}%` }}
+              <div className="relative">
+                <Progress
+                  value={xpPercent}
+                  className="h-3 rounded bg-black/80 ring-1 ring-white/10"
+                  indicatorClassName="bg-linear-to-r from-[#8b6f47] via-[#d4a574] to-[#ffd700]"
                 />
                 <div className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-black/80 shadow-white/50 drop-shadow-sm">
                   {Math.round(xpPercent)}% XP

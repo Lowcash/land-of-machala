@@ -1,9 +1,9 @@
 'use client'
 
-import { ActionsLayout, CharacterBox } from '@/components/features/Game'
-import { PageTemplate } from '@/components/layout'
-import { InfoLogPanel } from '@/components/layout/InfoLogPanel'
-import { GameButton } from '@/components/ui/game/GameButton'
+import { CharacterBox, GameFooter, GameHeader } from '@/components/features/Game'
+import { GameActions } from '@/components/features/Game/components/GameActions'
+import { GameInfoPanel } from '@/components/layout/GameInfoPanel'
+import { Button } from '@/components/ui/button'
 import { performCombatActionAction, performUseItemAction } from '@/lib/actions/combat'
 import { endCombat } from '@/lib/actions/combat-state'
 import { useActivityLog } from '@/lib/hooks/useActivityLog'
@@ -95,11 +95,16 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   const potions = inventory.filter((i) => i.type === 'CONSUMABLE' || i.type === 'consumable')
 
   return (
-    <PageTemplate
-      title="Souboj"
-      icon={Swords}
+    <PageLayout
+      header={<GameHeader title="Souboj" icon={Swords} />}
+      footer={<GameFooter />}
       backgroundImage="/assets/locations/forest.jpg"
-      maxWidth="lg"
+      rightPanel={
+        <GameInfoPanel
+          logs={logs}
+          className="mx-3 h-[140px] shrink-0 rounded border border-[#d4a574]/50 bg-black/60 p-4 backdrop-blur-sm"
+        />
+      }
     >
       <div className="flex min-w-0 flex-1 flex-col gap-3">
         {/* Top Section - Player and Enemy */}
@@ -144,15 +149,9 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
           </div>
         </div>
 
-        {/* Combat Log - Middle */}
-        <InfoLogPanel
-          logs={logs}
-          className="mx-3 h-[140px] shrink-0 rounded border border-[#d4a574]/50 bg-black/60 p-4 backdrop-blur-sm"
-        />
-
         {/* Actions - Bottom */}
         <div className="relative min-h-0 flex-1 px-3 pb-3">
-          <ActionsLayout
+          <GameActions
             showDirections={false}
             onToggleDirections={() => {}}
             exploration={
@@ -162,25 +161,25 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                     Obrana & Taktika
                   </div>
                   <div className="space-y-2">
-                    <GameButton
+                    <Button
                       onClick={() => handleAction('defend', 'block')}
-                      icon={Shield}
-                      variant="secondary"
-                      isLoading={isPending}
-                      className="w-full"
+                      variant="game-secondary"
+                      disabled={isPending}
+                      className="w-full gap-2"
                     >
+                      <Shield className="h-4 w-4" />
                       <span>Obrana</span>{' '}
                       <span className="ml-2 text-xs opacity-70">(Sníží poškození)</span>
-                    </GameButton>
-                    <GameButton
+                    </Button>
+                    <Button
                       onClick={() => handleAction('flee')}
-                      icon={ArrowLeft}
                       variant="ghost"
-                      isLoading={isPending}
-                      className="w-full text-[#8b7355] hover:text-[#d4a574]"
+                      disabled={isPending}
+                      className="w-full gap-2 text-[#8b7355] hover:text-[#d4a574]"
                     >
+                      <ArrowLeft className="h-4 w-4" />
                       <span>Útěk</span>
-                    </GameButton>
+                    </Button>
                   </div>
                 </div>
 
@@ -189,27 +188,30 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                     Lektvary ({potions.length})
                   </div>
                   <div className="grid grid-cols-2 gap-2">
-                    {potions.map((potion) => (
-                      <GameButton
-                        key={potion.id}
-                        onClick={async () => {
-                          const [_res, err] = await performUseItemAction({
-                            characterId: character.id,
-                            itemId: potion.id,
-                          })
-                          if (!err) {
-                            toast.success('Lektvar použit')
-                          }
-                        }}
-                        icon={getIconFromName(potion.iconName || 'potion')}
-                        variant="outline"
-                        isLoading={isPending}
-                        size="sm"
-                        className="border-game-success/50 text-game-success hover:border-game-success"
-                      >
-                        {potion.name}
-                      </GameButton>
-                    ))}
+                    {potions.map((potion) => {
+                      const Icon = getIconFromName(potion.iconName || 'potion')
+                      return (
+                        <Button
+                          key={potion.id}
+                          onClick={async () => {
+                            const [_res, err] = await performUseItemAction({
+                              characterId: character.id,
+                              itemId: potion.id,
+                            })
+                            if (!err) {
+                              toast.success('Lektvar použit')
+                            }
+                          }}
+                          variant="outline"
+                          disabled={isPending}
+                          size="sm"
+                          className="border-game-success/50 text-game-success hover:border-game-success gap-2"
+                        >
+                          <Icon className="h-4 w-4" />
+                          {potion.name}
+                        </Button>
+                      )
+                    })}
                   </div>
                   {potions.length === 0 && (
                     <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>
@@ -223,41 +225,47 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                 Útok
               </div>
               <div className="space-y-2">
-                <GameButton
+                <Button
                   onClick={() => handleAction('attack', 'quick')}
-                  icon={Zap}
-                  variant="primary"
-                  isLoading={isPending}
+                  variant="game-primary"
+                  disabled={isPending}
                   className="w-full justify-between"
                 >
-                  <span>Rychlý útok</span>
+                  <div className="flex items-center gap-2">
+                    <Zap className="h-4 w-4" />
+                    <span>Rychlý útok</span>
+                  </div>
                   <span className="text-[10px] opacity-70">Základní</span>
-                </GameButton>
-                <GameButton
+                </Button>
+                <Button
                   onClick={() => handleAction('attack', 'heavy')}
-                  icon={Target}
-                  variant="danger"
-                  isLoading={isPending}
+                  variant="game-danger"
+                  disabled={isPending}
                   className="w-full justify-between"
                 >
-                  <span>Silný úder</span>
+                  <div className="flex items-center gap-2">
+                    <Target className="h-4 w-4" />
+                    <span>Silný úder</span>
+                  </div>
                   <span className="text-[10px]">Vysoké poškození</span>
-                </GameButton>
-                <GameButton
+                </Button>
+                <Button
                   onClick={() => handleAction('special')}
-                  icon={Sparkles}
-                  variant="secondary"
-                  isLoading={isPending}
+                  variant="game-secondary"
+                  disabled={isPending}
                   className="border-game-magic text-game-magic hover:bg-game-magic/10 w-full justify-between"
                 >
-                  <span>Speciální schopnost</span>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="h-4 w-4" />
+                    <span>Speciální schopnost</span>
+                  </div>
                   <span className="text-[10px] opacity-70">-Mana</span>
-                </GameButton>
+                </Button>
               </div>
             </div>
-          </ActionsLayout>
+          </GameActions>
         </div>
       </div>
-    </PageTemplate>
+    </PageLayout>
   )
 }

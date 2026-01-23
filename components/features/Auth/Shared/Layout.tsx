@@ -1,4 +1,3 @@
-import { RouteTransition } from '@/components/layout/RouteTransition'
 import type { ReactNode } from 'react'
 
 interface LayoutProps {
@@ -15,7 +14,7 @@ export function Layout({
   centered = true,
 }: LayoutProps) {
   return (
-    <RouteTransition>
+    <TransitionLayout>
       <div
         className={`bg-game-wood-dark text-game-gold selection:bg-game-gold selection:text-game-wood-dark relative min-h-screen w-full overflow-x-hidden font-serif ${className}`}
       >

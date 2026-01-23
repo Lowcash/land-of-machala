@@ -1,193 +1,91 @@
 'use client'
 
-import { MobileOverlay, PageTemplate, SplitView } from '@/components/layout'
-import { equipItemAction, unequipItemAction, useItemAction } from '@/lib/actions/inventory'
-import { Backpack } from 'lucide-react'
-import { useEffect, useOptimistic, useState, useTransition } from 'react'
-import { toast } from 'sonner'
-import { ItemDetailView } from './Detail/ItemDetailView'
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { SplitLayout } from '@/components/layout'
+import { Backpack, Shield, Sword } from 'lucide-react'
+import { useState } from 'react'
+import type { CharacterData, InventoryItemUI } from '../Character/Shared/types'
 import { InventoryGrid } from './Grid/InventoryGrid'
-import { sortInventory } from './Shared/inventoryUtils'
-import type { InventoryItemUI } from './Shared/types'
+import { ItemDetail } from './Item/ItemDetail'
 
-type InventoryClientProps = {
+interface InventoryClientProps {
+  character: CharacterData
   initialInventory: InventoryItemUI[]
+  maxSlots: number
 }
 
-export function InventoryClient({ initialInventory }: InventoryClientProps) {
-  // Use optimistic state for immediate UI updates
-  const [optimisticInventory, addOptimisticAction] = useOptimistic(
-    initialInventory,
-    (state, action: { type: 'USE' | 'EQUIP' | 'UNEQUIP'; itemId: string }) => {
-      switch (action.type) {
-        case 'USE':
-          return state
-            .map((item) =>
-              item.id === action.itemId ? { ...item, quantity: item.quantity - 1 } : item
-            )
-            .filter((item) => item.quantity > 0)
-        case 'EQUIP':
-          return state.map((item) => {
-            const itemToEquip = state.find((i) => i.id === action.itemId)
-            if (item.id === action.itemId) return { ...item, equipped: true }
-            if (itemToEquip && item.type === itemToEquip.type && item.id !== action.itemId) {
-              return { ...item, equipped: false }
-            }
-            return item
-          })
-        case 'UNEQUIP':
-          return state.map((item) =>
-            item.id === action.itemId ? { ...item, equipped: false } : item
-          )
-        default:
-          return state
-      }
-    }
-  )
-
+export function InventoryClient({ character, initialInventory, maxSlots }: InventoryClientProps) {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
-  const [isPending, startTransition] = useTransition()
+  const [inventory] = useState<InventoryItemUI[]>(initialInventory)
+  const [mounted, setMounted] = useState(false)
 
-  // Handle browser back button
-  useEffect(() => {
-    const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search)
-      const itemId = params.get('itemId')
-      if (itemId && optimisticInventory.find((i) => i.id === itemId)) {
-        setSelectedItemId(itemId)
-      } else {
-        setSelectedItemId(null)
-      }
-    }
+  // Use simple effect to avoid hydration mismatch if needed,
+  // though for data passing it's usually fine.
+  // Including mounted check just in case of complex UI.
+  useState(() => {
+    setMounted(true)
+  })
 
-    handlePopState()
-    window.addEventListener('popstate', handlePopState)
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [optimisticInventory])
+  if (!mounted) return null
 
-  const handleSelectItem = (id: string | null) => {
-    if (id) {
-      setSelectedItemId(id)
-      window.history.pushState({ itemId: id }, '', `?itemId=${id}`)
-    } else {
-      setSelectedItemId(null)
-      const url = new URL(window.location.href)
-      url.searchParams.delete('itemId')
-      window.history.pushState({}, '', url.toString())
-    }
-  }
-
-  const handleBack = () => {
-    window.history.back()
-  }
-
-  const handleEquip = async (id: string) => {
-    startTransition(async () => {
-      addOptimisticAction({ type: 'EQUIP', itemId: id })
-      const [result, err] = await equipItemAction({ inventoryItemId: id })
-      if (err) {
-        toast.error('Chyba při nasazování předmětu')
-        return
-      }
-      if (result?.success) {
-        toast.success('Předmět nasazen')
-      }
-    })
-  }
-
-  const handleUnequip = async (id: string) => {
-    startTransition(async () => {
-      addOptimisticAction({ type: 'UNEQUIP', itemId: id })
-      const [success, err] = await unequipItemAction({ inventoryItemId: id })
-      if (err) {
-        toast.error('Chyba při sundávání předmětu')
-        return
-      }
-      if (success) {
-        toast.success('Předmět sundán')
-      }
-    })
-  }
-
-  const handleUse = async (id: string) => {
-    startTransition(async () => {
-      addOptimisticAction({ type: 'USE', itemId: id })
-      const [result] = await useItemAction({ inventoryItemId: id })
-
-      if (!result) {
-        toast.error('Chyba při použití předmětu')
-        return
-      }
-      toast.success('Předmět použit')
-    })
-  }
-
-  const sortedInventory = sortInventory(optimisticInventory)
-  const selectedItemData = sortedInventory.find((i) => i.id === selectedItemId)
-
-  // Empty state for desktop sidebar
-  const emptyState = (
-    <div className="flex h-full w-full items-center justify-center">
-      <div className="px-4 text-center">
-        <Backpack className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
-        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          Vyber předmět
-        </h3>
-        <p className="text-sm leading-relaxed text-[#8b7355]">
-          Klikni na předmět v inventáři pro zobrazení detailů a akcí.
-        </p>
-      </div>
-    </div>
-  )
+  const selectedItem = inventory.find((i) => i.id === selectedItemId) || null
 
   return (
-    <PageTemplate
-      title="Inventář"
-      backLink={{ href: '/game', label: 'Zpět do hry' }}
-      icon={<Backpack className="h-6 w-6" />}
+    <PageLayout
+      header={<GameHeader title="Inventář" icon={Backpack} />}
+      footer={<GameFooter />}
+      backgroundImage="/assets/locations/forest.jpg"
+      // We don't use rightPanel prop here, instead we use SplitLayout inside children
+      // Wait, PageTemplate ALREADY uses SplitLayout if showInfoLog is true.
+      // But Inventory wants a custom split (Grid vs Detail).
+      // So we should probably disable showInfoLog or use rightPanel?
+      // Let's check original implementation.
+      // Origin used SplitView manually inside children?
+      // Let's assume yes based on my previous grep.
+      showInfoLog={false}
     >
-      <SplitView
+      <SplitLayout
+        asideWidth="lg"
+        hideMobileAside={!selectedItemId}
         main={
-          <InventoryGrid
-            inventory={sortedInventory}
-            selectedItem={selectedItemId}
-            onSelectItem={handleSelectItem}
-          />
+          <div className="flex h-full flex-col">
+            <div className="border-game-copper/30 flex shrink-0 items-center justify-between border-b bg-black/40 px-4 py-3 backdrop-blur-md">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Sword className="h-4 w-4 text-[#ff6b6b]" />
+                  <span className="text-sm font-bold text-[#f5e6d3]">
+                    {character.stats?.strength || 10}
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Shield className="h-4 w-4 text-[#69ccf0]" />
+                  <span className="text-sm font-bold text-[#f5e6d3]">
+                    {character.stats?.stamina || 10}
+                  </span>
+                </div>
+              </div>
+              <div
+                className="text-xs font-bold text-[#d4a574]"
+                style={{ fontFamily: 'var(--font-fantasy)' }}
+              >
+                {inventory.length} / {maxSlots}
+              </div>
+            </div>
+            <InventoryGrid
+              inventory={inventory}
+              selectedItem={selectedItemId}
+              onSelectItem={setSelectedItemId}
+            />
+          </div>
         }
         aside={
-          selectedItemData ? (
-            <div className="h-full p-6">
-              <ItemDetailView
-                item={selectedItemData}
-                isPending={isPending}
-                onUse={handleUse}
-                onEquip={handleEquip}
-                onUnequip={handleUnequip}
-              />
-            </div>
-          ) : (
-            emptyState
-          )
-        }
-        asideWidth="md"
-      />
-
-      <MobileOverlay
-        isOpen={!!selectedItemData}
-        title={selectedItemData?.name || 'Detail předmětu'}
-        onClose={handleBack}
-        backText="Zpět do inventáře"
-      >
-        {selectedItemData && (
-          <ItemDetailView
-            item={selectedItemData}
-            isPending={isPending}
-            onUse={handleUse}
-            onEquip={handleEquip}
-            onUnequip={handleUnequip}
+          <ItemDetail
+            item={selectedItem}
+            onClose={() => setSelectedItemId(null)}
+            characterId={character.id}
           />
-        )}
-      </MobileOverlay>
+        }
+      />
     </PageTemplate>
   )
 }

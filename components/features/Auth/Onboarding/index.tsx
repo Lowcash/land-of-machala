@@ -6,12 +6,12 @@ import { Dices } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { Card, CardContent } from '@/components/ui/card'
 import { createCharacterAction } from '@/lib/actions/character'
 import type { Class, Race, StoryStep } from '@/lib/game/onboarding-data'
 import { classes, races } from '@/lib/game/onboarding-data'
 import type { CharacterClass, CharacterRace } from '@prisma/client'
 import { Layout } from '../Shared/Layout'
-import { Card } from '../Shared/ui/Card'
 import { ClassSelector } from './Creation/ClassSelector'
 import { RaceSelector } from './Creation/RaceSelector'
 import { StatsDisplay } from './Creation/StatsDisplay'
@@ -151,23 +151,25 @@ export function Onboarding() {
             {/* Left Column: Form & Stats (3 cols) */}
             <div className="space-y-4 lg:col-span-3">
               <Card className="border-game-gold-muted border-2">
-                <label className="text-game-gold font-fantasy mb-3 block text-center text-xl">
-                  Jméno hrdiny
-                </label>
-                <input
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Zadej jméno..."
-                  className="border-game-copper text-game-gold placeholder:text-game-copper-muted focus:border-game-gold font-fantasy w-full rounded-lg border-2 bg-black/60 px-4 py-3 text-center text-lg transition-colors focus:outline-none"
-                />
-                <button
-                  onClick={randomizeCharacter}
-                  className="border-game-copper text-game-gold-muted hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold font-fantasy mt-4 flex w-full items-center justify-center gap-2 rounded-lg border bg-black/60 py-3 transition-all"
-                >
-                  <Dices className="h-5 w-5" />
-                  <span>Náhodná postava</span>
-                </button>
+                <CardContent className="p-4 sm:p-6">
+                  <label className="text-game-gold font-fantasy mb-3 block text-center text-xl">
+                    Jméno hrdiny
+                  </label>
+                  <input
+                    type="text"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Zadej jméno..."
+                    className="border-game-copper text-game-gold placeholder:text-game-copper-muted focus:border-game-gold font-fantasy w-full rounded-lg border-2 bg-black/60 px-4 py-3 text-center text-lg transition-colors focus:outline-none"
+                  />
+                  <button
+                    onClick={randomizeCharacter}
+                    className="border-game-copper text-game-gold-muted hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold font-fantasy mt-4 flex w-full items-center justify-center gap-2 rounded-lg border bg-black/60 py-3 transition-all"
+                  >
+                    <Dices className="h-5 w-5" />
+                    <span>Náhodná postava</span>
+                  </button>
+                </CardContent>
               </Card>
 
               <StatsDisplay stats={finalStats} />

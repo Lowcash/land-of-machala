@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react'
 
-interface SplitViewProps {
+interface SplitLayoutProps {
   /** Left panel content (list/grid) */
   main: ReactNode
   /** Right panel content (details) */
@@ -29,13 +29,13 @@ const ASIDE_WIDTH_CLASSES = {
  *
  * Replaces repeated flex/grid patterns for list+detail views
  */
-export function SplitView({
+export function SplitLayout({
   main,
   aside,
   asideWidth = 'md',
   hideMobileAside = true,
   className = '',
-}: SplitViewProps) {
+}: SplitLayoutProps) {
   return (
     <div className={`flex min-h-0 flex-1 overflow-hidden ${className}`}>
       {/* Main content - always visible, with overflow handling */}

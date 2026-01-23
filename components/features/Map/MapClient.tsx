@@ -1,105 +1,60 @@
-import { PageTemplate, SplitView } from '@/components/layout'
-import { Map, MapPin } from 'lucide-react'
-import { useEffect, useState } from 'react'
-import { MapCanvas } from './Canvas/MapCanvas'
-import { LocationDetails } from './Detail/LocationDetails'
-import type { Location } from './Shared/types'
+'use client'
 
-const PLAYER_POSITION = { x: 100, y: 100 } // Starting Town position
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { SplitLayout } from '@/components/layout'
+import { Map as MapIcon } from 'lucide-react'
+import { useState } from 'react'
+import type { CharacterData, Location } from '../Character/Shared/types'
+import { LocationDetails } from './Detail/LocationDetails'
+import { MapGrid } from './Grid/MapGrid'
+import { generateMap } from './Shared/utils'
 
 interface MapClientProps {
-  locations: Location[]
-  discoveredLocations?: string[]
-  questMarkers?: any[]
-  deathLocation?: any
+  character: CharacterData
+  currentLocationId: string
 }
 
-export function MapClient({
-  locations,
-  discoveredLocations,
-  questMarkers,
-  deathLocation,
-}: MapClientProps) {
+export function MapClient({ character, currentLocationId }: MapClientProps) {
   const [selectedLocation, setSelectedLocation] = useState<Location | null>(null)
 
-  // Handle browser back button
-  useEffect(() => {
-    const handlePopState = (_event: PopStateEvent) => {
-      const params = new URLSearchParams(window.location.search)
-      const locationId = params.get('locationId')
-
-      if (locationId) {
-        const location = locations.find((l) => l.id === locationId)
-        if (location) {
-          setSelectedLocation(location)
-        }
-      } else {
-        setSelectedLocation(null)
-      }
-    }
-
-    window.addEventListener('popstate', handlePopState)
-
-    // Check initial URL
-    const params = new URLSearchParams(window.location.search)
-    const locationId = params.get('locationId')
-    if (locationId) {
-      const location = locations.find((l) => l.id === locationId)
-      if (location) {
-        setSelectedLocation(location)
-      }
-    }
-
-    return () => window.removeEventListener('popstate', handlePopState)
-  }, [locations])
-
-  const handleSelectLocation = (location: Location | null) => {
-    if (location) {
-      const url = new URL(window.location.href)
-      url.searchParams.set('locationId', location.id)
-      window.history.pushState({ locationId: location.id }, '', url)
-      setSelectedLocation(location)
-    } else {
-      const url = new URL(window.location.href)
-      url.searchParams.delete('locationId')
-      window.history.pushState({}, '', url)
-      setSelectedLocation(null)
-    }
-  }
-
-  // Empty state for sidebar
-  const emptyState = (
-    <div className="flex h-full items-center justify-center p-4">
-      <div className="text-center">
-        <Map className="mx-auto mb-4 h-16 w-16 text-[#8b6f47]" />
-        <h3 className="mb-2 text-lg text-[#d4a574]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          Vyber místo
-        </h3>
-        <p className="text-sm leading-relaxed text-[#8b7355]">
-          Klikni na lokaci na mapě pro zobrazení detailů.
-        </p>
-      </div>
-    </div>
-  )
+  // Note: Generate map is expensive, should be memoized or static in real app
+  const mapLocations = generateMap()
+  const currentLocation = mapLocations.find((l) => l.id === currentLocationId) || mapLocations[0]
 
   return (
-    <PageTemplate
-      title="Mapa světa"
-      backLink={{ href: '/game', label: 'Zpět do hry' }}
-      icon={<MapPin className="h-6 w-6" />}
-      maxWidth="full"
+    <PageLayout
+      header={<GameHeader title="Mapa světa" icon={MapIcon} />}
+      footer={<GameFooter />}
+      // No background image for map, we render the grid
+      showInfoLog={false}
     >
-      <SplitView
+      <SplitLayout
+        asideWidth="lg"
+        hideMobileAside={!selectedLocation}
         main={
-          <div className="relative h-full min-h-[500px] w-full bg-linear-to-br from-[#1a1510] via-[#2a2318] to-[#1a1510]">
-            <MapCanvas
-              locations={locations}
-              playerPosition={PLAYER_POSITION}
-              selectedLocation={selectedLocation}
-              onSelectLocation={handleSelectLocation}
-              discoveredLocations={discoveredLocations}
-              questMarkers={questMarkers}
-              deathLocation={deathLocation}
+          <div className="flex h-full flex-col">
+            {/* Info Bar */}
+            <div className="border-game-copper/30 flex shrink-0 items-center justify-between border-b bg-black/40 px-4 py-3 backdrop-blur-md">
+              <div className="flex items-center gap-2">
+                <span className="text-game-gold text-xs font-bold tracking-wider uppercase">
+                  Lokace: {mapLocations.length}
+                </span>
+                <span className="text-game-copper-muted">|</span>
+                <span className="text-game-gold text-xs font-bold tracking-wider uppercase">
+                  Prozkoumáno: {Math.floor(mapLocations.length * 0.1)}%
+                </span>
+              </div>
+              <div className="text-game-gold font-mono text-xs">
+                {currentLocation?.positionX}, {currentLocation?.positionY}
+              </div>
+            </div>
+
+            {/* Map Grid Container */}
+            <MapGrid
+              locations={mapLocations}
+              currentLocationId={currentLocationId}
+              selectedLocationId={selectedLocation?.id || null}
+              onSelectLocation={setSelectedLocation}
             />
           </div>
         }
@@ -107,13 +62,17 @@ export function MapClient({
           selectedLocation ? (
             <LocationDetails
               location={selectedLocation}
-              onClose={() => handleSelectLocation(null)}
+              onClose={() => setSelectedLocation(null)}
             />
           ) : (
-            emptyState
+            <div className="flex h-full flex-col items-center justify-center p-8 text-center">
+              <MapIcon className="text-game-copper-muted mb-4 h-12 w-12 opacity-20" />
+              <p className="text-game-copper-muted italic">
+                Vyber lokaci na mapě pro zobrazení detailů.
+              </p>
+            </div>
           )
         }
-        asideWidth="md"
       />
     </PageTemplate>
   )

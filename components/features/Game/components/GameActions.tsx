@@ -1,9 +1,9 @@
-import { BasePanel } from '@/components/layout/BasePanel'
-import { GameButton } from '@/components/ui/game/GameButton'
+import { Button } from '@/components/ui/button'
+import { GamePanel } from '@/components/ui/game/GamePanel'
 import { ArrowDown, ArrowLeft as ArrowLeftIcon, ArrowRight, ArrowUp, Home } from 'lucide-react'
 import type { ReactNode } from 'react'
 
-interface ActionsLayoutProps {
+interface GameActionsProps {
   children?: ReactNode // Main actions content
   exploration?: ReactNode // Exploration actions content (right column usually)
   showDirections: boolean
@@ -14,7 +14,7 @@ interface ActionsLayoutProps {
   title?: string
 }
 
-export function ActionsLayout({
+export function GameActions({
   children,
   exploration,
   showDirections,
@@ -23,23 +23,28 @@ export function ActionsLayout({
   onMove,
   onBack,
   title,
-}: ActionsLayoutProps) {
+}: GameActionsProps) {
   return (
-    <BasePanel title={title} className="bg-black/80 shadow-xl backdrop-blur-md">
+    <GamePanel title={title} className="bg-black/80 shadow-xl backdrop-blur-md">
       <div className="flex min-h-full flex-col justify-end gap-4">
         {showDirections ? (
           <>
             <div className="mb-4">
-              <GameButton onClick={onStay ?? onToggleDirections} icon={Home} className="w-full">
+              <Button
+                variant="game-primary"
+                onClick={onStay ?? onToggleDirections}
+                className="w-full gap-2"
+              >
+                <Home className="h-4 w-4" />
                 <span>Zůstat ve městě</span>
-              </GameButton>
+              </Button>
             </div>
 
             <div className="grid grid-cols-1 gap-3 pb-1 md:grid-cols-2">
-              <GameButton
+              <Button
+                variant="game-primary"
                 onClick={() => onMove?.('north')}
-                icon={ArrowUp}
-                className="border-game-gold relative h-24 w-full overflow-hidden p-4 text-left"
+                className="relative h-24 w-full justify-start overflow-hidden p-0 text-left hover:brightness-110"
               >
                 <div
                   className="absolute inset-0 z-0 opacity-40 transition-opacity group-hover:opacity-60"
@@ -50,16 +55,19 @@ export function ActionsLayout({
                   }}
                 />
                 <div className="absolute inset-0 z-10 bg-black/60" />
-                <div className="relative z-20 flex flex-col gap-1">
-                  <span className="text-game-gold text-lg font-bold uppercase">Sever</span>
-                  <span className="text-game-gold-muted text-xs">Hory, Doly</span>
+                <div className="relative z-20 flex flex-col gap-1 p-4">
+                  <span className="text-game-gold flex items-center gap-2 text-lg font-bold uppercase">
+                    <ArrowUp className="h-4 w-4" />
+                    Sever
+                  </span>
+                  <span className="text-game-gold-muted text-xs normal-case">Hory, Doly</span>
                 </div>
-              </GameButton>
+              </Button>
 
-              <GameButton
+              <Button
+                variant="game-primary"
                 onClick={() => onMove?.('south')}
-                icon={ArrowDown}
-                className="border-game-gold relative h-24 w-full overflow-hidden p-4 text-left"
+                className="relative h-24 w-full justify-start overflow-hidden p-0 text-left hover:brightness-110"
               >
                 <div
                   className="absolute inset-0 z-0 opacity-40 transition-opacity group-hover:opacity-60"
@@ -70,16 +78,19 @@ export function ActionsLayout({
                   }}
                 />
                 <div className="absolute inset-0 z-10 bg-black/60" />
-                <div className="relative z-20 flex flex-col gap-1">
-                  <span className="text-game-gold text-lg font-bold uppercase">Jih</span>
-                  <span className="text-game-gold-muted text-xs">Pláně, Farmy</span>
+                <div className="relative z-20 flex flex-col gap-1 p-4">
+                  <span className="text-game-gold flex items-center gap-2 text-lg font-bold uppercase">
+                    <ArrowDown className="h-4 w-4" />
+                    Jih
+                  </span>
+                  <span className="text-game-gold-muted text-xs normal-case">Pláně, Farmy</span>
                 </div>
-              </GameButton>
+              </Button>
 
-              <GameButton
+              <Button
+                variant="game-primary"
                 onClick={() => onMove?.('east')}
-                icon={ArrowRight}
-                className="border-game-gold relative h-24 w-full overflow-hidden p-4 text-left"
+                className="relative h-24 w-full justify-start overflow-hidden p-0 text-left hover:brightness-110"
               >
                 <div
                   className="absolute inset-0 z-0 opacity-40 transition-opacity group-hover:opacity-60"
@@ -90,31 +101,37 @@ export function ActionsLayout({
                   }}
                 />
                 <div className="absolute inset-0 z-10 bg-black/60" />
-                <div className="relative z-20 flex flex-col gap-1">
-                  <span className="text-game-gold text-lg font-bold uppercase">Východ</span>
-                  <span className="text-game-gold-muted text-xs">Poušť, Oáza</span>
+                <div className="relative z-20 flex flex-col gap-1 p-4">
+                  <span className="text-game-gold flex items-center gap-2 text-lg font-bold uppercase">
+                    <ArrowRight className="h-4 w-4" />
+                    Východ
+                  </span>
+                  <span className="text-game-gold-muted text-xs normal-case">Poušť, Oáza</span>
                 </div>
-              </GameButton>
+              </Button>
 
-              <GameButton
+              <Button
+                variant="game-primary"
                 onClick={() => onMove?.('west')}
-                icon={ArrowLeftIcon}
-                className="border-game-gold relative h-24 w-full overflow-hidden p-4 text-left"
+                className="relative h-24 w-full justify-start overflow-hidden p-0 text-left hover:brightness-110"
               >
                 <div
                   className="absolute inset-0 z-0 opacity-40 transition-opacity group-hover:opacity-60"
                   style={{
-                    backgroundImage: 'url(/assets/locations/forest-background.jpg)', // Assuming forest exist
+                    backgroundImage: 'url(/assets/locations/forest-background.jpg)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                   }}
                 />
                 <div className="absolute inset-0 z-10 bg-black/60" />
-                <div className="relative z-20 flex flex-col gap-1">
-                  <span className="text-game-gold text-lg font-bold uppercase">Západ</span>
-                  <span className="text-game-gold-muted text-xs">Temný les</span>
+                <div className="relative z-20 flex flex-col gap-1 p-4">
+                  <span className="text-game-gold flex items-center gap-2 text-lg font-bold uppercase">
+                    <ArrowLeftIcon className="h-4 w-4" />
+                    Západ
+                  </span>
+                  <span className="text-game-gold-muted text-xs normal-case">Temný les</span>
                 </div>
-              </GameButton>
+              </Button>
             </div>
           </>
         ) : (
@@ -140,14 +157,15 @@ export function ActionsLayout({
             {/* Back Button (Full Width below columns if back action exists) */}
             {onBack && (
               <div className="col-span-full pt-2">
-                <GameButton onClick={onBack} icon={ArrowLeftIcon} className="w-full">
+                <Button variant="game-primary" onClick={onBack} className="w-full gap-2">
+                  <ArrowLeftIcon className="h-4 w-4" />
                   Vrátit se do města
-                </GameButton>
+                </Button>
               </div>
             )}
           </div>
         )}
       </div>
-    </BasePanel>
+    </GamePanel>
   )
 }

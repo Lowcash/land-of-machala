@@ -1,6 +1,5 @@
-import { GameBackgroundWrapper } from '@/components/layout/GameBackgroundWrapper'
 import { NotificationProvider } from '@/components/providers/NotificationProvider'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
@@ -43,7 +42,7 @@ export default function RootLayout({
     >
       <body className="font-body text-game-fg bg-black antialiased">
         <NotificationProvider>
-          <GameBackgroundWrapper>{children}</GameBackgroundWrapper>
+          <div className="bg-game-bg flex min-h-screen flex-col">{children}</div>
           <Toaster />
         </NotificationProvider>
         <Analytics />

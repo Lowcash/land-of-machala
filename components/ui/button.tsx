@@ -33,9 +33,10 @@ const buttonVariants = cva(
         lg: 'h-10 rounded-md px-8',
         icon: 'h-9 w-9',
         // Game Specific Sizes
-        'game-sm': 'h-7 px-2 text-xs',
-        'game-md': 'h-10 px-4',
-        'game-lg': 'h-12 px-6 text-lg',
+        'game-sm': 'h-7 px-2 text-xs uppercase tracking-wide font-bold',
+        'game-md': 'h-10 px-4 text-sm uppercase tracking-wide font-bold',
+        'game-lg': 'h-12 px-6 text-lg uppercase tracking-wide font-bold',
+        'game-icon': 'h-10 w-10 p-2',
       },
     },
     defaultVariants: {
