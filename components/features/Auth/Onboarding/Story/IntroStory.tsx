@@ -1,7 +1,9 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import type { StoryStep } from '@/lib/game/onboarding-data'
 import { storySteps } from '@/lib/game/onboarding-data'
+import { cn } from '@/lib/utils'
 import { BookOpen, SkipForward } from 'lucide-react'
 import { Layout } from '../../Shared/Layout'
 
@@ -30,11 +32,17 @@ export function IntroStory({ storyIndex, onChoice, onSkip, isLoading }: IntroSto
 
         <div className="mt-8 space-y-3">
           {currentStory.choices.map((choice, idx) => (
-            <button
+            <Button
               key={idx}
               onClick={() => onChoice(choice)}
               disabled={isLoading}
-              className="group border-game-copper hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold font-fantasy min-h-16 w-full transform rounded-lg border bg-black/60 p-3 text-xs text-[#f5e6d3] transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50 sm:p-4 sm:text-sm md:text-base"
+              variant="ghost"
+              className={cn(
+                'group border-game-copper hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold',
+                'font-fantasy min-h-16 w-full rounded-lg border bg-black/60 p-3 text-xs text-[#f5e6d3]',
+                'transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50',
+                'sm:p-4 sm:text-sm md:text-base'
+              )}
             >
               <span className="flex items-center justify-center gap-3">
                 <span className="border-game-copper text-game-copper-muted group-hover:border-game-gold group-hover:text-game-gold flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs">
@@ -42,17 +50,18 @@ export function IntroStory({ storyIndex, onChoice, onSkip, isLoading }: IntroSto
                 </span>
                 <span>{choice.text}</span>
               </span>
-            </button>
+            </Button>
           ))}
         </div>
 
-        <button
+        <Button
           onClick={onSkip}
+          variant="ghost"
           className="text-game-copper-muted hover:text-game-gold mx-auto mt-8 flex items-center justify-center gap-2 text-xs transition-colors sm:text-sm"
         >
           <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />
           Přeskočit úvod (Jsem zkušený hráč)
-        </button>
+        </Button>
       </div>
     </Layout>
   )

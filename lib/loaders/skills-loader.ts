@@ -1,9 +1,10 @@
-import { SkillCategory } from '@/components/features/Skills/Shared/types'
-import { getMyCharacterAction } from '@/lib/actions/character'
-import { getAllSkillsAction, getCharacterSkillsAction } from '@/lib/actions/skill'
-import { Skill } from '@prisma/client'
+import type { SkillCategory } from '@/components/features/Skills/Shared/types'
+import { getCharacterByUserId } from '@/entity/character'
+import { getAllSkills, getCharacterSkills } from '@/entity/skill'
+import { auth } from '@/lib/auth'
+import type { Skill } from '@prisma/client'
 
-function treeToCategory(tree: string | any): SkillCategory {
+function treeToCategory(tree: string): SkillCategory {
   const treeStr = String(tree)
   switch (treeStr) {
     case 'COMBAT':
@@ -21,8 +22,8 @@ function treeToCategory(tree: string | any): SkillCategory {
   }
 }
 
-// Reuse dummy skills from original file as per user choice to keep them until DB is populated
-const DUMMY_SKILLS: any[] = [
+// Dummy skills if DB is empty
+const DUMMY_SKILLS: Partial<Skill>[] = [
   {
     id: 'dummy-1',
     name: 'Mocný Úder',
@@ -176,32 +177,25 @@ const DUMMY_SKILLS: any[] = [
 ]
 
 export async function getSkillsPageData() {
-  const [characterResult, characterError] = await getMyCharacterAction()
+  const session = await auth()
+  if (!session?.user?.id) return null
 
-  if (characterError || !characterResult?.character) {
-    return null
-  }
+  const character = await getCharacterByUserId(session.user.id)
+  if (!character) return null
 
-  const { character } = characterResult
-  const [allSkillsResult] = await getAllSkillsAction()
+  const allSkillsRaw = await getAllSkills()
+  let allSkills: Skill[] = allSkillsRaw || []
 
-  let allSkills: Skill[] = (allSkillsResult?.skills as unknown as Skill[]) || []
-
-  // If no skills found, use dummy skills
   if (allSkills.length === 0) {
     allSkills = DUMMY_SKILLS as unknown as Skill[]
   }
 
-  const [characterSkillsResult] = await getCharacterSkillsAction({
-    characterId: character.id,
-  })
-
-  const characterSkills = characterSkillsResult?.skills || []
+  const characterSkills = await getCharacterSkills(character.id)
 
   // Merge all skills with character progress
   const mergedSkills = allSkills.map((skill) => {
     const characterSkill = characterSkills.find((cs) => cs.skillId === skill.id)
-    const category = treeToCategory(skill.tree)
+    const category = treeToCategory(skill.tree as string)
 
     return {
       ...skill,

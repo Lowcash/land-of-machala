@@ -1,8 +1,9 @@
+import { Card } from '@/components/ui/card'
 import { Scroll, Users } from 'lucide-react'
 
 export function StatsGrid() {
   return (
-    <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
+    <Card className="border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
       <h3
         className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
         style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -36,7 +37,7 @@ export function StatsGrid() {
           </div>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
 
@@ -74,7 +75,7 @@ export function UpdatesList() {
 
 export function RecentUpdates() {
   return (
-    <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
+    <Card className="border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
       <h4
         className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
         style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -83,7 +84,7 @@ export function RecentUpdates() {
         Nejnovější změny
       </h4>
       <UpdatesList />
-    </div>
+    </Card>
   )
 }
 

@@ -1,12 +1,13 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import type { LucideIcon } from 'lucide-react'
 import { ArrowLeft, LogOut } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { isValidElement } from 'react'
-import { PlayerStats } from '../Shared/components/PlayerStats'
+import { PlayerStats } from './PlayerStats'
 
 interface GameHeaderProps {
   /** Icon to display */
@@ -51,7 +52,7 @@ export function GameHeader({
           <div className="flex min-w-0 items-center gap-2">
             {backLink && (
               <Link
-                href={backLink.href as any}
+                href={backLink.href}
                 className="mr-2 flex items-center gap-2 text-sm text-[#d4a574] hover:text-[#ffd700]"
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -66,8 +67,8 @@ export function GameHeader({
                 </div>
               ) : (
                 (() => {
-                  const LucideIcon = Icon as LucideIcon
-                  return <LucideIcon className="h-5 w-5 shrink-0 text-[#ffd700]" />
+                  const LucideIconComp = Icon as LucideIcon
+                  return <LucideIconComp className="h-5 w-5 shrink-0 text-[#ffd700]" />
                 })()
               ))}
             <div className="min-w-0">
@@ -90,14 +91,15 @@ export function GameHeader({
       {rightContent || (
         <div className="flex items-center gap-2">
           {/* Logout Button */}
-          <button
+          <Button
+            variant="ghost"
             onClick={() => router.push('/login')}
             aria-label="Odhlásit se z hry"
             className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/10 focus-visible:ring-2 focus-visible:ring-[#ff6b6b]"
           >
             <LogOut className="h-4 w-4 text-[#ff6b6b]" />
             <span className="hidden text-sm text-[#ff6b6b] sm:inline">Odhlásit</span>
-          </button>
+          </Button>
         </div>
       )}
     </div>

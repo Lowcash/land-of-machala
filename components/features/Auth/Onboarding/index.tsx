@@ -1,16 +1,18 @@
 'use client'
 
 import { useNotification } from '@/components/providers/NotificationProvider'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { createCharacterAction } from '@/lib/actions/character'
+import type { Class, Race, StoryStep } from '@/lib/game/onboarding-data'
+import { RANDOM_NAMES, classes, races } from '@/lib/game/onboarding-data'
+import type { CharacterClass, CharacterRace } from '@prisma/client'
 import * as Accordion from '@radix-ui/react-accordion'
 import { Dices } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-
-import { Card, CardContent } from '@/components/ui/card'
-import { createCharacterAction } from '@/lib/actions/character'
-import type { Class, Race, StoryStep } from '@/lib/game/onboarding-data'
-import { classes, races } from '@/lib/game/onboarding-data'
-import type { CharacterClass, CharacterRace } from '@prisma/client'
 import { Layout } from '../Shared/Layout'
 import { ClassSelector } from './Creation/ClassSelector'
 import { RaceSelector } from './Creation/RaceSelector'
@@ -58,21 +60,10 @@ export function Onboarding() {
   const randomizeCharacter = () => {
     const randomRace = races[Math.floor(Math.random() * races.length)]
     const randomClass = classes[Math.floor(Math.random() * classes.length)]
-    const randomNames = [
-      'Aragorn',
-      'Theron',
-      'Kael',
-      'Lyra',
-      'Gorath',
-      'Finnick',
-      'Valdor',
-      'Zara',
-      'Borin',
-      'Elara',
-    ]
+
     if (randomRace) setRace(randomRace.id)
     if (randomClass) setCharacterClass(randomClass.id)
-    setName(randomNames[Math.floor(Math.random() * randomNames.length)] || 'Hero')
+    setName(RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)] || 'Hero')
   }
 
   const handleStart = async () => {
@@ -152,36 +143,38 @@ export function Onboarding() {
             <div className="space-y-4 lg:col-span-3">
               <Card className="border-game-gold-muted border-2">
                 <CardContent className="p-4 sm:p-6">
-                  <label className="text-game-gold font-fantasy mb-3 block text-center text-xl">
+                  <Label className="text-game-gold font-fantasy mb-3 block text-center text-xl">
                     Jméno hrdiny
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Zadej jméno..."
                     className="border-game-copper text-game-gold placeholder:text-game-copper-muted focus:border-game-gold font-fantasy w-full rounded-lg border-2 bg-black/60 px-4 py-3 text-center text-lg transition-colors focus:outline-none"
                   />
-                  <button
+                  <Button
+                    variant="game-secondary"
                     onClick={randomizeCharacter}
-                    className="border-game-copper text-game-gold-muted hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold font-fantasy mt-4 flex w-full items-center justify-center gap-2 rounded-lg border bg-black/60 py-3 transition-all"
+                    className="border-game-copper text-game-gold-muted hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold font-fantasy mt-4 flex h-auto w-full items-center justify-center gap-2 rounded-lg border bg-black/60 py-3 transition-all"
                   >
                     <Dices className="h-5 w-5" />
                     <span>Náhodná postava</span>
-                  </button>
+                  </Button>
                 </CardContent>
               </Card>
 
               <StatsDisplay stats={finalStats} />
 
-              <button
+              <Button
+                variant="game-primary"
                 onClick={handleStart}
                 disabled={!name.trim() || isLoading}
                 className="border-game-gold bg-game-gold hover:bg-game-gold w-full rounded-lg border-2 py-4 text-xl font-bold text-black shadow-lg transition-all hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-50"
                 style={{ fontFamily: 'var(--font-medieval)' }}
               >
                 {isLoading ? 'Vstupuji do světa...' : 'Začít dobrodružství'}
-              </button>
+              </Button>
             </div>
 
             {/* Center Column: Race (4 or 5 cols) */}

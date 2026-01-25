@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { Skull } from 'lucide-react'
 import type { MarketItem } from './types'
 
@@ -15,19 +16,20 @@ export function BlackMarket({ stock, handleBuy }: BlackMarketProps) {
         <Skull className="h-3 w-3" />
       </div>
       {stock.map((item) => (
-        <button
+        <Button
           key={item.id}
           onClick={() => handleBuy(item)}
-          className="group w-full rounded border border-[#b66bd4]/30 bg-black/80 p-2 text-left transition-all hover:border-[#b66bd4]"
+          variant="ghost"
+          className="group h-auto w-full justify-start rounded border border-[#b66bd4]/30 bg-black/80 p-2 text-left transition-all hover:border-[#b66bd4]"
         >
-          <div className="mb-1 flex items-start justify-between">
+          <div className="mb-1 flex w-full items-start justify-between">
             <span className="flex items-center gap-2 text-sm font-bold text-[#dcd0ff] group-hover:text-[#b66bd4]">
               <item.icon className="h-4 w-4" />
               {item.name}
             </span>
             <span className="text-xs text-[#b66bd4]">{item.price}g</span>
           </div>
-        </button>
+        </Button>
       ))}
     </div>
   )

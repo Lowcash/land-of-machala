@@ -1,8 +1,8 @@
 'use client'
 
-import { CharacterBox, GameFooter, GameHeader } from '@/components/features/Game'
-import { GameActions } from '@/components/features/Game/components/GameActions'
-import { GameInfoPanel } from '@/components/layout/GameInfoPanel'
+import { CharacterBox, GameActivityPanel, GameFooter, GameHeader } from '@/components/features/Game'
+import { GameActions } from '@/components/features/Game/Shared/components/GameActions'
+import { PageLayout } from '@/components/layout/PageLayout'
 import { Button } from '@/components/ui/button'
 import { performCombatActionAction, performUseItemAction } from '@/lib/actions/combat'
 import { endCombat } from '@/lib/actions/combat-state'
@@ -19,8 +19,12 @@ interface CombatClientProps {
     combatPlayerHp?: number
     combatEnemyHp?: number
     combatEnemyId?: string
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    currentEnemy?: any
+    currentEnemy?: {
+      name: string
+      level: number
+      maxHp: number
+      [key: string]: unknown
+    }
   }
   inventory: CharacterItem[]
 }
@@ -32,23 +36,20 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   const [enemyHp, setEnemyHp] = useState(character.combatEnemyHp || 100)
   const [isPending, startTransition] = useTransition()
 
-  // Use activity log hook
-  const { logs } = useActivityLog(character.id as unknown as string, 2000)
+  const { logs } = useActivityLog(character.id as string, 2000)
 
-  // Ensure robust enemy data
   const enemy = {
     name: 'Nepřítel',
     level: character.level,
-    maxHp: character.combatEnemyHp ? 100 : 100,
+    maxHp: 100,
     ...character.currentEnemy,
   }
 
-  const handleAction = async (action: 'attack' | 'defend' | 'special' | 'flee', _type?: string) => {
+  const handleAction = async (action: 'attack' | 'defend' | 'special' | 'flee') => {
     startTransition(async () => {
       try {
         if (action === 'flee') {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          const result = await endCombat(character.id as any, 'flee')
+          const result = await endCombat(character.id, 'flee')
           if (result?.success) {
             router.push('/game')
           } else {
@@ -74,13 +75,11 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
           setEnemyHp(data.enemyHp || 0)
 
           if (data.result === 'victory') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await endCombat(character.id as any, 'victory')
+            await endCombat(character.id, 'victory')
             toast.success('Vítězství!')
             router.push('/game')
           } else if (data.result === 'defeat') {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            await endCombat(character.id as any, 'defeat')
+            await endCombat(character.id, 'defeat')
             toast.error('Porážka!')
             router.push('/game')
           }
@@ -92,7 +91,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
   }
 
   const [inventory] = useState(initialInventory)
-  const potions = inventory.filter((i) => i.type === 'CONSUMABLE' || i.type === 'consumable')
+  const potions = inventory.filter((i) => i.type?.toUpperCase() === 'CONSUMABLE')
 
   return (
     <PageLayout
@@ -100,56 +99,48 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
       footer={<GameFooter />}
       backgroundImage="/assets/locations/forest.jpg"
       rightPanel={
-        <GameInfoPanel
+        <GameActivityPanel
           logs={logs}
           className="mx-3 h-[140px] shrink-0 rounded border border-[#d4a574]/50 bg-black/60 p-4 backdrop-blur-sm"
         />
       }
     >
       <div className="flex min-w-0 flex-1 flex-col gap-3">
-        {/* Top Section - Player and Enemy */}
         <div className="grid w-full grid-cols-1 gap-3 px-3 pt-3 md:grid-cols-2">
-          {/* Player Stats */}
-          <div className="w-full">
-            <CharacterBox
-              name={character.name}
-              level={character.level}
-              hp={playerHp ?? character.hp}
-              hpMax={character.maxHp}
-              mana={playerMana}
-              manaMax={character.maxMana}
-              stats={{
-                strength: character.strength,
-                intelligence: character.intelligence,
-                agility: character.agility,
-                stamina: character.stamina,
-              }}
-              isEnemy={false}
-            />
-          </div>
+          <CharacterBox
+            name={character.name}
+            level={character.level}
+            hp={playerHp ?? character.hp}
+            hpMax={character.maxHp}
+            mana={playerMana}
+            manaMax={character.maxMana}
+            stats={{
+              strength: character.strength,
+              intelligence: character.intelligence,
+              agility: character.agility,
+              stamina: character.stamina,
+            }}
+            isEnemy={false}
+          />
 
-          {/* Enemy Stats */}
-          <div className="w-full">
-            <CharacterBox
-              name={enemy.name}
-              level={enemy.level}
-              hp={enemyHp ?? 100}
-              hpMax={enemy.maxHp}
-              mana={0}
-              manaMax={100}
-              stats={{
-                strength: character.strength, // Placeholder
-                intelligence: character.intelligence,
-                agility: character.agility,
-                stamina: 5, // Placeholder
-              }}
-              isEnemy={true}
-              image="/assets/enemies/wolf.png"
-            />
-          </div>
+          <CharacterBox
+            name={enemy.name}
+            level={enemy.level}
+            hp={enemyHp ?? 100}
+            hpMax={enemy.maxHp}
+            mana={0}
+            manaMax={100}
+            stats={{
+              strength: character.strength,
+              intelligence: character.intelligence,
+              agility: character.agility,
+              stamina: 5,
+            }}
+            isEnemy={true}
+            image="/assets/enemies/wolf.png"
+          />
         </div>
 
-        {/* Actions - Bottom */}
         <div className="relative min-h-0 flex-1 px-3 pb-3">
           <GameActions
             showDirections={false}
@@ -162,7 +153,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                   </div>
                   <div className="space-y-2">
                     <Button
-                      onClick={() => handleAction('defend', 'block')}
+                      onClick={() => handleAction('defend')}
                       variant="game-secondary"
                       disabled={isPending}
                       className="w-full gap-2"
@@ -226,7 +217,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
               </div>
               <div className="space-y-2">
                 <Button
-                  onClick={() => handleAction('attack', 'quick')}
+                  onClick={() => handleAction('attack')}
                   variant="game-primary"
                   disabled={isPending}
                   className="w-full justify-between"
@@ -238,7 +229,7 @@ export function CombatClient({ character, inventory: initialInventory }: CombatC
                   <span className="text-[10px] opacity-70">Základní</span>
                 </Button>
                 <Button
-                  onClick={() => handleAction('attack', 'heavy')}
+                  onClick={() => handleAction('attack')}
                   variant="game-danger"
                   disabled={isPending}
                   className="w-full justify-between"

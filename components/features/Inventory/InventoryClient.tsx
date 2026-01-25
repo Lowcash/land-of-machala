@@ -2,11 +2,13 @@
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
+import { PageLayout } from '@/components/layout/PageLayout'
 import { Backpack, Shield, Sword } from 'lucide-react'
 import { useState } from 'react'
-import type { CharacterData, InventoryItemUI } from '../Character/Shared/types'
+import type { CharacterData } from '../Character/Shared/types'
+import { ItemDetailView as ItemDetail } from './Detail/ItemDetailView'
 import { InventoryGrid } from './Grid/InventoryGrid'
-import { ItemDetail } from './Item/ItemDetail'
+import type { InventoryItemUI } from './Shared/types'
 
 interface InventoryClientProps {
   character: CharacterData
@@ -86,6 +88,6 @@ export function InventoryClient({ character, initialInventory, maxSlots }: Inven
           />
         }
       />
-    </PageTemplate>
+    </PageLayout>
   )
 }

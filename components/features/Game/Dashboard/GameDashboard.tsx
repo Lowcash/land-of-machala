@@ -1,19 +1,17 @@
 'use client'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
-import { GameInfoPanel } from '@/components/layout/GameInfoPanel'
-import { PageTemplate } from '@/components/layout/PageTemplate'
+import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
+import { PageLayout } from '@/components/layout/PageLayout'
+import { viewData } from '@/lib/game/config'
+import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
 import { useState } from 'react'
 import type { CharacterData as BaseCharacterData } from '../../Character/Shared/types'
 import type { MarketItem } from '../Locations/Market/types'
-import { viewData } from '../Shared/config/viewData'
-import { useGameMove } from '../Shared/hooks/useGameMove'
-import { useGameView } from '../Shared/hooks/useGameView'
-import { useInfoLog } from '../Shared/hooks/useInfoLog'
 import { ActionsArea } from './ActionsArea'
 import { CharacterBox } from './CharacterBox'
 
-interface CharacterData extends BaseCharacterData {
+export interface CharacterData extends BaseCharacterData {
   xpToNextLevel: number
   bankGold?: number
   stats: {
@@ -53,7 +51,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const currentViewData = viewData[currentView]
 
   return (
-    <PageTemplate
+    <PageLayout
       header={
         <GameHeader
           title={currentViewData.title}
@@ -65,7 +63,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
       footer={<GameFooter />}
       backgroundImage={currentViewData.bg}
       rightPanel={
-        <GameInfoPanel
+        <GameActivityPanel
           className={`mx-3 h-[140px] shrink-0 bg-black/60 transition-colors ${
             isShaking ? 'animate-shake' : ''
           }`}
@@ -75,7 +73,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
             key={infoText || currentViewData.desc}
             dangerouslySetInnerHTML={{ __html: infoText || currentViewData.desc }}
           />
-        </GameInfoPanel>
+        </GameActivityPanel>
       }
     >
       <div className="flex min-w-0 flex-1 flex-col gap-3">
@@ -117,6 +115,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
           bankGold={character.bankGold || 0}
         />
       </div>
-    </PageTemplate>
+    </PageLayout>
   )
 }

@@ -1,9 +1,9 @@
 'use client'
 
+import { useHeroText } from '@/lib/hooks/auth'
 import { Sparkles } from 'lucide-react'
 import { Brand } from '../Shared/Brand'
 import { Layout } from '../Shared/Layout'
-import { useHeroText } from '../Shared/hooks/useHeroText'
 import { FeatureList } from './FeatureList'
 import { RegisterForm } from './RegisterForm'
 
@@ -43,13 +43,6 @@ export function Register() {
           <div className="border-game-copper/50 text-game-copper-muted rounded-lg border bg-black/60 p-4 text-center text-sm italic">
             {heroText}
           </div>
-        </div>
-
-        {/* Mobile Footer */}
-        <div className="border-game-copper/30 col-span-full border-t pt-4 text-center lg:hidden">
-          <p className="text-game-copper-muted text-xs">
-            Verze 2.0 • © {new Date().getFullYear()} Land of Machala
-          </p>
         </div>
       </div>
     </Layout>

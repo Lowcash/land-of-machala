@@ -67,8 +67,9 @@ export async function travelToLocation(characterId: string, locationId: string) 
 
     revalidatePath('/game')
     return { success: true }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Travel error:', error)
-    return { success: false, error: error.message }
+    const message = error instanceof Error ? error.message : 'Neznámá chyba při cestování'
+    return { success: false, error: message }
   }
 }

@@ -1,13 +1,15 @@
-import { getMyCharacterAction } from '@/lib/actions/character'
+import { getCharacterByUserId } from '@/entity/character'
+import { auth } from '@/lib/auth'
 
 export async function getCharacterPageData() {
-  const [result, error] = await getMyCharacterAction()
+  const session = await auth()
+  if (!session?.user?.id) return null
 
-  if (error || !result?.character) {
+  const character = await getCharacterByUserId(session.user.id)
+
+  if (!character) {
     return null
   }
-
-  const character = result.character
 
   // Map server data to client props
   const clientProps = {
@@ -35,6 +37,8 @@ export async function getCharacterPageData() {
       poisonResistance: character.poisonResistance,
       reputation: 0,
       gold: character.gold,
+      bankGold: character.bankGold,
+      talentPoints: character.talentPoints,
     },
     inventory: character.inventory.map((inv) => ({
       id: inv.id,

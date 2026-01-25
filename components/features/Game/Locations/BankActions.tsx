@@ -1,114 +1,127 @@
 'use client'
 
-import { GameActionsPanel } from '@/components/features/Game/Layout/GameActionsPanel'
-import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { depositGoldAction, withdrawGoldAction } from '@/lib/actions/bank'
 import { ArrowRight, Coins, Landmark } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
+import { LocationAction } from '../Shared/components/LocationAction'
+import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface BankActionsProps {
-  onBack: () => void
   characterId: string
+  gold: number
+  balance: number
 }
 
-export function BankActions({ onBack, characterId }: BankActionsProps) {
+export function BankActions({ characterId, gold, balance }: BankActionsProps) {
   const [depositAmount, setDepositAmount] = useState('')
   const [withdrawAmount, setWithdrawAmount] = useState('')
-  const [bankBalance, setBalance] = useState(1000) // Mock
-  const [gold, setGold] = useState(500) // Mock
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
 
   const handleDeposit = () => {
     const amount = Number(depositAmount)
-    if (amount > 0 && amount <= gold) {
-      setGold((g) => g - amount)
-      setBalance((b) => b + amount)
-      setDepositAmount('')
-    }
+    if (amount <= 0 || amount > gold) return
+
+    startTransition(async () => {
+      const result = await depositGoldAction(characterId, amount)
+      if (result.success) {
+        toast.success(result.message)
+        setDepositAmount('')
+        router.refresh()
+      } else {
+        toast.error(result.message)
+      }
+    })
   }
 
   const handleWithdraw = () => {
     const amount = Number(withdrawAmount)
-    if (amount > 0 && amount <= bankBalance) {
-      setBalance((b) => b - amount)
-      setGold((g) => g + amount)
-      setWithdrawAmount('')
-    }
+    if (amount <= 0 || amount > balance) return
+
+    startTransition(async () => {
+      const result = await withdrawGoldAction(characterId, amount)
+      if (result.success) {
+        toast.success(result.message)
+        setWithdrawAmount('')
+        router.refresh()
+      } else {
+        toast.error(result.message)
+      }
+    })
   }
 
   return (
-    <GameActionsPanel
-      title="Banka - Trezor"
-      onBack={onBack}
-      showDirections={false}
-      onToggleDirections={() => {}}
-      exploration={
-        <div className="space-y-4">
-          <Card variant="game" className="p-3">
-            <div className="text-game-gold text-xs font-bold tracking-wider uppercase">
-              V trezoru:
-            </div>
-            <div className="flex items-center gap-2">
-              <Landmark className="h-4 w-4 text-[#ffd700]" />
-              <span className="text-xl font-bold text-[#f5e6d3]">{bankBalance}g</span>
-            </div>
-          </Card>
-
-          <Card
-            variant="muted"
-            className="border-game-copper/20 bg-black/40 p-3 text-[#8b7355] italic"
-          >
-            "Tvé zlato je u nás v bezpečí. Úrok 0%, poplatky 10%... dělám si legraci, příteli."
-          </Card>
-        </div>
-      }
+    <LocationLayout
+      title="Strážnice pokladů"
+      description="Tvé zlato je u nás v bezpečí, poutníku. Žádné poplatky, čistá důvěra."
     >
-      <div className="space-y-4 pt-2">
-        <div className="space-y-2">
-          <label className="text-game-copper-muted text-xs font-bold uppercase">Uložit zlato</label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              value={depositAmount}
-              onChange={(e) => setDepositAmount(e.target.value)}
-              placeholder="Množství..."
-              className="h-10"
-            />
-            <Button
-              variant="game-secondary"
-              onClick={handleDeposit}
-              disabled={!depositAmount || Number(depositAmount) <= 0}
-              className="shrink-0"
-            >
-              <ArrowRight className="h-4 w-4" />
-            </Button>
+      <div className="space-y-4 px-1">
+        <Card variant="game" className="bg-black/40 p-3">
+          <div className="text-game-gold text-[10px] font-bold tracking-wider uppercase opacity-70">
+            Zůstatek v bance
           </div>
-          <div className="text-right text-[10px] text-[#8b7355]">
-            U sebe máš: <span className="text-[#ffd700]">{gold}g</span>
+          <div className="flex items-center gap-2">
+            <Landmark className="h-4 w-4 text-[#ffd700]" />
+            <span className="text-xl font-bold text-[#f5e6d3]">{balance}g</span>
           </div>
-        </div>
+        </Card>
 
-        <div className="space-y-2">
-          <label className="text-game-copper-muted text-xs font-bold uppercase">Vybrat zlato</label>
-          <div className="flex gap-2">
-            <Input
-              type="number"
-              value={withdrawAmount}
-              onChange={(e) => setWithdrawAmount(e.target.value)}
-              placeholder="Množství..."
-              className="h-10"
-            />
-            <Button
-              variant="game-secondary"
-              onClick={handleWithdraw}
-              disabled={!withdrawAmount || Number(withdrawAmount) <= 0}
-              className="shrink-0"
-            >
-              <Coins className="h-4 w-4" />
-            </Button>
+        <div className="space-y-3">
+          <div className="space-y-2">
+            <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
+              Uložit zlato
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                value={depositAmount}
+                onChange={(e) => setDepositAmount(e.target.value)}
+                placeholder="Množství..."
+                className="h-10 bg-black/40"
+              />
+              <LocationAction
+                title="Vložit"
+                icon={ArrowRight}
+                onClick={handleDeposit}
+                disabled={!depositAmount || Number(depositAmount) <= 0 || isPending}
+                loading={isPending}
+                className="p-1"
+              />
+            </div>
+            <div className="text-right text-[10px] text-[#8b7355]">
+              V měšci: <span className="text-[#ffd700]">{gold}g</span>
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
+              Vybrat zlato
+            </Label>
+            <div className="flex gap-2">
+              <Input
+                type="number"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                placeholder="Množství..."
+                className="h-10 bg-black/40"
+              />
+              <LocationAction
+                title="Vybrat"
+                icon={Coins}
+                onClick={handleWithdraw}
+                disabled={!withdrawAmount || Number(withdrawAmount) <= 0 || isPending}
+                loading={isPending}
+                className="p-1"
+              />
+            </div>
           </div>
         </div>
       </div>
-    </GameActionsPanel>
+    </LocationLayout>
   )
 }

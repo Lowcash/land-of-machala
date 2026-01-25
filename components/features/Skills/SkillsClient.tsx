@@ -2,18 +2,20 @@
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
+import { PageLayout } from '@/components/layout/PageLayout'
 import { BookOpen } from 'lucide-react'
 import { useState } from 'react'
-import type { CharacterData, MergedSkill, SkillCategory } from '../Character/Shared/types'
-import { SkillDetail } from './Detail/SkillDetail'
+import { SkillDetailPanel as SkillDetail } from './Detail/SkillDetailPanel'
 import { SkillGrid } from './Grid/SkillGrid'
+import type { MergedSkill, SkillCategory } from './Shared/types'
 
 interface SkillsClientProps {
-  character: CharacterData
+  characterId: string
+  talentPoints: number
   skills: MergedSkill[]
 }
 
-export function SkillsClient({ character, skills }: SkillsClientProps) {
+export function SkillsClient({ characterId, talentPoints, skills }: SkillsClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<SkillCategory>('all')
   const [selectedSkillId, setSelectedSkillId] = useState<string | null>(null)
 
@@ -32,7 +34,7 @@ export function SkillsClient({ character, skills }: SkillsClientProps) {
         main={
           <SkillGrid
             skills={skills}
-            talentPoints={character.talentPoints}
+            talentPoints={talentPoints}
             selectedCategory={selectedCategory}
             onSelectCategoryAction={setSelectedCategory}
             selectedSkill={selectedSkillId}
@@ -43,11 +45,11 @@ export function SkillsClient({ character, skills }: SkillsClientProps) {
           <SkillDetail
             skill={selectedSkill}
             onClose={() => setSelectedSkillId(null)}
-            characterId={character.id}
-            talentPoints={character.talentPoints}
+            characterId={characterId}
+            talentPoints={talentPoints}
           />
         }
       />
-    </PageTemplate>
+    </PageLayout>
   )
 }

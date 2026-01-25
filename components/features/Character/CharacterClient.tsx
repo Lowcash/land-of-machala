@@ -1,11 +1,13 @@
 'use client'
 
 import { CharacterBox } from '@/components/features/Game'
+import { ACHIEVEMENTS } from '@/lib/game/data'
+import type { LucideIcon} from 'lucide-react';
 import { Coins, MapPin, Shield, Swords, Trophy } from 'lucide-react'
 import { AchievementList } from './Achievements/AchievementList'
 import { EquipmentList } from './Equipment/EquipmentList'
 import { StatsPanel } from './Profile/StatsPanel'
-import { CharacterData, CharacterItem } from './Shared/types'
+import type { CharacterData, CharacterItem } from './Shared/types'
 import { calculateDerivedStats } from './Shared/utils'
 
 interface CharacterClientProps {
@@ -17,51 +19,24 @@ export function CharacterClient({ character, inventory }: CharacterClientProps) 
   const equipped = inventory.filter((item) => item.equipped)
   const stats = calculateDerivedStats(character, inventory)
 
-  // Mock achievements
-  const achievements = [
-    {
-      id: 1,
-      name: 'První kroky',
-      description: 'Vstoupil jsi do světa Machala',
-      icon: Trophy,
-      unlocked: true,
-    },
-    {
-      id: 2,
-      name: 'Začátečník',
-      description: 'Dosáhl jsi level 5',
-      icon: Trophy,
-      unlocked: false,
-    },
-    {
-      id: 3,
-      name: 'Bojovník',
-      description: 'Poraz 10 nepřátel',
-      icon: Swords,
-      unlocked: false,
-    },
-    {
-      id: 4,
-      name: 'Průzkumník',
-      description: 'Prozkoumal jsi 5 lokací',
-      icon: MapPin,
-      unlocked: false,
-    },
-    {
-      id: 5,
-      name: 'Sběratel',
-      description: 'Najdi 20 itemů',
-      icon: Shield,
-      unlocked: false,
-    },
-    {
-      id: 6,
-      name: 'Obchodník',
-      description: 'Prodej 50 itemů',
-      icon: Coins,
-      unlocked: false,
-    },
-  ]
+  // Enrich achievements with UI metadata
+  // TODO: Move icon mapping to a centralized config once we have server-side achievement tracking
+  const ACHIEVEMENT_ICONS: Record<number, LucideIcon> = {
+    1: Trophy,
+    2: Trophy,
+    3: MapPin,
+    4: Coins,
+    5: Shield,
+    6: Swords,
+  }
+
+  const achievements = ACHIEVEMENTS.map((ach) => ({
+    id: ach.id,
+    name: ach.name,
+    description: ach.desc,
+    icon: ACHIEVEMENT_ICONS[ach.id] || Trophy,
+    unlocked: ach.id === 1, // TODO: Get actual unlocked status from server
+  }))
 
   return (
     <div className="mx-auto w-full max-w-7xl space-y-3 pb-4 md:p-3">

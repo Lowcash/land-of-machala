@@ -1,12 +1,13 @@
 'use client'
 
+import type { LucideIcon } from 'lucide-react'
 import { Trophy } from 'lucide-react'
 
 interface Achievement {
   id: number
   name: string
   description: string
-  icon: any
+  icon: LucideIcon
   unlocked: boolean
 }
 

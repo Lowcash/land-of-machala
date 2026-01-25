@@ -1,3 +1,4 @@
+import { TransitionLayout } from '@/components/layout/TransitionLayout'
 import type { ReactNode } from 'react'
 
 interface LayoutProps {
@@ -33,11 +34,18 @@ export function Layout({
         </div>
 
         <div
-          className={`relative z-10 container mx-auto min-h-screen px-4 ${centered ? 'flex flex-col items-center justify-center py-12' : 'flex h-screen flex-col'}`}
+          className={`relative z-10 container mx-auto px-4 ${centered ? 'flex min-h-screen flex-col items-center justify-center py-12' : 'flex h-screen flex-col'}`}
         >
-          {children}
+          <div className="flex w-full flex-1 flex-col items-center justify-center">{children}</div>
+
+          {/* Version Footer */}
+          <div className="mt-8 shrink-0 text-center opacity-40 transition-opacity hover:opacity-100">
+            <p className="font-fantasy text-[10px] tracking-widest text-[#d4a574] uppercase sm:text-xs">
+              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+            </p>
+          </div>
         </div>
       </div>
-    </RouteTransition>
+    </TransitionLayout>
   )
 }

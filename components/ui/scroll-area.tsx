@@ -23,7 +23,9 @@ const ScrollArea = React.forwardRef<
       className={cn('relative overflow-hidden', className)}
       {...props}
     >
-      {showIndicators && <ScrollIndicator targetRef={viewportRef} position="both" />}
+      {showIndicators && (
+        <ScrollIndicator targetRef={viewportRef as React.RefObject<HTMLElement>} position="both" />
+      )}
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
         className={cn('h-full w-full rounded-[inherit] hover:cursor-auto', viewportClassName)}

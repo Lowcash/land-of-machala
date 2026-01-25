@@ -1,73 +1,87 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { GamePanel } from '@/components/ui/game/GamePanel'
+import { Slider } from '@/components/ui/slider'
+import { rollDiceAction } from '@/lib/actions/game-actions'
+import { buyRumorAction, buyStayAction } from '@/lib/actions/tavern'
 import { BedDouble, Beer, ChevronRight, Dices, ScrollText } from 'lucide-react'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useState, useTransition } from 'react'
+import { toast } from 'sonner'
+import { LocationAction } from '../Shared/components/LocationAction'
+import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface TavernActionsProps {
-  onBack: () => void
-  onRest: () => void
+  characterId: string
   gold: number
-  setGold: (gold: number | ((prev: number) => number)) => void
-  setInfoText: (text: string) => void
+  onInfoAction: (text: string | null) => void
 }
 
-export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: TavernActionsProps) {
+export function TavernActions({ characterId, gold, onInfoAction }: TavernActionsProps) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
   const [activeTab, setActiveTab] = useState<'menu' | 'gamble'>('menu')
   const [betAmount, setBetAmount] = useState(10)
   const [diceResult, setDiceResult] = useState<{ player: number[]; house: number[] } | null>(null)
   const [gameState, setGameState] = useState<'idle' | 'rolling' | 'result'>('idle')
-
   const handleRumors = () => {
     if (gold < 5) {
-      setInfoText('Nemáš dost zlata na drink pro štamgasta! (5g)')
+      onInfoAction('Nemáš dost zlata na drink pro štamgasta! (5g)')
       return
     }
-    setGold((prev: number) => Math.max(0, prev - 5))
-    const rumors = [
-      'Opilý trpaslík ti prozradil, že v horách našel žílu zlata, ale vyhnali ho obři.',
-      'Zaslechl jsi, že starosta má tajný tunel z radnice rovnou do banky.',
-      'Někdo říkal, že v noci vylézají z kanálů obří krysy s červenýma očima.',
-      'Hostinský prý míchá pivo s vodou z řeky, proto je tak levné.',
-    ]
-    const rumor = rumors[Math.floor(Math.random() * rumors.length)]
-    setInfoText(`Koupil jsi rundu (5g). ${rumor}`)
+
+    startTransition(async () => {
+      const result = await buyRumorAction(characterId)
+      if (result.success) {
+        onInfoAction(`${result.message} ${result.rumor}`)
+        router.refresh()
+      } else {
+        toast.error(result.message)
+      }
+    })
+  }
+
+  const handleStay = () => {
+    if (gold < 10) {
+      onInfoAction('Nemáš dost zlata na pokoj! (10g)')
+      return
+    }
+
+    startTransition(async () => {
+      const result = await buyStayAction(characterId)
+      if (result.success) {
+        onInfoAction(result.message)
+        router.refresh()
+      } else {
+        toast.error(result.message)
+      }
+    })
   }
 
   const rollDice = () => {
     if (gold < betAmount) {
-      setInfoText('Nemáš dost zlata na sázku!')
+      onInfoAction('Nemáš dost zlata na sázku!')
       return
     }
 
-    setGameState('rolling')
-    setGold((prev) => prev - betAmount)
-
-    // Animation delay
-    setTimeout(() => {
-      const p1 = Math.floor(Math.random() * 6) + 1
-      const p2 = Math.floor(Math.random() * 6) + 1
-      const h1 = Math.floor(Math.random() * 6) + 1
-      const h2 = Math.floor(Math.random() * 6) + 1
-
-      const playerSum = p1 + p2
-      const houseSum = h1 + h2
-
-      setDiceResult({ player: [p1, p2], house: [h1, h2] })
-      setGameState('result')
-
-      if (playerSum > houseSum) {
-        const win = betAmount * 2
-        setGold((prev) => prev + win)
-        setInfoText(`Vyhrál jsi ${win}g!`)
-      } else if (playerSum < houseSum) {
-        setInfoText(`Prohrál jsi ${betAmount}g.`)
-      } else {
-        setGold((prev) => prev + betAmount)
-        setInfoText('Remíza! Sázka se vrací.')
+    startTransition(async () => {
+      setGameState('rolling')
+      try {
+        const result = await rollDiceAction(characterId, betAmount)
+        await new Promise((r) => setTimeout(r, 600))
+        setDiceResult({ player: result.player, house: result.house })
+        setGameState('result')
+        if (result.result === 'win') {
+          onInfoAction(`Vyhrál jsi ${result.goldChange}g!`)
+        } else if (result.result === 'lose') {
+          onInfoAction(`Prohrál jsi ${Math.abs(result.goldChange)}g.`)
+        } else {
+          onInfoAction('Remíza! Sázka se vrací.')
+        }
+        router.refresh()
+      } catch {
+        onInfoAction('Chyba při hře.')
       }
-    }, 600)
+    })
   }
 
   const Die = ({ val, rolling }: { val: number; rolling: boolean }) => (
@@ -78,167 +92,99 @@ export function TavernActions({ onBack, onRest, gold, setGold, setInfoText }: Ta
     </div>
   )
 
-  const renderDiceGame = () => (
-    <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-      <div className="mb-2 flex w-full items-center justify-between text-xs text-[#8b7355]">
-        <span>
-          Tvé zlato: <span className="text-[#ffd700]">{gold}g</span>
-        </span>
-      </div>
-
-      <div className="flex w-full items-center justify-center gap-8 rounded border border-[#8b6f47]/30 bg-black/40 p-4">
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold tracking-wider text-[#ffd700] uppercase">Ty</span>
-          <div className="flex gap-2">
-            <Die val={diceResult?.player[0] || 1} rolling={gameState === 'rolling'} />
-            <Die val={diceResult?.player[1] || 1} rolling={gameState === 'rolling'} />
-          </div>
-          <span className="font-mono text-sm text-[#d4a574]">
-            {gameState === 'result' && diceResult?.player
-              ? diceResult.player[0]! + diceResult.player[1]!
-              : '-'}
-          </span>
-        </div>
-
-        <div className="text-xl font-bold text-[#8b7355]">VS</div>
-
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-xs font-bold tracking-wider text-[#ff6b6b] uppercase">
-            Hostinský
-          </span>
-          <div className="flex gap-2">
-            <Die val={diceResult?.house[0] || 1} rolling={gameState === 'rolling'} />
-            <Die val={diceResult?.house[1] || 1} rolling={gameState === 'rolling'} />
-          </div>
-          <span className="font-mono text-sm text-[#d4a574]">
-            {gameState === 'result' && diceResult?.house
-              ? diceResult.house[0]! + diceResult.house[1]!
-              : '-'}
-          </span>
-        </div>
-      </div>
-
-      <div className="w-full space-y-2">
-        <div className="flex justify-between text-xs">
-          <span className="text-[#8b7355]">Sázka:</span>
-          <span className="text-[#ffd700]">{betAmount}g</span>
-        </div>
-        <Slider
-          defaultValue={[betAmount]}
-          max={Math.min(gold, 500)}
-          min={10}
-          step={10}
-          onValueChange={(val) => setBetAmount(val[0])}
-          disabled={gameState === 'rolling'}
-          className="py-4"
+  if (activeTab === 'gamble') {
+    return (
+      <div className="space-y-4">
+        <LocationAction
+          variant="compact"
+          title="Zpět k baru"
+          icon={ChevronRight}
+          className="h-auto border-none bg-transparent p-0 text-[#8b7355] hover:bg-transparent hover:text-[#d4a574]"
+          onClick={() => setActiveTab('menu')}
         />
-        <div className="flex justify-between text-[10px] text-[#8b7355]">
-          <span>10g</span>
-          <span>{Math.min(gold, 500)}g</span>
-        </div>
-      </div>
 
-      <Button
-        variant="game-primary"
-        onClick={rollDice}
-        disabled={gameState === 'rolling' || gold < betAmount}
-        className="w-full justify-center border-[#ffe4b5] bg-linear-to-r from-[#ffd700] to-[#b8860b] py-3 font-bold tracking-wider text-black uppercase transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:grayscale"
-      >
-        {gameState === 'rolling' ? 'Kostky se kutálí...' : 'Hodit kostkami'}
-      </Button>
-    </div>
-  )
-
-  return (
-    <>
-      {activeTab === 'gamble' ? (
-        <GamePanel title="KOSTKY" icon={Dices} className="bg-black/80 shadow-xl backdrop-blur-md">
-          <Button
-            variant="link"
-            onClick={() => setActiveTab('menu')}
-            className="mb-4 h-auto p-0 text-sm text-[#8b7355] hover:text-[#d4a574] hover:no-underline"
-          >
-            <ChevronRight className="mr-2 h-4 w-4 rotate-180" />
-            Zpět k baru
-          </Button>
-          {renderDiceGame()}
-        </GamePanel>
-      ) : (
-        <GameActions
-          title="Taverna"
-          onBack={onBack}
-          showDirections={false}
-          onToggleDirections={() => {}}
-          exploration={
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 rounded border border-[#ffd700]/30 bg-[#ffd700]/10 p-3 text-[#ffd700]">
-                <span className="text-xs tracking-wider text-[#8b7355] uppercase">Tvé zlato:</span>
-                <span className="font-bold">{gold}g</span>
-              </div>
-              <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
-                Hlasitý smích a cinkání hrnčků naplněuje tavernu &quot;U Zlomeného meče&quot;. Je to
-                jediné místo, kde se v tomhle městě dá opravdu odpočinout a načerpat novou energii
-                na další výpravy.
+        <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+          <div className="flex w-full items-center justify-around py-2">
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[10px] font-bold text-[#ffd700] uppercase">Ty</span>
+              <div className="flex gap-1.5">
+                <Die val={diceResult?.player[0] || 1} rolling={gameState === 'rolling'} />
+                <Die val={diceResult?.player[1] || 1} rolling={gameState === 'rolling'} />
               </div>
             </div>
-          }
-        >
-          <div className="space-y-1.5 pt-2">
-            <Button
-              variant="game-secondary"
-              onClick={() => {}}
-              className="w-full justify-between"
-              size="game-lg"
-            >
-              <div className="flex items-center gap-3">
-                <Beer className="h-5 w-5 text-[#ffd700]" />
-                <span>
-                  Koupit <span className="text-[#ffd700]">pivo</span> (5g)
-                </span>
+            <div className="text-sm font-bold text-[#8b7355]">VS</div>
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-[10px] font-bold text-[#ff6b6b] uppercase">Hostinský</span>
+              <div className="flex gap-1.5">
+                <Die val={diceResult?.house[0] || 1} rolling={gameState === 'rolling'} />
+                <Die val={diceResult?.house[1] || 1} rolling={gameState === 'rolling'} />
               </div>
-            </Button>
-            <Button
-              variant="game-secondary"
-              onClick={onRest}
-              className="w-full justify-between"
-              size="game-lg"
-            >
-              <div className="flex items-center gap-3">
-                <BedDouble className="h-5 w-5 text-[#ffd700]" />
-                <span>
-                  <span className="text-[#ffd700]">Odpočinout si</span> (10g)
-                </span>
-              </div>
-            </Button>
-            <Button
-              variant="game-secondary"
-              onClick={handleRumors}
-              className="w-full justify-between"
-              size="game-lg"
-            >
-              <div className="flex items-center gap-3">
-                <ScrollText className="h-5 w-5 text-[#ffd700]" />
-                <span>
-                  Koupit rundu a <span className="text-[#ffd700]">zvědět drby</span> (5g)
-                </span>
-              </div>
-            </Button>
-            <Button
-              variant="game-secondary"
-              onClick={() => setActiveTab('gamble')}
-              className="w-full justify-between"
-              size="game-lg"
-            >
-              <div className="flex items-center gap-3">
-                <Dices className="h-5 w-5 text-[#ffd700]" />
-                <span>
-                  Hrát <span className="text-[#ffd700]">kostky</span>
-                </span>
-              </div>
-            </Button>
+            </div>
           </div>
-        </GameActions>
-      )}
-    </>
+
+          <div className="w-full space-y-2 px-2">
+            <div className="flex justify-between text-[10px]">
+              <span className="text-[#8b7355]">Sázka:</span>
+              <span className="font-bold text-[#ffd700]">{betAmount}g</span>
+            </div>
+            <Slider
+              defaultValue={[betAmount]}
+              max={Math.min(gold, 500)}
+              min={10}
+              step={10}
+              onValueChange={(val) => val[0] !== undefined && setBetAmount(val[0])}
+              disabled={gameState === 'rolling'}
+            />
+          </div>
+
+          <LocationAction
+            title={gameState === 'rolling' ? 'Hází se...' : 'Hrát kostky'}
+            icon={Dices}
+            onClick={rollDice}
+            disabled={gameState === 'rolling' || gold < betAmount || isPending}
+            className="w-full py-2"
+          />
+        </div>
+      </div>
+    )
+  }
+
+  return (
+    <LocationLayout
+      title="Hostinec 'U Hladového skřeta'"
+      description="Uvnitř je rušno a zakouřeno. Hostinský právě utírá stůl a v rohu parta dobrodruhů hraje kostky."
+    >
+      <LocationAction
+        variant="compact"
+        title="Koupit"
+        description="pivo"
+        icon={Beer}
+        rightElement={<span className="text-[10px] text-[#8b7355]">(5g)</span>}
+        onClick={() => {}}
+      />
+      <LocationAction
+        variant="compact"
+        title="Odpočinout si"
+        icon={BedDouble}
+        rightElement={<span className="text-[10px] text-[#8b7355]">(10g)</span>}
+        disabled={isPending}
+        onClick={handleStay}
+      />
+      <LocationAction
+        variant="compact"
+        title="Drby a"
+        description="zvěsti"
+        icon={ScrollText}
+        rightElement={<span className="text-[10px] text-[#8b7355]">(5g)</span>}
+        onClick={handleRumors}
+      />
+      <LocationAction
+        variant="compact"
+        title="Hrát"
+        description="kostky"
+        icon={Dices}
+        onClick={() => setActiveTab('gamble')}
+      />
+    </LocationLayout>
   )
 }

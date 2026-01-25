@@ -1,17 +1,22 @@
-'use client'
-
+import type { View } from '@/lib/game/config'
+import { viewData } from '@/lib/game/config'
 import React from 'react'
-import { TownActions } from '../Locations/TownActions'
-
+import { BankActions } from '../Locations/BankActions'
+import type { MarketItem } from '../Locations/Market/types'
 import { HealerShop } from '../Locations/Shops/HealerShop'
 import { MarketShop } from '../Locations/Shops/MarketShop'
 import { SmithShop } from '../Locations/Shops/SmithShop'
-
-import { BankActions } from '../Locations/BankActions'
 import { TavernActions } from '../Locations/TavernActions'
+import { TownActions } from '../Locations/TownActions'
+import { GameActions } from '../Shared/components/GameActions'
 
-import type { MarketItem } from '../Locations/Market/types'
-import type { View } from '../Shared/config/viewData'
+interface Buff {
+  name: string
+  stat: string
+  val: number
+}
+
+type MoveDirection = 'north' | 'south' | 'east' | 'west'
 
 interface ActionsAreaProps {
   currentView: View
@@ -21,10 +26,10 @@ interface ActionsAreaProps {
   setGold: React.Dispatch<React.SetStateAction<number>>
   inventory: MarketItem[]
   setInventory: React.Dispatch<React.SetStateAction<MarketItem[]>>
-  activeBuffs: any[]
-  setActiveBuffs: React.Dispatch<React.SetStateAction<any[]>>
+  activeBuffs: Buff[]
+  setActiveBuffs: React.Dispatch<React.SetStateAction<Buff[]>>
   handleSetInfoText: (text: string | null) => void
-  handleMove: (direction: any) => void
+  handleMove: (direction: MoveDirection) => void
   characterId: string
   bankGold: number
 }
@@ -44,67 +49,64 @@ export function ActionsArea({
   characterId,
   bankGold,
 }: ActionsAreaProps) {
-  // Wrapper to bridge setInfoText interface
-  const setInfoTextWrapper = (text: string) => handleSetInfoText(text)
+  const currentViewConfig = viewData[currentView]
 
   return (
     <div className="relative flex h-full min-h-0 w-full flex-1 flex-col">
-      {currentView === 'town' && (
-        <TownActions
-          onSmith={() => goToView('smith')}
-          onBank={() => goToView('bank')}
-          onHealer={() => goToView('healer')}
-          onTavern={() => goToView('tavern')}
-          onMarket={() => goToView('market')}
-          onMove={handleMove}
-          setInfoText={handleSetInfoText}
-        />
-      )}
+      <GameActions
+        title={currentViewConfig.title}
+        onBack={currentView !== 'town' ? goBack : undefined}
+        showDirections={currentView === 'town'}
+        onToggleDirections={() => {}}
+        onMove={handleMove}
+        exploration={
+          <div className="space-y-4">
+            <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
+              <div dangerouslySetInnerHTML={{ __html: currentViewConfig.desc }} />
+            </div>
+          </div>
+        }
+      >
+        <div className="space-y-1.5 pt-2">
+          {currentView === 'town' && <TownActions onView={goToView} />}
 
-      {currentView === 'smith' && (
-        <SmithShop
-          onBack={goBack}
-          gold={gold}
-          setGold={setGold}
-          inventory={inventory}
-          setInventory={setInventory}
-        />
-      )}
+          {currentView === 'bank' && (
+            <BankActions characterId={characterId} gold={gold} balance={bankGold} />
+          )}
 
-      {currentView === 'bank' && (
-        <BankActions onBack={goBack} gold={gold} balance={bankGold} characterId={characterId} />
-      )}
+          {currentView === 'tavern' && (
+            <TavernActions characterId={characterId} gold={gold} onInfoAction={handleSetInfoText} />
+          )}
 
-      {currentView === 'healer' && (
-        <HealerShop
-          onBack={goBack}
-          gold={gold}
-          setGold={setGold}
-          activeBuffs={activeBuffs}
-          setActiveBuffs={setActiveBuffs}
-        />
-      )}
+          {currentView === 'smith' && (
+            <SmithShop
+              gold={gold}
+              setGold={setGold}
+              inventory={inventory}
+              setInventory={setInventory}
+            />
+          )}
 
-      {currentView === 'tavern' && (
-        <TavernActions
-          onBack={goBack}
-          onRest={() => {}}
-          gold={gold}
-          setGold={setGold}
-          setInfoText={handleSetInfoText}
-        />
-      )}
+          {currentView === 'healer' && (
+            <HealerShop
+              gold={gold}
+              setGold={setGold}
+              activeBuffs={activeBuffs}
+              setActiveBuffs={setActiveBuffs}
+            />
+          )}
 
-      {currentView === 'market' && (
-        <MarketShop
-          onBack={goBack}
-          gold={gold}
-          setGold={setGold}
-          inventory={inventory}
-          setInventory={setInventory}
-          setInfoText={setInfoTextWrapper}
-        />
-      )}
+          {currentView === 'market' && (
+            <MarketShop
+              gold={gold}
+              setGold={setGold}
+              inventory={inventory}
+              setInventory={setInventory}
+              setInfoText={handleSetInfoText}
+            />
+          )}
+        </div>
+      </GameActions>
     </div>
   )
 }

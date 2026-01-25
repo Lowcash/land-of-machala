@@ -1,26 +1,26 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { SMITH_STOCK } from '@/lib/game/data'
-import { LucideIcon } from 'lucide-react'
+import type { LucideIcon } from 'lucide-react'
 import { toast } from 'sonner'
+import { LocationLayout } from '../../Shared/components/LocationLayout'
 import { ShopInterface, type ShopItem } from '../../Shared/components/ShopInterface'
-import type { MarketItem } from '../Market/types'
+import type { MarketItem, MarketItemType } from '../Market/types'
 
 interface SmithShopProps {
-  onBack: () => void
   gold: number
   setGold: (val: number | ((prev: number) => number)) => void
   inventory: MarketItem[]
   setInventory: (val: MarketItem[] | ((prev: MarketItem[]) => MarketItem[])) => void
 }
 
-export function SmithShop({ onBack, gold, setGold, inventory, setInventory }: SmithShopProps) {
+export function SmithShop({ gold, setGold, inventory, setInventory }: SmithShopProps) {
   const handleBuy = (item: ShopItem) => {
-    // Create new item from stock
     const newItem: MarketItem = {
       id: Math.max(0, ...inventory.map((i) => i.id)) + 1 + Math.floor(Math.random() * 1000),
       name: item.name,
-      type: item.type as any,
+      type: item.type as MarketItemType,
       icon: item.icon as LucideIcon,
       price: item.price,
       attack: item.attack,
@@ -36,54 +36,23 @@ export function SmithShop({ onBack, gold, setGold, inventory, setInventory }: Sm
     toast.success(`Koupeno: ${item.name}`)
   }
 
-  const columns = [
-    { key: 'name', label: 'Název' },
-    {
-      key: 'description',
-      label: 'Popis',
-      render: (item: any) => (
-        <div>
-          <div>{item.description}</div>
-          <div className="mt-1 flex items-center gap-2 text-xs">
-            {item.attack && <span className="text-game-danger">Útok: +{item.attack}</span>}
-            {item.defense && <span className="text-game-info">Obrana: +{item.defense}</span>}
-          </div>
-        </div>
-      ),
-    },
-    {
-      key: 'price',
-      label: 'Cena',
-      render: (item: any) => <span className="text-game-gold">{item.price}g</span>,
-    },
-  ]
-
-  const customContent = (
-    <div className="space-y-2">
-      <h4 className="font-medieval text-game-copper-muted scroll-m-20 text-xl font-semibold tracking-tight">
-        Speciální zakázky
-      </h4>
-      <div className="flex flex-col gap-1">
-        <button className="text-game-copper-muted hover:text-game-gold text-left text-sm transition-colors">
-          &gt; Slyšel jsem o speciálních mečích (Quest)
-        </button>
-        <button className="text-game-copper-muted hover:text-game-gold text-left text-sm transition-colors">
-          &gt; Co potřebuješ pro opravu brnění?
-        </button>
-      </div>
-    </div>
-  )
-
   return (
-    <ShopInterface
-      title="Mistr Kovář"
-      greeting="Vítej u mé dílny, dobrodruhu. Hledáš kvalitní zbraně a zbroje? Pokud máš dost zlata a správné materiály, můžu ti vykovat něco výjimečného."
-      gold={gold}
-      items={SMITH_STOCK as unknown as ShopItem[]}
-      onBuy={handleBuy}
-      onBack={onBack}
-      itemColumns={columns}
-      customContent={customContent}
-    />
+    <LocationLayout
+      title="Dílna mistra kováře"
+      description="Hledáš-li ocel, co tě nezradí, jsi na správném místě, poutníku."
+    >
+      <ShopInterface gold={gold} items={SMITH_STOCK as unknown as ShopItem[]} onBuy={handleBuy} />
+
+      <div className="pt-2">
+        <h5 className="mb-2 text-[10px] font-bold text-[#8b7355] uppercase">Služby a opravy</h5>
+        <Button
+          variant="game-secondary"
+          className="h-8 w-full justify-start px-3 text-[10px]"
+          disabled
+        >
+          &gt; Poptat opravu vybavení (připravuje se)
+        </Button>
+      </div>
+    </LocationLayout>
   )
 }

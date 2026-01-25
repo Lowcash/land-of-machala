@@ -20,6 +20,15 @@ export interface CharacterData {
   poisonResistance: number
   reputation?: number
   gold: number
+  bankGold?: number
+  talentPoints: number
+  nextLevelExp?: number
+  stats?: {
+    strength: number
+    intelligence: number
+    agility: number
+    stamina: number
+  }
 }
 
 import type { LucideIcon } from 'lucide-react'

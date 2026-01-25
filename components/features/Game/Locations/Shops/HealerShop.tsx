@@ -3,6 +3,7 @@
 import { HEALER_SERVICES } from '@/lib/game/data'
 import { Zap } from 'lucide-react'
 import { toast } from 'sonner'
+import { LocationLayout } from '../../Shared/components/LocationLayout'
 import { ShopInterface, type ShopItem } from '../../Shared/components/ShopInterface'
 
 interface Buff {
@@ -12,20 +13,13 @@ interface Buff {
 }
 
 interface HealerShopProps {
-  onBack: () => void
   gold: number
   setGold: (gold: number | ((prev: number) => number)) => void
   activeBuffs: Buff[]
   setActiveBuffs: (buffs: Buff[] | ((prev: Buff[]) => Buff[])) => void
 }
 
-export function HealerShop({
-  onBack,
-  gold,
-  setGold,
-  activeBuffs,
-  setActiveBuffs,
-}: HealerShopProps) {
+export function HealerShop({ gold, setGold, activeBuffs, setActiveBuffs }: HealerShopProps) {
   const handleBuy = (service: ShopItem) => {
     setGold((prev) => prev - service.price)
 
@@ -40,54 +34,30 @@ export function HealerShop({
     }
   }
 
-  const columns = [
-    { key: 'name', label: 'Služba' },
-    { key: 'description', label: 'Účinek' },
-    {
-      key: 'price',
-      label: 'Cena',
-      render: (item: any) => <span className="text-game-gold">{item.price}g</span>,
-    },
-  ]
+  return (
+    <LocationLayout
+      title="Chrám léčení"
+      description="Tvé rány se zahojí, tvá duše najde klid. Moje byliny jsou ti k službám."
+    >
+      <ShopInterface
+        gold={gold}
+        items={HEALER_SERVICES as unknown as ShopItem[]}
+        onBuy={handleBuy}
+      />
 
-  const customContent = (
-    <div className="space-y-4">
-      {activeBuffs.length > 0 ? (
-        <div className="bg-game-gold/10 border-game-gold/20 rounded border p-3">
-          <small className="text-game-gold font-body mb-2 block text-sm leading-none font-medium tracking-wider uppercase">
+      {activeBuffs.length > 0 && (
+        <div className="rounded border border-[#ffd700]/20 bg-[#ffd700]/5 p-2">
+          <div className="mb-1 text-[10px] font-bold text-[#ffd700] uppercase">
             Aktivní požehnání
-          </small>
+          </div>
           {activeBuffs.map((b, i) => (
-            <div key={i} className="text-game-fg flex items-center gap-2 text-xs">
-              <Zap className="text-game-gold h-3 w-3" />
+            <div key={i} className="flex items-center gap-2 text-[10px] text-[#f5e6d3]">
+              <Zap className="h-3 w-3 text-[#ffd700]" />
               {b.name} (+{b.val} {b.stat})
             </div>
           ))}
         </div>
-      ) : (
-        <p className="font-body text-muted-foreground text-sm italic">
-          Léčitel míchá byliny a tiše si brouká. Vůně heřmánku je uklidňující.
-        </p>
       )}
-
-      <div className="border-game-copper/20 flex flex-col gap-1 border-t pt-2">
-        <button className="text-game-copper-muted hover:text-game-gold text-left text-sm transition-colors">
-          &gt; Slyšel jsem o problémech s bylinami (Quest)
-        </button>
-      </div>
-    </div>
-  )
-
-  return (
-    <ShopInterface
-      title="Léčitel"
-      greeting="Vítej, poutníku. Mé byliny jsou čerstvé a mé ruce pevné. Co tě trápí?"
-      gold={gold}
-      items={HEALER_SERVICES as unknown as ShopItem[]}
-      onBuy={handleBuy}
-      onBack={onBack}
-      itemColumns={columns}
-      customContent={customContent}
-    />
+    </LocationLayout>
   )
 }

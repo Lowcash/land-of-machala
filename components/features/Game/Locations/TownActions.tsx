@@ -1,110 +1,64 @@
 'use client'
 
-import { GameActionsPanel } from '@/components/features/Game/Layout/GameActionsPanel'
-import { Button } from '@/components/ui/button'
-import { Beer, Building, Cross, Hammer, ScrollText, ShoppingBag, Swords } from 'lucide-react'
-import { useState } from 'react'
-import { BankActions } from './BankActions'
-import { TavernActions } from './TavernActions'
+import type { View } from '@/lib/game/config'
+import { Beer, Building, Cross, Hammer, ScrollText, ShoppingBag } from 'lucide-react'
+import { LocationAction } from '../Shared/components/LocationAction'
+import { LocationLayout } from '../Shared/components/LocationLayout'
 
-export function TownActions({
-  showDirections,
-  onToggleDirections,
-  characterId,
-}: {
-  showDirections: boolean
-  onToggleDirections: () => void
-  characterId: string
-}) {
-  const [currentBuilding, setCurrentBuilding] = useState<string | null>(null)
+interface TownActionsProps {
+  onView: (view: View) => void
+}
 
-  if (currentBuilding === 'bank') {
-    return <BankActions characterId={characterId} onBack={() => setCurrentBuilding(null)} />
-  }
-
-  if (currentBuilding === 'tavern') {
-    // Note: Passing empty handlers/props as placeholders because they are required but missing in original logic
-    return (
-      <TavernActions
-        onBack={() => setCurrentBuilding(null)}
-        onRest={() => {}}
-        gold={100}
-        setGold={() => {}}
-        setInfoText={() => {}}
-      />
-    )
-  }
-
+export function TownActions({ onView }: TownActionsProps) {
   return (
-    <GameActionsPanel
-      showDirections={showDirections}
-      onToggleDirections={onToggleDirections}
-      title="Machala - Náměstí"
+    <LocationLayout
+      title="Náměstí Machaly"
+      description="Střed všeho dění. Vzduch je cítit kouřem z kovárny a vůní pečeného masa z hospody."
     >
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('shop')}
-        >
-          <ShoppingBag className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Tržiště</span>
-        </Button>
+        <LocationAction
+          variant="large"
+          title="Tržiště"
+          icon={ShoppingBag}
+          onClick={() => onView('market')}
+        />
 
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('smith')}
-        >
-          <Hammer className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Kovárna</span>
-        </Button>
+        <LocationAction
+          variant="large"
+          title="Kovárna"
+          icon={Hammer}
+          onClick={() => onView('smith')}
+        />
 
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('tavern')}
-        >
-          <Beer className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Hospoda</span>
-        </Button>
+        <LocationAction
+          variant="large"
+          title="Hospoda"
+          icon={Beer}
+          onClick={() => onView('tavern')}
+        />
 
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('bank')}
-        >
-          <Building className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Banka</span>
-        </Button>
+        <LocationAction
+          variant="large"
+          title="Banka"
+          icon={Building}
+          onClick={() => onView('bank')}
+        />
 
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('arena')}
-        >
-          <Swords className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Aréna</span>
-        </Button>
+        <LocationAction
+          variant="large"
+          title="Léčitel"
+          icon={Cross}
+          onClick={() => onView('healer')}
+        />
 
-        <Button
-          variant="game-secondary"
-          className="h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('church')}
-        >
-          <Cross className="h-8 w-8 text-[#d4a574]" />
-          <span className="text-xs font-bold uppercase">Chrám</span>
-        </Button>
-
-        <Button
-          variant="game-secondary"
-          className="col-span-full h-12 gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]"
-          onClick={() => setCurrentBuilding('boards')}
-        >
-          <ScrollText className="h-5 w-5 text-[#d4a574]" />
-          <span className="text-sm font-bold uppercase">Vývěska úkolů</span>
-        </Button>
+        <LocationAction
+          variant="compact"
+          title="Vývěska úkolů"
+          icon={ScrollText}
+          className="col-span-full"
+          onClick={() => {}} // TODO: Quest Board logic
+        />
       </div>
-    </GameActionsPanel>
+    </LocationLayout>
   )
 }

@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import {
   AlertCircle,
   Castle,
@@ -174,11 +175,12 @@ export function MapCanvas({
         }
 
         return (
-          <button
+          <Button
             key={location.id}
             onClick={() => isUnlocked && onSelectLocation(location)}
             disabled={!isUnlocked}
-            className={`absolute -mt-6 -ml-6 h-12 w-12 transition-all ${
+            variant="ghost"
+            className={`absolute -mt-6 -ml-6 h-12 w-12 p-0 transition-all ${
               isUnlocked ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed opacity-40'
             } ${isSelected ? 'z-40 scale-125' : 'z-20'}`}
             style={{
@@ -200,7 +202,6 @@ export function MapCanvas({
                 <Lock className="h-6 w-6 text-[#8b6f47]" />
               )}
 
-              {/* Quest Marker Overlay */}
               {activeQuest && (
                 <div className="absolute -top-2 -right-2 z-50 animate-bounce">
                   {activeQuest.type === 'giver' ? (
@@ -211,7 +212,6 @@ export function MapCanvas({
                 </div>
               )}
 
-              {/* Level Badge */}
               {location.level > 1 && (
                 <span
                   className="absolute -right-1 -bottom-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#8b6f47] bg-[#ff6b6b] text-[10px] text-white"
@@ -222,14 +222,13 @@ export function MapCanvas({
               )}
             </div>
 
-            {/* Name Label */}
             <div
               className={`mt-1 rounded bg-black/40 px-1 text-center text-[10px] whitespace-nowrap backdrop-blur-sm ${isSelected ? 'font-bold text-[#ffd700]' : 'text-[#d4a574]'}`}
               style={{ fontFamily: 'var(--font-fantasy)' }}
             >
               {location.name}
             </div>
-          </button>
+          </Button>
         )
       })}
     </div>

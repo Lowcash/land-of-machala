@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { races } from '@/lib/game/onboarding-data'
 import { cn } from '@/lib/utils'
 import * as Accordion from '@radix-ui/react-accordion'
@@ -35,9 +36,10 @@ export function RaceSelector({ selectedId, onSelect, isMobile }: SelectorProps) 
                 const Icon = r.icon
                 const isSelected = selectedId === r.id
                 return (
-                  <button
+                  <Button
                     key={r.id}
                     onClick={() => onSelect(r.id)}
+                    variant="ghost"
                     className={cn(
                       'flex h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:h-20 sm:gap-1 sm:p-3',
                       isSelected
@@ -60,7 +62,7 @@ export function RaceSelector({ selectedId, onSelect, isMobile }: SelectorProps) 
                     >
                       {r.name}
                     </span>
-                  </button>
+                  </Button>
                 )
               })}
             </div>
@@ -84,11 +86,12 @@ export function RaceSelector({ selectedId, onSelect, isMobile }: SelectorProps) 
           const Icon = r.icon
           const isSelected = selectedId === r.id
           return (
-            <button
+            <Button
               key={r.id}
               onClick={() => onSelect(r.id)}
+              variant="ghost"
               className={cn(
-                'flex flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all',
+                'flex h-auto flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all',
                 isSelected
                   ? 'border-game-gold from-game-copper to-game-copper-muted scale-105 bg-linear-to-br shadow-lg'
                   : 'border-game-copper/50 hover:border-game-gold bg-black/40 hover:scale-105'
@@ -103,7 +106,7 @@ export function RaceSelector({ selectedId, onSelect, isMobile }: SelectorProps) 
               >
                 {r.name}
               </span>
-            </button>
+            </Button>
           )
         })}
       </div>

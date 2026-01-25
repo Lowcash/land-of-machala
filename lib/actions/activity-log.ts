@@ -1,13 +1,14 @@
 'use server'
 
 import { prisma } from '@/lib/db'
+import type { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 
 export async function logActivity(
   characterId: string,
   type: string,
   message: string,
-  metadata?: any,
+  metadata?: Prisma.InputJsonValue,
   global: boolean = false
 ) {
   try {

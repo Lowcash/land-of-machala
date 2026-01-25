@@ -1,8 +1,8 @@
-'use client'
-
+import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { abandonQuestAction } from '@/lib/actions/quest'
+import { cn } from '@/lib/utils'
 import { CheckCircle, Circle, Coins, MapPin, User, X, Zap } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
@@ -96,7 +96,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
           <div className="mb-4">
             <div className="mb-2 flex items-center gap-2">
               <span
-                className={`rounded px-2 py-1 text-xs ${getCategoryBadge(quest.category)}`}
+                className={cn('rounded px-2 py-1 text-xs', getCategoryBadge(quest.category))}
                 style={{ fontFamily: 'var(--font-fantasy)' }}
               >
                 {getCategoryName(quest.category)}
@@ -104,7 +104,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               <span className="text-xs text-[#8b7355]">Level {quest.level || 1}</span>
             </div>
             <h2
-              className={`mb-2 text-2xl ${getCategoryColor(quest.category)}`}
+              className={cn('mb-2 text-2xl', getCategoryColor(quest.category))}
               style={{ fontFamily: 'var(--font-medieval)' }}
             >
               {quest.title}
@@ -163,7 +163,10 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
                   )}
                   <div className="flex-1">
                     <p
-                      className={`text-sm ${objective.completed ? 'text-[#6fbf6f] line-through' : 'text-[#f5e6d3]'}`}
+                      className={cn(
+                        'text-sm',
+                        objective.completed ? 'text-[#6fbf6f] line-through' : 'text-[#f5e6d3]'
+                      )}
                     >
                       {objective.description}
                     </p>
@@ -230,7 +233,8 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
 
           {/* Action button - only show for ACTIVE quests */}
           {quest.characterStatus === 'ACTIVE' && (
-            <button
+            <Button
+              variant="ghost"
               onClick={() => setShowAbandonModal(true)}
               className="mt-4 flex w-full items-center justify-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/10 py-3 text-[#ff6b6b] transition-all hover:bg-[#ff6b6b]/20"
             >
@@ -238,7 +242,7 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
                 Vzdát quest
               </span>
-            </button>
+            </Button>
           )}
 
           {/* Completed badge */}
@@ -268,22 +272,24 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
               ztracen.
             </p>
             <div className="flex gap-3">
-              <button
+              <Button
+                variant="game-secondary"
                 onClick={() => setShowAbandonModal(false)}
                 disabled={isLoading}
                 className="flex-1 rounded border border-[#8b6f47] bg-black/60 py-3 text-sm text-[#d4a574] transition-colors hover:border-[#d4a574] hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-50"
                 style={{ fontFamily: 'var(--font-fantasy)' }}
               >
                 Zrušit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="game-danger"
                 onClick={handleAbandonQuest}
                 disabled={isLoading}
                 className="flex-1 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/20 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
                 style={{ fontFamily: 'var(--font-fantasy)' }}
               >
                 {isLoading ? 'Opouštím...' : 'Ano, vzdát quest'}
-              </button>
+              </Button>
             </div>
           </div>
         </div>

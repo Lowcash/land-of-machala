@@ -1,10 +1,12 @@
 'use client'
 
-import { GameInfoPanel } from '@/components/features/Game/Log/GameInfoPanel'
+import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
+import { SplitLayout } from '@/components/layout/SplitLayout'
+import { TransitionLayout } from '@/components/layout/TransitionLayout'
 import Image from 'next/image'
 import type { ReactNode } from 'react'
 
-export interface PageTemplateProps {
+export interface PageLayoutProps {
   children: ReactNode
   header?: ReactNode
   footer?: ReactNode
@@ -24,7 +26,7 @@ export interface PageTemplateProps {
  * Designed to be used WITHIN GameLayout.
  * Handles the internal structure: Header -> Split Content/Info -> Footer
  */
-export function PageTemplate({
+export function PageLayout({
   children,
   header,
   footer,
@@ -33,7 +35,7 @@ export function PageTemplate({
   backgroundImage,
   maxWidth = 'lg',
   className = '',
-}: PageTemplateProps) {
+}: PageLayoutProps) {
   const maxWidthClass = {
     sm: 'max-w-4xl',
     md: 'max-w-5xl',
@@ -66,7 +68,7 @@ export function PageTemplate({
             {showInfoLog ? (
               <SplitLayout
                 main={<div className="h-full overflow-y-auto">{children}</div>}
-                aside={rightPanel || <GameInfoPanel />}
+                aside={rightPanel || <GameActivityPanel />}
                 className="h-full"
                 asideWidth="md"
               />

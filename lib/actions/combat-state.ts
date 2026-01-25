@@ -65,6 +65,11 @@ export async function startCombat(characterId: string, enemyId: string | null = 
   }
 }
 
+interface Point {
+  x: number
+  y: number
+}
+
 export async function endCombat(characterId: string, result: 'victory' | 'defeat' | 'flee') {
   try {
     const character = await prisma.character.findUnique({ where: { id: characterId } })
@@ -87,7 +92,7 @@ export async function endCombat(characterId: string, result: 'victory' | 'defeat
     } else if (result === 'flee') {
       // Restore position
       if (character.preCombatLocation) {
-        const loc = character.preCombatLocation as any
+        const loc = character.preCombatLocation as unknown as Point
         await prisma.character.update({
           where: { id: characterId },
           data: {

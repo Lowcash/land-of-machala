@@ -7,14 +7,14 @@ interface LogEntry {
   type: string
 }
 
-interface GameInfoPanelProps {
+interface GameActivityPanelProps {
   logs?: LogEntry[]
   title?: string
   className?: string
   children?: React.ReactNode
 }
 
-export function GameInfoPanel({ logs = [], className = '', children }: GameInfoPanelProps) {
+export function GameActivityPanel({ logs = [], className = '', children }: GameActivityPanelProps) {
   return (
     <div className={`relative flex min-h-0 flex-col ${className}`}>
       <div className="relative min-h-0 flex-1">

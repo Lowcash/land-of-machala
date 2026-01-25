@@ -1,18 +1,5 @@
-import { Backpack, Heart, Shield, Sparkles, Sword, Zap, type LucideIcon } from 'lucide-react'
 import type { InventoryItemUI, ItemRarity } from './types'
-
-export const ICON_MAP: Record<string, LucideIcon> = {
-  sword: Sword,
-  shield: Shield,
-  heart: Heart,
-  zap: Zap,
-  sparkles: Sparkles,
-  backpack: Backpack,
-}
-
-export function getIconFromName(iconName: string): LucideIcon {
-  return ICON_MAP[(iconName || '').toLowerCase()] || Sparkles
-}
+export { getIconFromName } from '@/lib/icons'
 
 export const getRarityColor = (rarity: ItemRarity) => {
   switch (rarity) {

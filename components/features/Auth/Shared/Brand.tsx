@@ -1,5 +1,5 @@
+import { useHeroText } from '@/lib/hooks/auth'
 import { Sparkles, Swords } from 'lucide-react'
-import { useHeroText } from './hooks/useHeroText'
 
 interface BrandProps {
   className?: string

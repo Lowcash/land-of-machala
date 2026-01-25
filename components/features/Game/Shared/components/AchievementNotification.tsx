@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { Trophy, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -88,7 +89,6 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
             <Icon className="h-6 w-6" style={{ color: colors.border }} />
           </div>
 
-          {/* Content */}
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex items-start justify-between gap-2">
               <div
@@ -97,15 +97,17 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
               >
                 Úspěch odemčen
               </div>
-              <button
+              <Button
                 onClick={() => {
                   setIsVisible(false)
                   setTimeout(onClose, 300)
                 }}
-                className="shrink-0 text-white/60 transition-colors hover:text-white"
+                variant="ghost"
+                size="icon"
+                className="h-5 w-5 shrink-0 p-0 text-white/60 hover:text-white"
               >
                 <X className="h-4 w-4" />
-              </button>
+              </Button>
             </div>
             <h3 className="mb-1 text-base text-white" style={{ fontFamily: 'var(--font-fantasy)' }}>
               {achievement.title}

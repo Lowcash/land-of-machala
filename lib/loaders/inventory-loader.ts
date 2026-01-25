@@ -1,14 +1,20 @@
-import { InventoryItemUI, ItemRarity, ItemType } from '@/components/features/Inventory/Shared/types'
-import { getMyCharacterAction } from '@/lib/actions/character'
+import type {
+  InventoryItemUI,
+  ItemRarity,
+  ItemType,
+} from '@/components/features/Inventory/Shared/types'
+import { getCharacterByUserId } from '@/entity/character'
+import { auth } from '@/lib/auth'
 
 export async function getInventoryPageData() {
-  const [result, error] = await getMyCharacterAction()
+  const session = await auth()
+  if (!session?.user?.id) return null
 
-  if (error || !result?.character) {
+  const character = await getCharacterByUserId(session.user.id)
+
+  if (!character) {
     return null
   }
-
-  const character = result.character
 
   let inventory: InventoryItemUI[] = character.inventory.map((invItem) => ({
     id: invItem.id,
@@ -77,7 +83,7 @@ export async function getInventoryPageData() {
   }
 
   return {
-    characterId: character.id,
+    character,
     inventory,
   }
 }

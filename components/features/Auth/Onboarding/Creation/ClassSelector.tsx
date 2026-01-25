@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { classes } from '@/lib/game/onboarding-data'
 import { cn } from '@/lib/utils'
 import * as Accordion from '@radix-ui/react-accordion'
@@ -35,9 +36,10 @@ export function ClassSelector({ selectedId, onSelect, isMobile }: SelectorProps)
                 const Icon = c.icon
                 const isSelected = selectedId === c.id
                 return (
-                  <button
+                  <Button
                     key={c.id}
                     onClick={() => onSelect(c.id)}
+                    variant="ghost"
                     className={cn(
                       'flex min-h-15 flex-col items-center justify-center gap-0.5 rounded-lg border-2 p-2 transition-all sm:min-h-17.5 sm:gap-1 sm:p-3',
                       isSelected
@@ -60,7 +62,7 @@ export function ClassSelector({ selectedId, onSelect, isMobile }: SelectorProps)
                     >
                       {c.name}
                     </span>
-                  </button>
+                  </Button>
                 )
               })}
             </div>
@@ -84,11 +86,12 @@ export function ClassSelector({ selectedId, onSelect, isMobile }: SelectorProps)
           const Icon = c.icon
           const isSelected = selectedId === c.id
           return (
-            <button
+            <Button
               key={c.id}
               onClick={() => onSelect(c.id)}
+              variant="ghost"
               className={cn(
-                'flex flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all',
+                'flex h-auto flex-col items-center justify-center gap-2 rounded-lg border-2 p-3 transition-all',
                 isSelected
                   ? 'border-game-gold from-game-copper to-game-copper-muted scale-105 bg-linear-to-br shadow-lg'
                   : 'border-game-copper/50 hover:border-game-gold bg-black/40 hover:scale-105'
@@ -103,7 +106,7 @@ export function ClassSelector({ selectedId, onSelect, isMobile }: SelectorProps)
               >
                 {c.name}
               </span>
-            </button>
+            </Button>
           )
         })}
       </div>

@@ -1,6 +1,7 @@
 import { BlackMarket } from '@/components/features/Game/Locations/Market/MarketBlackMarket'
 import { MarketBuy } from '@/components/features/Game/Locations/Market/MarketBuy'
 import { MarketSell } from '@/components/features/Game/Locations/Market/MarketSell'
+import type { MarketItem } from '@/components/features/Game/Locations/Market/types'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { Shield, Sword } from 'lucide-react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -56,7 +57,7 @@ describe('Market Components', () => {
     it('renders stock items correctly', () => {
       render(
         <MarketBuy
-          stock={mockStock as unknown as any[]} // Keeping cast for now as strict type matching for tests can be verbose, but removing 'any' from other places
+          stock={mockStock as unknown as MarketItem[]}
           handleBuy={mockHandleBuy}
           handleHaggle={mockHandleHaggle}
           getPrice={mockGetPrice}
@@ -71,7 +72,7 @@ describe('Market Components', () => {
     it('calls handleBuy when clicked', () => {
       render(
         <MarketBuy
-          stock={mockStock as unknown as any[]}
+          stock={mockStock as unknown as MarketItem[]}
           handleBuy={mockHandleBuy}
           handleHaggle={mockHandleHaggle}
           getPrice={mockGetPrice}
@@ -88,7 +89,7 @@ describe('Market Components', () => {
     it('renders inventory items correctly', () => {
       render(
         <MarketSell
-          inventory={mockInventory as unknown as any[]}
+          inventory={mockInventory as unknown as MarketItem[]}
           handleSell={mockHandleSell}
           handleHaggle={mockHandleHaggle}
           getPrice={mockGetPrice}
@@ -106,7 +107,7 @@ describe('Market Components', () => {
       const bmStock = [
         { id: 3, name: 'Poison', price: 666, icon: Sword, type: 'misc', description: 'Deadly' },
       ]
-      render(<BlackMarket stock={bmStock as unknown as any[]} handleBuy={mockHandleBuy} />)
+      render(<BlackMarket stock={bmStock as unknown as MarketItem[]} handleBuy={mockHandleBuy} />)
       expect(screen.getByText('Poison')).toBeDefined()
       expect(screen.getByText('666g')).toBeDefined()
     })

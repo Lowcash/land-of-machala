@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Check } from 'lucide-react'
 import { getIconFromName, getRarityBorder, getRarityColor } from '../Shared/inventoryUtils'
@@ -20,10 +21,11 @@ export function InventoryGrid({ inventory, selectedItem, onSelectItem }: Invento
             {inventory.map((item) => {
               const Icon = getIconFromName(item.iconName)
               return (
-                <button
+                <Button
                   key={item.id}
                   onClick={() => onSelectItem(item.id)}
-                  className={`group relative aspect-square rounded-lg border-2 p-2 transition-all ${
+                  variant="ghost"
+                  className={`group relative aspect-square h-auto rounded-lg border-2 p-2 transition-all ${
                     selectedItem === item.id
                       ? 'scale-105 border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.3)]'
                       : `bg-black/40 hover:bg-black/60 ${getRarityBorder(item.rarity)}`
@@ -44,7 +46,7 @@ export function InventoryGrid({ inventory, selectedItem, onSelectItem }: Invento
                       <Check className="h-3 w-3" />
                     </div>
                   )}
-                </button>
+                </Button>
               )
             })}
           </div>

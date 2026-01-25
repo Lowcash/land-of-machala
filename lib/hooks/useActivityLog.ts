@@ -1,10 +1,19 @@
 'use client'
 
 import { getCharacterActivityLog } from '@/lib/actions/activity-log'
+import type { Prisma } from '@prisma/client'
 import { useEffect, useState } from 'react'
 
+interface ActivityLogEntry {
+  id: string
+  timestamp: Date
+  message: string
+  type: string
+  metadata: Prisma.JsonValue
+}
+
 export function useActivityLog(characterId: string, refreshInterval = 30000) {
-  const [logs, setLogs] = useState<any[]>([])
+  const [logs, setLogs] = useState<ActivityLogEntry[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -14,7 +23,7 @@ export function useActivityLog(characterId: string, refreshInterval = 30000) {
       try {
         const data = await getCharacterActivityLog(characterId)
         if (mounted) {
-          setLogs(data)
+          setLogs(data as unknown as ActivityLogEntry[])
           setLoading(false)
         }
       } catch (error) {

@@ -1,3 +1,4 @@
+import type { LucideIcon } from 'lucide-react'
 import { FlaskConical, Heart, Shield, Sparkles, Sword } from 'lucide-react'
 
 export const SMITH_STOCK = [
@@ -62,7 +63,7 @@ export interface HealerService {
   name: string
   description: string
   price: number
-  icon: any
+  icon: LucideIcon
   iconColor: string
   iconBg: string
   action: string
@@ -110,3 +111,12 @@ export const HEALER_SERVICES: HealerService[] = [
     action: 'Protijed',
   },
 ]
+
+export const ACHIEVEMENTS = [
+  { id: 1, name: 'První kroky', xp: 50, desc: 'Dokončil jsi první úkol' },
+  { id: 2, name: 'Zabiják', xp: 100, desc: 'Zabil jsi 10 nepřátel' },
+  { id: 3, name: 'Průzkumník', xp: 150, desc: 'Navštívil jsi všechny oblasti' },
+  { id: 4, name: 'Boháč', xp: 200, desc: 'Nasbíral jsi 1000 zlatých' },
+  { id: 5, name: 'Mistr řemesel', xp: 250, desc: 'Vylepšil jsi zbraň na maximum' },
+  { id: 6, name: 'Hrdina Machaly', xp: 500, desc: 'Dokončil jsi hlavní příběh' },
+] as const

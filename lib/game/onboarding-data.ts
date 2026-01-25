@@ -181,3 +181,18 @@ export const classes = [
     bonuses: '+10 Inteligence, +3 Obratnost, oživování nemrtvých, vysávání života',
   },
 ]
+
+export const RANDOM_NAMES = [
+  'Aragorn',
+  'Theron',
+  'Kael',
+  'Elara',
+  'Dorian',
+  'Lyssa',
+  'Brennan',
+  'Seraphina',
+  'Cedric',
+  'Isolde',
+  'Magnus',
+  'Rowena',
+] as const

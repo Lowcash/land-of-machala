@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { abandonQuestAction, startQuestAction } from '@/lib/actions/quest'
 import { CheckCircle, PlayCircle, X } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -98,30 +99,32 @@ export function QuestStartButton({ quest, characterId }: QuestStartButtonProps) 
             Aktivní quest
           </span>
         </div>
-        <button
+        <Button
           onClick={handleAbandonQuest}
           disabled={isLoading}
-          className="flex items-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/20 px-4 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
+          variant="game-danger"
+          className="flex h-auto items-center gap-2 rounded border border-[#ff6b6b] bg-[#ff6b6b]/20 px-4 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
           title="Vzdát quest"
         >
           <X className="h-5 w-5" />
           <span className="hidden sm:inline">Vzdát quest</span>
-        </button>
+        </Button>
       </div>
     )
   }
 
   // Quest not started yet
   return (
-    <button
+    <Button
       onClick={handleStartQuest}
       disabled={isLoading}
-      className="flex w-full items-center justify-center gap-2 rounded border-2 border-[#ffd700] bg-[#ffd700]/20 py-3 text-[#ffd700] transition-all hover:bg-[#ffd700]/30 disabled:cursor-not-allowed disabled:opacity-50"
+      variant="game-primary"
+      className="flex h-auto w-full items-center justify-center gap-2 rounded border-2 border-[#ffd700] bg-[#ffd700]/20 py-3 text-[#ffd700] transition-all hover:bg-[#ffd700]/30 disabled:cursor-not-allowed disabled:opacity-50"
     >
       <PlayCircle className="h-5 w-5" />
       <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
         {isLoading ? 'Přijímám quest...' : 'Přijmout quest'}
       </span>
-    </button>
+    </Button>
   )
 }

@@ -1,6 +1,8 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
 import { Check, Lock } from 'lucide-react'
 import { getIconFromName } from '../Shared/iconMap'
 import type { MergedSkill, SkillCategory } from '../Shared/types'
@@ -111,16 +113,18 @@ export function SkillGrid({
                     talentPoints >= skill.cost
 
                   return (
-                    <button
+                    <Button
                       key={skill.id}
+                      variant="game-secondary"
                       onClick={() => onSelectSkillAction(skill.id)}
-                      className={`min-h-touch-target w-full rounded-lg border-2 p-4 text-left transition-all sm:min-h-0 ${
+                      className={cn(
+                        'min-h-touch-target h-auto w-full flex-col items-start rounded-lg border-2 p-4 text-left transition-all sm:min-h-0',
                         selectedSkill === skill.id
                           ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
                           : skill.unlocked
                             ? 'border-[#8b6f47] bg-black/60 hover:border-[#d4a574] hover:bg-black/70'
                             : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
-                      }`}
+                      )}
                     >
                       <div className="mb-3 flex items-center gap-3">
                         <div
@@ -183,7 +187,7 @@ export function SkillGrid({
                           </span>
                         </div>
                       )}
-                    </button>
+                    </Button>
                   )
                 })}
               </div>

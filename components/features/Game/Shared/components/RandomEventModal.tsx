@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import type { RandomEvent } from '@/types/events'
 import { Sparkles } from 'lucide-react'
 
@@ -13,7 +14,7 @@ export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalP
   if (!event) return null
 
   const handleClose = () => {
-    onChoice(1) // Default choice
+    onChoice(1)
     onClose()
   }
 
@@ -47,12 +48,9 @@ export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalP
 
   return (
     <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center p-4 duration-300">
-      {/* Backdrop */}
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
-      {/* Modal */}
       <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-yellow-600/40 bg-linear-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
-        {/* Header with event type indicator */}
         <div className={`border-b-2 ${getTypeColor()} px-6 py-4`}>
           <div className="flex items-center gap-3">
             <div className="rounded-lg border border-slate-700/50 bg-slate-800/60 p-2">
@@ -67,24 +65,19 @@ export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalP
                   {event.type}
                 </span>
               </div>
-              <p className="mt-0.5 text-sm text-slate-400">A random encounter...</p>
+              <p className="mt-0.5 text-sm text-slate-400">Náhodné setkání...</p>
             </div>
           </div>
         </div>
 
-        {/* Event Description */}
         <div className="px-6 py-6">
           <div className="mb-6 rounded-lg border border-slate-700/30 bg-slate-800/40 p-4 backdrop-blur-sm">
             <p className="leading-relaxed text-slate-200">{event.description}</p>
           </div>
 
-          {/* OK Button */}
-          <button
-            onClick={handleClose}
-            className="w-full cursor-pointer rounded-lg border-2 border-slate-700/50 bg-slate-800/40 p-4 transition-all hover:border-yellow-500/50 hover:bg-slate-700/60"
-          >
-            <p className="text-center text-yellow-100">Continue</p>
-          </button>
+          <Button onClick={handleClose} variant="game-secondary" className="w-full p-4">
+            <span className="text-yellow-100">Pokračovat</span>
+          </Button>
         </div>
       </div>
     </div>

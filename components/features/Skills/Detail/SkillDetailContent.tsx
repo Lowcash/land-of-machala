@@ -56,9 +56,8 @@ function getCategoryName(category: SkillCategory) {
       return 'Stealth'
     case 'crafting':
       return 'Řemeslo'
-      return 'Užitečné'
     default:
-      return 'Všechny'
+      return 'Užitečné'
   }
 }
 

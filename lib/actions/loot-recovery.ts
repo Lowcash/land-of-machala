@@ -5,6 +5,20 @@ import { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
 import { logActivity } from './activity-log'
 
+interface DeathLocation {
+  x: number
+  y: number
+  items: string[]
+  gold: number
+  expiresAt: string
+}
+
+interface Notification {
+  timestamp: string
+  message: string
+  items: string[]
+}
+
 export async function cleanExpiredLootPiles(characterId: string) {
   try {
     const character = await prisma.character.findUnique({
@@ -18,12 +32,12 @@ export async function cleanExpiredLootPiles(characterId: string) {
 
     if (!character || !character.deathLocation) return
 
-    const deathLoc = character.deathLocation as any
+    const deathLoc = character.deathLocation as unknown as DeathLocation
     if (new Date() > new Date(deathLoc.expiresAt)) {
       // Expired
       // Add notification to history
       const notifications = Array.isArray(character.lootExpirationNotifications)
-        ? [...(character.lootExpirationNotifications as any[])]
+        ? (character.lootExpirationNotifications as unknown as Notification[])
         : []
 
       notifications.push({
@@ -36,7 +50,7 @@ export async function cleanExpiredLootPiles(characterId: string) {
         where: { id: characterId },
         data: {
           deathLocation: Prisma.DbNull,
-          lootExpirationNotifications: notifications,
+          lootExpirationNotifications: notifications as unknown as Prisma.InputJsonValue,
         },
       })
 
@@ -62,7 +76,7 @@ export async function recoverLoot(characterId: string) {
       return { success: false, message: 'Žádné věci k vyzvednutí.' }
     }
 
-    const deathLoc = character.deathLocation as any
+    const deathLoc = character.deathLocation as unknown as DeathLocation
 
     // Check distance
     if (character.locationX !== deathLoc.x || character.locationY !== deathLoc.y) {
@@ -70,16 +84,7 @@ export async function recoverLoot(characterId: string) {
     }
 
     // Give items back (logic depends on how items are stored in JSON vs Inventory tables)
-    // Ideally we would move items back to inventory_items table.
-    // Assuming deathLoc.items is a list of item IDs or serialized items.
-    // For now, let's assume we just clear the deathLocation and say "recovered"
-    // because full item restoration requires complex Inventory management logic I might not have fully visible here.
-    // But I should try to restore if simple.
-
-    // If items were just IDs:
-    // await prisma.inventoryItem.createMany(...)
-
-    // For MVP, just clearing it and giving gold back
+    // Ideally we would move items back to inventory_items table (not implemented here for simplicity)
 
     await prisma.character.update({
       where: { id: characterId },

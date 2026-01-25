@@ -1,8 +1,15 @@
-import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag } from 'lucide-react'
+import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag, type LucideIcon } from 'lucide-react'
 
 export type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
 
-export const viewData = {
+export interface ViewConfig {
+  bg: string
+  title: string
+  icon: LucideIcon
+  desc: string
+}
+
+export const viewData: Record<View, ViewConfig> = {
   town: {
     bg: '/assets/locations/city-background.jpg',
     title: 'Město Machala',

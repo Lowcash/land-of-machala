@@ -3,8 +3,8 @@
 import { SplitLayout } from '@/components/layout/SplitLayout'
 import { User } from 'lucide-react'
 import type { CharacterData } from '../Character/Shared/types'
-import { CharacterEquipment } from './Equipment/CharacterEquipment'
-import { CharacterStats } from './Profile/CharacterStats'
+import { EquipmentList } from './Equipment/EquipmentList'
+import { StatsPanel } from './Profile/StatsPanel'
 
 interface CharacterSectionsProps {
   character: CharacterData
@@ -44,12 +44,12 @@ export function CharacterSections({ character }: CharacterSectionsProps) {
             </div>
           </div>
 
-          <CharacterEquipment character={character} />
+          <EquipmentList equipped={[]} />
         </div>
       }
       aside={
         <div className="h-full overflow-y-auto p-4">
-          <CharacterStats character={character} />
+          <StatsPanel character={character} totalAttack={0} totalDefense={0} />
         </div>
       }
     />

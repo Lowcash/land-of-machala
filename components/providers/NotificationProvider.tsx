@@ -1,5 +1,6 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
@@ -66,9 +67,10 @@ function NotificationItem({
   }, [onClose])
 
   // Fade in
-  useState(() => {
-    setTimeout(() => setIsVisible(true), 100)
-  })
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Auto close
   useEffect(() => {
@@ -112,13 +114,15 @@ function NotificationItem({
           )}
         </div>
 
-        <button
+        <Button
           onClick={handleClose}
-          className="shrink-0 text-[#f5e6d3]/60 transition-colors hover:text-[#f5e6d3]"
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 shrink-0 p-0 text-[#f5e6d3]/60 hover:text-[#f5e6d3]"
           aria-label="Zavřít oznámení"
         >
           <X className="h-4 w-4" />
-        </button>
+        </Button>
       </div>
     </div>
   )

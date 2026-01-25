@@ -1,6 +1,7 @@
 'use client'
 
 import { useNotification } from '@/components/providers/NotificationProvider'
+import { Button } from '@/components/ui/button'
 import { increaseSkillRankAction } from '@/lib/actions/skill'
 import { Check } from 'lucide-react'
 import { useRouter } from 'next/navigation'
@@ -75,22 +76,17 @@ export function SkillUpgradeButton({
   }
 
   return (
-    <button
+    <Button
       onClick={handleUpgrade}
       disabled={!canUpgrade || isUpgrading}
-      className={`min-h-touch-target w-full rounded border-2 py-2 transition-all sm:min-h-0 sm:py-3 ${
-        canUpgrade && !isUpgrading
-          ? 'border-[#ffd700] bg-[#ffd700]/20 text-[#ffd700] hover:bg-[#ffd700]/30'
-          : 'cursor-not-allowed border-[#8b6f47]/30 bg-black/40 text-[#8b7355]'
-      }`}
+      loading={isUpgrading}
+      variant={canUpgrade ? 'game-primary' : 'game-secondary'}
+      className="min-h-touch-target w-full py-2 sm:min-h-0 sm:py-3"
+      style={{ fontFamily: 'var(--font-fantasy)' }}
     >
-      <span className="text-sm" style={{ fontFamily: 'var(--font-fantasy)' }}>
-        {isUpgrading
-          ? 'Upgraduji...'
-          : canUpgrade
-            ? `Upgradovat (${cost} bodů)`
-            : 'Nedostatek bodů'}
+      <span className="text-sm">
+        {canUpgrade ? `Upgradovat (${cost} bodů)` : 'Nedostatek bodů'}
       </span>
-    </button>
+    </Button>
   )
 }

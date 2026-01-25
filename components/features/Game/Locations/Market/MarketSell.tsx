@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { ArrowRight, MessageSquare } from 'lucide-react'
 import type { HaggleState, MarketItem } from './types'
 
@@ -46,13 +47,15 @@ export function MarketSell({
                 </div>
                 <div className="flex items-center gap-2">
                   {!haggleState && (
-                    <button
+                    <Button
                       onClick={(e) => handleHaggle(item, false, e)}
-                      className="rounded p-1 text-[#8b7355] transition-colors hover:bg-[#69ccf0]/20 hover:text-[#69ccf0]"
+                      variant="ghost"
+                      size="icon"
+                      className="h-6 w-6 p-1 text-[#8b7355] hover:bg-[#69ccf0]/20 hover:text-[#69ccf0]"
                       title="Smlouvat o ceně"
                     >
                       <MessageSquare className="h-3 w-3" />
-                    </button>
+                    </Button>
                   )}
                   <div
                     className={`flex items-center gap-1 font-mono text-xs ${haggleState ? (haggleState.success ? 'text-green-400' : 'text-red-400') : 'text-[#69ccf0]'}`}

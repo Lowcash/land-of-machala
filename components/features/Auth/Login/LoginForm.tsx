@@ -1,15 +1,16 @@
-'use client'
-
 import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
+import { GameDivider } from '@/components/ui/GameDivider'
 import { Label } from '@/components/ui/label'
+import { createGuestAccountAction, loginAction } from '@/lib/actions/auth'
 import { getMyCharacterAction } from '@/lib/actions/character'
 import { cn } from '@/lib/utils'
 import { Check, Lock, Mail } from 'lucide-react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { AuthInput } from '../Shared/AuthInput'
 
 export function LoginForm() {
   const router = useRouter()
@@ -25,7 +26,6 @@ export function LoginForm() {
 
     setIsLoading(true)
     try {
-      const { loginAction } = await import('@/lib/actions/auth')
       const [data, err] = await loginAction({
         email,
         password,
@@ -42,9 +42,7 @@ export function LoginForm() {
       }
 
       if (data?.success) {
-        // Check if user has character
         const [charData] = await getMyCharacterAction()
-
         if (charData?.character) {
           router.push('/game')
         } else {
@@ -66,24 +64,17 @@ export function LoginForm() {
     if (isLoading) return
     setIsLoading(true)
     try {
-      const { createGuestAccountAction } = await import('@/lib/actions/auth')
       const [data, err] = await createGuestAccountAction()
 
-      if (err) {
-        throw new Error(err.message || 'Failed to create guest account')
+      if (err || !data) {
+        throw new Error(err?.message || 'Failed to create guest account')
       }
 
-      if (!data) {
-        throw new Error('No data returned from guest creation')
-      }
+      const { email: guestEmail, password: guestPassword } = data
 
-      const { email, password } = data
-
-      // Sign in with guest credentials
-      const { signIn } = await import('next-auth/react')
       const result = await signIn('credentials', {
-        email,
-        password,
+        email: guestEmail,
+        password: guestPassword,
         redirect: false,
       })
 
@@ -91,7 +82,6 @@ export function LoginForm() {
         throw new Error(result.error)
       }
 
-      // Guest users always need to create character
       router.push('/onboarding')
     } catch (error) {
       console.error('Guest login error:', error)
@@ -116,69 +106,52 @@ export function LoginForm() {
     >
       <CardContent className="pt-6">
         <form onSubmit={handleLogin} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-game-gold/80">
-              Email
-            </Label>
-            <div className="group relative">
-              <div className="text-game-gold/50 group-focus-within:text-game-gold absolute top-1/2 left-3 -translate-y-1/2 transition-colors">
-                <Mail className="h-4 w-4" />
-              </div>
-              <Input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="Zadej email..."
-                disabled={isLoading}
-                autoComplete="email"
-                className="font-fantasy text-game-gold placeholder:text-game-gold/30 border-game-gold/30 bg-game-wood-dark/50 focus-visible:border-game-gold pl-10 focus-visible:ring-0"
-              />
-            </div>
-          </div>
+          <AuthInput
+            id="email"
+            label="Email"
+            type="email"
+            value={email}
+            onChange={setEmail}
+            placeholder="Zadej email..."
+            icon={Mail}
+            disabled={isLoading}
+            autoComplete="email"
+          />
 
-          <div className="space-y-2">
-            <Label htmlFor="password" className="text-game-gold/80">
-              Heslo
-            </Label>
-            <div className="group relative">
-              <div className="text-game-gold/50 group-focus-within:text-game-gold absolute top-1/2 left-3 -translate-y-1/2 transition-colors">
-                <Lock className="h-4 w-4" />
-              </div>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Zadej heslo..."
-                disabled={isLoading}
-                autoComplete="current-password"
-                className="font-fantasy text-game-gold placeholder:text-game-gold/30 border-game-gold/30 bg-game-wood-dark/50 focus-visible:border-game-gold pl-10 focus-visible:ring-0"
-              />
-            </div>
-          </div>
+          <AuthInput
+            id="password"
+            label="Heslo"
+            type="password"
+            value={password}
+            onChange={setPassword}
+            placeholder="Zadej heslo..."
+            icon={Lock}
+            disabled={isLoading}
+            autoComplete="current-password"
+          />
 
           {/* Remember Me Checkbox */}
           <div className="flex items-center gap-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
               disabled={isLoading}
               onClick={() => setRememberMe(!rememberMe)}
               className={cn(
-                'flex h-5 w-5 items-center justify-center rounded border-2 transition-all disabled:cursor-not-allowed disabled:opacity-50',
+                'flex h-5 w-5 items-center justify-center rounded border-2 p-0 transition-all disabled:cursor-not-allowed disabled:opacity-50',
                 rememberMe
                   ? 'border-game-gold bg-game-gold'
                   : 'border-game-copper hover:border-game-gold bg-black/60'
               )}
             >
               {rememberMe && <Check className="h-3.5 w-3.5 text-black" />}
-            </button>
-            <label
+            </Button>
+            <Label
               onClick={() => setRememberMe(!rememberMe)}
               className="font-fantasy text-game-gold-muted hover:text-game-gold cursor-pointer text-xs transition-colors select-none sm:text-sm"
             >
               Zapamatovat si mě
-            </label>
+            </Label>
           </div>
 
           <Button
@@ -192,12 +165,7 @@ export function LoginForm() {
           </Button>
         </form>
 
-        {/* Divider */}
-        <div className="my-6 flex items-center gap-4">
-          <div className="via-game-copper h-px flex-1 bg-linear-to-r from-transparent to-transparent"></div>
-          <span className="font-fantasy text-game-copper-muted text-xs">NEBO</span>
-          <div className="via-game-copper h-px flex-1 bg-linear-to-r from-transparent to-transparent"></div>
-        </div>
+        <GameDivider label="NEBO" />
 
         {/* Other Actions */}
         <div className="space-y-3">

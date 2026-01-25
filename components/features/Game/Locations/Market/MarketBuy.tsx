@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button'
 import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react'
 import type { HaggleState, MarketItem } from './types'
 
@@ -35,13 +36,15 @@ export function MarketBuy({
               </span>
               <div className="flex items-center gap-2">
                 {!haggleState && (
-                  <button
+                  <Button
                     onClick={(e) => handleHaggle(item, true, e)}
-                    className="rounded p-1 text-[#d4a574] transition-colors hover:bg-[#ffd700]/20 hover:text-[#ffd700]"
+                    variant="ghost"
+                    size="icon"
+                    className="h-6 w-6 p-1 text-[#d4a574] hover:bg-[#ffd700]/20 hover:text-[#ffd700]"
                     title="Smlouvat"
                   >
                     <MessageSquare className="h-3 w-3" />
-                  </button>
+                  </Button>
                 )}
                 <span
                   className={`font-mono text-xs ${haggleState ? (haggleState.success ? 'text-green-400' : 'text-red-400') : 'text-[#ffd700]'}`}

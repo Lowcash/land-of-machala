@@ -2,18 +2,19 @@
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
+import { PageLayout } from '@/components/layout/PageLayout'
 import { ScrollText } from 'lucide-react'
 import { useState } from 'react'
-import type { CharacterData, MergedQuest } from '../Character/Shared/types'
 import { QuestDetailContent } from './Detail/QuestDetailContent'
 import { QuestList } from './List/QuestList'
+import type { MergedQuest } from './Shared/types'
 
 interface QuestClientProps {
-  character: CharacterData
   quests: MergedQuest[]
+  characterId: string
 }
 
-export function QuestClient({ character, quests }: QuestClientProps) {
+export function QuestClient({ quests, characterId }: QuestClientProps) {
   const [selectedQuestId, setSelectedQuestId] = useState<string | null>(null)
 
   const selectedQuest = quests.find((q) => q.id === selectedQuestId) || null
@@ -101,7 +102,7 @@ export function QuestClient({ character, quests }: QuestClientProps) {
             <QuestList
               quests={quests}
               selectedQuest={selectedQuestId}
-              onSelectQuest={setSelectedQuestId}
+              onSelectQuestAction={setSelectedQuestId}
             />
             {/* We need a container for the detail view if it's not the aside? 
               Actually, if QuestList is the Master, and we want it on Left.
@@ -119,7 +120,7 @@ export function QuestClient({ character, quests }: QuestClientProps) {
         }
         aside={
           selectedQuest ? (
-            <QuestDetailContent quest={selectedQuest} characterId={character.id} />
+            <QuestDetailContent quest={selectedQuest} characterId={characterId} />
           ) : (
             <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
               Vyber quest ze seznamu pro zobrazení detailů.
@@ -127,6 +128,6 @@ export function QuestClient({ character, quests }: QuestClientProps) {
           )
         }
       />
-    </PageTemplate>
+    </PageLayout>
   )
 }
