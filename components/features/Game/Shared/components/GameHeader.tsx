@@ -9,6 +9,18 @@ import type { ReactNode } from 'react'
 import { isValidElement } from 'react'
 import { PlayerStats } from './PlayerStats'
 
+// Define valid routes for this application to satisfy Next.js typed routes
+export type AppRoute =
+  | '/character'
+  | '/game'
+  | '/inventory'
+  | '/map'
+  | '/quests'
+  | '/skills'
+  | '/login'
+  | '/onboarding'
+  | '/register'
+
 interface GameHeaderProps {
   /** Icon to display */
   icon?: LucideIcon | ReactNode
@@ -24,7 +36,7 @@ interface GameHeaderProps {
   characterId?: string
   /** Back link configuration */
   backLink?: {
-    href: string
+    href: AppRoute
     label?: string
   }
 }

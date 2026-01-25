@@ -15,6 +15,7 @@
   - Removed `as any` from `app/(game)/game/page.tsx`, `GameFooter.tsx`, `MarketShop.tsx` and others.
   - Replaced generic `any` with `unknown` or specific interfaces in `lib/actions/` (travel, combat-state, loot-recovery, activity-log).
   - Fixed corrupted `lib/game/data.ts` and `MarketShop.tsx` where tool calls previously introduced placeholder text.
+  - Resolved Next.js Typed Routes errors in `GameHeader.tsx` and `GameFooter.tsx` by defining explicit `AppRoute` types and ensuring all linked routes exist.
 - **UI Components:**
   - Fixed empty interface error in `components/ui/input.tsx` by converting it to a type.
   - Added missing icon imports in `MarketShop.tsx`.

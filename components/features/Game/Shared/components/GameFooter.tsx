@@ -2,14 +2,34 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import type { LucideIcon } from 'lucide-react'
 import { Backpack, Map as MapIcon, ScrollText, TrendingUp, User } from 'lucide-react'
 import { usePathname, useRouter } from 'next/navigation'
+
+// Define valid routes for this application to satisfy Next.js typed routes
+type AppRoute =
+  | '/character'
+  | '/game'
+  | '/inventory'
+  | '/map'
+  | '/quests'
+  | '/skills'
+  | '/login'
+  | '/onboarding'
+  | '/register'
+
+interface NavItem {
+  id: string
+  icon: LucideIcon
+  label: string
+  path: AppRoute
+}
 
 export function GameFooter() {
   const router = useRouter()
   const pathname = usePathname()
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { id: 'character', icon: User, label: 'Postava', path: '/character' },
     { id: 'skills', icon: TrendingUp, label: 'Dovednosti', path: '/skills' },
     { id: 'quests', icon: ScrollText, label: 'Questy', path: '/quests' },
