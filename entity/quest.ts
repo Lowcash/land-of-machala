@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/db'
 import type { QuestCategory, QuestStatus } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Quest Entity Layer

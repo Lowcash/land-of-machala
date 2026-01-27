@@ -1,4 +1,3 @@
-import type { WorldState } from '@/types/events'
 import {
   Cloud,
   CloudFog,
@@ -9,6 +8,8 @@ import {
   Moon,
   Sun,
 } from 'lucide-react'
+
+import type { WorldState } from '@/types/events'
 
 interface WorldStateDisplayProps {
   worldState: WorldState

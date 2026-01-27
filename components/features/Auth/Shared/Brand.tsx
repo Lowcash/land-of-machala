@@ -1,13 +1,11 @@
-import { useHeroText } from '@/lib/hooks/auth'
 import { Sparkles, Swords } from 'lucide-react'
 
 interface BrandProps {
   className?: string
+  heroText: string
 }
 
-export function Brand({ className = '' }: BrandProps) {
-  const { heroText } = useHeroText()
-
+export function Brand({ className = '', heroText }: BrandProps) {
   return (
     <div className={`mb-6 text-center sm:mb-8 ${className}`}>
       <div className="relative mb-4 inline-block">

@@ -1,4 +1,5 @@
 import { getCharacterByUserId } from '@/entity/character'
+
 import { auth } from '@/lib/auth'
 
 export async function getCharacterPageData() {
@@ -39,6 +40,7 @@ export async function getCharacterPageData() {
       gold: character.gold,
       bankGold: character.bankGold,
       talentPoints: character.talentPoints,
+      userId: character.userId,
     },
     inventory: character.inventory.map((inv) => ({
       id: inv.id,

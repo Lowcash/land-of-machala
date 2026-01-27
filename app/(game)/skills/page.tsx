@@ -1,13 +1,20 @@
-import { GameFooter, GameHeader } from '@/components/features/Game'
-import { SkillsClient } from '@/components/features/Skills'
-import { PageLayout } from '@/components/layout/PageLayout'
-import { getSkillsPageData } from '@/lib/loaders/skills-loader'
-import { TrendingUp } from 'lucide-react'
 import { redirect } from 'next/navigation'
+
+import { TrendingUp } from 'lucide-react'
+
+import { getSkillsPageData } from '@/lib/loaders/skills-loader'
+
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { Skills } from '@/components/features/Skills'
+import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
 
-export default async function SkillsPage() {
+export default async function SkillsPage({
+  searchParams,
+}: {
+  searchParams: { skillId?: string; category?: string }
+}) {
   const data = await getSkillsPageData()
 
   if (!data) redirect('/onboarding')
@@ -24,11 +31,7 @@ export default async function SkillsPage() {
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <SkillsClient
-        skills={data.skills}
-        talentPoints={data.talentPoints}
-        characterId={data.characterId}
-      />
+      <Skills skills={data.skills} talentPoints={data.talentPoints} searchParams={searchParams} />
     </PageLayout>
   )
 }

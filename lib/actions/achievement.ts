@@ -9,12 +9,13 @@ import {
   unlockAchievement,
   updateAchievementProgress,
 } from '@/entity/achievement'
-import { addExperience, getCharacter, updateCharacterResources } from '@/entity/character'
-import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/db'
+import { addExperience, updateCharacterResources } from '@/entity/character'
 import type { AchievementCategory } from '@prisma/client'
 import { z } from 'zod'
-import { createServerAction } from 'zsa'
+
+import { prisma } from '@/lib/db'
+
+import { characterProcedure } from './procedures'
 
 /**
  * Achievement Server Actions
@@ -25,82 +26,60 @@ const getCategorySchema = z.object({
   category: z.enum(['COMBAT', 'EXPLORATION', 'QUESTS', 'SOCIAL', 'COLLECTION', 'PROGRESSION']),
 })
 
-const getCharacterAchievementsSchema = z.object({
-  characterId: z.string(),
-})
-
 const updateProgressSchema = z.object({
-  characterId: z.string(),
   achievementId: z.string(),
   progress: z.number().int().min(0),
 })
 
 const incrementProgressSchema = z.object({
-  characterId: z.string(),
   achievementId: z.string(),
   amount: z.number().int().min(1).default(1),
 })
 
 const unlockSchema = z.object({
-  characterId: z.string(),
   achievementId: z.string(),
 })
 
-export const getAllAchievementsAction = createServerAction()
+export const getAllAchievementsAction = characterProcedure
+  .createServerAction()
   .input(z.object({ includeHidden: z.boolean().default(false) }))
   .handler(async ({ input }) => {
     const achievements = await getAllAchievements(input.includeHidden)
     return { achievements }
   })
 
-export const getAchievementsByCategoryAction = createServerAction()
+export const getAchievementsByCategoryAction = characterProcedure
+  .createServerAction()
   .input(getCategorySchema)
   .handler(async ({ input }) => {
     const achievements = await getAchievementsByCategory(input.category as AchievementCategory)
     return { achievements }
   })
 
-export const getCharacterAchievementsAction = createServerAction()
-  .input(getCharacterAchievementsSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+export const getCharacterAchievementsAction = characterProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const achievements = await getCharacterAchievements(input.characterId)
+    const achievements = await getCharacterAchievements(character.id)
 
     // Initialize achievements if none exist
     if (achievements.length === 0) {
-      const initialized = await initializeCharacterAchievements(input.characterId)
+      const initialized = await initializeCharacterAchievements(character.id)
       return { achievements: initialized }
     }
 
     return { achievements }
   })
 
-export const updateAchievementProgressAction = createServerAction()
+export const updateAchievementProgressAction = characterProcedure
+  .createServerAction()
   .input(updateProgressSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     const characterAchievement = await updateAchievementProgress(
-      input.characterId,
+      character.id,
       input.achievementId,
       input.progress
     )
@@ -113,13 +92,13 @@ export const updateAchievementProgressAction = createServerAction()
       const achievement = characterAchievement.achievement
 
       if (achievement.rewardGold > 0) {
-        await updateCharacterResources(input.characterId, {
+        await updateCharacterResources(character.id, {
           gold: character.gold + achievement.rewardGold,
         })
       }
 
       if (achievement.rewardXp > 0) {
-        await addExperience(input.characterId, achievement.rewardXp)
+        await addExperience(character.id, achievement.rewardXp)
       }
 
       return {
@@ -136,22 +115,14 @@ export const updateAchievementProgressAction = createServerAction()
     return { characterAchievement, justUnlocked: false }
   })
 
-export const incrementAchievementProgressAction = createServerAction()
+export const incrementAchievementProgressAction = characterProcedure
+  .createServerAction()
   .input(incrementProgressSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     const characterAchievement = await incrementAchievementProgress(
-      input.characterId,
+      character.id,
       input.achievementId,
       input.amount
     )
@@ -161,13 +132,13 @@ export const incrementAchievementProgressAction = createServerAction()
       const achievement = characterAchievement.achievement
 
       if (achievement.rewardGold > 0) {
-        await updateCharacterResources(input.characterId, {
+        await updateCharacterResources(character.id, {
           gold: character.gold + achievement.rewardGold,
         })
       }
 
       if (achievement.rewardXp > 0) {
-        await addExperience(input.characterId, achievement.rewardXp)
+        await addExperience(character.id, achievement.rewardXp)
       }
 
       return {
@@ -184,39 +155,31 @@ export const incrementAchievementProgressAction = createServerAction()
     return { characterAchievement, justUnlocked: false }
   })
 
-export const unlockAchievementAction = createServerAction()
+export const unlockAchievementAction = characterProcedure
+  .createServerAction()
   .input(unlockSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const characterAchievement = await unlockAchievement(input.characterId, input.achievementId)
+    const characterAchievement = await unlockAchievement(character.id, input.achievementId)
 
     const achievement = await prisma.achievement.findUnique({
       where: { id: characterAchievement.achievementId },
     })
 
     if (!achievement) {
-      throw new Error('Achievement not found')
+      throw new Error('Achievement nebylo nalezeno')
     }
 
     // Award rewards
     if (achievement.rewardGold > 0) {
-      await updateCharacterResources(input.characterId, {
+      await updateCharacterResources(character.id, {
         gold: character.gold + achievement.rewardGold,
       })
     }
 
     if (achievement.rewardXp > 0) {
-      await addExperience(input.characterId, achievement.rewardXp)
+      await addExperience(character.id, achievement.rewardXp)
     }
 
     return {

@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 import type { HaggleState, MarketItem } from './types'
 
 interface UseHaggleProps {

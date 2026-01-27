@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/db'
 import type { AchievementCategory } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Achievement Entity Layer

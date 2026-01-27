@@ -1,8 +1,10 @@
 'use client'
 
-import { getCharacterActivityLog } from '@/lib/actions/activity-log'
-import type { Prisma } from '@prisma/client'
 import { useEffect, useState } from 'react'
+
+import type { Prisma } from '@prisma/client'
+
+import { getCharacterActivityLog } from '@/lib/actions/activity-log'
 
 interface ActivityLogEntry {
   id: string

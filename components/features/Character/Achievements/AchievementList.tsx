@@ -1,7 +1,8 @@
-'use client'
-
 import type { LucideIcon } from 'lucide-react'
 import { Trophy } from 'lucide-react'
+
+import { GameCard } from '@/components/ui/game-card'
+import { GameList } from '@/components/ui/game-list'
 
 interface Achievement {
   id: number
@@ -16,19 +17,19 @@ interface AchievementListProps {
 }
 
 export function AchievementList({ achievements }: AchievementListProps) {
+  const unlockedCount = achievements.filter((a) => a.unlocked).length
+
   return (
-    <div className="flex h-full flex-col rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg">
-      <h3
-        className="mb-3 flex items-center gap-2 text-base text-[#d4a574]"
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        <Trophy className="h-4 w-4" />
-        Úspěchy ({achievements.filter((a) => a.unlocked).length}/{achievements.length})
-      </h3>
-      <div className="scrollbar-custom max-h-[300px] space-y-2 overflow-y-auto pr-2">
-        {achievements.map((achievement) => (
+    <GameCard
+      title={`Úspěchy (${unlockedCount}/${achievements.length})`}
+      icon={Trophy}
+      className="h-full"
+    >
+      <GameList
+        data={achievements}
+        keyExtractor={(item) => item.id}
+        renderItem={(achievement) => (
           <div
-            key={achievement.id}
             className={`flex items-start gap-3 rounded border p-3 ${
               achievement.unlocked
                 ? 'border-[#ffd700]/30 bg-[#ffd700]/5'
@@ -51,8 +52,8 @@ export function AchievementList({ achievements }: AchievementListProps) {
               <p className="text-xs text-[#8b7355]">{achievement.description}</p>
             </div>
           </div>
-        ))}
-      </div>
-    </div>
+        )}
+      />
+    </GameCard>
   )
 }

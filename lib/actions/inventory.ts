@@ -1,79 +1,56 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import {
   equipInventoryItem,
   sellInventoryItem,
   unequipInventoryItem,
   useInventoryItem,
 } from '@/entity/inventory'
-import { auth } from '@/lib/auth'
-import { revalidatePath } from 'next/cache'
 import { z } from 'zod'
-import { createServerAction } from 'zsa'
+
+import { characterProcedure } from './procedures'
 
 const itemActionSchema = z.object({
   inventoryItemId: z.string(),
 })
 
-export const equipItemAction = createServerAction()
+export const equipItemAction = characterProcedure
+  .createServerAction()
   .input(itemActionSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Not authenticated')
-
-    const { getCharacterByUserId } = await import('@/entity/character')
-    const character = await getCharacterByUserId(session.user.id)
-
-    if (!character) throw new Error('Character not found')
-
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
     await equipInventoryItem(character.id, input.inventoryItemId)
     revalidatePath('/inventory')
     return { success: true }
   })
 
-export const unequipItemAction = createServerAction()
+export const unequipItemAction = characterProcedure
+  .createServerAction()
   .input(itemActionSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Not authenticated')
-
-    const { getCharacterByUserId } = await import('@/entity/character')
-    const character = await getCharacterByUserId(session.user.id)
-
-    if (!character) throw new Error('Character not found')
-
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
     await unequipInventoryItem(character.id, input.inventoryItemId)
     revalidatePath('/inventory')
     return { success: true }
   })
 
-export const useItemAction = createServerAction()
+export const useItemAction = characterProcedure
+  .createServerAction()
   .input(itemActionSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Not authenticated')
-
-    const { getCharacterByUserId } = await import('@/entity/character')
-    const character = await getCharacterByUserId(session.user.id)
-
-    if (!character) throw new Error('Character not found')
-
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
     await useInventoryItem(character.id, input.inventoryItemId)
     revalidatePath('/inventory')
     return { success: true }
   })
 
-export const sellItemAction = createServerAction()
+export const sellItemAction = characterProcedure
+  .createServerAction()
   .input(itemActionSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Not authenticated')
-
-    const { getCharacterByUserId } = await import('@/entity/character')
-    const character = await getCharacterByUserId(session.user.id)
-
-    if (!character) throw new Error('Character not found')
-
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
     await sellInventoryItem(character.id, input.inventoryItemId)
     revalidatePath('/inventory')
     return { success: true }

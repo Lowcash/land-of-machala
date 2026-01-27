@@ -1,27 +1,26 @@
 'use server'
 
-import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+
+import { prisma } from '@/lib/db'
+
 import { logActivity } from './activity-log'
+import { characterProcedure } from './procedures'
 
-export async function discoverNearbyLocations(characterId: string) {
-  try {
-    const character = await prisma.character.findUnique({
-      where: { id: characterId },
-      select: {
-        id: true,
-        serverId: true,
-        locationX: true,
-        locationY: true,
-        discoveredLocations: true,
-      },
-    })
-
-    if (!character) return
+export const discoverNearbyLocations = characterProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { character } = ctx
 
     const serverLocations = await prisma.location.findMany({
       where: { serverId: character.serverId },
-      select: { id: true, name: true, positionX: true, positionY: true, discoveryRadius: true },
+      select: {
+        id: true,
+        name: true,
+        positionX: true,
+        positionY: true,
+        discoveryRadius: true,
+      },
     })
 
     const discovered = Array.isArray(character.discoveredLocations)
@@ -41,7 +40,7 @@ export async function discoverNearbyLocations(characterId: string) {
         discovered.push(loc.id)
         newDiscoveries = true
 
-        await logActivity(characterId, 'discovery', `Objevil jsi nové místo: ${loc.name}`, {
+        await logActivity(character.id, 'discovery', `Objevil jsi nové místo: ${loc.name}`, {
           locationId: loc.id,
         })
       }
@@ -49,12 +48,11 @@ export async function discoverNearbyLocations(characterId: string) {
 
     if (newDiscoveries) {
       await prisma.character.update({
-        where: { id: characterId },
+        where: { id: character.id },
         data: { discoveredLocations: discovered },
       })
       revalidatePath('/game')
     }
-  } catch (error) {
-    console.error('Discovery error:', error)
-  }
-}
+
+    return { success: true, newDiscoveries }
+  })

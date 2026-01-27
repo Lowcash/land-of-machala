@@ -1,31 +1,15 @@
 'use server'
 
 import { createUser, getUser, getUserByUsername } from '@/entity/user'
-import { auth, signIn, signOut } from '@/lib/auth'
 import { randomBytes } from 'crypto'
-import { z } from 'zod'
 import { createServerAction } from 'zsa'
+
+import { auth, signIn, signOut } from '@/lib/auth'
+import { loginSchema, registerSchema } from '@/lib/schemas/auth'
 
 /**
  * Auth Server Actions
- * Handles user authentication using NextAuth
  */
-
-const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
-
-const registerSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  username: z
-    .string()
-    .min(3, 'Username must be at least 3 characters')
-    .max(20, 'Username must be at most 20 characters')
-    .regex(/^[a-zA-Z0-9_]+$/, 'Username can only contain letters, numbers, and underscores')
-    .optional(),
-  password: z.string().min(6, 'Password must be at least 6 characters'),
-})
 
 export const loginAction = createServerAction()
   .input(loginSchema)
@@ -39,12 +23,12 @@ export const loginAction = createServerAction()
     })
 
     if (!result || result.error) {
-      throw new Error('Invalid credentials')
+      throw new Error('Nesprávné údaje')
     }
 
     const user = await getUser(email)
     if (!user) {
-      throw new Error('User not found')
+      throw new Error('Uživatel nenalezen')
     }
 
     return {
@@ -65,14 +49,14 @@ export const registerAction = createServerAction()
     // Check if user already exists
     const existingUser = await getUser(email)
     if (existingUser) {
-      throw new Error('Email already registered')
+      throw new Error('E-mail je již registrován')
     }
 
     const finalUsername = (username || email.split('@')[0]) as string
 
     const existingUsername = await getUserByUsername(finalUsername)
     if (existingUsername) {
-      throw new Error('Username already taken')
+      throw new Error('Uživatelské jméno je již obsazeno')
     }
 
     const user = await createUser({
@@ -89,7 +73,7 @@ export const registerAction = createServerAction()
     })
 
     if (!result || result.error) {
-      throw new Error('Failed to sign in after registration')
+      throw new Error('Nepodařilo se přihlásit po registraci')
     }
 
     return {

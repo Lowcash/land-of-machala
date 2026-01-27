@@ -1,8 +1,10 @@
 'use server'
 
-import { prisma } from '@/lib/db'
-import type { Prisma } from '@prisma/client'
 import { revalidatePath } from 'next/cache'
+
+import type { Prisma } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 export async function logActivity(
   characterId: string,

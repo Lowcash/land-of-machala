@@ -1,10 +1,13 @@
 'use client'
 
-import { ScrollIndicator } from '@/components/ui/scroll-indicator'
-import { cn } from '@/lib/utils'
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import * as React from 'react'
 import { useRef } from 'react'
+
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
+
+import { cn } from '@/lib/utils'
+
+import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 
 interface ScrollAreaProps extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
   viewportClassName?: string

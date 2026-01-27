@@ -1,6 +1,6 @@
 'use server'
 
-import { addExperience, getCharacter, updateCharacterResources } from '@/entity/character'
+import { addExperience, updateCharacterResources } from '@/entity/character'
 import { addItem } from '@/entity/inventory'
 import {
   abandonQuest,
@@ -11,160 +11,113 @@ import {
   startQuest,
   updateQuestObjectiveProgress,
 } from '@/entity/quest'
-import { auth } from '@/lib/auth'
 import type { QuestStatus } from '@prisma/client'
-import { z } from 'zod'
-import { createServerAction } from 'zsa'
 
-const getCharacterQuestsSchema = z.object({
-  characterId: z.string(),
-  status: z.enum(['AVAILABLE', 'ACTIVE', 'COMPLETED', 'FAILED']).optional(),
-})
+import {
+  abandonQuestSchema,
+  completeQuestSchema,
+  getCharacterQuestsSchema,
+  startQuestSchema,
+  updateObjectiveSchema,
+} from '@/lib/schemas/quest'
 
-const startQuestSchema = z.object({
-  characterId: z.string(),
-  questId: z.string(),
-})
+import { characterProcedure } from './procedures'
 
-const updateObjectiveSchema = z.object({
-  characterId: z.string(),
-  questId: z.string(),
-  objectiveId: z.string(),
-  progress: z.number().int().min(0),
-})
+/**
+ * Actions for quest management.
+ */
 
-const completeQuestSchema = z.object({
-  characterId: z.string(),
-  questId: z.string(),
-})
+/**
+ * Actions for quest management.
+ */
 
-const abandonQuestSchema = z.object({
-  characterId: z.string(),
-  questId: z.string(),
-})
-
-export const getAllQuestsAction = createServerAction().handler(async () => {
+export const getAllQuestsAction = characterProcedure.createServerAction().handler(async () => {
   const quests = await getAllQuests()
   return { quests }
 })
 
-export const getCharacterQuestsAction = createServerAction()
+export const getCharacterQuestsAction = characterProcedure
+  .createServerAction()
   .input(getCharacterQuestsSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const quests = await getCharacterQuests(
-      input.characterId,
-      input.status as QuestStatus | undefined
-    )
-
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    const quests = await getCharacterQuests(character.id, input.status as QuestStatus | undefined)
     return { quests }
   })
 
-export const startQuestAction = createServerAction()
+export const startQuestAction = characterProcedure
+  .createServerAction()
   .input(startQuestSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const existing = await getCharacterQuest(input.characterId, input.questId)
+    const existing = await getCharacterQuest(character.id, input.questId)
     if (existing) {
-      throw new Error('Quest already started')
+      return { success: false, message: 'Tento úkol už máš v deníku.' }
     }
 
-    const characterQuest = await startQuest(input.characterId, input.questId)
-
-    return { quest: characterQuest }
+    const characterQuest = await startQuest(character.id, input.questId)
+    return { success: true, quest: characterQuest, message: 'Úkol byl přijat.' }
   })
 
-export const updateQuestObjectiveAction = createServerAction()
+export const updateQuestObjectiveAction = characterProcedure
+  .createServerAction()
   .input(updateObjectiveSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     const updated = await updateQuestObjectiveProgress(
-      input.characterId,
+      character.id,
       input.questId,
       input.objectiveId,
       input.progress
     )
 
-    return { quest: updated }
+    return { success: true, quest: updated }
   })
 
-export const completeQuestAction = createServerAction()
+export const completeQuestAction = characterProcedure
+  .createServerAction()
   .input(completeQuestSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const characterQuest = await getCharacterQuest(input.characterId, input.questId)
+    const characterQuest = await getCharacterQuest(character.id, input.questId)
 
     if (!characterQuest) {
-      throw new Error('Quest not found')
+      return { success: false, message: 'Úkol nebyl nalezen.' }
     }
 
     if (characterQuest.status !== 'COMPLETED') {
-      throw new Error('Quest objectives not completed')
+      return { success: false, message: 'Cíle úkolu ještě nejsou splněny.' }
     }
 
     const quest = characterQuest.quest
 
+    // Award rewards
     if (quest.rewardGold > 0) {
-      await updateCharacterResources(input.characterId, {
+      await updateCharacterResources(character.id, {
         gold: character.gold + quest.rewardGold,
       })
     }
 
     if (quest.rewardXp > 0) {
-      await addExperience(input.characterId, quest.rewardXp)
+      await addExperience(character.id, quest.rewardXp)
     }
 
     if (quest.rewards && quest.rewards.length > 0) {
       for (const reward of quest.rewards) {
         if (reward.itemId) {
-          await addItem(input.characterId, reward.itemId, reward.quantity)
+          await addItem(character.id, reward.itemId, reward.quantity)
         }
       }
     }
 
-    const completed = await completeQuest(input.characterId, input.questId)
+    const completed = await completeQuest(character.id, input.questId)
 
     return {
+      success: true,
+      message: 'Úkol byl úspěšně dokončen! Získal jsi odměny.',
       quest: completed,
       rewards: {
         gold: quest.rewardGold,
@@ -174,21 +127,13 @@ export const completeQuestAction = createServerAction()
     }
   })
 
-export const abandonQuestAction = createServerAction()
+export const abandonQuestAction = characterProcedure
+  .createServerAction()
   .input(abandonQuestSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+    await abandonQuest(character.id, input.questId)
 
-    await abandonQuest(input.characterId, input.questId)
-
-    return { success: true }
+    return { success: true, message: 'Úkol byl opuštěn.' }
   })

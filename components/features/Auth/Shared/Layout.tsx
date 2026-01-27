@@ -1,5 +1,6 @@
-import { TransitionLayout } from '@/components/layout/TransitionLayout'
 import type { ReactNode } from 'react'
+
+import { TransitionWrapper } from '@/components/layout/TransitionWrapper'
 
 interface LayoutProps {
   children: ReactNode
@@ -15,21 +16,17 @@ export function Layout({
   centered = true,
 }: LayoutProps) {
   return (
-    <TransitionLayout>
+    <TransitionWrapper>
       <div
         className={`bg-game-wood-dark text-game-gold selection:bg-game-gold selection:text-game-wood-dark relative min-h-screen w-full overflow-x-hidden font-serif ${className}`}
       >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
-          {/* We use a div with background-image to easily handle cover/position if Next Image is tricky with dynamic paths, 
-               but ideally we stick to Next Image if possible. 
-               However, to match RegisterForm style which uses inline style background-image: */}
           <div
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${backgroundImage})` }}
           />
           <div className="bg-game-wood-dark/80 absolute inset-0 backdrop-blur-sm" />
-          {/* Add linear gradient overlay from RegisterForm if desired for more depth */}
           <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90 mix-blend-multiply" />
         </div>
 
@@ -46,6 +43,6 @@ export function Layout({
           </div>
         </div>
       </div>
-    </TransitionLayout>
+    </TransitionWrapper>
   )
 }

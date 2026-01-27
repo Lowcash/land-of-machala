@@ -1,11 +1,6 @@
 'use server'
 
-import {
-  addExperience,
-  getCharacter,
-  getCharacterByUserId,
-  updateCharacterResources,
-} from '@/entity/character'
+import { addExperience, getCharacterByUserId, updateCharacterResources } from '@/entity/character'
 import {
   calculateAttackDamage,
   calculateCombatDamage,
@@ -18,53 +13,38 @@ import {
   updateCharacterCombatState,
 } from '@/entity/combat'
 import { getEquippedItems } from '@/entity/inventory'
+
 import { auth } from '@/lib/auth'
-import { z } from 'zod'
-import { createServerAction } from 'zsa'
+import {
+  performActionSchema,
+  startCombatSchema,
+  updateCombatSchema,
+  useItemSchema,
+} from '@/lib/schemas/combat'
+
 import { checkCombatAchievements } from './achievement'
+import { characterProcedure } from './procedures'
 
 /**
  * Combat Server Actions
- * Handles combat initialization and turn-based combat mechanics
+ * Handles combat initialization, turn-based mechanics, and state management.
  */
 
-const initiateCombatSchema = z.object({
-  characterId: z.string(),
-})
+/**
+ * Initiates a new combat encounter with a random enemy.
+ */
+export const initiateCombatAction = characterProcedure
+  .createServerAction()
+  .handler(async ({ ctx }) => {
+    const { character } = ctx
 
-const performActionSchema = z.object({
-  characterId: z.string(),
-  enemyId: z.string(),
-  enemyCurrentHp: z.number().int().min(0),
-  action: z.enum(['attack', 'defend', 'special', 'flee']),
-})
-
-const useItemSchema = z.object({
-  characterId: z.string(),
-  itemId: z.string(),
-})
-
-export const initiateCombatAction = createServerAction()
-  .input(initiateCombatSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    // Get random enemy based on character level
     const enemy = await getRandomEnemy(character.level)
     if (!enemy) {
-      throw new Error('No enemy available for this level')
+      return { success: false, message: 'Žádný nepřítel není blízko tvého okolí.' }
     }
 
     return {
+      success: true,
       enemy,
       combat: {
         playerHp: character.hp,
@@ -77,23 +57,18 @@ export const initiateCombatAction = createServerAction()
     }
   })
 
-export const performCombatActionAction = createServerAction()
+/**
+ * Performs a combat turn (attack, defend, etc.).
+ */
+export const performCombatActionAction = characterProcedure
+  .createServerAction()
   .input(performActionSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+    const equipment = await getEquippedItems(character.id)
 
-    const equipment = await getEquippedItems(input.characterId)
-
-    // Calculate player stats
+    // Calculate player attributes
     const playerAttack = calculateAttackDamage(
       10, // base attack
       {
@@ -112,10 +87,11 @@ export const performCombatActionAction = createServerAction()
       equipment
     )
 
-    // Get enemy (simplified - in real app would fetch from combat state)
+    // In a real stateful app, we'd fetch the specific enemy instance,
+    // but for this implementation we use the level-based random enemy.
     const enemy = await getRandomEnemy(character.level)
     if (!enemy) {
-      throw new Error('No enemy available for this level')
+      return { success: false, message: 'Nepřítel zmizel v mlze.' }
     }
 
     let playerDamage = 0
@@ -124,7 +100,7 @@ export const performCombatActionAction = createServerAction()
     let enemyCrit = false
     const combatLog: string[] = []
 
-    // Handle player action
+    // 1. Process Player Choice
     switch (input.action) {
       case 'attack': {
         playerCrit = isCriticalHit(character.agility)
@@ -133,29 +109,30 @@ export const performCombatActionAction = createServerAction()
 
         combatLog.push(
           playerCrit
-            ? `Critical hit! You deal ${playerDamage} damage!`
-            : `You attack for ${playerDamage} damage!`
+            ? `Kritický zásah! Udělil jsi ${playerDamage} poškození!`
+            : `Zaútočil jsi za ${playerDamage} poškození!`
         )
         break
       }
 
       case 'defend': {
-        combatLog.push('You take a defensive stance!')
-        // Defense reduces incoming damage by 50%
+        combatLog.push('Zaujal jsi obranný postoj!')
+        // Defense reduces incoming damage significantly
         enemyDamage = Math.floor(calculateCombatDamage(enemy.attack, playerDefense * 2) * 0.5)
         break
       }
 
       case 'special': {
-        // Special attack costs mana (simplified)
         if (character.mana >= 10) {
           playerDamage = Math.floor(playerAttack * 1.5)
-          await updateCharacterResources(input.characterId, {
+          await updateCharacterResources(character.id, {
             mana: character.mana - 10,
           })
-          combatLog.push(`You use a special attack for ${playerDamage} damage!`)
+          combatLog.push(`Použil jsi speciální útok za ${playerDamage} poškození!`)
         } else {
-          combatLog.push('Not enough mana for special attack!')
+          combatLog.push('Nedostatek many pro speciální útok!')
+          // Player essentially loses turn if they try and fail?
+          // Or we could return error. Let's return a soft error in log.
         }
         break
       }
@@ -163,42 +140,42 @@ export const performCombatActionAction = createServerAction()
       case 'flee': {
         const fleeChance = 0.5
         if (Math.random() < fleeChance) {
-          combatLog.push('You successfully fled from combat!')
+          combatLog.push('Úspěšně jsi utekl z boje!')
           return {
+            success: true,
             result: 'fled' as const,
             combatLog,
           }
         } else {
-          combatLog.push('Failed to flee!')
+          combatLog.push('Útěk se nezdařil! Nepřítel ti zablokoval cestu.')
         }
         break
       }
     }
 
-    // Enemy turn (if not defending)
+    // 2. Process Enemy Counter (Skipped if player defended since it's handled in switch)
     if (input.action !== 'defend') {
-      enemyCrit = isCriticalHit(enemy.attack * 0.1) // Enemies have lower crit chance
+      enemyCrit = isCriticalHit(enemy.attack * 0.1)
       const baseDamage = calculateCombatDamage(enemy.attack, playerDefense)
       enemyDamage = enemyCrit ? baseDamage * 2 : baseDamage
 
       combatLog.push(
         enemyCrit
-          ? `${enemy.name} lands a critical hit for ${enemyDamage} damage!`
-          : `${enemy.name} attacks for ${enemyDamage} damage!`
+          ? `${enemy.name} udělil kritický zásah za ${enemyDamage} poškození!`
+          : `${enemy.name} útočí za ${enemyDamage} poškození!`
       )
     }
 
-    // Update HP
+    // 3. Update Health States
     const newEnemyHp = Math.max(0, input.enemyCurrentHp - playerDamage)
     const newPlayerHp = Math.max(0, character.hp - enemyDamage)
 
-    await updateCharacterResources(input.characterId, {
+    await updateCharacterResources(character.id, {
       hp: newPlayerHp,
     })
 
-    // Check combat outcome
+    // 4. Determine Combat Result
     if (newEnemyHp <= 0) {
-      // Victory!
       const xpReward = calculateExperienceReward(
         enemy.experienceReward,
         enemy.level,
@@ -206,39 +183,36 @@ export const performCombatActionAction = createServerAction()
       )
       const goldReward = calculateGoldReward(enemy.goldReward)
 
-      await addExperience(input.characterId, xpReward)
-      await updateCharacterResources(input.characterId, {
+      await addExperience(character.id, xpReward)
+      await updateCharacterResources(character.id, {
         gold: character.gold + goldReward,
       })
 
-      combatLog.push(`${enemy.name} defeated!`)
-      combatLog.push(`You gained ${xpReward} XP and ${goldReward} gold!`)
+      combatLog.push(`${enemy.name} byl poražen!`)
+      combatLog.push(`Získal jsi ${xpReward} XP a ${goldReward} zlata!`)
 
-      // Check achievements
-      await checkCombatAchievements(input.characterId, 1)
+      await checkCombatAchievements(character.id, 1)
 
       return {
+        success: true,
         result: 'victory' as const,
         combatLog,
-        rewards: {
-          xp: xpReward,
-          gold: goldReward,
-        },
+        rewards: { xp: xpReward, gold: goldReward },
         playerHp: newPlayerHp,
         enemyHp: newEnemyHp,
       }
     }
 
     if (newPlayerHp <= 0) {
-      // Defeat
-      combatLog.push('You have been defeated!')
+      combatLog.push('Byl jsi poražen a upadl jsi do bezvědomí...')
 
-      // Respawn at town with half HP
-      await updateCharacterResources(input.characterId, {
+      // Defeat consequences: Respawn at half health
+      await updateCharacterResources(character.id, {
         hp: Math.floor(character.maxHp / 2),
       })
 
       return {
+        success: true,
         result: 'defeat' as const,
         combatLog,
         playerHp: newPlayerHp,
@@ -246,8 +220,9 @@ export const performCombatActionAction = createServerAction()
       }
     }
 
-    // Combat continues
+    // 5. Combat continues
     return {
+      success: true,
       result: 'ongoing' as const,
       combatLog,
       playerHp: newPlayerHp,
@@ -259,55 +234,25 @@ export const performCombatActionAction = createServerAction()
     }
   })
 
-export const performUseItemAction = createServerAction()
+export const performUseItemAction = characterProcedure
+  .createServerAction()
   .input(useItemSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    // Get item from inventory and apply effects
-    // (Implementation depends on item effects system)
-
+  .handler(async () => {
     return {
       success: true,
-      message: 'Item used successfully',
+      message: 'Předmět byl úspěšně použit.',
     }
   })
 
 /**
- * Combat State Management for SSR
+ * State Management
  */
 
-const startCombatSchema = z.object({
-  enemyId: z.string(),
-  enemyHp: z.number(),
-})
-
-const updateCombatSchema = z.object({
-  playerHp: z.number(),
-  enemyHp: z.number(),
-  turn: z.enum(['player', 'enemy']),
-})
-
-/**
- * Start combat encounter (sets backend state)
- */
-export const startCombatState = createServerAction()
+export const startCombatState = characterProcedure
+  .createServerAction()
   .input(startCombatSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Unauthorized')
-
-    const character = await getCharacterByUserId(session.user.id)
-    if (!character) throw new Error('Character not found')
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     await updateCharacterCombatState(character.id, {
       inCombat: true,
@@ -321,19 +266,12 @@ export const startCombatState = createServerAction()
     return { success: true }
   })
 
-/**
- * Update combat state during battle
- */
-export const updateCombatState = createServerAction()
+export const updateCombatState = characterProcedure
+  .createServerAction()
   .input(updateCombatSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) throw new Error('Unauthorized')
-
-    const character = await getCharacterByUserId(session.user.id)
-
-    if (!character) throw new Error('Character not found')
-    if (!character.inCombat) throw new Error('Not in combat')
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    if (!character.inCombat) return { success: false, message: 'Nejsi v boji.' }
 
     await updateCharacterCombatState(character.id, {
       combatPlayerHp: input.playerHp,
@@ -344,16 +282,8 @@ export const updateCombatState = createServerAction()
     return { success: true }
   })
 
-/**
- * End combat (victory or defeat)
- */
-export const endCombatState = createServerAction().handler(async () => {
-  const session = await auth()
-  if (!session?.user?.id) throw new Error('Unauthorized')
-
-  const character = await getCharacterByUserId(session.user.id)
-
-  if (!character) throw new Error('Character not found')
+export const endCombatState = characterProcedure.createServerAction().handler(async ({ ctx }) => {
+  const { character } = ctx
 
   await updateCharacterCombatState(character.id, {
     inCombat: false,
@@ -367,20 +297,12 @@ export const endCombatState = createServerAction().handler(async () => {
   return { success: true }
 })
 
-/**
- * Get current combat state (for SSR)
- */
 export async function getCombatState() {
   const session = await auth()
   if (!session?.user?.id) return null
 
   const character = await getCharacterByUserId(session.user.id)
   if (!character) return null
-
-  // Using getCharacterCombatState would be cleaner but we already have the character object here
-  // However, getCharacterByUserId might not select combat fields, let's double check.
-  // Actually, getCharacterByUserId usually returns the whole character.
-  // But to be safe and use our new API:
 
   return await getCharacterCombatState(character.id)
 }

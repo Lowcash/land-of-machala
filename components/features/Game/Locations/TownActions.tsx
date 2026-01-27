@@ -1,7 +1,9 @@
 'use client'
 
-import type { View } from '@/lib/game/config'
 import { Beer, Building, Cross, Hammer, ScrollText, ShoppingBag } from 'lucide-react'
+
+import type { View } from '@/lib/game/config'
+
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'
 

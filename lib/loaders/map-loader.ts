@@ -1,13 +1,17 @@
-import type { Location } from '@/components/features/Map/Shared/types'
+import type { LocationType } from '@prisma/client'
+
 import { getLocationsByServer, getQuestMarkersForCharacter } from '@/lib/actions/location'
 import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
-import type { LocationType } from '@prisma/client'
+import { DEMO_LOCATIONS } from '@/lib/game/map'
 
-export async function getMapPageData(userId: string) {
+import type { Location } from '@/components/features/Map/Shared/types'
+
+export async function getMapPageData() {
   const session = await auth()
-  if (!session?.user?.id || session.user.id !== userId) return null
+  if (!session?.user?.id) return null
 
+  const userId = session.user.id
   const character = await prisma.character.findFirst({
     where: { userId },
     select: {
@@ -35,44 +39,7 @@ export async function getMapPageData(userId: string) {
   // Hardcoded locations for demo/dev purposes
   const knownIds = new Set(locations.map((l) => l.id))
 
-  const demoLocations: Partial<Location>[] = [
-    {
-      id: 'demo-cave',
-      name: 'Gobliní Jeskyně',
-      description: 'Temná a vlhká jeskyně plná zlomyslných skřetů.',
-      type: 'DUNGEON' as LocationType,
-      level: 5,
-      positionX: 150,
-      positionY: 80,
-    },
-    {
-      id: 'demo-ruins',
-      name: 'Staré Ruiny',
-      description: 'Pozůstatky starověké civilizace, které prý ukrývají poklad.',
-      type: 'LANDMARK' as LocationType,
-      level: 10,
-      positionX: 200,
-      positionY: 150,
-    },
-    {
-      id: 'demo-forest',
-      name: 'Temný Hvozd',
-      description: 'Les, kam slunce nesvítí a stromy šeptají.',
-      type: 'WILDERNESS' as LocationType,
-      level: 3,
-      positionX: 80,
-      positionY: 120,
-    },
-    {
-      id: 'demo-lake',
-      name: 'Jezero Snů',
-      description: 'Klidné jezero s křišťálovou vodou.',
-      type: 'LANDMARK' as LocationType,
-      level: 1,
-      positionX: 120,
-      positionY: 180,
-    },
-  ].filter((l) => !knownIds.has(l.id as string))
+  const filteredDemoLocations = DEMO_LOCATIONS.filter((l) => !knownIds.has(l.id as string))
 
   const serializedLocations: Location[] = [
     ...locations.map((loc) => ({
@@ -84,7 +51,7 @@ export async function getMapPageData(userId: string) {
       positionX: loc.positionX,
       positionY: loc.positionY,
     })),
-    ...(demoLocations as Location[]),
+    ...(filteredDemoLocations as Location[]),
   ]
 
   return {
@@ -92,7 +59,7 @@ export async function getMapPageData(userId: string) {
     serializedLocations,
     discoveredLocations: [
       ...discoveredLocations,
-      ...demoLocations.map((d) => d.id).filter((id): id is string => !!id),
+      ...filteredDemoLocations.map((d) => d.id).filter((id): id is string => !!id),
     ],
     questMarkers,
     deathLocation: character.deathLocation,

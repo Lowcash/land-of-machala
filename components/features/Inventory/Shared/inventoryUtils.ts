@@ -1,4 +1,5 @@
 import type { InventoryItemUI, ItemRarity } from './types'
+
 export { getIconFromName } from '@/lib/icons'
 
 export const getRarityColor = (rarity: ItemRarity) => {

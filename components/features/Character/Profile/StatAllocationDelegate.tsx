@@ -1,47 +1,47 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { updateCharacterStatsAction } from '@/lib/actions/character'
-import { Plus } from 'lucide-react'
+import { useTransition } from 'react'
+
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+
+import { Plus } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { updateCharacterStatsAction } from '@/lib/actions/character'
+
+import { Button } from '@/components/ui/button'
+
 interface StatAllocationDelegateProps {
-  characterId: string
   talentPoints: number
 }
 
-export function StatAllocationDelegate({ characterId, talentPoints }: StatAllocationDelegateProps) {
-  const [isAllocating, setIsAllocating] = useState(false)
+export function StatAllocationDelegate({ talentPoints }: StatAllocationDelegateProps) {
+  const [isAllocating, startTransition] = useTransition()
   const router = useRouter()
 
-  const handleAllocateStat = async (stat: 'strength' | 'intelligence' | 'agility' | 'stamina') => {
+  const handleAllocateStat = (stat: 'strength' | 'intelligence' | 'agility' | 'stamina') => {
     if (talentPoints <= 0 || isAllocating) return
 
-    setIsAllocating(true)
-    try {
-      const result = await updateCharacterStatsAction({
-        characterId,
-        stats: {
-          [stat]: 1, // Add 1 to the stat (will be calculated in entity layer)
-        },
-      })
+    startTransition(async () => {
+      try {
+        const result = await updateCharacterStatsAction({
+          stats: {
+            [stat]: 1, // Add 1 to the stat (will be calculated in entity layer)
+          },
+        })
 
-      if (result[0]) {
-        toast.success(`+1 ${stat}`)
-        router.refresh() // Refresh to show new stats
+        if (result[0]) {
+          toast.success(`+1 ${stat}`)
+          router.refresh() // Refresh to show new stats
+        }
+      } catch {
+        toast.error('Nepodařilo se přidat atribut')
       }
-    } catch {
-      toast.error('Nepodařilo se přidat atribut')
-    } finally {
-      setIsAllocating(false)
-    }
+    })
   }
 
   return (
-    <div className="mt-2 border-t border-[#8b6f47]/30 pt-2">
-      <div className="mb-1 text-center text-[10px] text-[#ffd700]">Volné body: {talentPoints}</div>
+    <div className="mt-2 text-[10px]">
       <div className="grid grid-cols-4 gap-1">
         <Button
           onClick={() => handleAllocateStat('strength')}

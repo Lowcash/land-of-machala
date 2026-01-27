@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+
 import { loginAsGuest } from './helpers'
 
 test.describe('Navigation System', () => {

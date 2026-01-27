@@ -1,9 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+
+import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
 
 type NotificationVariant = 'success' | 'error' | 'warning' | 'info'
 

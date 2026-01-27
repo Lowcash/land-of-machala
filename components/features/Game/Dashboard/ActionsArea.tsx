@@ -1,6 +1,8 @@
+import React from 'react'
+
 import type { View } from '@/lib/game/config'
 import { viewData } from '@/lib/game/config'
-import React from 'react'
+
 import { BankActions } from '../Locations/BankActions'
 import type { MarketItem } from '../Locations/Market/types'
 import { HealerShop } from '../Locations/Shops/HealerShop'
@@ -30,7 +32,6 @@ interface ActionsAreaProps {
   setActiveBuffs: React.Dispatch<React.SetStateAction<Buff[]>>
   handleSetInfoText: (text: string | null) => void
   handleMove: (direction: MoveDirection) => void
-  characterId: string
   bankGold: number
 }
 
@@ -46,7 +47,6 @@ export function ActionsArea({
   setActiveBuffs,
   handleSetInfoText,
   handleMove,
-  characterId,
   bankGold,
 }: ActionsAreaProps) {
   const currentViewConfig = viewData[currentView]
@@ -70,12 +70,10 @@ export function ActionsArea({
         <div className="space-y-1.5 pt-2">
           {currentView === 'town' && <TownActions onView={goToView} />}
 
-          {currentView === 'bank' && (
-            <BankActions characterId={characterId} gold={gold} balance={bankGold} />
-          )}
+          {currentView === 'bank' && <BankActions gold={gold} balance={bankGold} />}
 
           {currentView === 'tavern' && (
-            <TavernActions characterId={characterId} gold={gold} onInfoAction={handleSetInfoText} />
+            <TavernActions gold={gold} onInfoAction={handleSetInfoText} />
           )}
 
           {currentView === 'smith' && (

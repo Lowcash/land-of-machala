@@ -1,13 +1,14 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import type { ReactNode } from 'react'
 
-interface TransitionLayoutProps {
+import { motion } from 'framer-motion'
+
+interface TransitionWrapperProps {
   children: ReactNode
 }
 
-export function TransitionLayout({ children }: TransitionLayoutProps) {
+export function TransitionWrapper({ children }: TransitionWrapperProps) {
   return (
     <motion.div
       animate={{ opacity: 1 }}

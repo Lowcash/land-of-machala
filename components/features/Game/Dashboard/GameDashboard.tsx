@@ -1,11 +1,14 @@
 'use client'
 
+import { useState } from 'react'
+
+import { viewData } from '@/lib/game/config'
+import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
+
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
 import { PageLayout } from '@/components/layout/PageLayout'
-import { viewData } from '@/lib/game/config'
-import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
-import { useState } from 'react'
+
 import type { CharacterData as BaseCharacterData } from '../../Character/Shared/types'
 import type { MarketItem } from '../Locations/Market/types'
 import { ActionsArea } from './ActionsArea'
@@ -43,7 +46,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
   const [inventory, setInventory] = useState<MarketItem[]>(character.inventory || [])
 
   const { handleMove } = useGameMove({
-    characterId: character.id,
     handleSetInfoText,
   })
 
@@ -111,7 +113,6 @@ export function GameDashboard({ character }: GameDashboardProps) {
           setActiveBuffs={setActiveBuffs}
           handleSetInfoText={handleSetInfoText}
           handleMove={handleMove}
-          characterId={character.id}
           bankGold={character.bankGold || 0}
         />
       </div>

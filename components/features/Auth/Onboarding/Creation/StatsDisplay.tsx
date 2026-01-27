@@ -1,5 +1,3 @@
-'use client'
-
 import { Activity, Brain, Droplet, Heart, Sword, Wind } from 'lucide-react'
 
 interface Stats {

@@ -1,1 +1,0 @@
-export { useHeroText } from './useHeroText'

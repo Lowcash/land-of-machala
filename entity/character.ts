@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/db'
 import type { CharacterClass, CharacterRace } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Character Entity Layer

@@ -1,7 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
 import { X } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+
 import { getIconFromName, getRarityBorder, getRarityColor } from '../Shared/inventoryUtils'
 import type { InventoryItemUI } from '../Shared/types'
 

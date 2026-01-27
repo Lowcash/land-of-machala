@@ -1,8 +1,10 @@
 'use client'
 
-import { Card } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
 import type { ReactNode } from 'react'
+
+import { cn } from '@/lib/utils'
+
+import { Card } from '@/components/ui/card'
 
 interface LocationLayoutProps {
   /** Optional title for the location info box */

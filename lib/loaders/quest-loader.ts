@@ -1,7 +1,10 @@
-import type { MergedQuest } from '@/components/features/Quest/Shared/types'
 import { getCharacterByUserId } from '@/entity/character'
 import { getAllQuests, getCharacterQuests } from '@/entity/quest'
+
 import { auth } from '@/lib/auth'
+import { DUMMY_QUESTS } from '@/lib/game/quests'
+
+import type { MergedQuest } from '@/components/features/Quest/Shared/types'
 
 export async function getQuestPageData() {
   const session = await auth()
@@ -12,74 +15,7 @@ export async function getQuestPageData() {
 
   const allQuests = await getAllQuests()
 
-  // Dummy quests if DB is empty
-  const dummyQuests = [
-    {
-      id: 'dummy-q1',
-      title: 'Krysí problém',
-      description: 'Hostinský si stěžuje na krysy ve sklepě. Pomoc mu je vyhubit.',
-      category: 'MAIN',
-      minLevel: 1,
-      rewards: [],
-      objectives: [
-        {
-          id: 'obj-1',
-          description: 'Zabij 5 Krys',
-          target: 5,
-          current: 0,
-          completed: false,
-          order: 1,
-          questId: 'dummy-q1',
-        },
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 'dummy-q2',
-      title: 'Ztracený amulet',
-      description: 'Najdi starý rodinný amulet ztracený v lese.',
-      category: 'SIDE',
-      minLevel: 3,
-      rewards: [],
-      objectives: [
-        {
-          id: 'obj-2',
-          description: 'Najdi Amulet',
-          target: 1,
-          current: 0,
-          completed: false,
-          order: 1,
-          questId: 'dummy-q2',
-        },
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-    {
-      id: 'dummy-q3',
-      title: 'Denní lov: VLCI',
-      description: 'Vlci se přemnožili. Sniž jejich stavy.',
-      category: 'DAILY',
-      minLevel: 5,
-      rewards: [],
-      objectives: [
-        {
-          id: 'obj-3',
-          description: 'Ulov 10 Vlků',
-          target: 10,
-          current: 3,
-          completed: false,
-          order: 1,
-          questId: 'dummy-q3',
-        },
-      ],
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    },
-  ]
-
-  const questsToUse = allQuests.length > 0 ? allQuests : dummyQuests
+  const questsToUse = allQuests.length > 0 ? allQuests : DUMMY_QUESTS
 
   const characterQuests = await getCharacterQuests(character.id)
 

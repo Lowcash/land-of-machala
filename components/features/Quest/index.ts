@@ -1,1 +1,1 @@
-export { QuestClient } from './QuestClient'
+export { QuestDashboard as Quest } from './QuestDashboard'

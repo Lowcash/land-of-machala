@@ -1,8 +1,10 @@
 'use client'
 
-import { HEALER_SERVICES } from '@/lib/game/data'
 import { Zap } from 'lucide-react'
 import { toast } from 'sonner'
+
+import { HEALER_SERVICES } from '@/lib/game/data'
+
 import { LocationLayout } from '../../Shared/components/LocationLayout'
 import { ShopInterface, type ShopItem } from '../../Shared/components/ShopInterface'
 

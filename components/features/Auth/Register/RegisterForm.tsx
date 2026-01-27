@@ -1,110 +1,108 @@
 'use client'
 
+import { useTransition } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+// Corrected import for useTransition
+
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Lock, Mail } from 'lucide-react'
+import { useForm } from 'react-hook-form'
+
+import { registerAction } from '@/lib/actions/auth'
+
 import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { registerAction } from '@/lib/actions/auth'
-import { Lock, Mail } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+
 import { AuthInput } from '../Shared/AuthInput'
+import { type RegisterValues, registerSchema } from './registerSchema'
 
 export function RegisterForm() {
   const router = useRouter()
   const { showNotification } = useNotification()
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email || !password || isLoading) return
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<RegisterValues>({
+    resolver: zodResolver(registerSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    mode: 'onChange',
+  })
 
-    setIsLoading(true)
-    try {
-      const [, err] = await registerAction({
-        email,
-        password,
-      })
+  const onRegister = (values: RegisterValues) => {
+    if (isPending) return
 
-      if (err) {
-        throw new Error(err.message || 'Registrace se nezdařila')
+    startTransition(async () => {
+      try {
+        const [, err] = await registerAction({
+          email: values.email,
+          password: values.password,
+        })
+
+        if (err) {
+          throw new Error(err.message || 'Registrace se nezdařila')
+        }
+
+        showNotification({
+          variant: 'success',
+          title: 'Registrace úspěšná',
+          description: 'Vítejte!',
+        })
+
+        router.push('/onboarding')
+      } catch (err) {
+        showNotification({
+          variant: 'error',
+          title: 'Chyba registrace',
+          description:
+            err instanceof Error ? err.message : 'Došlo k chybě. Zkuste to prosím znovu.',
+        })
       }
-
-      showNotification({
-        variant: 'success',
-        title: 'Registrace úspěšná',
-        description: 'Vítejte!',
-      })
-
-      router.push('/onboarding')
-    } catch (err) {
-      showNotification({
-        variant: 'error',
-        title: 'Chyba registrace',
-        description: err instanceof Error ? err.message : 'Došlo k chybě. Zkuste to prosím znovu.',
-      })
-    } finally {
-      setIsLoading(false)
-    }
+    })
   }
 
   return (
-    <Card
-      variant="default"
-      className="border-game-gold/20 w-full max-w-md bg-black/40 backdrop-blur-md"
-    >
-      <CardContent className="pt-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <AuthInput
-            id="email"
-            label="Email"
-            type="email"
-            value={email}
-            onChange={setEmail}
-            placeholder="Zadej email..."
-            icon={Mail}
-            disabled={isLoading}
-            required
-          />
+    <form onSubmit={handleSubmit(onRegister)} className="space-y-4">
+      <AuthInput
+        id="email"
+        label="Email"
+        type="email"
+        placeholder="Zadej email..."
+        icon={Mail}
+        disabled={isPending}
+        autoComplete="email"
+        {...register('email')}
+        error={errors.email?.message}
+      />
 
-          <AuthInput
-            id="password"
-            label="Heslo"
-            type="password"
-            value={password}
-            onChange={setPassword}
-            placeholder="Zadej heslo (min. 6 znaků)..."
-            icon={Lock}
-            disabled={isLoading}
-            required
-            minLength={6}
-          />
+      <AuthInput
+        id="password"
+        label="Heslo"
+        type="password"
+        placeholder="Zadej heslo (min. 6 znaků)..."
+        icon={Lock}
+        disabled={isPending}
+        autoComplete="new-password"
+        {...register('password')}
+        error={errors.password?.message}
+      />
 
-          <Button
-            type="submit"
-            loading={isLoading}
-            disabled={!email || !password}
-            variant="game-primary"
-            className="font-fantasy w-full font-bold"
-          >
-            Vytvořit účet
-          </Button>
-        </form>
-
-        <div className="mt-4 text-center">
-          <p className="text-game-copper-muted text-sm sm:text-base">
-            Již máš účet?{' '}
-            <Link
-              href="/login"
-              className="text-game-gold-muted hover:text-game-gold transition-colors hover:underline"
-            >
-              Přihlas se zde
-            </Link>
-          </p>
-        </div>
-      </CardContent>
-    </Card>
+      <Button
+        type="submit"
+        loading={isPending}
+        disabled={!isValid}
+        variant="game-primary"
+        className="font-fantasy w-full font-bold"
+      >
+        Vytvořit účet
+      </Button>
+    </form>
   )
 }

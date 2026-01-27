@@ -1,2 +1,2 @@
-export { CharacterClient as Character } from './CharacterClient'
+export { CharacterDashboard as Character } from './CharacterDashboard'
 export * from './Shared/types'

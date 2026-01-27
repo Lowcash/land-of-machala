@@ -1,10 +1,11 @@
-'use client'
+import type { ReactNode } from 'react'
+
+import Image from 'next/image'
 
 import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
 import { SplitLayout } from '@/components/layout/SplitLayout'
-import { TransitionLayout } from '@/components/layout/TransitionLayout'
-import Image from 'next/image'
-import type { ReactNode } from 'react'
+
+import { TransitionWrapper } from './TransitionWrapper'
 
 export interface PageLayoutProps {
   children: ReactNode
@@ -45,7 +46,7 @@ export function PageLayout({
   }[maxWidth]
 
   return (
-    <TransitionLayout>
+    <TransitionWrapper>
       <div className={`relative flex h-full w-full flex-col ${className}`}>
         {/* Page Background */}
         {backgroundImage && (
@@ -85,6 +86,6 @@ export function PageLayout({
           </div>
         )}
       </div>
-    </TransitionLayout>
+    </TransitionWrapper>
   )
 }

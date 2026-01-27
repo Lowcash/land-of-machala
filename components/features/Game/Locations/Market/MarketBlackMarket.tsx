@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button'
 import { Skull } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+
 import type { MarketItem } from './types'
 
 interface BlackMarketProps {

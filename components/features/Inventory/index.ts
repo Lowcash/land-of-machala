@@ -1,1 +1,1 @@
-export { InventoryClient } from './InventoryClient'
+export { InventoryDashboard as Inventory } from './InventoryDashboard'

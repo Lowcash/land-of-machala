@@ -1,18 +1,18 @@
-import { GameFooter, GameHeader } from '@/components/features/Game'
-import { MapClient } from '@/components/features/Map'
-import { PageLayout } from '@/components/layout/PageLayout'
-import { auth } from '@/lib/auth'
-import { getMapPageData } from '@/lib/loaders/map-loader'
-import { Map as MapIcon } from 'lucide-react'
 import { redirect } from 'next/navigation'
+
+import { Map as MapIcon } from 'lucide-react'
+
+import { getMapPageData } from '@/lib/loaders/map-loader'
+
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { GameMap } from '@/components/features/Map'
+import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
 
-export default async function MapPage() {
-  const session = await auth()
-  if (!session?.user?.id) redirect('/login')
+export default async function MapPage({ searchParams }: { searchParams: { locationId?: string } }) {
+  const data = await getMapPageData()
 
-  const data = await getMapPageData(session.user.id)
   if (!data) redirect('/onboarding')
 
   return (
@@ -21,11 +21,12 @@ export default async function MapPage() {
       footer={<GameFooter />}
       showInfoLog={false}
     >
-      <MapClient
+      <GameMap
         locations={data.serializedLocations}
         discoveredLocations={data.discoveredLocations}
         questMarkers={data.questMarkers as unknown[]}
         deathLocation={data.deathLocation as unknown as { x: number; y: number }}
+        searchParams={searchParams}
       />
     </PageLayout>
   )

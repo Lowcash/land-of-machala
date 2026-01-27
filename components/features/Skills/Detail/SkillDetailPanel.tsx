@@ -1,22 +1,18 @@
-'use client'
+import Link from 'next/link'
+
+import { X } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { X } from 'lucide-react'
+
 import type { MergedSkill } from '../Shared/types'
 
 interface SkillDetailPanelProps {
   skill: MergedSkill | null
-  onClose: () => void
-  characterId: string
+  closeHref: string
   talentPoints: number
 }
 
-export function SkillDetailPanel({
-  skill,
-  onClose,
-  characterId: _characterId,
-  talentPoints,
-}: SkillDetailPanelProps) {
+export function SkillDetailPanel({ skill, closeHref, talentPoints }: SkillDetailPanelProps) {
   if (!skill) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
@@ -34,14 +30,12 @@ export function SkillDetailPanel({
         >
           {skill.name}
         </h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="h-8 w-8 text-[#8b7355] hover:text-[#d4a574]"
+        <Link
+          href={closeHref as any}
+          className="flex h-8 w-8 items-center justify-center rounded-md text-[#8b7355] transition-colors hover:bg-white/10 hover:text-[#d4a574]"
         >
           <X className="h-5 w-5" />
-        </Button>
+        </Link>
       </div>
 
       <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto pr-2">

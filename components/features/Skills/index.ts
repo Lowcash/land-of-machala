@@ -1,1 +1,1 @@
-export { SkillsClient } from './SkillsClient'
+export { SkillsDashboard as Skills } from './SkillsDashboard'

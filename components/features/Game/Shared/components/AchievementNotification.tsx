@@ -1,10 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { Trophy, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import { Trophy, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
 
 type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary'
 

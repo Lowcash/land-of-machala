@@ -1,12 +1,16 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import type { LucideIcon } from 'lucide-react'
-import { ArrowLeft, LogOut } from 'lucide-react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import type { ReactNode } from 'react'
 import { isValidElement } from 'react'
+
+import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import type { LucideIcon } from 'lucide-react'
+import { ArrowLeft, LogOut } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+
 import { PlayerStats } from './PlayerStats'
 
 // Define valid routes for this application to satisfy Next.js typed routes

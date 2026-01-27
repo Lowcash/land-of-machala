@@ -1,6 +1,8 @@
-import { Progress } from '@/components/ui/progress'
-import { Brain, Coins, MapPin, Shield, Sword, User, Wind } from 'lucide-react'
 import Image from 'next/image'
+
+import { Brain, Coins, MapPin, Shield, Sword, User, Wind } from 'lucide-react'
+
+import { Progress } from '@/components/ui/progress'
 
 interface CharacterBoxProps {
   name: string

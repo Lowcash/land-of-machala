@@ -1,8 +1,10 @@
 'use client'
 
+import { Check } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { Check } from 'lucide-react'
+
 import { getIconFromName, getRarityBorder, getRarityColor } from '../Shared/inventoryUtils'
 import type { InventoryItemUI } from '../Shared/types'
 

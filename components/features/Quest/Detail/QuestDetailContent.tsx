@@ -1,17 +1,27 @@
+'use client'
+
+import { useState } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { CheckCircle, X } from 'lucide-react'
+import { toast } from 'sonner'
+
+import { abandonQuestAction } from '@/lib/actions/quest'
+import { cn } from '@/lib/utils'
+
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { abandonQuestAction } from '@/lib/actions/quest'
-import { cn } from '@/lib/utils'
-import { CheckCircle, Circle, Coins, MapPin, User, X, Zap } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'sonner'
+
 import type { MergedQuest, QuestCategory } from '../Shared/types'
+import { QuestAbandonDialog } from './QuestAbandonDialog'
+import { QuestInfoPanel } from './QuestInfoPanel'
+import { QuestObjectivesList } from './QuestObjectivesList'
+import { QuestRewardsList } from './QuestRewardsList'
 
 type QuestDetailContentProps = {
   quest: MergedQuest
-  characterId: string
 }
 
 function getCategoryColor(category: QuestCategory) {
@@ -53,7 +63,7 @@ function getCategoryName(category: QuestCategory) {
   }
 }
 
-export function QuestDetailContent({ quest, characterId }: QuestDetailContentProps) {
+export function QuestDetailContent({ quest }: QuestDetailContentProps) {
   const router = useRouter()
   const [showAbandonModal, setShowAbandonModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -64,7 +74,6 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
 
     try {
       const [result, error] = await abandonQuestAction({
-        characterId,
         questId: quest.id,
       })
 
@@ -91,9 +100,9 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
   return (
     <div className="relative flex flex-1 flex-col overflow-hidden">
       <ScrollArea className="h-full">
-        <div className="mx-auto max-w-2xl p-4">
-          {/* Quest header */}
-          <div className="mb-4">
+        <div className="mx-auto max-w-2xl space-y-4 p-4">
+          {/* Header */}
+          <div>
             <div className="mb-2 flex items-center gap-2">
               <span
                 className={cn('rounded px-2 py-1 text-xs', getCategoryBadge(quest.category))}
@@ -112,111 +121,15 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
             <p className="text-sm leading-relaxed text-[#d4a574]">{quest.description}</p>
           </div>
 
-          {/* Quest giver & location */}
-          <div className="mb-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-[#d4a574]" />
-                <div>
-                  <p className="text-[10px] text-[#8b7355]">Quest Giver</p>
-                  <p className="text-sm text-[#f5e6d3]">{quest.giver || 'Neznámý'}</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-2">
-                <MapPin className="h-4 w-4 text-[#d4a574]" />
-                <div>
-                  <p className="text-[10px] text-[#8b7355]">Lokace</p>
-                  <p className="text-sm text-[#f5e6d3]">{quest.location || 'Neznámá'}</p>
-                </div>
-              </div>
-            </div>
-          </div>
+          <QuestInfoPanel giver={quest.giver} location={quest.location} story={quest.story} />
 
-          {/* Story */}
-          {quest.story && (
-            <div className="mb-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-              <h3
-                className="mb-2 text-sm text-[#d4a574]"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                Příběh:
-              </h3>
-              <p className="text-sm leading-relaxed text-[#f5e6d3] italic">{quest.story}</p>
-            </div>
-          )}
+          <QuestObjectivesList objectives={quest.objectives} />
 
-          {/* Objectives */}
-          <div className="mb-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-            <h3
-              className="mb-3 text-sm text-[#d4a574]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              Úkoly:
-            </h3>
-            <div className="space-y-2">
-              {quest.objectives.map((objective) => (
-                <div key={objective.id} className="flex items-start gap-2">
-                  {objective.completed ? (
-                    <CheckCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#6fbf6f]" />
-                  ) : (
-                    <Circle className="mt-0.5 h-4 w-4 shrink-0 text-[#8b7355]" />
-                  )}
-                  <div className="flex-1">
-                    <p
-                      className={cn(
-                        'text-sm',
-                        objective.completed ? 'text-[#6fbf6f] line-through' : 'text-[#f5e6d3]'
-                      )}
-                    >
-                      {objective.description}
-                    </p>
-                    {objective.target > 1 && (
-                      <p className="mt-0.5 text-xs text-[#8b7355]">
-                        Pokrok: {objective.current}/{objective.target}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Rewards */}
-          <div className="mb-4 rounded border border-[#8b6f47] bg-black/60 p-4">
-            <h3
-              className="mb-3 text-sm text-[#d4a574]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              Odměny:
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {quest.rewardXp > 0 && (
-                <div className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/40 px-3 py-2">
-                  <Zap className="h-4 w-4 text-[#ffd700]" />
-                  <span className="text-sm text-[#f5e6d3]">{quest.rewardXp} XP</span>
-                </div>
-              )}
-              {quest.rewardGold > 0 && (
-                <div className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/40 px-3 py-2">
-                  <Coins className="h-4 w-4 text-[#ffd700]" />
-                  <span className="text-sm text-[#f5e6d3]">{quest.rewardGold} zlatých</span>
-                </div>
-              )}
-              {Array.isArray(quest.rewards) &&
-                quest.rewards.map((reward) =>
-                  reward.item ? (
-                    <div
-                      key={reward.id}
-                      className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/40 px-3 py-2"
-                    >
-                      <span className="text-sm text-[#69ccf0]">
-                        {reward.quantity}x {reward.item.name}
-                      </span>
-                    </div>
-                  ) : null
-                )}
-            </div>
-          </div>
+          <QuestRewardsList
+            rewardXp={quest.rewardXp}
+            rewardGold={quest.rewardGold}
+            rewards={quest.rewards}
+          />
 
           {/* Progress bar for active quests */}
           {quest.characterStatus === 'ACTIVE' && (
@@ -257,43 +170,13 @@ export function QuestDetailContent({ quest, characterId }: QuestDetailContentPro
         </div>
       </ScrollArea>
 
-      {/* Abandon Confirmation Modal */}
-      {showAbandonModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-          <div className="mx-4 w-full max-w-md rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/95 to-black/80 p-6 shadow-2xl">
-            <h3
-              className="mb-4 text-xl text-[#ffd700]"
-              style={{ fontFamily: 'var(--font-medieval)' }}
-            >
-              Opravdu chceš vzdát quest?
-            </h3>
-            <p className="mb-6 text-sm text-[#d4a574]">
-              Quest &quot;{quest.title}&quot; bude odstraněn z tvé deníku a veškerý postup bude
-              ztracen.
-            </p>
-            <div className="flex gap-3">
-              <Button
-                variant="game-secondary"
-                onClick={() => setShowAbandonModal(false)}
-                disabled={isLoading}
-                className="flex-1 rounded border border-[#8b6f47] bg-black/60 py-3 text-sm text-[#d4a574] transition-colors hover:border-[#d4a574] hover:bg-black/80 disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                Zrušit
-              </Button>
-              <Button
-                variant="game-danger"
-                onClick={handleAbandonQuest}
-                disabled={isLoading}
-                className="flex-1 rounded border-2 border-[#ff6b6b] bg-[#ff6b6b]/20 py-3 text-sm text-[#ff6b6b] transition-colors hover:bg-[#ff6b6b]/30 disabled:cursor-not-allowed disabled:opacity-50"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                {isLoading ? 'Opouštím...' : 'Ano, vzdát quest'}
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      <QuestAbandonDialog
+        questTitle={quest.title}
+        isOpen={showAbandonModal}
+        onClose={() => setShowAbandonModal(false)}
+        onConfirm={handleAbandonQuest}
+        isLoading={isLoading}
+      />
     </div>
   )
 }

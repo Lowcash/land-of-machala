@@ -1,18 +1,9 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import {
-  AlertCircle,
-  Castle,
-  HelpCircle,
-  Home,
-  Lock,
-  MapPin,
-  Mountain,
-  Skull,
-  Trees,
-} from 'lucide-react'
+import { Castle, Home, MapPin, Mountain, Skull, Trees } from 'lucide-react'
+
 import type { Location, LocationType } from '../Shared/types'
+import { MapMarker } from './MapMarker'
 
 interface QuestMarker {
   locationId: string
@@ -158,79 +149,20 @@ export function MapCanvas({
       )}
 
       {/* Locations */}
-      {locations.map((location) => {
-        const Icon = getLocationIcon(location.type)
-        const color = getLocationColor(location.type)
-        const percent = toPercent(location.positionX, location.positionY)
-        const isSelected = selectedLocation?.id === location.id
-        const isDiscovered = discoveredLocations.includes(location.id)
-        const isUnlocked = location.level <= 100 // Access logic handled by server actions mainly
-
-        const activeQuest = questMarkers.find((q) => q.locationId === location.id)
-
-        if (!isDiscovered) {
-          // Fog of war placeholder (optional, or just don't render)
-          // For now, only render discovered
-          return null
-        }
-
-        return (
-          <Button
-            key={location.id}
-            onClick={() => isUnlocked && onSelectLocation(location)}
-            disabled={!isUnlocked}
-            variant="ghost"
-            className={`absolute -mt-6 -ml-6 h-12 w-12 p-0 transition-all ${
-              isUnlocked ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed opacity-40'
-            } ${isSelected ? 'z-40 scale-125' : 'z-20'}`}
-            style={{
-              left: `${percent.x}%`,
-              top: `${percent.y}%`,
-            }}
-            title={location.name}
-          >
-            <div
-              className={`relative flex h-full w-full items-center justify-center rounded-full ${
-                isUnlocked
-                  ? 'border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]'
-                  : 'border-2 border-[#8b6f47] bg-black/60'
-              } ${isSelected ? 'border-[#ffd700] shadow-lg shadow-[#ffd700]/50' : ''}`}
-            >
-              {isUnlocked && Icon ? (
-                <Icon className={`h-6 w-6 ${color}`} />
-              ) : (
-                <Lock className="h-6 w-6 text-[#8b6f47]" />
-              )}
-
-              {activeQuest && (
-                <div className="absolute -top-2 -right-2 z-50 animate-bounce">
-                  {activeQuest.type === 'giver' ? (
-                    <AlertCircle className="h-5 w-5 fill-black text-[#ffd700]" />
-                  ) : (
-                    <HelpCircle className="h-5 w-5 fill-black text-[#ffd700]" />
-                  )}
-                </div>
-              )}
-
-              {location.level > 1 && (
-                <span
-                  className="absolute -right-1 -bottom-1 flex h-5 w-5 items-center justify-center rounded-full border border-[#8b6f47] bg-[#ff6b6b] text-[10px] text-white"
-                  style={{ fontFamily: 'var(--font-fantasy)' }}
-                >
-                  {location.level}
-                </span>
-              )}
-            </div>
-
-            <div
-              className={`mt-1 rounded bg-black/40 px-1 text-center text-[10px] whitespace-nowrap backdrop-blur-sm ${isSelected ? 'font-bold text-[#ffd700]' : 'text-[#d4a574]'}`}
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {location.name}
-            </div>
-          </Button>
-        )
-      })}
+      {locations.map((location) => (
+        <MapMarker
+          key={location.id}
+          location={location}
+          percent={toPercent(location.positionX, location.positionY)}
+          isSelected={selectedLocation?.id === location.id}
+          isDiscovered={discoveredLocations.includes(location.id)}
+          isUnlocked={location.level <= 100}
+          activeQuest={questMarkers.find((q) => q.locationId === location.id)}
+          onSelect={onSelectLocation}
+          getIcon={getLocationIcon}
+          getColor={getLocationColor}
+        />
+      ))}
     </div>
   )
 }

@@ -1,23 +1,27 @@
 'use client'
 
+import { useState, useTransition } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { ArrowRight, Coins, Landmark } from 'lucide-react'
+import { toast } from 'sonner'
+
+import { depositGoldAction, withdrawGoldAction } from '@/lib/actions/bank'
+
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { depositGoldAction, withdrawGoldAction } from '@/lib/actions/bank'
-import { ArrowRight, Coins, Landmark } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
-import { toast } from 'sonner'
+
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface BankActionsProps {
-  characterId: string
   gold: number
   balance: number
 }
 
-export function BankActions({ characterId, gold, balance }: BankActionsProps) {
+export function BankActions({ gold, balance }: BankActionsProps) {
   const [depositAmount, setDepositAmount] = useState('')
   const [withdrawAmount, setWithdrawAmount] = useState('')
   const [isPending, startTransition] = useTransition()
@@ -28,13 +32,13 @@ export function BankActions({ characterId, gold, balance }: BankActionsProps) {
     if (amount <= 0 || amount > gold) return
 
     startTransition(async () => {
-      const result = await depositGoldAction(characterId, amount)
-      if (result.success) {
-        toast.success(result.message)
+      const [data, err] = await depositGoldAction({ amount })
+      if (!err && data?.success) {
+        toast.success(data.message)
         setDepositAmount('')
         router.refresh()
       } else {
-        toast.error(result.message)
+        toast.error(err?.message || data?.message || 'Vklad selhal')
       }
     })
   }
@@ -44,13 +48,13 @@ export function BankActions({ characterId, gold, balance }: BankActionsProps) {
     if (amount <= 0 || amount > balance) return
 
     startTransition(async () => {
-      const result = await withdrawGoldAction(characterId, amount)
-      if (result.success) {
-        toast.success(result.message)
+      const [data, err] = await withdrawGoldAction({ amount })
+      if (!err && data?.success) {
+        toast.success(data.message)
         setWithdrawAmount('')
         router.refresh()
       } else {
-        toast.error(result.message)
+        toast.error(err?.message || data?.message || 'Výběr selhal')
       }
     })
   }

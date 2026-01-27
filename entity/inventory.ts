@@ -1,6 +1,7 @@
 import { healCharacter, restoreMana, updateCharacterResources } from '@/entity/character'
-import { prisma } from '@/lib/db'
 import { ItemType } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Inventory Entity Layer

@@ -1,34 +1,31 @@
-import { moveCharacter } from '@/lib/actions/movement-actions'
-import { useRouter } from 'next/navigation'
 import { useTransition } from 'react'
 
+import { useRouter } from 'next/navigation'
+
+import { moveCharacter } from '@/lib/actions/movement-actions'
+import { MOVEMENT_DESCRIPTIONS } from '@/lib/game/data'
+
 interface UseGameMoveProps {
-  characterId: string
   handleSetInfoText: (text: string | null) => void
 }
 
-export function useGameMove({ characterId, handleSetInfoText }: UseGameMoveProps) {
+export function useGameMove({ handleSetInfoText }: UseGameMoveProps) {
   const router = useRouter()
   const [, startTransition] = useTransition()
 
   const handleMove = async (direction: 'north' | 'south' | 'east' | 'west') => {
     startTransition(async () => {
-      const result = await moveCharacter(characterId, direction)
+      const [result, err] = await moveCharacter({ direction })
 
-      if (!result.success) {
-        handleSetInfoText(`<span class="text-[#ff6b6b]">Chyba:</span> ${result.error}`)
+      if (err || !result?.success) {
+        handleSetInfoText(
+          `<span class="text-[#ff6b6b]">Chyba:</span> ${err?.message || 'Pohyb selhal'}`
+        )
         return
       }
 
       // Direction descriptions
-      const directionTexts = {
-        north:
-          'Vydáváš se na <span class="text-[#ffd700]">sever</span> k <span class="text-[#d4a574]">horským průsmykům</span>. Vzduch je tu chladnější a slyšíš ozvěnu větru mezi skalami.',
-        south:
-          'Kráčíš na <span class="text-[#ffd700]">jih</span> přes <span class="text-[#6fbf6f]">zelené pláně</span>. Tráva se vlní ve větru a vzduch je plný vůně květů.',
-        east: 'Vydáváš se na <span class="text-[#ffd700]">východ</span> k <span class="text-[#ffa500]">vyprahlé poušti</span>. Písek šustí pod tvýma nohama a slunce pálí nemilosrdně.',
-        west: 'Vcházíš na <span class="text-[#ffd700]">západ</span> do <span class="text-[#8b7355]">temného lesa</span>. Stromy jsou husté a světlo sem proniká jen stěží.',
-      }
+      const directionDesc = MOVEMENT_DESCRIPTIONS[direction]
 
       // Random combat encounter
       if (result.hasEncounter) {
@@ -36,7 +33,7 @@ export function useGameMove({ characterId, handleSetInfoText }: UseGameMoveProps
         router.refresh()
       } else {
         handleSetInfoText(
-          `${directionTexts[direction]}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
+          `${directionDesc}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
         )
       }
     })

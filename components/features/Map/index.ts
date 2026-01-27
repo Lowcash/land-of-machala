@@ -1,1 +1,1 @@
-export { MapClient } from './MapClient'
+export { MapDashboard as GameMap } from './MapDashboard'

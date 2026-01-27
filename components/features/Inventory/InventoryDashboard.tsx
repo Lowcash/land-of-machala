@@ -1,34 +1,35 @@
-'use client'
+import { Backpack, Shield, Sword } from 'lucide-react'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
 import { PageLayout } from '@/components/layout/PageLayout'
-import { Backpack, Shield, Sword } from 'lucide-react'
-import { useState } from 'react'
+
 import type { CharacterData } from '../Character/Shared/types'
-import { ItemDetailView as ItemDetail } from './Detail/ItemDetailView'
-import { InventoryGrid } from './Grid/InventoryGrid'
+import { InventoryGridWrapper } from './InventoryGridWrapper'
+import { ItemDetailWrapper } from './ItemDetailWrapper'
 import type { InventoryItemUI } from './Shared/types'
 
-interface InventoryClientProps {
+interface InventoryDashboardProps {
   character: CharacterData
   initialInventory: InventoryItemUI[]
   maxSlots: number
+  searchParams: { itemId?: string }
 }
 
-export function InventoryClient({ character, initialInventory, maxSlots }: InventoryClientProps) {
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null)
-  const [inventory] = useState<InventoryItemUI[]>(initialInventory)
-  const [mounted, setMounted] = useState(false)
-
-  // Use simple effect to avoid hydration mismatch if needed,
-  // though for data passing it's usually fine.
-  // Including mounted check just in case of complex UI.
-  useState(() => {
-    setMounted(true)
-  })
-
-  if (!mounted) return null
+export function InventoryDashboard({
+  character,
+  initialInventory,
+  maxSlots,
+  searchParams,
+}: InventoryDashboardProps) {
+  // TODO: Fetch inventory on server?
+  // currently initialInventory is passed from page default async func.
+  // inventory state was local. If we want optimistic updates etc, we might need a client wrapper for the whole list if mutation happens?
+  // But for simple "Dashboard" viewing, current list is fine.
+  // The original client had `const [inventory] = useState(initialInventory)`.
+  // It was effectively static unless updated?
+  const inventory = initialInventory
+  const selectedItemId = searchParams?.itemId || null
 
   const selectedItem = inventory.find((i) => i.id === selectedItemId) || null
 
@@ -37,13 +38,6 @@ export function InventoryClient({ character, initialInventory, maxSlots }: Inven
       header={<GameHeader title="Inventář" icon={Backpack} />}
       footer={<GameFooter />}
       backgroundImage="/assets/locations/forest.jpg"
-      // We don't use rightPanel prop here, instead we use SplitLayout inside children
-      // Wait, PageTemplate ALREADY uses SplitLayout if showInfoLog is true.
-      // But Inventory wants a custom split (Grid vs Detail).
-      // So we should probably disable showInfoLog or use rightPanel?
-      // Let's check original implementation.
-      // Origin used SplitView manually inside children?
-      // Let's assume yes based on my previous grep.
       showInfoLog={false}
     >
       <SplitLayout
@@ -73,20 +67,12 @@ export function InventoryClient({ character, initialInventory, maxSlots }: Inven
                 {inventory.length} / {maxSlots}
               </div>
             </div>
-            <InventoryGrid
-              inventory={inventory}
-              selectedItem={selectedItemId}
-              onSelectItem={setSelectedItemId}
-            />
+            <div className="flex-1 p-4">
+              <InventoryGridWrapper inventory={inventory} selectedItem={selectedItemId} />
+            </div>
           </div>
         }
-        aside={
-          <ItemDetail
-            item={selectedItem}
-            onClose={() => setSelectedItemId(null)}
-            characterId={character.id}
-          />
-        }
+        aside={<ItemDetailWrapper item={selectedItem} characterId={character.id} />}
       />
     </PageLayout>
   )

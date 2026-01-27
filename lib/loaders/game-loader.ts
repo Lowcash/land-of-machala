@@ -1,7 +1,14 @@
 import { cleanExpiredLootPiles } from '@/lib/actions/loot-recovery'
+import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
+import { getXPNeededForNextLevel } from '@/lib/game/progression'
 
-export async function getGamePageData(userId: string) {
+export async function getGamePageData() {
+  const session = await auth()
+  if (!session?.user?.id) return null
+
+  const userId = session.user.id
+
   const character = await prisma.character.findFirst({
     where: { userId },
     include: {
@@ -22,10 +29,9 @@ export async function getGamePageData(userId: string) {
   }
 
   // Transform character data to match GameDashboard interface
-  // TODO: Calculate xpToNextLevel based on level tables
   const characterWithStats = {
     ...character,
-    xpToNextLevel: 1000,
+    xpToNextLevel: getXPNeededForNextLevel(character.level),
     stats: {
       strength: character.strength,
       intelligence: character.intelligence,

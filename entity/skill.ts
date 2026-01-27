@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/db'
 import type { SkillTree } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Skill Entity Layer

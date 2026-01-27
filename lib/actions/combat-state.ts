@@ -1,85 +1,87 @@
 'use server'
 
-import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+
+import { prisma } from '@/lib/db'
+import { endCombatSchema, initiateCombatSchema } from '@/lib/schemas/combat'
+
 import { logActivity } from './activity-log'
+import { characterProcedure } from './procedures'
 
-export async function startCombat(characterId: string, enemyId: string | null = null) {
-  try {
-    const character = await prisma.character.findUnique({
-      where: { id: characterId },
-    })
-
-    if (!character) throw new Error('Character not found')
-
-    // Find enemy
-    // If enemyId is not provided, pick random based on level/location?
-    // This logic usually resides in `combat.ts`, but we are unifying state here.
+export const startCombat = characterProcedure
+  .createServerAction()
+  .input(initiateCombatSchema)
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    const { enemyId } = input
 
     let targetEnemyId = enemyId
     if (!targetEnemyId) {
       // Simple random logic or fetch from DB
       const enemies = await prisma.enemy.findMany({
-        where: { level: { lte: character.level + 2, gte: Math.max(1, character.level - 2) } },
+        where: {
+          level: {
+            lte: character.level + 2,
+            gte: Math.max(1, character.level - 2),
+          },
+        },
       })
+
       if (enemies.length > 0) {
         targetEnemyId = enemies[Math.floor(Math.random() * enemies.length)]!.id
       }
     }
 
-    if (!targetEnemyId) throw new Error('No enemy found')
+    if (!targetEnemyId) {
+      throw new Error('Nepřítel nenalezen')
+    }
 
     // Save pre-combat location
     const preCombatLoc = { x: character.locationX, y: character.locationY }
 
     await prisma.character.update({
-      where: { id: characterId },
+      where: { id: character.id },
       data: {
         inCombat: true,
         combatEnemyId: targetEnemyId,
-        currentEnemyId: targetEnemyId, // instance ID same as model for now, or UUID
+        currentEnemyId: targetEnemyId,
         preCombatLocation: preCombatLoc,
         combatTurn: 'player',
         combatPlayerHp: character.hp,
-        // Fetch enemy max HP to set initial combatEnemyHp
-        // We need to fetch enemy first
       },
     })
 
-    // We need to update enemy HP.
+    // Update enemy HP
     const enemy = await prisma.enemy.findUnique({ where: { id: targetEnemyId } })
+
     if (enemy) {
       await prisma.character.update({
-        where: { id: characterId },
+        where: { id: character.id },
         data: { combatEnemyHp: enemy.maxHp },
       })
 
-      await logActivity(characterId, 'combat', `Boj začal! Nepřítel: ${enemy.name}`)
+      await logActivity(character.id, 'combat', `Boj začal! Nepřítel: ${enemy.name}`)
     }
 
     revalidatePath('/game')
     return { success: true }
-  } catch (error) {
-    console.error('Start combat error:', error)
-    return { success: false }
-  }
-}
+  })
 
 interface Point {
   x: number
   y: number
 }
 
-export async function endCombat(characterId: string, result: 'victory' | 'defeat' | 'flee') {
-  try {
-    const character = await prisma.character.findUnique({ where: { id: characterId } })
-    if (!character) return
+export const endCombat = characterProcedure
+  .createServerAction()
+  .input(endCombatSchema)
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    const { result } = input
 
     if (result === 'victory') {
-      // Logic for loot handled in combat actions or here?
-      // Usually loot is distributed.
       await prisma.character.update({
-        where: { id: characterId },
+        where: { id: character.id },
         data: {
           inCombat: false,
           combatEnemyId: null,
@@ -88,13 +90,13 @@ export async function endCombat(characterId: string, result: 'victory' | 'defeat
           combatEnemyHp: null,
         },
       })
-      await logActivity(characterId, 'combat', 'Zvítězil jsi v souboji!')
+      await logActivity(character.id, 'combat', 'Zvítězil jsi v souboji!')
     } else if (result === 'flee') {
       // Restore position
       if (character.preCombatLocation) {
         const loc = character.preCombatLocation as unknown as Point
         await prisma.character.update({
-          where: { id: characterId },
+          where: { id: character.id },
           data: {
             inCombat: false,
             locationX: loc.x,
@@ -103,7 +105,7 @@ export async function endCombat(characterId: string, result: 'victory' | 'defeat
           },
         })
       }
-      await logActivity(characterId, 'combat', 'Utekl jsi z boje.')
+      await logActivity(character.id, 'combat', 'Utekl jsi z boje.')
     } else if (result === 'defeat') {
       // Death penalty
       const deathLoc = {
@@ -115,19 +117,17 @@ export async function endCombat(characterId: string, result: 'victory' | 'defeat
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       }
 
-      // TODO: Move items to death box (remove from inventory)
-
       // Respawn at safe zone
       const safeZone = await prisma.location.findFirst({
         where: { serverId: character.serverId, isSafeZone: true },
       })
 
       await prisma.character.update({
-        where: { id: characterId },
+        where: { id: character.id },
         data: {
           inCombat: false,
           hp: 1,
-          gold: character.gold - deathLoc.gold, // deduct dropped gold
+          gold: character.gold - deathLoc.gold,
           deathLocation: deathLoc,
           locationX: safeZone?.positionX ?? 0,
           locationY: safeZone?.positionY ?? 0,
@@ -135,15 +135,11 @@ export async function endCombat(characterId: string, result: 'victory' | 'defeat
         },
       })
 
-      await logActivity(characterId, 'death', 'Zemřel jsi! Tvé věci zůstaly na místě smrti.', {
+      await logActivity(character.id, 'death', 'Zemřel jsi! Tvé věci zůstaly na místě smrti.', {
         deathLocation: deathLoc,
       })
     }
 
     revalidatePath('/game')
     return { success: true }
-  } catch (error) {
-    console.error('End combat error:', error)
-    return { success: false }
-  }
-}
+  })

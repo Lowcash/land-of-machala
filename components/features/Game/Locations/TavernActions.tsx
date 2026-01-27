@@ -1,22 +1,26 @@
 'use client'
 
-import { Slider } from '@/components/ui/slider'
+import { useState, useTransition } from 'react'
+
+import { useRouter } from 'next/navigation'
+
+import { BedDouble, Beer, ChevronRight, Dices, ScrollText } from 'lucide-react'
+import { toast } from 'sonner'
+
 import { rollDiceAction } from '@/lib/actions/game-actions'
 import { buyRumorAction, buyStayAction } from '@/lib/actions/tavern'
-import { BedDouble, Beer, ChevronRight, Dices, ScrollText } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import { useState, useTransition } from 'react'
-import { toast } from 'sonner'
+
+import { Slider } from '@/components/ui/slider'
+
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface TavernActionsProps {
-  characterId: string
   gold: number
   onInfoAction: (text: string | null) => void
 }
 
-export function TavernActions({ characterId, gold, onInfoAction }: TavernActionsProps) {
+export function TavernActions({ gold, onInfoAction }: TavernActionsProps) {
   const router = useRouter()
   const [isPending, startTransition] = useTransition()
   const [activeTab, setActiveTab] = useState<'menu' | 'gamble'>('menu')
@@ -30,12 +34,12 @@ export function TavernActions({ characterId, gold, onInfoAction }: TavernActions
     }
 
     startTransition(async () => {
-      const result = await buyRumorAction(characterId)
-      if (result.success) {
-        onInfoAction(`${result.message} ${result.rumor}`)
+      const [data, err] = await buyRumorAction()
+      if (!err && data?.success) {
+        onInfoAction(`${data.message} ${data.rumor}`)
         router.refresh()
       } else {
-        toast.error(result.message)
+        toast.error(err?.message || data?.message || 'Nákup selhal')
       }
     })
   }
@@ -47,12 +51,12 @@ export function TavernActions({ characterId, gold, onInfoAction }: TavernActions
     }
 
     startTransition(async () => {
-      const result = await buyStayAction(characterId)
-      if (result.success) {
-        onInfoAction(result.message)
+      const [data, err] = await buyStayAction()
+      if (!err && data?.success) {
+        onInfoAction(data.message)
         router.refresh()
       } else {
-        toast.error(result.message)
+        toast.error(err?.message || data?.message || 'Ubytování selhalo')
       }
     })
   }
@@ -66,7 +70,9 @@ export function TavernActions({ characterId, gold, onInfoAction }: TavernActions
     startTransition(async () => {
       setGameState('rolling')
       try {
-        const result = await rollDiceAction(characterId, betAmount)
+        const [result, err] = await rollDiceAction({ betAmount })
+        if (err) throw err
+
         await new Promise((r) => setTimeout(r, 600))
         setDiceResult({ player: result.player, house: result.house })
         setGameState('result')
@@ -77,9 +83,8 @@ export function TavernActions({ characterId, gold, onInfoAction }: TavernActions
         } else {
           onInfoAction('Remíza! Sázka se vrací.')
         }
-        router.refresh()
-      } catch {
-        onInfoAction('Chyba při hře.')
+      } catch (error) {
+        onInfoAction(error instanceof Error ? error.message : 'Chyba při hře.')
       }
     })
   }

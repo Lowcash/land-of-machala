@@ -1,6 +1,5 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import type { ReactNode } from 'react'
+
 import {
   ArrowDown,
   ArrowLeft as ArrowLeftIcon,
@@ -9,7 +8,10 @@ import {
   Home,
   type LucideIcon,
 } from 'lucide-react'
-import type { ReactNode } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Card, CardHeader, CardTitle } from '@/components/ui/card'
+import { ScrollArea } from '@/components/ui/scroll-area'
 
 interface GameActionsProps {
   children?: ReactNode

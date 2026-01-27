@@ -1,8 +1,10 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { ArrowLeft } from 'lucide-react'
 import type { ReactNode } from 'react'
+
+import { ArrowLeft } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
 
 interface MobileLayoutProps {
   /** Is overlay visible */

@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button'
 import { MessageSquare, ThumbsDown, ThumbsUp } from 'lucide-react'
+
+import { Button } from '@/components/ui/button'
+
 import type { HaggleState, MarketItem } from './types'
 
 interface MarketBuyProps {

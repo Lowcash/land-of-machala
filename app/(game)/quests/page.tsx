@@ -1,13 +1,16 @@
-import { GameFooter, GameHeader } from '@/components/features/Game'
-import { QuestClient } from '@/components/features/Quest'
-import { PageLayout } from '@/components/layout/PageLayout'
-import { getQuestPageData } from '@/lib/loaders/quest-loader'
-import { ScrollText } from 'lucide-react'
 import { redirect } from 'next/navigation'
+
+import { ScrollText } from 'lucide-react'
+
+import { getQuestPageData } from '@/lib/loaders/quest-loader'
+
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { Quest } from '@/components/features/Quest'
+import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
 
-export default async function QuestsPage() {
+export default async function QuestsPage({ searchParams }: { searchParams: { questId?: string } }) {
   const data = await getQuestPageData()
 
   if (!data) redirect('/onboarding')
@@ -24,7 +27,7 @@ export default async function QuestsPage() {
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <QuestClient quests={data.quests} characterId={data.characterId} />
+      <Quest quests={data.quests} searchParams={searchParams} />
     </PageLayout>
   )
 }

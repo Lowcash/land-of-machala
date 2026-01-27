@@ -1,6 +1,5 @@
 'use server'
 
-import { getCharacter } from '@/entity/character'
 import {
   getAllSkills,
   getCharacterSkills,
@@ -10,14 +9,14 @@ import {
   setActiveSkill,
   unlockSkill,
 } from '@/entity/skill'
-import { auth } from '@/lib/auth'
 import type { SkillTree } from '@prisma/client'
 import { z } from 'zod'
-import { createServerAction } from 'zsa'
+
+import { characterProcedure } from './procedures'
 
 /**
  * Skill Server Actions
- * Handles skill tree navigation, unlocking, and upgrades
+ * Handles skill tree navigation, unlocking, and upgrades.
  */
 
 const getSkillsByTreeSchema = z.object({
@@ -25,132 +24,100 @@ const getSkillsByTreeSchema = z.object({
 })
 
 const getCharacterSkillsSchema = z.object({
-  characterId: z.string(),
   tree: z.enum(['COMBAT', 'DEFENSE', 'MAGIC']).optional(),
 })
 
 const unlockSkillSchema = z.object({
-  characterId: z.string(),
   skillId: z.string(),
 })
 
 const increaseRankSchema = z.object({
-  characterId: z.string(),
   skillId: z.string(),
 })
 
 const setActiveSchema = z.object({
-  characterId: z.string(),
   skillId: z.string(),
   active: z.boolean(),
 })
 
-export const getAllSkillsAction = createServerAction().handler(async () => {
+export const getAllSkillsAction = characterProcedure.createServerAction().handler(async () => {
   const skills = await getAllSkills()
   return { skills }
 })
 
-export const getSkillsByTreeAction = createServerAction()
+export const getSkillsByTreeAction = characterProcedure
+  .createServerAction()
   .input(getSkillsByTreeSchema)
   .handler(async ({ input }) => {
     const skills = await getSkillsByTree(input.tree as SkillTree)
     return { skills }
   })
 
-export const getCharacterSkillsAction = createServerAction()
+export const getCharacterSkillsAction = characterProcedure
+  .createServerAction()
   .input(getCharacterSkillsSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     const skills = input.tree
-      ? await getCharacterSkillsByTree(input.characterId, input.tree as SkillTree)
-      : await getCharacterSkills(input.characterId)
+      ? await getCharacterSkillsByTree(character.id, input.tree as SkillTree)
+      : await getCharacterSkills(character.id)
 
     return { skills }
   })
 
-export const unlockSkillAction = createServerAction()
+export const unlockSkillAction = characterProcedure
+  .createServerAction()
   .input(unlockSkillSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     try {
-      const characterSkill = await unlockSkill(input.characterId, input.skillId)
+      const characterSkill = await unlockSkill(character.id, input.skillId)
 
       return {
-        characterSkill,
         success: true,
+        message: `Dovednost ${characterSkill.skill.name} byla odemčena!`,
+        characterSkill,
       }
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message)
-      }
-      throw new Error('Failed to unlock skill')
+      const message = error instanceof Error ? error.message : 'Nepodařilo se odemknout dovednost.'
+      return { success: false, message }
     }
   })
 
-export const increaseSkillRankAction = createServerAction()
+export const increaseSkillRankAction = characterProcedure
+  .createServerAction()
   .input(increaseRankSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
-    }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
 
     try {
-      const characterSkill = await increaseSkillRank(input.characterId, input.skillId)
+      const characterSkill = await increaseSkillRank(character.id, input.skillId)
 
       return {
-        characterSkill,
         success: true,
+        message: `Úroveň dovednosti ${characterSkill.skill.name} byla zvýšena na ${characterSkill.currentRank}.`,
+        characterSkill,
       }
     } catch (error) {
-      if (error instanceof Error) {
-        throw new Error(error.message)
-      }
-      throw new Error('Failed to increase skill rank')
+      const message =
+        error instanceof Error ? error.message : 'Nepodařilo se zvýšit úroveň dovednosti.'
+      return { success: false, message }
     }
   })
 
-export const setActiveSkillAction = createServerAction()
+export const setActiveSkillAction = characterProcedure
+  .createServerAction()
   .input(setActiveSchema)
-  .handler(async ({ input }) => {
-    const session = await auth()
-    if (!session?.user?.id) {
-      throw new Error('Not authenticated')
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+
+    const characterSkill = await setActiveSkill(character.id, input.skillId, input.active)
+
+    return {
+      success: true,
+      characterSkill,
+      message: input.active ? 'Schopnost byla aktivována.' : 'Schopnost byla deaktivována.',
     }
-    const userId = session.user.id
-
-    const character = await getCharacter(input.characterId)
-    if (!character || character.userId !== userId) {
-      throw new Error('Character not found or unauthorized')
-    }
-
-    const characterSkill = await setActiveSkill(input.characterId, input.skillId, input.active)
-
-    return { characterSkill }
   })

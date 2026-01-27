@@ -1,8 +1,10 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import type { RandomEvent } from '@/types/events'
 import { Sparkles } from 'lucide-react'
+
+import type { RandomEvent } from '@/types/events'
+
+import { Button } from '@/components/ui/button'
 
 interface RandomEventModalProps {
   event: RandomEvent | null

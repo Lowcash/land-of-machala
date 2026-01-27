@@ -1,9 +1,11 @@
 'use client'
 
+import { ArrowLeft, Lock } from 'lucide-react'
+
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { ArrowLeft, Lock } from 'lucide-react'
+
 import type { Location } from '../Shared/types'
 
 interface LocationDetailsProps {

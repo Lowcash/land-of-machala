@@ -14,6 +14,7 @@ import {
   Hammer,
   Heart,
   Home,
+  type LucideIcon,
   Map,
   Mountain,
   Scroll,
@@ -27,7 +28,6 @@ import {
   User,
   Wand,
   Zap,
-  type LucideIcon,
 } from 'lucide-react'
 
 export const iconMap: Record<string, LucideIcon> = {

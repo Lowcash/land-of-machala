@@ -1,9 +1,12 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { SMITH_STOCK } from '@/lib/game/data'
 import type { LucideIcon } from 'lucide-react'
 import { toast } from 'sonner'
+
+import { SMITH_STOCK } from '@/lib/game/data'
+
+import { Button } from '@/components/ui/button'
+
 import { LocationLayout } from '../../Shared/components/LocationLayout'
 import { ShopInterface, type ShopItem } from '../../Shared/components/ShopInterface'
 import type { MarketItem, MarketItemType } from '../Market/types'

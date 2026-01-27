@@ -1,7 +1,8 @@
 import { createCharacter } from '@/entity/character'
 import { addItem, equipInventoryItem, getInventory, unequipInventoryItem } from '@/entity/inventory'
-import { prisma } from '@/lib/db'
 import { CharacterClass, CharacterRace, EquipmentSlot, ItemType } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 async function main() {
   console.log('Starting Inventory Logic Test...')

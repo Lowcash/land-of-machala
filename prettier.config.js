@@ -1,9 +1,22 @@
-/** @type {import('prettier').Config} */
 module.exports = {
   semi: false,
   singleQuote: true,
-  tabWidth: 2,
-  trailingComma: 'es5',
   printWidth: 100,
-  plugins: ['prettier-plugin-tailwindcss'],
+  tabWidth: 2,
+  useTabs: false,
+  trailingComma: 'es5',
+  plugins: ['@trivago/prettier-plugin-sort-imports', 'prettier-plugin-tailwindcss'],
+  importOrder: [
+    '^(react/(.*)$)|^(react$)',
+    '^(next/(.*)$)|^(next$)',
+    '<THIRD_PARTY_MODULES>',
+    '^@/types/(.*)$',
+    '^@/config/(.*)$',
+    '^@/lib/(.*)$',
+    '^@/components/(.*)$',
+    '^@/styles/(.*)$',
+    '^[./]',
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true,
 }

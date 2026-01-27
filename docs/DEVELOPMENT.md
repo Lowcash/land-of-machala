@@ -172,13 +172,13 @@ npm run test:watch
 **Example:**
 
 ```typescript
+// __tests__/unit/utils.test.ts
+import { calculateExperience } from '@/lib/utils'
+
 // lib/utils.ts
 export function calculateExperience(level: number): number {
   return level * 100
 }
-
-// __tests__/unit/utils.test.ts
-import { calculateExperience } from '@/lib/utils'
 
 describe('calculateExperience', () => {
   it('returns correct XP for level 1', () => {
@@ -271,7 +271,7 @@ npx playwright test auth.spec.ts
 
 ```typescript
 // __tests__/e2e/game.spec.ts
-import { test, expect } from '@playwright/test'
+import { expect, test } from '@playwright/test'
 
 test('user can login and start game', async ({ page }) => {
   // Navigate to login

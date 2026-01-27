@@ -1,8 +1,11 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
 import { Castle, Home, Lock, MapPin, Mountain, Trees } from 'lucide-react'
+
+import { cn } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
+
 import type { MapFilters } from '../Shared/types'
 
 interface MapLegendProps {

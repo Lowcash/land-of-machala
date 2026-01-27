@@ -1,5 +1,6 @@
-import { Card } from '@/components/ui/card'
 import { Sparkles } from 'lucide-react'
+
+import { Card } from '@/components/ui/card'
 
 export function FeatureList() {
   return (

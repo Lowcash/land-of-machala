@@ -1,3 +1,5 @@
+import type { LucideIcon } from 'lucide-react'
+
 export interface CharacterData {
   id: string
   name: string
@@ -21,7 +23,9 @@ export interface CharacterData {
   reputation?: number
   gold: number
   bankGold?: number
-  talentPoints: number
+  talentPoints?: number
+  achievements?: string[] // IDs of unlocked achievements
+  userId: string
   nextLevelExp?: number
   stats?: {
     strength: number
@@ -30,8 +34,6 @@ export interface CharacterData {
     stamina: number
   }
 }
-
-import type { LucideIcon } from 'lucide-react'
 
 export interface CharacterItem {
   id: string

@@ -1,21 +1,10 @@
+'use client'
+
 import { useEffect, useState } from 'react'
 
-/**
- * Custom hook for managing detail view state with browser history integration
- *
- * @param items - Array of items to select from
- * @param paramName - URL parameter name (e.g., 'skillId', 'questId')
- * @returns Selected item state and update functions
- *
- * @example
- * ```tsx
- * const { selectedItem, selectItem, clearSelection } = useDetailViewHistory(skills, 'skillId')
- * ```
- */
 export function useDetailViewHistory<T extends { id: string }>(items: T[], paramName: string) {
   const [selectedId, setSelectedId] = useState<string | null>(null)
 
-  // Sync state with URL on mount and back/forward navigation
   useEffect(() => {
     const handlePopState = () => {
       const params = new URLSearchParams(window.location.search)
@@ -28,17 +17,11 @@ export function useDetailViewHistory<T extends { id: string }>(items: T[], param
       }
     }
 
-    // Handle initial URL on mount (supports direct URLs)
     handlePopState()
-
-    // Listen for browser back/forward
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [items, paramName])
 
-  /**
-   * Select an item and update URL history
-   */
   const selectItem = (id: string | null) => {
     if (id) {
       setSelectedId(id)
@@ -51,14 +34,8 @@ export function useDetailViewHistory<T extends { id: string }>(items: T[], param
     }
   }
 
-  /**
-   * Clear selection (same as selectItem(null))
-   */
   const clearSelection = () => selectItem(null)
 
-  /**
-   * Navigate back in browser history
-   */
   const navigateBack = () => {
     window.history.back()
   }

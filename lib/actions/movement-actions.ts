@@ -1,7 +1,11 @@
 'use server'
 
-import { prisma } from '@/lib/db'
 import { revalidatePath } from 'next/cache'
+
+import { prisma } from '@/lib/db'
+import { moveCharacterSchema } from '@/lib/schemas/movement'
+
+import { characterProcedure } from './procedures'
 
 const DIRECTION_DELTAS = {
   north: { x: 0, y: 1 },
@@ -10,26 +14,19 @@ const DIRECTION_DELTAS = {
   west: { x: -1, y: 0 },
 } as const
 
-export async function moveCharacter(
-  characterId: string,
-  direction: 'north' | 'south' | 'east' | 'west'
-) {
-  try {
-    const character = await prisma.character.findUnique({
-      where: { id: characterId },
-      select: { locationX: true, locationY: true },
-    })
-
-    if (!character) {
-      return { success: false, error: 'Character not found' }
-    }
+export const moveCharacter = characterProcedure
+  .createServerAction()
+  .input(moveCharacterSchema)
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    const { direction } = input
 
     const delta = DIRECTION_DELTAS[direction]
     const newX = character.locationX + delta.x
     const newY = character.locationY + delta.y
 
     await prisma.character.update({
-      where: { id: characterId },
+      where: { id: character.id },
       data: {
         locationX: newX,
         locationY: newY,
@@ -41,33 +38,31 @@ export async function moveCharacter(
     const hasEncounter = encounterChance < 0.4
 
     if (hasEncounter) {
-      // Need to fetch full character to get level
-      const fullChar = await prisma.character.findUnique({ where: { id: characterId } })
-
-      if (fullChar) {
-        const enemy =
-          (await prisma.enemy.findFirst({
-            where: {
-              level: { lte: Math.max(1, fullChar.level + 2), gte: Math.max(1, fullChar.level - 2) },
+      const enemy =
+        (await prisma.enemy.findFirst({
+          where: {
+            level: {
+              lte: Math.max(1, character.level + 2),
+              gte: Math.max(1, character.level - 2),
             },
-          })) || (await prisma.enemy.findFirst())
+          },
+        })) || (await prisma.enemy.findFirst())
 
-        if (enemy) {
-          await prisma.character.update({
-            where: { id: characterId },
-            data: {
-              inCombat: true,
-              combatEnemyId: enemy.id,
-              combatTurn: 'player',
-              combatPlayerHp: fullChar.hp,
-              combatEnemyHp: enemy.maxHp,
-              currentView: 'combat',
-            },
-          })
+      if (enemy) {
+        await prisma.character.update({
+          where: { id: character.id },
+          data: {
+            inCombat: true,
+            combatEnemyId: enemy.id,
+            combatTurn: 'player',
+            combatPlayerHp: character.hp,
+            combatEnemyHp: enemy.maxHp,
+            currentView: 'combat',
+          },
+        })
 
-          revalidatePath('/game')
-          return { success: true, newX, newY, hasEncounter: true }
-        }
+        revalidatePath('/game')
+        return { success: true, newX, newY, hasEncounter: true }
       }
     }
 
@@ -79,8 +74,4 @@ export async function moveCharacter(
       newY,
       hasEncounter: false,
     }
-  } catch (error) {
-    console.error('Movement error:', error)
-    return { success: false, error: 'Failed to move character' }
-  }
-}
+  })

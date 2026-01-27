@@ -1,13 +1,13 @@
-import { Onboarding } from '@/components/features/Auth'
-import { getMyCharacterAction } from '@/lib/actions/character'
-import { redirect } from 'next/navigation'
+import { Onboarding } from '@/components/features/Auth/Onboarding'
 
-export default async function OnboardingPage() {
-  const [result] = await getMyCharacterAction()
+export const metadata = {
+  title: 'Vytvoření postavy | Land of Machala',
+  description: 'Vytvoř svého hrdinu a vstup do světa Machala.',
+}
 
-  if (result?.character) {
-    redirect('/game')
-  }
-
-  return <Onboarding />
+export default async function OnboardingPage(props: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
+  const searchParams = await props.searchParams
+  return <Onboarding searchParams={searchParams} />
 }

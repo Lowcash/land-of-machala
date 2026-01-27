@@ -1,4 +1,4 @@
-import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag, type LucideIcon } from 'lucide-react'
+import { Beer, Cross, Hammer, Home, Landmark, type LucideIcon, ShoppingBag } from 'lucide-react'
 
 export type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
 

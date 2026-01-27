@@ -1,10 +1,13 @@
 'use client'
 
-import { Button } from '@/components/ui/button'
-import { cn } from '@/lib/utils'
+import { usePathname, useRouter } from 'next/navigation'
+
 import type { LucideIcon } from 'lucide-react'
 import { Backpack, Map as MapIcon, ScrollText, TrendingUp, User } from 'lucide-react'
-import { usePathname, useRouter } from 'next/navigation'
+
+import { cn } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
 
 // Define valid routes for this application to satisfy Next.js typed routes
 type AppRoute =

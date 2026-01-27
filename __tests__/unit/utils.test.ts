@@ -1,12 +1,7 @@
-import {
-  calculateLevelFromXP,
-  calculateLevelProgress,
-  calculateXPForLevel,
-  formatGold,
-  formatNumber,
-  randomInt,
-} from '@/lib/utils'
 import { describe, expect, it } from 'vitest'
+
+import { getLevelFromXP, getLevelProgress, getTotalXPForLevel } from '@/lib/game/progression'
+import { formatGold, formatNumber, randomInt } from '@/lib/utils'
 
 describe('formatNumber', () => {
   it('formats number with thousand separators', () => {
@@ -23,25 +18,25 @@ describe('formatGold', () => {
   })
 })
 
-describe('calculateXPForLevel', () => {
+describe('getTotalXPForLevel', () => {
   it('calculates XP needed for level', () => {
-    expect(calculateXPForLevel(1)).toBe(100)
-    expect(calculateXPForLevel(2)).toBeGreaterThan(100)
-    expect(calculateXPForLevel(10)).toBeGreaterThan(calculateXPForLevel(5))
+    expect(getTotalXPForLevel(1)).toBe(0)
+    expect(getTotalXPForLevel(2)).toBe(100)
+    expect(getTotalXPForLevel(10)).toBeGreaterThan(getTotalXPForLevel(5))
   })
 })
 
-describe('calculateLevelFromXP', () => {
+describe('getLevelFromXP', () => {
   it('calculates level from total XP', () => {
-    expect(calculateLevelFromXP(0)).toBe(1)
-    expect(calculateLevelFromXP(100)).toBe(2)
-    expect(calculateLevelFromXP(500)).toBeGreaterThanOrEqual(2)
+    expect(getLevelFromXP(0)).toBe(1)
+    expect(getLevelFromXP(100)).toBe(2)
+    expect(getLevelFromXP(500)).toBeGreaterThanOrEqual(2)
   })
 })
 
-describe('calculateLevelProgress', () => {
+describe('getLevelProgress', () => {
   it('calculates progress percentage', () => {
-    const progress = calculateLevelProgress(50, 2)
+    const progress = getLevelProgress(50, 2)
     expect(progress).toBeGreaterThanOrEqual(0)
     expect(progress).toBeLessThanOrEqual(100)
   })

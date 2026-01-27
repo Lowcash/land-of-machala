@@ -1,7 +1,8 @@
 'use client'
 
-import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 import { useEffect, useState } from 'react'
+
+import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 
 interface ScrollIndicatorProps {
   targetRef: React.RefObject<HTMLElement>

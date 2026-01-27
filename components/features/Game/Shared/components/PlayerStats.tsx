@@ -1,8 +1,10 @@
 'use client'
 
-import { getCharacterStatsAction } from '@/lib/actions/character'
-import { Coins, MapPin } from 'lucide-react'
 import { useEffect, useState } from 'react'
+
+import { Coins, MapPin } from 'lucide-react'
+
+import { getCharacterStatsAction } from '@/lib/actions/character'
 
 interface PlayerStatsProps {
   characterId: string
@@ -20,7 +22,7 @@ export function PlayerStats({ characterId }: PlayerStatsProps) {
   useEffect(() => {
     const fetchPlayerData = async () => {
       try {
-        const [data, err] = await getCharacterStatsAction({ characterId })
+        const [data, err] = await getCharacterStatsAction()
         if (data && !err) {
           setPlayerData({
             x: data.x,

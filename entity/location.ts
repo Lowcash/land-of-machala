@@ -1,5 +1,6 @@
-import { prisma } from '@/lib/db'
 import type { LocationType } from '@prisma/client'
+
+import { prisma } from '@/lib/db'
 
 /**
  * Location Entity Layer

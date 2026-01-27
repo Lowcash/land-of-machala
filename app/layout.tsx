@@ -1,8 +1,12 @@
-import { NotificationProvider } from '@/components/providers/NotificationProvider'
-import { Toaster } from '@/components/ui/sonner'
-import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
+
+import { Analytics } from '@vercel/analytics/next'
+
+import { NotificationProvider } from '@/components/providers/NotificationProvider'
+import { QueryProvider } from '@/components/providers/QueryProvider'
+import { Toaster } from '@/components/ui/sonner'
+
 import './globals.css'
 
 const cinzel = Cinzel({
@@ -42,8 +46,10 @@ export default function RootLayout({
     >
       <body className="font-body text-game-fg bg-black antialiased">
         <NotificationProvider>
-          <div className="bg-game-bg flex min-h-screen flex-col">{children}</div>
-          <Toaster />
+          <QueryProvider>
+            <div className="bg-game-bg flex min-h-screen flex-col">{children}</div>
+            <Toaster />
+          </QueryProvider>
         </NotificationProvider>
         <Analytics />
       </body>

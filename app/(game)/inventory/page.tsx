@@ -1,13 +1,20 @@
-import { GameFooter, GameHeader } from '@/components/features/Game'
-import { InventoryClient } from '@/components/features/Inventory'
-import { PageLayout } from '@/components/layout/PageLayout'
-import { getInventoryPageData } from '@/lib/loaders/inventory-loader'
-import { Backpack } from 'lucide-react'
 import { redirect } from 'next/navigation'
+
+import { Backpack } from 'lucide-react'
+
+import { getInventoryPageData } from '@/lib/loaders/inventory-loader'
+
+import { GameFooter, GameHeader } from '@/components/features/Game'
+import { Inventory } from '@/components/features/Inventory'
+import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
 
-export default async function InventoryPage() {
+export default async function InventoryPage({
+  searchParams,
+}: {
+  searchParams: { itemId?: string }
+}) {
   const data = await getInventoryPageData()
 
   if (!data) redirect('/onboarding')
@@ -24,7 +31,12 @@ export default async function InventoryPage() {
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <InventoryClient character={data.character} initialInventory={data.inventory} maxSlots={20} />
+      <Inventory
+        character={data.character}
+        initialInventory={data.inventory}
+        maxSlots={20}
+        searchParams={searchParams}
+      />
     </PageLayout>
   )
 }

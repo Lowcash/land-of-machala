@@ -6,7 +6,6 @@
  *
  * Usage: npm run db:reset-dev
  */
-
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()

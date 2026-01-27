@@ -25,6 +25,29 @@
   - Properly typed `metadata` in `activity-log.ts` using `Prisma.InputJsonValue`.
   - Fixed `useActivityLog` hook return types to avoid `any[]`.
 
+### Changelog
+
+## [2025-05-22] - Major Refactor & Project Cleanup
+
+### Added
+
+- Created `lib/actions/procedures.ts` with standardized `authenticatedProcedure` and `characterProcedure` using ZSA.
+- Added session-based character identification within server actions.
+
+### Changed
+
+- **Server Actions Refactor**: Migrated all server actions (Combat, Movement, Bank, Tavern, Quest, Skill) to use ZSA procedures.
+- **Dependency Simplification**: Removed redundant `characterId` arguments from all server action signatures and component prop interfaces.
+- **Component Cleanup**: Streamlined `QuestClient`, `SkillsClient`, `CombatClient`, and location-based components.
+- **Standardized Hooks**: Updated `useGameMove` to match the new context-aware action pattern.
+- **Icon Optimization**: Cleaned up `lib/icons.ts` and simplified icon name handling.
+
+### Fixed
+
+- Resolved multiple TypeScript build errors related to mismatched action signatures.
+- Fixed ESLint errors and standardized procedure middleware types.
+- Corrected prop drilling issues in `ActionsArea` and `PlayerStats`.
+
 ### Changed
 
 - **Type Imports:** Standardized on `import type` for Lucide icons and Prisma types where applicable.

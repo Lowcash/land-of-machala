@@ -1,5 +1,7 @@
-import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
+
 import type { Location } from '../Shared/types'
 
 type MapGridProps = {

@@ -4,8 +4,8 @@
  * Full Authentication + Character Creation Flow Test
  * Tests: Register → Login → Character Creation → Character Retrieval
  */
-
 import { hash } from 'bcryptjs'
+
 import { getCharacterByUserId } from '../../entity/character'
 import { getUser } from '../../entity/user'
 import { prisma } from '../../lib/db'
