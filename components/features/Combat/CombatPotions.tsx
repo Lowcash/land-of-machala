@@ -1,9 +1,11 @@
+'use client'
+
 import { toast } from 'sonner'
 
 import { performUseItemAction } from '@/lib/actions/combat'
 import { getIconFromName } from '@/lib/icons'
 
-import { Button } from '@/components/ui/button'
+import { ActionGrid, ActionItem } from '@/components/ui/Action'
 
 import type { CharacterItem } from '../Character/Shared/types'
 
@@ -18,12 +20,14 @@ export function CombatPotions({ potions, isPending }: CombatPotionsProps) {
       <div className="mb-1 text-xs font-bold tracking-wider text-[#8b7355] uppercase">
         Lektvary ({potions.length})
       </div>
-      <div className="grid grid-cols-2 gap-2">
+      <ActionGrid columns={{ default: 2 }}>
         {potions.map((potion) => {
           const Icon = getIconFromName(potion.iconName || 'potion')
           return (
-            <Button
+            <ActionItem
               key={potion.id}
+              label={potion.name}
+              icon={Icon}
               onClick={async () => {
                 const [, err] = await performUseItemAction({
                   itemId: potion.id,
@@ -34,17 +38,14 @@ export function CombatPotions({ potions, isPending }: CombatPotionsProps) {
                   toast.error(err.message)
                 }
               }}
-              variant="outline"
+              variant="default"
               disabled={isPending}
-              size="sm"
               className="border-game-success/50 text-game-success hover:border-game-success gap-2"
-            >
-              <Icon className="h-4 w-4" />
-              <span className="truncate">{potion.name}</span>
-            </Button>
+              layout="row"
+            />
           )
         })}
-      </div>
+      </ActionGrid>
       {potions.length === 0 && (
         <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>
       )}

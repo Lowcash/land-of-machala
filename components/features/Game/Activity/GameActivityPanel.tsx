@@ -23,26 +23,26 @@ export function GameActivityPanel({ logs = [], className = '', children }: GameA
             {children ? (
               children
             ) : logs.length === 0 ? (
-              <div className="py-4 text-center text-xs text-[#8b7355] italic">
+              <div className="text-game-copper-muted py-4 text-center text-xs italic">
                 Zatím žádné záznamy...
               </div>
             ) : (
               logs.map((log) => {
                 const colors = {
-                  playerAttack: 'text-[#ffd700] border-l-[#ffd700]',
-                  enemyAttack: 'text-[#ff6b6b] border-l-[#ff6b6b]',
-                  defend: 'text-[#69ccf0] border-l-[#69ccf0]',
-                  heal: 'text-[#6fbf6f] border-l-[#6fbf6f]',
-                  mana: 'text-[#c084fc] border-l-[#c084fc]',
-                  info: 'text-[#8b7355] border-l-[#8b7355]',
-                  travel: 'text-[#d4a574] border-l-[#d4a574]',
-                  discovery: 'text-[#b66bd4] border-l-[#b66bd4]',
-                  quest: 'text-[#ffd700] border-l-[#ffd700]',
-                  loot: 'text-[#6fbf6f] border-l-[#6fbf6f]',
-                  death: 'text-[#ff6b6b] border-l-[#ff6b6b]',
+                  playerAttack: 'text-game-gold border-l-game-gold',
+                  enemyAttack: 'text-game-danger border-l-game-danger',
+                  defend: 'text-game-info border-l-game-info',
+                  heal: 'text-game-success border-l-game-success',
+                  mana: 'text-game-magic border-l-game-magic',
+                  info: 'text-game-copper-muted border-l-game-copper-muted',
+                  travel: 'text-game-gold-muted border-l-game-gold-muted',
+                  discovery: 'text-game-magic border-l-game-magic',
+                  quest: 'text-game-gold border-l-game-gold',
+                  loot: 'text-game-success border-l-game-success',
+                  death: 'text-game-danger border-l-game-danger',
                 }
                 const colorClass =
-                  colors[log.type as keyof typeof colors] || 'text-[#f5e6d3] border-l-[#8b6f47]'
+                  colors[log.type as keyof typeof colors] || 'text-game-fg border-l-game-copper'
 
                 return (
                   <div

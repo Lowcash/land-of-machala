@@ -1,6 +1,7 @@
+import { getCharacterByUserId } from '@/entity/character'
+
 import { cleanExpiredLootPiles } from '@/lib/actions/loot-recovery'
 import { auth } from '@/lib/auth'
-import { prisma } from '@/lib/db'
 import { getXPNeededForNextLevel } from '@/lib/game/progression'
 
 export async function getGamePageData() {
@@ -9,17 +10,7 @@ export async function getGamePageData() {
 
   const userId = session.user.id
 
-  const character = await prisma.character.findFirst({
-    where: { userId },
-    include: {
-      inventory: {
-        include: { item: true },
-      },
-      skills: {
-        include: { skill: true },
-      },
-    },
-  })
+  const character = await getCharacterByUserId(userId)
 
   if (!character) return null
 

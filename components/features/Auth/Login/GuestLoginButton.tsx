@@ -1,63 +1,21 @@
 'use client'
 
-import { useState } from 'react'
+import { useGuestLogin } from '@/lib/hooks/auth/useGuestLogin'
 
-import { useRouter } from 'next/navigation'
-
-import { signIn } from 'next-auth/react'
-
-import { createGuestAccountAction } from '@/lib/actions/auth'
-
-import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 
 export function GuestLoginButton() {
-  const router = useRouter()
-  const { showNotification } = useNotification()
-  const [isLoading, setIsLoading] = useState(false)
-
-  const handleDemoMode = async () => {
-    if (isLoading) return
-    setIsLoading(true)
-    try {
-      const [data, err] = await createGuestAccountAction()
-
-      if (err || !data) {
-        throw new Error(err?.message || 'Failed to create guest account')
-      }
-
-      const { email: guestEmail, password: guestPassword } = data
-
-      const result = await signIn('credentials', {
-        email: guestEmail,
-        password: guestPassword,
-        redirect: false,
-      })
-
-      if (result?.error) {
-        throw new Error(result.error)
-      }
-
-      router.push('/onboarding')
-    } catch (error) {
-      console.error('Guest login error:', error)
-      showNotification({
-        variant: 'error',
-        title: 'Chyba host účtu',
-        description: 'Došlo k chybě při vytváření host účtu',
-      })
-      setIsLoading(false)
-    }
-  }
+  const { handleGuestLogin, isPending } = useGuestLogin()
 
   return (
     <Button
-      onClick={handleDemoMode}
-      loading={isLoading}
-      variant="game-secondary"
-      className="font-fantasy w-full"
+      onClick={handleGuestLogin}
+      disabled={isPending}
+      className="group border-game-gold/30 hover:border-game-gold hover:bg-game-gold/10 text-game-gold relative w-full overflow-hidden transition-all duration-300"
     >
-      Zkusit hru jako host (bez registrace)
+      <span className="relative z-10 flex items-center justify-center gap-2">
+        {isPending ? 'Vstupuji...' : 'Hrát jako host'}
+      </span>
     </Button>
   )
 }

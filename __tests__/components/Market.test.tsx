@@ -2,10 +2,11 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import { Shield, Sword } from 'lucide-react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 
+import type { MarketItem } from '@/lib/types/market'
+
 import { BlackMarket } from '@/components/features/Game/Locations/Market/MarketBlackMarket'
 import { MarketBuy } from '@/components/features/Game/Locations/Market/MarketBuy'
 import { MarketSell } from '@/components/features/Game/Locations/Market/MarketSell'
-import type { MarketItem } from '@/components/features/Game/Locations/Market/types'
 
 // Mock icons
 vi.mock('lucide-react', async () => {

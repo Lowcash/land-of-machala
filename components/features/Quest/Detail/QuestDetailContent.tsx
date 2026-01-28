@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 
 import { useRouter } from 'next/navigation'
 
@@ -66,35 +66,34 @@ function getCategoryName(category: QuestCategory) {
 export function QuestDetailContent({ quest }: QuestDetailContentProps) {
   const router = useRouter()
   const [showAbandonModal, setShowAbandonModal] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
 
   const handleAbandonQuest = async () => {
-    if (isLoading) return
-    setIsLoading(true)
+    if (isPending) return
 
-    try {
-      const [result, error] = await abandonQuestAction({
-        questId: quest.id,
-      })
+    startTransition(async () => {
+      try {
+        const [result, error] = await abandonQuestAction({
+          questId: quest.id,
+        })
 
-      if (error) {
-        toast.error('Chyba při opuštění questu', {
-          description: error.message || 'Nepodařilo se opustit quest',
+        if (error) {
+          toast.error('Chyba při opuštění questu', {
+            description: error.message || 'Nepodařilo se opustit quest',
+          })
+        } else if (result?.success) {
+          toast.success('Quest opuštěn', {
+            description: `Opustil jsi quest "${quest.title}"`,
+          })
+          setShowAbandonModal(false)
+          router.refresh()
+        }
+      } catch {
+        toast.error('Chyba', {
+          description: 'Něco se pokazilo při opouštění questu',
         })
-      } else if (result?.success) {
-        toast.success('Quest opuštěn', {
-          description: `Opustil jsi quest "${quest.title}"`,
-        })
-        setShowAbandonModal(false)
-        router.refresh()
       }
-    } catch {
-      toast.error('Chyba', {
-        description: 'Něco se pokazilo při opouštění questu',
-      })
-    } finally {
-      setIsLoading(false)
-    }
+    })
   }
 
   return (
@@ -175,7 +174,7 @@ export function QuestDetailContent({ quest }: QuestDetailContentProps) {
         isOpen={showAbandonModal}
         onClose={() => setShowAbandonModal(false)}
         onConfirm={handleAbandonQuest}
-        isLoading={isLoading}
+        isLoading={isPending}
       />
     </div>
   )

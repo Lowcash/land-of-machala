@@ -1,6 +1,6 @@
 import { Trophy } from 'lucide-react'
 
-import { ACHIEVEMENTS, ACHIEVEMENT_ICONS } from '@/lib/game/data'
+import { ACHIEVEMENTS, ACHIEVEMENT_ICONS } from '@/lib/game/constants/items'
 
 import type { CharacterData, CharacterItem } from './types'
 

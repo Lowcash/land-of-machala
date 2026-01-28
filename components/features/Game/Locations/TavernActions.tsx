@@ -4,7 +4,7 @@ import { useState, useTransition } from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import { BedDouble, Beer, ChevronRight, Dices, ScrollText } from 'lucide-react'
+import { ChevronRight, Dices } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { rollDiceAction } from '@/lib/actions/game-actions'
@@ -12,8 +12,8 @@ import { buyRumorAction, buyStayAction } from '@/lib/actions/tavern'
 
 import { Slider } from '@/components/ui/slider'
 
+import { DialogPanel } from '../Shared/components/DialogPanel'
 import { LocationAction } from '../Shared/components/LocationAction'
-import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface TavernActionsProps {
   gold: number
@@ -27,6 +27,7 @@ export function TavernActions({ gold, onInfoAction }: TavernActionsProps) {
   const [betAmount, setBetAmount] = useState(10)
   const [diceResult, setDiceResult] = useState<{ player: number[]; house: number[] } | null>(null)
   const [gameState, setGameState] = useState<'idle' | 'rolling' | 'result'>('idle')
+
   const handleRumors = () => {
     if (gold < 5) {
       onInfoAction('Nemáš dost zlata na drink pro štamgasta! (5g)')
@@ -155,41 +156,35 @@ export function TavernActions({ gold, onInfoAction }: TavernActionsProps) {
   }
 
   return (
-    <LocationLayout
-      title="Hostinec 'U Hladového skřeta'"
-      description="Uvnitř je rušno a zakouřeno. Hostinský právě utírá stůl a v rohu parta dobrodruhů hraje kostky."
-    >
-      <LocationAction
-        variant="compact"
-        title="Koupit"
-        description="pivo"
-        icon={Beer}
-        rightElement={<span className="text-[10px] text-[#8b7355]">(5g)</span>}
-        onClick={() => {}}
-      />
-      <LocationAction
-        variant="compact"
-        title="Odpočinout si"
-        icon={BedDouble}
-        rightElement={<span className="text-[10px] text-[#8b7355]">(10g)</span>}
-        disabled={isPending}
-        onClick={handleStay}
-      />
-      <LocationAction
-        variant="compact"
-        title="Drby a"
-        description="zvěsti"
-        icon={ScrollText}
-        rightElement={<span className="text-[10px] text-[#8b7355]">(5g)</span>}
-        onClick={handleRumors}
-      />
-      <LocationAction
-        variant="compact"
-        title="Hrát"
-        description="kostky"
-        icon={Dices}
-        onClick={() => setActiveTab('gamble')}
-      />
-    </LocationLayout>
+    <DialogPanel
+      npcName="Hostinský"
+      dialogText="Vítej ve Hladovém skřetovi! Co si dáš? Máme pivo jako křen a postele bez štěnic. Nebo si chceš zahrát?"
+      options={[
+        {
+          id: 'beer',
+          text: 'Koupit pivo (5g)',
+          action: () => {}, // TODO: Add logic or keep placeholder if purely flavor in original? Original had empty handler.
+          variant: 'ghost',
+        },
+        {
+          id: 'stay',
+          text: 'Odpočinout si (10g)',
+          action: handleStay,
+          variant: 'secondary',
+        },
+        {
+          id: 'rumors',
+          text: 'Drby a zvěsti (5g)',
+          action: handleRumors,
+          variant: 'secondary',
+        },
+        {
+          id: 'gamble',
+          text: 'Hrát kostky',
+          action: () => setActiveTab('gamble'),
+          variant: 'primary',
+        },
+      ]}
+    />
   )
 }

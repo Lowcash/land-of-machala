@@ -8,13 +8,10 @@ import {
   unequipInventoryItem,
   useInventoryItem,
 } from '@/entity/inventory'
-import { z } from 'zod'
+
+import { itemActionSchema } from '@/lib/schemas/inventory'
 
 import { characterProcedure } from './procedures'
-
-const itemActionSchema = z.object({
-  inventoryItemId: z.string(),
-})
 
 export const equipItemAction = characterProcedure
   .createServerAction()

@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from 'react'
 
-import { Trophy, X } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
+import { Trophy, X } from 'lucide-react'
+
+import {
+  ACHIEVEMENT_RARITY_COLORS,
+  type AchievementRarity,
+} from '@/lib/game/constants/achievements'
 
 import { Button } from '@/components/ui/button'
-
-type AchievementRarity = 'common' | 'rare' | 'epic' | 'legendary'
 
 export interface Achievement {
   id: number
@@ -38,30 +41,7 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
     return () => clearTimeout(timer)
   }, [onClose])
 
-  const rarityColors = {
-    common: {
-      border: '#d4a574',
-      bg: 'from-[#8b6f47]/90 to-[#6d5a3e]/90',
-      glow: 'rgba(212, 165, 116, 0.3)',
-    },
-    rare: {
-      border: '#69ccf0',
-      bg: 'from-[#69ccf0]/20 to-[#4dabdb]/20',
-      glow: 'rgba(105, 204, 240, 0.4)',
-    },
-    epic: {
-      border: '#c084fc',
-      bg: 'from-[#c084fc]/20 to-[#a855f7]/20',
-      glow: 'rgba(192, 132, 252, 0.4)',
-    },
-    legendary: {
-      border: '#ffd700',
-      bg: 'from-[#ffd700]/20 to-[#ffed4e]/20',
-      glow: 'rgba(255, 215, 0, 0.5)',
-    },
-  }
-
-  const colors = rarityColors[achievement.rarity]
+  const colors = ACHIEVEMENT_RARITY_COLORS[achievement.rarity]
   const Icon = achievement.icon || Trophy
 
   return (
@@ -130,26 +110,4 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
       </div>
     </div>
   )
-}
-
-// Achievement Manager Hook
-export function useAchievements() {
-  const [achievements, setAchievements] = useState<Achievement[]>([])
-  const [notifications, setNotifications] = useState<Achievement[]>([])
-
-  const unlockAchievement = (achievement: Achievement) => {
-    setAchievements((prev) => [...prev, achievement])
-    setNotifications((prev) => [...prev, achievement])
-  }
-
-  const removeNotification = (id: number) => {
-    setNotifications((prev) => prev.filter((a) => a.id !== id))
-  }
-
-  return {
-    achievements,
-    notifications,
-    unlockAchievement,
-    removeNotification,
-  }
 }

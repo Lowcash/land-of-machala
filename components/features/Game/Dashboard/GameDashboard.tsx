@@ -1,9 +1,6 @@
 'use client'
 
-import { useState } from 'react'
-
-import { viewData } from '@/lib/game/config'
-import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
+import { useGameDashboard } from '@/lib/hooks/game/useGameDashboard'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
@@ -30,27 +27,23 @@ interface GameDashboardProps {
   character: CharacterData
 }
 
-interface Buff {
-  name: string
-  stat: string
-  val: number
-}
-
 export function GameDashboard({ character }: GameDashboardProps) {
-  const { currentView, goToView, goBack } = useGameView('town')
-  const { infoText, isShaking, handleSetInfoText } = useInfoLog()
-
-  // Local state for game interactions
-  const [gold, setGold] = useState(character.gold || 0)
-  const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
-  const [inventory, setInventory] = useState<MarketItem[]>(character.inventory || [])
-
-  const { handleMove } = useGameMove({
+  const {
+    currentView,
+    goToView,
+    goBack,
+    infoText,
+    isShaking,
     handleSetInfoText,
-  })
-
-  // Get current view data
-  const currentViewData = viewData[currentView]
+    gold,
+    setGold,
+    activeBuffs,
+    setActiveBuffs,
+    inventory,
+    setInventory,
+    handleMove,
+    currentViewData,
+  } = useGameDashboard({ character })
 
   return (
     <PageLayout

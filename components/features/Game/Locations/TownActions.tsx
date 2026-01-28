@@ -2,7 +2,7 @@
 
 import { Beer, Building, Cross, Hammer, ScrollText, ShoppingBag } from 'lucide-react'
 
-import type { View } from '@/lib/game/config'
+import type { View } from '@/lib/types/game'
 
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'

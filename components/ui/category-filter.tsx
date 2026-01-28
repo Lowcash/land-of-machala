@@ -36,6 +36,7 @@ export function CategoryFilter<T extends string>({
       )}
     >
       <Link
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         href={'?' as any}
         className={cn(
           'w-full rounded border-2 px-2 py-2 text-xs transition-all md:px-4 md:text-left md:text-sm',
@@ -56,6 +57,7 @@ export function CategoryFilter<T extends string>({
         return (
           <Link
             key={cat.id}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             href={`?${paramName}=${cat.id}` as any}
             className={cn(
               'flex w-full items-center justify-center gap-1.5 rounded border-2 px-2 py-2 transition-all md:justify-start md:gap-2 md:px-4',

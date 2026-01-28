@@ -9,6 +9,7 @@ import { prisma } from '@/lib/db'
  */
 
 export const authenticatedProcedure = createServerActionProcedure().handler(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async ({ next }: any) => {
     const session = await auth()
 

@@ -5,21 +5,10 @@ import { usePathname, useRouter } from 'next/navigation'
 import type { LucideIcon } from 'lucide-react'
 import { Backpack, Map as MapIcon, ScrollText, TrendingUp, User } from 'lucide-react'
 
+import type { AppRoute } from '@/lib/types/game'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
-
-// Define valid routes for this application to satisfy Next.js typed routes
-type AppRoute =
-  | '/character'
-  | '/game'
-  | '/inventory'
-  | '/map'
-  | '/quests'
-  | '/skills'
-  | '/login'
-  | '/onboarding'
-  | '/register'
 
 interface NavItem {
   id: string

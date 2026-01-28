@@ -67,15 +67,18 @@ export function SkillGrid({
               const canUpgrade =
                 skill.unlocked && skill.currentLevel < skill.maxRank && talentPoints >= skill.cost
 
-              const href =
-                selectedCategory === 'all'
-                  ? `?skillId=${skill.id}`
-                  : `?category=${selectedCategory}&skillId=${skill.id}`
+              const href = {
+                pathname: '/game/skills',
+                query:
+                  selectedCategory === 'all'
+                    ? { skillId: skill.id }
+                    : { category: selectedCategory, skillId: skill.id },
+              }
 
               return (
                 <Link
                   key={skill.id}
-                  href={href as any}
+                  href={href}
                   className={cn(
                     'flex h-auto min-h-[80px] w-full flex-col items-start rounded-lg border-2 p-4 text-left transition-all sm:min-h-0',
                     selectedSkill === skill.id

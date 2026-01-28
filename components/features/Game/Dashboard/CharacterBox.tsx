@@ -1,8 +1,8 @@
-import Image from 'next/image'
+import { Coins, MapPin } from 'lucide-react'
 
-import { Brain, Coins, MapPin, Shield, Sword, User, Wind } from 'lucide-react'
-
-import { Progress } from '@/components/ui/progress'
+import { CharacterAvatar } from './CharacterParts/CharacterAvatar'
+import { CharacterStats } from './CharacterParts/CharacterStats'
+import { CharacterVitals } from './CharacterParts/CharacterVitals'
 
 interface CharacterBoxProps {
   name: string
@@ -42,10 +42,6 @@ export function CharacterBox({
   gold,
   locationName,
 }: CharacterBoxProps) {
-  const hpPercent = Math.max(0, Math.min(100, (hp / hpMax) * 100))
-  const resourcePercent = Math.max(0, Math.min(100, (mana / manaMax) * 100))
-  const xpPercent = xp !== undefined && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
-
   return (
     <div
       className={`group relative overflow-hidden rounded-xl border-2 shadow-lg transition-all duration-300 ${
@@ -55,18 +51,7 @@ export function CharacterBox({
       }`}
     >
       {/* Medieval Corner Decorations with Scrollwork */}
-      <div className="absolute top-0 left-0 h-10 w-10 border-t-2 border-l-2 border-[#d4a574]/40">
-        <div className="absolute top-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
-      </div>
-      <div className="absolute top-0 right-0 h-10 w-10 border-t-2 border-r-2 border-[#d4a574]/40">
-        <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
-      </div>
-      <div className="absolute bottom-0 left-0 h-10 w-10 border-b-2 border-l-2 border-[#d4a574]/40">
-        <div className="absolute bottom-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
-      </div>
-      <div className="absolute right-0 bottom-0 h-10 w-10 border-r-2 border-b-2 border-[#d4a574]/40">
-        <div className="absolute right-1 bottom-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
-      </div>
+      <CornerDecorations />
 
       {/* Parchment Texture Overlay with Paper Grain */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,rgba(0,0,0,0.2)_100%)] opacity-50"></div>
@@ -79,36 +64,7 @@ export function CharacterBox({
       ></div>
 
       <div className="flex p-3 sm:p-4">
-        {/* Avatar - Compacted */}
-        <div className="relative mr-4 shrink-0">
-          <div
-            className={`flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border-2 shadow-inner ${
-              isEnemy ? 'border-red-900 bg-red-950' : 'border-[#8b6f47] bg-black'
-            }`}
-          >
-            {image ? (
-              <Image
-                src={image}
-                alt={name}
-                width={80}
-                height={80}
-                className="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
-              />
-            ) : (
-              <User className={`h-10 w-10 ${isEnemy ? 'text-red-500/70' : 'text-[#d4a574]/70'}`} />
-            )}
-          </div>
-          {/* Level Bubble - moved overlap with glow */}
-          <div
-            className={`absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full border-2 ${
-              isEnemy
-                ? 'border-red-800 bg-red-950 text-red-200 shadow-[0_0_10px_rgba(220,38,38,0.5)]'
-                : 'border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#5a4a2e] text-[#ffd700] shadow-[0_0_10px_rgba(255,215,0,0.4)]'
-            } text-sm font-bold`}
-          >
-            {level}
-          </div>
-        </div>
+        <CharacterAvatar name={name} level={level} isEnemy={isEnemy} image={image} />
 
         {/* Info Column */}
         <div className="flex min-w-0 flex-1 flex-col justify-center space-y-2">
@@ -124,58 +80,20 @@ export function CharacterBox({
             </h3>
           </div>
 
-          {/* Vitals Bars - Thicker and with Text */}
-          <div className="w-full space-y-1.5">
-            {/* HP Bar */}
-            <div className="relative">
-              <Progress
-                value={hpPercent}
-                className="h-4 rounded bg-black/80 ring-1 ring-white/10"
-                indicatorClassName="bg-linear-to-r from-red-900 via-red-700 to-red-600"
-              />
-              <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
-                {Math.round(hp)} / {hpMax} HP
-              </div>
-            </div>
-
-            {/* Mana Bar */}
-            <div className="relative">
-              <Progress
-                value={resourcePercent}
-                className="h-4 rounded bg-black/80 ring-1 ring-white/10"
-                indicatorClassName="bg-linear-to-r from-blue-900 via-blue-700 to-blue-500"
-              />
-              <div className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white shadow-black drop-shadow-md">
-                {Math.round(mana)} / {manaMax} {resourceType === 'energy' ? 'EN' : 'MP'}
-              </div>
-            </div>
-
-            {/* XP Bar - Prominent */}
-            {!isEnemy && xp !== undefined && (
-              <div className="relative">
-                <Progress
-                  value={xpPercent}
-                  className="h-3 rounded bg-black/80 ring-1 ring-white/10"
-                  indicatorClassName="bg-linear-to-r from-[#8b6f47] via-[#d4a574] to-[#ffd700]"
-                />
-                <div className="absolute inset-0 flex items-center justify-center text-[8px] font-bold text-black/80 shadow-white/50 drop-shadow-sm">
-                  {Math.round(xpPercent)}% XP
-                </div>
-              </div>
-            )}
-          </div>
+          <CharacterVitals
+            hp={hp}
+            hpMax={hpMax}
+            mana={mana}
+            manaMax={manaMax}
+            xp={xp}
+            xpMax={xpMax}
+            isEnemy={isEnemy}
+            resourceType={resourceType}
+          />
         </div>
       </div>
 
-      {/* Stats - Horizontal Strip */}
-      {stats && (
-        <div className="flex divide-x divide-[#8b6f47]/20 border-t border-[#8b6f47]/30 bg-[#120f0a]/50">
-          <StatItem icon={Sword} value={stats.strength} label="STR" color="text-red-400" />
-          <StatItem icon={Brain} value={stats.intelligence} label="INT" color="text-purple-400" />
-          <StatItem icon={Wind} value={stats.agility} label="AGI" color="text-yellow-400" />
-          <StatItem icon={Shield} value={stats.stamina} label="STA" color="text-blue-400" />
-        </div>
-      )}
+      {stats && <CharacterStats stats={stats} />}
 
       {/* Money & Location Footer (for Player) */}
       {!isEnemy && (gold !== undefined || locationName) && (
@@ -198,23 +116,21 @@ export function CharacterBox({
   )
 }
 
-interface StatItemProps {
-  icon: typeof Sword
-  value: number
-  label: string
-  color: string
-}
-
-function StatItem({ icon: Icon, value, label, color }: StatItemProps) {
+function CornerDecorations() {
   return (
-    <div className="flex flex-1 flex-col items-center py-2 transition-colors hover:bg-white/5">
-      <span className={`mb-0.5 text-[10px] font-bold tracking-wider text-[#8b7355] uppercase`}>
-        {label}
-      </span>
-      <div className="flex items-center gap-1.5">
-        <Icon className={`h-3.5 w-3.5 ${color}`} />
-        <span className="text-sm font-medium text-[#d4a574]">{value}</span>
+    <>
+      <div className="absolute top-0 left-0 h-10 w-10 border-t-2 border-l-2 border-[#d4a574]/40">
+        <div className="absolute top-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
       </div>
-    </div>
+      <div className="absolute top-0 right-0 h-10 w-10 border-t-2 border-r-2 border-[#d4a574]/40">
+        <div className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
+      </div>
+      <div className="absolute bottom-0 left-0 h-10 w-10 border-b-2 border-l-2 border-[#d4a574]/40">
+        <div className="absolute bottom-1 left-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
+      </div>
+      <div className="absolute right-0 bottom-0 h-10 w-10 border-r-2 border-b-2 border-[#d4a574]/40">
+        <div className="absolute right-1 bottom-1 h-2 w-2 rounded-full bg-[#d4a574]/20"></div>
+      </div>
+    </>
   )
 }

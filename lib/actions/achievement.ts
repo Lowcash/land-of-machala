@@ -11,9 +11,15 @@ import {
 } from '@/entity/achievement'
 import { addExperience, updateCharacterResources } from '@/entity/character'
 import type { AchievementCategory } from '@prisma/client'
-import { z } from 'zod'
 
 import { prisma } from '@/lib/db'
+import {
+  getAllAchievementsSchema,
+  getCategorySchema,
+  incrementProgressSchema,
+  unlockSchema,
+  updateProgressSchema,
+} from '@/lib/schemas/achievement'
 
 import { characterProcedure } from './procedures'
 
@@ -22,27 +28,9 @@ import { characterProcedure } from './procedures'
  * Handles achievement tracking, progress updates, and rewards
  */
 
-const getCategorySchema = z.object({
-  category: z.enum(['COMBAT', 'EXPLORATION', 'QUESTS', 'SOCIAL', 'COLLECTION', 'PROGRESSION']),
-})
-
-const updateProgressSchema = z.object({
-  achievementId: z.string(),
-  progress: z.number().int().min(0),
-})
-
-const incrementProgressSchema = z.object({
-  achievementId: z.string(),
-  amount: z.number().int().min(1).default(1),
-})
-
-const unlockSchema = z.object({
-  achievementId: z.string(),
-})
-
 export const getAllAchievementsAction = characterProcedure
   .createServerAction()
-  .input(z.object({ includeHidden: z.boolean().default(false) }))
+  .input(getAllAchievementsSchema)
   .handler(async ({ input }) => {
     const achievements = await getAllAchievements(input.includeHidden)
     return { achievements }

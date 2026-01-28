@@ -1,6 +1,8 @@
+'use client'
+
 import { useState } from 'react'
 
-import type { HaggleState, MarketItem } from './types'
+import type { HaggleState, MarketItem } from '@/lib/types/market'
 
 interface UseHaggleProps {
   setInfoText: (text: string) => void

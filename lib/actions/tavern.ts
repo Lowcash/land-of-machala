@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache'
 
 import { prisma } from '@/lib/db'
-import { RUMORS } from '@/lib/game/data'
+import { RUMORS } from '@/lib/game/constants/texts'
 
 import { characterProcedure } from './procedures'
 

@@ -1,29 +1,15 @@
 import type { CharacterClass, CharacterRace } from '@prisma/client'
 
 import { prisma } from '@/lib/db'
+import { calculateMaxHp, calculateMaxMana, calculateProgression } from '@/lib/game/formulas'
 
 /**
  * Character Entity Layer
  * Handles character creation, progression, and stats
  */
 
-const XP_BASE = 100
-const XP_MULTIPLIER = 1.5
-
-export function calculateXpForLevel(level: number): number {
-  return Math.floor(XP_BASE * Math.pow(XP_MULTIPLIER, level - 1))
-}
-
-function calculateMaxHp(stamina: number, level: number): number {
-  return 100 + stamina * 5 + level * 10
-}
-
-function calculateMaxMana(intelligence: number, level: number): number {
-  return 50 + intelligence * 3 + level * 5
-}
-
 export async function getCharacter(id: string) {
-  return await prisma.character.findUnique({
+  const character = await prisma.character.findUnique({
     where: { id },
     include: {
       inventory: {
@@ -63,6 +49,8 @@ export async function getCharacter(id: string) {
       },
     },
   })
+
+  return character
 }
 
 export async function getCharacterByUserId(userId: string) {
@@ -166,6 +154,7 @@ export async function updateCharacterStats(
       stamina: updatedStats.stamina,
       maxHp,
       maxMana,
+      // Ensure current HP/Mana doesn't exceed new max
       hp: Math.min(character.hp, maxHp),
       mana: Math.min(character.mana, maxMana),
       talentPoints: Math.max(0, character.talentPoints - 1),
@@ -177,30 +166,26 @@ export async function addExperience(id: string, amount: number) {
   const character = await prisma.character.findUnique({ where: { id } })
   if (!character) throw new Error('Character not found')
 
-  let newExperience = character.experience + amount
-  let newLevel = character.level
-  let newTalentPoints = character.talentPoints
+  const { newLevel, newXp, levelsGained } = calculateProgression(
+    character.level,
+    character.experience,
+    amount
+  )
 
-  // Check for level up
-  while (newExperience >= calculateXpForLevel(newLevel)) {
-    newExperience -= calculateXpForLevel(newLevel)
-    newLevel++
-    newTalentPoints++
-  }
-
+  // Use the formulas for max HP/Mana
   const maxHp = calculateMaxHp(character.stamina, newLevel)
   const maxMana = calculateMaxMana(character.intelligence, newLevel)
 
   return await prisma.character.update({
     where: { id },
     data: {
-      experience: newExperience,
+      experience: newXp,
       level: newLevel,
-      talentPoints: newTalentPoints,
+      talentPoints: { increment: levelsGained },
       maxHp,
       maxMana,
-      hp: maxHp, // Full heal on level up
-      mana: maxMana,
+      // Full heal on level up if level increased
+      ...(levelsGained > 0 ? { hp: maxHp, mana: maxMana } : {}),
     },
   })
 }

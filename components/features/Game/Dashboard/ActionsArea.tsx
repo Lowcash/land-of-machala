@@ -1,10 +1,10 @@
 import React from 'react'
 
-import type { View } from '@/lib/game/config'
-import { viewData } from '@/lib/game/config'
+import { viewData } from '@/lib/game/constants/views'
+import type { View } from '@/lib/types/game'
+import type { MarketItem } from '@/lib/types/market'
 
 import { BankActions } from '../Locations/BankActions'
-import type { MarketItem } from '../Locations/Market/types'
 import { HealerShop } from '../Locations/Shops/HealerShop'
 import { MarketShop } from '../Locations/Shops/MarketShop'
 import { SmithShop } from '../Locations/Shops/SmithShop'

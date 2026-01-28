@@ -10,7 +10,14 @@ import {
   unlockSkill,
 } from '@/entity/skill'
 import type { SkillTree } from '@prisma/client'
-import { z } from 'zod'
+
+import {
+  getCharacterSkillsSchema,
+  getSkillsByTreeSchema,
+  increaseRankSchema,
+  setActiveSchema,
+  unlockSkillSchema,
+} from '@/lib/schemas/skill'
 
 import { characterProcedure } from './procedures'
 
@@ -18,27 +25,6 @@ import { characterProcedure } from './procedures'
  * Skill Server Actions
  * Handles skill tree navigation, unlocking, and upgrades.
  */
-
-const getSkillsByTreeSchema = z.object({
-  tree: z.enum(['COMBAT', 'DEFENSE', 'MAGIC']),
-})
-
-const getCharacterSkillsSchema = z.object({
-  tree: z.enum(['COMBAT', 'DEFENSE', 'MAGIC']).optional(),
-})
-
-const unlockSkillSchema = z.object({
-  skillId: z.string(),
-})
-
-const increaseRankSchema = z.object({
-  skillId: z.string(),
-})
-
-const setActiveSchema = z.object({
-  skillId: z.string(),
-  active: z.boolean(),
-})
 
 export const getAllSkillsAction = characterProcedure.createServerAction().handler(async () => {
   const skills = await getAllSkills()

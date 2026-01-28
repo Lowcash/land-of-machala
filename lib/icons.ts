@@ -1,6 +1,5 @@
 import {
   Axe,
-  Backpack,
   Beer,
   Circle,
   Coins,
@@ -19,7 +18,6 @@ import {
   Mountain,
   Scroll,
   Shield,
-  Shirt,
   Skull,
   Sparkles,
   Sword,
@@ -32,7 +30,6 @@ import {
 
 export const iconMap: Record<string, LucideIcon> = {
   axe: Axe,
-  backpack: Backpack,
   beer: Beer,
   bow: Target,
   circle: Circle,
@@ -57,9 +54,7 @@ export const iconMap: Record<string, LucideIcon> = {
   armor: Shield,
   helmet: Shield,
   gloves: Shield,
-  shirt: Shirt,
-  robe: Shirt,
-  cloak: Shirt,
+
   skull: Skull,
   sparkles: Sparkles,
   sword: Sword,

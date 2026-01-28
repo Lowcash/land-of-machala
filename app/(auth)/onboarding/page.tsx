@@ -1,6 +1,8 @@
+import type { Metadata } from 'next'
+
 import { Onboarding } from '@/components/features/Auth/Onboarding'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Vytvoření postavy | Land of Machala',
   description: 'Vytvoř svého hrdinu a vstup do světa Machala.',
 }

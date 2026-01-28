@@ -9,21 +9,13 @@ import { useRouter } from 'next/navigation'
 import type { LucideIcon } from 'lucide-react'
 import { ArrowLeft, LogOut } from 'lucide-react'
 
+import type { AppRoute } from '@/lib/types/game'
+
 import { Button } from '@/components/ui/button'
 
 import { PlayerStats } from './PlayerStats'
 
-// Define valid routes for this application to satisfy Next.js typed routes
-export type AppRoute =
-  | '/character'
-  | '/game'
-  | '/inventory'
-  | '/map'
-  | '/quests'
-  | '/skills'
-  | '/login'
-  | '/onboarding'
-  | '/register'
+// Valid routes are now defined in @/lib/types/game.ts
 
 interface GameHeaderProps {
   /** Icon to display */

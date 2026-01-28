@@ -1,12 +1,19 @@
-export function getSlotName(slot: string): string {
-  const names: Record<string, string> = {
-    left_hand: 'Levá ruka',
-    right_hand: 'Pravá ruka',
-    chest: 'Hruď',
-    hands: 'Ruce',
-    feet: 'Nohy',
-    head: 'Hlava',
-    legs: 'Nohy',
+import type { SkillCategory } from '@/components/features/Skills/Shared/types'
+
+export function treeToCategory(tree: string): SkillCategory {
+  const treeStr = String(tree)
+  switch (treeStr) {
+    case 'COMBAT':
+      return 'combat'
+    case 'DEFENSE':
+      return 'defense'
+    case 'MAGIC':
+      return 'magic'
+    case 'STEALTH':
+      return 'stealth'
+    case 'CRAFTING':
+      return 'crafting'
+    default:
+      return 'combat'
   }
-  return names[slot] || slot
 }

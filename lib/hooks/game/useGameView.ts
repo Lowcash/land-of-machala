@@ -1,6 +1,8 @@
+'use client'
+
 import { useState } from 'react'
 
-import type { View } from '@/lib/game/config'
+import type { View } from '@/lib/types/game'
 
 export function useGameView(initialView: View = 'town') {
   const [currentView, setCurrentView] = useState<View>(initialView)

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
 import { User } from 'lucide-react'
@@ -9,6 +10,11 @@ import { GameFooter, GameHeader } from '@/components/features/Game'
 import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: 'Postava | Land of Machala',
+  description: 'Přehled statistik, vybavení a úspěchů tvé postavy.',
+}
 
 export default async function CharacterPage() {
   const data = await getCharacterPageData()

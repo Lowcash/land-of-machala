@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react'
 import { ChevronLeft, EyeOff, FlaskConical, Mountain, ShoppingBag, Store } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { useHaggle } from '@/lib/hooks/game/useHaggle'
+
 import { Button } from '@/components/ui/button'
 
 import { LocationLayout } from '../../Shared/components/LocationLayout'
@@ -12,7 +14,6 @@ import { BlackMarket } from '../Market/MarketBlackMarket'
 import { MarketBuy } from '../Market/MarketBuy'
 import { MarketSell } from '../Market/MarketSell'
 import type { MarketItem } from '../Market/types'
-import { useHaggle } from '../Market/useHaggle'
 
 interface MarketShopProps {
   gold: number

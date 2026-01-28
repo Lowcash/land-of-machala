@@ -1,6 +1,5 @@
 import type { Class, Race } from '@/lib/game/onboarding'
-import { classes, races } from '@/lib/game/onboarding'
-import { parseOnboardingParams } from '@/lib/schemas/onboardingParams'
+import { useOnboarding } from '@/lib/hooks/game/useOnboarding'
 
 import { OnboardingCreation } from './OnboardingCreation'
 import { OnboardingIntro } from './OnboardingIntro'
@@ -14,32 +13,7 @@ interface OnboardingProps {
  * Manages the multi-step character creation process
  */
 export function Onboarding({ searchParams }: OnboardingProps) {
-  // Parse URL params safely
-  const {
-    step,
-    story: storyIndex,
-    race,
-    class: characterClass,
-  } = parseOnboardingParams(searchParams ?? {})
-
-  // Validate race/class (fallback to default if invalid)
-  const safeRace = races.find((r) => r.id === race) ? race : 'human'
-  const safeClass = classes.find((c) => c.id === characterClass) ? characterClass : 'warrior'
-
-  const selectedClass = classes.find((c) => c.id === safeClass)!
-  const selectedRace = races.find((r) => r.id === safeRace)!
-
-  // Calculate final stats
-  const finalStats = {
-    hp: selectedRace.stats.hp,
-    hpMax: selectedRace.stats.hp,
-    mana: selectedRace.stats.mana,
-    manaMax: selectedRace.stats.mana,
-    strength: selectedRace.stats.strength + selectedClass.statMod.strength,
-    intelligence: selectedRace.stats.intelligence + selectedClass.statMod.intelligence,
-    agility: selectedRace.stats.agility + selectedClass.statMod.agility,
-    stamina: selectedRace.stats.stamina + selectedClass.statMod.stamina,
-  }
+  const { step, storyIndex, safeRace, safeClass, finalStats } = useOnboarding({ searchParams })
 
   if (step === 0) {
     return <OnboardingIntro storyIndex={storyIndex} />

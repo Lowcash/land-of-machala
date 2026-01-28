@@ -27,10 +27,6 @@ import { characterProcedure } from './procedures'
  * Actions for quest management.
  */
 
-/**
- * Actions for quest management.
- */
-
 export const getAllQuestsAction = characterProcedure.createServerAction().handler(async () => {
   const quests = await getAllQuests()
   return { quests }

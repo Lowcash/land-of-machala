@@ -1,9 +1,11 @@
+'use client'
+
 /**
  * Custom React hooks for common patterns
  */
 
-export { useBuffs } from './useBuffs'
-export { useDetailViewHistory } from './useDetailViewHistory'
-export { useGameResources } from './useGameResources'
-export { useInfoText } from './useInfoText'
-export { useViewState } from './useViewState'
+export { useBuffs } from './game/useBuffs'
+export { useDetailViewHistory } from './game/useDetailViewHistory'
+export { useGameResources } from './game/useGameResources'
+export { useInfoText } from './game/useInfoText'
+export { useViewState } from './game/useViewState'

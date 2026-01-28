@@ -1,23 +1,13 @@
 'use client'
 
-import { useTransition } from 'react'
-
-import { useRouter } from 'next/navigation'
-
-import { zodResolver } from '@hookform/resolvers/zod'
-import type { CharacterClass, CharacterRace } from '@prisma/client'
 import { Dice5, Sparkles } from 'lucide-react'
-import { useForm } from 'react-hook-form'
 
-import { createCharacterAction } from '@/lib/actions/character'
 import type { Class, Race } from '@/lib/game/onboarding'
-import { RANDOM_NAMES } from '@/lib/game/onboarding'
+import { useNameForm } from '@/lib/hooks/onboarding/useNameForm'
 
-import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 
 import { AuthInput } from '../../Shared/AuthInput'
-import { type NameValues, nameSchema } from './nameSchema'
 
 interface NameFormProps {
   race: Race
@@ -25,69 +15,14 @@ interface NameFormProps {
 }
 
 export function NameForm({ race, characterClass }: NameFormProps) {
-  const router = useRouter()
-  const { showNotification } = useNotification()
-  const [isPending, startTransition] = useTransition()
-
+  const { form, isPending, randomizeName, handleSubmit } = useNameForm(race, characterClass)
   const {
     register,
-    handleSubmit,
-    setValue,
     formState: { errors, isValid },
-  } = useForm<NameValues>({
-    resolver: zodResolver(nameSchema),
-    defaultValues: {
-      name: '',
-    },
-    mode: 'onChange',
-  })
-
-  const randomizeName = () => {
-    const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)] || 'Hero'
-    setValue('name', randomName, { shouldValidate: true })
-  }
-
-  const onSubmit = (values: NameValues) => {
-    if (isPending) return
-
-    startTransition(async () => {
-      try {
-        const [, err] = await createCharacterAction({
-          name: values.name.trim(),
-          race: race.toUpperCase() as CharacterRace,
-          class: characterClass.toUpperCase() as CharacterClass,
-        })
-
-        if (err) {
-          showNotification({
-            variant: 'error',
-            title: 'Chyba vytváření postavy',
-            description: err.message || 'Nepodařilo se vytvořit postavu',
-          })
-          return
-        }
-
-        showNotification({
-          variant: 'success',
-          title: 'Postava vytvořena!',
-          description: `Vítej v zemi Machala, ${values.name}!`,
-        })
-
-        // Short delay for user to see success
-        setTimeout(() => router.push('/game'), 500)
-      } catch (error) {
-        console.error('Character creation error:', error)
-        showNotification({
-          variant: 'error',
-          title: 'Chyba',
-          description: 'Došlo k chybě při vytváření postavy',
-        })
-      }
-    })
-  }
+  } = form
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-2 text-center">
         <h2 className="font-fantasy text-game-gold text-2xl tracking-wide">
           Pojmenuj svého hrdinu

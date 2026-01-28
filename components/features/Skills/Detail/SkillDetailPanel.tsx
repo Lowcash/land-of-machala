@@ -31,6 +31,7 @@ export function SkillDetailPanel({ skill, closeHref, talentPoints }: SkillDetail
           {skill.name}
         </h2>
         <Link
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           href={closeHref as any}
           className="flex h-8 w-8 items-center justify-center rounded-md text-[#8b7355] transition-colors hover:bg-white/10 hover:text-[#d4a574]"
         >

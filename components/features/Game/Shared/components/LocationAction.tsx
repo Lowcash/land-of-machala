@@ -6,6 +6,7 @@ import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
+import { ActionItem } from '@/components/ui/Action'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 
@@ -36,43 +37,41 @@ export function LocationAction({
 }: LocationActionProps) {
   if (variant === 'large') {
     return (
-      <Button
-        variant="game-secondary"
+      <ActionItem
+        label={title}
+        subLabel={description}
+        icon={Icon}
+        onClick={onClick || (() => {})}
+        disabled={disabled}
+        loading={loading}
+        variant="secondary"
         className={cn(
           'h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]',
           className
         )}
-        onClick={onClick}
-        disabled={disabled}
-        loading={loading}
-      >
-        <Icon className="h-8 w-8 text-[#d4a574]" />
-        <span className="text-xs font-bold uppercase">{title}</span>
-        {description && <span className="text-[10px] lowercase opacity-60">{description}</span>}
-      </Button>
+        layout="col"
+      />
     )
   }
 
   if (variant === 'compact') {
     return (
-      <Button
-        variant="game-secondary"
-        onClick={onClick}
+      <ActionItem
+        label={title}
+        subLabel={description}
+        icon={Icon}
+        onClick={onClick || (() => {})}
         disabled={disabled}
         loading={loading}
+        variant="secondary"
         className={cn('h-11 w-full justify-between px-4', className)}
-      >
-        <div className="flex items-center gap-3">
-          <Icon className="h-4 w-4 text-[#ffd700]" />
-          <span className="text-xs">
-            {title} {description && <span className="text-[#ffd700]">{description}</span>}
-          </span>
-        </div>
-        {rightElement}
-      </Button>
+        layout="row"
+      />
     )
   }
 
+  // Default variant is complex (has children, rightElement etc.)
+  // We keep it as Card for now but style it consistently
   return (
     <Card
       className={cn(

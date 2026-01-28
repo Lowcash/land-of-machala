@@ -124,34 +124,7 @@ export async function removeItem(characterId: string, itemId: string, quantity =
   })
 }
 
-// Legacy support - deprecated
-export async function equipItem(characterId: string, itemId: string) {
-  const inventoryItem = await prisma.inventoryItem.findFirst({
-    where: {
-      characterId,
-      itemId,
-    },
-    include: {
-      item: true,
-    },
-  })
-
-  if (!inventoryItem) throw new Error('Item not found')
-  return equipInventoryItem(characterId, inventoryItem.id)
-}
-
-// Legacy support - deprecated
-export async function unequipItem(characterId: string, itemId: string) {
-  const inventoryItem = await prisma.inventoryItem.findFirst({
-    where: {
-      characterId,
-      itemId,
-    },
-  })
-
-  if (!inventoryItem) throw new Error('Item not found')
-  return unequipInventoryItem(characterId, inventoryItem.id)
-}
+// Deprecated functions removed
 
 // New function using InventoryItem ID
 export async function equipInventoryItem(characterId: string, inventoryItemId: string) {

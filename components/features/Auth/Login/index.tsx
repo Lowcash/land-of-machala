@@ -1,4 +1,4 @@
-import { HERO_TEXTS } from '@/lib/game/data'
+import { HERO_TEXTS } from '@/lib/game/constants/texts'
 
 import { Brand } from '../Shared/Brand'
 import { Layout } from '../Shared/Layout'

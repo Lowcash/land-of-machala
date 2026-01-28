@@ -1,9 +1,11 @@
+'use client'
+
 import { useTransition } from 'react'
 
 import { useRouter } from 'next/navigation'
 
 import { moveCharacter } from '@/lib/actions/movement-actions'
-import { MOVEMENT_DESCRIPTIONS } from '@/lib/game/data'
+import { MOVEMENT_DESCRIPTIONS } from '@/lib/game/constants/texts'
 
 interface UseGameMoveProps {
   handleSetInfoText: (text: string | null) => void

@@ -4,26 +4,7 @@ import type { Skill } from '@prisma/client'
 
 import { auth } from '@/lib/auth'
 import { DUMMY_SKILLS } from '@/lib/game/skills'
-
-import type { SkillCategory } from '@/components/features/Skills/Shared/types'
-
-function treeToCategory(tree: string): SkillCategory {
-  const treeStr = String(tree)
-  switch (treeStr) {
-    case 'COMBAT':
-      return 'combat'
-    case 'DEFENSE':
-      return 'defense'
-    case 'MAGIC':
-      return 'magic'
-    case 'STEALTH':
-      return 'stealth'
-    case 'CRAFTING':
-      return 'crafting'
-    default:
-      return 'combat'
-  }
-}
+import { treeToCategory } from '@/lib/game/utils'
 
 export async function getSkillsPageData() {
   const session = await auth()
