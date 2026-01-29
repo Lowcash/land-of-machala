@@ -20,6 +20,12 @@ import {
   unlockSchema,
   updateProgressSchema,
 } from '@/lib/schemas/achievement'
+/**
+ * Server-side achievement triggers
+ * These are called automatically when certain events occur
+ */
+
+import type { UnlockedAchievement } from '@/lib/types/game'
 
 import { characterProcedure } from './procedures'
 
@@ -180,18 +186,25 @@ export const unlockAchievementAction = characterProcedure
     }
   })
 
-/**
- * Server-side achievement triggers
- * These are called automatically when certain events occur
- */
-
 export async function checkCombatAchievements(characterId: string, enemiesDefeated: number) {
+  const unlockedAchievements: UnlockedAchievement[] = []
+
   // First Blood (defeat 1 enemy)
   if (enemiesDefeated === 1) {
     const firstBlood = await getAllAchievements()
     const achievement = firstBlood.find((a) => a.title === 'First Blood')
     if (achievement) {
-      await unlockAchievement(characterId, achievement.id)
+      const result = await unlockAchievement(characterId, achievement.id)
+      if (result.unlocked) {
+        unlockedAchievements.push({
+          title: achievement.title,
+          rewards: {
+            gold: achievement.rewardGold,
+            xp: achievement.rewardXp,
+            title: achievement.rewardTitle,
+          },
+        })
+      }
     }
   }
 
@@ -199,36 +212,97 @@ export async function checkCombatAchievements(characterId: string, enemiesDefeat
   const slayer = await getAllAchievements()
   const slayerAchievement = slayer.find((a) => a.title === 'Slayer')
   if (slayerAchievement) {
-    await updateAchievementProgress(characterId, slayerAchievement.id, enemiesDefeated)
+    const result = await updateAchievementProgress(
+      characterId,
+      slayerAchievement.id,
+      enemiesDefeated
+    )
+    if (
+      result.unlocked &&
+      result.progress === result.achievement.maxProgress &&
+      result.progress === enemiesDefeated // Ensure it was JUST unlocked if possible, though progress vs maxProgress check is usually enough if called incrementally
+    ) {
+      // Re-fetch or structure rewards since updateAchievementProgress returns CharacterAchievement directly
+      // Actually updateAchievementProgressAction handles rewards logic internally but here we are calling the entity function directly.
+      // Wait, updateAchievementProgress entity function returns CharacterAchievement with Achievement included.
+      unlockedAchievements.push({
+        title: slayerAchievement.title,
+        rewards: {
+          gold: slayerAchievement.rewardGold,
+          xp: slayerAchievement.rewardXp,
+          title: slayerAchievement.rewardTitle,
+        },
+      })
+    }
   }
+
+  return unlockedAchievements
 }
 
 export async function checkQuestAchievements(characterId: string, questsCompleted: number) {
+  const unlockedAchievements: UnlockedAchievement[] = []
+  const allAchievements = await getAllAchievements()
+
   // Quest Beginner (complete 1 quest)
   if (questsCompleted === 1) {
-    const questBeginner = await getAllAchievements()
-    const achievement = questBeginner.find((a) => a.title === 'Quest Beginner')
-    if (achievement) {
-      await unlockAchievement(characterId, achievement.id)
+    const questBeginner = allAchievements.find((a) => a.title === 'Quest Beginner')
+    if (questBeginner) {
+      const result = await unlockAchievement(characterId, questBeginner.id)
+      if (result.unlocked) {
+        unlockedAchievements.push({
+          title: questBeginner.title,
+          rewards: {
+            gold: questBeginner.rewardGold,
+            xp: questBeginner.rewardXp,
+            title: questBeginner.rewardTitle,
+          },
+        })
+      }
     }
   }
 
   // Quest Master (complete 50 quests)
-  const questMaster = await getAllAchievements()
-  const achievement = questMaster.find((a) => a.title === 'Quest Master')
-  if (achievement) {
-    await updateAchievementProgress(characterId, achievement.id, questsCompleted)
+  const questMaster = allAchievements.find((a) => a.title === 'Quest Master')
+  if (questMaster) {
+    const result = await updateAchievementProgress(characterId, questMaster.id, questsCompleted)
+    if (
+      result.unlocked &&
+      result.progress === result.achievement.maxProgress &&
+      result.progress === questsCompleted
+    ) {
+      unlockedAchievements.push({
+        title: questMaster.title,
+        rewards: {
+          gold: questMaster.rewardGold,
+          xp: questMaster.rewardXp,
+          title: questMaster.rewardTitle,
+        },
+      })
+    }
   }
+
+  return unlockedAchievements
 }
 
 export async function checkLevelAchievements(characterId: string, level: number) {
+  const unlockedAchievements: UnlockedAchievement[] = []
   const allAchievements = await getAllAchievements()
 
   // Level 10
   if (level >= 10) {
     const level10 = allAchievements.find((a) => a.title === 'Level 10')
     if (level10) {
-      await unlockAchievement(characterId, level10.id)
+      const result = await unlockAchievement(characterId, level10.id)
+      if (result.unlocked) {
+        unlockedAchievements.push({
+          title: level10.title,
+          rewards: {
+            gold: level10.rewardGold,
+            xp: level10.rewardXp,
+            title: level10.rewardTitle,
+          },
+        })
+      }
     }
   }
 
@@ -236,7 +310,19 @@ export async function checkLevelAchievements(characterId: string, level: number)
   if (level >= 50) {
     const legendary = allAchievements.find((a) => a.title === 'Legendary Hero')
     if (legendary) {
-      await unlockAchievement(characterId, legendary.id)
+      const result = await unlockAchievement(characterId, legendary.id)
+      if (result.unlocked) {
+        unlockedAchievements.push({
+          title: legendary.title,
+          rewards: {
+            gold: legendary.rewardGold,
+            xp: legendary.rewardXp,
+            title: legendary.rewardTitle,
+          },
+        })
+      }
     }
   }
+
+  return unlockedAchievements
 }

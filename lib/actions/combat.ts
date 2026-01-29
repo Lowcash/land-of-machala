@@ -2,19 +2,21 @@
 
 import { addExperience, getCharacterByUserId, updateCharacterResources } from '@/entity/character'
 import {
-  calculateAttackDamage,
-  calculateCombatDamage,
-  calculateDefense,
-  calculateExperienceReward,
-  calculateGoldReward,
   getCharacterCombatState,
   getRandomEnemy,
-  isCriticalHit,
   updateCharacterCombatState,
 } from '@/entity/combat'
 import { getEquippedItems } from '@/entity/inventory'
 
 import { auth } from '@/lib/auth'
+import {
+  calculateAttackDamage,
+  calculateCombatDamage,
+  calculateDefense,
+  calculateExperienceReward,
+  calculateGoldReward,
+  isCriticalHit,
+} from '@/lib/game/formulas'
 import {
   performActionSchema,
   startCombatSchema,
@@ -22,7 +24,7 @@ import {
   useItemSchema,
 } from '@/lib/schemas/combat'
 
-import { checkCombatAchievements } from './achievement'
+import { checkCombatAchievements, checkLevelAchievements } from './achievement'
 import { characterProcedure } from './procedures'
 
 /**
@@ -75,6 +77,7 @@ export const performCombatActionAction = characterProcedure
         strength: character.strength,
         intelligence: character.intelligence,
         agility: character.agility,
+        stamina: character.stamina,
       },
       equipment
     )
@@ -183,7 +186,7 @@ export const performCombatActionAction = characterProcedure
       )
       const goldReward = calculateGoldReward(enemy.goldReward)
 
-      await addExperience(character.id, xpReward)
+      const updatedCharacter = await addExperience(character.id, xpReward)
       await updateCharacterResources(character.id, {
         gold: character.gold + goldReward,
       })
@@ -191,7 +194,8 @@ export const performCombatActionAction = characterProcedure
       combatLog.push(`${enemy.name} byl poražen!`)
       combatLog.push(`Získal jsi ${xpReward} XP a ${goldReward} zlata!`)
 
-      await checkCombatAchievements(character.id, 1)
+      const combatAchievements = await checkCombatAchievements(character.id, 1)
+      const levelAchievements = await checkLevelAchievements(character.id, updatedCharacter.level)
 
       return {
         success: true,
@@ -200,6 +204,7 @@ export const performCombatActionAction = characterProcedure
         rewards: { xp: xpReward, gold: goldReward },
         playerHp: newPlayerHp,
         enemyHp: newEnemyHp,
+        achievements: [...combatAchievements, ...levelAchievements],
       }
     }
 

@@ -1,3 +1,5 @@
+import type { Character as PrismaCharacter } from '@prisma/client'
+import { ItemRarity, ItemType } from '@prisma/client'
 import type { LucideIcon } from 'lucide-react'
 
 // View Types
@@ -11,33 +13,15 @@ export interface ViewConfig {
 }
 
 // Character Types
-export interface CharacterData {
-  id: string
-  name: string
-  level: number
-  race: string
-  class: string
-  experience: number
-  hp: number
-  maxHp: number
-  mana: number
-  maxMana: number
-  strength: number
-  intelligence: number
-  agility: number
-  stamina: number
-  physicalResistance: number
-  magicalResistance: number
-  fireResistance: number
-  coldResistance: number
-  poisonResistance: number
+export interface CharacterData extends Omit<
+  PrismaCharacter,
+  'createdAt' | 'updatedAt' | 'lastPlayedAt' | 'locationX' | 'locationY' | 'currentView'
+> {
   reputation?: number
-  gold: number
-  bankGold?: number
-  talentPoints?: number
   achievements?: string[] // IDs of unlocked achievements
-  userId: string
   nextLevelExp?: number
+  x?: number
+  y?: number
   stats?: {
     strength: number
     intelligence: number
@@ -58,4 +42,34 @@ export interface CharacterItem {
   icon?: LucideIcon
   type?: string
   iconName?: string
+}
+
+export { ItemRarity, ItemType }
+
+export type AppRoute = '/character' | '/skills' | '/quests' | '/inventory' | '/map' | '/game'
+
+export interface UnlockedAchievement {
+  title: string
+  rewards: {
+    gold: number
+    xp: number
+    title: string | null
+  }
+}
+
+export interface Achievement {
+  id: string
+  title: string
+  description: string
+  icon: string
+  rarity: ItemRarity
+  category: string
+  maxProgress: number
+  rewardGold: number
+  rewardXp: number
+  rewardTitle: string | null
+  // Character specific fields
+  unlocked?: boolean
+  progress?: number
+  unlockedAt?: Date | null
 }

@@ -73,6 +73,18 @@ export function useCombatLogic({ character, initialInventory }: UseCombatLogicPr
           setPlayerHp(data.playerHp || 0)
           setEnemyHp(data.enemyHp || 0)
 
+          if (data.achievements && data.achievements.length > 0) {
+            data.achievements.forEach((achievement: UnlockedAchievement) => {
+              toast.success(`Achievement Unlocked: ${achievement.title}!`, {
+                description: achievement.rewards?.title
+                  ? `Odmena: ${achievement.rewards.title}`
+                  : 'Gratulujeme!',
+                duration: 5000,
+                // icon: <Trophy className="h-4 w-4 text-yellow-500" />, // If we import Trophy
+              })
+            })
+          }
+
           if (data.result === 'victory') {
             await endCombat({ result: 'victory' })
             toast.success('Vítězství!')
