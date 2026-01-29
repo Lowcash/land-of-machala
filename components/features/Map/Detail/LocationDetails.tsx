@@ -1,8 +1,7 @@
-'use client'
+import Link from 'next/link'
 
 import { ArrowLeft, Lock } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 
@@ -10,7 +9,6 @@ import type { Location } from '../Shared/types'
 
 interface LocationDetailsProps {
   location: Location
-  onCloseAction: () => void
 }
 
 const TYPE_LABELS = {
@@ -34,7 +32,7 @@ const REWARD_LEVELS = {
   LANDMARK: 'Legendární',
 }
 
-export function LocationDetails({ location, onCloseAction }: LocationDetailsProps) {
+export function LocationDetails({ location }: LocationDetailsProps) {
   const isUnlocked = location.level <= 5 // Simple unlock logic
 
   const typeColor =
@@ -52,14 +50,13 @@ export function LocationDetails({ location, onCloseAction }: LocationDetailsProp
         <div className="flex-1 space-y-4">
           {/* Back button (mobile only) */}
           <div className="sticky top-0 z-30 mb-2 shrink-0 border-b border-[#8b6f47] bg-black/95 px-4 py-3 backdrop-blur-sm md:hidden">
-            <Button
-              variant="ghost"
-              onClick={onCloseAction}
+            <Link
+              href="?"
               className="inline-flex h-auto items-center gap-2 px-0 text-sm text-[#d4a574] transition-colors hover:bg-transparent hover:text-[#ffd700]"
             >
               <ArrowLeft className="h-4 w-4" />
               Zpět na mapu
-            </Button>
+            </Link>
           </div>
 
           <div className="px-4 pb-4">

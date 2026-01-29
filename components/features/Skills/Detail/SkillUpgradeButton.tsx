@@ -11,7 +11,7 @@ import { increaseSkillRankAction } from '@/lib/actions/skill'
 import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 
-type SkillUpgradeButtonProps = {
+interface SkillUpgradeButtonProps {
   skillId: string
   skillName: string
   cost: number

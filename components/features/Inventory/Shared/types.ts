@@ -1,5 +1,6 @@
-export type ItemType = 'weapon' | 'armor' | 'consumable' | 'material' | 'quest'
-export type ItemRarity = 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary'
+import type { ItemRarity, ItemType } from '@/lib/types/game'
+
+export type { ItemRarity, ItemType }
 
 export type InventoryItemUI = {
   id: string

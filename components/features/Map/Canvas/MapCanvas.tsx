@@ -1,5 +1,3 @@
-'use client'
-
 import { Castle, Home, MapPin, Mountain, Skull, Trees } from 'lucide-react'
 
 import type { Location, LocationType } from '../Shared/types'

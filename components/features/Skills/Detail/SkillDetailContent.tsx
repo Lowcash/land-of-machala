@@ -5,7 +5,7 @@ import { getCategoryBg, getCategoryColor, getCategoryName } from '../Shared/styl
 import type { MergedSkill } from '../Shared/types'
 import { SkillUpgradeButton } from './SkillUpgradeButton'
 
-type SkillDetailContentProps = {
+interface SkillDetailContentProps {
   skill: MergedSkill
   allSkills: MergedSkill[]
   talentPoints: number

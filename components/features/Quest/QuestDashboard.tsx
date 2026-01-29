@@ -1,7 +1,7 @@
 import { SplitLayout } from '@/components/layout'
 
 import { QuestDetailContent } from './Detail/QuestDetailContent'
-import { QuestListWrapper } from './QuestListWrapper'
+import { QuestList } from './List/QuestList'
 import type { MergedQuest } from './Shared/types'
 
 interface QuestDashboardProps {
@@ -19,7 +19,7 @@ export function QuestDashboard({ quests, searchParams }: QuestDashboardProps) {
       hideMobileAside={!selectedQuestId}
       main={
         <div className="flex h-full p-4">
-          <QuestListWrapper quests={quests} selectedQuestId={selectedQuestId} />
+          <QuestList quests={quests} selectedQuest={selectedQuestId} />
         </div>
       }
       aside={

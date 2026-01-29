@@ -1,31 +1,30 @@
-'use client'
+import Link from 'next/link'
 
 import { Check } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
 import { GameGrid } from '@/components/ui/game-grid'
 
 import { getIconFromName, getRarityBorder, getRarityColor } from '../Shared/inventoryUtils'
 import type { InventoryItemUI } from '../Shared/types'
 
-type InventoryGridProps = {
+interface InventoryGridProps {
   inventory: InventoryItemUI[]
   selectedItem: string | null
-  onSelectItem: (id: string | null) => void
 }
 
-export function InventoryGrid({ inventory, selectedItem, onSelectItem }: InventoryGridProps) {
+export function InventoryGrid({ inventory, selectedItem }: InventoryGridProps) {
   return (
     <GameGrid columns={{ default: 5, sm: 6, md: 8, lg: 10, xl: 12 }}>
       {inventory.map((item) => {
         const Icon = getIconFromName(item.iconName)
+        const isSelected = selectedItem === item.id
+
         return (
-          <Button
+          <Link
             key={item.id}
-            onClick={() => onSelectItem(item.id)}
-            variant="ghost"
-            className={`group relative aspect-square h-auto rounded-lg border-2 p-2 transition-all ${
-              selectedItem === item.id
+            href={isSelected ? '?' : `?itemId=${item.id}`} // Toggle select/deselect or just select? Standard is select. Deselect via X in detail.
+            className={`group relative flex aspect-square h-auto flex-col items-center justify-center rounded-lg border-2 p-2 transition-all ${
+              isSelected
                 ? 'scale-105 border-[#ffd700] bg-black/60 shadow-[0_0_10px_rgba(255,215,0,0.3)]'
                 : `bg-black/40 hover:bg-black/60 ${getRarityBorder(item.rarity)}`
             }`}
@@ -45,7 +44,7 @@ export function InventoryGrid({ inventory, selectedItem, onSelectItem }: Invento
                 <Check className="h-3 w-3" />
               </div>
             )}
-          </Button>
+          </Link>
         )
       })}
     </GameGrid>

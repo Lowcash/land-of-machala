@@ -1,3 +1,5 @@
+'use client'
+
 import { AlertCircle, HelpCircle, Lock, type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'

@@ -6,7 +6,7 @@ import { CategoryFilter } from '@/components/ui/category-filter'
 import { getCategoryColor } from '../Shared/styles'
 import type { SkillCategory } from '../Shared/types'
 
-type SkillCategoryFilterProps = {
+interface SkillCategoryFilterProps {
   selectedCategory: SkillCategory
 }
 

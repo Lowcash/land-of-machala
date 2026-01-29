@@ -1,18 +1,20 @@
-import type { InventoryItemUI, ItemRarity } from './types'
+import { ItemRarity } from '@/lib/types/game'
+
+import type { InventoryItemUI } from './types'
 
 export { getIconFromName } from '@/lib/icons'
 
 export const getRarityColor = (rarity: ItemRarity) => {
   switch (rarity) {
-    case 'common':
+    case ItemRarity.COMMON:
       return 'text-[#8b7355]'
-    case 'uncommon':
+    case ItemRarity.UNCOMMON:
       return 'text-[#6fbf6f]'
-    case 'rare':
+    case ItemRarity.RARE:
       return 'text-[#69ccf0]'
-    case 'epic':
+    case ItemRarity.EPIC:
       return 'text-[#b66bd4]'
-    case 'legendary':
+    case ItemRarity.LEGENDARY:
       return 'text-[#ffd700]'
     default:
       return 'text-[#8b7355]'
@@ -21,15 +23,15 @@ export const getRarityColor = (rarity: ItemRarity) => {
 
 export const getRarityBorder = (rarity: ItemRarity) => {
   switch (rarity) {
-    case 'common':
+    case ItemRarity.COMMON:
       return 'border-[#8b7355]'
-    case 'uncommon':
+    case ItemRarity.UNCOMMON:
       return 'border-[#6fbf6f]'
-    case 'rare':
+    case ItemRarity.RARE:
       return 'border-[#69ccf0]'
-    case 'epic':
+    case ItemRarity.EPIC:
       return 'border-[#b66bd4]'
-    case 'legendary':
+    case ItemRarity.LEGENDARY:
       return 'border-[#ffd700]'
     default:
       return 'border-[#8b7355]'
@@ -37,11 +39,11 @@ export const getRarityBorder = (rarity: ItemRarity) => {
 }
 
 const RARITY_ORDER: Record<string, number> = {
-  legendary: 5,
-  epic: 4,
-  rare: 3,
-  uncommon: 2,
-  common: 1,
+  [ItemRarity.LEGENDARY]: 5,
+  [ItemRarity.EPIC]: 4,
+  [ItemRarity.RARE]: 3,
+  [ItemRarity.UNCOMMON]: 2,
+  [ItemRarity.COMMON]: 1,
 }
 
 export function sortInventory(items: InventoryItemUI[]): InventoryItemUI[] {

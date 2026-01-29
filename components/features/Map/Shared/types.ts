@@ -1,18 +1,21 @@
-export type LocationType = 'TOWN' | 'DUNGEON' | 'WILDERNESS' | 'LANDMARK'
+import type { LocationType, Location as PrismaLocation } from '@prisma/client'
 
-export interface Location {
-  id: string
-  name: string
-  type: LocationType
-  description: string | null
-  level: number
-  positionX: number
-  positionY: number
-}
+export type { LocationType }
+
+export type Location = Omit<
+  PrismaLocation,
+  'createdAt' | 'serverId' | 'isSafeZone' | 'discoveryRadius' | 'questGiverId' | 'questTurnInId'
+>
 
 export interface MapFilters {
   showTowns: boolean
   showDungeons: boolean
   showWilderness: boolean
   showLandmarks: boolean
+}
+
+export interface QuestMarker {
+  locationId: string
+  type: 'giver' | 'turnin'
+  questId: string
 }

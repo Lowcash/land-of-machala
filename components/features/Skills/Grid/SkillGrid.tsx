@@ -11,7 +11,7 @@ import { getCategoryBg, getCategoryColor } from '../Shared/styles'
 import type { MergedSkill, SkillCategory } from '../Shared/types'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
 
-type SkillGridProps = {
+interface SkillGridProps {
   skills: MergedSkill[]
   talentPoints: number
   selectedCategory: SkillCategory

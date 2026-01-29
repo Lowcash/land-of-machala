@@ -2,8 +2,8 @@ import { Map as MapIcon } from 'lucide-react'
 
 import { SplitLayout } from '@/components/layout'
 
-import { LocationDetailsWrapper } from './LocationDetailsWrapper'
-import { MapGridWrapper } from './MapGridWrapper'
+import { LocationDetails } from './Detail/LocationDetails'
+import { MapGrid } from './Grid/MapGrid'
 import type { Location } from './Shared/types'
 
 interface MapDashboardProps {
@@ -17,9 +17,6 @@ interface MapDashboardProps {
 
 export function MapDashboard({
   locations,
-  discoveredLocations,
-  questMarkers,
-  deathLocation,
   currentLocationId = 'town_center',
   searchParams,
 }: MapDashboardProps) {
@@ -52,19 +49,16 @@ export function MapDashboard({
           </div>
 
           {/* Map Grid Container */}
-          <MapGridWrapper
+          <MapGrid
             locations={locations}
             currentLocationId={currentLocationId}
             selectedLocationId={selectedLocationId}
-            discoveredLocations={discoveredLocations}
-            questMarkers={questMarkers}
-            deathLocation={deathLocation}
           />
         </div>
       }
       aside={
         selectedLocation ? (
-          <LocationDetailsWrapper location={selectedLocation} />
+          <LocationDetails location={selectedLocation} />
         ) : (
           <div className="flex h-full flex-col items-center justify-center p-8 text-center">
             <MapIcon className="text-game-copper-muted mb-4 h-12 w-12 opacity-20" />

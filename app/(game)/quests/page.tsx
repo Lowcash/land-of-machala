@@ -16,8 +16,13 @@ export const metadata: Metadata = {
   description: 'Sleduj svůj postup v plnění úkolů a výzev.',
 }
 
-export default async function QuestsPage({ searchParams }: { searchParams: { questId?: string } }) {
+export default async function QuestsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ questId?: string }>
+}) {
   const data = await getQuestPageData()
+  const resolvedParams = await searchParams
 
   if (!data) redirect('/onboarding')
 
@@ -33,7 +38,7 @@ export default async function QuestsPage({ searchParams }: { searchParams: { que
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <Quest quests={data.quests} searchParams={searchParams} />
+      <Quest quests={data.quests} searchParams={resolvedParams} />
     </PageLayout>
   )
 }

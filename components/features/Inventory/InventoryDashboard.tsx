@@ -1,10 +1,11 @@
 import { Shield, Sword } from 'lucide-react'
 
+import type { CharacterData } from '@/lib/types/game'
+
 import { SplitLayout } from '@/components/layout'
 
-import type { CharacterData } from '../Character/Shared/types'
-import { InventoryGridWrapper } from './InventoryGridWrapper'
-import { ItemDetailWrapper } from './ItemDetailWrapper'
+import { ItemDetailView } from './Detail/ItemDetailView'
+import { InventoryGrid } from './Grid/InventoryGrid'
 import type { InventoryItemUI } from './Shared/types'
 
 interface InventoryDashboardProps {
@@ -20,12 +21,8 @@ export function InventoryDashboard({
   maxSlots,
   searchParams,
 }: InventoryDashboardProps) {
-  // TODO: Fetch inventory on server?
-  // currently initialInventory is passed from page default async func.
-  // inventory state was local. If we want optimistic updates etc, we might need a client wrapper for the whole list if mutation happens?
-  // But for simple "Dashboard" viewing, current list is fine.
-  // The original client had `const [inventory] = useState(initialInventory)`.
-  // It was effectively static unless updated?
+  // Inventory data is passed from the server page component.
+  // Updates trigger a revalidatePath/refresh, so this "static" prop is kept in sync.
   const inventory = initialInventory
   const selectedItemId = searchParams?.itemId || null
 
@@ -60,11 +57,11 @@ export function InventoryDashboard({
             </div>
           </div>
           <div className="flex-1 p-4">
-            <InventoryGridWrapper inventory={inventory} selectedItem={selectedItemId} />
+            <InventoryGrid inventory={inventory} selectedItem={selectedItemId} />
           </div>
         </div>
       }
-      aside={<ItemDetailWrapper item={selectedItem} characterId={character.id} />}
+      aside={<ItemDetailView item={selectedItem} characterId={character.id} />}
     />
   )
 }

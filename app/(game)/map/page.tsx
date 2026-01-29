@@ -16,8 +16,13 @@ export const metadata: Metadata = {
   description: 'Prozkoumej svět Machala a objev nová místa.',
 }
 
-export default async function MapPage({ searchParams }: { searchParams: { locationId?: string } }) {
+export default async function MapPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ locationId?: string }>
+}) {
   const data = await getMapPageData()
+  const resolvedParams = await searchParams
 
   if (!data) redirect('/onboarding')
 
@@ -32,7 +37,7 @@ export default async function MapPage({ searchParams }: { searchParams: { locati
         discoveredLocations={data.discoveredLocations}
         questMarkers={data.questMarkers as unknown[]}
         deathLocation={data.deathLocation as unknown as { x: number; y: number }}
-        searchParams={searchParams}
+        searchParams={resolvedParams}
       />
     </PageLayout>
   )

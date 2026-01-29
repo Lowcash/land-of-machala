@@ -1,30 +1,19 @@
-'use client'
+import Link from 'next/link'
 
 import { X } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { ItemType } from '@/lib/types/game'
 
 import { getIconFromName, getRarityBorder, getRarityColor } from '../Shared/inventoryUtils'
 import type { InventoryItemUI } from '../Shared/types'
+import { InventoryItemActions } from './InventoryItemActions'
 
 interface ItemDetailViewProps {
   item: InventoryItemUI | null
-  onClose: () => void
-  characterId: string
-  isPending?: boolean
-  onUse?: (id: string) => void
-  onEquip?: (id: string) => void
-  onUnequip?: (id: string) => void
+  characterId?: string // Kept for compat but unused? Or removed?
 }
 
-export function ItemDetailView({
-  item,
-  onClose,
-  isPending = false,
-  onUse = () => {},
-  onEquip = () => {},
-  onUnequip = () => {},
-}: ItemDetailViewProps) {
+export function ItemDetailView({ item }: ItemDetailViewProps) {
   if (!item) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
@@ -42,14 +31,12 @@ export function ItemDetailView({
         >
           {item.name}
         </h2>
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onClose}
-          className="h-8 w-8 text-[#8b7355] hover:text-[#d4a574]"
+        <Link
+          href="?"
+          className="inline-flex h-8 w-8 items-center justify-center rounded-md text-[#8b7355] transition-colors hover:bg-black/20 hover:text-[#d4a574]"
         >
           <X className="h-5 w-5" />
-        </Button>
+        </Link>
       </div>
 
       <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto pr-2">
@@ -84,26 +71,12 @@ export function ItemDetailView({
       </div>
 
       {/* Actions */}
-      <div className="mt-4 grid gap-2 border-t border-[#8b6f47]/30 pt-4">
-        {item.type === 'consumable' ? (
-          <Button
-            onClick={() => onUse(item.id)}
-            disabled={isPending}
-            variant="game-primary"
-            className="w-full"
-          >
-            Použít předmět
-          </Button>
-        ) : (
-          <Button
-            onClick={() => (item.equipped ? onUnequip(item.id) : onEquip(item.id))}
-            disabled={isPending}
-            variant={item.equipped ? 'game-danger' : 'game-primary'}
-            className="w-full"
-          >
-            {item.equipped ? 'Sundat výbavu' : 'Nasadit výbavu'}
-          </Button>
-        )}
+      <div className="mt-4 border-t border-[#8b6f47]/30 pt-4">
+        <InventoryItemActions
+          itemId={item.id}
+          isEquipped={item.equipped}
+          isConsumable={item.type === ItemType.CONSUMABLE}
+        />
       </div>
     </div>
   )

@@ -19,9 +19,10 @@ export const metadata: Metadata = {
 export default async function SkillsPage({
   searchParams,
 }: {
-  searchParams: { skillId?: string; category?: string }
+  searchParams: Promise<{ skillId?: string; category?: string }>
 }) {
   const data = await getSkillsPageData()
+  const resolvedParams = await searchParams
 
   if (!data) redirect('/onboarding')
 
@@ -37,7 +38,7 @@ export default async function SkillsPage({
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <Skills skills={data.skills} talentPoints={data.talentPoints} searchParams={searchParams} />
+      <Skills skills={data.skills} talentPoints={data.talentPoints} searchParams={resolvedParams} />
     </PageLayout>
   )
 }

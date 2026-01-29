@@ -19,9 +19,10 @@ export const metadata: Metadata = {
 export default async function InventoryPage({
   searchParams,
 }: {
-  searchParams: { itemId?: string }
+  searchParams: Promise<{ itemId?: string }>
 }) {
   const data = await getInventoryPageData()
+  const resolvedParams = await searchParams
 
   if (!data) redirect('/onboarding')
 
@@ -41,7 +42,7 @@ export default async function InventoryPage({
         character={data.character}
         initialInventory={data.inventory}
         maxSlots={20}
-        searchParams={searchParams}
+        searchParams={resolvedParams}
       />
     </PageLayout>
   )
