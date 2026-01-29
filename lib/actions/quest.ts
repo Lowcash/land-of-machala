@@ -13,6 +13,8 @@ import {
 } from '@/entity/quest'
 import type { QuestStatus } from '@prisma/client'
 
+import { checkLevelAchievements, checkQuestAchievements } from '@/lib/actions/achievement'
+import { prisma } from '@/lib/db'
 import {
   abandonQuestSchema,
   completeQuestSchema,
@@ -111,6 +113,18 @@ export const completeQuestAction = characterProcedure
 
     const completed = await completeQuest(character.id, input.questId)
 
+    // Check achievements
+    const allCharacterQuests = await getCharacterQuests(character.id, 'COMPLETED')
+    const questsCompletedCount = allCharacterQuests.length
+
+    const questAchievements = await checkQuestAchievements(character.id, questsCompletedCount)
+
+    // Check level achievements (character might have leveled up from rewards)
+    const updatedCharacter = await prisma.character.findUnique({ where: { id: character.id } })
+    const levelAchievements = updatedCharacter
+      ? await checkLevelAchievements(character.id, updatedCharacter.level)
+      : []
+
     return {
       success: true,
       message: 'Úkol byl úspěšně dokončen! Získal jsi odměny.',
@@ -120,6 +134,7 @@ export const completeQuestAction = characterProcedure
         xp: quest.rewardXp,
         items: quest.rewards,
       },
+      achievements: [...questAchievements, ...levelAchievements],
     }
   })
 
