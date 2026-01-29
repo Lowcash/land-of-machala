@@ -4,6 +4,8 @@ import { Sparkles } from 'lucide-react'
 
 import type { RandomEvent } from '@/types/events'
 
+import { getEventTypeColor, getEventTypeIconColor } from '@/lib/game/views'
+
 import { Button } from '@/components/ui/button'
 
 interface RandomEventModalProps {
@@ -20,31 +22,8 @@ export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalP
     onClose()
   }
 
-  const getTypeColor = () => {
-    switch (event.type) {
-      case 'combat':
-        return 'border-red-500/30 bg-red-900/20'
-      case 'treasure':
-        return 'border-yellow-500/30 bg-yellow-900/20'
-      case 'flavor':
-        return 'border-purple-500/30 bg-purple-900/20'
-      default:
-        return 'border-slate-500/30 bg-slate-900/20'
-    }
-  }
-
-  const getTypeIconColor = () => {
-    switch (event.type) {
-      case 'combat':
-        return 'text-red-400'
-      case 'treasure':
-        return 'text-yellow-400'
-      case 'flavor':
-        return 'text-purple-400'
-      default:
-        return 'text-slate-400'
-    }
-  }
+  const getTypeColor = () => getEventTypeColor(event.type)
+  const getTypeIconColor = () => getEventTypeIconColor(event.type)
 
   const EventIcon = Sparkles
 

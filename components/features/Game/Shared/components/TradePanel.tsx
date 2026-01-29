@@ -1,19 +1,10 @@
-'use client'
-
-import { ArrowRight, type LucideIcon, MessageSquare } from 'lucide-react'
+import { ArrowRight, MessageSquare } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 
-export interface TradeItem {
-  id: number | string
-  name: string
-  type?: string
-  description?: string
-  icon: LucideIcon
-  price: number
-  equipped?: boolean
-  canHaggle?: boolean
-}
+import type { TradeableItem } from './types'
+
+export type TradeItem = TradeableItem
 
 export interface HaggleState {
   success: boolean

@@ -10,9 +10,16 @@ interface ProgressProps extends React.ComponentProps<typeof ProgressPrimitive.Ro
   indicatorClassName?: string
 }
 
-function Progress({ className, indicatorClassName, value, ...props }: ProgressProps) {
+export function Progress({
+  className,
+  indicatorClassName,
+  value,
+  ref,
+  ...props
+}: ProgressProps & { ref?: React.Ref<React.ElementRef<typeof ProgressPrimitive.Root>> }) {
   return (
     <ProgressPrimitive.Root
+      ref={ref}
       data-slot="progress"
       className={cn('bg-primary/20 relative h-2 w-full overflow-hidden rounded-full', className)}
       {...props}
@@ -25,5 +32,3 @@ function Progress({ className, indicatorClassName, value, ...props }: ProgressPr
     </ProgressPrimitive.Root>
   )
 }
-
-export { Progress }

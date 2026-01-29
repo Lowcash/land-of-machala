@@ -1,16 +1,25 @@
-import React from 'react'
+import React, { Suspense } from 'react'
+
+import dynamic from 'next/dynamic'
 
 import { viewData } from '@/lib/game/constants/views'
 import type { View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
-import { BankActions } from '../Locations/BankActions'
-import { HealerShop } from '../Locations/Shops/HealerShop'
-import { MarketShop } from '../Locations/Shops/MarketShop'
-import { SmithShop } from '../Locations/Shops/SmithShop'
-import { TavernActions } from '../Locations/TavernActions'
-import { TownActions } from '../Locations/TownActions'
 import { GameActions } from '../Shared/components/GameActions'
+
+const BankActions = dynamic(() => import('../Locations/BankActions').then((mod) => mod.BankActions))
+const HealerShop = dynamic(() =>
+  import('../Locations/Shops/HealerShop').then((mod) => mod.HealerShop)
+)
+const MarketShop = dynamic(() =>
+  import('../Locations/Shops/MarketShop').then((mod) => mod.MarketShop)
+)
+const SmithShop = dynamic(() => import('../Locations/Shops/SmithShop').then((mod) => mod.SmithShop))
+const TavernActions = dynamic(() =>
+  import('../Locations/TavernActions').then((mod) => mod.TavernActions)
+)
+const TownActions = dynamic(() => import('../Locations/TownActions').then((mod) => mod.TownActions))
 
 interface Buff {
   name: string
@@ -68,41 +77,49 @@ export function ActionsArea({
         }
       >
         <div className="space-y-1.5 pt-2">
-          {currentView === 'town' && <TownActions onView={goToView} />}
+          <Suspense
+            fallback={
+              <div className="flex h-20 items-center justify-center text-xs text-[#8b7355]">
+                Načítání...
+              </div>
+            }
+          >
+            {currentView === 'town' && <TownActions onView={goToView} />}
 
-          {currentView === 'bank' && <BankActions gold={gold} balance={bankGold} />}
+            {currentView === 'bank' && <BankActions gold={gold} balance={bankGold} />}
 
-          {currentView === 'tavern' && (
-            <TavernActions gold={gold} onInfoAction={handleSetInfoText} />
-          )}
+            {currentView === 'tavern' && (
+              <TavernActions gold={gold} onInfoAction={handleSetInfoText} />
+            )}
 
-          {currentView === 'smith' && (
-            <SmithShop
-              gold={gold}
-              setGold={setGold}
-              inventory={inventory}
-              setInventory={setInventory}
-            />
-          )}
+            {currentView === 'smith' && (
+              <SmithShop
+                gold={gold}
+                setGold={setGold}
+                inventory={inventory}
+                setInventory={setInventory}
+              />
+            )}
 
-          {currentView === 'healer' && (
-            <HealerShop
-              gold={gold}
-              setGold={setGold}
-              activeBuffs={activeBuffs}
-              setActiveBuffs={setActiveBuffs}
-            />
-          )}
+            {currentView === 'healer' && (
+              <HealerShop
+                gold={gold}
+                setGold={setGold}
+                activeBuffs={activeBuffs}
+                setActiveBuffs={setActiveBuffs}
+              />
+            )}
 
-          {currentView === 'market' && (
-            <MarketShop
-              gold={gold}
-              setGold={setGold}
-              inventory={inventory}
-              setInventory={setInventory}
-              setInfoText={handleSetInfoText}
-            />
-          )}
+            {currentView === 'market' && (
+              <MarketShop
+                gold={gold}
+                setGold={setGold}
+                inventory={inventory}
+                setInventory={setInventory}
+                setInfoText={handleSetInfoText}
+              />
+            )}
+          </Suspense>
         </div>
       </GameActions>
     </div>

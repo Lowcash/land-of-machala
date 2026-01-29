@@ -1,25 +1,12 @@
-'use client'
-
-import type { LucideIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
 
-export interface ShopItem {
-  id?: number | string
-  name: string
-  description?: string
-  price: number
-  icon?: LucideIcon
-  type?: string
-  action?: string
-  iconColor?: string
-  iconBg?: string
-  attack?: number
-  defense?: number
-}
+import type { TradeableItem } from './types'
+
+export type ShopItem = TradeableItem
 
 export interface ShopInterfaceProps {
   items: ShopItem[]

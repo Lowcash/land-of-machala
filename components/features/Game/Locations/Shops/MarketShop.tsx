@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-import { ChevronLeft, EyeOff, FlaskConical, Mountain, ShoppingBag, Store } from 'lucide-react'
+import { ChevronLeft, EyeOff, ShoppingBag, Store } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { BLACK_MARKET_STOCK, MARKET_STOCK } from '@/lib/game/constants/items'
+import { MARKET_CONSTANTS } from '@/lib/game/constants/values'
 import { useHaggle } from '@/lib/hooks/game/useHaggle'
 
 import { Button } from '@/components/ui/button'
@@ -31,8 +33,9 @@ export function MarketShop({
   setInfoText,
 }: MarketShopProps) {
   const [mode, setMode] = useState<'default' | 'buy' | 'sell' | 'blackmarket'>('default')
-  const [stock, setStock] = useState<MarketItem[]>([])
-  const [blackMarketStock, setBlackMarketStock] = useState<MarketItem[]>([])
+  // Initialize with constants directly
+  const [stock] = useState<MarketItem[]>([...MARKET_STOCK])
+  const [blackMarketStock] = useState<MarketItem[]>([...BLACK_MARKET_STOCK])
   const [isNight] = useState(false) // Simplified for now
   const [bribed, setBribed] = useState(false)
 
@@ -41,43 +44,21 @@ export function MarketShop({
     showMessage: (msg) => toast.success(msg),
   })
 
-  useEffect(() => {
-    setStock([
-      {
-        id: 101,
-        name: 'Lektvar zdraví',
-        type: 'consumable',
-        price: 30,
-        healing: 30,
-        icon: FlaskConical,
-      },
-      {
-        id: 102,
-        name: 'Lektvar many',
-        type: 'consumable',
-        price: 40,
-        mana: 30,
-        icon: FlaskConical,
-      },
-      { id: 103, name: 'Kus oceli', type: 'consumable', price: 25, icon: Mountain },
-    ])
-
-    setBlackMarketStock([
-      { id: 201, name: 'Jed zmije', type: 'consumable', price: 150, icon: FlaskConical },
-      { id: 202, name: 'Stínový prsten', type: 'consumable', price: 300, icon: Store },
-    ])
-  }, [])
-
   const enterBlackMarket = () => {
     if (isNight || bribed) {
       setMode('blackmarket')
     } else {
-      if (gold >= 50) {
-        if (confirm('Strážce chce 50g za vstup do uličky. Zaplatit?')) {
-          setGold((g) => g - 50)
-          setBribed(true)
-          setMode('blackmarket')
-        }
+      if (gold >= MARKET_CONSTANTS.ENTRANCE_FEE) {
+        toast('Strážce chce 50g za vstup do uličky.', {
+          action: {
+            label: 'Zaplatit',
+            onClick: () => {
+              setGold((g) => g - MARKET_CONSTANTS.ENTRANCE_FEE)
+              setBribed(true)
+              setMode('blackmarket')
+            },
+          },
+        })
       } else {
         toast.error('Je zavřeno a na úplatek nemáš.')
       }

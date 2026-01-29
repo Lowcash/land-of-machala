@@ -1,23 +1,17 @@
-import type { CSSProperties } from 'react'
-
 import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
 
-export interface ActionItemProps {
+export interface ActionItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string
   subLabel?: string
   icon?: LucideIcon
-  onClick: () => void
-  disabled?: boolean
   loading?: boolean
   variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'default'
-  className?: string
   layout?: 'row' | 'col' | 'auto' // Layout direction of content
   cooldown?: number // Percentage 0-100 or potentially generic cooldown logic later
-  style?: CSSProperties
 }
 
 // Map logical variants to UI button variants
@@ -40,6 +34,7 @@ export function ActionItem({
   className,
   layout = 'auto',
   style,
+  ...props
 }: ActionItemProps) {
   // Determine layout classes based on prop or context (could be enhanced)
   const isRow = layout === 'row' || (layout === 'auto' && !!subLabel)
@@ -56,6 +51,7 @@ export function ActionItem({
         className
       )}
       style={style}
+      {...props}
     >
       <div className={cn('flex items-center gap-2', isRow ? '' : 'flex-col')}>
         {Icon && <Icon className={cn('shrink-0', isRow ? 'h-5 w-5' : 'h-6 w-6')} />}

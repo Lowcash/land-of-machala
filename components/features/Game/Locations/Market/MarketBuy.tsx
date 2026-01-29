@@ -9,7 +9,7 @@ interface MarketBuyProps {
   handleBuy: (item: MarketItem) => void
   handleHaggle: (item: MarketItem, buying: boolean, e: React.MouseEvent) => void
   getPrice: (item: MarketItem, buying: boolean) => number
-  haggledItems: Record<number, HaggleState>
+  haggledItems: Record<string, HaggleState>
 }
 
 export function MarketBuy({

@@ -1,3 +1,5 @@
+import { calculatePercentage } from '@/lib/game/formulas'
+
 import { Progress } from '@/components/ui/progress'
 
 interface CharacterVitalsProps {
@@ -21,9 +23,9 @@ export function CharacterVitals({
   isEnemy,
   resourceType = 'mana',
 }: CharacterVitalsProps) {
-  const hpPercent = Math.max(0, Math.min(100, (hp / hpMax) * 100))
-  const resourcePercent = Math.max(0, Math.min(100, (mana / manaMax) * 100))
-  const xpPercent = xp !== undefined && xpMax ? Math.max(0, Math.min(100, (xp / xpMax) * 100)) : 0
+  const hpPercent = calculatePercentage(hp, hpMax)
+  const resourcePercent = calculatePercentage(mana, manaMax)
+  const xpPercent = xp !== undefined && xpMax ? calculatePercentage(xp, xpMax) : 0
 
   return (
     <div className="w-full space-y-1.5">

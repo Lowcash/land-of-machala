@@ -1,46 +1,25 @@
 'use client'
 
-import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
-import type { LucideIcon } from 'lucide-react'
-import { Backpack, Map as MapIcon, ScrollText, TrendingUp, User } from 'lucide-react'
-
-import type { AppRoute } from '@/lib/types/game'
+import { GAME_NAV_ITEMS } from '@/lib/game/views'
 import { cn } from '@/lib/utils'
 
-import { Button } from '@/components/ui/button'
-
-interface NavItem {
-  id: string
-  icon: LucideIcon
-  label: string
-  path: AppRoute
-}
-
 export function GameFooter() {
-  const router = useRouter()
   const pathname = usePathname()
-
-  const navItems: NavItem[] = [
-    { id: 'character', icon: User, label: 'Postava', path: '/character' },
-    { id: 'skills', icon: TrendingUp, label: 'Dovednosti', path: '/skills' },
-    { id: 'quests', icon: ScrollText, label: 'Questy', path: '/quests' },
-    { id: 'inventory', icon: Backpack, label: 'Inventář', path: '/inventory' },
-    { id: 'map', icon: MapIcon, label: 'Mapa', path: '/map' },
-  ]
 
   return (
     <div className="w-full py-2">
       <div className="mx-auto flex max-w-lg items-center justify-between px-4">
-        {navItems.map((item) => {
+        {GAME_NAV_ITEMS.map((item) => {
           const isActive = pathname === item.path
           const Icon = item.icon
 
           return (
-            <Button
+            <Link
               key={item.id}
-              variant="ghost"
-              onClick={() => router.push(item.path)}
+              href={item.path}
               className={cn(
                 'group relative flex h-auto min-w-16 flex-col items-center gap-1 rounded-lg p-2 transition-all duration-300',
                 isActive ? 'bg-[#ffd700]/5' : 'hover:bg-white/5'
@@ -73,7 +52,7 @@ export function GameFooter() {
               {isActive && (
                 <div className="absolute -bottom-1 h-1 w-1 rounded-full bg-[#ffd700] shadow-[0_0_5px_#ffd700]"></div>
               )}
-            </Button>
+            </Link>
           )
         })}
       </div>

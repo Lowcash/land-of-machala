@@ -22,6 +22,8 @@ export async function getGamePageData() {
   // Transform character data to match GameDashboard interface
   const characterWithStats = {
     ...character,
+    x: character.locationX,
+    y: character.locationY,
     xpToNextLevel: getXPNeededForNextLevel(character.level),
     stats: {
       strength: character.strength,

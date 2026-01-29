@@ -1,19 +1,19 @@
 'use client'
 
+import { CharacterClass } from '@prisma/client'
+
 import { useGameDashboard } from '@/lib/hooks/game/useGameDashboard'
+import type { CharacterData as BaseCharacterData } from '@/lib/types/game'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
+import { ActionsArea } from '@/components/features/Game/Dashboard/ActionsArea'
+import { CharacterBox } from '@/components/features/Game/Dashboard/CharacterBox'
+import type { MarketItem } from '@/components/features/Game/Locations/Market/types'
 import { PageLayout } from '@/components/layout/PageLayout'
-
-import type { CharacterData as BaseCharacterData } from '../../Character/Shared/types'
-import type { MarketItem } from '../Locations/Market/types'
-import { ActionsArea } from './ActionsArea'
-import { CharacterBox } from './CharacterBox'
 
 export interface CharacterData extends BaseCharacterData {
   xpToNextLevel: number
-  bankGold?: number
   stats: {
     strength: number
     intelligence: number
@@ -25,9 +25,10 @@ export interface CharacterData extends BaseCharacterData {
 
 interface GameDashboardProps {
   character: CharacterData
+  initialView?: string
 }
 
-export function GameDashboard({ character }: GameDashboardProps) {
+export function GameDashboardClient({ character, initialView }: GameDashboardProps) {
   const {
     currentView,
     goToView,
@@ -43,7 +44,7 @@ export function GameDashboard({ character }: GameDashboardProps) {
     setInventory,
     handleMove,
     currentViewData,
-  } = useGameDashboard({ character })
+  } = useGameDashboard({ character, initialView })
 
   return (
     <PageLayout
@@ -52,6 +53,11 @@ export function GameDashboard({ character }: GameDashboardProps) {
           title={currentViewData.title}
           subtitle={character.name}
           characterId={character.id}
+          playerStats={{
+            gold: gold,
+            x: character.x || 0,
+            y: character.y || 0,
+          }}
           icon={currentViewData.icon}
         />
       }
@@ -86,7 +92,9 @@ export function GameDashboard({ character }: GameDashboardProps) {
             stats={character.stats}
             isEnemy={false}
             resourceType={
-              character.class === 'warrior' || character.class === 'rogue' ? 'energy' : 'mana'
+              character.class === CharacterClass.WARRIOR || character.class === CharacterClass.ROGUE
+                ? 'energy'
+                : 'mana'
             }
             gold={gold}
             locationName={currentViewData.title}

@@ -4,8 +4,9 @@ import { Zap } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { HEALER_SERVICES } from '@/lib/game/constants/items'
+import { ServiceActions } from '@/lib/game/constants/mechanics'
+import { HEALER_CONSTANTS } from '@/lib/game/constants/values'
 
-import { type ShopItem } from '../../Shared/components/ShopInterface'
 import { type TradeItem, TradePanel } from '../../Shared/components/TradePanel'
 
 interface Buff {
@@ -30,33 +31,35 @@ export function HealerShop({ gold, setGold, activeBuffs, setActiveBuffs }: Heale
 
     setGold((prev) => prev - item.price)
 
-    // Note: Mapping back from TradeItem to logic.
-    // Ideally items should have an ID or key to identify action.
-    // HEALER_SERVICES has 'action' property. We can find it by name or use extended interface.
-    // For now, I'll use name matching or just assume the TradeItem was created from the service.
+    // Lookup service by ID or check Action directly if mapped
+    const service = HEALER_SERVICES.find((s) => s.name === item.name)
 
-    // Let's look up the service
-    const service = (HEALER_SERVICES as unknown as ShopItem[]).find((s) => s.name === item.name)
-
-    if (service?.action === 'Léčení') {
+    if (service?.action === ServiceActions.HEAL) {
       toast.success('Léčitel ti vyčistil rány. Cítíš se lépe.')
-    } else if (service?.action === 'Požehnání síly') {
-      setActiveBuffs((prev) => [...prev, { name: 'Síla Býka', stat: 'strength', val: 5 }])
+    } else if (service?.action === ServiceActions.BUFF_STRENGTH) {
+      setActiveBuffs((prev) => [
+        ...prev,
+        { name: 'Síla Býka', stat: 'strength', val: HEALER_CONSTANTS.BUFF_VALUE },
+      ])
       toast.success('Cítíš příliv nové síly!')
-    } else if (service?.action === 'Požehnání ochrany') {
-      setActiveBuffs((prev) => [...prev, { name: 'Výdrž kance', stat: 'stamina', val: 5 }])
+    } else if (service?.action === ServiceActions.BUFF_STAMINA) {
+      setActiveBuffs((prev) => [
+        ...prev,
+        { name: 'Výdrž kance', stat: 'stamina', val: HEALER_CONSTANTS.BUFF_VALUE },
+      ])
       toast.success('Tvá kůže ztvrdla jako kámen!')
     }
   }
 
-  const tradeItems: TradeItem[] = (HEALER_SERVICES as unknown as ShopItem[]).map((s) => ({
-    id: s.name, // Using name as ID
+  const tradeItems: TradeItem[] = HEALER_SERVICES.map((s) => ({
+    id: s.name, // Using name as ID for now
     name: s.name,
     description: s.description,
     price: s.price,
     icon: s.icon || Zap,
     type: 'Služba',
     canHaggle: false,
+    action: s.action,
   }))
 
   const activeBuffsContent = activeBuffs.length > 0 && (

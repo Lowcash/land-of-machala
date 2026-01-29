@@ -47,7 +47,7 @@ const buttonVariants = cva(
   }
 )
 
-function Button({
+export function Button({
   className,
   variant,
   size,
@@ -55,11 +55,13 @@ function Button({
   loading = false,
   children,
   disabled,
+  ref,
   ...props
 }: React.ComponentProps<'button'> &
   VariantProps<typeof buttonVariants> & {
     asChild?: boolean
     loading?: boolean
+    ref?: React.Ref<HTMLButtonElement>
   }) {
   const Comp = asChild ? Slot : 'button'
 
@@ -68,6 +70,7 @@ function Button({
       data-slot="button"
       className={cn(buttonVariants({ variant, size, className }))}
       disabled={disabled || loading}
+      ref={ref}
       {...props}
     >
       {loading ? (
@@ -82,4 +85,4 @@ function Button({
   )
 }
 
-export { Button, buttonVariants }
+export { buttonVariants }

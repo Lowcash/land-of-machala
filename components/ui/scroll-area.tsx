@@ -14,10 +14,14 @@ interface ScrollAreaProps extends React.ComponentPropsWithoutRef<typeof ScrollAr
   showIndicators?: boolean
 }
 
-const ScrollArea = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  ScrollAreaProps
->(({ className, children, viewportClassName, showIndicators = true, ...props }, ref) => {
+export function ScrollArea({
+  className,
+  children,
+  viewportClassName,
+  showIndicators = true,
+  ref,
+  ...props
+}: ScrollAreaProps & { ref?: React.Ref<React.ElementRef<typeof ScrollAreaPrimitive.Root>> }) {
   const viewportRef = useRef<HTMLDivElement>(null)
 
   return (
@@ -39,27 +43,29 @@ const ScrollArea = React.forwardRef<
       <ScrollAreaPrimitive.Corner />
     </ScrollAreaPrimitive.Root>
   )
-})
-ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
+}
 
-const ScrollBar = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
->(({ className, orientation = 'vertical', ...props }, ref) => (
-  <ScrollAreaPrimitive.ScrollAreaScrollbar
-    ref={ref}
-    orientation={orientation}
-    className={cn(
-      'flex touch-none transition-colors select-none',
-      orientation === 'vertical' && 'h-full w-2.5 border-l border-transparent p-px',
-      orientation === 'horizontal' && 'h-2.5 flex-col border-t border-transparent p-px',
-      className
-    )}
-    {...props}
-  >
-    <ScrollAreaPrimitive.ScrollAreaThumb className="bg-border relative flex-1 rounded-full dark:bg-slate-700" />
-  </ScrollAreaPrimitive.ScrollAreaScrollbar>
-))
-ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
-
-export { ScrollArea, ScrollBar }
+export function ScrollBar({
+  className,
+  orientation = 'vertical',
+  ref,
+  ...props
+}: React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> & {
+  ref?: React.Ref<React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>>
+}) {
+  return (
+    <ScrollAreaPrimitive.ScrollAreaScrollbar
+      ref={ref}
+      orientation={orientation}
+      className={cn(
+        'flex touch-none transition-colors select-none',
+        orientation === 'vertical' && 'h-full w-2.5 border-l border-transparent p-px',
+        orientation === 'horizontal' && 'h-2.5 flex-col border-t border-transparent p-px',
+        className
+      )}
+      {...props}
+    >
+      <ScrollAreaPrimitive.ScrollAreaThumb className="bg-border relative flex-1 rounded-full dark:bg-slate-700" />
+    </ScrollAreaPrimitive.ScrollAreaScrollbar>
+  )
+}

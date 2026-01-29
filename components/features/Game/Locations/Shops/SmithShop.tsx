@@ -1,15 +1,14 @@
 'use client'
 
-import type { LucideIcon } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { SMITH_STOCK } from '@/lib/game/constants/items'
+import { ItemTypes } from '@/lib/game/constants/mechanics'
 
 import { Button } from '@/components/ui/button'
 
-import { type ShopItem } from '../../Shared/components/ShopInterface'
 import { type TradeItem, TradePanel } from '../../Shared/components/TradePanel'
-import type { MarketItem, MarketItemType } from '../Market/types'
+import type { MarketItem } from '../Market/types'
 
 interface SmithShopProps {
   gold: number
@@ -21,9 +20,7 @@ interface SmithShopProps {
 export function SmithShop({ gold, setGold, inventory, setInventory }: SmithShopProps) {
   const handleBuy = (tradeItem: TradeItem) => {
     // Find item details from stock
-    const originalItem = (SMITH_STOCK as unknown as ShopItem[]).find(
-      (i) => i.name === tradeItem.name
-    )
+    const originalItem = SMITH_STOCK.find((i) => i.name === tradeItem.name)
 
     if (!originalItem) return
 
@@ -33,13 +30,13 @@ export function SmithShop({ gold, setGold, inventory, setInventory }: SmithShopP
     }
 
     const newItem: MarketItem = {
-      id: Math.max(0, ...inventory.map((i) => i.id)) + 1 + Math.floor(Math.random() * 1000),
+      id: Math.max(0, ...inventory.map((i) => Number(i.id))) + 1,
       name: originalItem.name,
-      type: (originalItem.type as MarketItemType) || 'Zbraň', // Fallback type
-      icon: originalItem.icon as LucideIcon,
+      type: originalItem.type || ItemTypes.WEAPON,
+      icon: originalItem.icon,
       price: originalItem.price,
-      attack: originalItem.attack,
-      defense: originalItem.defense,
+      attack: 'attack' in originalItem ? originalItem.attack : undefined,
+      defense: 'defense' in originalItem ? originalItem.defense : undefined,
       durability: 100,
       maxDurability: 100,
       level: 0,
@@ -51,12 +48,12 @@ export function SmithShop({ gold, setGold, inventory, setInventory }: SmithShopP
     toast.success(`Koupeno: ${tradeItem.name}`)
   }
 
-  const tradeItems: TradeItem[] = (SMITH_STOCK as unknown as ShopItem[]).map((s) => ({
+  const tradeItems: TradeItem[] = SMITH_STOCK.map((s) => ({
     id: s.name,
     name: s.name,
     description: s.description,
     price: s.price,
-    icon: s.icon as LucideIcon,
+    icon: s.icon,
     type: s.type,
     canHaggle: false,
   }))

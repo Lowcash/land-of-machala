@@ -1,17 +1,14 @@
-'use client'
-
 import type { ReactNode } from 'react'
 import { isValidElement } from 'react'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 
 import type { LucideIcon } from 'lucide-react'
-import { ArrowLeft, LogOut } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 
 import type { AppRoute } from '@/lib/types/game'
 
-import { Button } from '@/components/ui/button'
+import { LogoutButton } from '@/components/features/Auth/LogoutButton'
 
 import { PlayerStats } from './PlayerStats'
 
@@ -29,8 +26,12 @@ interface GameHeaderProps {
   /** Custom right content (replaces settings menu) */
   rightContent?: ReactNode
   /** Character ID for displaying player stats */
-  characterId?: string
-  /** Back link configuration */
+  characterId?: string // Kept for backward compat if needed, but preferred below
+  playerStats?: {
+    gold: number
+    x: number
+    y: number
+  }
   backLink?: {
     href: AppRoute
     label?: string
@@ -47,11 +48,10 @@ export function GameHeader({
   subtitle,
   leftContent,
   rightContent,
-  characterId,
+  // characterId, // Deprecated
+  playerStats,
   backLink,
 }: GameHeaderProps) {
-  const router = useRouter()
-
   return (
     <div className="flex w-full items-center justify-between gap-3 px-3 py-2">
       {/* Left - Title/Icon or Custom Content */}
@@ -62,6 +62,7 @@ export function GameHeader({
               <Link
                 href={backLink.href}
                 className="mr-2 flex items-center gap-2 text-sm text-[#d4a574] hover:text-[#ffd700]"
+                aria-label={backLink.label || 'Zpět'}
               >
                 <ArrowLeft className="h-4 w-4" />
                 <span className="hidden sm:inline">{backLink.label || 'Zpět'}</span>
@@ -92,22 +93,15 @@ export function GameHeader({
         )}
 
         {/* Player Stats */}
-        {characterId && <PlayerStats characterId={characterId} />}
+        {/* Player Stats */}
+        {playerStats && <PlayerStats {...playerStats} />}
       </div>
 
       {/* Right - Logout or Custom Content */}
       {rightContent || (
         <div className="flex items-center gap-2">
           {/* Logout Button */}
-          <Button
-            variant="ghost"
-            onClick={() => router.push('/login')}
-            aria-label="Odhlásit se z hry"
-            className="flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-1.5 transition-colors hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/10 focus-visible:ring-2 focus-visible:ring-[#ff6b6b]"
-          >
-            <LogOut className="h-4 w-4 text-[#ff6b6b]" />
-            <span className="hidden text-sm text-[#ff6b6b] sm:inline">Odhlásit</span>
-          </Button>
+          <LogoutButton />
         </div>
       )}
     </div>

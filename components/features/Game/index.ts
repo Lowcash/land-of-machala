@@ -5,7 +5,7 @@
  */
 
 export { CharacterBox } from './Dashboard/CharacterBox'
-export { GameDashboard } from './Dashboard/GameDashboard'
+export { GameDashboardClient } from './Dashboard/GameDashboardClient'
 
 export { GameActivityPanel } from './Activity/GameActivityPanel'
 export { BankActions } from './Locations/BankActions'
