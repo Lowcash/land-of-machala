@@ -11,7 +11,7 @@ export default defineConfig({
     env: {
       USE_MOCK_DATA: 'true',
     },
-    exclude: ['node_modules/', '.next/', '__tests__/e2e/**'],
+    exclude: ['node_modules/', '.next/', '__tests__/e2e/**', 'tests/**'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],

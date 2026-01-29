@@ -10,7 +10,7 @@ interface UseHaggleProps {
 }
 
 export function useHaggle({ setInfoText, showMessage }: UseHaggleProps) {
-  const [haggledItems, setHaggledItems] = useState<Record<number, HaggleState>>({})
+  const [haggledItems, setHaggledItems] = useState<Record<string, HaggleState>>({})
 
   const getPrice = (item: MarketItem, buying: boolean) => {
     const basePrice = buying ? item.price : Math.floor(item.price * 0.5)

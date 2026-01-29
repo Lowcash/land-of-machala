@@ -4,12 +4,16 @@ import {
   FlaskConical,
   Heart,
   MapPin,
+  Mountain,
   Shield,
   Sparkles,
+  Store,
   Sword,
   Swords,
   Trophy,
 } from 'lucide-react'
+
+import { ItemTypes, ServiceActions } from './mechanics'
 
 export const SMITH_STOCK = [
   {
@@ -17,7 +21,7 @@ export const SMITH_STOCK = [
     name: 'Dřevěný meč',
     attack: 5,
     price: 50,
-    type: 'weapon',
+    type: ItemTypes.WEAPON,
     description: 'Základní zbraň pro začátečníky',
     icon: Sword,
   },
@@ -26,7 +30,7 @@ export const SMITH_STOCK = [
     name: 'Železný meč',
     attack: 12,
     price: 150,
-    type: 'weapon',
+    type: ItemTypes.WEAPON,
     description: 'Spolehlivý meč z tvrdého železa',
     icon: Sword,
   },
@@ -35,7 +39,7 @@ export const SMITH_STOCK = [
     name: 'Dlouhý meč',
     attack: 15,
     price: 200,
-    type: 'weapon',
+    type: ItemTypes.WEAPON,
     description: 'Delší dosah, větší síla',
     icon: Sword,
   },
@@ -44,7 +48,7 @@ export const SMITH_STOCK = [
     name: 'Kožená zbroj',
     defense: 8,
     price: 100,
-    type: 'armor',
+    type: ItemTypes.ARMOR,
     description: 'Lehká ochrana pro rychlé bojovníky',
     icon: Shield,
   },
@@ -53,7 +57,7 @@ export const SMITH_STOCK = [
     name: 'Řetězová zbroj',
     defense: 15,
     price: 250,
-    type: 'armor',
+    type: ItemTypes.ARMOR,
     description: 'Kovové kroužky poskytují solidní ochranu',
     icon: Shield,
   },
@@ -62,7 +66,7 @@ export const SMITH_STOCK = [
     name: 'Ocelová zbroj',
     defense: 20,
     price: 400,
-    type: 'armor',
+    type: ItemTypes.ARMOR,
     description: 'Odolná pancéřová výstroj',
     icon: Shield,
   },
@@ -76,7 +80,7 @@ export interface HealerService {
   icon: LucideIcon
   iconColor: string
   iconBg: string
-  action: string
+  action: ServiceActions
 }
 
 export const HEALER_SERVICES: HealerService[] = [
@@ -88,7 +92,7 @@ export const HEALER_SERVICES: HealerService[] = [
     icon: Heart,
     iconColor: 'text-[#6fbf6f]',
     iconBg: 'bg-[#6fbf6f]/20',
-    action: 'Léčení',
+    action: ServiceActions.HEAL,
   },
   {
     id: 'str-buff',
@@ -98,7 +102,7 @@ export const HEALER_SERVICES: HealerService[] = [
     icon: Sparkles,
     iconColor: 'text-[#ffd700]',
     iconBg: 'bg-[#ffd700]/20',
-    action: 'Požehnání síly',
+    action: ServiceActions.BUFF_STRENGTH,
   },
   {
     id: 'sta-buff',
@@ -108,7 +112,7 @@ export const HEALER_SERVICES: HealerService[] = [
     icon: Sparkles,
     iconColor: 'text-[#ffd700]',
     iconBg: 'bg-[#ffd700]/20',
-    action: 'Požehnání ochrany',
+    action: ServiceActions.BUFF_STAMINA,
   },
   {
     id: 'antidote',
@@ -118,9 +122,52 @@ export const HEALER_SERVICES: HealerService[] = [
     icon: FlaskConical,
     iconColor: 'text-[#69ccf0]',
     iconBg: 'bg-[#69ccf0]/20',
-    action: 'Protijed',
+    action: ServiceActions.ANTIDOTE,
   },
 ]
+
+export const MARKET_STOCK = [
+  {
+    id: 101,
+    name: 'Lektvar zdraví',
+    type: ItemTypes.CONSUMABLE,
+    price: 30,
+    healing: 30,
+    icon: FlaskConical,
+  },
+  {
+    id: 102,
+    name: 'Lektvar many',
+    type: ItemTypes.CONSUMABLE,
+    price: 40,
+    mana: 30,
+    icon: FlaskConical,
+  },
+  {
+    id: 103,
+    name: 'Kus oceli',
+    type: ItemTypes.CONSUMABLE,
+    price: 25,
+    icon: Mountain,
+  },
+] as const
+
+export const BLACK_MARKET_STOCK = [
+  {
+    id: 201,
+    name: 'Jed zmije',
+    type: ItemTypes.CONSUMABLE,
+    price: 150,
+    icon: FlaskConical,
+  },
+  {
+    id: 202,
+    name: 'Stínový prsten',
+    type: ItemTypes.CONSUMABLE,
+    price: 300,
+    icon: Store,
+  },
+] as const
 
 export const ACHIEVEMENT_ICONS: Record<number, LucideIcon> = {
   1: Trophy,

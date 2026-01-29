@@ -1,11 +1,10 @@
 import { Shield } from 'lucide-react'
 
 import { getSlotName } from '@/lib/game/utils'
+import type { CharacterItem } from '@/lib/types/game'
 
 import { GameCard } from '@/components/ui/game-card'
 import { GameList } from '@/components/ui/game-list'
-
-import type { CharacterItem } from '../Shared/types'
 
 interface EquipmentListProps {
   equipped: CharacterItem[]

@@ -1,22 +1,10 @@
-import type { LucideIcon } from 'lucide-react'
+import type { ItemTypes } from '@/lib/game/constants/mechanics'
 
-export type MarketItemType = 'weapon' | 'armor' | 'consumable'
+import type { TradeableItem } from '@/components/features/Game/Shared/components/types'
 
-export interface MarketItem {
-  id: number
-  name: string
-  type: MarketItemType
-  icon: LucideIcon
-  price: number // keeping price to match current usage, map to value if needed
-  attack?: number
-  defense?: number
-  durability?: number
-  maxDurability?: number
-  level?: number
-  equipped?: boolean
-  healing?: number
-  mana?: number
-}
+export type MarketItemType = ItemTypes
+
+export type MarketItem = TradeableItem
 
 export interface MarketActionsProps {
   onBack: () => void

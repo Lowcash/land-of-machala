@@ -5,9 +5,15 @@ import { auth } from '@/lib/auth'
 import { prisma } from '@/lib/db'
 import { DEMO_LOCATIONS } from '@/lib/game/map'
 
-import type { Location } from '@/components/features/Map/Shared/types'
+import type { Location, QuestMarker } from '@/components/features/Map/Shared/types'
 
-export async function getMapPageData() {
+export async function getMapPageData(): Promise<{
+  characterId: string
+  serializedLocations: Location[]
+  discoveredLocations: string[]
+  questMarkers: QuestMarker[]
+  deathLocation: { x: number; y: number; expiresAt: string } | null
+} | null> {
   const session = await auth()
   if (!session?.user?.id) return null
 
@@ -62,6 +68,10 @@ export async function getMapPageData() {
       ...filteredDemoLocations.map((d) => d.id).filter((id): id is string => !!id),
     ],
     questMarkers,
-    deathLocation: character.deathLocation,
+    deathLocation: character.deathLocation as unknown as {
+      x: number
+      y: number
+      expiresAt: string
+    } | null,
   }
 }

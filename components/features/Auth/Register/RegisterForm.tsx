@@ -1,73 +1,24 @@
 'use client'
 
-import { useTransition } from 'react'
-
-import { useRouter } from 'next/navigation'
-
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Lock, Mail } from 'lucide-react'
-import { useForm } from 'react-hook-form'
 
-import { registerAction } from '@/lib/actions/auth'
+import { useRegisterForm } from '@/lib/hooks/auth/useRegisterForm'
 
-import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 
 import { AuthInput } from '../Shared/AuthInput'
-import { type RegisterValues, registerSchema } from './registerSchema'
 
 export function RegisterForm() {
-  const router = useRouter()
-  const { showNotification } = useNotification()
-  const [isPending, startTransition] = useTransition()
+  const { form, onSubmit, isPending } = useRegisterForm()
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<RegisterValues>({
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-    mode: 'onChange',
-  })
-
-  const onRegister = (values: RegisterValues) => {
-    if (isPending) return
-
-    startTransition(async () => {
-      try {
-        const [, err] = await registerAction({
-          email: values.email,
-          password: values.password,
-        })
-
-        if (err) {
-          throw new Error(err.message || 'Registrace se nezdařila')
-        }
-
-        showNotification({
-          variant: 'success',
-          title: 'Registrace úspěšná',
-          description: 'Vítejte!',
-        })
-
-        router.push('/onboarding')
-      } catch (err) {
-        showNotification({
-          variant: 'error',
-          title: 'Chyba registrace',
-          description:
-            err instanceof Error ? err.message : 'Došlo k chybě. Zkuste to prosím znovu.',
-        })
-      }
-    })
-  }
+  } = form
 
   return (
-    <form onSubmit={handleSubmit(onRegister)} className="space-y-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
       <AuthInput
         id="email"
         label="Email"

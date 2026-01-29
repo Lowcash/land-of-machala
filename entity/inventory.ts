@@ -1,7 +1,7 @@
-import { healCharacter, restoreMana, updateCharacterResources } from '@/entity/character'
-import { ItemType } from '@prisma/client'
+import { updateCharacterResources } from '@/entity/character'
 
 import { prisma } from '@/lib/db'
+import { calculateSellValue } from '@/lib/game/inventory'
 
 /**
  * Inventory Entity Layer
@@ -210,38 +210,30 @@ export async function unequipInventoryItem(characterId: string, inventoryItemId:
   })
 }
 
-export async function useInventoryItem(characterId: string, inventoryItemId: string) {
+export async function consumeInventoryItem(
+  characterId: string,
+  inventoryItemId: string,
+  quantity = 1
+) {
   const inventoryItem = await prisma.inventoryItem.findUnique({
     where: { id: inventoryItemId },
-    include: { item: true },
   })
 
   if (!inventoryItem || inventoryItem.characterId !== characterId) {
     throw new Error('Item not found')
   }
 
-  if (inventoryItem.item.type !== ItemType.CONSUMABLE) {
-    throw new Error('Item is not consumable')
+  if (inventoryItem.quantity < quantity) {
+    throw new Error('Not enough items')
   }
 
-  // Apply effects
-  if (inventoryItem.item.healing > 0) {
-    await healCharacter(characterId, inventoryItem.item.healing)
-  }
-
-  if (inventoryItem.item.manaRestore > 0) {
-    await restoreMana(characterId, inventoryItem.item.manaRestore)
-  }
-
-  // Consume item
-  if (inventoryItem.quantity <= 1) {
+  if (inventoryItem.quantity === quantity) {
     await prisma.inventoryItem.delete({ where: { id: inventoryItemId } })
-    return null // Item gone
+    return null
   } else {
     return await prisma.inventoryItem.update({
       where: { id: inventoryItemId },
-      data: { quantity: inventoryItem.quantity - 1 },
-      include: { item: true },
+      data: { quantity: inventoryItem.quantity - quantity },
     })
   }
 }
@@ -256,7 +248,7 @@ export async function sellInventoryItem(characterId: string, inventoryItemId: st
     throw new Error('Item not found')
   }
 
-  const sellValue = Math.floor(inventoryItem.item.value * 0.5)
+  const sellValue = calculateSellValue(inventoryItem.item)
 
   // Add gold
   const character = await prisma.character.findUnique({ where: { id: characterId } })

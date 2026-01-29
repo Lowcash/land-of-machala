@@ -9,8 +9,18 @@ import {
   Zap,
 } from 'lucide-react'
 
-export type Race = 'human' | 'dwarf' | 'elf' | 'orc' | 'halfling' | 'dragonborn'
-export type Class = 'warrior' | 'mage' | 'rogue' | 'paladin' | 'ranger' | 'necromancer'
+import { ClassId, RaceId } from '@/lib/game/constants/mechanics'
+
+export type Race = RaceId
+export type Class = ClassId
+
+export function isCasterClass(id: ClassId | string): boolean {
+  return [ClassId.MAGE, ClassId.NECROMANCER].includes(id as ClassId)
+}
+
+export function isTankClass(id: ClassId | string): boolean {
+  return [ClassId.WARRIOR, ClassId.PALADIN].includes(id as ClassId)
+}
 
 export type StoryStep = {
   id: number
@@ -29,15 +39,19 @@ export const storySteps: StoryStep[] = [
     choices: [
       {
         text: 'Postava v těžké zbroji s velkým mečem',
-        effect: { class: 'warrior' },
+        effect: { class: ClassId.WARRIOR },
         nextStep: 1,
       },
       {
         text: 'Postava v kápi, kolem které jiskří magie',
-        effect: { class: 'mage' },
+        effect: { class: ClassId.MAGE },
         nextStep: 1,
       },
-      { text: 'Postava ve stínech s dýkami v rukou', effect: { class: 'rogue' }, nextStep: 1 },
+      {
+        text: 'Postava ve stínech s dýkami v rukou',
+        effect: { class: ClassId.ROGUE },
+        nextStep: 1,
+      },
     ],
   },
   {
@@ -46,17 +60,17 @@ export const storySteps: StoryStep[] = [
     choices: [
       {
         text: 'Okamžitě tasíš zbraň a připravíš se k boji',
-        effect: { race: 'orc' },
+        effect: { race: RaceId.ORC },
         nextStep: 2,
       },
       {
         text: 'Rychle se schováš a vyhodnotíš situaci',
-        effect: { race: 'halfling' },
+        effect: { race: RaceId.HALFLING },
         nextStep: 2,
       },
       {
         text: 'Využiješ magii k vytvoření ochranné bariéry',
-        effect: { race: 'elf' },
+        effect: { race: RaceId.ELF },
         nextStep: 2,
       },
     ],
@@ -67,22 +81,26 @@ export const storySteps: StoryStep[] = [
     choices: [
       {
         text: 'Hrubá síla a odolnost',
-        effect: { class: 'warrior', race: 'dwarf' },
+        effect: { class: ClassId.WARRIOR, race: RaceId.DWARF },
         nextStep: 'end',
       },
       {
         text: 'Inteligence a znalost magie',
-        effect: { class: 'mage', race: 'human' },
+        effect: { class: ClassId.MAGE, race: RaceId.HUMAN },
         nextStep: 'end',
       },
-      { text: 'Rychlost a přesnost', effect: { class: 'ranger', race: 'elf' }, nextStep: 'end' },
+      {
+        text: 'Rychlost a přesnost',
+        effect: { class: ClassId.RANGER, race: RaceId.ELF },
+        nextStep: 'end',
+      },
     ],
   },
 ]
 
 export const races = [
   {
-    id: 'human' as Race,
+    id: RaceId.HUMAN,
     name: 'Člověk',
     icon: User,
     desc: 'Všestranní a adaptabilní bojovníci. Lidé jsou známí svou vyrovnaností ve všech aspektech boje. Mají dobré zdraví, slušné magické schopnosti a vyvážené bojové vlastnosti. Jejich adaptabilita jim umožňuje ovládnout jakýkoliv styl boje.',
@@ -90,7 +108,7 @@ export const races = [
     bonuses: 'Vyvážené statistiky, +10% rychlejší učení',
   },
   {
-    id: 'dwarf' as Race,
+    id: RaceId.DWARF,
     name: 'Trpaslík',
     icon: ShieldIcon,
     desc: 'Odolní a silní bojovníci z podzemních hal. Trpaslíci jsou mistři v kovářství a obraně. Jejich robustní těla snesou mnohem více ran než ostatní rasy. Preferují těžkou zbroj a silné zbraně, ale jejich malé nohy jim brání v rychlosti.',
@@ -98,7 +116,7 @@ export const races = [
     bonuses: '+20 HP, +5 Výdrž, +2 Síla, -3 Obratnost',
   },
   {
-    id: 'elf' as Race,
+    id: RaceId.ELF,
     name: 'Elf',
     icon: Zap,
     desc: 'Rychlí a magicky nadaní lesní obyvatelé. Elfové mají vrozenou afinitu k magii a přírodě. Jsou mistři v lukostřelbě a magii živlů. Jejich štíhlé tělo jim dává nepřekonatelnou rychlost, ale jsou křehcí v blízkém boji.',
@@ -106,7 +124,7 @@ export const races = [
     bonuses: '+40 Mana, +7 Inteligence, +4 Obratnost, -20 HP',
   },
   {
-    id: 'orc' as Race,
+    id: RaceId.ORC,
     name: 'Ork',
     icon: Swords,
     desc: 'Brutální síla divočiny. Orkové jsou nejsilnější rasou v blízkém boju. Jejich svaly a zuřivost nemají ve válce konkurenci. Magii považují za slabost a svým těžkopádným pohybům chybí finesa, ale když ork zaútočí, jen málokdo přežije.',
@@ -114,7 +132,7 @@ export const races = [
     bonuses: '+40 HP, +8 Síla, +2 Výdrž, -5 Inteligence',
   },
   {
-    id: 'halfling' as Race,
+    id: RaceId.HALFLING,
     name: 'Půlčík',
     icon: Target,
     desc: 'Malí, ale obratní a šikovní. Půlčíci jsou mistři ve vyhýbání se útokům a překvapivém úderu ze stínů. Jejich malá postava a přirozená hbitost z nich dělají vynikající zloděje a záškodníky. Co jim chybí na síle, nahrazují lstí.',
@@ -122,7 +140,7 @@ export const races = [
     bonuses: '+6 Obratnost, vyšší šance na únik a kritický zásah',
   },
   {
-    id: 'dragonborn' as Race,
+    id: RaceId.DRAGONBORN,
     name: 'Dračí rod',
     icon: Sparkles,
     desc: 'Dědicové dračí krve s vyvážených silou. Potomci starověkých draků kombinují sílu, magii i obratnost. Mají vrozenou odolnost vůči magii a schopnost dýchat ohnivým dechem. Jsou vzácní a respektovaní bojovníci.',
@@ -133,7 +151,7 @@ export const races = [
 
 export const classes = [
   {
-    id: 'warrior' as Class,
+    id: ClassId.WARRIOR,
     name: 'Válečník',
     icon: Swords,
     desc: 'Mistr blízkého boje a těžké zbroje. Válečníci jsou frontální bojovníci tréninovaní v použití všech zbraní. Zvyšují útok a obranu, což jim umožňuje stát v první linii a přežít i ty nejtvrdší bitvy. Jsou specialisté na fyzický boj.',
@@ -141,7 +159,7 @@ export const classes = [
     bonuses: '+5 Síla, +5 Výdrž, schopnost používat těžké zbroje',
   },
   {
-    id: 'paladin' as Class,
+    id: ClassId.PALADIN,
     name: 'Paladin',
     icon: ShieldIcon,
     desc: 'Svatý ochránce s magií a obranou. Paladinové kombinují bojové dovednosti s léčivou a ochrannou magií. Jsou neotřesitelní obránci slabých a využívají světelnou magii k oslabení nepřátel. Jejich zbroj září jako znamení naděje.',
@@ -149,7 +167,7 @@ export const classes = [
     bonuses: '+8 Výdrž, +3 Inteligence, +3 Síla, léčivá magie',
   },
   {
-    id: 'rogue' as Class,
+    id: ClassId.ROGUE,
     name: 'Lotr',
     icon: Target,
     desc: 'Rychlý zabiják ze stínů. Lotři jsou mistři nenápadnosti a kritických úderů. Spoléhají na rychlost a přesnost místo hrubé síly. Jejich speciální schopnosti zahrnují útoky ze zálohy, otrávené zbraně a dovednost odemykat zámky.',
@@ -157,7 +175,7 @@ export const classes = [
     bonuses: '+8 Obratnost, +4 Síla, kritické údery, nenápadnost',
   },
   {
-    id: 'mage' as Class,
+    id: ClassId.MAGE,
     name: 'Mág',
     icon: Wand2,
     desc: 'Mistr mystických sil a ničivé magie. Mágové ovládají živelnou magii - oheň, led, blesk. Jejich kouzla dokážou zničit celé skupiny nepřátel. Jsou však fyzicky slabí a musí udržovat odstup od nepřátel. Studiem získávají nová mocnější kouzla.',
@@ -165,7 +183,7 @@ export const classes = [
     bonuses: '+12 Inteligence, +2 Obratnost, ničivá kouzla, -2 Výdrž',
   },
   {
-    id: 'ranger' as Class,
+    id: ClassId.RANGER,
     name: 'Hraničář',
     icon: Zap,
     desc: 'Lučištník a stopař divočiny. Hraničáři jsou spojení s přírodou a ovládají boj na dálku. Jejich lukostřelba je smrtící přesná a dokážou stopovat jakoukoliv kořist. Kombinují fyzický útok s přírodní magií a schopností ovládat zvířata.',
@@ -173,7 +191,7 @@ export const classes = [
     bonuses: '+6 Síla, +6 Obratnost, +2 Výdrž, boj na dálku',
   },
   {
-    id: 'necromancer' as Class,
+    id: ClassId.NECROMANCER,
     name: 'Nekromant',
     icon: Skull,
     desc: 'Temný kouzelník ovládající smrt. Nekromanti manipulují se smrtí a nemrtvými. Dokážou oživovat mrtvoly jako své služebníky a vysávat životní sílu z nepřátel. Jejich temná magie je mocná, ale společnost je často odsuzuje. Ovládají kletby a stínovou magii.',

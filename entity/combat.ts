@@ -1,17 +1,4 @@
 import { prisma } from '@/lib/db'
-import {
-  calculateAttackDamage,
-  calculateCombatDamage,
-  calculateDefense,
-  calculateExperienceReward,
-  calculateGoldReward,
-  isCriticalHit,
-} from '@/lib/game/formulas'
-
-/**
- * Combat Entity Layer
- * Handles enemy data and combat mechanics
- */
 
 export async function getAllEnemies() {
   return await prisma.enemy.findMany({
@@ -56,15 +43,6 @@ export async function getRandomEnemy(characterLevel: number) {
   }
 
   return enemies[Math.floor(Math.random() * enemies.length)]
-}
-
-export {
-  calculateAttackDamage,
-  calculateCombatDamage,
-  calculateDefense,
-  calculateExperienceReward,
-  calculateGoldReward,
-  isCriticalHit,
 }
 
 // -- State Management --

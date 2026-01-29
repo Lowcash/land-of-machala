@@ -1,46 +1,55 @@
-import type { InventoryItemUI } from '@/components/features/Inventory/Shared/types'
+import { ItemType } from '@prisma/client'
 
-export const DUMMY_INVENTORY: InventoryItemUI[] = [
+export function getConsumableEffects(item: {
+  type: ItemType
+  healing: number | null
+  manaRestore: number | null
+}) {
+  if (item.type !== ItemType.CONSUMABLE) {
+    throw new Error('Item is not consumable')
+  }
+
+  return {
+    healing: item.healing ?? 0,
+    manaRestore: item.manaRestore ?? 0,
+  }
+}
+
+export function canEquipItem(item: { slot: string | null }) {
+  return !!item.slot
+}
+
+export function calculateSellValue(item: { value: number }) {
+  return Math.floor(item.value * 0.5)
+}
+
+export const DUMMY_INVENTORY = [
   {
-    id: 'dummy-inv-1',
-    name: 'Rezavý Meč',
-    type: 'weapon',
-    rarity: 'common',
+    id: 'dummy-1',
+    name: 'Rezavý meč',
+    type: ItemType.WEAPON,
+    rarity: 'COMMON' as const,
     iconName: 'sword',
-    slot: 'right_hand',
+    slot: 'main_hand',
     equipped: true,
     value: 10,
     level: 1,
-    description: 'Starý, ale stále ostrý meč.',
+    description: 'Starý orezlý meč, ale lepší než nic.',
     quantity: 1,
     attack: 5,
   },
   {
-    id: 'dummy-inv-2',
-    name: 'Léčivý Lektvar',
-    type: 'consumable',
-    rarity: 'common',
+    id: 'dummy-2',
+    name: 'Léčivý lektvar',
+    type: ItemType.CONSUMABLE,
+    rarity: 'COMMON' as const,
     iconName: 'flask',
     slot: null,
     equipped: false,
-    value: 20,
+    value: 5,
     level: 1,
-    description: 'Obnoví 50 zdraví.',
+    description: 'Obnoví 20 životů.',
     quantity: 3,
-    healing: 50,
-  },
-  {
-    id: 'dummy-inv-3',
-    name: 'Kožená Zbroj',
-    type: 'armor',
-    rarity: 'uncommon',
-    iconName: 'shield',
-    slot: 'chest',
-    equipped: false,
-    value: 50,
-    level: 2,
-    description: 'Základní ochrana pro dobrodruhy.',
-    quantity: 1,
-    defense: 10,
+    healing: 20,
   },
 ]

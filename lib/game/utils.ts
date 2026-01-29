@@ -17,3 +17,24 @@ export function treeToCategory(tree: string): SkillCategory {
       return 'combat'
   }
 }
+
+export function getSlotName(slot: string): string {
+  switch (slot) {
+    case 'HEAD':
+      return 'Hlava'
+    case 'CHEST':
+      return 'Hruď'
+    case 'LEGS':
+      return 'Nohy'
+    case 'FEET':
+      return 'Boty'
+    case 'HANDS':
+      return 'Rukavice'
+    case 'WEAPON':
+      return 'Zbraň'
+    case 'OFFHAND':
+      return 'Štít/Vedlejší'
+    default:
+      return slot
+  }
+}

@@ -1,8 +1,9 @@
 import { User } from 'lucide-react'
 
+import type { CharacterData } from '@/lib/types/game'
+
 import { SplitLayout } from '@/components/layout/SplitLayout'
 
-import type { CharacterData } from '../Character/Shared/types'
 import { EquipmentList } from './Equipment/EquipmentList'
 import { StatsPanel } from './Profile/StatsPanel'
 

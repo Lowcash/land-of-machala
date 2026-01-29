@@ -1,13 +1,13 @@
-import { classes } from '@/lib/game/onboarding'
+import { classes, isCasterClass, isTankClass } from '@/lib/game/onboarding'
 import { cn } from '@/lib/utils'
+
+import { EntitySelector } from './EntitySelector'
 
 interface SelectorProps {
   selectedId: string
   searchParams?: { [key: string]: string | string[] | undefined }
   isMobile?: boolean
 }
-
-import { EntitySelector } from './EntitySelector'
 
 interface SelectorProps {
   selectedId: string
@@ -30,8 +30,8 @@ export function ClassSelector({ selectedId, searchParams, isMobile }: SelectorPr
 }
 
 function ClassInfo({ classData }: { classData: (typeof classes)[0] }) {
-  const isCaster = ['mage', 'necromancer'].includes(classData.id)
-  const isTank = ['warrior', 'paladin'].includes(classData.id)
+  const isCaster = isCasterClass(classData.id)
+  const isTank = isTankClass(classData.id)
 
   return (
     <div className="border-game-copper rounded border bg-black/60 p-3">

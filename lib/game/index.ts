@@ -1,5 +1,3 @@
-export * from './config'
-export * from './data'
 export * from './inventory'
 export * from './map'
 export * from './onboarding'

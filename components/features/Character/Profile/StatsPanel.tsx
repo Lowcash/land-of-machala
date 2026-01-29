@@ -1,11 +1,11 @@
 import { Shield, Swords } from 'lucide-react'
 
 import { calculateCritChance, calculateDodgeChance } from '@/lib/game/formulas'
+import type { CharacterData } from '@/lib/types/game'
 
 import { GameCard } from '@/components/ui/game-card'
 
-import type { CharacterData } from '../Shared/types'
-import { StatAllocationDelegate } from './StatAllocationDelegate'
+import { AttributesPanel } from './AttributesPanel'
 
 export function StatsPanel({
   character,
@@ -23,8 +23,16 @@ export function StatsPanel({
   // Use character talent points or default to 0
   const talentPoints = character.talentPoints ?? 0
 
+  // Default stats if missing
+  const stats = character.stats || { strength: 0, intelligence: 0, agility: 0, stamina: 0 }
+
   return (
     <GameCard className="h-full space-y-3 p-3">
+      {/* Attributes Panel (Optimistic) */}
+      <AttributesPanel stats={stats} talentPoints={talentPoints} />
+
+      <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
+
       {/* Combat Stats */}
       <div>
         <h3
@@ -132,14 +140,6 @@ export function StatsPanel({
             </span>
           </div>
         </div>
-      </div>
-
-      {/* Interactive Allocation */}
-      <div className="border-t border-[#8b6f47]/30 pt-2">
-        <div className="mb-1 text-center text-[10px] text-[#ffd700]">
-          Volné body: {talentPoints}
-        </div>
-        <StatAllocationDelegate talentPoints={talentPoints} />
       </div>
     </GameCard>
   )

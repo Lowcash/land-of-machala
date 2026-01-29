@@ -4,17 +4,17 @@ import { useState } from 'react'
 
 import { viewData } from '@/lib/game/constants/views'
 import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
-import type { CharacterData } from '@/lib/types/game'
+import type { CharacterData, View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
 interface DashboardCharacterData extends CharacterData {
   inventory?: MarketItem[]
   xpToNextLevel?: number
-  bankGold?: number
 }
 
 interface UseGameDashboardProps {
   character: DashboardCharacterData
+  initialView?: string
 }
 
 interface Buff {
@@ -23,8 +23,8 @@ interface Buff {
   val: number
 }
 
-export function useGameDashboard({ character }: UseGameDashboardProps) {
-  const { currentView, goToView, goBack } = useGameView('town')
+export function useGameDashboard({ character, initialView }: UseGameDashboardProps) {
+  const { currentView, goToView, goBack } = useGameView((initialView as View) || 'town')
   const { infoText, isShaking, handleSetInfoText } = useInfoLog()
 
   // Local state for game interactions
