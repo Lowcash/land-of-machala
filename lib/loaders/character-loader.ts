@@ -12,49 +12,53 @@ export async function getCharacterPageData() {
     return null
   }
 
-  // Map server data to client props
-  const clientProps = {
-    // Note: We don't pass characterId here as it's not in clientProps,
-    // but we pass it to PageTemplate for the header
-    character: {
-      id: character.id,
-      name: character.name,
-      level: character.level,
-      race: character.race,
-      class: character.class,
-      experience: character.experience,
-      hp: character.hp,
-      maxHp: character.maxHp,
-      mana: character.mana,
-      maxMana: character.maxMana,
-      strength: character.strength,
-      intelligence: character.intelligence,
-      agility: character.agility,
-      stamina: character.stamina,
-      physicalResistance: character.physicalResistance,
-      magicalResistance: character.magicalResistance,
-      fireResistance: character.fireResistance,
-      coldResistance: character.coldResistance,
-      poisonResistance: character.poisonResistance,
-      reputation: 0,
-      gold: character.gold,
-      bankGold: character.bankGold,
-      talentPoints: character.talentPoints,
-      userId: character.userId,
-    },
-    inventory: character.inventory.map((inv) => ({
-      id: inv.id,
-      name: inv.item.name,
-      slot: inv.item.slot,
-      attack: inv.item.strength,
-      defense: inv.item.stamina,
-      value: inv.item.value,
-      equipped: inv.equipped,
-    })),
+  // Map achievements for separate prop
+  const mappedAchievements = character.achievements.map((ca) => ({
+    id: ca.achievement.id,
+    title: ca.achievement.title,
+    description: ca.achievement.description,
+    icon: ca.achievement.iconName,
+    rarity: ca.achievement.rarity,
+    category: ca.achievement.category,
+    maxProgress: ca.achievement.maxProgress,
+    rewardGold: ca.achievement.rewardGold,
+    rewardXp: ca.achievement.rewardXp,
+    rewardTitle: ca.achievement.rewardTitle,
+    unlocked: ca.unlocked,
+    progress: ca.progress,
+    unlockedAt: ca.unlockedAt,
+  }))
+
+  // Map inventory
+  const mappedInventory = character.inventory.map((inv) => ({
+    id: inv.id,
+    name: inv.item.name,
+    slot: inv.item.slot,
+    attack: inv.item.strength,
+    defense: inv.item.stamina,
+    value: inv.item.value,
+    equipped: inv.equipped,
+  }))
+
+  // Map character data for client (ensure achievements is string[] IDs)
+  const characterForClient = {
+    ...character,
+    achievements: character.achievements.map((ca) => ca.achievementId),
+    reputation: 0,
+    createdAt: undefined,
+    updatedAt: undefined,
+    lastPlayedAt: undefined,
+    locationX: undefined,
+    locationY: undefined,
+    currentView: undefined,
   }
 
   return {
     characterId: character.id,
-    clientProps,
+    clientProps: {
+      character: characterForClient,
+      inventory: mappedInventory,
+      achievements: mappedAchievements,
+    },
   }
 }

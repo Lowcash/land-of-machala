@@ -34,7 +34,11 @@ export default async function CharacterPage() {
       footer={<GameFooter />}
       maxWidth="lg"
     >
-      <Character character={data.clientProps.character} inventory={data.clientProps.inventory} />
+      <Character
+        character={data.clientProps.character}
+        inventory={data.clientProps.inventory}
+        achievements={data.clientProps.achievements}
+      />
     </PageLayout>
   )
 }

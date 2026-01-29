@@ -1,6 +1,7 @@
 import type { CharacterClass, CharacterRace } from '@prisma/client'
 
 import { prisma } from '@/lib/db'
+import { calculateInitialStats } from '@/lib/game/character'
 import { calculateMaxHp, calculateMaxMana, calculateProgression } from '@/lib/game/formulas'
 
 /**
@@ -76,6 +77,11 @@ export async function getCharacterByUserId(userId: string) {
           skill: true,
         },
       },
+      achievements: {
+        include: {
+          achievement: true,
+        },
+      },
     },
   })
 }
@@ -86,19 +92,7 @@ export async function createCharacter(data: {
   race: CharacterRace
   class: CharacterClass
 }) {
-  // Base stats by race
-  const raceStats = {
-    HUMAN: { strength: 10, intelligence: 10, agility: 10, stamina: 10 },
-    DWARF: { strength: 12, intelligence: 8, agility: 8, stamina: 14 },
-    ELF: { strength: 8, intelligence: 12, agility: 14, stamina: 8 },
-    ORC: { strength: 14, intelligence: 6, agility: 8, stamina: 12 },
-    HALFLING: { strength: 8, intelligence: 10, agility: 14, stamina: 10 },
-    DRAGONBORN: { strength: 12, intelligence: 10, agility: 10, stamina: 12 },
-  }
-
-  const stats = raceStats[data.race]
-  const maxHp = calculateMaxHp(stats.stamina, 1)
-  const maxMana = calculateMaxMana(stats.intelligence, 1)
+  const initialStats = calculateInitialStats(data.race)
 
   return await prisma.character.create({
     data: {
@@ -106,18 +100,7 @@ export async function createCharacter(data: {
       name: data.name,
       race: data.race,
       class: data.class,
-      strength: stats.strength,
-      intelligence: stats.intelligence,
-      agility: stats.agility,
-      stamina: stats.stamina,
-      level: 1,
-      experience: 0,
-      hp: maxHp,
-      maxHp,
-      mana: maxMana,
-      maxMana,
-      gold: 0,
-      talentPoints: 0,
+      ...initialStats,
     },
   })
 }

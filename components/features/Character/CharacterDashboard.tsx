@@ -1,21 +1,26 @@
+import type { Achievement, CharacterData, CharacterItem } from '@/lib/types/game'
+
 import { CharacterBox } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
 
 import { AchievementList } from './Achievements/AchievementList'
 import { EquipmentList } from './Equipment/EquipmentList'
 import { StatsPanel } from './Profile/StatsPanel'
-import type { CharacterData, CharacterItem } from './Shared/types'
-import { calculateDerivedStats, enrichAchievements } from './Shared/utils'
+import { calculateDerivedStats } from './Shared/utils'
 
 interface CharacterDashboardProps {
   character: CharacterData
   inventory: CharacterItem[]
+  achievements: Achievement[]
 }
 
-export function CharacterDashboard({ character, inventory }: CharacterDashboardProps) {
+export function CharacterDashboard({
+  character,
+  inventory,
+  achievements,
+}: CharacterDashboardProps) {
   const equipped = inventory.filter((item) => item.equipped)
   const stats = calculateDerivedStats(character, inventory)
-  const achievements = enrichAchievements(character.achievements)
 
   return (
     <div className="h-full">
