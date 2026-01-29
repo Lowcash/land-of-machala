@@ -3,15 +3,14 @@
 import { Swords } from 'lucide-react'
 
 import { useCombatLogic } from '@/lib/hooks/game/useCombatLogic'
+import type { CharacterData, CharacterItem } from '@/lib/types/game'
 
+import { CombatActions } from '@/components/features/Combat/CombatActions'
+import { CombatPotions } from '@/components/features/Combat/CombatPotions'
+import { CombatStats } from '@/components/features/Combat/CombatStats'
 import { GameActivityPanel, GameFooter, GameHeader } from '@/components/features/Game'
 import { GameActions } from '@/components/features/Game/Shared/components/GameActions'
 import { PageLayout } from '@/components/layout/PageLayout'
-
-import type { CharacterData, CharacterItem } from '../Character/Shared/types'
-import { CombatActions } from './CombatActions'
-import { CombatPotions } from './CombatPotions'
-import { CombatStats } from './CombatStats'
 
 interface CombatClientProps {
   character: CharacterData & {
