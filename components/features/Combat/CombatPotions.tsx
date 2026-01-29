@@ -4,10 +4,9 @@ import { toast } from 'sonner'
 
 import { performUseItemAction } from '@/lib/actions/combat'
 import { getIconFromName } from '@/lib/icons'
+import type { CharacterItem } from '@/lib/types/game'
 
 import { ActionGrid, ActionItem } from '@/components/ui/Action'
-
-import type { CharacterItem } from '../Character/Shared/types'
 
 interface CombatPotionsProps {
   potions: CharacterItem[]
