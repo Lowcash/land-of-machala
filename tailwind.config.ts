@@ -73,6 +73,15 @@ const config: Config = {
           '10%, 30%, 50%, 70%, 90%': { transform: 'translateX(-4px) rotate(-2deg)' },
           '20%, 40%, 60%, 80%': { transform: 'translateX(4px) rotate(2deg)' },
         },
+        floatUp: {
+          '0%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+          '50%': { transform: 'translateY(-40px) scale(1.2)' },
+          '100%': { opacity: '0', transform: 'translateY(-80px) scale(0.8)' },
+        },
+        'pulse-glow': {
+          '0%, 100%': { opacity: '1', boxShadow: '0 0 20px rgba(212, 165, 116, 0.5)' },
+          '50%': { opacity: '0.7', boxShadow: '0 0 40px rgba(212, 165, 116, 0.7)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -80,6 +89,8 @@ const config: Config = {
         'fade-in': 'fadeIn 0.3s ease-out',
         'fade-in-wave': 'fadeInWave 0.6s ease-out',
         shake: 'shake 0.5s',
+        'float-up': 'floatUp 1.5s ease-out forwards',
+        'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
       },
     },
   },

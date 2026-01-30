@@ -1,13 +1,11 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState } from 'react'
 
-import { useRouter } from 'next/navigation'
+import { Landmark, type LucideIcon } from 'lucide-react'
 
-import { ArrowRight, Coins, Landmark } from 'lucide-react'
-import { toast } from 'sonner'
-
-import { depositGoldAction, withdrawGoldAction } from '@/lib/actions/bank'
+import { BANK_CONFIG } from '@/lib/game/constants/interactive'
+import { useBankActions } from '@/lib/hooks/game'
 
 import { Card } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -22,42 +20,62 @@ interface BankActionsProps {
 }
 
 export function BankActions({ gold, balance }: BankActionsProps) {
+  // 1. Hooks
   const [depositAmount, setDepositAmount] = useState('')
   const [withdrawAmount, setWithdrawAmount] = useState('')
-  const [isPending, startTransition] = useTransition()
-  const router = useRouter()
 
-  const handleDeposit = () => {
-    const amount = Number(depositAmount)
-    if (amount <= 0 || amount > gold) return
+  const { handleDeposit, handleWithdraw, isPending } = useBankActions({
+    onSuccess: () => {
+      setDepositAmount('')
+      setWithdrawAmount('')
+    },
+  })
 
-    startTransition(async () => {
-      const [data, err] = await depositGoldAction({ amount })
-      if (!err && data?.success) {
-        toast.success(data.message)
-        setDepositAmount('')
-        router.refresh()
-      } else {
-        toast.error(err?.message || data?.message || 'Vklad selhal')
-      }
-    })
-  }
+  // 2. Navigation State - None currently
 
-  const handleWithdraw = () => {
-    const amount = Number(withdrawAmount)
-    if (amount <= 0 || amount > balance) return
+  // 3. Handlers
+  const onDeposit = () => handleDeposit(Number(depositAmount))
+  const onWithdraw = () => handleWithdraw(Number(withdrawAmount))
 
-    startTransition(async () => {
-      const [data, err] = await withdrawGoldAction({ amount })
-      if (!err && data?.success) {
-        toast.success(data.message)
-        setWithdrawAmount('')
-        router.refresh()
-      } else {
-        toast.error(err?.message || data?.message || 'Výběr selhal')
-      }
-    })
-  }
+  // 4. Sub-components (Render helpers)
+  const BankOperationRow = ({
+    title,
+    amount,
+    setAmount,
+    maxAmount,
+    onAction,
+    actionConfig,
+  }: {
+    title: string
+    amount: string
+    setAmount: (val: string) => void
+    maxAmount: number
+    onAction: () => void
+    actionConfig: { title: string; icon: LucideIcon }
+  }) => (
+    <div className="space-y-2">
+      <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
+        {title}
+      </Label>
+      <div className="flex gap-2">
+        <Input
+          type="number"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+          placeholder="Množství..."
+          className="h-10 bg-black/40"
+        />
+        <LocationAction
+          title={actionConfig.title}
+          icon={actionConfig.icon}
+          onClick={onAction}
+          disabled={!amount || Number(amount) <= 0 || Number(amount) > maxAmount || isPending}
+          loading={isPending}
+          className="p-1"
+        />
+      </div>
+    </div>
+  )
 
   return (
     <LocationLayout
@@ -76,54 +94,27 @@ export function BankActions({ gold, balance }: BankActionsProps) {
         </Card>
 
         <div className="space-y-3">
-          <div className="space-y-2">
-            <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
-              Uložit zlato
-            </Label>
-            <div className="flex gap-2">
-              <Input
-                type="number"
-                value={depositAmount}
-                onChange={(e) => setDepositAmount(e.target.value)}
-                placeholder="Množství..."
-                className="h-10 bg-black/40"
-              />
-              <LocationAction
-                title="Vložit"
-                icon={ArrowRight}
-                onClick={handleDeposit}
-                disabled={!depositAmount || Number(depositAmount) <= 0 || isPending}
-                loading={isPending}
-                className="p-1"
-              />
-            </div>
-            <div className="text-right text-[10px] text-[#8b7355]">
-              V měšci: <span className="text-[#ffd700]">{gold}g</span>
-            </div>
+          <BankOperationRow
+            title={BANK_CONFIG.depositTitle}
+            amount={depositAmount}
+            setAmount={setDepositAmount}
+            maxAmount={gold}
+            onAction={onDeposit}
+            actionConfig={BANK_CONFIG.depositAction}
+          />
+
+          <div className="-mt-2 text-right text-[10px] text-[#8b7355]">
+            V měšci: <span className="text-[#ffd700]">{gold}g</span>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
-              Vybrat zlato
-            </Label>
-            <div className="flex gap-2">
-              <Input
-                type="number"
-                value={withdrawAmount}
-                onChange={(e) => setWithdrawAmount(e.target.value)}
-                placeholder="Množství..."
-                className="h-10 bg-black/40"
-              />
-              <LocationAction
-                title="Vybrat"
-                icon={Coins}
-                onClick={handleWithdraw}
-                disabled={!withdrawAmount || Number(withdrawAmount) <= 0 || isPending}
-                loading={isPending}
-                className="p-1"
-              />
-            </div>
-          </div>
+          <BankOperationRow
+            title={BANK_CONFIG.withdrawTitle}
+            amount={withdrawAmount}
+            setAmount={setWithdrawAmount}
+            maxAmount={balance}
+            onAction={onWithdraw}
+            actionConfig={BANK_CONFIG.withdrawAction}
+          />
         </div>
       </div>
     </LocationLayout>

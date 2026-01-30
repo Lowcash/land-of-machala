@@ -1,19 +1,16 @@
 'use client'
 
-import { useState, useTransition } from 'react'
-
-import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 
 import { ChevronRight, Dices } from 'lucide-react'
-import { toast } from 'sonner'
 
-import { rollDiceAction } from '@/lib/actions/game-actions'
-import { buyRumorAction, buyStayAction } from '@/lib/actions/tavern'
+import { TAVERN_OPTIONS } from '@/lib/game/constants/interactive'
+import { useTavernActions, useTavernGamble } from '@/lib/hooks/game'
 
 import { Slider } from '@/components/ui/slider'
 
-import { DialogPanel } from '../Shared/components/DialogPanel'
 import { LocationAction } from '../Shared/components/LocationAction'
+import { LocationLayout } from '../Shared/components/LocationLayout'
 
 interface TavernActionsProps {
   gold: number
@@ -21,75 +18,40 @@ interface TavernActionsProps {
 }
 
 export function TavernActions({ gold, onInfoAction }: TavernActionsProps) {
-  const router = useRouter()
-  const [isPending, startTransition] = useTransition()
+  // 1. Hooks
+  const { handleRumors, handleStay, handleDrink, isPending } = useTavernActions({
+    gold,
+    onInfoAction,
+  })
+
+  const { betAmount, setBetAmount, diceResult, gameState, rollDice } = useTavernGamble({
+    gold,
+    onInfoAction,
+  })
+
+  // 2. Navigation State
   const [activeTab, setActiveTab] = useState<'menu' | 'gamble'>('menu')
-  const [betAmount, setBetAmount] = useState(10)
-  const [diceResult, setDiceResult] = useState<{ player: number[]; house: number[] } | null>(null)
-  const [gameState, setGameState] = useState<'idle' | 'rolling' | 'result'>('idle')
 
-  const handleRumors = () => {
-    if (gold < 5) {
-      onInfoAction('Nemáš dost zlata na drink pro štamgasta! (5g)')
-      return
+  // 3. Handlers
+  const handleGambleTab = () => setActiveTab('gamble')
+  const handleMenuTab = () => setActiveTab('menu')
+
+  const getActionHandler = (id: string) => {
+    switch (id) {
+      case 'drink':
+        return handleDrink
+      case 'stay':
+        return handleStay
+      case 'rumors':
+        return handleRumors
+      case 'gamble':
+        return handleGambleTab
+      default:
+        return () => {}
     }
-
-    startTransition(async () => {
-      const [data, err] = await buyRumorAction()
-      if (!err && data?.success) {
-        onInfoAction(`${data.message} ${data.rumor}`)
-        router.refresh()
-      } else {
-        toast.error(err?.message || data?.message || 'Nákup selhal')
-      }
-    })
   }
 
-  const handleStay = () => {
-    if (gold < 10) {
-      onInfoAction('Nemáš dost zlata na pokoj! (10g)')
-      return
-    }
-
-    startTransition(async () => {
-      const [data, err] = await buyStayAction()
-      if (!err && data?.success) {
-        onInfoAction(data.message)
-        router.refresh()
-      } else {
-        toast.error(err?.message || data?.message || 'Ubytování selhalo')
-      }
-    })
-  }
-
-  const rollDice = () => {
-    if (gold < betAmount) {
-      onInfoAction('Nemáš dost zlata na sázku!')
-      return
-    }
-
-    startTransition(async () => {
-      setGameState('rolling')
-      try {
-        const [result, err] = await rollDiceAction({ betAmount })
-        if (err) throw err
-
-        await new Promise((r) => setTimeout(r, 600))
-        setDiceResult({ player: result.player, house: result.house })
-        setGameState('result')
-        if (result.result === 'win') {
-          onInfoAction(`Vyhrál jsi ${result.goldChange}g!`)
-        } else if (result.result === 'lose') {
-          onInfoAction(`Prohrál jsi ${Math.abs(result.goldChange)}g.`)
-        } else {
-          onInfoAction('Remíza! Sázka se vrací.')
-        }
-      } catch (error) {
-        onInfoAction(error instanceof Error ? error.message : 'Chyba při hře.')
-      }
-    })
-  }
-
+  // 4. Sub-components (Render helpers)
   const Die = ({ val, rolling }: { val: number; rolling: boolean }) => (
     <div
       className={`flex h-10 w-10 items-center justify-center rounded border-2 border-[#8b6f47] bg-[#f5e6d3] text-2xl font-bold text-black shadow-lg ${rolling ? 'animate-spin' : ''}`}
@@ -100,91 +62,87 @@ export function TavernActions({ gold, onInfoAction }: TavernActionsProps) {
 
   if (activeTab === 'gamble') {
     return (
-      <div className="space-y-4">
-        <LocationAction
-          variant="compact"
-          title="Zpět k baru"
-          icon={ChevronRight}
-          className="h-auto border-none bg-transparent p-0 text-[#8b7355] hover:bg-transparent hover:text-[#d4a574]"
-          onClick={() => setActiveTab('menu')}
-        />
+      <LocationLayout
+        title="U Hladového skřeta"
+        description="Hlasitý smích, cinkání korbelů a vůně pečeného masa. Ideální místo pro odpočinek i hazard."
+      >
+        <div className="space-y-4">
+          <LocationAction
+            variant="compact"
+            title="Zpět k baru"
+            icon={ChevronRight}
+            className="h-auto border-none bg-transparent p-0 text-[#8b7355] hover:bg-transparent hover:text-[#d4a574]"
+            onClick={handleMenuTab}
+          />
 
-        <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-          <div className="flex w-full items-center justify-around py-2">
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[10px] font-bold text-[#ffd700] uppercase">Ty</span>
-              <div className="flex gap-1.5">
-                <Die val={diceResult?.player[0] || 1} rolling={gameState === 'rolling'} />
-                <Die val={diceResult?.player[1] || 1} rolling={gameState === 'rolling'} />
+          <div className="flex flex-col items-center gap-4 rounded border border-[#8b6f47]/30 bg-black/40 p-3">
+            <div className="flex w-full items-center justify-around py-2">
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-bold text-[#ffd700] uppercase">Ty</span>
+                <div className="flex gap-1.5">
+                  <Die val={diceResult?.player[0] || 1} rolling={gameState === 'rolling'} />
+                  <Die val={diceResult?.player[1] || 1} rolling={gameState === 'rolling'} />
+                </div>
+              </div>
+              <div className="text-sm font-bold text-[#8b7355]">VS</div>
+              <div className="flex flex-col items-center gap-1">
+                <span className="text-[10px] font-bold text-[#ff6b6b] uppercase">Hostinský</span>
+                <div className="flex gap-1.5">
+                  <Die val={diceResult?.house[0] || 1} rolling={gameState === 'rolling'} />
+                  <Die val={diceResult?.house[1] || 1} rolling={gameState === 'rolling'} />
+                </div>
               </div>
             </div>
-            <div className="text-sm font-bold text-[#8b7355]">VS</div>
-            <div className="flex flex-col items-center gap-1">
-              <span className="text-[10px] font-bold text-[#ff6b6b] uppercase">Hostinský</span>
-              <div className="flex gap-1.5">
-                <Die val={diceResult?.house[0] || 1} rolling={gameState === 'rolling'} />
-                <Die val={diceResult?.house[1] || 1} rolling={gameState === 'rolling'} />
-              </div>
-            </div>
-          </div>
 
-          <div className="w-full space-y-2 px-2">
-            <div className="flex justify-between text-[10px]">
-              <span className="text-[#8b7355]">Sázka:</span>
-              <span className="font-bold text-[#ffd700]">{betAmount}g</span>
+            <div className="w-full space-y-2 px-2">
+              <div className="flex justify-between text-[10px]">
+                <span className="text-[#8b7355]">Sázka:</span>
+                <span className="font-bold text-[#ffd700]">{betAmount}g</span>
+              </div>
+              <Slider
+                defaultValue={[betAmount]}
+                max={Math.min(gold, 500)}
+                min={10}
+                step={10}
+                onValueChange={(val) => val[0] !== undefined && setBetAmount(val[0])}
+                disabled={gameState === 'rolling'}
+              />
             </div>
-            <Slider
-              defaultValue={[betAmount]}
-              max={Math.min(gold, 500)}
-              min={10}
-              step={10}
-              onValueChange={(val) => val[0] !== undefined && setBetAmount(val[0])}
-              disabled={gameState === 'rolling'}
+
+            <LocationAction
+              title={gameState === 'rolling' ? 'Hází se...' : 'Hrát kostky'}
+              icon={Dices}
+              onClick={rollDice}
+              disabled={gameState === 'rolling' || gold < betAmount || isPending}
+              className="w-full py-2"
             />
           </div>
-
-          <LocationAction
-            title={gameState === 'rolling' ? 'Hází se...' : 'Hrát kostky'}
-            icon={Dices}
-            onClick={rollDice}
-            disabled={gameState === 'rolling' || gold < betAmount || isPending}
-            className="w-full py-2"
-          />
         </div>
-      </div>
+      </LocationLayout>
     )
   }
 
+  // No additional logic needed here, it's all in hooks
+
   return (
-    <DialogPanel
-      npcName="Hostinský"
-      dialogText="Vítej ve Hladovém skřetovi! Co si dáš? Máme pivo jako křen a postele bez štěnic. Nebo si chceš zahrát?"
-      options={[
-        {
-          id: 'beer',
-          text: 'Koupit pivo (5g)',
-          action: () => {}, // TODO: Add logic or keep placeholder if purely flavor in original? Original had empty handler.
-          variant: 'ghost',
-        },
-        {
-          id: 'stay',
-          text: 'Odpočinout si (10g)',
-          action: handleStay,
-          variant: 'secondary',
-        },
-        {
-          id: 'rumors',
-          text: 'Drby a zvěsti (5g)',
-          action: handleRumors,
-          variant: 'secondary',
-        },
-        {
-          id: 'gamble',
-          text: 'Hrát kostky',
-          action: () => setActiveTab('gamble'),
-          variant: 'primary',
-        },
-      ]}
-    />
+    <LocationLayout
+      title="U Hladového skřeta"
+      description="Hlasitý smích, cinkání korbelů a vůně pečeného masa. Ideální místo pro odpočinek i hazard."
+    >
+      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+        {TAVERN_OPTIONS.map((action) => (
+          <LocationAction
+            key={action.id}
+            variant="large"
+            title={action.title}
+            description={action.description}
+            icon={action.icon}
+            onClick={getActionHandler(action.actionId)}
+            disabled={isPending}
+            className="bg-black/40 hover:bg-black/60"
+          />
+        ))}
+      </div>
+    </LocationLayout>
   )
 }

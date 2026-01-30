@@ -1,4 +1,4 @@
-import { Beer, Cross, Hammer, Home, Landmark, ShoppingBag } from 'lucide-react'
+import { Beer, Cross, Hammer, Home, Landmark, ScrollText, ShoppingBag, Trees } from 'lucide-react'
 
 import type { View, ViewConfig } from '@/lib/types/game'
 
@@ -38,5 +38,17 @@ export const viewData: Record<View, ViewConfig> = {
     title: 'Tržiště',
     icon: ShoppingBag,
     desc: 'Rušné tržiště plné kupců a obchodníků. Můžeš zde najít opravdu cokoliv, pokud máš dost zlata.',
+  },
+  board: {
+    bg: '/assets/locations/city-background.jpg',
+    title: 'Vývěska úkolů',
+    icon: ScrollText,
+    desc: 'Dřevěná tabule polepená pergameny. Každý list papíru je voláním o pomoc nebo příslibem odměny pro odvážné dobrodruhy.',
+  },
+  forest: {
+    bg: '/assets/locations/forest.jpg',
+    title: 'Temný Hvozd',
+    icon: Trees,
+    desc: 'Hustý, neprostupný les se rozkládá za hradbami města. V korunách stromů šumí vítr a ve stínech se skrývá nebezpečí i kořist. Je to ideální místo pro <span class="text-[#ff6b6b]">lov</span> a získávání zkušeností.',
   },
 }

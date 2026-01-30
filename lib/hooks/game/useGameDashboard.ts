@@ -1,15 +1,14 @@
 'use client'
 
-import { useState } from 'react'
-
 import { viewData } from '@/lib/game/constants/views'
 import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
-import type { CharacterData, View } from '@/lib/types/game'
+import type { Buff, CharacterData, View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
 interface DashboardCharacterData extends CharacterData {
   inventory?: MarketItem[]
   xpToNextLevel?: number
+  activeBuffs?: Buff[]
 }
 
 interface UseGameDashboardProps {
@@ -17,20 +16,9 @@ interface UseGameDashboardProps {
   initialView?: string
 }
 
-interface Buff {
-  name: string
-  stat: string
-  val: number
-}
-
 export function useGameDashboard({ character, initialView }: UseGameDashboardProps) {
   const { currentView, goToView, goBack } = useGameView((initialView as View) || 'town')
   const { infoText, isShaking, handleSetInfoText } = useInfoLog()
-
-  // Local state for game interactions
-  const [gold, setGold] = useState(character.gold || 0)
-  const [activeBuffs, setActiveBuffs] = useState<Buff[]>([])
-  const [inventory, setInventory] = useState<MarketItem[]>(character.inventory || [])
 
   const { handleMove } = useGameMove({
     handleSetInfoText,
@@ -46,12 +34,9 @@ export function useGameDashboard({ character, initialView }: UseGameDashboardPro
     infoText,
     isShaking,
     handleSetInfoText,
-    gold,
-    setGold,
-    activeBuffs,
-    setActiveBuffs,
-    inventory,
-    setInventory,
+    gold: character.gold || 0,
+    activeBuffs: character.activeBuffs || [],
+    inventory: character.inventory || [],
     handleMove,
     currentViewData,
   }

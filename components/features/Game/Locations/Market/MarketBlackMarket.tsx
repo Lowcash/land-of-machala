@@ -7,11 +7,14 @@ import type { MarketItem } from './types'
 interface BlackMarketProps {
   stock: MarketItem[]
   handleBuy: (item: MarketItem) => void
+  disabled?: boolean
 }
 
-export function BlackMarket({ stock, handleBuy }: BlackMarketProps) {
+export function BlackMarket({ stock, handleBuy, disabled = false }: BlackMarketProps) {
   return (
-    <div className="space-y-2 rounded border border-[#b66bd4]/30 bg-[#0a050a] p-2">
+    <div
+      className={`space-y-2 rounded border border-[#b66bd4]/30 bg-[#0a050a] p-2 ${disabled ? 'pointer-events-none opacity-50' : ''}`}
+    >
       <div className="mb-2 flex items-center justify-center gap-2 text-center text-xs font-bold tracking-wider text-[#b66bd4] uppercase">
         <Skull className="h-3 w-3" />
         Nelegální zboží

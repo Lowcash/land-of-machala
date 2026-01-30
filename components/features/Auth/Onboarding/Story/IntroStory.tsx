@@ -22,7 +22,10 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
         <BookOpen className="text-game-gold mx-auto mb-4 h-12 w-12" />
 
         <div className="flex min-h-32 flex-col justify-center sm:min-h-28">
-          <h1 className="text-game-gold-muted font-fantasy text-xl leading-relaxed italic sm:text-2xl">
+          <h1
+            className="text-game-gold font-fantasy animate-fade-in-wave text-xl leading-relaxed italic sm:text-2xl"
+            style={{ textShadow: '0 0 10px rgba(255, 215, 0, 0.3)' }}
+          >
             &quot;{currentStory.text}&quot;
           </h1>
         </div>
@@ -31,7 +34,7 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
           {currentStory.choices.map((choice, idx) => {
             const nextParams = new URLSearchParams()
             if (choice.nextStep === 'end') {
-              nextParams.set('step', 'creation')
+              nextParams.set('step', '1') // Step 1 = character creation
             } else {
               nextParams.set('story', choice.nextStep.toString())
             }
@@ -45,8 +48,10 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
                 href={`?${nextParams.toString()}`}
                 className={cn(
                   'group border-game-copper hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold block w-full rounded-lg border bg-black/60 p-3 text-left transition-all hover:scale-[1.02] sm:p-4',
-                  'font-fantasy text-xs text-[#f5e6d3] sm:text-sm md:text-base'
+                  'font-fantasy text-xs text-[#f5e6d3] sm:text-sm md:text-base',
+                  'animate-in zoom-in-95 duration-300'
                 )}
+                style={{ animationDelay: `${idx * 150}ms`, animationFillMode: 'both' }}
               >
                 <span className="flex items-center gap-3">
                   <span className="border-game-copper text-game-copper-muted group-hover:border-game-gold group-hover:text-game-gold flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs">
@@ -60,7 +65,7 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
         </div>
 
         <Link
-          href="?step=creation"
+          href="?step=1"
           className="text-game-copper-muted hover:text-game-gold mx-auto mt-8 flex w-fit items-center justify-center gap-2 text-xs transition-colors sm:text-sm"
         >
           <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />

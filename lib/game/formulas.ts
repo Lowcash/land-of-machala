@@ -9,6 +9,22 @@ interface Stats {
   stamina: number
 }
 
+/**
+ * Applies active buffs to base stats.
+ */
+export function applyBuffsToStats(
+  stats: Stats,
+  buffs: Array<{ type: string; value: number }> = []
+): Stats {
+  const buffedStats = { ...stats }
+  buffs.forEach((buff) => {
+    // Current Healer buffs: "STR" and "STA"
+    if (buff.type === 'STR') buffedStats.strength += buff.value
+    if (buff.type === 'STA') buffedStats.stamina += buff.value
+  })
+  return buffedStats
+}
+
 interface EquipmentItem {
   strength?: number
   intelligence?: number

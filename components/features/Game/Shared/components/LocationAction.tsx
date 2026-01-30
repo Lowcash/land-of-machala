@@ -1,5 +1,3 @@
-'use client'
-
 import type { ReactNode } from 'react'
 
 import type { LucideIcon } from 'lucide-react'
@@ -16,7 +14,7 @@ interface LocationActionProps {
   icon: LucideIcon
   onClick?: () => void
   children?: ReactNode
-  variant?: 'default' | 'large' | 'compact'
+  variant?: 'default' | 'large' | 'compact' | 'danger' | 'secondary' | 'ghost'
   className?: string
   disabled?: boolean
   loading?: boolean
@@ -54,7 +52,12 @@ export function LocationAction({
     )
   }
 
-  if (variant === 'compact') {
+  if (
+    variant === 'compact' ||
+    variant === 'danger' ||
+    variant === 'secondary' ||
+    variant === 'ghost'
+  ) {
     return (
       <ActionItem
         label={title}
@@ -63,8 +66,8 @@ export function LocationAction({
         onClick={onClick || (() => {})}
         disabled={disabled}
         loading={loading}
-        variant="secondary"
-        className={cn('h-11 w-full justify-between px-4', className)}
+        variant={variant === 'compact' ? 'secondary' : variant}
+        className={cn('h-auto w-full justify-between px-4 py-3', className)}
         layout="row"
       />
     )

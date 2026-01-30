@@ -23,6 +23,7 @@ import {
   updateObjectiveSchema,
 } from '@/lib/schemas/quest'
 
+import { logActivity } from './activity-log'
 import { characterProcedure } from './procedures'
 
 /**
@@ -55,6 +56,7 @@ export const startQuestAction = characterProcedure
     }
 
     const characterQuest = await startQuest(character.id, input.questId)
+    await logActivity(character.id, 'quest', `Přijal jsi úkol: ${characterQuest.quest.title}`)
     return { success: true, quest: characterQuest, message: 'Úkol byl přijat.' }
   })
 
@@ -112,6 +114,7 @@ export const completeQuestAction = characterProcedure
     }
 
     const completed = await completeQuest(character.id, input.questId)
+    await logActivity(character.id, 'quest', `Dokončil jsi úkol: ${completed.quest.title}`)
 
     // Check achievements
     const allCharacterQuests = await getCharacterQuests(character.id, 'COMPLETED')
@@ -145,6 +148,7 @@ export const abandonQuestAction = characterProcedure
     const { character } = ctx
 
     await abandonQuest(character.id, input.questId)
+    await logActivity(character.id, 'info', `Opustil jsi úkol.`)
 
     return { success: true, message: 'Úkol byl opuštěn.' }
   })

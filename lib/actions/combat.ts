@@ -9,10 +9,13 @@ import {
 import { getEquippedItems } from '@/entity/inventory'
 
 import { auth } from '@/lib/auth'
+import { prisma } from '@/lib/db'
 import {
+  applyBuffsToStats,
   calculateAttackDamage,
   calculateCombatDamage,
   calculateDefense,
+  calculateDodgeChance,
   calculateExperienceReward,
   calculateGoldReward,
   isCriticalHit,
@@ -45,6 +48,15 @@ export const initiateCombatAction = characterProcedure
       return { success: false, message: 'Žádný nepřítel není blízko tvého okolí.' }
     }
 
+    await updateCharacterCombatState(character.id, {
+      inCombat: true,
+      combatEnemyId: enemy.id,
+      combatTurn: 'player',
+      combatPlayerHp: character.hp,
+      combatEnemyHp: enemy.maxHp,
+      currentView: 'combat',
+    })
+
     return {
       success: true,
       enemy,
@@ -70,22 +82,30 @@ export const performCombatActionAction = characterProcedure
 
     const equipment = await getEquippedItems(character.id)
 
+    const baseStats = {
+      strength: character.strength,
+      intelligence: character.intelligence,
+      agility: character.agility,
+      stamina: character.stamina,
+    }
+
+    // Apply active buffs (e.g., from Healer)
+    const buffedStats = applyBuffsToStats(
+      baseStats,
+      (character as unknown as { buffs?: Array<{ type: string; value: number }> }).buffs
+    )
+
     // Calculate player attributes
     const playerAttack = calculateAttackDamage(
       10, // base attack
-      {
-        strength: character.strength,
-        intelligence: character.intelligence,
-        agility: character.agility,
-        stamina: character.stamina,
-      },
+      buffedStats,
       equipment
     )
 
     const playerDefense = calculateDefense(
       {
-        stamina: character.stamina,
-        agility: character.agility,
+        stamina: buffedStats.stamina,
+        agility: buffedStats.agility,
       },
       equipment
     )
@@ -103,39 +123,66 @@ export const performCombatActionAction = characterProcedure
     let enemyCrit = false
     const combatLog: string[] = []
 
+    const actionResult = {
+      playerDodged: false,
+      enemyDodged: false,
+      playerCrit: false,
+      enemyCrit: false,
+    }
+
+    // 4. Combat Logic
+    const playerDodgeChance = calculateDodgeChance(baseStats.agility)
+    // Enemy dodge chance - mock or derive. For now 5% + level scaling?
+    const enemyDodgeChance = Math.min(30, enemy.level * 2)
+
     // 1. Process Player Choice
     switch (input.action) {
       case 'attack': {
-        playerCrit = isCriticalHit(character.agility)
-        const baseDamage = calculateCombatDamage(playerAttack, enemy.defense)
-        playerDamage = playerCrit ? baseDamage * 2 : baseDamage
+        const enemyDodged = Math.random() * 100 < enemyDodgeChance
 
-        combatLog.push(
-          playerCrit
-            ? `Kritický zásah! Udělil jsi ${playerDamage} poškození!`
-            : `Zaútočil jsi za ${playerDamage} poškození!`
-        )
+        if (enemyDodged) {
+          combatLog.push(`${enemy.name} se tvému útoku vyhnul!`)
+          playerDamage = 0
+          actionResult.enemyDodged = true
+        } else {
+          playerCrit = isCriticalHit(character.agility)
+          const baseDamage = calculateCombatDamage(playerAttack, enemy.defense)
+          playerDamage = playerCrit ? baseDamage * 2 : baseDamage
+          actionResult.playerCrit = playerCrit
+
+          combatLog.push(
+            playerCrit
+              ? `Kritický zásah! Udělil jsi ${playerDamage} poškození!`
+              : `Zaútočil jsi za ${playerDamage} poškození!`
+          )
+        }
         break
       }
 
       case 'defend': {
         combatLog.push('Zaujal jsi obranný postoj!')
         // Defense reduces incoming damage significantly
-        enemyDamage = Math.floor(calculateCombatDamage(enemy.attack, playerDefense * 2) * 0.5)
         break
       }
 
       case 'special': {
         if (character.mana >= 10) {
-          playerDamage = Math.floor(playerAttack * 1.5)
-          await updateCharacterResources(character.id, {
-            mana: character.mana - 10,
-          })
-          combatLog.push(`Použil jsi speciální útok za ${playerDamage} poškození!`)
+          const enemyDodged = Math.random() * 100 < enemyDodgeChance
+
+          if (enemyDodged) {
+            combatLog.push(`${enemy.name} se tvému speciálnímu útoku vyhnul!`)
+            await updateCharacterResources(character.id, { mana: character.mana - 10 })
+            playerDamage = 0
+            actionResult.enemyDodged = true
+          } else {
+            playerDamage = Math.floor(playerAttack * 1.5)
+            await updateCharacterResources(character.id, {
+              mana: character.mana - 10,
+            })
+            combatLog.push(`Použil jsi speciální útok za ${playerDamage} poškození!`)
+          }
         } else {
           combatLog.push('Nedostatek many pro speciální útok!')
-          // Player essentially loses turn if they try and fail?
-          // Or we could return error. Let's return a soft error in log.
         }
         break
       }
@@ -158,15 +205,32 @@ export const performCombatActionAction = characterProcedure
 
     // 2. Process Enemy Counter (Skipped if player defended since it's handled in switch)
     if (input.action !== 'defend') {
-      enemyCrit = isCriticalHit(enemy.attack * 0.1)
-      const baseDamage = calculateCombatDamage(enemy.attack, playerDefense)
-      enemyDamage = enemyCrit ? baseDamage * 2 : baseDamage
+      const playerDodged = Math.random() * 100 < playerDodgeChance
 
-      combatLog.push(
-        enemyCrit
-          ? `${enemy.name} udělil kritický zásah za ${enemyDamage} poškození!`
-          : `${enemy.name} útočí za ${enemyDamage} poškození!`
-      )
+      if (playerDodged) {
+        combatLog.push(`Vyhnul ses útoku ${enemy.name}!`)
+        enemyDamage = 0
+        actionResult.playerDodged = true
+      } else {
+        enemyCrit = isCriticalHit(enemy.attack * 0.1)
+        const baseDamage = calculateCombatDamage(enemy.attack, playerDefense)
+        enemyDamage = enemyCrit ? baseDamage * 2 : baseDamage
+        actionResult.enemyCrit = enemyCrit
+
+        combatLog.push(
+          enemyCrit
+            ? `${enemy.name} udělil kritický zásah za ${enemyDamage} poškození!`
+            : `${enemy.name} útočí za ${enemyDamage} poškození!`
+        )
+      }
+    } else {
+      // Defend Logic: Enemy attacks but damage is reduced (and no dodge while defending potentially? or Keep dodge?)
+      // Let's say Defend = Guaranteed Block (no dodge needed) but reduced damage
+      enemyCrit = isCriticalHit(enemy.attack * 0.1)
+      const baseDamage = calculateCombatDamage(enemy.attack, playerDefense * 2) // Double def
+      enemyDamage = Math.floor((enemyCrit ? baseDamage * 2 : baseDamage) * 0.5) // Halved dmg
+
+      combatLog.push(`${enemy.name} útočí do tvé obrany za ${enemyDamage} poškození.`)
     }
 
     // 3. Update Health States
@@ -196,6 +260,7 @@ export const performCombatActionAction = characterProcedure
 
       const combatAchievements = await checkCombatAchievements(character.id, 1)
       const levelAchievements = await checkLevelAchievements(character.id, updatedCharacter.level)
+      const levelUp = updatedCharacter.level > character.level
 
       return {
         success: true,
@@ -205,6 +270,12 @@ export const performCombatActionAction = characterProcedure
         playerHp: newPlayerHp,
         enemyHp: newEnemyHp,
         achievements: [...combatAchievements, ...levelAchievements],
+        levelUp,
+        newLevel: updatedCharacter.level,
+        playerCrit: actionResult.playerCrit,
+        enemyCrit: actionResult.enemyCrit,
+        playerDodged: actionResult.playerDodged,
+        enemyDodged: actionResult.enemyDodged,
       }
     }
 
@@ -234,18 +305,66 @@ export const performCombatActionAction = characterProcedure
       enemyHp: newEnemyHp,
       playerDamage,
       enemyDamage,
-      playerCrit,
-      enemyCrit,
+      playerCrit: actionResult.playerCrit,
+      enemyCrit: actionResult.enemyCrit,
+      playerDodged: actionResult.playerDodged,
+      enemyDodged: actionResult.enemyDodged,
     }
   })
 
 export const performUseItemAction = characterProcedure
   .createServerAction()
   .input(useItemSchema)
-  .handler(async () => {
+  .handler(async ({ input, ctx }) => {
+    const { character } = ctx
+    const { itemId } = input
+
+    // 1. Fetch inventory item
+    const inventoryItem = await prisma.inventoryItem.findFirst({
+      where: {
+        characterId: character.id,
+        id: itemId,
+      },
+      include: {
+        item: true,
+      },
+    })
+
+    if (!inventoryItem) {
+      throw new Error('Předmět nebyl nalezen v inventáři.')
+    }
+
+    const { item } = inventoryItem
+
+    if (item.type !== 'CONSUMABLE') {
+      throw new Error('Tento předmět nelze použít v boji.')
+    }
+
+    // 2. Apply effects
+    let message = 'Předmět byl úspěšně použit.'
+
+    if (item.healing > 0) {
+      const newHp = Math.min(character.maxHp, character.hp + item.healing)
+      await updateCharacterResources(character.id, { hp: newHp })
+      message = `Použil jsi ${item.name} a vyléčil se o ${item.healing} HP.`
+    }
+
+    if (item.manaRestore > 0) {
+      const newMana = Math.min(character.maxMana, character.mana + item.manaRestore)
+      await updateCharacterResources(character.id, { mana: newMana })
+      message = `Použil jsi ${item.name} a obnovil ${item.manaRestore} Many.`
+    }
+
+    // 3. Consume item
+    const { consumeInventoryItem } = await import('@/entity/inventory')
+    const { logActivity } = await import('./activity-log')
+
+    await consumeInventoryItem(character.id, inventoryItem.id, 1)
+    await logActivity(character.id, 'info', message)
+
     return {
       success: true,
-      message: 'Předmět byl úspěšně použit.',
+      message,
     }
   })
 

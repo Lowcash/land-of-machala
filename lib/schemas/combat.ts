@@ -27,4 +27,10 @@ export const initiateCombatSchema = z.object({
 
 export const endCombatSchema = z.object({
   result: z.enum(['victory', 'defeat', 'flee']),
+  rewards: z
+    .object({
+      xp: z.number(),
+      gold: z.number(),
+    })
+    .optional(),
 })

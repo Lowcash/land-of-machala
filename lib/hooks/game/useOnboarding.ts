@@ -1,5 +1,3 @@
-'use client'
-
 import { classes, races } from '@/lib/game/onboarding'
 import { parseOnboardingParams } from '@/lib/schemas/onboardingParams'
 

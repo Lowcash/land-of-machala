@@ -48,6 +48,13 @@ export async function getCharacter(id: string) {
           achievement: true,
         },
       },
+      buffs: {
+        where: {
+          expiresAt: {
+            gt: new Date(),
+          },
+        },
+      },
     },
   })
 
@@ -80,6 +87,13 @@ export async function getCharacterByUserId(userId: string) {
       achievements: {
         include: {
           achievement: true,
+        },
+      },
+      buffs: {
+        where: {
+          expiresAt: {
+            gt: new Date(),
+          },
         },
       },
     },

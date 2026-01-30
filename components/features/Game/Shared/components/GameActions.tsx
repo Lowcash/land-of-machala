@@ -1,15 +1,8 @@
-'use client'
-
 import type { ReactNode } from 'react'
 
-import {
-  ArrowDown,
-  ArrowLeft as ArrowLeftIcon,
-  ArrowRight,
-  ArrowUp,
-  Home,
-  type LucideIcon,
-} from 'lucide-react'
+import { ArrowLeft, Home, type LucideIcon } from 'lucide-react'
+
+import { type Direction, GAME_ACTION_LABELS, GAME_DIRECTIONS } from '@/lib/constants/game-actions'
 
 import { GameActionPanel } from '@/components/features/Game/Shared/components/GameActionPanel'
 import { ActionGrid, ActionItem } from '@/components/ui/Action'
@@ -21,7 +14,7 @@ interface GameActionsProps {
   showDirections: boolean
   onToggleDirections: () => void
   onStay?: () => void
-  onMove?: (direction: 'north' | 'south' | 'east' | 'west') => void
+  onMove?: (direction: Direction) => void
   onBack?: () => void
   title?: string
   icon?: LucideIcon
@@ -38,37 +31,6 @@ export function GameActions({
   title,
   icon: Icon,
 }: GameActionsProps) {
-  const directions = [
-    {
-      direction: 'north',
-      label: 'Sever',
-      subLabel: 'Hory, Doly',
-      icon: ArrowUp,
-      bg: '/assets/locations/mountains-background.jpg',
-    },
-    {
-      direction: 'south',
-      label: 'Jih',
-      subLabel: 'Pláně, Farmy',
-      icon: ArrowDown,
-      bg: '/assets/locations/plains-background.jpg',
-    },
-    {
-      direction: 'east',
-      label: 'Východ',
-      subLabel: 'Poušť, Oáza',
-      icon: ArrowRight,
-      bg: '/assets/locations/desert-background.jpg',
-    },
-    {
-      direction: 'west',
-      label: 'Západ',
-      subLabel: 'Temný les',
-      icon: ArrowLeftIcon,
-      bg: '/assets/locations/forest-background.jpg',
-    },
-  ] as const
-
   if (showDirections) {
     return (
       <GameActionPanel title={title} icon={Icon}>
@@ -79,12 +41,12 @@ export function GameActions({
             className="w-full gap-2"
           >
             <Home className="h-4 w-4" />
-            <span>Zůstat ve městě</span>
+            <span>{GAME_ACTION_LABELS.STAY_IN_TOWN}</span>
           </Button>
         </div>
 
         <ActionGrid columns={{ default: 1, md: 2 }}>
-          {directions.map((d) => (
+          {GAME_DIRECTIONS.map((d) => (
             <ActionItem
               key={d.direction}
               label={d.label}
@@ -115,8 +77,8 @@ export function GameActions({
       footer={
         onBack && (
           <Button variant="game-primary" onClick={onBack} className="w-full gap-2">
-            <ArrowLeftIcon className="h-4 w-4" />
-            Vrátit se do města
+            <ArrowLeft className="h-4 w-4" />
+            {GAME_ACTION_LABELS.BACK_TO_TOWN}
           </Button>
         )
       }

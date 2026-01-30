@@ -1,93 +1,52 @@
 'use client'
 
 import { Zap } from 'lucide-react'
-import { toast } from 'sonner'
 
-import { HEALER_SERVICES } from '@/lib/game/constants/items'
-import { ServiceActions } from '@/lib/game/constants/mechanics'
-import { HEALER_CONSTANTS } from '@/lib/game/constants/values'
+import { HEALER_SHOP_CONFIG, HEALER_SHOP_ITEMS } from '@/lib/game/constants/shops'
+import { useShopActions } from '@/lib/hooks/game'
+import type { Buff } from '@/lib/types/game'
+import type { ShopItem } from '@/lib/types/shop'
 
-import { type TradeItem, TradePanel } from '../../Shared/components/TradePanel'
-
-interface Buff {
-  name: string
-  stat: string
-  val: number
-}
+import { GenericShopDisplay } from '../../Shared/Shop/GenericShopDisplay'
 
 interface HealerShopProps {
-  gold: number
-  setGold: (gold: number | ((prev: number) => number)) => void
   activeBuffs: Buff[]
-  setActiveBuffs: (buffs: Buff[] | ((prev: Buff[]) => Buff[])) => void
+  gold: number
 }
 
-export function HealerShop({ gold, setGold, activeBuffs, setActiveBuffs }: HealerShopProps) {
-  const handleBuy = (item: TradeItem) => {
-    if (gold < item.price) {
-      toast.error('Nemáš dost zlata!')
-      return
-    }
+export function HealerShop({ activeBuffs, gold }: HealerShopProps) {
+  // 1. Hooks
+  const { handlePurchaseService } = useShopActions()
 
-    setGold((prev) => prev - item.price)
+  // 2. Navigation State - None currently
 
-    // Lookup service by ID or check Action directly if mapped
-    const service = HEALER_SERVICES.find((s) => s.name === item.name)
+  // 3. Handlers
+  const getServiceAction = (item: ShopItem) => () => handlePurchaseService(item.id.toString())
 
-    if (service?.action === ServiceActions.HEAL) {
-      toast.success('Léčitel ti vyčistil rány. Cítíš se lépe.')
-    } else if (service?.action === ServiceActions.BUFF_STRENGTH) {
-      setActiveBuffs((prev) => [
-        ...prev,
-        { name: 'Síla Býka', stat: 'strength', val: HEALER_CONSTANTS.BUFF_VALUE },
-      ])
-      toast.success('Cítíš příliv nové síly!')
-    } else if (service?.action === ServiceActions.BUFF_STAMINA) {
-      setActiveBuffs((prev) => [
-        ...prev,
-        { name: 'Výdrž kance', stat: 'stamina', val: HEALER_CONSTANTS.BUFF_VALUE },
-      ])
-      toast.success('Tvá kůže ztvrdla jako kámen!')
-    }
+  // 4. Sub-components (Render helpers)
+  const ActiveBuffsList = () => {
+    if (activeBuffs.length === 0) return null
+    return (
+      <div className="mb-4 rounded border border-[#ffd700]/20 bg-[#ffd700]/5 p-2">
+        <div className="mb-1 text-[10px] font-bold text-[#ffd700] uppercase">Aktivní požehnání</div>
+        {activeBuffs.map((b, i) => (
+          <div key={i} className="flex items-center gap-2 text-[10px] text-[#f5e6d3]">
+            <Zap className="h-3 w-3 text-[#ffd700]" />
+            {b.name} (+{b.val} {b.stat})
+          </div>
+        ))}
+      </div>
+    )
   }
 
-  const tradeItems: TradeItem[] = HEALER_SERVICES.map((s) => ({
-    id: s.name, // Using name as ID for now
-    name: s.name,
-    description: s.description,
-    price: s.price,
-    icon: s.icon || Zap,
-    type: 'Služba',
-    canHaggle: false,
-    action: s.action,
-  }))
-
-  const activeBuffsContent = activeBuffs.length > 0 && (
-    <div className="rounded border border-[#ffd700]/20 bg-[#ffd700]/5 p-2">
-      <div className="mb-1 text-[10px] font-bold text-[#ffd700] uppercase">Aktivní požehnání</div>
-      {activeBuffs.map((b, i) => (
-        <div key={i} className="flex items-center gap-2 text-[10px] text-[#f5e6d3]">
-          <Zap className="h-3 w-3 text-[#ffd700]" />
-          {b.name} (+{b.val} {b.stat})
-        </div>
-      ))}
-    </div>
-  )
-
   return (
-    <div className="space-y-4">
-      <div className="mb-2 text-center text-sm text-[#8b7355] italic">
-        &quot;Tvé rány se zahojí, tvá duše najde klid. Moje byliny jsou ti k službám.&quot;
-      </div>
-
-      {activeBuffsContent}
-
-      <TradePanel
-        items={tradeItems}
-        onAction={handleBuy}
-        actionLabel="Koupit"
-        emptyMessage="Léčitel nic nenabízí."
-      />
-    </div>
+    <GenericShopDisplay
+      config={HEALER_SHOP_CONFIG}
+      items={HEALER_SHOP_ITEMS}
+      gold={gold}
+      getItemAction={getServiceAction}
+    >
+      <ActiveBuffsList />
+    </GenericShopDisplay>
   )
 }

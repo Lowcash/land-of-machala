@@ -1,0 +1,61 @@
+import { ArrowLeft, Shield, Sparkles, Target, Zap } from 'lucide-react'
+
+export const COMBAT_ACTIONS = [
+  {
+    id: 'attack',
+    label: 'Rychlý útok',
+    subLabel: 'Základní',
+    loadingLabel: 'Útočím...',
+    action: 'attack',
+    group: 'offensive',
+    variant: 'primary',
+    icon: Zap,
+    className: undefined,
+  },
+  {
+    id: 'strong-attack',
+    label: 'Silný úder',
+    subLabel: 'Vysoké poškození',
+    loadingLabel: 'Útočím...',
+    action: 'attack',
+    group: 'offensive',
+    variant: 'danger',
+    icon: Target,
+    className: undefined,
+  },
+  {
+    id: 'defend',
+    label: 'Obrana',
+    subLabel: 'Sníží poškození',
+    loadingLabel: 'Bráním...',
+    action: 'defend',
+    group: 'defensive',
+    variant: 'secondary',
+    icon: Shield,
+    className: undefined,
+  },
+  {
+    id: 'special',
+    label: 'Speciální útok',
+    subLabel: '-30 Mana',
+    loadingLabel: 'Vyvolávám...',
+    action: 'special',
+    variant: 'secondary',
+    group: 'offensive',
+    icon: Sparkles,
+    className: 'border-game-magic text-game-magic hover:bg-game-magic/10',
+  },
+  {
+    id: 'flee',
+    label: 'Útěk',
+    subLabel: 'Šance 50%',
+    loadingLabel: 'Utíkám...',
+    action: 'flee',
+    variant: 'ghost',
+    group: 'defensive',
+    icon: ArrowLeft,
+    className: 'text-[#8b7355] hover:text-[#d4a574]',
+  },
+] as const
+
+export type CombatActionType = (typeof COMBAT_ACTIONS)[number]['action']

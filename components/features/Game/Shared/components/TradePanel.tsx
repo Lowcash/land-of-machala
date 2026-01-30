@@ -19,6 +19,7 @@ export interface TradePanelProps {
   emptyMessage?: string
   haggledItems?: Record<string | number, HaggleState>
   currencyIcon?: React.ReactNode // e.g., "g" or icon
+  disabled?: boolean
 }
 
 export function TradePanel({
@@ -29,6 +30,7 @@ export function TradePanel({
   emptyMessage = 'Žádné předměty.',
   haggledItems = {},
   currencyIcon = 'g',
+  disabled = false,
 }: TradePanelProps) {
   return (
     <div className="scrollbar-custom max-h-75 space-y-2 overflow-y-auto">
@@ -41,9 +43,11 @@ export function TradePanel({
           return (
             <div
               key={item.id}
-              onClick={() => onAction(item)}
+              onClick={() => !disabled && onAction(item)}
               title={actionLabel}
-              className="group relative w-full cursor-pointer rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all hover:border-[#69ccf0]"
+              className={`group relative w-full rounded border border-[#8b6f47]/50 bg-black/60 p-2 text-left transition-all ${
+                disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:border-[#69ccf0]'
+              }`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -67,12 +71,13 @@ export function TradePanel({
                     <Button
                       onClick={(e) => {
                         e.stopPropagation()
-                        onHaggle(item, e)
+                        if (!disabled) onHaggle(item, e)
                       }}
                       variant="ghost"
                       size="icon"
                       className="h-6 w-6 p-1 text-[#8b7355] hover:bg-[#69ccf0]/20 hover:text-[#69ccf0]"
                       title="Smlouvat o ceně"
+                      disabled={disabled}
                     >
                       <MessageSquare className="h-3 w-3" />
                     </Button>

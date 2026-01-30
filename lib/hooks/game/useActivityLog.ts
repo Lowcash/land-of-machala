@@ -2,17 +2,8 @@
 
 import { useEffect, useState } from 'react'
 
-import type { Prisma } from '@prisma/client'
-
 import { getCharacterActivityLog } from '@/lib/actions/activity-log'
-
-interface ActivityLogEntry {
-  id: string
-  timestamp: Date
-  message: string
-  type: string
-  metadata: Prisma.JsonValue
-}
+import type { ActivityLogEntry } from '@/lib/types/game'
 
 export function useActivityLog(characterId: string, refreshInterval = 30000) {
   const [logs, setLogs] = useState<ActivityLogEntry[]>([])

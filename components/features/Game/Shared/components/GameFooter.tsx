@@ -1,13 +1,15 @@
-'use client'
-
+import { headers } from 'next/headers'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 
 import { GAME_NAV_ITEMS } from '@/lib/game/views'
 import { cn } from '@/lib/utils'
 
-export function GameFooter() {
-  const pathname = usePathname()
+export async function GameFooter() {
+  const headersList = await headers()
+  // Since we are in a server component rendering in a layout or page,
+  // we can't always rely on custom headers if middleware didn't run or for static pages?
+  // But our middleware runs for all except api/static.
+  const pathname = headersList.get('x-pathname') || '/'
 
   return (
     <div className="w-full py-2">

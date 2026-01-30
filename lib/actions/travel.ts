@@ -52,7 +52,7 @@ export const travelToLocation = characterProcedure
       distance,
     })
 
-    await discoverNearbyLocations(character.id)
+    await discoverNearbyLocations()
 
     // Combat check
     if (!location.isSafeZone && Math.random() < 0.6) {

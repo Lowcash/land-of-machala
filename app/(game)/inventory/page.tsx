@@ -4,6 +4,7 @@ import { redirect } from 'next/navigation'
 import { Backpack } from 'lucide-react'
 
 import { getInventoryPageData } from '@/lib/loaders/inventory-loader'
+import type { CharacterData } from '@/lib/types/game'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { Inventory } from '@/components/features/Inventory'
@@ -39,7 +40,7 @@ export default async function InventoryPage({
       maxWidth="lg"
     >
       <Inventory
-        character={data.character}
+        character={data.character as unknown as CharacterData}
         initialInventory={data.inventory}
         maxSlots={20}
         searchParams={resolvedParams}

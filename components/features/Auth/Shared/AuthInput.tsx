@@ -41,7 +41,7 @@ export function AuthInput({
           ref={ref}
           {...props}
           className={cn(
-            'font-fantasy bg-game-wood-dark/50 border-game-gold/30 text-game-gold placeholder:text-game-gold/30 focus-visible:border-game-gold pl-10 focus-visible:ring-0',
+            'font-fantasy border-[#8b6f47]/30 bg-black/40 pl-10 text-[#fef9c3] placeholder:text-[#8b6f47]/50 focus-visible:border-[#d4a574]/50 focus-visible:ring-0',
             error && 'border-red-500/50 focus-visible:border-red-500',
             className
           )}

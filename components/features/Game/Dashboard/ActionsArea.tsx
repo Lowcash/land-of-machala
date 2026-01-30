@@ -1,63 +1,63 @@
-import React, { Suspense } from 'react'
+'use client'
+
+import { Suspense } from 'react'
 
 import dynamic from 'next/dynamic'
 
 import { viewData } from '@/lib/game/constants/views'
-import type { View } from '@/lib/types/game'
+import { useGameMove, useGameView } from '@/lib/hooks/game'
+import type { Buff, View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
+import type { MergedQuest } from '@/components/features/Quest/Shared/types'
+
 import { GameActions } from '../Shared/components/GameActions'
+import { useGameDashboardState } from './GameDashboardProvider'
 
 const BankActions = dynamic(() => import('../Locations/BankActions').then((mod) => mod.BankActions))
-const HealerShop = dynamic(() =>
-  import('../Locations/Shops/HealerShop').then((mod) => mod.HealerShop)
-)
+
 const MarketShop = dynamic(() =>
   import('../Locations/Shops/MarketShop').then((mod) => mod.MarketShop)
 )
-const SmithShop = dynamic(() => import('../Locations/Shops/SmithShop').then((mod) => mod.SmithShop))
+
 const TavernActions = dynamic(() =>
   import('../Locations/TavernActions').then((mod) => mod.TavernActions)
 )
 const TownActions = dynamic(() => import('../Locations/TownActions').then((mod) => mod.TownActions))
-
-interface Buff {
-  name: string
-  stat: string
-  val: number
-}
-
-type MoveDirection = 'north' | 'south' | 'east' | 'west'
+const QuestBoard = dynamic(() => import('../Locations/QuestBoard').then((mod) => mod.QuestBoard))
+const ForestActions = dynamic(() =>
+  import('../Locations/ForestActions').then((mod) => mod.ForestActions)
+)
 
 interface ActionsAreaProps {
   currentView: View
-  goBack: () => void
-  goToView: (view: View) => void
   gold: number
-  setGold: React.Dispatch<React.SetStateAction<number>>
   inventory: MarketItem[]
-  setInventory: React.Dispatch<React.SetStateAction<MarketItem[]>>
   activeBuffs: Buff[]
-  setActiveBuffs: React.Dispatch<React.SetStateAction<Buff[]>>
-  handleSetInfoText: (text: string | null) => void
-  handleMove: (direction: MoveDirection) => void
   bankGold: number
+  quests: MergedQuest[]
+  // Server Component Slots
+  smithShopSlot: React.ReactNode
+  healerShopSlot: React.ReactNode
 }
 
 export function ActionsArea({
   currentView,
-  goBack,
-  goToView,
   gold,
-  setGold,
   inventory,
-  setInventory,
-  activeBuffs,
-  setActiveBuffs,
-  handleSetInfoText,
-  handleMove,
   bankGold,
+  quests,
+  smithShopSlot,
+  healerShopSlot,
 }: ActionsAreaProps) {
+  // 1. Hooks (using context for shared state)
+  const { setInfoText } = useGameDashboardState()
+  const { goToView, goBack } = useGameView(currentView)
+  const { handleMove } = useGameMove({
+    handleSetInfoText: setInfoText,
+  })
+
+  // 2. Data
   const currentViewConfig = viewData[currentView]
 
   return (
@@ -88,37 +88,17 @@ export function ActionsArea({
 
             {currentView === 'bank' && <BankActions gold={gold} balance={bankGold} />}
 
-            {currentView === 'tavern' && (
-              <TavernActions gold={gold} onInfoAction={handleSetInfoText} />
-            )}
+            {currentView === 'tavern' && <TavernActions gold={gold} onInfoAction={setInfoText} />}
 
-            {currentView === 'smith' && (
-              <SmithShop
-                gold={gold}
-                setGold={setGold}
-                inventory={inventory}
-                setInventory={setInventory}
-              />
-            )}
+            {currentView === 'smith' && smithShopSlot}
 
-            {currentView === 'healer' && (
-              <HealerShop
-                gold={gold}
-                setGold={setGold}
-                activeBuffs={activeBuffs}
-                setActiveBuffs={setActiveBuffs}
-              />
-            )}
+            {currentView === 'healer' && healerShopSlot}
 
-            {currentView === 'market' && (
-              <MarketShop
-                gold={gold}
-                setGold={setGold}
-                inventory={inventory}
-                setInventory={setInventory}
-                setInfoText={handleSetInfoText}
-              />
-            )}
+            {currentView === 'market' && <MarketShop gold={gold} inventory={inventory} />}
+
+            {currentView === 'board' && <QuestBoard quests={quests} onBack={goBack} />}
+
+            {currentView === 'forest' && <ForestActions onView={goToView} />}
           </Suspense>
         </div>
       </GameActions>

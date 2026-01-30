@@ -26,8 +26,8 @@ export function Layout({
             className="absolute inset-0 bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: `url(${backgroundImage})` }}
           />
-          <div className="bg-game-wood-dark/80 absolute inset-0 backdrop-blur-sm" />
-          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90 mix-blend-multiply" />
+          {/* Legacy style: No heavy blur, just gradient overlay */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90" />
         </div>
 
         <div

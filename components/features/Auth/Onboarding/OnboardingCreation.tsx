@@ -1,4 +1,4 @@
-import type { Class, Race } from '@/lib/game/onboarding'
+import { type classes, type races } from '@/lib/game/onboarding'
 
 import { Layout } from '../Shared/Layout'
 import { ClassSelector } from './Creation/ClassSelector'
@@ -17,9 +17,12 @@ export interface CharacterStats {
   stamina: number
 }
 
+type RaceData = (typeof races)[number]
+type ClassData = (typeof classes)[number]
+
 interface OnboardingCreationProps {
-  race: Race
-  characterClass: Class
+  race: RaceData
+  characterClass: ClassData
   finalStats: CharacterStats
   searchParams?: { [key: string]: string | string[] | undefined }
 }
@@ -51,17 +54,17 @@ export function OnboardingCreation({
 
           <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
             <div className="space-y-4 lg:col-span-3">
-              <NameForm race={race} characterClass={characterClass} />
+              <NameForm race={race.id} characterClass={characterClass.id} />
 
-              <StatsDisplay stats={finalStats} />
+              <StatsDisplay race={race} classData={characterClass} finalStats={finalStats} />
             </div>
 
             <div className="lg:col-span-4 lg:hidden">
               {/* Mobile View: Simple Stack instead of Accordion for Server Component simplicity */}
               <div className="space-y-4">
-                <RaceSelector selectedId={race} searchParams={searchParams} isMobile={true} />
+                <RaceSelector selectedId={race.id} searchParams={searchParams} isMobile={true} />
                 <ClassSelector
-                  selectedId={characterClass}
+                  selectedId={characterClass.id}
                   searchParams={searchParams}
                   isMobile={true}
                 />
@@ -69,11 +72,11 @@ export function OnboardingCreation({
             </div>
 
             <div className="hidden lg:col-span-4 lg:block">
-              <RaceSelector selectedId={race} searchParams={searchParams} />
+              <RaceSelector selectedId={race.id} searchParams={searchParams} />
             </div>
 
             <div className="hidden lg:col-span-5 lg:block">
-              <ClassSelector selectedId={characterClass} searchParams={searchParams} />
+              <ClassSelector selectedId={characterClass.id} searchParams={searchParams} />
             </div>
           </div>
         </div>

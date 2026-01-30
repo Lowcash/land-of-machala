@@ -4,12 +4,12 @@ import { SplitLayout } from '@/components/layout'
 
 import { LocationDetails } from './Detail/LocationDetails'
 import { MapGrid } from './Grid/MapGrid'
-import type { Location } from './Shared/types'
+import type { Location, QuestMarker } from './Shared/types'
 
 interface MapDashboardProps {
   locations: Location[]
   discoveredLocations: string[]
-  questMarkers: unknown[]
+  questMarkers: QuestMarker[]
   deathLocation?: { x: number; y: number } | null
   currentLocationId?: string
   searchParams: { locationId?: string }
@@ -17,6 +17,9 @@ interface MapDashboardProps {
 
 export function MapDashboard({
   locations,
+  discoveredLocations,
+  questMarkers,
+  deathLocation,
   currentLocationId = 'town_center',
   searchParams,
 }: MapDashboardProps) {
@@ -51,6 +54,9 @@ export function MapDashboard({
           {/* Map Grid Container */}
           <MapGrid
             locations={locations}
+            discoveredLocations={discoveredLocations}
+            questMarkers={questMarkers}
+            deathLocation={deathLocation}
             currentLocationId={currentLocationId}
             selectedLocationId={selectedLocationId}
           />

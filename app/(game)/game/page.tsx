@@ -1,12 +1,25 @@
 import type { Metadata } from 'next'
 import { redirect } from 'next/navigation'
 
+import { CharacterClass } from '@prisma/client'
+
+import { viewData } from '@/lib/game/constants/views'
 import { getGamePageData } from '@/lib/loaders/game-loader'
-import type { CharacterData, CharacterItem } from '@/lib/types/game'
+import type { CharacterData, CharacterItem, View } from '@/lib/types/game'
 
 import { CombatClient } from '@/components/features/Combat/CombatClient'
-import { GameDashboardClient } from '@/components/features/Game'
-import type { CharacterData as DashboardCharacter } from '@/components/features/Game/Dashboard/GameDashboardClient'
+import {
+  CharacterBox,
+  GameDashboardActivity,
+  GameDashboardProvider,
+  GameFooter,
+  GameHeader,
+} from '@/components/features/Game'
+import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
+import { ActionsArea } from '@/components/features/Game/Dashboard/ActionsArea'
+import { HealerShop } from '@/components/features/Game/Locations/Shops/HealerShop'
+import { SmithShop } from '@/components/features/Game/Locations/Shops/SmithShop'
+import { GenericGameLayout } from '@/components/features/Game/Shared/layouts/GenericGameLayout'
 
 export const dynamic = 'force-dynamic'
 
@@ -15,18 +28,18 @@ export const metadata: Metadata = {
   description: 'Vstup do světa Machala a zažij dobrodružství.',
 }
 
-export default async function GamePage({
-  searchParams,
-}: {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-}) {
-  const data = await getGamePageData()
-  const resolvedParams = await searchParams
-  const view = (resolvedParams.view as string) || 'town'
+interface PageProps {
+  searchParams: Promise<{ view?: string }>
+}
 
+export default async function GamePage({ searchParams }: PageProps) {
+  const data = await getGamePageData()
   if (!data) redirect('/onboarding')
 
   const { character, dashboardData } = data
+  const { view } = await searchParams
+  const currentView = (view as View) || 'town'
+  const currentViewConfig = viewData[currentView]
 
   if (character.inCombat) {
     const combatCharacter = character as unknown as CharacterData & {
@@ -35,22 +48,78 @@ export default async function GamePage({
       combatEnemyId?: string
     }
 
-    // Transform inventory items to match CharacterItem type
     const inventory = character.inventory.map((i: unknown) => {
       const inv = i as { item: CharacterItem }
       return { ...inv.item, ...inv } as unknown as CharacterItem
     })
 
-    return <CombatClient character={combatCharacter} inventory={inventory} />
+    return (
+      <CombatClient character={combatCharacter} inventory={inventory} footer={<GameFooter />} />
+    )
   }
 
-  // We can pass the initial view to the client component if needed,
-  // but useGameView hook will also read it from URL.
-  // For now, we keep it simple as the hook handles the state sync.
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  const dash = dashboardData as any
+
   return (
-    <GameDashboardClient
-      character={dashboardData as unknown as DashboardCharacter}
-      initialView={view}
-    />
+    <GameDashboardProvider>
+      <GenericGameLayout
+        header={
+          <GameHeader
+            title={currentViewConfig.title}
+            subtitle={character.name}
+            playerStats={{
+              gold: character.gold,
+              x: dash.x || 0,
+              y: dash.y || 0,
+            }}
+            icon={currentViewConfig.icon}
+          />
+        }
+        footer={<GameFooter />}
+        backgroundImage={currentViewConfig.bg}
+        rightPanel={
+          <GameActivityPanel className="mx-3 h-[140px] shrink-0 bg-black/60 transition-colors">
+            <GameDashboardActivity viewDesc={currentViewConfig.desc} />
+          </GameActivityPanel>
+        }
+        topContent={
+          <CharacterBox
+            name={character.name}
+            level={character.level}
+            hp={character.hp}
+            hpMax={character.maxHp}
+            mana={character.mana}
+            manaMax={character.maxMana}
+            xp={character.experience}
+            xpMax={dash.xpToNextLevel}
+            stats={dash.stats}
+            isEnemy={false}
+            resourceType={
+              character.class === CharacterClass.WARRIOR || character.class === CharacterClass.ROGUE
+                ? 'energy'
+                : 'mana'
+            }
+            gold={character.gold}
+            locationName={currentViewConfig.title}
+          />
+        }
+        bottomContent={
+          <ActionsArea
+            currentView={currentView}
+            gold={character.gold}
+            inventory={dash.inventory}
+            activeBuffs={dash.activeBuffs}
+            bankGold={dash.bankGold}
+            quests={data.quests as any}
+            smithShopSlot={<SmithShop gold={character.gold} />}
+            healerShopSlot={
+              <HealerShop activeBuffs={character.buffs as any} gold={character.gold} />
+            }
+          />
+        }
+      />
+    </GameDashboardProvider>
   )
+  /* eslint-enable @typescript-eslint/no-explicit-any */
 }

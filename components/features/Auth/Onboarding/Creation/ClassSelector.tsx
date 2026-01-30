@@ -9,12 +9,6 @@ interface SelectorProps {
   isMobile?: boolean
 }
 
-interface SelectorProps {
-  selectedId: string
-  searchParams?: { [key: string]: string | string[] | undefined }
-  isMobile?: boolean
-}
-
 export function ClassSelector({ selectedId, searchParams, isMobile }: SelectorProps) {
   return (
     <EntitySelector

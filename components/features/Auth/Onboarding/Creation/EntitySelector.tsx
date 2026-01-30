@@ -1,3 +1,4 @@
+// Server Component
 import type { EntityItem, EntitySelectorProps } from '../types'
 import { EntityDesktopView } from './EntityDesktopView'
 import { EntityMobileView } from './EntityMobileView'
@@ -13,11 +14,19 @@ export function EntitySelector<T extends EntityItem>({
 }: EntitySelectorProps<T>) {
   const createLink = (id: string) => {
     const params = new URLSearchParams()
+
     if (searchParams) {
       Object.entries(searchParams).forEach(([key, value]) => {
-        if (value) params.set(key, value as string)
+        if (value) {
+          if (Array.isArray(value)) {
+            value.forEach((v) => params.append(key, v))
+          } else {
+            params.set(key, value)
+          }
+        }
       })
     }
+
     params.set(paramName, id)
     return `?${params.toString()}`
   }

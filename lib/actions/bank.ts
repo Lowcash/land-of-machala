@@ -1,9 +1,12 @@
 'use server'
 
+import { revalidatePath } from 'next/cache'
+
 import { z } from 'zod'
 
 import { prisma } from '@/lib/db'
 
+import { logActivity } from './activity-log'
 import { characterProcedure } from './procedures'
 
 /**
@@ -27,6 +30,9 @@ export const depositGoldAction = characterProcedure
         bankGold: { increment: amount },
       },
     })
+
+    await logActivity(character.id, 'info', `Uloženo ${amount}zl. do banky.`)
+    revalidatePath('/')
 
     return { success: true, message: `Úspěšně jsi uložil ${amount} zlata.` }
   })
@@ -52,6 +58,9 @@ export const withdrawGoldAction = characterProcedure
         bankGold: { decrement: amount },
       },
     })
+
+    await logActivity(character.id, 'info', `Vybráno ${amount}zl. z banky.`)
+    revalidatePath('/')
 
     return { success: true, message: `Úspěšně jsi vybral ${amount} zlata.` }
   })

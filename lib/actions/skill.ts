@@ -19,6 +19,7 @@ import {
   unlockSkillSchema,
 } from '@/lib/schemas/skill'
 
+import { logActivity } from './activity-log'
 import { characterProcedure } from './procedures'
 
 /**
@@ -61,6 +62,12 @@ export const unlockSkillAction = characterProcedure
     try {
       const characterSkill = await unlockSkill(character.id, input.skillId)
 
+      await logActivity(
+        character.id,
+        'info',
+        `Nová dovednost odemčena: ${characterSkill.skill.name}`
+      )
+
       return {
         success: true,
         message: `Dovednost ${characterSkill.skill.name} byla odemčena!`,
@@ -80,6 +87,12 @@ export const increaseSkillRankAction = characterProcedure
 
     try {
       const characterSkill = await increaseSkillRank(character.id, input.skillId)
+
+      await logActivity(
+        character.id,
+        'info',
+        `Dovednost ${characterSkill.skill.name} vylepšena na úroveň ${characterSkill.currentRank}`
+      )
 
       return {
         success: true,

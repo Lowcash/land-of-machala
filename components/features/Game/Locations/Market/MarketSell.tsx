@@ -1,31 +1,23 @@
 import { type TradeItem, TradePanel } from '@/components/features/Game/Shared/components/TradePanel'
 
-import type { HaggleState, MarketItem } from './types'
+import type { MarketItem } from './types'
 
 interface MarketSellProps {
   inventory: MarketItem[]
   handleSell: (item: MarketItem) => void
-  handleHaggle: (item: MarketItem, buying: boolean, e: React.MouseEvent) => void
-  getPrice: (item: MarketItem, buying: boolean) => number
-  haggledItems: Record<string, HaggleState>
+  disabled?: boolean
 }
 
-export function MarketSell({
-  inventory,
-  handleSell,
-  handleHaggle,
-  getPrice,
-  haggledItems,
-}: MarketSellProps) {
+export function MarketSell({ inventory, handleSell, disabled = false }: MarketSellProps) {
   // Map MarketItem to TradeItem
   const tradeItems: TradeItem[] = inventory.map((item) => ({
     id: item.id,
     name: item.name,
     type: item.type,
     icon: item.icon,
-    price: getPrice(item, false),
+    price: Math.floor(item.price * 0.5), // Sell for 50%
     equipped: item.equipped,
-    canHaggle: true, // Market allows haggling
+    canHaggle: false, // Haggle removed
   }))
 
   return (
@@ -36,13 +28,11 @@ export function MarketSell({
         const originalItem = inventory.find((i) => i.id === tradeItem.id)
         if (originalItem) handleSell(originalItem)
       }}
-      onHaggle={(tradeItem: TradeItem, e: React.MouseEvent) => {
-        const originalItem = inventory.find((i) => i.id === tradeItem.id)
-        if (originalItem) handleHaggle(originalItem, false, e)
-      }}
+      onHaggle={() => {}} // No-op
       actionLabel="Prodat"
       emptyMessage="Tvůj batoh je prázdný."
-      haggledItems={haggledItems}
+      haggledItems={{}} // Empty
+      disabled={disabled}
     />
   )
 }

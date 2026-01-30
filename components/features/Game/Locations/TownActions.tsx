@@ -1,7 +1,4 @@
-'use client'
-
-import { Beer, Building, Cross, Hammer, ScrollText, ShoppingBag } from 'lucide-react'
-
+import { TOWN_ACTIONS, TOWN_CONFIG } from '@/lib/game/constants/locations'
 import type { View } from '@/lib/types/game'
 
 import { LocationAction } from '../Shared/components/LocationAction'
@@ -12,54 +9,28 @@ interface TownActionsProps {
 }
 
 export function TownActions({ onView }: TownActionsProps) {
+  // 1. Hooks - None currently
+
+  // 2. Navigation State - None currently
+
+  // 3. Handlers
+  const handleAction = (view: View) => onView(view)
+
+  // 4. Sub-components (Render helpers) - None currently
+
   return (
-    <LocationLayout
-      title="Náměstí Machaly"
-      description="Střed všeho dění. Vzduch je cítit kouřem z kovárny a vůní pečeného masa z hospody."
-    >
+    <LocationLayout title={TOWN_CONFIG.title} description={TOWN_CONFIG.description}>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <LocationAction
-          variant="large"
-          title="Tržiště"
-          icon={ShoppingBag}
-          onClick={() => onView('market')}
-        />
-
-        <LocationAction
-          variant="large"
-          title="Kovárna"
-          icon={Hammer}
-          onClick={() => onView('smith')}
-        />
-
-        <LocationAction
-          variant="large"
-          title="Hospoda"
-          icon={Beer}
-          onClick={() => onView('tavern')}
-        />
-
-        <LocationAction
-          variant="large"
-          title="Banka"
-          icon={Building}
-          onClick={() => onView('bank')}
-        />
-
-        <LocationAction
-          variant="large"
-          title="Léčitel"
-          icon={Cross}
-          onClick={() => onView('healer')}
-        />
-
-        <LocationAction
-          variant="compact"
-          title="Vývěska úkolů"
-          icon={ScrollText}
-          className="col-span-full"
-          onClick={() => {}} // TODO: Quest Board logic
-        />
+        {TOWN_ACTIONS.map((action) => (
+          <LocationAction
+            key={action.id}
+            variant={action.variant}
+            title={action.title}
+            icon={action.icon}
+            className={action.className}
+            onClick={() => handleAction(action.view)}
+          />
+        ))}
       </div>
     </LocationLayout>
   )

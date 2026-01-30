@@ -1,14 +1,9 @@
+import type { ActivityLogEntry } from '@/lib/types/game'
+
 import { ScrollArea } from '@/components/ui/scroll-area'
 
-interface LogEntry {
-  id: string
-  timestamp: Date
-  message: string
-  type: string
-}
-
 interface GameActivityPanelProps {
-  logs?: LogEntry[]
+  logs?: ActivityLogEntry[]
   title?: string
   className?: string
   children?: React.ReactNode
@@ -44,10 +39,27 @@ export function GameActivityPanel({ logs = [], className = '', children }: GameA
                 const colorClass =
                   colors[log.type as keyof typeof colors] || 'text-game-fg border-l-game-copper'
 
+                const isCrit = log.message.includes('Kritický zásah')
+                const isDodge = log.message.includes('vyhnul') || log.message.includes('utekl')
+                const isVictory =
+                  log.message.includes('poražen') || log.message.includes('Získal jsi')
+
+                let dynamicClass = colorClass
+                if (isCrit) {
+                  dynamicClass =
+                    'text-amber-400 font-bold border-l-4 border-l-amber-500 bg-amber-900/20'
+                }
+                if (isDodge) {
+                  dynamicClass = 'text-gray-400 italic border-l-gray-500 opacity-90'
+                }
+                if (isVictory) {
+                  dynamicClass = 'text-green-400 font-bold border-l-green-500 bg-green-900/20'
+                }
+
                 return (
                   <div
                     key={log.id}
-                    className={`rounded-lg border-l-2 px-3 py-1.5 text-xs sm:text-sm ${colorClass} bg-black/40 backdrop-blur-sm transition-opacity hover:bg-black/60`}
+                    className={`rounded-lg border-l-2 px-3 py-1.5 text-xs sm:text-sm ${dynamicClass} bg-black/40 backdrop-blur-sm transition-opacity hover:bg-black/60`}
                     style={{ fontFamily: 'var(--font-fantasy)' }}
                   >
                     <span className="mr-2 text-[10px] opacity-50">

@@ -1,14 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { type LucideIcon, X } from 'lucide-react'
 
-import type { LucideIcon } from 'lucide-react'
-import { Trophy, X } from 'lucide-react'
-
-import {
-  ACHIEVEMENT_RARITY_COLORS,
-  type AchievementRarity,
-} from '@/lib/game/constants/achievements'
+import { type AchievementRarity } from '@/lib/game/constants/achievements'
+import { useAchievementConfig } from '@/lib/hooks/game'
+import { useNotificationAnimation } from '@/lib/hooks/ui/useNotificationAnimation'
 
 import { Button } from '@/components/ui/button'
 
@@ -26,24 +22,23 @@ interface AchievementNotificationProps {
 }
 
 export function AchievementNotification({ achievement, onClose }: AchievementNotificationProps) {
-  const [isVisible, setIsVisible] = useState(false)
+  // 1. Hooks
+  const { isVisible, handleClose } = useNotificationAnimation({
+    onClose,
+    duration: 15000,
+  })
 
-  useEffect(() => {
-    // Fade in
-    setTimeout(() => setIsVisible(true), 100)
+  const { colors, Icon } = useAchievementConfig({
+    rarity: achievement.rarity,
+    icon: achievement.icon,
+  })
 
-    // Auto-close after 15 seconds
-    const timer = setTimeout(() => {
-      setIsVisible(false)
-      setTimeout(onClose, 300)
-    }, 15000)
+  // 2. Navigation State - None currently
 
-    return () => clearTimeout(timer)
-  }, [onClose])
+  // 3. Handlers
+  const onDismiss = () => handleClose()
 
-  const colors = ACHIEVEMENT_RARITY_COLORS[achievement.rarity]
-  const Icon = achievement.icon || Trophy
-
+  // 4. Sub-components (Render helpers)
   return (
     <div
       className={`pointer-events-auto mb-3 transition-all duration-300 ${
@@ -79,10 +74,7 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
                 Úspěch odemčen
               </div>
               <Button
-                onClick={() => {
-                  setIsVisible(false)
-                  setTimeout(onClose, 300)
-                }}
+                onClick={onDismiss}
                 variant="ghost"
                 size="icon"
                 className="h-5 w-5 shrink-0 p-0 text-white/60 hover:text-white"

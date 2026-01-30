@@ -50,3 +50,17 @@ export function getCategoryName(category: SkillCategory) {
       return 'Užitečné'
   }
 }
+export function getCategoryGradient(category: SkillCategory) {
+  switch (category) {
+    case 'combat':
+      return 'from-[#ff6b6b] to-[#ff8b8b]'
+    case 'defense':
+      return 'from-[#69ccf0] to-[#89dcff]'
+    case 'magic':
+      return 'from-[#b66bd4] to-[#d68bf4]'
+    case 'stealth':
+      return 'from-[#6fbf6f] to-[#8fdf8f]'
+    default:
+      return 'from-[#d4a574] to-[#e4b584]'
+  }
+}

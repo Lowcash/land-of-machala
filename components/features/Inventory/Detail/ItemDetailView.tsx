@@ -10,10 +10,13 @@ import { InventoryItemActions } from './InventoryItemActions'
 
 interface ItemDetailViewProps {
   item: InventoryItemUI | null
-  characterId?: string // Kept for compat but unused? Or removed?
+  characterLevel?: number
 }
 
-export function ItemDetailView({ item }: ItemDetailViewProps) {
+export function ItemDetailView({ item, characterLevel = 1 }: ItemDetailViewProps) {
+  // 1. Hooks - None
+
+  // 2. Derived Values
   if (!item) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
@@ -21,6 +24,21 @@ export function ItemDetailView({ item }: ItemDetailViewProps) {
       </div>
     )
   }
+
+  const isLevelMet = characterLevel >= item.level
+
+  // 4. Sub-components (Render helpers)
+  const StatRow = ({ label, value }: { label: string; value?: number }) => {
+    if (value == null || value <= 0) return null
+    return (
+      <div className="flex justify-between text-[11px]">
+        <span className="text-[#8b7355]">{label}:</span>
+        <span className="font-bold text-[#d4a574]">+{value}</span>
+      </div>
+    )
+  }
+
+  const Icon = getIconFromName(item.iconName)
 
   return (
     <div className="flex h-full flex-col">
@@ -46,13 +64,21 @@ export function ItemDetailView({ item }: ItemDetailViewProps) {
               item.rarity
             )} shadow-[0_0_15px_rgba(0,0,0,0.5)]`}
           >
-            {(() => {
-              const Icon = getIconFromName(item.iconName)
-              return <Icon className={`h-10 w-10 ${getRarityColor(item.rarity)}`} />
-            })()}
+            <Icon className={`h-10 w-10 ${getRarityColor(item.rarity)}`} />
           </div>
           <p className="text-xs tracking-widest text-[#8b7355] uppercase">{item.type}</p>
         </div>
+
+        {/* Requirements */}
+        {item.level > 1 && (
+          <div
+            className={`rounded border px-3 py-2 text-center text-xs font-bold ${
+              isLevelMet ? 'border-[#8b6f47]/30 text-[#d4a574]' : 'border-red-900/50 text-red-400'
+            }`}
+          >
+            Požadovaný Level: {item.level} {!isLevelMet && '(Nedostatečný)'}
+          </div>
+        )}
 
         {/* Stats */}
         <div className="space-y-2 rounded border border-[#8b6f47]/30 bg-black/40 p-4">
@@ -78,16 +104,6 @@ export function ItemDetailView({ item }: ItemDetailViewProps) {
           isConsumable={item.type === ItemType.CONSUMABLE}
         />
       </div>
-    </div>
-  )
-}
-
-function StatRow({ label, value }: { label: string; value?: number }) {
-  if (value == null || value <= 0) return null
-  return (
-    <div className="flex justify-between text-[11px]">
-      <span className="text-[#8b7355]">{label}:</span>
-      <span className="font-bold text-[#d4a574]">+{value}</span>
     </div>
   )
 }

@@ -1,10 +1,20 @@
-import { Scroll, Users } from 'lucide-react'
+import { Users } from 'lucide-react'
 
-import { Card } from '@/components/ui/card'
+// Mock data for now - could be fetched from DB in a real Server Component
+async function getStats() {
+  return {
+    activePlayers: 1247,
+    bossKills: 89,
+    topLevel: 87,
+    completedQuests: '12k+',
+  }
+}
 
-export function StatsGrid() {
+export async function ServerStats() {
+  const stats = await getStats()
+
   return (
-    <Card className="border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
+    <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
       <h3
         className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
         style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -13,118 +23,30 @@ export function StatsGrid() {
         Statistiky serveru
       </h3>
       <div className="grid grid-cols-2 gap-4">
-        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-          <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
-          <div className="text-xl text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-            1,247
-          </div>
-        </div>
-        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-          <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
-          <div className="text-xl text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-            89
-          </div>
-        </div>
-        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-          <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
-          <div className="text-xl text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-            87
-          </div>
-        </div>
-        <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-          <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
-          <div className="text-xl text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-            12k+
-          </div>
-        </div>
-      </div>
-    </Card>
-  )
-}
-
-export function UpdatesList() {
-  return (
-    <ul className="space-y-2 text-sm text-[#d4a574]">
-      <li className="flex items-start gap-2">
-        <span className="mt-1 text-[#ffd700]">•</span>
-        <span>
-          <span className="text-[#6fbf6f]">Rozšíření dovedností:</span> 19 skills ve 3 větvích
-          (Combat, Defense, Magic)
-        </span>
-      </li>
-      <li className="flex items-start gap-2">
-        <span className="mt-1 text-[#ffd700]">•</span>
-        <span>
-          <span className="text-[#69ccf0]">WoW-style talent systém:</span> 3-tier progrese s unlock
-          požadavky
-        </span>
-      </li>
-      <li className="flex items-start gap-2">
-        <span className="mt-1 text-[#ffd700]">•</span>
-        <span>
-          <span className="text-[#ff6b6b]">Movement systém:</span> Směrové pohyby (N/S/E/W) +
-          náhodné souboje
-        </span>
-      </li>
-      <li className="flex items-start gap-2">
-        <span className="mt-1 text-[#ffd700]">•</span>
-        <span>Kompaktní CharacterBox redesign s medieval fantasy stylem</span>
-      </li>
-    </ul>
-  )
-}
-
-export function RecentUpdates() {
-  return (
-    <Card className="border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
-      <h4
-        className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        <Scroll className="h-5 w-5" />
-        Nejnovější změny
-      </h4>
-      <UpdatesList />
-    </Card>
-  )
-}
-
-export function ServerInfoMobile() {
-  return (
-    <div className="grid grid-cols-2 gap-3">
-      <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-        <div className="mb-1 text-xs text-[#8b7355]">Aktivní hráči</div>
-        <div className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          1,247
-        </div>
-      </div>
-      <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-        <div className="mb-1 text-xs text-[#8b7355]">Zabití bossů</div>
-        <div className="text-lg text-[#ff6b6b]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          89
-        </div>
-      </div>
-      <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-        <div className="mb-1 text-xs text-[#8b7355]">Top level</div>
-        <div className="text-lg text-[#6fbf6f]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          87
-        </div>
-      </div>
-      <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3">
-        <div className="mb-1 text-xs text-[#8b7355]">Questy</div>
-        <div className="text-lg text-[#69ccf0]" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          12k+
-        </div>
+        <StatItem label="Aktivní hráči" value={stats.activePlayers} color="text-[#ffd700]" />
+        <StatItem label="Zabití bossů" value={stats.bossKills} color="text-[#ff6b6b]" />
+        <StatItem label="Top level" value={stats.topLevel} color="text-[#6fbf6f]" />
+        <StatItem label="Questy" value={stats.completedQuests} color="text-[#69ccf0]" />
       </div>
     </div>
   )
 }
 
-export function ServerStats() {
+function StatItem({
+  label,
+  value,
+  color,
+}: {
+  label: string
+  value: string | number
+  color: string
+}) {
   return (
-    <div className="space-y-6">
-      <StatsGrid />
-      <RecentUpdates />
+    <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:border-[#8b6f47]/60">
+      <div className="mb-1 text-xs text-[#8b7355]">{label}</div>
+      <div className={`text-xl ${color}`} style={{ fontFamily: 'var(--font-fantasy)' }}>
+        {value}
+      </div>
     </div>
   )
 }

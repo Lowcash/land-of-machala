@@ -77,7 +77,7 @@ export const endCombat = characterProcedure
   .input(endCombatSchema)
   .handler(async ({ input, ctx }) => {
     const { character } = ctx
-    const { result } = input
+    const { result, rewards } = input
 
     if (result === 'victory') {
       await prisma.character.update({
@@ -90,7 +90,11 @@ export const endCombat = characterProcedure
           combatEnemyHp: null,
         },
       })
-      await logActivity(character.id, 'combat', 'Zvítězil jsi v souboji!')
+      let victoryMsg = 'Zvítězil jsi v souboji!'
+      if (rewards) {
+        victoryMsg += ` (Získáno: ${rewards.xp} XP, ${rewards.gold} zlata)`
+      }
+      await logActivity(character.id, 'combat', victoryMsg)
     } else if (result === 'flee') {
       // Restore position
       if (character.preCombatLocation) {

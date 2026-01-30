@@ -1,7 +1,6 @@
 'use client'
 
-import { Castle, Home, Lock, MapPin, Mountain, Trees } from 'lucide-react'
-
+import { MAP_LEGEND_ITEMS, MAP_LEGEND_TIP } from '@/lib/constants/map'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
@@ -14,6 +13,66 @@ interface MapLegendProps {
 }
 
 export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
+  // 1. Hooks - None currently
+
+  // 2. Navigation State / Derived Values - None currently
+
+  // 3. Handlers
+  const toggleFilter = (filterKey: keyof MapFilters) => {
+    onFiltersChange({
+      ...filters,
+      [filterKey]: !filters[filterKey],
+    })
+  }
+
+  // 4. Sub-components (Render helpers)
+  const LegendItemRender = ({ item }: { item: (typeof MAP_LEGEND_ITEMS)[number] }) => {
+    const Icon = item.icon
+    const isFilterable = 'filterKey' in item && item.filterKey !== undefined
+    const isActive = !isFilterable || (item.filterKey && filters[item.filterKey])
+
+    // Special case for static items (Player, Locked)
+    if (item.id === 'player' || item.id === 'locked') {
+      const isPlayer = item.id === 'player'
+      return (
+        <div className="flex items-center gap-3">
+          <div
+            className={cn(
+              'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2',
+              isPlayer ? 'border-white bg-[#69ccf0]' : 'border-[#8b6f47] bg-black/60'
+            )}
+          >
+            <Icon className={cn('h-4 w-4', isPlayer ? 'text-white' : 'text-[#8b6f47]')} />
+          </div>
+          <div className="flex-1">
+            <div className="text-sm text-[#d4a574]">{item.label}</div>
+            <div className="text-xs text-[#8b7355]">{item.description}</div>
+          </div>
+        </div>
+      )
+    }
+
+    // Filterable items
+    return (
+      <Button
+        variant="game-secondary"
+        onClick={() => isFilterable && item.filterKey && toggleFilter(item.filterKey)}
+        className={cn(
+          'flex h-auto w-full items-center justify-start gap-3 p-2',
+          !isActive && 'opacity-50'
+        )}
+      >
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
+          <Icon className="h-4 w-4" style={{ color: item.color }} />
+        </div>
+        <div className="flex-1 text-left">
+          <div className="text-sm text-[#d4a574]">{item.label}</div>
+          <div className="text-xs text-[#8b7355]">{item.description}</div>
+        </div>
+      </Button>
+    )
+  }
+
   return (
     <div className="space-y-4">
       <h2 className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
@@ -21,101 +80,15 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
       </h2>
 
       <div className="space-y-3">
-        {/* Player position */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-white bg-[#69ccf0]">
-            <MapPin className="h-4 w-4 text-white" />
-          </div>
-          <div className="flex-1">
-            <div className="text-sm text-[#d4a574]">Tvá pozice</div>
-            <div className="text-xs text-[#8b7355]">Aktuální lokace</div>
-          </div>
-        </div>
-        {/* Town */}
-        <Button
-          variant="game-secondary"
-          onClick={() => onFiltersChange({ ...filters, showTowns: !filters.showTowns })}
-          className={cn(
-            'flex h-auto w-full items-center justify-start gap-3 p-2',
-            !filters.showTowns && 'opacity-50'
-          )}
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
-            <Home className="h-4 w-4 text-[#ffd700]" />
-          </div>
-          <div className="flex-1 text-left">
-            <div className="text-sm text-[#d4a574]">Město</div>
-            <div className="text-xs text-[#8b7355]">Bezpečné oblasti</div>
-          </div>
-        </Button>
-        {/* Wilderness */}
-        <Button
-          variant="game-secondary"
-          onClick={() => onFiltersChange({ ...filters, showWilderness: !filters.showWilderness })}
-          className={cn(
-            'flex h-auto w-full items-center justify-start gap-3 p-2',
-            !filters.showWilderness && 'opacity-50'
-          )}
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
-            <Trees className="h-4 w-4 text-[#6fbf6f]" />
-          </div>
-          <div className="flex-1 text-left">
-            <div className="text-sm text-[#d4a574]">Divočina</div>
-            <div className="text-xs text-[#8b7355]">Střední nebezpečí</div>
-          </div>
-        </Button>
-        {/* Dungeon */}
-        <Button
-          variant="game-secondary"
-          onClick={() => onFiltersChange({ ...filters, showDungeons: !filters.showDungeons })}
-          className={cn(
-            'flex h-auto w-full items-center justify-start gap-3 p-2',
-            !filters.showDungeons && 'opacity-50'
-          )}
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
-            <Castle className="h-4 w-4 text-[#ff6b6b]" />
-          </div>
-          <div className="flex-1 text-left">
-            <div className="text-sm text-[#d4a574]">Dungeon</div>
-            <div className="text-xs text-[#8b7355]">Vysoké nebezpečí</div>
-          </div>
-        </Button>
-        {/* Landmark */}
-        <Button
-          variant="game-secondary"
-          onClick={() => onFiltersChange({ ...filters, showLandmarks: !filters.showLandmarks })}
-          className={cn(
-            'flex h-auto w-full items-center justify-start gap-3 p-2',
-            !filters.showLandmarks && 'opacity-50'
-          )}
-        >
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
-            <Mountain className="h-4 w-4 text-[#b66bd4]" />
-          </div>
-          <div className="flex-1 text-left">
-            <div className="text-sm text-[#d4a574]">Zajímavost</div>
-            <div className="text-xs text-[#8b7355]">Speciální místa</div>
-          </div>
-        </Button>
-        {/* Locked */}
-        <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#8b6f47] bg-black/60">
-            <Lock className="h-4 w-4 text-[#8b6f47]" />
-          </div>
-          <div className="flex-1">
-            <div className="text-sm text-[#d4a574]">Uzamčeno</div>
-            <div className="text-xs text-[#8b7355]">Vyžaduje level</div>
-          </div>
-        </div>
+        {MAP_LEGEND_ITEMS.map((item) => (
+          <LegendItemRender key={item.id} item={item} />
+        ))}
       </div>
 
       {/* Tip */}
       <div className="rounded border border-[#d4a574] bg-black/60 p-3">
         <p className="text-xs leading-relaxed text-[#f5e6d3]">
-          <span className="text-[#ffd700]">Tip:</span> Klikni na lokaci pro zobrazení detailů a
-          cestování. Číslo u lokace označuje doporučený level.
+          <span className="text-[#ffd700]">Tip:</span> {MAP_LEGEND_TIP}
         </p>
       </div>
     </div>

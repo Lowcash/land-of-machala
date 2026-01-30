@@ -1,4 +1,3 @@
-import type { Class, Race } from '@/lib/game/onboarding'
 import { useOnboarding } from '@/lib/hooks/game/useOnboarding'
 
 import { OnboardingCreation } from './OnboardingCreation'
@@ -13,7 +12,9 @@ interface OnboardingProps {
  * Manages the multi-step character creation process
  */
 export function Onboarding({ searchParams }: OnboardingProps) {
-  const { step, storyIndex, safeRace, safeClass, finalStats } = useOnboarding({ searchParams })
+  const { step, storyIndex, finalStats, selectedRace, selectedClass } = useOnboarding({
+    searchParams,
+  })
 
   if (step === 0) {
     return <OnboardingIntro storyIndex={storyIndex} />
@@ -21,8 +22,8 @@ export function Onboarding({ searchParams }: OnboardingProps) {
 
   return (
     <OnboardingCreation
-      race={safeRace as Race}
-      characterClass={safeClass as Class}
+      race={selectedRace}
+      characterClass={selectedClass}
       finalStats={finalStats}
       searchParams={searchParams}
     />

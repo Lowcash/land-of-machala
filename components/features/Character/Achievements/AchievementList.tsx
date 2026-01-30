@@ -1,8 +1,13 @@
-import { useState } from 'react'
+'use client'
 
-import type { LucideIcon } from 'lucide-react'
-import { Coins, MapPin, Search, Shield, Swords, Trophy, User } from 'lucide-react'
+import { Search } from 'lucide-react'
 
+import {
+  ACHIEVEMENT_FILTER_BUTTONS,
+  ACHIEVEMENT_SEARCH_PLACEHOLDER,
+  getAchievementIcon,
+} from '@/lib/constants/achievements'
+import { useAchievementFilters } from '@/lib/hooks/game/useAchievementFilters'
 import type { Achievement } from '@/lib/types/game'
 
 import { Button } from '@/components/ui/button'
@@ -10,74 +15,43 @@ import { GameCard } from '@/components/ui/game-card'
 import { GameList } from '@/components/ui/game-list'
 import { Input } from '@/components/ui/input'
 
-const ICON_MAP: Record<string, LucideIcon> = {
-  Trophy,
-  Swords,
-  Shield,
-  Coins,
-  MapPin,
-  User,
-  // Fallbacks or defaults
-  default: Trophy,
-}
-
 interface AchievementListProps {
   achievements: Achievement[]
 }
 
 export function AchievementList({ achievements }: AchievementListProps) {
-  const [filter, setFilter] = useState<'all' | 'unlocked' | 'locked'>('all')
-  const [search, setSearch] = useState('')
+  // Hooks
+  const { filter, search, filteredAchievements, unlockedCount, actions } = useAchievementFilters({
+    achievements,
+  })
 
-  const unlockedCount = achievements.filter((a) => a.unlocked).length
-
-  const filteredAchievements = achievements
-    .filter((a) => {
-      if (filter === 'unlocked') return a.unlocked
-      if (filter === 'locked') return !a.unlocked
-      return true
-    })
-    .filter((a) => a.title.toLowerCase().includes(search.toLowerCase()))
-
+  // Render
   return (
     <GameCard
       title={`Úspěchy (${unlockedCount}/${achievements.length})`}
-      icon={Trophy}
+      icon={getAchievementIcon('trophy')}
       className="flex h-full flex-col"
     >
       <div className="flex flex-col gap-3 border-b border-[#3e3e3e] p-3">
         <div className="flex gap-2">
-          <Button
-            variant={filter === 'all' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setFilter('all')}
-            className="flex-1"
-          >
-            Vše
-          </Button>
-          <Button
-            variant={filter === 'unlocked' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setFilter('unlocked')}
-            className="flex-1"
-          >
-            Získáno
-          </Button>
-          <Button
-            variant={filter === 'locked' ? 'default' : 'outline'}
-            size="sm"
-            onClick={() => setFilter('locked')}
-            className="flex-1"
-          >
-            Uzamčeno
-          </Button>
+          {ACHIEVEMENT_FILTER_BUTTONS.map((button) => (
+            <Button
+              key={button.id}
+              variant={filter === button.id ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => actions.setFilter(button.id)}
+              className="flex-1"
+            >
+              {button.label}
+            </Button>
+          ))}
         </div>
         <div className="relative">
           <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
           <Input
-            placeholder="Hledat úspěchy..."
+            placeholder={ACHIEVEMENT_SEARCH_PLACEHOLDER}
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => actions.setSearch(e.target.value)}
             className="pl-8"
           />
         </div>
@@ -88,7 +62,7 @@ export function AchievementList({ achievements }: AchievementListProps) {
           data={filteredAchievements}
           keyExtractor={(item) => item.id}
           renderItem={(achievement) => {
-            const IconComponent = (ICON_MAP[achievement.icon] || ICON_MAP.default) as LucideIcon
+            const IconComponent = getAchievementIcon(achievement.icon)
 
             return (
               <div

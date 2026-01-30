@@ -1,6 +1,14 @@
+'use client'
+
+import { useTransition } from 'react'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 import { X } from 'lucide-react'
+import { toast } from 'sonner'
+
+import { increaseSkillRankAction, unlockSkillAction } from '@/lib/actions/skill'
 
 import { Button } from '@/components/ui/button'
 
@@ -13,6 +21,32 @@ interface SkillDetailPanelProps {
 }
 
 export function SkillDetailPanel({ skill, closeHref, talentPoints }: SkillDetailPanelProps) {
+  const router = useRouter()
+  const [isPending, startTransition] = useTransition()
+
+  const handleUpgrade = async () => {
+    if (!skill) return
+
+    startTransition(async () => {
+      try {
+        const action = skill.currentLevel === 0 ? unlockSkillAction : increaseSkillRankAction
+        const [data, err] = await action({ skillId: skill.id })
+
+        if (err) {
+          toast.error(err.message)
+          return
+        }
+
+        if (data?.success) {
+          toast.success(data.message)
+          router.refresh()
+        }
+      } catch {
+        toast.error('Chyba při vylepšování dovednosti')
+      }
+    })
+  }
+
   if (!skill) {
     return (
       <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
@@ -62,9 +96,16 @@ export function SkillDetailPanel({ skill, closeHref, talentPoints }: SkillDetail
         <Button
           variant="game-primary"
           className="w-full"
-          disabled={skill.currentLevel >= skill.maxRank || talentPoints < skill.cost}
+          disabled={skill.currentLevel >= skill.maxRank || talentPoints < skill.cost || isPending}
+          onClick={handleUpgrade}
         >
-          {skill.currentLevel >= skill.maxRank ? 'Maximálně vylepšeno' : 'Vylepšit dovednost'}
+          {isPending
+            ? 'Zpracovávám...'
+            : skill.currentLevel >= skill.maxRank
+              ? 'Maximálně vylepšeno'
+              : skill.currentLevel === 0
+                ? 'Naučit se dovednost'
+                : 'Vylepšit dovednost'}
         </Button>
       </div>
     </div>

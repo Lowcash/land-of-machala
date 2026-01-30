@@ -1,70 +1,28 @@
 'use client'
 
-import { useTransition } from 'react'
-
-import { useRouter } from 'next/navigation'
-
 import { Check } from 'lucide-react'
 
-import { increaseSkillRankAction } from '@/lib/actions/skill'
+import { useSkillActions } from '@/lib/hooks/game'
 
-import { useNotification } from '@/components/providers/NotificationProvider'
 import { Button } from '@/components/ui/button'
 
 interface SkillUpgradeButtonProps {
   skillId: string
-  skillName: string
   cost: number
   canUpgrade: boolean
   maxed: boolean
 }
 
-export function SkillUpgradeButton({
-  skillId,
-  skillName,
-  cost,
-  canUpgrade,
-  maxed,
-}: SkillUpgradeButtonProps) {
-  const [isPending, startTransition] = useTransition()
-  const router = useRouter()
-  const { showNotification } = useNotification()
+export function SkillUpgradeButton({ skillId, cost, canUpgrade, maxed }: SkillUpgradeButtonProps) {
+  // 1. Hooks
+  const { handleUpgrade, isPending } = useSkillActions()
 
-  const handleUpgrade = () => {
-    if (!canUpgrade || isPending) return
+  // 2. Navigation State / Derived Values - None currently
 
-    startTransition(async () => {
-      try {
-        const [result, error] = await increaseSkillRankAction({
-          skillId,
-        })
+  // 3. Handlers
+  const onUpgrade = () => handleUpgrade(skillId)
 
-        if (error) {
-          showNotification({
-            variant: 'error',
-            title: 'Chyba při upgradu',
-            description: error.message || 'Nepodařilo se upgradovat dovednost',
-          })
-        } else if (result?.success) {
-          showNotification({
-            variant: 'success',
-            title: 'Dovednost upgradována!',
-            description: `${skillName} byl úspěšně vylepšen`,
-          })
-
-          // Refresh the page to show updated data
-          router.refresh()
-        }
-      } catch {
-        showNotification({
-          variant: 'error',
-          title: 'Chyba',
-          description: 'Něco se pokazilo při upgradu dovednosti',
-        })
-      }
-    })
-  }
-
+  // 4. Sub-components (Render helpers)
   if (maxed) {
     return (
       <div className="flex items-center justify-center gap-2 py-2 text-[#6fbf6f] sm:py-3">
@@ -76,7 +34,7 @@ export function SkillUpgradeButton({
 
   return (
     <Button
-      onClick={handleUpgrade}
+      onClick={onUpgrade}
       disabled={!canUpgrade || isPending}
       loading={isPending}
       variant={canUpgrade ? 'game-primary' : 'game-secondary'}

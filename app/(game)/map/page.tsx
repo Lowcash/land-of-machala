@@ -7,6 +7,7 @@ import { getMapPageData } from '@/lib/loaders/map-loader'
 
 import { GameFooter, GameHeader } from '@/components/features/Game'
 import { GameMap } from '@/components/features/Map'
+import type { QuestMarker } from '@/components/features/Map/Shared/types'
 import { PageLayout } from '@/components/layout/PageLayout'
 
 export const dynamic = 'force-dynamic'
@@ -35,7 +36,7 @@ export default async function MapPage({
       <GameMap
         locations={data.serializedLocations}
         discoveredLocations={data.discoveredLocations}
-        questMarkers={data.questMarkers as unknown[]}
+        questMarkers={data.questMarkers as QuestMarker[]}
         deathLocation={data.deathLocation as unknown as { x: number; y: number }}
         searchParams={resolvedParams}
       />

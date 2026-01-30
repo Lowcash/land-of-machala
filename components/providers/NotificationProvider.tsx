@@ -1,15 +1,19 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { createContext, useCallback, useContext, useEffect, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
-import { AlertCircle, AlertTriangle, CheckCircle2, Info, X } from 'lucide-react'
+import { X } from 'lucide-react'
+
+import {
+  NOTIFICATION_VARIANT_CONFIG,
+  type NotificationVariant,
+} from '@/lib/constants/notifications'
+import { useNotificationAnimation } from '@/lib/hooks/ui/useNotificationAnimation'
 
 import { Button } from '@/components/ui/button'
 
-type NotificationVariant = 'success' | 'error' | 'warning' | 'info'
-
-type Notification = {
+export type Notification = {
   id: number
   title: string
   description?: string
@@ -25,64 +29,23 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 
 let notificationId = 0
 
-const variantConfig = {
-  success: {
-    icon: CheckCircle2,
-    borderColor: '#6fbf6f',
-    bgGradient: 'from-[#6fbf6f]/20 to-black/90',
-    glowColor: 'rgba(111, 191, 111, 0.4)',
-  },
-  error: {
-    icon: AlertCircle,
-    borderColor: '#ff6b6b',
-    bgGradient: 'from-[#ff6b6b]/20 to-black/90',
-    glowColor: 'rgba(255, 107, 107, 0.4)',
-  },
-  warning: {
-    icon: AlertTriangle,
-    borderColor: '#ffd700',
-    bgGradient: 'from-[#ffd700]/20 to-black/90',
-    glowColor: 'rgba(255, 215, 0, 0.4)',
-  },
-  info: {
-    icon: Info,
-    borderColor: '#69ccf0',
-    bgGradient: 'from-[#69ccf0]/20 to-black/90',
-    glowColor: 'rgba(105, 204, 240, 0.4)',
-  },
-}
-
-function NotificationItem({
-  notification,
-  onClose,
-}: {
+interface NotificationItemProps {
   notification: Notification
   onClose: () => void
-}) {
-  const [isVisible, setIsVisible] = useState(false)
-  const config = variantConfig[notification.variant]
+}
+
+function NotificationItem({ notification, onClose }: NotificationItemProps) {
+  // Hooks
+  const { isVisible, handleClose } = useNotificationAnimation({
+    onClose,
+    duration: notification.duration,
+  })
+
+  // Derived values
+  const config = NOTIFICATION_VARIANT_CONFIG[notification.variant]
   const Icon = config.icon
 
-  const handleClose = useCallback(() => {
-    setIsVisible(false)
-    setTimeout(onClose, 300)
-  }, [onClose])
-
-  // Fade in
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100)
-    return () => clearTimeout(timer)
-  }, [])
-
-  // Auto close
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      handleClose()
-    }, notification.duration || 5000)
-
-    return () => clearTimeout(timer)
-  }, [notification.duration, handleClose])
-
+  // Render
   return (
     <div
       role="alert"
@@ -131,8 +94,10 @@ function NotificationItem({
 }
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  // Hooks
   const [notifications, setNotifications] = useState<Notification[]>([])
 
+  // Callbacks
   const showNotification = useCallback((notification: Omit<Notification, 'id'>) => {
     const id = notificationId++
     setNotifications((prev) => [...prev, { ...notification, id }])
@@ -142,6 +107,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     setNotifications((prev) => prev.filter((n) => n.id !== id))
   }, [])
 
+  // Render
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}

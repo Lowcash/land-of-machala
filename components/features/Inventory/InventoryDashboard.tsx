@@ -61,7 +61,7 @@ export function InventoryDashboard({
           </div>
         </div>
       }
-      aside={<ItemDetailView item={selectedItem} characterId={character.id} />}
+      aside={<ItemDetailView item={selectedItem} characterLevel={character.level} />}
     />
   )
 }

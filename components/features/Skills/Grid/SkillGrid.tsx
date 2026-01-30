@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { GameGrid } from '@/components/ui/game-grid'
 
 import { getIconFromName } from '../Shared/iconMap'
-import { getCategoryBg, getCategoryColor } from '../Shared/styles'
+import { getCategoryBg, getCategoryColor, getCategoryGradient } from '../Shared/styles'
 import type { MergedSkill, SkillCategory } from '../Shared/types'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
 
@@ -117,19 +117,12 @@ export function SkillGrid({
                     {Array.from({ length: skill.maxRank }).map((_, i) => (
                       <div
                         key={i}
-                        className={`h-1.5 flex-1 rounded-full ${
+                        className={cn(
+                          'h-1.5 flex-1 rounded-full',
                           i < skill.currentLevel
-                            ? `bg-linear-to-r ${
-                                skill.category === 'combat'
-                                  ? 'from-[#ff6b6b] to-[#ff8b8b]'
-                                  : skill.category === 'defense'
-                                    ? 'from-[#69ccf0] to-[#89dcff]'
-                                    : skill.category === 'magic'
-                                      ? 'from-[#b66bd4] to-[#d68bf4]'
-                                      : 'from-[#6fbf6f] to-[#8fdf8f]'
-                              }`
+                            ? `bg-linear-to-r ${getCategoryGradient(skill.category)}`
                             : 'bg-black/60'
-                        }`}
+                        )}
                       />
                     ))}
                   </div>

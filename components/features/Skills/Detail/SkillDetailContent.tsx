@@ -101,7 +101,6 @@ export function SkillDetailContent({ skill, allSkills, talentPoints }: SkillDeta
       {skill.unlocked && (
         <SkillUpgradeButton
           skillId={skill.id}
-          skillName={skill.name}
           cost={skill.cost}
           canUpgrade={canUpgrade}
           maxed={maxed}

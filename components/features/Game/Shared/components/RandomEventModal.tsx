@@ -15,49 +15,53 @@ interface RandomEventModalProps {
 }
 
 export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalProps) {
+  // 1. Hooks - None currently
+
+  // 2. Navigation State / Derived Values
   if (!event) return null
 
-  const handleClose = () => {
+  const typeColor = getEventTypeColor(event.type)
+  const typeIconColor = getEventTypeIconColor(event.type)
+  const EventIcon = Sparkles
+
+  // 3. Handlers
+  const handleConfirm = () => {
     onChoice(1)
     onClose()
   }
 
-  const getTypeColor = () => getEventTypeColor(event.type)
-  const getTypeIconColor = () => getEventTypeIconColor(event.type)
-
-  const EventIcon = Sparkles
-
+  // 4. Sub-components (Render helpers)
   return (
     <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center p-4 duration-300">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
 
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-yellow-600/40 bg-linear-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
-        <div className={`border-b-2 ${getTypeColor()} px-6 py-4`}>
+      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-[#8b6f47]/40 bg-linear-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
+        <div className={`border-b-2 ${typeColor} px-6 py-4`}>
           <div className="flex items-center gap-3">
             <div className="rounded-lg border border-slate-700/50 bg-slate-800/60 p-2">
-              <EventIcon className={`h-6 w-6 ${getTypeIconColor()}`} />
+              <EventIcon className={`h-6 w-6 ${typeIconColor}`} />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-yellow-100">{event.title}</h2>
+                <h2 className="font-bold text-[#f5e6d3]">{event.title}</h2>
                 <span
-                  className={`rounded px-2 py-0.5 text-xs tracking-wide uppercase ${getTypeColor()}`}
+                  className={`rounded px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ${typeColor}`}
                 >
                   {event.type}
                 </span>
               </div>
-              <p className="mt-0.5 text-sm text-slate-400">Náhodné setkání...</p>
+              <p className="mt-0.5 text-xs text-slate-400 italic">Náhodné setkání...</p>
             </div>
           </div>
         </div>
 
-        <div className="px-6 py-6">
-          <div className="mb-6 rounded-lg border border-slate-700/30 bg-slate-800/40 p-4 backdrop-blur-sm">
-            <p className="leading-relaxed text-slate-200">{event.description}</p>
+        <div className="px-6 py-6 text-center">
+          <div className="mb-6 rounded-lg border border-[#8b6f47]/20 bg-black/40 p-6 backdrop-blur-sm">
+            <p className="text-sm leading-relaxed text-[#f5e6d3]">{event.description}</p>
           </div>
 
-          <Button onClick={handleClose} variant="game-secondary" className="w-full p-4">
-            <span className="text-yellow-100">Pokračovat</span>
+          <Button onClick={handleConfirm} variant="game-primary" className="min-w-[200px] px-8">
+            <span>Pokračovat v cestě</span>
           </Button>
         </div>
       </div>

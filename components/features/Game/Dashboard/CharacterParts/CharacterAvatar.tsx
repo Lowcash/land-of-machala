@@ -1,6 +1,4 @@
-import Image from 'next/image'
-
-import { User } from 'lucide-react'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 
 interface CharacterAvatarProps {
   name: string
@@ -12,23 +10,18 @@ interface CharacterAvatarProps {
 export function CharacterAvatar({ name, level, isEnemy, image }: CharacterAvatarProps) {
   return (
     <div className="relative mr-4 shrink-0">
-      <div
-        className={`flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg border-2 shadow-inner ${
+      <Avatar
+        className={`h-20 w-20 rounded-lg border-2 shadow-inner ${
           isEnemy ? 'border-red-900 bg-red-950' : 'border-[#8b6f47] bg-black'
         }`}
       >
-        {image ? (
-          <Image
-            src={image}
-            alt={name}
-            width={80}
-            height={80}
-            className="h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
-          />
-        ) : (
-          <User className={`h-10 w-10 ${isEnemy ? 'text-red-500/70' : 'text-[#d4a574]/70'}`} />
-        )}
-      </div>
+        <AvatarImage
+          src={image || ''}
+          alt={name}
+          className="object-cover opacity-90 transition-opacity group-hover:opacity-100"
+        />
+        <AvatarFallback name={name} className={isEnemy ? 'text-red-500/70' : 'text-[#d4a574]/70'} />
+      </Avatar>
       {/* Level Bubble */}
       <div
         className={`absolute -right-2 -bottom-2 flex h-8 w-8 items-center justify-center rounded-full border-2 ${

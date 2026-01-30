@@ -3,7 +3,14 @@ import { ItemRarity, ItemType } from '@prisma/client'
 import type { LucideIcon } from 'lucide-react'
 
 // View Types
-export type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market'
+export type View = 'town' | 'smith' | 'bank' | 'healer' | 'tavern' | 'market' | 'board' | 'forest'
+
+export interface Buff {
+  name: string
+  stat: string
+  val: number
+  expiresAt?: Date
+}
 
 export interface ViewConfig {
   bg: string
@@ -72,4 +79,12 @@ export interface Achievement {
   unlocked?: boolean
   progress?: number
   unlockedAt?: Date | null
+}
+
+export interface ActivityLogEntry {
+  id: string
+  timestamp: Date
+  message: string
+  type: string
+  metadata?: any // eslint-disable-line @typescript-eslint/no-explicit-any
 }
