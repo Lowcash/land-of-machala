@@ -36,7 +36,7 @@ export function OnboardingCreation({
   return (
     <Layout backgroundImage="/assets/locations/city-background.jpg" centered={false}>
       <div className="scrollbar-custom relative z-10 flex min-h-0 flex-1 flex-col items-center overflow-y-auto p-2 sm:p-4">
-        <div className="my-auto w-full max-w-6xl py-4 sm:py-8">
+        <div className="my-auto w-full max-w-4xl py-4 sm:py-8">
           <div className="mb-6 text-center">
             <h1
               className="text-game-gold mb-1 text-2xl sm:text-4xl lg:text-5xl"
@@ -53,7 +53,7 @@ export function OnboardingCreation({
           </div>
 
           <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="space-y-4 lg:col-span-3">
+            <div className="space-y-4 lg:col-span-4">
               <NameForm race={race.id} characterClass={characterClass.id} />
 
               <StatsDisplay race={race} classData={characterClass} finalStats={finalStats} />
@@ -75,7 +75,7 @@ export function OnboardingCreation({
               <RaceSelector selectedId={race.id} searchParams={searchParams} />
             </div>
 
-            <div className="hidden lg:col-span-5 lg:block">
+            <div className="hidden lg:col-span-4 lg:block">
               <ClassSelector selectedId={characterClass.id} searchParams={searchParams} />
             </div>
           </div>

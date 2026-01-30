@@ -43,7 +43,7 @@ export default function LoginPage() {
               <Link href="/register" className="block w-full">
                 <Button
                   variant="ghost"
-                  className="border-game-gold-muted font-fantasy text-game-gold hover:border-game-gold hover:text-game-gold w-full border-2"
+                  className="border-game-copper/50 hover:border-game-gold font-fantasy text-game-gold w-full border bg-black/60 hover:bg-black/80"
                 >
                   Vytvořit nový účet
                 </Button>
@@ -82,7 +82,7 @@ export default function LoginPage() {
         </div>
 
         {/* Right Column: Info & Stats (Desktop Only) */}
-        <div className="hidden w-full max-w-md space-y-6 self-center lg:block">
+        <div className="hidden w-full max-w-md space-y-6 self-end lg:block">
           <ServerStats />
           <Changelog />
         </div>
