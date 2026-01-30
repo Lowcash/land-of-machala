@@ -6,7 +6,6 @@ import { useLoginForm } from '@/lib/hooks/auth/useLoginForm'
 import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
 
 import { AuthInput } from '../Shared/AuthInput'
 
@@ -44,26 +43,26 @@ export function LoginForm() {
       />
 
       <div className="flex items-center gap-2">
-        <Button
+        <button
           type="button"
-          variant="ghost"
           disabled={isPending}
           onClick={toggleRememberMe}
           className={cn(
-            'flex h-5 w-5 items-center justify-center rounded border-2 p-0 transition-all disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-5 w-5 items-center justify-center rounded border-2 transition-all disabled:cursor-not-allowed disabled:opacity-50',
             rememberMe
-              ? 'border-game-gold bg-game-gold'
-              : 'border-game-copper hover:border-game-gold bg-black/60'
+              ? 'border-[#ffd700] bg-[#ffd700]'
+              : 'border-[#8b6f47] bg-black/60 hover:border-[#ffd700]'
           )}
         >
           {rememberMe && <Check className="h-3.5 w-3.5 text-black" />}
-        </Button>
-        <Label
+        </button>
+        <label
           onClick={toggleRememberMe}
-          className="font-fantasy text-game-gold-muted hover:text-game-gold cursor-pointer text-xs transition-colors select-none sm:text-sm"
+          className="cursor-pointer text-xs text-[#d4a574] transition-colors select-none hover:text-[#ffd700] sm:text-sm"
+          style={{ fontFamily: 'var(--font-fantasy)' }}
         >
           Zapamatovat si mě
-        </Label>
+        </label>
       </div>
 
       <Button
@@ -71,10 +70,9 @@ export function LoginForm() {
         loading={isPending}
         disabled={!isValid}
         variant="game-ghost"
-        className="font-fantasy w-full border-2 font-bold"
-      >
-        Přihlásit se
-      </Button>
+        fullWidth
+        label={isPending ? 'Přihlašování...' : 'Přihlásit se'}
+      />
     </form>
   )
 }

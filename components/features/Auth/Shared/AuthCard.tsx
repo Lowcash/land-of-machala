@@ -11,11 +11,11 @@ export function AuthCard({ children, className }: AuthCardProps) {
   return (
     <Card
       className={cn(
-        'border-double-gold w-full max-w-md overflow-hidden bg-black/40 shadow-2xl backdrop-blur-md',
+        'w-full max-w-md overflow-hidden rounded-lg border-2 border-[#d4a574] bg-black/90 shadow-2xl backdrop-blur-md',
         className
       )}
     >
-      <CardContent className="pt-6">{children}</CardContent>
+      <CardContent className="p-4 sm:p-6">{children}</CardContent>
     </Card>
   )
 }

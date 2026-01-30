@@ -47,11 +47,10 @@ export function RegisterForm() {
         type="submit"
         loading={isPending}
         disabled={!isValid}
-        variant="game-primary"
-        className="font-fantasy w-full font-bold"
-      >
-        Vytvořit účet
-      </Button>
+        variant="game-ghost"
+        fullWidth
+        label={isPending ? 'Registruji...' : 'Vytvořit účet'}
+      />
     </form>
   )
 }

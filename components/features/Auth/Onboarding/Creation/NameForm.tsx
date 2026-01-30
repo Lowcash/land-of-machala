@@ -26,31 +26,28 @@ export function NameForm({ race, characterClass }: NameFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex gap-2">
-        <div className="grow">
-          <AuthInput
-            id="name"
-            label="Jméno postavy"
-            placeholder="Např. Gandalf, Aragorn..."
-            icon={Sparkles}
-            disabled={isPending}
-            {...register('name')}
-            error={errors.name?.message}
-          />
-        </div>
-        <div className="flex flex-col justify-end">
-          <Button
-            onClick={randomizeCharacter}
-            variant="outline"
-            size="icon"
-            className="border-game-copper hover:border-game-gold hover:text-game-gold mb-[2px] h-10 w-10 border-2 bg-black/60 text-[#d4a574]"
-            title="Náhodné jméno"
-            type="button"
-            disabled={isPending}
-          >
-            <Dice5 className="h-5 w-5" />
-          </Button>
-        </div>
+      <div className="space-y-4">
+        <AuthInput
+          id="name"
+          label="Jméno postavy"
+          placeholder="Např. Gandalf, Aragorn..."
+          icon={Sparkles}
+          disabled={isPending}
+          {...register('name')}
+          error={errors.name?.message}
+        />
+
+        <Button
+          onClick={randomizeCharacter}
+          variant="ghost"
+          className="h-auto w-full justify-center gap-2 border border-[#8b6f47] bg-black/60 py-3 text-[#d4a574] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700]"
+          type="button"
+          disabled={isPending}
+          style={{ fontFamily: 'var(--font-fantasy)' }}
+        >
+          <Dice5 className="h-5 w-5" />
+          <span className="text-sm sm:text-base">Náhodná postava</span>
+        </Button>
       </div>
       <Button
         type="submit"

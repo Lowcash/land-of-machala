@@ -27,13 +27,13 @@ export function AuthInput({
   return (
     <div className="space-y-2">
       <div className="flex justify-between">
-        <Label htmlFor={id} className="text-game-gold/80">
+        <Label htmlFor={id} className="font-fantasy text-xs text-[#d4a574] sm:text-sm">
           {label}
         </Label>
         {error && <span className="text-xs text-red-500">{error}</span>}
       </div>
       <div className="group relative">
-        <div className="text-game-gold/50 group-focus-within:text-game-gold absolute top-1/2 left-3 -translate-y-1/2 transition-colors">
+        <div className="absolute top-1/2 left-3 -translate-y-1/2 text-[#8b7355] transition-colors">
           <Icon className="h-4 w-4" />
         </div>
         <Input
@@ -41,7 +41,7 @@ export function AuthInput({
           ref={ref}
           {...props}
           className={cn(
-            'font-fantasy border-[#8b6f47]/30 bg-black/40 pl-10 text-[#fef9c3] placeholder:text-[#8b6f47]/50 focus-visible:border-[#d4a574]/50 focus-visible:ring-0',
+            'font-fantasy placeholder:font-fantasy h-[50px] pl-10 text-base placeholder:text-base focus-visible:ring-0',
             error && 'border-red-500/50 focus-visible:border-red-500',
             className
           )}

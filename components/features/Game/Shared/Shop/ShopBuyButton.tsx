@@ -3,7 +3,6 @@
 import { ShoppingCart } from 'lucide-react'
 
 import { useServerAction } from '@/lib/hooks/ui/useServerAction'
-import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
 
@@ -23,14 +22,13 @@ export function ShopBuyButton({ price, canAfford, action, fullWidth }: ShopBuyBu
 
   return (
     <Button
-      variant={canAfford ? 'default' : 'outline'}
+      variant={canAfford ? 'game-action' : 'game-secondary'}
       size="sm"
-      className={cn('gap-2 transition-all', !canAfford && 'opacity-50', fullWidth && 'w-full')}
       disabled={!canAfford || isPending}
       onClick={() => execute(action)}
-    >
-      <ShoppingCart className="h-4 w-4" />
-      <span>{price}g</span>
-    </Button>
+      fullWidth={fullWidth}
+      icon={ShoppingCart}
+      label={`${price}g`}
+    />
   )
 }

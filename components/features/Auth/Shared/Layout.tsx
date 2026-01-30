@@ -33,14 +33,9 @@ export function Layout({
         <div
           className={`relative z-10 container mx-auto px-4 ${centered ? 'flex min-h-screen flex-col items-center justify-center py-12' : 'flex h-screen flex-col'}`}
         >
-          <div className="flex w-full flex-1 flex-col items-center justify-center">{children}</div>
-
-          {/* Version Footer - Standardized Global Footer */}
-          <div className="mt-auto shrink-0 py-6 text-center opacity-40 transition-opacity hover:opacity-100">
-            <p className="font-fantasy text-[10px] tracking-widest text-[#d4a574] uppercase sm:text-xs">
-              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
-            </p>
-          </div>
+          <main className="relative flex min-h-screen items-center justify-center p-4">
+            {children}
+          </main>
         </div>
       </div>
     </TransitionWrapper>

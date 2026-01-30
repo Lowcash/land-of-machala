@@ -29,9 +29,10 @@ export default function RegisterPage() {
             </div>
 
             <h1
-              className="text-glow mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
+              className="mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
               style={{
                 fontFamily: 'var(--font-medieval)',
+                textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
               }}
             >
               Land of Machala
@@ -52,11 +53,11 @@ export default function RegisterPage() {
             <RegisterForm />
 
             <div className="mt-4 text-center">
-              <p className="text-game-copper-muted text-sm sm:text-base">
+              <p className="text-sm text-[#8b7355] sm:text-base">
                 Již máš účet?{' '}
                 <Link
                   href="/login"
-                  className="text-game-gold-muted hover:text-game-gold transition-colors hover:underline"
+                  className="text-[#d4a574] transition-colors hover:text-[#ffd700] hover:underline"
                 >
                   Přihlas se zde
                 </Link>

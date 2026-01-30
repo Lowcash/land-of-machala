@@ -12,11 +12,8 @@ export function GuestLoginButton() {
       onClick={handleGuestLogin}
       disabled={isPending}
       variant="game-ghost"
-      className="group relative w-full overflow-hidden border-2"
-    >
-      <span className="relative z-10 flex items-center justify-center gap-2">
-        {isPending ? 'Vstupuji...' : 'Hrát jako host'}
-      </span>
-    </Button>
+      fullWidth
+      label={isPending ? 'Vytváření účtu...' : 'Zkusit hru jako host (bez registrace)'}
+    />
   )
 }

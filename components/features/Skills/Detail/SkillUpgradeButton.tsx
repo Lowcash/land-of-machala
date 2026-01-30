@@ -38,12 +38,9 @@ export function SkillUpgradeButton({ skillId, cost, canUpgrade, maxed }: SkillUp
       disabled={!canUpgrade || isPending}
       loading={isPending}
       variant={canUpgrade ? 'game-primary' : 'game-secondary'}
-      className="min-h-touch-target w-full py-2 sm:min-h-0 sm:py-3"
-      style={{ fontFamily: 'var(--font-fantasy)' }}
-    >
-      <span className="text-sm">
-        {canUpgrade ? `Upgradovat (${cost} bodů)` : 'Nedostatek bodů'}
-      </span>
-    </Button>
+      fullWidth
+      size="game-tall"
+      label={canUpgrade ? `Upgradovat (${cost} bodů)` : 'Nedostatek bodů'}
+    />
   )
 }

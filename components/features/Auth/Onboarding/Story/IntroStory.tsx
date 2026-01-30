@@ -3,7 +3,8 @@ import Link from 'next/link'
 import { BookOpen, SkipForward } from 'lucide-react'
 
 import { storySteps } from '@/lib/game/onboarding'
-import { cn } from '@/lib/utils'
+
+import { Button } from '@/components/ui/button'
 
 import { Layout } from '../../Shared/Layout'
 
@@ -19,12 +20,12 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
   return (
     <Layout backgroundImage="/assets/locations/city-background.jpg">
       <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
-        <BookOpen className="text-game-gold mx-auto mb-4 h-12 w-12" />
+        <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
 
         <div className="flex min-h-32 flex-col justify-center sm:min-h-28">
           <h1
-            className="text-game-gold font-fantasy animate-fade-in-wave text-xl leading-relaxed italic sm:text-2xl"
-            style={{ textShadow: '0 0 10px rgba(255, 215, 0, 0.3)' }}
+            className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
+            style={{ fontFamily: 'var(--font-fantasy)' }}
           >
             &quot;{currentStory.text}&quot;
           </h1>
@@ -43,34 +44,35 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
             if (choice.effect?.class) nextParams.set('class', choice.effect.class)
 
             return (
-              <Link
+              <Button
                 key={idx}
-                href={`?${nextParams.toString()}`}
-                className={cn(
-                  'group border-game-copper hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold block w-full rounded-lg border bg-black/60 p-3 text-left transition-all hover:scale-[1.02] sm:p-4',
-                  'font-fantasy text-xs text-[#f5e6d3] sm:text-sm md:text-base',
-                  'animate-in zoom-in-95 duration-300'
-                )}
-                style={{ animationDelay: `${idx * 150}ms`, animationFillMode: 'both' }}
+                asChild
+                variant="game-choice"
+                className="w-full justify-center text-xs sm:text-sm md:text-base"
               >
-                <span className="flex items-center gap-3">
-                  <span className="border-game-copper text-game-copper-muted group-hover:border-game-gold group-hover:text-game-gold flex h-6 w-6 shrink-0 items-center justify-center rounded-full border text-xs">
-                    {String.fromCharCode(65 + idx)}
+                <Link href={`?${nextParams.toString()}`}>
+                  <span className="flex items-center gap-3">
+                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#8b6f47] text-xs text-[#8b7355] group-hover:border-[#ffd700] group-hover:text-[#ffd700]">
+                      {String.fromCharCode(65 + idx)}
+                    </span>
+                    <span>{choice.text}</span>
                   </span>
-                  <span>{choice.text}</span>
-                </span>
-              </Link>
+                </Link>
+              </Button>
             )
           })}
         </div>
 
-        <Link
-          href="?step=1"
-          className="text-game-copper-muted hover:text-game-gold mx-auto mt-8 flex w-fit items-center justify-center gap-2 text-xs transition-colors sm:text-sm"
+        <Button
+          asChild
+          variant="game-link-subtle"
+          className="mx-auto mt-8 flex w-fit items-center justify-center gap-2 text-xs sm:text-sm"
         >
-          <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />
-          Přeskočit úvod (Jsem zkušený hráč)
-        </Link>
+          <Link href="?step=1">
+            <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />
+            Přeskočit úvod (Jsem zkušený hráč)
+          </Link>
+        </Button>
       </div>
     </Layout>
   )

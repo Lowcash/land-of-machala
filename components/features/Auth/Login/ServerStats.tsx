@@ -16,11 +16,11 @@ export async function ServerStats() {
   return (
     <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
       <h3
-        className="mb-4 flex items-center gap-2 text-base text-[#ffd700]"
+        className="font-fantasy mb-4 flex items-center gap-2 text-base text-[#ffd700] uppercase"
         style={{ fontFamily: 'var(--font-fantasy)' }}
       >
         <Users className="h-5 w-5" />
-        Statistiky serveru
+        STATISTIKY SERVERU
       </h3>
       <div className="grid grid-cols-2 gap-4">
         <StatItem label="Aktivní hráči" value={stats.activePlayers} color="text-[#ffd700]" />

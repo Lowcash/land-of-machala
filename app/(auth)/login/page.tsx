@@ -5,6 +5,7 @@ import { Scroll, Users } from 'lucide-react'
 
 import { Changelog } from '@/components/features/Auth/Login/Changelog'
 import { GuestLoginButton } from '@/components/features/Auth/Login/GuestLoginButton'
+import { HeroQuote } from '@/components/features/Auth/Login/HeroQuote'
 import { HeroSection } from '@/components/features/Auth/Login/HeroSection'
 import { LoginForm } from '@/components/features/Auth/Login/LoginForm'
 import { ServerStats } from '@/components/features/Auth/Login/ServerStats'
@@ -41,9 +42,7 @@ export default function LoginPage() {
               <GuestLoginButton />
 
               <Link href="/register" className="block w-full">
-                <Button variant="game-ghost" className="font-fantasy w-full border-2">
-                  Vytvořit nový účet
-                </Button>
+                <Button variant="game-outline-highlight" fullWidth label="Vytvořit nový účet" />
               </Link>
             </div>
           </AuthCard>
@@ -82,6 +81,14 @@ export default function LoginPage() {
         <div className="hidden w-full max-w-md space-y-6 self-end lg:block">
           <ServerStats />
           <Changelog />
+          <HeroQuote />
+
+          {/* Version Footer */}
+          <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
+            <p className="text-xs text-[#8b7355]">
+              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
+            </p>
+          </div>
         </div>
       </div>
     </Layout>
