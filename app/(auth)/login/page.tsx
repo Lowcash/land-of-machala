@@ -41,10 +41,7 @@ export default function LoginPage() {
               <GuestLoginButton />
 
               <Link href="/register" className="block w-full">
-                <Button
-                  variant="ghost"
-                  className="border-game-copper/50 hover:border-game-gold font-fantasy text-game-gold w-full border bg-black/60 hover:bg-black/80"
-                >
+                <Button variant="game-ghost" className="font-fantasy w-full border-2">
                   Vytvořit nový účet
                 </Button>
               </Link>

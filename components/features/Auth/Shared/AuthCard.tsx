@@ -11,7 +11,7 @@ export function AuthCard({ children, className }: AuthCardProps) {
   return (
     <Card
       className={cn(
-        'border-game-gold/20 w-full max-w-md overflow-hidden bg-black/40 shadow-2xl backdrop-blur-md',
+        'border-double-gold w-full max-w-md overflow-hidden bg-black/40 shadow-2xl backdrop-blur-md',
         className
       )}
     >

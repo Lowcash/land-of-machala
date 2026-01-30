@@ -6,7 +6,7 @@ export function RegisterInfo() {
 
   return (
     <div className="mx-auto hidden w-full max-w-md space-y-4 self-end lg:block">
-      <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
+      <div className="border-double-gold rounded-lg bg-black/80 p-4 shadow-xl backdrop-blur-md">
         <h3
           className="animate-pulse-glow mb-4 flex items-center gap-2 text-base text-[#ffd700]"
           style={{ fontFamily: 'var(--font-fantasy)' }}
@@ -40,13 +40,6 @@ export function RegisterInfo() {
       {/* Quote/Lore */}
       <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
         {heroText}
-      </div>
-
-      {/* Version Footer */}
-      <div className="border-t border-[#8b6f47]/30 pt-4 text-center">
-        <p className="text-xs text-[#8b7355]">
-          Verze 2.0 • © {new Date().getFullYear()} Land of Machala
-        </p>
       </div>
     </div>
   )

@@ -25,6 +25,8 @@ interface AvatarImageProps extends React.ComponentPropsWithoutRef<typeof Image> 
 }
 
 export function AvatarImage({ className, alt = 'Avatar', ref, ...props }: AvatarImageProps) {
+  if (!props.src) return null
+
   return (
     <Image
       ref={ref}

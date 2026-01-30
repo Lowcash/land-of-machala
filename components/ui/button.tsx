@@ -27,6 +27,8 @@ const buttonVariants = cva(
           'bg-linear-to-r from-[#8b6f47] to-[#6d5a3e] text-[#f5e6d3] border border-[#d4a574]/30 hover:brightness-110 shadow-md',
         'game-danger':
           'border border-red-900/50 bg-red-950/30 text-red-400 hover:bg-red-950/50 hover:border-red-500/50 hover:text-red-300',
+        'game-ghost':
+          'border border-game-copper/50 bg-black/60 text-game-gold hover:bg-black/80 hover:border-game-gold hover:text-game-gold transition-all duration-300',
       },
       size: {
         default: 'h-9 px-4 py-2',

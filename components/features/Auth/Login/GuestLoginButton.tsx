@@ -11,7 +11,8 @@ export function GuestLoginButton() {
     <Button
       onClick={handleGuestLogin}
       disabled={isPending}
-      className="group border-game-copper/50 hover:border-game-gold text-game-gold relative w-full overflow-hidden border bg-black/60 transition-all duration-300 hover:bg-black/80"
+      variant="game-ghost"
+      className="group relative w-full overflow-hidden border-2"
     >
       <span className="relative z-10 flex items-center justify-center gap-2">
         {isPending ? 'Vstupuji...' : 'Hrát jako host'}

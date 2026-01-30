@@ -18,7 +18,7 @@ export function Layout({
   return (
     <TransitionWrapper>
       <div
-        className={`bg-game-wood-dark text-game-gold selection:bg-game-gold selection:text-game-wood-dark relative min-h-screen w-full overflow-x-hidden font-serif ${className}`}
+        className={`bg-game-wood-dark bg-noise text-game-gold selection:bg-game-gold selection:text-game-wood-dark relative min-h-screen w-full overflow-x-hidden font-serif ${className}`}
       >
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
@@ -35,8 +35,8 @@ export function Layout({
         >
           <div className="flex w-full flex-1 flex-col items-center justify-center">{children}</div>
 
-          {/* Version Footer */}
-          <div className="mt-8 shrink-0 text-center opacity-40 transition-opacity hover:opacity-100">
+          {/* Version Footer - Standardized Global Footer */}
+          <div className="mt-auto shrink-0 py-6 text-center opacity-40 transition-opacity hover:opacity-100">
             <p className="font-fantasy text-[10px] tracking-widest text-[#d4a574] uppercase sm:text-xs">
               Verze 2.0 • © {new Date().getFullYear()} Land of Machala
             </p>

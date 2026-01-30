@@ -29,10 +29,9 @@ export default function RegisterPage() {
             </div>
 
             <h1
-              className="mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
+              className="text-glow mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
               style={{
                 fontFamily: 'var(--font-medieval)',
-                textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
               }}
             >
               Land of Machala
@@ -64,13 +63,6 @@ export default function RegisterPage() {
               </p>
             </div>
           </AuthCard>
-
-          {/* Mobile Footer */}
-          <div className="mt-8 border-t border-[#8b6f47]/30 pt-4 text-center lg:hidden">
-            <p className="font-fantasy text-[10px] tracking-widest text-[#d4a574] uppercase sm:text-xs">
-              Verze 2.0 • © {new Date().getFullYear()} Land of Machala
-            </p>
-          </div>
         </div>
 
         {/* Right Column: Info - desktop only */}

@@ -70,8 +70,8 @@ export function LoginForm() {
         type="submit"
         loading={isPending}
         disabled={!isValid}
-        variant="game-primary"
-        className="font-fantasy w-full font-bold"
+        variant="game-ghost"
+        className="font-fantasy w-full border-2 font-bold"
       >
         Přihlásit se
       </Button>

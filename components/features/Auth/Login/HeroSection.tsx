@@ -49,10 +49,9 @@ function HeroContent({ flavor, hero }: { flavor: string; hero: string }) {
       </div>
 
       <h1
-        className="mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
+        className="text-glow mb-2 text-3xl whitespace-nowrap text-[#ffd700] sm:text-4xl lg:text-5xl"
         style={{
           fontFamily: 'var(--font-medieval)',
-          textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
         }}
       >
         Land of Machala
@@ -69,7 +68,7 @@ function HeroContent({ flavor, hero }: { flavor: string; hero: string }) {
       </div>
 
       {/* Hero Quote - visible only on large screens usually, but we keep it here to be flexible */}
-      <div className="mx-auto mt-6 hidden max-w-md rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic lg:block">
+      <div className="border-double-gold mx-auto mt-6 hidden max-w-md rounded-lg bg-black/60 p-4 text-center text-sm text-[#8b7355] italic lg:block">
         {hero}
       </div>
     </div>
