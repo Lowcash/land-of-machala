@@ -7,6 +7,8 @@ import { useCharacterRandomizer } from '@/lib/hooks/onboarding/useCharacterRando
 import { useNameForm } from '@/lib/hooks/onboarding/useNameForm'
 
 import { Button } from '@/components/ui/button'
+import { StandardForm } from '@/components/ui/display'
+import { VStack } from '@/components/ui/stack'
 
 import { AuthInput } from '../../Shared/AuthInput'
 
@@ -21,12 +23,12 @@ export function NameForm({ race, characterClass }: NameFormProps) {
 
   const {
     register,
-    formState: { errors, isValid },
+    formState: { errors },
   } = form
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="space-y-4">
+    <StandardForm onSubmit={handleSubmit} gap="lg">
+      <VStack gap="md">
         <AuthInput
           id="name"
           label="Jméno postavy"
@@ -39,27 +41,24 @@ export function NameForm({ race, characterClass }: NameFormProps) {
 
         <Button
           onClick={randomizeCharacter}
-          variant="ghost"
-          className="h-auto w-full justify-center gap-2 border border-[#8b6f47] bg-black/60 py-3 text-[#d4a574] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700]"
+          variant="secondary_game"
+          fullWidth
           type="button"
           disabled={isPending}
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Dice5 className="h-5 w-5" />
-          <span className="text-sm sm:text-base">Náhodná postava</span>
-        </Button>
-      </div>
+          icon={Dice5}
+          label="Náhodná postava"
+        />
+      </VStack>
+
       <Button
         type="submit"
+        variant="choice"
+        size="lg"
+        fullWidth
+        disabled={isPending || !form.getValues('name')}
         loading={isPending}
-        disabled={!isValid}
-        variant="ghost"
-        className="group relative w-full overflow-hidden rounded border border-yellow-900/50 bg-black/60 px-8 py-3 text-lg font-bold text-yellow-500 shadow-lg backdrop-blur-sm transition-all hover:border-yellow-500/50 hover:bg-yellow-900/20 hover:text-yellow-200 disabled:opacity-50"
-        style={{ fontFamily: 'var(--font-medieval)' }}
-      >
-        <span className="relative z-10">Vstoupit do světa</span>
-        <div className="absolute inset-0 z-0 bg-linear-to-r from-yellow-500/0 via-yellow-500/5 to-yellow-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-      </Button>
-    </form>
+        label="Vstoupit do hry"
+      />
+    </StandardForm>
   )
 }

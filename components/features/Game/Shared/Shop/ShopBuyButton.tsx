@@ -22,7 +22,7 @@ export function ShopBuyButton({ price, canAfford, action, fullWidth }: ShopBuyBu
 
   return (
     <Button
-      variant={canAfford ? 'game-action' : 'game-secondary'}
+      variant={canAfford ? 'primary' : 'secondary_game'}
       size="sm"
       disabled={!canAfford || isPending}
       onClick={() => execute(action)}

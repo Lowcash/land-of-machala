@@ -1,52 +1,45 @@
 import { Users } from 'lucide-react'
 
+import { Card } from '@/components/ui/card'
+import { StatCard } from '@/components/ui/display'
+import { HStack, Stack, VStack } from '@/components/ui/stack'
+import { GoldTitle } from '@/components/ui/typography'
+
 // Mock data for now - could be fetched from DB in a real Server Component
 async function getStats() {
-  return {
-    activePlayers: 1247,
-    bossKills: 89,
-    topLevel: 87,
-    completedQuests: '12k+',
-  }
+  return [
+    { label: 'Aktivní hráči', value: 1247, color: 'gold' as const },
+    { label: 'Zabití bossů', value: 89, color: 'danger' as const },
+    { label: 'Top level', value: 87, color: 'success' as const },
+    { label: 'Questy', value: '12k+', color: 'magic' as const },
+  ]
 }
 
+/**
+ * Server statistics display for the authentication pages.
+ * Shows global game metrics.
+ */
 export async function ServerStats() {
   const stats = await getStats()
 
   return (
-    <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
-      <h3
-        className="font-fantasy mb-4 flex items-center gap-2 text-base text-[#ffd700] uppercase"
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        <Users className="h-5 w-5" />
-        STATISTIKY SERVERU
-      </h3>
-      <div className="grid grid-cols-2 gap-4">
-        <StatItem label="Aktivní hráči" value={stats.activePlayers} color="text-[#ffd700]" />
-        <StatItem label="Zabití bossů" value={stats.bossKills} color="text-[#ff6b6b]" />
-        <StatItem label="Top level" value={stats.topLevel} color="text-[#6fbf6f]" />
-        <StatItem label="Questy" value={stats.completedQuests} color="text-[#69ccf0]" />
-      </div>
-    </div>
-  )
-}
+    <Card variant="game">
+      <VStack backdrop fullWidth>
+        <Card.Content>
+          <VStack gap="lg" fullWidth>
+            <HStack gap="sm" align="center">
+              <Users className="text-game-gold h-5 w-5" />
+              <GoldTitle>STATISTIKY SERVERU</GoldTitle>
+            </HStack>
 
-function StatItem({
-  label,
-  value,
-  color,
-}: {
-  label: string
-  value: string | number
-  color: string
-}) {
-  return (
-    <div className="rounded border border-[#8b6f47]/30 bg-black/40 p-3 transition-colors hover:border-[#8b6f47]/60">
-      <div className="mb-1 text-xs text-[#8b7355]">{label}</div>
-      <div className={`text-xl ${color}`} style={{ fontFamily: 'var(--font-fantasy)' }}>
-        {value}
-      </div>
-    </div>
+            <Stack display="grid" gridCols="2" gap="md">
+              {stats.map((stat) => (
+                <StatCard key={stat.label} {...stat} />
+              ))}
+            </Stack>
+          </VStack>
+        </Card.Content>
+      </VStack>
+    </Card>
   )
 }

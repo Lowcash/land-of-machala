@@ -2,12 +2,17 @@
 
 import { useEffect, useState } from 'react'
 
+import { cn } from '@/lib/utils'
+
+import { VStack } from '@/components/ui/stack'
+
 interface TypewriterTextProps {
   text: string
-  className?: string
+  /** Internal use only */
+  _internalClassName?: string
 }
 
-export function TypewriterText({ text, className = '' }: TypewriterTextProps) {
+export function TypewriterText({ text, _internalClassName }: TypewriterTextProps) {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -18,8 +23,11 @@ export function TypewriterText({ text, className = '' }: TypewriterTextProps) {
   }, [text])
 
   return (
-    <div
-      className={`${className} ${isVisible ? 'animate-fade-in-wave opacity-100' : 'opacity-0'}`}
+    <VStack
+      _internalClassName={cn(
+        _internalClassName,
+        isVisible ? 'animate-fade-in-wave opacity-100' : 'opacity-0'
+      )}
       dangerouslySetInnerHTML={{ __html: text }}
     />
   )

@@ -1,4 +1,10 @@
+import { Scroll } from 'lucide-react'
+
 import { SplitLayout } from '@/components/layout'
+import { StatDisplay } from '@/components/ui/display'
+import { InfoBar } from '@/components/ui/info-bar'
+import { VStack } from '@/components/ui/stack'
+import { P } from '@/components/ui/typography'
 
 import { QuestDetailContent } from './Detail/QuestDetailContent'
 import { QuestList } from './List/QuestList'
@@ -18,17 +24,30 @@ export function QuestDashboard({ quests, searchParams }: QuestDashboardProps) {
       asideWidth="lg"
       hideMobileAside={!selectedQuestId}
       main={
-        <div className="flex h-full p-4">
-          <QuestList quests={quests} selectedQuest={selectedQuestId} />
-        </div>
+        <VStack fullHeight gap="none" fullWidth>
+          <InfoBar>
+            <StatDisplay
+              icon={Scroll}
+              label="Aktivní Questy"
+              value={quests.length}
+              color="gold"
+              size="sm"
+            />
+          </InfoBar>
+          <VStack flex="1" p="md" fullWidth>
+            <QuestList quests={quests} selectedQuest={selectedQuestId} />
+          </VStack>
+        </VStack>
       }
       aside={
         selectedQuest ? (
           <QuestDetailContent quest={selectedQuest} />
         ) : (
-          <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
-            Vyber quest ze seznamu pro zobrazení detailů.
-          </div>
+          <VStack fullHeight justify="center" align="center" p="xl">
+            <P color="muted" align="center" italic>
+              Vyber quest ze seznamu pro zobrazení detailů.
+            </P>
+          </VStack>
         )
       }
     />

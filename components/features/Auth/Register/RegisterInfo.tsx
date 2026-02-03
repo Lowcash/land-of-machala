@@ -1,46 +1,60 @@
 import { Sparkles } from 'lucide-react'
 
+import { Card } from '@/components/ui/card'
+import { HStack, VStack } from '@/components/ui/stack'
+import { GoldTitle, MutedText, P, Span } from '@/components/ui/typography'
+
+/**
+ * Information panel for the registration page.
+ * Explains the benefits of joining the game.
+ */
 export function RegisterInfo() {
   const heroText =
     'V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako ti před tebou?'
 
   return (
-    <div className="mx-auto hidden w-full max-w-md space-y-4 self-end lg:block">
-      <div className="border-double-gold rounded-lg bg-black/80 p-4 shadow-xl backdrop-blur-md">
-        <h3
-          className="animate-pulse-glow mb-4 flex items-center gap-2 text-base text-[#ffd700]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Sparkles className="h-5 w-5" />
-          Začni své dobrodružství
-        </h3>
-        <p className="mb-3 text-sm leading-relaxed text-[#d4a574]">
-          Registrací získáš přístup do světa Machala, kde můžeš:
-        </p>
-        <ul className="space-y-2 text-sm text-[#d4a574]">
-          <li className="flex items-start gap-2">
-            <span className="mt-1 text-[#ffd700]">•</span>
-            <span>Vytvořit svého hrdinu z 6 ras a povolání</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 text-[#ffd700]">•</span>
-            <span>Bojovat s monstry a získávat legendární předměty</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 text-[#ffd700]">•</span>
-            <span>Plnit questy a odhalovat příběh země Machala</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="mt-1 text-[#ffd700]">•</span>
-            <span>Rozvíjet dovednosti ve 3 větvích talentů</span>
-          </li>
-        </ul>
-      </div>
+    <VStack gap="md">
+      {/* Features Card */}
+      <Card variant="game" backdrop textured decorated>
+        <Card.Header>
+          <HStack gap="sm">
+            <Sparkles className="text-game-gold h-5 w-5" />
+            <GoldTitle>Začni své dobrodružství</GoldTitle>
+          </HStack>
+        </Card.Header>
+        <Card.Content>
+          <VStack gap="md">
+            <P color="copper">Registrací získáš přístup do světa Machala, kde můžeš:</P>
 
-      {/* Quote/Lore */}
-      <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
-        {heroText}
-      </div>
-    </div>
+            <VStack as="ul" gap="sm">
+              <FeatureItem>Vytvořit svého hrdinu z 6 ras a povolání</FeatureItem>
+              <FeatureItem>Bojovat s monstry a získávat legendární předměty</FeatureItem>
+              <FeatureItem>Plnit questy a odhalovat příběh země Machala</FeatureItem>
+              <FeatureItem>Rozvíjet dovednosti ve 3 větvích talentů</FeatureItem>
+            </VStack>
+          </VStack>
+        </Card.Content>
+      </Card>
+
+      {/* Quote/Lore Card */}
+      <Card variant="muted" backdrop="small">
+        <Card.Content>
+          <VStack align="center" fullWidth p="md">
+            <MutedText italic align="center">
+              {heroText}
+            </MutedText>
+          </VStack>
+        </Card.Content>
+      </Card>
+    </VStack>
+  )
+}
+
+function FeatureItem({ children }: { children: React.ReactNode }) {
+  return (
+    <HStack as="li" align="start" gap="sm">
+      <Span color="gold">•</Span>
+      <P color="copper">{children}</P>
+    </HStack>
   )
 }

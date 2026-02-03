@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 
 import { ChevronDown, ChevronLeft, ChevronRight, ChevronUp } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
+
+import { VStack } from './stack'
+
 interface ScrollIndicatorProps {
   targetRef: React.RefObject<HTMLElement>
   position?: 'top' | 'bottom' | 'both' | 'left' | 'right'
@@ -50,48 +54,80 @@ export function ScrollIndicator({
   }, [targetRef])
 
   return (
-    <>
-      <div className={`pointer-events-none absolute inset-0 z-20 ${className}`}>
-        {/* Top Gradient & Icon */}
-        {(position === 'top' || position === 'both') && (
-          <div
-            className={`absolute top-0 right-0 left-0 flex h-12 items-start justify-center bg-linear-to-b from-black/80 to-transparent pt-1 transition-opacity duration-300 ${
-              showTop ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <ChevronUp className="animate-bounce text-[#ffd700]" />
-          </div>
-        )}
+    <VStack position="absolute" inset="0" z="20" interactive={false} _internalClassName={className}>
+      {/* Top Gradient & Icon */}
+      {(position === 'top' || position === 'both') && (
+        <VStack
+          position="absolute"
+          top="0"
+          right="0"
+          left="0"
+          h="12"
+          align="center"
+          justify="start"
+          pt="1"
+          _internalClassName={cn(
+            'bg-linear-to-b from-black/80 to-transparent transition-opacity duration-300',
+            showTop ? 'opacity-100' : 'opacity-0'
+          )}
+        >
+          <ChevronUp className="animate-bounce text-[#ffd700]" />
+        </VStack>
+      )}
 
-        {/* Bottom Gradient & Icon */}
-        {(position === 'bottom' || position === 'both') && (
-          <div
-            className={`absolute right-0 bottom-0 left-0 flex h-12 items-end justify-center bg-linear-to-t from-black/80 to-transparent pb-1 transition-opacity duration-300 ${
-              showBottom ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <ChevronDown className="animate-bounce text-[#ffd700]" />
-          </div>
-        )}
+      {/* Bottom Gradient & Icon */}
+      {(position === 'bottom' || position === 'both') && (
+        <VStack
+          position="absolute"
+          right="0"
+          bottom="0"
+          left="0"
+          h="12"
+          align="center"
+          justify="end"
+          pb="1"
+          _internalClassName={cn(
+            'bg-linear-to-t from-black/80 to-transparent transition-opacity duration-300',
+            showBottom ? 'opacity-100' : 'opacity-0'
+          )}
+        >
+          <ChevronDown className="animate-bounce text-[#ffd700]" />
+        </VStack>
+      )}
 
-        {/* Left Gradient & Icon (for horizontal) */}
-        {(position === 'left' || position === 'both') && showLeft && (
-          <div
-            className={`absolute top-0 bottom-0 left-0 flex w-12 items-center justify-start bg-linear-to-r from-black/80 to-transparent pl-1 transition-opacity duration-300`}
-          >
-            <ChevronLeft className="animate-bounce text-[#ffd700]" />
-          </div>
-        )}
+      {/* Left Gradient & Icon (for horizontal) */}
+      {(position === 'left' || position === 'both') && showLeft && (
+        <VStack
+          position="absolute"
+          top="0"
+          bottom="0"
+          left="0"
+          w="12"
+          align="center"
+          justify="start"
+          pl="1"
+          _internalClassName="bg-linear-to-r from-black/80 to-transparent transition-opacity duration-300"
+        >
+          <ChevronLeft className="animate-bounce text-[#ffd700]" />
+        </VStack>
+      )}
 
-        {/* Right Gradient & Icon (for horizontal) */}
-        {(position === 'right' || position === 'both') && showRight && (
-          <div
-            className={`absolute top-0 right-0 bottom-0 flex w-12 items-center justify-end bg-linear-to-l from-black/80 to-transparent pr-1 transition-opacity duration-300`}
-          >
-            <ChevronRight className="animate-bounce text-[#ffd700]" />
-          </div>
-        )}
-      </div>
-    </>
+      {/* Right Gradient & Icon (for horizontal) */}
+      {(position === 'right' || position === 'both') && showRight && (
+        <VStack
+          position="absolute"
+          top="0"
+          right="0"
+          bottom="0"
+          w="12"
+          align="center"
+          justify="end"
+          pr="1"
+          _internalClassName="bg-linear-to-l from-black/80 to-transparent transition-opacity duration-300"
+        >
+          <ChevronRight className="animate-bounce text-[#ffd700]" />
+        </VStack>
+      )}
+    </VStack>
   )
 }

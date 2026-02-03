@@ -1,43 +1,58 @@
 import type { ReactNode } from 'react'
 
 import { TransitionWrapper } from '@/components/layout/TransitionWrapper'
+import { Stack, VStack } from '@/components/ui/stack'
 
 interface LayoutProps {
   children: ReactNode
   backgroundImage?: string
-  className?: string
   centered?: boolean
 }
 
 export function Layout({
   children,
   backgroundImage = '/images/login-bg.webp',
-  className = '',
   centered = true,
 }: LayoutProps) {
   return (
     <TransitionWrapper>
-      <div
-        className={`bg-game-wood-dark bg-noise text-game-gold selection:bg-game-gold selection:text-game-wood-dark relative min-h-screen w-full overflow-x-hidden font-serif ${className}`}
+      <VStack
+        bg="game-wood-dark"
+        position="relative"
+        minH="screen"
+        fullWidth
+        overflowX="hidden"
+        _internalClassName="bg-noise"
       >
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${backgroundImage})` }}
+        {/* Background Image Layer */}
+        <Stack position="absolute" inset="0" z="0">
+          <Stack position="absolute" inset="0" bg="black-60" z="0" />
+          <Stack
+            position="absolute"
+            inset="0"
+            _internalClassName="bg-cover bg-center bg-no-repeat"
+            _internalStyle={{ backgroundImage: `url(${backgroundImage})` }}
           />
-          {/* Legacy style: No heavy blur, just gradient overlay */}
-          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90" />
-        </div>
+          <Stack
+            position="absolute"
+            inset="0"
+            _internalClassName="bg-linear-to-b from-black/85 via-black/90 to-black/95"
+          />
+        </Stack>
 
-        <div
-          className={`relative z-10 container mx-auto px-4 ${centered ? 'flex min-h-screen flex-col items-center justify-center py-12' : 'flex h-screen flex-col'}`}
+        {/* Content Layer */}
+        <VStack
+          position="relative"
+          z="10"
+          minH="screen"
+          fullWidth
+          p="md"
+          justify={centered ? 'center' : 'start'}
+          align="center"
         >
-          <main className="relative flex min-h-screen items-center justify-center p-4">
-            {children}
-          </main>
-        </div>
-      </div>
+          {children}
+        </VStack>
+      </VStack>
     </TransitionWrapper>
   )
 }

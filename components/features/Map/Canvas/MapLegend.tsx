@@ -1,9 +1,12 @@
 'use client'
 
 import { MAP_LEGEND_ITEMS, MAP_LEGEND_TIP } from '@/lib/constants/map'
-import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { GameMarker, ProfileHeader } from '@/components/ui/display'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, H3, Span } from '@/components/ui/typography'
 
 import type { MapFilters } from '../Shared/types'
 
@@ -13,10 +16,6 @@ interface MapLegendProps {
 }
 
 export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
-  // 1. Hooks - None currently
-
-  // 2. Navigation State / Derived Values - None currently
-
   // 3. Handlers
   const toggleFilter = (filterKey: keyof MapFilters) => {
     onFiltersChange({
@@ -35,62 +34,61 @@ export function MapLegend({ filters, onFiltersChange }: MapLegendProps) {
     if (item.id === 'player' || item.id === 'locked') {
       const isPlayer = item.id === 'player'
       return (
-        <div className="flex items-center gap-3">
-          <div
-            className={cn(
-              'flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2',
-              isPlayer ? 'border-white bg-[#69ccf0]' : 'border-[#8b6f47] bg-black/60'
-            )}
-          >
-            <Icon className={cn('h-4 w-4', isPlayer ? 'text-white' : 'text-[#8b6f47]')} />
-          </div>
-          <div className="flex-1">
-            <div className="text-sm text-[#d4a574]">{item.label}</div>
-            <div className="text-xs text-[#8b7355]">{item.description}</div>
-          </div>
-        </div>
+        <ProfileHeader
+          avatar={
+            <GameMarker
+              icon={Icon}
+              color={isPlayer ? 'player' : 'muted'}
+              size="sm"
+              glow={isPlayer}
+            />
+          }
+          title={item.label}
+          subtitle={item.description}
+        />
       )
     }
 
     // Filterable items
     return (
-      <Button
-        variant="game-secondary"
-        onClick={() => isFilterable && item.filterKey && toggleFilter(item.filterKey)}
-        className={cn(
-          'flex h-auto w-full items-center justify-start gap-3 p-2',
-          !isActive && 'opacity-50'
-        )}
-      >
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#d4a574] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e]">
-          <Icon className="h-4 w-4" style={{ color: item.color }} />
-        </div>
-        <div className="flex-1 text-left">
-          <div className="text-sm text-[#d4a574]">{item.label}</div>
-          <div className="text-xs text-[#8b7355]">{item.description}</div>
-        </div>
-      </Button>
+      <VStack fullWidth opacity={!isActive ? '50' : '100'}>
+        <Button
+          variant="secondary_game"
+          onClick={() => isFilterable && item.filterKey && toggleFilter(item.filterKey)}
+          fullWidth
+          icon={Icon}
+          label={item.label}
+          subLabel={item.description}
+        />
+      </VStack>
     )
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-lg text-[#ffd700]" style={{ fontFamily: 'var(--font-fantasy)' }}>
+    <VStack gap="lg" fullWidth>
+      <H3 font="fantasy" color="gold">
         Legenda mapy
-      </h2>
+      </H3>
 
-      <div className="space-y-3">
+      <VStack gap="md" fullWidth>
         {MAP_LEGEND_ITEMS.map((item) => (
           <LegendItemRender key={item.id} item={item} />
         ))}
-      </div>
+      </VStack>
 
       {/* Tip */}
-      <div className="rounded border border-[#d4a574] bg-black/60 p-3">
-        <p className="text-xs leading-relaxed text-[#f5e6d3]">
-          <span className="text-[#ffd700]">Tip:</span> {MAP_LEGEND_TIP}
-        </p>
-      </div>
-    </div>
+      <Card variant="muted" fullWidth>
+        <Card.Content>
+          <HStack leading="relaxed" fullWidth>
+            <Caption color="copper">
+              <Span color="gold" bold>
+                Tip:{' '}
+              </Span>
+              {MAP_LEGEND_TIP}
+            </Caption>
+          </HStack>
+        </Card.Content>
+      </Card>
+    </VStack>
   )
 }

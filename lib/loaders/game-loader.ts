@@ -33,8 +33,18 @@ export async function getGamePageData() {
       ...q,
       characterStatus: cq?.status || null,
       progress: 0, // Simplified for dashboard
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      objectives: (q.objectives as unknown as any) || [],
+      objectives: q.objectives.map((obj) => {
+        const charObj = cq?.objectives.find((co) => co.objectiveId === obj.id)
+        return {
+          ...obj,
+          current: charObj?.current || 0,
+          completed: charObj?.completed || false,
+        }
+      }),
+      rewards: q.rewards.map((r) => ({
+        ...r,
+        item: r.item ? { id: r.item.id, name: r.item.name } : null,
+      })),
     }
   })
 

@@ -1,3 +1,7 @@
+import { Card } from '@/components/ui/card'
+import { VStack } from '@/components/ui/stack'
+import { GoldTitle } from '@/components/ui/typography'
+
 import { type EntityItem, type EntitySelectorProps } from '../types'
 import { EntityItemComponent } from './EntityItem'
 
@@ -13,20 +17,30 @@ export function EntityDesktopView<T extends EntityItem>({
   const selectedItem = items.find((i) => i.id === selectedId)!
 
   return (
-    <div className="border-game-gold-muted flex flex-col gap-4 rounded-lg border-2 bg-black/90 p-4 shadow-2xl backdrop-blur-md">
-      <h2 className="font-fantasy text-game-gold text-center text-xl">{title}</h2>
-      <div className="grid grid-cols-3 gap-3">
-        {items.map((item) => (
-          <EntityItemComponent
-            key={item.id}
-            item={item}
-            isSelected={selectedId === item.id}
-            isMobileView={false}
-            createLink={createLink}
-          />
-        ))}
-      </div>
-      {renderDetail(selectedItem)}
-    </div>
+    <Card variant="dialog" fullWidth>
+      <VStack backdrop fullWidth>
+        <Card.Content>
+          <VStack gap="lg" fullWidth>
+            <GoldTitle variant="h2" align="center">
+              {title}
+            </GoldTitle>
+
+            <VStack display="grid" gridCols="3" gap="sm" fullWidth>
+              {items.map((item) => (
+                <EntityItemComponent
+                  key={item.id}
+                  item={item}
+                  isSelected={selectedId === item.id}
+                  isMobileView={false}
+                  createLink={createLink}
+                />
+              ))}
+            </VStack>
+
+            {renderDetail(selectedItem)}
+          </VStack>
+        </Card.Content>
+      </VStack>
+    </Card>
   )
 }

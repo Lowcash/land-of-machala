@@ -1,52 +1,44 @@
 import { Scroll } from 'lucide-react'
 
-export function Changelog() {
-  const updates = [
-    {
-      id: 1,
-      prefix: 'Rozšíření dovedností:',
-      text: '19 skills ve 3 větvích (Combat, Defense, Magic)',
-      color: 'text-[#6fbf6f]',
-    },
-    {
-      id: 2,
-      prefix: 'WoW-style talent systém:',
-      text: '3-tier progrese s unlock požadavky',
-      color: 'text-[#69ccf0]',
-    },
-    {
-      id: 3,
-      prefix: 'Movement systém:',
-      text: 'Směrové pohyby (N/S/E/W) + náhodné souboje',
-      color: 'text-[#ff6b6b]',
-    },
-    {
-      id: 4,
-      prefix: 'UI Update:',
-      text: 'Kompaktní CharacterBox redesign s medieval fantasy stylem',
-      color: 'text-[#d4a574]',
-    },
-  ]
+import { GAME_CHANGELOG } from '@/lib/game/constants/changelog'
 
+import { Card } from '@/components/ui/card'
+import { HStack, VStack } from '@/components/ui/stack'
+import { GoldTitle, Span } from '@/components/ui/typography'
+
+/**
+ * Changelog display for the authentication pages.
+ * Lists recent updates to the game.
+ */
+export function Changelog() {
   return (
-    <div className="rounded-lg border border-[#8b6f47] bg-black/80 p-4 shadow-xl backdrop-blur-md">
-      <h4
-        className="mb-3 flex items-center gap-2 text-base text-[#ffd700]"
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        <Scroll className="h-5 w-5" />
-        Nejnovější změny
-      </h4>
-      <ul className="space-y-3 text-sm text-[#d4a574]">
-        {updates.map((update) => (
-          <li key={update.id} className="flex items-start gap-2">
-            <span className="mt-1 text-[#ffd700]">•</span>
-            <span className="leading-snug">
-              <span className={`font-semibold ${update.color}`}>{update.prefix}</span> {update.text}
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <Card variant="game">
+      <VStack backdrop bg="black-80" p="lg" fullWidth>
+        <Card.Content>
+          <VStack gap="lg" fullWidth>
+            <HStack gap="sm" align="center">
+              <Scroll className="text-game-gold h-5 w-5" />
+              <GoldTitle>Nejnovější změny</GoldTitle>
+            </HStack>
+
+            <VStack gap="md" fullWidth>
+              {GAME_CHANGELOG.map((update) => (
+                <HStack key={update.id} align="start" gap="sm" fullWidth>
+                  <Span color="gold" weight="bold" mt="none">
+                    •
+                  </Span>
+                  <HStack gap="xs" wrap="wrap">
+                    <Span color={update.color} bold>
+                      {update.prefix}
+                    </Span>
+                    <Span color="copper">{update.text}</Span>
+                  </HStack>
+                </HStack>
+              ))}
+            </VStack>
+          </VStack>
+        </Card.Content>
+      </VStack>
+    </Card>
   )
 }

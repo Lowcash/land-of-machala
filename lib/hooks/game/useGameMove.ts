@@ -21,7 +21,7 @@ export function useGameMove({ handleSetInfoText }: UseGameMoveProps) {
 
       if (err || !result?.success) {
         handleSetInfoText(
-          `<span class="text-[#ff6b6b]">Chyba:</span> ${err?.message || 'Pohyb selhal'}`
+          `<span class="text-game-danger">Chyba:</span> ${err?.message || 'Pohyb selhal'}`
         )
         return
       }
@@ -35,7 +35,7 @@ export function useGameMove({ handleSetInfoText }: UseGameMoveProps) {
         router.refresh()
       } else {
         handleSetInfoText(
-          `${directionDesc}<br/><span class="text-[#8b7355]">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
+          `${directionDesc}<br/><span class="text-game-copper-muted">Pozice: X: ${result.newX}, Y: ${result.newY}</span>`
         )
       }
     })

@@ -2,56 +2,69 @@ import type { ReactNode } from 'react'
 
 import { cn } from '@/lib/utils'
 
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { VStack } from './stack'
 
 interface GameGridProps {
   children: ReactNode
-  className?: string
-  containerClassName?: string
+  fullHeight?: boolean
+  variant?: 'default' | 'map'
   columns?: {
-    default?: number
+    default?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
     sm?: number
     md?: number
     lg?: number
     xl?: number
   }
-}
-
-const COLUMN_MAP = {
-  1: 'grid-cols-1',
-  2: 'grid-cols-2',
-  3: 'grid-cols-3',
-  4: 'grid-cols-4',
-  5: 'grid-cols-5',
-  6: 'grid-cols-6',
-  8: 'grid-cols-8',
-  10: 'grid-cols-10',
-  12: 'grid-cols-12',
+  className?: string
 }
 
 export function GameGrid({
   children,
+  fullHeight = false,
+  variant = 'default',
+  columns = { default: 2 },
   className,
-  containerClassName,
-  columns = { default: 1, sm: 2, lg: 3 },
 }: GameGridProps) {
-  const gridCols = cn(
-    'grid gap-3 sm:gap-4',
-    COLUMN_MAP[columns.default as keyof typeof COLUMN_MAP] || 'grid-cols-1',
-    columns.sm && `sm:${COLUMN_MAP[columns.sm as keyof typeof COLUMN_MAP]}`,
-    columns.md && `md:${COLUMN_MAP[columns.md as keyof typeof COLUMN_MAP]}`,
-    columns.lg && `lg:${COLUMN_MAP[columns.lg as keyof typeof COLUMN_MAP]}`,
-    columns.xl && `xl:${COLUMN_MAP[columns.xl as keyof typeof COLUMN_MAP]}`,
-    className
-  )
-
   return (
-    <div className={cn('relative flex flex-1 flex-col overflow-hidden', containerClassName)}>
-      <ScrollArea className="h-full">
-        <div className="flex-1 p-4">
-          <div className={gridCols}>{children}</div>
-        </div>
-      </ScrollArea>
-    </div>
+    <VStack
+      flex="1"
+      minH="none"
+      overflow="hidden"
+      bg={variant === 'map' ? 'black' : 'none'}
+      fullHeight={fullHeight}
+    >
+      <VStack overflowY="scroll" fullHeight={fullHeight} maxH={fullHeight ? 'none' : 'md'}>
+        <VStack p="md" fullWidth>
+          <VStack
+            display="grid"
+            gridCols={
+              String(columns.default || 1) as
+                | '1'
+                | '2'
+                | '3'
+                | '4'
+                | '5'
+                | '6'
+                | '7'
+                | '8'
+                | '9'
+                | '10'
+                | '11'
+                | '12'
+            }
+            gap="md"
+            fullWidth
+            _internalClassName={cn(
+              columns.sm && `sm:grid-cols-${columns.sm}`,
+              columns.md && `md:grid-cols-${columns.md}`,
+              columns.lg && `lg:grid-cols-${columns.lg}`,
+              className
+            )}
+          >
+            {children}
+          </VStack>
+        </VStack>
+      </VStack>
+    </VStack>
   )
 }

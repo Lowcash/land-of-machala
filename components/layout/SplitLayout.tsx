@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react'
 
+import { cn } from '@/lib/utils'
+
+import { VStack } from '@/components/ui/stack'
+
 interface SplitLayoutProps {
   /** Left panel content (list/grid) */
   main: ReactNode
@@ -35,16 +39,34 @@ export function SplitLayout({
   className = '',
 }: SplitLayoutProps) {
   return (
-    <div className={`flex min-h-0 flex-1 overflow-hidden ${className}`}>
+    <VStack
+      direction="row"
+      flex="1"
+      fullHeight
+      overflow="hidden"
+      _internalClassName={cn('min-h-0', className)}
+    >
       {/* Main content - always visible, with overflow handling */}
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">{main}</div>
+      <VStack flex="1" fullHeight overflow="hidden" _internalClassName="min-h-0 min-w-0">
+        {main}
+      </VStack>
 
       {/* Aside - hidden on mobile by default */}
-      <aside
-        className={` ${hideMobileAside ? 'hidden md:block' : 'block'} ${ASIDE_WIDTH_CLASSES[asideWidth]} border-game-gold-muted/50 flex shrink-0 flex-col overflow-hidden border-l bg-black/70 shadow-[-5px_0_15px_rgba(0,0,0,0.5)] backdrop-blur-sm`}
+      <VStack
+        as="aside"
+        shrink="0"
+        fullHeight
+        overflow="hidden"
+        backdrop="medium"
+        border="game-l"
+        _internalClassName={cn(
+          hideMobileAside ? 'hidden md:flex' : 'flex',
+          ASIDE_WIDTH_CLASSES[asideWidth as keyof typeof ASIDE_WIDTH_CLASSES],
+          'bg-black/70 shadow-[-5px_0_15px_rgba(0,0,0,0.5)]'
+        )}
       >
         {aside}
-      </aside>
-    </div>
+      </VStack>
+    </VStack>
   )
 }

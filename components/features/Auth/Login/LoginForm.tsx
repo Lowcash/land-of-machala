@@ -1,11 +1,12 @@
 'use client'
 
-import { Check, Lock, Mail } from 'lucide-react'
+import { Lock, Mail } from 'lucide-react'
 
 import { useLoginForm } from '@/lib/hooks/auth/useLoginForm'
-import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
+import { StandardForm } from '@/components/ui/display'
 
 import { AuthInput } from '../Shared/AuthInput'
 
@@ -17,7 +18,7 @@ export function LoginForm() {
   } = form
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <StandardForm onSubmit={handleSubmit}>
       <AuthInput
         id="email"
         label="Email"
@@ -42,37 +43,21 @@ export function LoginForm() {
         error={errors.password?.message}
       />
 
-      <div className="flex items-center gap-2">
-        <button
-          type="button"
-          disabled={isPending}
-          onClick={toggleRememberMe}
-          className={cn(
-            'flex h-5 w-5 items-center justify-center rounded border-2 transition-all disabled:cursor-not-allowed disabled:opacity-50',
-            rememberMe
-              ? 'border-[#ffd700] bg-[#ffd700]'
-              : 'border-[#8b6f47] bg-black/60 hover:border-[#ffd700]'
-          )}
-        >
-          {rememberMe && <Check className="h-3.5 w-3.5 text-black" />}
-        </button>
-        <label
-          onClick={toggleRememberMe}
-          className="cursor-pointer text-xs text-[#d4a574] transition-colors select-none hover:text-[#ffd700] sm:text-sm"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          Zapamatovat si mě
-        </label>
-      </div>
+      <Checkbox
+        label="Zapamatovat si mě"
+        checked={rememberMe}
+        onCheckedChange={toggleRememberMe}
+        disabled={isPending}
+      />
 
       <Button
         type="submit"
         loading={isPending}
         disabled={!isValid}
-        variant="game-ghost"
+        variant="ghost_game"
         fullWidth
         label={isPending ? 'Přihlašování...' : 'Přihlásit se'}
       />
-    </form>
+    </StandardForm>
   )
 }

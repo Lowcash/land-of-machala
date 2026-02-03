@@ -14,7 +14,7 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:watch": "playwright test --ui --watch",
-    "test:character": "playwright test __tests__/e2e/character.spec.ts --headed",
+    "test:character": "playwright test tests/e2e/character.spec.ts --headed",
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate dev",
     "db:push": "prisma db push",

@@ -4,6 +4,10 @@ import { useEffect, useState } from 'react'
 
 import { HERO_TEXTS } from '@/lib/constants/auth-texts'
 
+import { Card } from '@/components/ui/card'
+import { VStack } from '@/components/ui/stack'
+import { MutedText } from '@/components/ui/typography'
+
 export function HeroQuote() {
   const [text, setText] = useState<string>('')
   const [mounted, setMounted] = useState(false)
@@ -16,8 +20,12 @@ export function HeroQuote() {
   if (!mounted) return null
 
   return (
-    <div className="rounded-lg border border-[#8b6f47]/50 bg-black/60 p-4 text-center text-sm text-[#8b7355] italic">
-      {text}
-    </div>
+    <Card variant="muted">
+      <Card.Content>
+        <VStack align="center" fullWidth>
+          <MutedText italic>{text}</MutedText>
+        </VStack>
+      </Card.Content>
+    </Card>
   )
 }

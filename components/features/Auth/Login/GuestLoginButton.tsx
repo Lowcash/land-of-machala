@@ -11,7 +11,7 @@ export function GuestLoginButton() {
     <Button
       onClick={handleGuestLogin}
       disabled={isPending}
-      variant="game-ghost"
+      variant="ghost_game"
       fullWidth
       label={isPending ? 'Vytváření účtu...' : 'Zkusit hru jako host (bez registrace)'}
     />

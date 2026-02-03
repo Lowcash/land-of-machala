@@ -1,36 +1,55 @@
 import type { SkillCategory } from './types'
 
+export function getCategoryTypographyColor(
+  category: SkillCategory
+): 'danger' | 'cold' | 'magic' | 'nature' | 'copper' {
+  switch (category) {
+    case 'combat':
+      return 'danger'
+    case 'defense':
+      return 'cold'
+    case 'magic':
+      return 'magic'
+    case 'stealth':
+      return 'nature'
+    case 'crafting':
+      return 'copper'
+    default:
+      return 'copper'
+  }
+}
+
 export function getCategoryColor(category: SkillCategory) {
   switch (category) {
     case 'combat':
-      return 'text-[#ff6b6b]'
+      return 'text-game-danger'
     case 'defense':
-      return 'text-[#69ccf0]'
+      return 'text-game-info'
     case 'magic':
-      return 'text-[#b66bd4]'
+      return 'text-game-magic'
     case 'stealth':
-      return 'text-[#6fbf6f]'
+      return 'text-game-success'
     case 'crafting':
-      return 'text-[#d4a574]'
+      return 'text-game-copper-muted'
     default:
-      return 'text-[#d4a574]'
+      return 'text-game-copper-muted'
   }
 }
 
 export function getCategoryBg(category: SkillCategory) {
   switch (category) {
     case 'combat':
-      return 'bg-[#ff6b6b]/10 border-[#ff6b6b]'
+      return 'bg-game-danger/10 border-game-danger'
     case 'defense':
-      return 'bg-[#69ccf0]/10 border-[#69ccf0]'
+      return 'bg-game-info/10 border-game-info'
     case 'magic':
-      return 'bg-[#b66bd4]/10 border-[#b66bd4]'
+      return 'bg-game-magic/10 border-game-magic'
     case 'stealth':
-      return 'bg-[#6fbf6f]/10 border-[#6fbf6f]'
+      return 'bg-game-success/10 border-game-success'
     case 'crafting':
-      return 'bg-[#d4a574]/10 border-[#d4a574]'
+      return 'bg-game-copper/10 border-game-copper'
     default:
-      return 'bg-black/40 border-[#8b6f47]'
+      return 'bg-black/40 border-border'
   }
 }
 
@@ -53,14 +72,14 @@ export function getCategoryName(category: SkillCategory) {
 export function getCategoryGradient(category: SkillCategory) {
   switch (category) {
     case 'combat':
-      return 'from-[#ff6b6b] to-[#ff8b8b]'
+      return 'from-game-danger to-red-400'
     case 'defense':
-      return 'from-[#69ccf0] to-[#89dcff]'
+      return 'from-game-info to-blue-300'
     case 'magic':
-      return 'from-[#b66bd4] to-[#d68bf4]'
+      return 'from-game-magic to-purple-400'
     case 'stealth':
-      return 'from-[#6fbf6f] to-[#8fdf8f]'
+      return 'from-game-success to-green-400'
     default:
-      return 'from-[#d4a574] to-[#e4b584]'
+      return 'from-game-copper to-amber-300'
   }
 }

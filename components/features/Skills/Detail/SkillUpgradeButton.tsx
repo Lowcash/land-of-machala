@@ -1,10 +1,9 @@
-'use client'
-
 import { Check } from 'lucide-react'
 
 import { useSkillActions } from '@/lib/hooks/game'
 
 import { Button } from '@/components/ui/button'
+import { StatusMessage } from '@/components/ui/status-message'
 
 interface SkillUpgradeButtonProps {
   skillId: string
@@ -25,10 +24,9 @@ export function SkillUpgradeButton({ skillId, cost, canUpgrade, maxed }: SkillUp
   // 4. Sub-components (Render helpers)
   if (maxed) {
     return (
-      <div className="flex items-center justify-center gap-2 py-2 text-[#6fbf6f] sm:py-3">
-        <Check className="h-4 w-4" />
-        <span className="text-sm">Maximální level</span>
-      </div>
+      <StatusMessage variant="success" icon={Check}>
+        Maximální level
+      </StatusMessage>
     )
   }
 
@@ -37,9 +35,9 @@ export function SkillUpgradeButton({ skillId, cost, canUpgrade, maxed }: SkillUp
       onClick={onUpgrade}
       disabled={!canUpgrade || isPending}
       loading={isPending}
-      variant={canUpgrade ? 'game-primary' : 'game-secondary'}
+      variant={canUpgrade ? 'primary' : 'secondary_game'}
       fullWidth
-      size="game-tall"
+      size="lg"
       label={canUpgrade ? `Upgradovat (${cost} bodů)` : 'Nedostatek bodů'}
     />
   )

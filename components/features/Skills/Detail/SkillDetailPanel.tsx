@@ -2,15 +2,17 @@
 
 import { useTransition } from 'react'
 
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
-import { X } from 'lucide-react'
 import { toast } from 'sonner'
 
 import { increaseSkillRankAction, unlockSkillAction } from '@/lib/actions/skill'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { DetailLayout, StatDisplay, StatGrid } from '@/components/ui/display'
+import { VStack } from '@/components/ui/stack'
+import { P } from '@/components/ui/typography'
 
 import type { MergedSkill } from '../Shared/types'
 
@@ -47,67 +49,50 @@ export function SkillDetailPanel({ skill, closeHref, talentPoints }: SkillDetail
     })
   }
 
-  if (!skill) {
-    return (
-      <div className="flex h-full items-center justify-center p-8 text-center text-[#8b7355] italic">
-        Vyber si dovednost pro zobrazení detailů...
-      </div>
-    )
-  }
+  const footer = skill && (
+    <Button
+      variant="primary"
+      fullWidth
+      disabled={skill.currentLevel >= skill.maxRank || talentPoints < skill.cost || isPending}
+      onClick={handleUpgrade}
+      label={
+        isPending
+          ? 'Zpracovávám...'
+          : skill.currentLevel >= skill.maxRank
+            ? 'Maximálně vylepšeno'
+            : skill.currentLevel === 0
+              ? 'Naučit se dovednost'
+              : 'Vylepšit dovednost'
+      }
+    />
+  )
 
   return (
-    <div className="flex h-full flex-col">
-      <div className="mb-4 flex items-center justify-between border-b border-[#8b6f47]/30 pb-2">
-        <h2
-          className="text-xl font-bold text-[#ffd700]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          {skill.name}
-        </h2>
-        <Link
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          href={closeHref as any}
-          className="flex h-8 w-8 items-center justify-center rounded-md text-[#8b7355] transition-colors hover:bg-white/10 hover:text-[#d4a574]"
-        >
-          <X className="h-5 w-5" />
-        </Link>
-      </div>
+    <DetailLayout
+      title={skill?.name || 'Detail dovednosti'}
+      onClose={closeHref}
+      isEmpty={!skill}
+      emptyMessage="Vyber si dovednost pro zobrazení detailů..."
+      footer={footer}
+    >
+      <VStack gap="md">
+        <Card variant="muted" textured fullWidth>
+          <Card.Content>
+            <P color="copper">{skill?.description || 'Žádný popis není k dispozici.'}</P>
+          </Card.Content>
+        </Card>
 
-      <div className="custom-scrollbar flex-1 space-y-4 overflow-y-auto pr-2">
-        <div className="rounded bg-black/40 p-3 text-sm leading-relaxed text-[#f5e6d3]">
-          {skill.description || 'Žádný popis není k dispozici.'}
-        </div>
-
-        <div className="grid grid-cols-2 gap-2 text-xs">
-          <div className="rounded border border-[#8b6f47]/20 bg-black/20 p-2">
-            <div className="text-[#8b7355] uppercase">Level</div>
-            <div className="text-lg font-bold text-[#d4a574]">
-              {skill.currentLevel} / {skill.maxRank}
-            </div>
-          </div>
-          <div className="rounded border border-[#8b6f47]/20 bg-black/20 p-2">
-            <div className="text-[#8b7355] uppercase">Cena vylepšení</div>
-            <div className="text-lg font-bold text-[#ffd700]">{skill.cost} bodů</div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 border-t border-[#8b6f47]/30 pt-4">
-        <Button
-          variant="game-primary"
-          className="w-full"
-          disabled={skill.currentLevel >= skill.maxRank || talentPoints < skill.cost || isPending}
-          onClick={handleUpgrade}
-        >
-          {isPending
-            ? 'Zpracovávám...'
-            : skill.currentLevel >= skill.maxRank
-              ? 'Maximálně vylepšeno'
-              : skill.currentLevel === 0
-                ? 'Naučit se dovednost'
-                : 'Vylepšit dovednost'}
-        </Button>
-      </div>
-    </div>
+        {skill && (
+          <StatGrid columns="2">
+            <StatDisplay
+              label="Level"
+              value={`${skill.currentLevel} / ${skill.maxRank}`}
+              color="copper"
+            />
+            <StatDisplay label="Cena vylepšení" value={`${skill.cost} bodů`} color="gold" />
+          </StatGrid>
+        )}
+      </VStack>
+    </DetailLayout>
   )
 }

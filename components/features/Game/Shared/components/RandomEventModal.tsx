@@ -7,6 +7,10 @@ import type { RandomEvent } from '@/types/events'
 import { getEventTypeColor, getEventTypeIconColor } from '@/lib/game/views'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { Modal } from '@/components/ui/modal'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, H2, P, Span } from '@/components/ui/typography'
 
 interface RandomEventModalProps {
   event: RandomEvent | null
@@ -15,56 +19,71 @@ interface RandomEventModalProps {
 }
 
 export function RandomEventModal({ event, onChoice, onClose }: RandomEventModalProps) {
-  // 1. Hooks - None currently
-
-  // 2. Navigation State / Derived Values
   if (!event) return null
 
   const typeColor = getEventTypeColor(event.type)
   const typeIconColor = getEventTypeIconColor(event.type)
   const EventIcon = Sparkles
 
-  // 3. Handlers
   const handleConfirm = () => {
     onChoice(1)
     onClose()
   }
 
-  // 4. Sub-components (Render helpers)
   return (
-    <div className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center p-4 duration-300">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+    <Modal isOpen={!!event} onClose={onClose}>
+      <Modal.Content variant="dialog">
+        <VStack _internalClassName={typeColor}>
+          <Modal.Header>
+            <HStack align="center" gap="md" fullWidth>
+              <HStack
+                rounded="lg"
+                border="default"
+                p="xs"
+                _internalClassName="bg-slate-800/60 border-slate-700/50"
+              >
+                <VStack _internalClassName={typeIconColor}>
+                  <EventIcon className="h-6 w-6" />
+                </VStack>
+              </HStack>
+              <VStack gap="none" fullWidth>
+                <HStack align="center" gap="sm" justify="between" fullWidth>
+                  <H2>{event.title}</H2>
+                  <HStack rounded="sm" px="sm" _internalClassName={typeColor}>
+                    <Span bold uppercase variant="caption">
+                      {event.type}
+                    </Span>
+                  </HStack>
+                </HStack>
+                <Caption color="muted" italic>
+                  Náhodné setkání...
+                </Caption>
+              </VStack>
+            </HStack>
+          </Modal.Header>
+        </VStack>
 
-      <div className="relative w-full max-w-2xl overflow-hidden rounded-lg border-2 border-[#8b6f47]/40 bg-linear-to-b from-slate-900/98 to-slate-800/98 shadow-2xl backdrop-blur-md">
-        <div className={`border-b-2 ${typeColor} px-6 py-4`}>
-          <div className="flex items-center gap-3">
-            <div className="rounded-lg border border-slate-700/50 bg-slate-800/60 p-2">
-              <EventIcon className={`h-6 w-6 ${typeIconColor}`} />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <h2 className="font-bold text-[#f5e6d3]">{event.title}</h2>
-                <span
-                  className={`rounded px-2 py-0.5 text-[10px] font-bold tracking-wide uppercase ${typeColor}`}
-                >
-                  {event.type}
-                </span>
-              </div>
-              <p className="mt-0.5 text-xs text-slate-400 italic">Náhodné setkání...</p>
-            </div>
-          </div>
-        </div>
+        <Modal.Body>
+          <VStack gap="lg" align="center" fullWidth>
+            <Card variant="muted" fullWidth>
+              <Card.Content>
+                <VStack leading="relaxed">
+                  <P>{event.description}</P>
+                </VStack>
+              </Card.Content>
+            </Card>
 
-        <div className="px-6 py-6 text-center">
-          <div className="mb-6 rounded-lg border border-[#8b6f47]/20 bg-black/40 p-6 backdrop-blur-sm">
-            <p className="text-sm leading-relaxed text-[#f5e6d3]">{event.description}</p>
-          </div>
-
-          <Button onClick={handleConfirm} variant="game-primary" className="min-w-[200px] px-8">
-            <span>Pokračovat v cestě</span>
-          </Button>
-        </div>
-      </div>
-    </div>
+            <VStack _internalClassName="min-w-[200px]">
+              <Button
+                onClick={handleConfirm}
+                variant="primary"
+                label="Pokračovat v cestě"
+                fullWidth
+              />
+            </VStack>
+          </VStack>
+        </Modal.Body>
+      </Modal.Content>
+    </Modal>
   )
 }

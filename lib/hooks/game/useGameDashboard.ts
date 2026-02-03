@@ -5,7 +5,7 @@ import { useGameMove, useGameView, useInfoLog } from '@/lib/hooks/game'
 import type { Buff, CharacterData, View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
-interface DashboardCharacterData extends CharacterData {
+interface DashboardCharacterData extends Omit<CharacterData, 'inventory'> {
   inventory?: MarketItem[]
   xpToNextLevel?: number
   activeBuffs?: Buff[]

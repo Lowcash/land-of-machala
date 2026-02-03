@@ -5,6 +5,10 @@ import { ChevronRight, ScrollText } from 'lucide-react'
 import { useQuestBoard } from '@/lib/hooks/game'
 
 import type { MergedQuest } from '@/components/features/Quest/Shared/types'
+import { ActionGrid } from '@/components/ui/action'
+import { LabelledDivider } from '@/components/ui/display'
+import { VStack } from '@/components/ui/stack'
+import { MutedText } from '@/components/ui/typography'
 
 import { DialogPanel } from '../Shared/components/DialogPanel'
 import { LocationAction } from '../Shared/components/LocationAction'
@@ -32,12 +36,11 @@ export function QuestBoard({ quests, onBack }: QuestBoardProps) {
   // 4. Sub-components (Render helpers)
   if (selectedQuest) {
     return (
-      <div className="space-y-4">
+      <VStack gap="md">
         <LocationAction
-          variant="compact"
+          variant="ghost"
           title="Zpět na vývěsku"
           icon={ChevronRight}
-          className="h-auto border-none bg-transparent p-0 text-[#8b7355] hover:bg-transparent hover:text-[#d4a574]"
           onClick={() => onSelect(null)}
         />
 
@@ -60,20 +63,15 @@ export function QuestBoard({ quests, onBack }: QuestBoardProps) {
             },
           ]}
         />
-      </div>
+      </VStack>
     )
   }
 
   return (
-    <div className="space-y-3">
-      <div className="flex items-center justify-between px-1">
-        <h4 className="text-xs font-bold tracking-widest text-[#8b7355] uppercase">
-          Dostupné zakázky
-        </h4>
-        <div className="mx-4 h-px flex-1 bg-[#8b6f47]/20" />
-      </div>
+    <VStack gap="md">
+      <LabelledDivider label="Dostupné zakázky" />
 
-      <div className="grid grid-cols-1 gap-2">
+      <ActionGrid columns={{ default: 1 }}>
         {availableQuests.length > 0 ? (
           availableQuests.map((quest) => (
             <LocationAction
@@ -82,15 +80,14 @@ export function QuestBoard({ quests, onBack }: QuestBoardProps) {
               icon={ScrollText}
               variant="compact"
               onClick={() => onSelect(quest)}
-              className="border-[#8b6f47]/30 bg-black/40 hover:border-[#ffd700]/50"
             />
           ))
         ) : (
-          <div className="py-8 text-center text-sm text-[#8b7355] italic">
-            Momentálně nejsou k dispozici žádné nové úkoly.
-          </div>
+          <VStack py="lg" align="center" fullWidth gap="sm">
+            <MutedText italic>Momentálně nejsou k dispozici žádné nové úkoly.</MutedText>
+          </VStack>
         )}
-      </div>
-    </div>
+      </ActionGrid>
+    </VStack>
   )
 }

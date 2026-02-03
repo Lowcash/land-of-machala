@@ -48,8 +48,6 @@ describe('Market Components', () => {
 
   const mockHandleBuy = vi.fn()
   const mockHandleSell = vi.fn()
-  const mockHandleHaggle = vi.fn()
-  const mockGetPrice = vi.fn((item, buying) => (buying ? item.price : item.price / 2))
 
   afterEach(() => {
     vi.clearAllMocks()
@@ -57,30 +55,14 @@ describe('Market Components', () => {
 
   describe('MarketBuy', () => {
     it('renders stock items correctly', () => {
-      render(
-        <MarketBuy
-          stock={mockStock as unknown as MarketItem[]}
-          handleBuy={mockHandleBuy}
-          handleHaggle={mockHandleHaggle}
-          getPrice={mockGetPrice}
-          haggledItems={{}}
-        />
-      )
+      render(<MarketBuy stock={mockStock as unknown as MarketItem[]} handleBuy={mockHandleBuy} />)
 
       expect(screen.getByText('Test Sword')).toBeDefined()
       expect(screen.getByText('100g')).toBeDefined()
     })
 
     it('calls handleBuy when clicked', () => {
-      render(
-        <MarketBuy
-          stock={mockStock as unknown as MarketItem[]}
-          handleBuy={mockHandleBuy}
-          handleHaggle={mockHandleHaggle}
-          getPrice={mockGetPrice}
-          haggledItems={{}}
-        />
-      )
+      render(<MarketBuy stock={mockStock as unknown as MarketItem[]} handleBuy={mockHandleBuy} />)
 
       fireEvent.click(screen.getByText('Test Sword').closest('div')!)
       expect(mockHandleBuy).toHaveBeenCalledWith(mockStock[0])
@@ -93,9 +75,6 @@ describe('Market Components', () => {
         <MarketSell
           inventory={mockInventory as unknown as MarketItem[]}
           handleSell={mockHandleSell}
-          handleHaggle={mockHandleHaggle}
-          getPrice={mockGetPrice}
-          haggledItems={{}}
         />
       )
 

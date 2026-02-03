@@ -1,25 +1,29 @@
 import type { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
+import { Button, type ButtonProps } from '@/components/ui/button'
 
-import { Button } from '@/components/ui/button'
-
-export interface ActionItemProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ActionItemProps extends Omit<
+  React.ButtonHTMLAttributes<HTMLButtonElement>,
+  'className'
+> {
   label: string
   subLabel?: string
   icon?: LucideIcon
   loading?: boolean
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'default'
+  variant?: 'primary' | 'secondary' | 'danger' | 'success' | 'ghost' | 'default' | 'magic' | 'muted'
   layout?: 'row' | 'col' | 'auto' // Layout direction of content
   cooldown?: number // Percentage 0-100 or potentially generic cooldown logic later
 }
 
 // Map logical variants to UI button variants
-const VARIANT_MAP = {
-  primary: 'game-primary',
-  secondary: 'game-secondary',
-  danger: 'game-danger',
-  ghost: 'ghost',
+const VARIANT_MAP: Record<NonNullable<ActionItemProps['variant']>, ButtonProps['variant']> = {
+  primary: 'primary',
+  secondary: 'secondary_game',
+  danger: 'danger',
+  success: 'success',
+  ghost: 'ghost_game',
+  magic: 'magic_game',
+  muted: 'muted_game',
   default: 'default',
 } as const
 
@@ -31,40 +35,22 @@ export function ActionItem({
   disabled,
   loading,
   variant = 'primary',
-  className,
   layout = 'auto',
-  style,
   ...props
 }: ActionItemProps) {
-  // Determine layout classes based on prop or context (could be enhanced)
   const isRow = layout === 'row' || (layout === 'auto' && !!subLabel)
 
   return (
     <Button
-      variant={VARIANT_MAP[variant] || 'game-primary'}
+      variant={isRow ? 'row' : VARIANT_MAP[variant] || 'primary'}
       onClick={onClick}
       disabled={disabled}
       loading={loading}
-      className={cn(
-        'relative overflow-hidden transition-all',
-        isRow ? 'h-auto w-full justify-between px-4 py-3' : 'h-24 w-full flex-col gap-2',
-        className
-      )}
-      style={style}
+      size={isRow ? 'default' : 'lg'}
+      label={label}
+      subLabel={subLabel}
+      icon={Icon}
       {...props}
-    >
-      <div className={cn('flex items-center gap-2', isRow ? '' : 'flex-col')}>
-        {Icon && <Icon className={cn('shrink-0', isRow ? 'h-5 w-5' : 'h-6 w-6')} />}
-        <span
-          className={cn('font-fantasy', isRow ? 'text-sm' : 'text-xs tracking-wider uppercase')}
-        >
-          {label}
-        </span>
-      </div>
-
-      {subLabel && (
-        <span className={cn('opacity-70', isRow ? 'text-xs' : 'text-[10px]')}>{subLabel}</span>
-      )}
-    </Button>
+    />
   )
 }

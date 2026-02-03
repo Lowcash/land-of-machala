@@ -2,7 +2,13 @@ import type { ReactNode } from 'react'
 
 import { ArrowLeft } from 'lucide-react'
 
+// Internal cn helper for the local file refactor if needed,
+// though we usually import it. Checking imports...
+import { cn } from '@/lib/utils'
+
 import { Button } from '@/components/ui/button'
+import { HStack, VStack } from '@/components/ui/stack'
+import { H2 } from '@/components/ui/typography'
 
 interface MobileLayoutProps {
   /** Is overlay visible */
@@ -34,28 +40,43 @@ export function MobileLayout({
   if (!isOpen) return null
 
   return (
-    <div
-      className={`fixed inset-0 z-50 flex flex-col bg-black/95 pt-11.75 backdrop-blur-md md:hidden ${className}`}
+    <VStack
+      position="fixed"
+      inset="0"
+      z="top"
+      fullHeight
+      fullWidth
+      bg="black-90"
+      backdrop
+      _internalClassName={cn('md:hidden pt-11.75', className)}
     >
-      <div className="flex shrink-0 items-center justify-between border-b border-[#8b6f47] bg-black/80 px-3 py-3 backdrop-blur-md">
-        <h2
-          className="text-base text-[#ffd700] sm:text-lg"
-          style={{ fontFamily: 'var(--font-medieval)' }}
-        >
+      {/* Header */}
+      <HStack
+        shrink="0"
+        align="center"
+        justify="between"
+        px="md"
+        py="md"
+        bg="black-80"
+        border="game-b"
+        backdrop
+      >
+        <H2 font="medieval" color="gold" _internalClassName="text-base sm:text-lg">
           {title}
-        </h2>
+        </H2>
         <Button
           onClick={onClose}
           variant="ghost"
-          className="min-h-touch-target flex items-center gap-2 rounded border border-[#8b6f47] bg-black/60 px-3 py-2 transition-colors hover:border-[#ffd700] sm:min-h-0"
+          icon={ArrowLeft}
+          label={backText}
           aria-label="Zavřít"
-        >
-          <ArrowLeft className="h-4 w-4 text-[#d4a574]" />
-          <span className="text-sm text-[#d4a574]">{backText}</span>
-        </Button>
-      </div>
+        />
+      </HStack>
 
-      <div className="scrollbar-custom flex-1 overflow-y-auto p-3 sm:p-4">{children}</div>
-    </div>
+      {/* Scrollable Content */}
+      <VStack flex="1" overflow="scroll" p="md" _internalClassName="sm:p-6">
+        {children}
+      </VStack>
+    </VStack>
   )
 }

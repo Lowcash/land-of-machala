@@ -5,8 +5,11 @@ import { type LucideIcon, X } from 'lucide-react'
 import { type AchievementRarity } from '@/lib/game/constants/achievements'
 import { useAchievementConfig } from '@/lib/hooks/game'
 import { useNotificationAnimation } from '@/lib/hooks/ui/useNotificationAnimation'
+import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, H3, P } from '@/components/ui/typography'
 
 export interface Achievement {
   id: number
@@ -33,73 +36,74 @@ export function AchievementNotification({ achievement, onClose }: AchievementNot
     icon: achievement.icon,
   })
 
-  // 2. Navigation State - None currently
-
   // 3. Handlers
   const onDismiss = () => handleClose()
 
   // 4. Sub-components (Render helpers)
   return (
-    <div
-      className={`pointer-events-auto mb-3 transition-all duration-300 ${
+    <VStack
+      interactive={isVisible}
+      mb="sm"
+      _internalClassName={cn(
+        'transition-all duration-300',
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      }`}
+      )}
     >
-      <div
-        className={`bg-linear-to-r ${colors.bg} w-full max-w-sm rounded-lg border p-4 backdrop-blur-md`}
-        style={{
+      <VStack
+        p="md"
+        rounded="lg"
+        backdrop
+        border="game"
+        bg="black-80"
+        _internalClassName={cn('w-full max-w-sm', colors.bg)}
+        _internalStyle={{
           borderColor: colors.border,
-          boxShadow: `0 0 15px ${colors.glow}, 0 4px 6px rgba(0,0,0,0.3)`,
+          boxShadow: `0 0 20px ${colors.glow}40, 0 4px 12px rgba(0,0,0,0.5)`,
         }}
       >
-        <div className="flex items-start gap-3">
+        <HStack align="start" gap="md">
           {/* Icon */}
-          <div
-            className="shrink-0 rounded-full border-2 p-3"
-            style={{
-              borderColor: colors.border,
-              background: `linear-gradient(135deg, ${colors.border}40, ${colors.border}20)`,
-              boxShadow: `0 0 15px ${colors.glow}`,
+          <VStack
+            rounded="full"
+            p="sm"
+            _internalStyle={{
+              border: `2px solid ${colors.border}`,
+              background: `linear-gradient(135deg, ${colors.border}20, ${colors.border}10)`,
+              boxShadow: `0 0 15px ${colors.glow}40`,
             }}
           >
             <Icon className="h-6 w-6" style={{ color: colors.border }} />
-          </div>
+          </VStack>
 
-          <div className="min-w-0 flex-1">
-            <div className="mb-1 flex items-start justify-between gap-2">
-              <div
-                className="text-xs tracking-wider uppercase opacity-80"
-                style={{ color: colors.border, fontFamily: 'var(--font-fantasy)' }}
-              >
+          <VStack gap="xs" flex="1">
+            <HStack justify="between" align="start">
+              <Caption bold uppercase font="fantasy" _internalStyle={{ color: colors.border }}>
                 Úspěch odemčen
-              </div>
-              <Button
-                onClick={onDismiss}
-                variant="ghost"
-                size="icon"
-                className="h-5 w-5 shrink-0 p-0 text-white/60 hover:text-white"
-              >
-                <X className="h-4 w-4" />
-              </Button>
-            </div>
-            <h3 className="mb-1 text-base text-white" style={{ fontFamily: 'var(--font-fantasy)' }}>
+              </Caption>
+              <Button onClick={onDismiss} variant="ghost_game" size="icon-xs" icon={X} />
+            </HStack>
+            <H3 font="fantasy" color="gold">
               {achievement.title}
-            </h3>
-            <p className="text-xs leading-relaxed text-white/80">{achievement.description}</p>
-          </div>
-        </div>
+            </H3>
+            <P size="sm" color="copper" opacity="80" leading="relaxed">
+              {achievement.description}
+            </P>
+          </VStack>
+        </HStack>
 
         {/* Progress bar animation */}
-        <div className="mt-3 h-1 overflow-hidden rounded-full bg-black/40">
-          <div
-            className="h-full rounded-full transition-all duration-5000 ease-linear"
-            style={{
+        <VStack mt="sm" h="1" rounded="full" bg="black" border="game" overflow="hidden">
+          <VStack
+            h="full"
+            rounded="full"
+            _internalClassName="transition-all duration-5000 ease-linear"
+            _internalStyle={{
               width: isVisible ? '0%' : '100%',
               background: colors.border,
             }}
-          ></div>
-        </div>
-      </div>
-    </div>
+          />
+        </VStack>
+      </VStack>
+    </VStack>
   )
 }

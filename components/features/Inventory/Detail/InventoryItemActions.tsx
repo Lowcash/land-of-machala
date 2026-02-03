@@ -3,6 +3,7 @@
 import { useInventoryActions } from '@/lib/hooks/game'
 
 import { Button } from '@/components/ui/button'
+import { VStack } from '@/components/ui/stack'
 
 interface InventoryItemActionsProps {
   itemId: string
@@ -33,24 +34,23 @@ export function InventoryItemActions({
 
   // 4. Sub-components (Render helpers)
   return (
-    <div className="flex flex-col gap-2">
+    <VStack gap="sm" fullWidth>
       <Button
         onClick={handleAction}
         disabled={isPending}
-        variant={isEquipped ? 'game-danger' : 'game-primary'}
-        className="w-full"
-      >
-        {isConsumable ? 'Použít předmět' : isEquipped ? 'Sundat výbavu' : 'Nasadit výbavu'}
-      </Button>
+        variant={isEquipped ? 'danger' : 'primary'}
+        fullWidth
+        label={isConsumable ? 'Použít předmět' : isEquipped ? 'Sundat výbavu' : 'Nasadit výbavu'}
+      />
 
       <Button
         onClick={() => handleSell(itemId)}
         disabled={isPending || isEquipped}
-        variant="ghost"
-        className="text-game-danger hover:bg-game-danger/10 w-full text-xs"
-      >
-        Prodat (Market)
-      </Button>
-    </div>
+        variant="danger"
+        size="xs"
+        fullWidth
+        label="Prodat (Market)"
+      />
+    </VStack>
   )
 }

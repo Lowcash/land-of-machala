@@ -6,6 +6,7 @@ import { Analytics } from '@vercel/analytics/next'
 import { NotificationProvider } from '@/components/providers/NotificationProvider'
 import { QueryProvider } from '@/components/providers/QueryProvider'
 import { Toaster } from '@/components/ui/sonner'
+import { VStack } from '@/components/ui/stack'
 
 import './globals.css'
 
@@ -47,7 +48,9 @@ export default function RootLayout({
       <body className="font-body text-game-fg bg-black antialiased">
         <NotificationProvider>
           <QueryProvider>
-            <div className="bg-game-bg flex min-h-screen flex-col">{children}</div>
+            <VStack bg="game-wood-dark" minH="screen" fullWidth>
+              {children}
+            </VStack>
             <Toaster />
           </QueryProvider>
         </NotificationProvider>

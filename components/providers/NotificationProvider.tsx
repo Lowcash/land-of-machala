@@ -10,8 +10,11 @@ import {
   type NotificationVariant,
 } from '@/lib/constants/notifications'
 import { useNotificationAnimation } from '@/lib/hooks/ui/useNotificationAnimation'
+import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
+import { Stack, VStack } from '@/components/ui/stack'
+import { H4, P } from '@/components/ui/typography'
 
 export type Notification = {
   id: number
@@ -47,49 +50,68 @@ function NotificationItem({ notification, onClose }: NotificationItemProps) {
 
   // Render
   return (
-    <div
+    <VStack
       role="alert"
       aria-live="polite"
       aria-atomic="true"
-      className={`relative mb-3 w-80 overflow-hidden rounded-lg border-2 backdrop-blur-md transition-all duration-300 ${
-        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-      } bg-linear-to-br ${config.bgGradient}`}
-      style={{
+      rounded="lg"
+      backdrop
+      position="relative"
+      mb="sm"
+      w="80"
+      overflow="hidden"
+      _internalClassName={cn(
+        'transition-all duration-300 bg-linear-to-br border-2',
+        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
+        config.bgGradient
+      )}
+      _internalStyle={{
         borderColor: config.borderColor,
         boxShadow: `0 0 20px ${config.glowColor}, 0 4px 6px rgba(0,0,0,0.3)`,
       }}
     >
-      <div className="flex items-start gap-3 p-4">
-        <div
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2"
-          style={{
+      <Stack direction="row" align="start" gap="md" p="md">
+        <VStack
+          h="10"
+          w="10"
+          shrink="0"
+          align="center"
+          justify="center"
+          rounded="full"
+          _internalClassName="border-2"
+          _internalStyle={{
             borderColor: config.borderColor,
             boxShadow: `0 0 12px ${config.glowColor}`,
           }}
         >
           <Icon className="h-5 w-5" style={{ color: config.borderColor }} />
-        </div>
+        </VStack>
 
-        <div className="flex-1 space-y-1">
-          <h4 className="font-fantasy text-sm font-semibold text-[#f5e6d3]">
+        <VStack flex="1" gap="xs">
+          <H4
+            font="fantasy"
+            color="default"
+            weight="bold"
+            _internalStyle={{ color: '#f5e6d3', fontSize: '14px' }}
+          >
             {notification.title}
-          </h4>
+          </H4>
           {notification.description && (
-            <p className="text-xs text-[#f5e6d3]/80">{notification.description}</p>
+            <P _internalStyle={{ color: 'rgba(245, 230, 211, 0.8)', fontSize: '12px' }}>
+              {notification.description}
+            </P>
           )}
-        </div>
+        </VStack>
 
         <Button
           onClick={handleClose}
           variant="ghost"
-          size="icon"
-          className="h-6 w-6 shrink-0 p-0 text-[#f5e6d3]/60 hover:text-[#f5e6d3]"
+          size="icon-xs"
+          icon={X}
           aria-label="Zavřít oznámení"
-        >
-          <X className="h-4 w-4" />
-        </Button>
-      </div>
-    </div>
+        />
+      </Stack>
+    </VStack>
   )
 }
 
@@ -111,7 +133,16 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   return (
     <NotificationContext.Provider value={{ showNotification }}>
       {children}
-      <div className="fixed top-20 left-1/2 z-600 flex w-full max-w-6xl -translate-x-1/2 flex-col items-end px-4">
+      <VStack
+        position="fixed"
+        top="20"
+        left="0"
+        z="top"
+        fullWidth
+        align="end"
+        px="md"
+        _internalClassName="left-1/2 max-w-6xl -translate-x-1/2"
+      >
         {notifications.map((notification) => (
           <NotificationItem
             key={notification.id}
@@ -119,7 +150,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
             onClose={() => removeNotification(notification.id)}
           />
         ))}
-      </div>
+      </VStack>
     </NotificationContext.Provider>
   )
 }

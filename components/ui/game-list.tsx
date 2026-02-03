@@ -1,11 +1,10 @@
-import { cn } from '@/lib/utils'
-
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { VStack } from '@/components/ui/stack'
+import { P } from '@/components/ui/typography'
 
 interface GameListProps<T> {
   data: T[]
   renderItem: (item: T, index: number) => React.ReactNode
-  className?: string
   emptyMessage?: string
   keyExtractor?: (item: T) => string | number
 }
@@ -13,30 +12,28 @@ interface GameListProps<T> {
 export function GameList<T>({
   data,
   renderItem,
-  className,
   emptyMessage = 'Žádné položky',
   keyExtractor,
 }: GameListProps<T>) {
   if (!data?.length) {
     return (
-      <div
-        className={cn(
-          'text-game-gold-muted flex h-full items-center justify-center p-4 text-center italic',
-          className
-        )}
-      >
-        {emptyMessage}
-      </div>
+      <VStack h="full" align="center" justify="center" p="md">
+        <P color="muted" align="center" italic>
+          {emptyMessage}
+        </P>
+      </VStack>
     )
   }
 
   return (
-    <ScrollArea className={cn('h-full', className)}>
-      <div className="space-y-2 p-1">
+    <ScrollArea>
+      <VStack gap="sm" p="xs">
         {data.map((item, index) => (
-          <div key={keyExtractor ? keyExtractor(item) : index}>{renderItem(item, index)}</div>
+          <VStack fullWidth key={keyExtractor ? keyExtractor(item) : index}>
+            {renderItem(item, index)}
+          </VStack>
         ))}
-      </div>
+      </VStack>
     </ScrollArea>
   )
 }

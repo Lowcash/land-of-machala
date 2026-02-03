@@ -31,13 +31,11 @@ export async function getCharacterPageData() {
 
   // Map inventory
   const mappedInventory = character.inventory.map((inv) => ({
-    id: inv.id,
-    name: inv.item.name,
-    slot: inv.item.slot,
+    ...inv.item,
+    equipped: inv.equipped,
+    quantity: inv.quantity,
     attack: inv.item.strength,
     defense: inv.item.stamina,
-    value: inv.item.value,
-    equipped: inv.equipped,
   }))
 
   // Map character data for client (ensure achievements is string[] IDs)

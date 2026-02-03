@@ -2,20 +2,28 @@ import type { ReactNode } from 'react'
 
 import type { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
-
-import { ActionItem } from '@/components/ui/Action'
+import { ActionItem } from '@/components/ui/action'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { GameIcon } from '@/components/ui/display'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, Label } from '@/components/ui/typography'
 
 interface LocationActionProps {
   title: string
   description?: string
   icon: LucideIcon
   onClick?: () => void
-  children?: ReactNode
-  variant?: 'default' | 'large' | 'compact' | 'danger' | 'secondary' | 'ghost'
-  className?: string
+  variant?:
+    | 'default'
+    | 'large'
+    | 'compact'
+    | 'danger'
+    | 'secondary'
+    | 'ghost'
+    | 'success'
+    | 'forest'
+    | 'primary'
   disabled?: boolean
   loading?: boolean
   rightElement?: ReactNode
@@ -26,9 +34,7 @@ export function LocationAction({
   description,
   icon: Icon,
   onClick,
-  children,
   variant = 'default',
-  className,
   disabled,
   loading,
   rightElement,
@@ -43,10 +49,6 @@ export function LocationAction({
         disabled={disabled}
         loading={loading}
         variant="secondary"
-        className={cn(
-          'h-24 flex-col gap-2 border-[#d4a574]/30 bg-black/40 hover:bg-black/60 hover:text-[#ffd700]',
-          className
-        )}
         layout="col"
       />
     )
@@ -67,48 +69,38 @@ export function LocationAction({
         disabled={disabled}
         loading={loading}
         variant={variant === 'compact' ? 'secondary' : variant}
-        className={cn('h-auto w-full justify-between px-4 py-3', className)}
         layout="row"
       />
     )
   }
 
-  // Default variant is complex (has children, rightElement etc.)
-  // We keep it as Card for now but style it consistently
+  // Default variant is complex (has children etc.)
   return (
-    <Card
-      className={cn(
-        'group flex items-center justify-between border-[#8b6f47]/30 bg-black/40 p-2.5 transition-colors hover:border-[#d4a574] hover:bg-black/60',
-        className
-      )}
-    >
-      <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 items-center justify-center rounded border border-[#8b6f47]/30 bg-[#ffd700]/5">
-          <Icon className="h-4 w-4 text-[#ffd700]" />
-        </div>
-        <div className="flex flex-col">
-          <span className="text-xs font-bold text-[#f5e6d3]">{title}</span>
-          {description && (
-            <span className="text-[10px] leading-tight text-[#8b7355]">{description}</span>
-          )}
-        </div>
-      </div>
-      <div className="flex items-center gap-3 pl-2">
-        {rightElement}
-        {children}
-        {onClick && (
-          <Button
-            variant="game-secondary"
-            size="sm"
-            onClick={onClick}
-            disabled={disabled}
-            loading={loading}
-            className="h-7 px-2 text-[10px] uppercase"
-          >
-            Provést
-          </Button>
-        )}
-      </div>
+    <Card variant="row">
+      <Card.Content disablePadding>
+        <HStack align="center" justify="between" fullWidth>
+          <HStack align="center" gap="md" p="sm">
+            <GameIcon icon={Icon} color="gold" size="lg" rounded="sm" bgOpacity="20" />
+            <VStack gap="none">
+              <Label color="gold">{title}</Label>
+              {description && <Caption color="muted">{description}</Caption>}
+            </VStack>
+          </HStack>
+          <HStack align="center" gap="md" pr="sm" pl="sm">
+            {rightElement}
+            {onClick && (
+              <Button
+                variant="secondary_game"
+                size="xs"
+                onClick={onClick}
+                disabled={disabled}
+                loading={loading}
+                label="Provést"
+              />
+            )}
+          </HStack>
+        </HStack>
+      </Card.Content>
     </Card>
   )
 }

@@ -4,6 +4,10 @@ import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
+import { Label } from '@/components/ui/typography'
+
+import { VStack } from './stack'
+
 export interface CategoryOption<T extends string> {
   id: T
   label: string
@@ -16,7 +20,6 @@ interface CategoryFilterProps<T extends string> {
   selectedCategory: T
   paramName?: string // defaulting to 'category'
   allLabel?: string
-  className?: string
   getCategoryColor?: (category: T) => string
 }
 
@@ -25,29 +28,33 @@ export function CategoryFilter<T extends string>({
   selectedCategory,
   paramName = 'category',
   allLabel = 'Vše',
-  className,
   getCategoryColor,
 }: CategoryFilterProps<T>) {
   return (
-    <div
-      className={cn(
-        'grid grid-cols-3 gap-2 border-b border-[#8b6f47] bg-black/60 p-2 backdrop-blur-sm md:flex md:w-full md:flex-col md:gap-3 md:border-b-0 md:p-4',
-        className
-      )}
+    <VStack
+      fullWidth
+      p="1.5"
+      gap="sm"
+      border="game-b"
+      bg="black-60"
+      backdrop="small"
+      display="grid"
+      gridCols="3"
+      _internalClassName="md:flex md:flex-col md:gap-3 md:border-b-0 md:p-4"
     >
       <Link
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         href={'?' as any}
         className={cn(
-          'w-full rounded border-2 px-2 py-2 text-xs transition-all md:px-4 md:text-left md:text-sm',
-          'flex items-center justify-center md:justify-start',
+          'flex items-center justify-center rounded border-2 px-2 py-2 transition-all md:justify-start md:px-4',
           selectedCategory === 'all'
-            ? 'border-[#ffd700] bg-[#8b6f47]/30 text-[#ffd700]'
-            : 'border-[#8b6f47] bg-black/40 text-[#d4a574] hover:border-[#d4a574]'
+            ? 'border-[#ffd700] bg-[#8b6f47]/30'
+            : 'border-[#8b6f47] bg-black/40 hover:border-[#d4a574]'
         )}
-        style={{ fontFamily: 'var(--font-fantasy)' }}
       >
-        {allLabel}
+        <Label font="fantasy" color={selectedCategory === 'all' ? 'gold' : 'copper'}>
+          {allLabel}
+        </Label>
       </Link>
       {categories.map((cat) => {
         const Icon = cat.icon
@@ -72,15 +79,12 @@ export function CategoryFilter<T extends string>({
                 isActive ? 'text-[#ffd700]' : color || 'text-[#d4a574]'
               )}
             />
-            <span
-              className={cn('text-xs md:text-sm', isActive ? 'text-[#ffd700]' : 'text-[#d4a574]')}
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
+            <Label font="fantasy" color={isActive ? 'gold' : 'copper'}>
               {cat.label}
-            </span>
+            </Label>
           </Link>
         )
       })}
-    </div>
+    </VStack>
   )
 }

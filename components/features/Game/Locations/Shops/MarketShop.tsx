@@ -8,7 +8,10 @@ import { MARKET_HUB_ACTIONS } from '@/lib/game/constants/interactive'
 import { BLACK_MARKET_STOCK, MARKET_STOCK } from '@/lib/game/constants/items'
 import { useMarketActions } from '@/lib/hooks/game'
 
+import { ActionGrid } from '@/components/ui/action'
 import { Button } from '@/components/ui/button'
+import { VStack } from '@/components/ui/stack'
+import { H4 } from '@/components/ui/typography'
 
 import { LocationAction } from '../../Shared/components/LocationAction'
 import { LocationLayout } from '../../Shared/components/LocationLayout'
@@ -50,43 +53,44 @@ export function MarketShop({ gold, inventory }: MarketShopProps) {
   }
 
   // 4. Sub-components (Render helpers)
-  const BackButton = ({ label = 'Zpět na trh', colorClass = 'text-[#8b7355]' }) => (
+  const BackButton = ({ label = 'Zpět na trh' }) => (
     <Button
-      variant="link"
+      variant="link_game"
       onClick={() => setMode('default')}
-      className={`mb-2 h-auto p-0 text-[10px] ${colorClass}`}
-    >
-      <ChevronLeft className="mr-1 h-3 w-3" /> {label}
-    </Button>
+      label={label}
+      icon={ChevronLeft}
+    />
   )
 
   if (mode === 'buy') {
     return (
-      <div className="space-y-3">
+      <VStack gap="sm">
         <BackButton />
         <MarketBuy stock={stock} handleBuy={handleBuy} disabled={isPending} />
-      </div>
+      </VStack>
     )
   }
 
   if (mode === 'sell') {
     return (
-      <div className="space-y-3">
+      <VStack gap="sm">
         <BackButton />
         <MarketSell inventory={inventory} handleSell={handleSell} disabled={isPending} />
-      </div>
+      </VStack>
     )
   }
 
   if (mode === 'blackmarket') {
     return (
-      <div className="space-y-3">
-        <BackButton label="Zpět na trh" colorClass="text-purple-400" />
-        <div className="mb-2 rounded border border-purple-900/30 bg-purple-900/10 p-3">
-          <h4 className="text-xs font-bold tracking-wider text-purple-400 uppercase">Černý trh</h4>
-        </div>
+      <VStack gap="sm">
+        <BackButton label="Zpět na trh" />
+        <VStack p="sm" border="magic" bg="magic" opacity="10" rounded="sm">
+          <H4 color="magic" bold>
+            {'Černý trh'.toUpperCase()}
+          </H4>
+        </VStack>
         <BlackMarket stock={blackMarketStock} handleBuy={handleBuy} disabled={isPending} />
-      </div>
+      </VStack>
     )
   }
 
@@ -95,7 +99,7 @@ export function MarketShop({ gold, inventory }: MarketShopProps) {
       title="Tržiště svobodného města"
       description="Halas obchodníků, vůně koření a stovky lidí proudících mezi stánky."
     >
-      <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <ActionGrid columns={{ default: 1, sm: 2 }}>
         {MARKET_HUB_ACTIONS.map((action) => (
           <LocationAction
             key={action.id}
@@ -104,12 +108,9 @@ export function MarketShop({ gold, inventory }: MarketShopProps) {
             description={action.description}
             icon={action.icon}
             onClick={() => handleAction(action.actionId)}
-            className={
-              action.id === 'blackmarket' ? 'border-purple-900/20 hover:border-purple-900/50' : ''
-            }
           />
         ))}
-      </div>
+      </ActionGrid>
     </LocationLayout>
   )
 }

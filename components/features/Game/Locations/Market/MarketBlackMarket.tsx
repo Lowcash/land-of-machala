@@ -1,6 +1,9 @@
 import { Skull } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Label } from '@/components/ui/typography'
 
 import type { MarketItem } from './types'
 
@@ -12,30 +15,31 @@ interface BlackMarketProps {
 
 export function BlackMarket({ stock, handleBuy, disabled = false }: BlackMarketProps) {
   return (
-    <div
-      className={`space-y-2 rounded border border-[#b66bd4]/30 bg-[#0a050a] p-2 ${disabled ? 'pointer-events-none opacity-50' : ''}`}
-    >
-      <div className="mb-2 flex items-center justify-center gap-2 text-center text-xs font-bold tracking-wider text-[#b66bd4] uppercase">
-        <Skull className="h-3 w-3" />
-        Nelegální zboží
-        <Skull className="h-3 w-3" />
-      </div>
-      {stock.map((item) => (
-        <Button
-          key={item.id}
-          onClick={() => handleBuy(item)}
-          variant="ghost"
-          className="group h-auto w-full justify-start rounded border border-[#b66bd4]/30 bg-black/80 p-2 text-left transition-all hover:border-[#b66bd4]"
-        >
-          <div className="mb-1 flex w-full items-start justify-between">
-            <span className="flex items-center gap-2 text-sm font-bold text-[#dcd0ff] group-hover:text-[#b66bd4]">
-              <item.icon className="h-4 w-4" />
-              {item.name}
-            </span>
-            <span className="text-xs text-[#b66bd4]">{item.price}g</span>
-          </div>
-        </Button>
-      ))}
-    </div>
+    <VStack opacity={disabled ? '50' : '100'} fullWidth>
+      <Card border="magic" bg="black-60">
+        <Card.Content p="sm">
+          <HStack justify="center" align="center" gap="sm" mb="sm">
+            <Skull className="text-game-magic h-3 w-3" />
+            <Label color="magic" uppercase bold font="fantasy" letterSpacing="wider">
+              Nelegální zboží
+            </Label>
+            <Skull className="text-game-magic h-3 w-3" />
+          </HStack>
+          <VStack gap="xs">
+            {stock.map((item) => (
+              <Button
+                key={item.id}
+                onClick={() => handleBuy(item)}
+                variant="black_market"
+                icon={item.icon}
+                label={item.name}
+                subLabelRight={`${item.price}g`}
+                fullWidth
+              />
+            ))}
+          </VStack>
+        </Card.Content>
+      </Card>
+    </VStack>
   )
 }

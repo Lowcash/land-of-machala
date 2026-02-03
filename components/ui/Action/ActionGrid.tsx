@@ -2,21 +2,20 @@ import { GameGrid } from '@/components/ui/game-grid'
 
 interface ActionGridProps {
   children: React.ReactNode
-  className?: string
   columns?: {
-    default?: number
+    default?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12
     sm?: number
     md?: number
     lg?: number
+    xl?: number
   }
 }
 
-export function ActionGrid({ children, className, columns }: ActionGridProps) {
+export function ActionGrid({ children, columns }: ActionGridProps) {
   return (
     <GameGrid
-      className={className}
+      fullHeight={false}
       columns={columns || { default: 1, sm: 2 }} // Default for actions is usually 1 or 2 cols
-      containerClassName="h-auto min-h-0" // Override generic full height if needed, actions are usually part of a layout
     >
       {children}
     </GameGrid>

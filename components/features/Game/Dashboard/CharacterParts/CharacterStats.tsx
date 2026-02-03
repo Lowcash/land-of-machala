@@ -1,5 +1,7 @@
 import { Brain, Shield, Sword, Wind } from 'lucide-react'
 
+import { StatDisplay, StatGrid } from '@/components/ui/display'
+
 interface CharacterStatsProps {
   stats: {
     strength: number
@@ -11,32 +13,11 @@ interface CharacterStatsProps {
 
 export function CharacterStats({ stats }: CharacterStatsProps) {
   return (
-    <div className="flex divide-x divide-[#8b6f47]/20 border-t border-[#8b6f47]/30 bg-[#120f0a]/50">
-      <StatItem icon={Sword} value={stats.strength} label="STR" color="text-red-400" />
-      <StatItem icon={Brain} value={stats.intelligence} label="INT" color="text-purple-400" />
-      <StatItem icon={Wind} value={stats.agility} label="AGI" color="text-yellow-400" />
-      <StatItem icon={Shield} value={stats.stamina} label="STA" color="text-blue-400" />
-    </div>
-  )
-}
-
-interface StatItemProps {
-  icon: typeof Sword
-  value: number
-  label: string
-  color: string
-}
-
-function StatItem({ icon: Icon, value, label, color }: StatItemProps) {
-  return (
-    <div className="flex flex-1 flex-col items-center py-2 transition-colors hover:bg-white/5">
-      <span className={`mb-0.5 text-[10px] font-bold tracking-wider text-[#8b7355] uppercase`}>
-        {label}
-      </span>
-      <div className="flex items-center gap-1.5">
-        <Icon className={`h-3.5 w-3.5 ${color}`} />
-        <span className="text-sm font-medium text-[#d4a574]">{value}</span>
-      </div>
-    </div>
+    <StatGrid columns="4" border="game-t" p="xs" bg="black-40" divide>
+      <StatDisplay icon={Sword} value={stats.strength} label="STR" color="danger" size="sm" />
+      <StatDisplay icon={Brain} value={stats.intelligence} label="INT" color="magic" size="sm" />
+      <StatDisplay icon={Wind} value={stats.agility} label="AGI" color="gold" size="sm" />
+      <StatDisplay icon={Shield} value={stats.stamina} label="STA" color="info" size="sm" />
+    </StatGrid>
   )
 }

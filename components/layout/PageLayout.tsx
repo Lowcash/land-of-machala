@@ -4,6 +4,7 @@ import Image from 'next/image'
 
 import { GameActivityPanel } from '@/components/features/Game/Activity/GameActivityPanel'
 import { SplitLayout } from '@/components/layout/SplitLayout'
+import { VStack } from '@/components/ui/stack'
 
 import { TransitionWrapper } from './TransitionWrapper'
 
@@ -37,55 +38,88 @@ export function PageLayout({
   maxWidth = 'lg',
   className = '',
 }: PageLayoutProps) {
-  const maxWidthClass = {
-    sm: 'max-w-4xl',
-    md: 'max-w-5xl',
-    lg: 'max-w-6xl',
-    xl: 'max-w-7xl',
-    full: 'max-w-none',
-  }[maxWidth]
+  const maxWidthClass = (
+    {
+      sm: '4xl',
+      md: '5xl',
+      lg: '6xl',
+      xl: '7xl',
+      full: 'none',
+    } as const
+  )[maxWidth]
 
   return (
     <TransitionWrapper>
-      <div className={`relative flex h-full w-full flex-col ${className}`}>
+      <VStack position="relative" fullHeight fullWidth _internalClassName={className}>
         {/* Page Background */}
         {backgroundImage && (
-          <div className="absolute inset-0 -z-10">
+          <VStack position="absolute" inset="0" z="below" interactive="none">
             <Image src={backgroundImage} alt="" fill className="object-cover" priority />
-            <div className="absolute inset-0 bg-linear-to-b from-black/50 via-transparent to-black/60" />
-          </div>
+            <VStack
+              position="absolute"
+              inset="0"
+              _internalClassName="bg-linear-to-b from-black/50 via-transparent to-black/60"
+            />
+          </VStack>
         )}
 
-        {/* Header - Constrained */}
-        <div className="pointer-events-none sticky top-0 z-50 w-full">
-          <div className="pointer-events-auto mx-auto w-full px-4 sm:px-6 lg:px-8">
-            <div className={`mx-auto ${maxWidthClass}`}>{header}</div>
-          </div>
-        </div>
+        <VStack fullHeight fullWidth gap="none">
+          {/* Header - Constrained */}
+          <VStack position="sticky" top="0" z="top" fullWidth interactive="none">
+            <VStack px="md" _internalClassName="mx-auto w-full sm:px-6 lg:px-8">
+              <VStack maxW={maxWidthClass} _internalClassName="mx-auto" interactive={false}>
+                {header}
+              </VStack>
+            </VStack>
+          </VStack>
 
-        {/* Main Content Area - Constrained */}
-        <div className="relative min-h-0 w-full flex-1 px-4 sm:px-6 lg:px-8">
-          <div className={`mx-auto h-full ${maxWidthClass}`}>
-            {showInfoLog ? (
-              <SplitLayout
-                main={<div className="h-full overflow-y-auto">{children}</div>}
-                aside={rightPanel || <GameActivityPanel />}
-                className="h-full"
-                asideWidth="md"
-              />
-            ) : (
-              <div className="scrollbar-hide h-full overflow-y-auto">{children}</div>
-            )}
-          </div>
-        </div>
+          {/* Main Content Area - Constrained */}
+          <VStack
+            position="relative"
+            flex="1"
+            fullWidth
+            px="md"
+            _internalClassName="min-h-0 sm:px-6 lg:px-8"
+          >
+            <VStack maxW={maxWidthClass} fullHeight _internalClassName="mx-auto min-h-full">
+              {showInfoLog ? (
+                <SplitLayout
+                  main={
+                    <VStack flex="1" _internalClassName="min-h-0">
+                      {children}
+                    </VStack>
+                  }
+                  aside={rightPanel || <GameActivityPanel />}
+                  className="h-full"
+                  asideWidth="md"
+                />
+              ) : (
+                <VStack fullHeight gap="none" _internalClassName="scrollbar-hide h-full">
+                  {children}
+                </VStack>
+              )}
+            </VStack>
+          </VStack>
 
-        {/* Footer Area - Constrained */}
-        {footer && (
-          <div className="border-game-copper/30 w-full shrink-0 border-t bg-black/40 px-4 py-2 backdrop-blur-md sm:px-6 lg:px-8">
-            <div className={`mx-auto ${maxWidthClass}`}>{footer}</div>
-          </div>
-        )}
-      </div>
+          {/* Footer Area - Constrained */}
+          {footer && (
+            <VStack
+              shrink="0"
+              border="game-copper-t"
+              bg="black-40"
+              py="sm"
+              px="md"
+              backdrop
+              fullWidth
+              _internalClassName="sm:px-6 lg:px-8"
+            >
+              <VStack maxW={maxWidthClass} _internalClassName="mx-auto">
+                {footer}
+              </VStack>
+            </VStack>
+          )}
+        </VStack>
+      </VStack>
     </TransitionWrapper>
   )
 }

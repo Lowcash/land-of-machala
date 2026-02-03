@@ -19,13 +19,12 @@ export function LogoutButton() {
 
   return (
     <Button
-      variant="game-danger-ghost"
-      size="game-compact"
+      variant="danger"
+      size="sm"
       onClick={handleLogout}
       aria-label="Odhlásit se z hry"
       icon={LogOut}
       label="Odhlásit"
-      responsiveLabel
     />
   )
 }

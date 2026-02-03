@@ -5,6 +5,7 @@ import { Lock, Mail } from 'lucide-react'
 import { useRegisterForm } from '@/lib/hooks/auth/useRegisterForm'
 
 import { Button } from '@/components/ui/button'
+import { StandardForm } from '@/components/ui/display'
 
 import { AuthInput } from '../Shared/AuthInput'
 
@@ -18,7 +19,7 @@ export function RegisterForm() {
   } = form
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <StandardForm onSubmit={handleSubmit(onSubmit)}>
       <AuthInput
         id="email"
         label="Email"
@@ -47,10 +48,10 @@ export function RegisterForm() {
         type="submit"
         loading={isPending}
         disabled={!isValid}
-        variant="game-ghost"
+        variant="ghost_game"
         fullWidth
         label={isPending ? 'Registruji...' : 'Vytvořit účet'}
       />
-    </form>
+    </StandardForm>
   )
 }

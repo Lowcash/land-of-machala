@@ -11,7 +11,8 @@ export default defineConfig({
     env: {
       USE_MOCK_DATA: 'true',
     },
-    exclude: ['node_modules/', '.next/', '__tests__/e2e/**', 'tests/**'],
+    include: ['tests/unit/**/*.{test,spec}.{ts,tsx}'],
+    exclude: ['node_modules/', '.next/'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html', 'lcov'],
@@ -22,7 +23,8 @@ export default defineConfig({
         '**/*.config.*',
         '**/*.d.ts',
         'prisma/',
-        '__tests__/',
+        'tests/e2e/',
+        'tests/scripts/',
       ],
       thresholds: {
         lines: 75,

@@ -1,32 +1,29 @@
 import type { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
+import { Card } from './card'
+import { HStack } from './stack'
+import { H3 } from './typography'
 
-interface GameCardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface GameCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   title?: string
   icon?: LucideIcon
   children: React.ReactNode
 }
 
-export function GameCard({ title, icon: Icon, children, className, ...props }: GameCardProps) {
+export function GameCard({ title, icon: Icon, children, ...props }: GameCardProps) {
   return (
-    <div
-      className={cn(
-        'flex h-full flex-col rounded-lg border-2 border-[#d4a574] bg-linear-to-br from-black/80 to-black/60 p-4 shadow-lg',
-        className
-      )}
-      {...props}
-    >
-      {title && (
-        <h3
-          className="mb-4 flex items-center gap-2 text-base text-[#d4a574]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          {Icon && <Icon className="h-4 w-4" />}
-          {title}
-        </h3>
-      )}
-      {children}
-    </div>
+    <Card variant="game" {...props}>
+      <Card.Content>
+        {title && (
+          <HStack gap="sm" mb="md">
+            {Icon && <Icon className="h-4 w-4 text-[#d4a574]" />}
+            <H3 font="fantasy" color="copper">
+              {title}
+            </H3>
+          </HStack>
+        )}
+        {children}
+      </Card.Content>
+    </Card>
   )
 }

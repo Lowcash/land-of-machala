@@ -10,6 +10,8 @@ import type { Buff, View } from '@/lib/types/game'
 import type { MarketItem } from '@/lib/types/market'
 
 import type { MergedQuest } from '@/components/features/Quest/Shared/types'
+import { VStack } from '@/components/ui/stack'
+import { MutedText } from '@/components/ui/typography'
 
 import { GameActions } from '../Shared/components/GameActions'
 import { useGameDashboardState } from './GameDashboardProvider'
@@ -61,27 +63,20 @@ export function ActionsArea({
   const currentViewConfig = viewData[currentView]
 
   return (
-    <div className="relative flex h-full min-h-0 w-full flex-1 flex-col">
+    <VStack fullWidth flex="1" minH="0" position="relative">
       <GameActions
         title={currentViewConfig.title}
         onBack={currentView !== 'town' ? goBack : undefined}
         showDirections={currentView === 'town'}
         onToggleDirections={() => {}}
         onMove={handleMove}
-        exploration={
-          <div className="space-y-4">
-            <div className="rounded border border-[#8b6f47] bg-black/60 p-3 text-xs text-[#8b7355]">
-              <div dangerouslySetInnerHTML={{ __html: currentViewConfig.desc }} />
-            </div>
-          </div>
-        }
       >
-        <div className="space-y-1.5 pt-2">
+        <VStack gap="sm" pt="sm" fullWidth>
           <Suspense
             fallback={
-              <div className="flex h-20 items-center justify-center text-xs text-[#8b7355]">
-                Načítání...
-              </div>
+              <VStack h="12" align="center" justify="center" fullWidth>
+                <MutedText>Načítání...</MutedText>
+              </VStack>
             }
           >
             {currentView === 'town' && <TownActions onView={goToView} />}
@@ -100,8 +95,8 @@ export function ActionsArea({
 
             {currentView === 'forest' && <ForestActions onView={goToView} />}
           </Suspense>
-        </div>
+        </VStack>
       </GameActions>
-    </div>
+    </VStack>
   )
 }

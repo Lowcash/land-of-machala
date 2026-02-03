@@ -16,7 +16,11 @@ export function useInfoLog() {
     setInfoText(text)
 
     // Check for error/warning indicators in the text to trigger alert behavior
-    const isAlert = text.includes('text-[#ff6b6b]') || text.includes('⚠️') || text.includes('Chyba')
+    const isAlert =
+      text.includes('text-game-danger') ||
+      text.includes('text-game-info') ||
+      text.includes('⚠️') ||
+      text.includes('Chyba')
 
     if (isAlert) {
       setIsShaking(true)

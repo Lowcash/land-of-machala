@@ -2,10 +2,9 @@ import { type ComponentProps } from 'react'
 
 import type { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
-
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { HStack, VStack } from '@/components/ui/stack'
+import { DangerText, Label } from '@/components/ui/typography'
 
 interface AuthInputProps extends ComponentProps<'input'> {
   id: string
@@ -15,38 +14,31 @@ interface AuthInputProps extends ComponentProps<'input'> {
   ref?: React.Ref<HTMLInputElement>
 }
 
-export function AuthInput({
-  id,
-  label,
-  icon: Icon,
-  error,
-  className,
-  ref,
-  ...props
-}: AuthInputProps) {
+export function AuthInput({ id, label, icon: Icon, error, ref, ...props }: AuthInputProps) {
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between">
-        <Label htmlFor={id} className="font-fantasy text-xs text-[#d4a574] sm:text-sm">
+    <VStack fullWidth gap="xs">
+      <HStack justify="between" align="center" fullWidth>
+        <Label htmlFor={id} font="fantasy" color="gold-muted">
           {label}
         </Label>
-        {error && <span className="text-xs text-red-500">{error}</span>}
-      </div>
-      <div className="group relative">
-        <div className="absolute top-1/2 left-3 -translate-y-1/2 text-[#8b7355] transition-colors">
+        {error && <DangerText variant="caption">{error}</DangerText>}
+      </HStack>
+      <VStack position="relative" fullWidth _internalClassName="group">
+        <VStack
+          position="absolute"
+          top="0"
+          left="0"
+          h="full"
+          px="md"
+          align="center"
+          justify="center"
+          interactive="none"
+          _internalClassName="text-game-copper-muted transition-colors group-focus-within:text-game-gold"
+        >
           <Icon className="h-4 w-4" />
-        </div>
-        <Input
-          id={id}
-          ref={ref}
-          {...props}
-          className={cn(
-            'font-fantasy placeholder:font-fantasy h-[50px] pl-10 text-base placeholder:text-base focus-visible:ring-0',
-            error && 'border-red-500/50 focus-visible:border-red-500',
-            className
-          )}
-        />
-      </div>
-    </div>
+        </VStack>
+        <Input id={id} ref={ref} variant="game" inputSize="md" hasIcon error={!!error} {...props} />
+      </VStack>
+    </VStack>
   )
 }

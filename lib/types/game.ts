@@ -1,4 +1,8 @@
-import type { Character as PrismaCharacter } from '@prisma/client'
+import type {
+  Character as PrismaCharacter,
+  InventoryItem as PrismaInventoryItem,
+  Item as PrismaItem,
+} from '@prisma/client'
 import { ItemRarity, ItemType } from '@prisma/client'
 import type { LucideIcon } from 'lucide-react'
 
@@ -27,6 +31,9 @@ export interface CharacterData extends Omit<
   reputation?: number
   achievements?: string[] // IDs of unlocked achievements
   nextLevelExp?: number
+  xpToNextLevel?: number
+  activeBuffs?: Buff[]
+  inventory?: InventoryEntry[]
   x?: number
   y?: number
   stats?: {
@@ -37,18 +44,18 @@ export interface CharacterData extends Omit<
   }
 }
 
-export interface CharacterItem {
-  id: string
-  name: string
-  slot?: string | null
+export interface CharacterItem extends Omit<PrismaItem, 'createdAt'> {
+  icon?: LucideIcon
+  // Derived or custom fields used in UI
   attack?: number
   defense?: number
   damage?: number
-  value: number
   equipped?: boolean
-  icon?: LucideIcon
-  type?: string
-  iconName?: string
+  quantity?: number
+}
+
+export interface InventoryEntry extends Omit<PrismaInventoryItem, 'createdAt'> {
+  item: CharacterItem
 }
 
 export { ItemRarity, ItemType }
@@ -86,5 +93,5 @@ export interface ActivityLogEntry {
   timestamp: Date
   message: string
   type: string
-  metadata?: any // eslint-disable-line @typescript-eslint/no-explicit-any
+  metadata?: unknown
 }

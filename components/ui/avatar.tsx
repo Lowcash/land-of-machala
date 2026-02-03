@@ -4,47 +4,84 @@ import * as React from 'react'
 
 import Image from 'next/image'
 
-import { cn } from '@/lib/utils'
+import { type VariantProps, cva } from 'class-variance-authority'
 
-interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+import { VStack } from './stack'
+
+const avatarVariants = cva(
+  'relative flex shrink-0 overflow-hidden rounded-full border border-[#8b6f47] transition-colors',
+  {
+    variants: {
+      size: {
+        sm: 'h-8 w-8',
+        default: 'h-10 w-10',
+        lg: 'h-20 w-20',
+      },
+      variant: {
+        default: 'bg-black',
+        enemy: 'border-red-900 bg-red-950',
+      },
+    },
+    defaultVariants: {
+      size: 'default',
+      variant: 'default',
+    },
+  }
+)
+
+interface AvatarProps
+  extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>,
+    VariantProps<typeof avatarVariants> {
   ref?: React.Ref<HTMLDivElement>
 }
 
-export function Avatar({ className, ref, ...props }: AvatarProps) {
-  return (
-    <div
-      ref={ref}
-      className={cn('relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full', className)}
-      {...props}
-    />
-  )
+export function Avatar({ size, variant, ref, ...props }: AvatarProps) {
+  return <VStack ref={ref} _internalClassName={avatarVariants({ size, variant })} {...props} />
 }
 
-interface AvatarImageProps extends React.ComponentPropsWithoutRef<typeof Image> {
+interface AvatarImageProps extends Omit<React.ComponentPropsWithoutRef<typeof Image>, 'className'> {
   ref?: React.Ref<HTMLImageElement>
 }
 
-export function AvatarImage({ className, alt = 'Avatar', ref, ...props }: AvatarImageProps) {
+export function AvatarImage({ alt = 'Avatar', ref, ...props }: AvatarImageProps) {
   if (!props.src) return null
 
   return (
     <Image
       ref={ref}
-      className={cn('aspect-square h-full w-full', className)}
+      className="aspect-square h-full w-full object-cover opacity-90 transition-opacity group-hover:opacity-100"
       alt={alt}
-      width={props.width || 40}
-      height={props.height || 40}
+      width={props.width || 80}
+      height={props.height || 80}
       {...props}
     />
   )
 }
 
-interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {
+const fallbackVariants = cva('h-full w-full transition-colors', {
+  variants: {
+    variant: {
+      default: 'text-[#ffd700]',
+      muted: 'text-[#8b7355]',
+      enemy: 'text-red-500/70',
+      player: 'text-[#d4a574]/70',
+    },
+  },
+  defaultVariants: {
+    variant: 'default',
+  },
+})
+
+interface AvatarFallbackProps
+  extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>,
+    VariantProps<typeof fallbackVariants> {
   ref?: React.Ref<HTMLDivElement>
   name?: string
 }
 
-export function AvatarFallback({ className, name, children, ref, ...props }: AvatarFallbackProps) {
+export function AvatarFallback({ name, children, variant, ref, ...props }: AvatarFallbackProps) {
   const initials = name
     ? name
         .split(' ')
@@ -55,16 +92,17 @@ export function AvatarFallback({ className, name, children, ref, ...props }: Ava
     : null
 
   return (
-    <div
+    <VStack
       ref={ref}
-      className={cn(
-        'flex h-full w-full items-center justify-center rounded-full bg-[#2a2a2a] text-xs font-bold text-[#ffd700]',
-        className
-      )}
-      style={{ fontFamily: 'var(--font-fantasy)' }}
+      align="center"
+      justify="center"
+      rounded="full"
+      bg="black-40"
+      _internalClassName={fallbackVariants({ variant })}
+      _internalStyle={{ fontFamily: 'var(--font-fantasy)' }}
       {...props}
     >
       {children || initials || '?'}
-    </div>
+    </VStack>
   )
 }

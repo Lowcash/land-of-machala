@@ -9,10 +9,10 @@ import { ArrowLeft } from 'lucide-react'
 import type { AppRoute } from '@/lib/types/game'
 
 import { LogoutButton } from '@/components/features/Auth/LogoutButton'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, GoldTitle, Span } from '@/components/ui/typography'
 
 import { PlayerStats } from './PlayerStats'
-
-// Valid routes are now defined in @/lib/types/game.ts
 
 interface GameHeaderProps {
   /** Icon to display */
@@ -48,62 +48,77 @@ export function GameHeader({
   subtitle,
   leftContent,
   rightContent,
-  // characterId, // Deprecated
   playerStats,
   backLink,
 }: GameHeaderProps) {
   return (
-    <div className="flex w-full items-center justify-between gap-3 px-3 py-2">
-      {/* Left - Title/Icon or Custom Content */}
-      <div className="flex min-w-0 flex-1 items-center gap-4">
-        {leftContent || (
-          <div className="flex min-w-0 items-center gap-2">
-            {backLink && (
-              <Link
-                href={backLink.href}
-                className="mr-2 flex items-center gap-2 text-sm text-[#d4a574] hover:text-[#ffd700]"
-                aria-label={backLink.label || 'Zpět'}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                <span className="hidden sm:inline">{backLink.label || 'Zpět'}</span>
-              </Link>
+    <VStack px="sm" py="xs" fullWidth>
+      <HStack align="center" justify="between" gap="md" fullWidth>
+        {/* Left - Title/Icon or Custom Content */}
+        <HStack flex="1" align="center" gap="md">
+          <HStack align="center" gap="lg" fullWidth>
+            {leftContent || (
+              <HStack align="center" gap="sm">
+                {backLink && (
+                  <Link
+                    href={backLink.href}
+                    className="group mr-2 flex items-center gap-2"
+                    aria-label={backLink.label || 'Zpět'}
+                  >
+                    <ArrowLeft className="text-game-gold group-hover:text-game-gold-muted h-4 w-4 transition-colors" />
+                    <VStack _internalClassName="hidden sm:inline group-hover:text-game-gold transition-colors hover:underline">
+                      <Span color="copper">{backLink.label || 'Zpět'}</Span>
+                    </VStack>
+                  </Link>
+                )}
+
+                {Icon &&
+                  (isValidElement(Icon) ? (
+                    <VStack
+                      shrink="0"
+                      _internalClassName="h-5 w-5 text-game-gold [&>svg]:h-full [&>svg]:w-full"
+                    >
+                      {Icon}
+                    </VStack>
+                  ) : (
+                    (() => {
+                      const LucideIconComp = Icon as LucideIcon
+                      return (
+                        <VStack shrink="0" _internalClassName="text-game-gold">
+                          <LucideIconComp className="h-5 w-5" />
+                        </VStack>
+                      )
+                    })()
+                  ))}
+                <VStack gap="none" flex="1">
+                  <VStack leading="none">
+                    <GoldTitle as="h1" truncate>
+                      {title}
+                    </GoldTitle>
+                  </VStack>
+                  {subtitle && (
+                    <VStack mt="xs" _internalClassName="block">
+                      <Caption color="copper" truncate>
+                        {subtitle}
+                      </Caption>
+                    </VStack>
+                  )}
+                </VStack>
+              </HStack>
             )}
 
-            {Icon &&
-              (isValidElement(Icon) ? (
-                <div className="h-5 w-5 shrink-0 text-[#ffd700] [&>svg]:h-full [&>svg]:w-full">
-                  {Icon}
-                </div>
-              ) : (
-                (() => {
-                  const LucideIconComp = Icon as LucideIcon
-                  return <LucideIconComp className="h-5 w-5 shrink-0 text-[#ffd700]" />
-                })()
-              ))}
-            <div className="min-w-0">
-              <h1
-                className="truncate text-lg text-[#ffd700]"
-                style={{ fontFamily: 'var(--font-fantasy)' }}
-              >
-                {title}
-              </h1>
-              {subtitle && <p className="truncate text-xs text-[#d4a574]">{subtitle}</p>}
-            </div>
-          </div>
+            {/* Player Stats */}
+            {playerStats && <PlayerStats {...playerStats} />}
+          </HStack>
+        </HStack>
+
+        {/* Right - Logout or Custom Content */}
+        {rightContent || (
+          <HStack align="center" gap="sm" shrink="0">
+            <LogoutButton />
+          </HStack>
         )}
-
-        {/* Player Stats */}
-        {/* Player Stats */}
-        {playerStats && <PlayerStats {...playerStats} />}
-      </div>
-
-      {/* Right - Logout or Custom Content */}
-      {rightContent || (
-        <div className="flex items-center gap-2">
-          {/* Logout Button */}
-          <LogoutButton />
-        </div>
-      )}
-    </div>
+      </HStack>
+    </VStack>
   )
 }

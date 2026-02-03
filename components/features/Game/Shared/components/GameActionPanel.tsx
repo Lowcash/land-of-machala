@@ -2,8 +2,10 @@ import type { ReactNode } from 'react'
 
 import type { LucideIcon } from 'lucide-react'
 
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { Card } from '@/components/ui/card'
+import { GameGrid } from '@/components/ui/game-grid'
+import { HStack, VStack } from '@/components/ui/stack'
+import { H3, Label } from '@/components/ui/typography'
 
 interface GameActionPanelProps {
   title?: string
@@ -27,53 +29,54 @@ export function GameActionPanel({
   footer,
 }: GameActionPanelProps) {
   return (
-    <Card
-      variant="game"
-      className="relative flex min-h-0 flex-1 flex-col overflow-hidden border-2 bg-black/80 shadow-xl backdrop-blur-md"
-    >
-      {title && (
-        <CardHeader className="shrink-0 border-b border-[#8b6f47] bg-black/40 px-3 py-3 sm:px-4 sm:py-4">
-          <CardTitle className="flex items-center gap-2 text-base sm:text-lg">
-            {Icon && <Icon className="h-5 w-5" />}
-            {title}
-          </CardTitle>
-        </CardHeader>
-      )}
+    <Card variant="game" fullHeight>
+      <VStack fullHeight overflow="hidden">
+        {title && (
+          <Card.Header>
+            <HStack align="center" gap="sm">
+              {Icon && <Icon className="text-game-gold h-5 w-5" />}
+              <H3 font="fantasy" color="gold">
+                {title}
+              </H3>
+            </HStack>
+          </Card.Header>
+        )}
 
-      <ScrollArea className="flex-1 px-4 py-4" showIndicators>
-        <div className="flex min-h-full flex-col justify-end gap-4">
-          {children ? (
-            children
-          ) : (
-            <div className="grid grid-cols-1 gap-3 pb-1 md:grid-cols-2">
-              {/* Left Column (Side Content) */}
-              {sideContent && (
-                <div className="flex flex-col justify-between space-y-2">
-                  <div className="space-y-2">
-                    <div className="text-game-copper-muted mb-1 text-xs font-bold tracking-wider uppercase">
-                      {sideTitle}
-                    </div>
-                    {sideContent}
-                  </div>
-                </div>
+        <Card.Content>
+          <VStack overflow="scroll" fullHeight justify="end">
+            <VStack gap="md" fullWidth>
+              {children ? (
+                children
+              ) : (
+                <GameGrid columns={{ default: 1, md: 2 }}>
+                  {/* Left Column (Side Content) */}
+                  {sideContent && (
+                    <VStack gap="sm">
+                      <Label color="muted">{sideTitle}</Label>
+                      {sideContent}
+                    </VStack>
+                  )}
+
+                  {/* Right Column (Main Content) */}
+                  {mainContent && (
+                    <VStack gap="sm">
+                      <Label color="muted">{mainTitle}</Label>
+                      {mainContent}
+                    </VStack>
+                  )}
+
+                  {/* Footer (Full Width) */}
+                  {footer && (
+                    <VStack pt="sm" _internalClassName="col-span-full">
+                      {footer}
+                    </VStack>
+                  )}
+                </GameGrid>
               )}
-
-              {/* Right Column (Main Content) */}
-              {mainContent && (
-                <div className="space-y-2">
-                  <div className="text-game-copper-muted mb-1 text-xs font-bold tracking-wider uppercase">
-                    {mainTitle}
-                  </div>
-                  {mainContent}
-                </div>
-              )}
-
-              {/* Footer (Full Width) */}
-              {footer && <div className="col-span-full pt-2">{footer}</div>}
-            </div>
-          )}
-        </div>
-      </ScrollArea>
+            </VStack>
+          </VStack>
+        </Card.Content>
+      </VStack>
     </Card>
   )
 }

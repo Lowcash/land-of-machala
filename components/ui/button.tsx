@@ -1,16 +1,22 @@
 import * as React from 'react'
 
+import Link from 'next/link'
+
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 import { Loader2 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
+import { HStack, VStack } from './stack'
+import { Caption, Span } from './typography'
+
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0",
   {
     variants: {
       variant: {
+        // Standard variants (for fallback/internal)
         default: 'bg-primary text-primary-foreground shadow hover:bg-primary/90',
         destructive: 'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
         outline:
@@ -18,38 +24,35 @@ const buttonVariants = cva(
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        // Game Specific Variants
-        'game-primary':
-          'font-fantasy tracking-wide border-2 border-[#8b6f47] bg-linear-to-br from-[#1a1408] to-[#2a1f10] text-[#d4a574] hover:border-[#d4a574] hover:text-[#ffd700] hover:shadow-[0_0_10px_rgba(212,165,116,0.2)]',
-        'game-secondary':
-          'font-fantasy tracking-wide border border-[#8b6f47]/50 bg-black/40 text-[#8b7355] hover:border-[#8b6f47] hover:text-[#d4a574]',
-        'game-action':
-          'font-fantasy tracking-wide bg-linear-to-r from-[#8b6f47] to-[#6d5a3e] text-[#f5e6d3] border border-[#d4a574]/30 hover:brightness-110 shadow-md',
-        'game-danger':
-          'font-fantasy tracking-wide border border-red-900/50 bg-red-950/30 text-red-400 hover:bg-red-950/50 hover:border-red-500/50 hover:text-red-300',
-        'game-ghost':
-          'font-fantasy tracking-wide border-2 border-[#8b6f47] bg-[#8b6f47]/10 text-[#d4a574] hover:bg-[#8b6f47]/20 hover:border-[#ffd700] hover:text-[#ffd700] transition-all duration-300 font-bold',
-        'game-choice':
-          'font-fantasy tracking-wide border border-[#8b6f47] bg-black/60 text-[#f5e6d3] hover:scale-[1.02] hover:border-[#ffd700] hover:bg-[#8b6f47]/20 hover:text-[#ffd700] transition-all whitespace-normal h-auto py-3 sm:py-4',
-        'game-link-subtle':
-          'text-[#8b7355] hover:text-[#ffd700] bg-transparent hover:bg-transparent p-0 h-auto font-normal',
-        'game-danger-ghost':
-          'font-fantasy tracking-wide border border-[#8b6f47] bg-black/60 text-[#ff6b6b] hover:border-[#ff6b6b] hover:bg-[#ff6b6b]/10 transition-colors',
-        'game-outline-highlight':
-          'font-fantasy tracking-wide border-2 border-[#d4a574] bg-transparent text-[#ffd700] hover:scale-[1.02] hover:bg-[#d4a574]/10 transition-all',
+        // Consolidated Game Variants
+        primary:
+          'font-fantasy tracking-wide border-2 border-game-copper bg-linear-to-br from-game-copper to-black text-game-gold-muted shadow-[0_4px_10px_rgba(0,0,0,0.5)] hover:from-black hover:to-game-copper hover:shadow-[0_4px_15px_rgba(0,0,0,0.6)]',
+        secondary_game:
+          'font-fantasy tracking-wide border border-game-copper/50 bg-black/40 text-game-copper-muted hover:border-game-copper hover:text-game-gold-muted',
+        danger: 'border-game-danger/40 bg-game-danger/10 text-game-danger hover:bg-game-danger/20',
+        success:
+          'border-game-success/50 bg-game-success/10 text-game-success hover:bg-game-success/20',
+        ghost_game: 'border-transparent bg-transparent text-game-gold-muted hover:bg-black/40',
+        choice:
+          'font-fantasy tracking-wide border border-game-copper bg-black/60 text-game-gold-muted hover:scale-[1.02] hover:border-game-gold hover:bg-game-copper/20 hover:text-game-gold transition-all whitespace-normal h-auto py-3 sm:py-4 text-xs sm:text-sm md:text-base min-h-16',
+        link_game:
+          'text-game-copper-muted hover:text-game-gold bg-transparent hover:bg-transparent p-0 h-auto font-normal',
+        row: 'border border-game-copper/30 bg-black/40 p-2.5 text-game-gold-muted transition-colors hover:border-game-gold-muted hover:bg-black/60',
+        marker:
+          'relative flex h-12 w-12 items-center justify-center rounded-full border-2 border-game-gold-muted bg-linear-to-br from-game-copper to-black p-0 transition-all hover:scale-110 shadow-lg',
+        magic_game: 'border-game-magic text-game-magic bg-black/40 hover:bg-game-magic/10',
+        muted_game: 'text-game-copper-muted hover:text-game-gold-muted hover:bg-white/5',
+        black_market:
+          'border border-game-magic/30 bg-black/80 text-game-magic hover:border-game-magic hover:bg-black/90 transition-all',
       },
       size: {
         default: 'h-[42px] px-6 text-sm',
-        sm: 'h-8 rounded-md px-3 text-xs',
-        lg: 'h-10 rounded-md px-8',
-        icon: 'h-9 w-9',
-        // Game Specific Sizes
-        'game-sm': 'h-7 px-2 text-xs uppercase tracking-wide font-bold',
-        'game-md': 'h-10 px-4 text-sm uppercase tracking-wide font-bold',
-        'game-lg': 'h-12 px-6 text-lg uppercase tracking-wide font-bold',
-        'game-icon': 'h-10 w-10 p-2',
-        'game-compact': 'px-3 py-1.5 h-auto text-sm', // For LogoutButton
-        'game-tall': 'min-h-[44px] py-2 sm:min-h-0 sm:py-3 w-full h-auto', // For SkillUpgradeButton
+        xs: 'h-7 px-2 text-[10px] uppercase tracking-wide font-bold',
+        sm: 'h-8 px-3 text-xs uppercase tracking-wide font-bold',
+        md: 'h-10 px-4 text-sm uppercase tracking-wide font-bold',
+        lg: 'h-12 px-6 text-lg uppercase tracking-wide font-bold',
+        icon: 'h-10 w-10 p-2',
+        'icon-xs': 'h-6 w-6 p-1',
       },
     },
     defaultVariants: {
@@ -59,8 +62,95 @@ const buttonVariants = cva(
   }
 )
 
+interface ButtonContentProps {
+  loading?: boolean
+  icon?: React.ElementType
+  label?: React.ReactNode
+  subLabel?: string
+  subLabelRight?: string
+  indicator?: React.ReactNode
+  children?: React.ReactNode
+}
+
+function ButtonContent({
+  loading,
+  icon: Icon,
+  label,
+  subLabel,
+  subLabelRight,
+  indicator,
+  children,
+}: ButtonContentProps) {
+  // If no content is provided, render nothing (allows marker variant to render its own specific children)
+  const finalLabel = label || children
+
+  if (!loading && !Icon && !finalLabel && !subLabel && !indicator) return null
+
+  return (
+    <HStack align="center" gap="sm" fullWidth>
+      {loading ? (
+        <Loader2 className="h-4 w-4 animate-spin" />
+      ) : (
+        <>
+          {indicator && (
+            <VStack
+              shrink="0"
+              h="8"
+              w="8"
+              align="center"
+              justify="center"
+              rounded="full"
+              border="copper"
+              bg="black-40"
+              _internalClassName="text-game-copper-muted group-hover:border-game-gold group-hover:text-game-gold text-[10px] transition-colors"
+            >
+              {indicator}
+            </VStack>
+          )}
+          {Icon && <Icon className="h-4 w-4 shrink-0" />}
+        </>
+      )}
+      <VStack flex="1" align="start" justify="center" leading="tight" gap="none">
+        <HStack justify="between" align="center" fullWidth gap="none">
+          {finalLabel && (
+            <Span weight="bold" _internalClassName="text-left">
+              {finalLabel}
+            </Span>
+          )}
+          {subLabelRight && (
+            <Caption weight="medium" opacity="80">
+              {subLabelRight}
+            </Caption>
+          )}
+        </HStack>
+        {subLabel && (
+          <Caption weight="medium" opacity="70">
+            {subLabel}
+          </Caption>
+        )}
+      </VStack>
+    </HStack>
+  )
+}
+
+export interface ButtonProps
+  extends
+    Omit<React.ComponentProps<'button'>, 'className' | 'children' | 'label' | 'style' | 'ref'>,
+    VariantProps<typeof buttonVariants> {
+  asChild?: boolean
+  loading?: boolean
+  fullWidth?: boolean
+  icon?: React.ElementType
+  label?: React.ReactNode
+  subLabel?: string
+  subLabelRight?: string
+  indicator?: React.ReactNode
+  href?: React.ComponentProps<typeof Link>['href']
+  children?: React.ReactNode // Public for marker/asChild use cases
+  style?: React.CSSProperties // Allow style for absolute positioning (Map Markers)
+}
+
 export function Button({
-  className,
   variant,
   size,
   fullWidth = false,
@@ -68,43 +158,73 @@ export function Button({
   loading = false,
   icon: Icon,
   label,
-  responsiveLabel = false,
+  subLabel,
+  subLabelRight,
+  indicator,
+  href,
   children,
   disabled,
-  ref,
+  style,
   ...props
-}: React.ComponentProps<'button'> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
-    loading?: boolean
-    fullWidth?: boolean
-    icon?: React.ElementType
-    label?: React.ReactNode
-    responsiveLabel?: boolean
-    ref?: React.Ref<HTMLButtonElement>
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : 'button'
+  const isMarker = variant === 'marker'
+  const baseClasses = cn(
+    'group',
+    buttonVariants({ variant, size: isMarker ? undefined : size }),
+    fullWidth && 'w-full'
+  )
+
+  const content = isMarker ? (
+    children
+  ) : (
+    <ButtonContent
+      loading={loading}
+      icon={Icon}
+      label={label}
+      subLabel={subLabel}
+      subLabelRight={subLabelRight}
+      indicator={indicator}
+    >
+      {children}
+    </ButtonContent>
+  )
+
+  const inner =
+    asChild || href
+      ? React.isValidElement(children)
+        ? React.cloneElement(
+            children as React.ReactElement<{ children?: React.ReactNode }>,
+            {},
+            content ||
+              (children as React.ReactElement<{ children?: React.ReactNode }>).props.children
+          )
+        : children
+      : content
+
+  if (href) {
+    return (
+      <Link
+        // @ts-expect-error - Next.js Link href typing is overly strict for generic components
+        href={href as string}
+        className={baseClasses}
+        style={style}
+        {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {content}
+      </Link>
+    )
+  }
 
   return (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }), fullWidth && 'w-full')}
+      className={baseClasses}
       disabled={disabled || loading}
-      ref={ref}
+      style={style}
       {...props}
     >
-      {loading ? (
-        <>
-          <Loader2 className="h-4 w-4 animate-spin" />
-          {children || label}
-        </>
-      ) : (
-        <>
-          {Icon && <Icon className={cn('h-4 w-4', !label && !children && 'mr-0')} />}
-          {label && <span className={cn(responsiveLabel && 'hidden sm:inline')}>{label}</span>}
-          {children}
-        </>
-      )}
+      {inner}
     </Comp>
   )
 }

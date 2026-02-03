@@ -2,6 +2,11 @@ import { Activity, Brain, Droplet, Heart, Sword, Wind } from 'lucide-react'
 
 import { races } from '@/lib/game/onboarding'
 
+import { Card } from '@/components/ui/card'
+import { DetailRow, StatGrid } from '@/components/ui/display'
+import { VStack } from '@/components/ui/stack'
+import { Caption, Label } from '@/components/ui/typography'
+
 import { EntitySelector } from './EntitySelector'
 
 interface SelectorProps {
@@ -26,40 +31,63 @@ export function RaceSelector({ selectedId, searchParams, isMobile }: SelectorPro
 
 function RaceInfo({ race }: { race: (typeof races)[0] }) {
   return (
-    <div className="border-game-copper rounded border bg-black/60 p-3">
-      <p className="text-game-gold-muted mb-2 text-xs leading-relaxed">{race.desc}</p>
-      <div className="border-game-copper/30 mt-2 border-t pt-2">
-        <p className="text-game-gold mb-1.5 text-xs" style={{ fontFamily: 'var(--font-fantasy)' }}>
-          Bonusy rasy:
-        </p>
-        <div className="grid grid-cols-2 gap-x-2 gap-y-1 text-[10px]">
-          <span className="flex items-center gap-1">
-            <Heart className="h-3 w-3 text-red-400" />{' '}
-            <span className="text-game-gold-muted">{race.stats.hp} HP</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Droplet className="h-3 w-3 text-sky-400" />{' '}
-            <span className="text-game-gold-muted">{race.stats.mana} MP</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Sword className="h-3 w-3 text-red-400" />{' '}
-            <span className="text-game-gold-muted">{race.stats.strength} Síla</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Brain className="h-3 w-3 text-purple-400" />{' '}
-            <span className="text-game-gold-muted">{race.stats.intelligence} Intel.</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Wind className="text-game-gold h-3 w-3" />{' '}
-            <span className="text-game-gold-muted">{race.stats.agility} Obrat.</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <Activity className="h-3 w-3 text-sky-400" />{' '}
-            <span className="text-game-gold-muted">{race.stats.stamina} Výdrž</span>
-          </span>
-        </div>
-        <p className="mt-2 text-[10px] text-[#8b7355] italic">{race.bonuses}</p>
-      </div>
-    </div>
+    <VStack p="sm">
+      <Card variant="muted">
+        <Card.Content>
+          <VStack gap="sm" fullWidth>
+            <Caption color="gold-muted">{race.desc}</Caption>
+
+            <VStack mt="sm" border="game-t" pt="sm" gap="sm" fullWidth>
+              <Label font="fantasy" color="gold">
+                Bonusy rasy:
+              </Label>
+
+              <StatGrid columns="2">
+                <DetailRow
+                  label="HP"
+                  value={race.stats.hp}
+                  icon={Heart}
+                  iconColor="text-game-danger"
+                />
+                <DetailRow
+                  label="Mana"
+                  value={race.stats.mana}
+                  icon={Droplet}
+                  iconColor="text-game-info"
+                />
+                <DetailRow
+                  label="Síla"
+                  value={race.stats.strength}
+                  icon={Sword}
+                  iconColor="text-game-copper"
+                />
+                <DetailRow
+                  label="Intel."
+                  value={race.stats.intelligence}
+                  icon={Brain}
+                  iconColor="text-game-magic"
+                />
+                <DetailRow
+                  label="Obrat."
+                  value={race.stats.agility}
+                  icon={Wind}
+                  iconColor="text-game-gold"
+                />
+                <DetailRow
+                  label="Výdrž"
+                  value={race.stats.stamina}
+                  icon={Activity}
+                  iconColor="text-game-info"
+                />
+              </StatGrid>
+
+              <Caption color="muted" italic>
+                {race.bonuses}
+              </Caption>
+            </VStack>
+          </VStack>
+        </Card.Content>
+      </Card>
+    </VStack>
   )
 }

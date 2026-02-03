@@ -6,7 +6,9 @@ import { performUseItemAction } from '@/lib/actions/combat'
 import { getIconFromName } from '@/lib/icons'
 import type { CharacterItem } from '@/lib/types/game'
 
-import { ActionGrid, ActionItem } from '@/components/ui/Action'
+import { ActionGrid, ActionItem } from '@/components/ui/action'
+import { VStack } from '@/components/ui/stack'
+import { Label, MutedText } from '@/components/ui/typography'
 
 interface CombatPotionsProps {
   potions: CharacterItem[]
@@ -40,27 +42,24 @@ export function CombatPotions({ potions, isPending }: CombatPotionsProps) {
         label={potion.name}
         icon={Icon}
         onClick={() => handleUsePotion(potion.id, potion.name)}
-        variant="default"
+        variant="success"
         disabled={isPending}
-        className="border-game-success/50 text-game-success hover:border-game-success gap-2"
         layout="row"
       />
     )
   }
 
   return (
-    <div className="space-y-1">
-      <div className="mb-1 text-xs font-bold tracking-wider text-[#8b7355] uppercase">
+    <VStack gap="xs">
+      <Label color="muted" bold>
         Lektvary ({potions.length})
-      </div>
+      </Label>
       <ActionGrid columns={{ default: 2 }}>
         {potions.map((potion) => (
           <PotionItem key={potion.id} potion={potion} />
         ))}
       </ActionGrid>
-      {potions.length === 0 && (
-        <div className="text-xs text-[#8b7355] italic">Žádné lektvary k dispozici</div>
-      )}
-    </div>
+      {potions.length === 0 && <MutedText italic>Žádné lektvary k dispozici</MutedText>}
+    </VStack>
   )
 }

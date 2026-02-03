@@ -2,6 +2,7 @@ import type { Achievement, CharacterData, CharacterItem } from '@/lib/types/game
 
 import { CharacterBox } from '@/components/features/Game'
 import { SplitLayout } from '@/components/layout'
+import { VStack } from '@/components/ui/stack'
 
 import { AchievementList } from './Achievements/AchievementList'
 import { EquipmentList } from './Equipment/EquipmentList'
@@ -23,40 +24,44 @@ export function CharacterDashboard({
   const stats = calculateDerivedStats(character, inventory)
 
   return (
-    <div className="h-full">
+    <VStack fullHeight>
       <SplitLayout
         asideWidth="lg"
         main={
-          <div className="flex flex-col gap-6 p-4">
-            {/* Character Summary */}
-            <CharacterBox
-              name={character.name}
-              level={character.level}
-              hp={character.hp}
-              hpMax={character.maxHp}
-              mana={character.mana}
-              manaMax={character.maxMana}
-              xp={character.experience}
-              xpMax={1000}
-              isEnemy={false}
-              gold={character.gold}
-            />
+          <VStack p="md" fullHeight>
+            <VStack gap="lg">
+              {/* Character Summary */}
+              <CharacterBox
+                name={character.name}
+                level={character.level}
+                hp={character.hp}
+                hpMax={character.maxHp}
+                mana={character.mana}
+                manaMax={character.maxMana}
+                xp={character.experience}
+                xpMax={1000}
+                isEnemy={false}
+                gold={character.gold}
+              />
 
-            {/* Equipment */}
-            <EquipmentList equipped={equipped} />
+              {/* Equipment */}
+              <EquipmentList equipped={equipped} />
 
-            {/* Achievements */}
-            <AchievementList achievements={achievements} />
-          </div>
+              {/* Achievements */}
+              <AchievementList achievements={achievements} />
+            </VStack>
+          </VStack>
         }
         aside={
-          <StatsPanel
-            character={character}
-            totalAttack={stats.totalAttack}
-            totalDefense={stats.totalDefense}
-          />
+          <VStack fullHeight overflow="scroll" p="md">
+            <StatsPanel
+              character={character}
+              totalAttack={stats.totalAttack}
+              totalDefense={stats.totalDefense}
+            />
+          </VStack>
         }
       />
-    </div>
+    </VStack>
   )
 }

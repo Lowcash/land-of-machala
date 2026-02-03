@@ -2,9 +2,11 @@ import type { ReactNode } from 'react'
 
 import type { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
-
 import { Card } from '@/components/ui/card'
+import { GameIcon } from '@/components/ui/display'
+import { RichText } from '@/components/ui/rich-text'
+import { HStack, VStack } from '@/components/ui/stack'
+import { GoldTitle } from '@/components/ui/typography'
 
 interface LocationViewProps {
   title: string
@@ -12,7 +14,6 @@ interface LocationViewProps {
   icon?: LucideIcon
   children: ReactNode
   aside?: ReactNode
-  className?: string
 }
 
 /**
@@ -25,30 +26,27 @@ export function LocationView({
   icon: Icon,
   children,
   aside,
-  className,
 }: LocationViewProps) {
   return (
-    <div className={cn('flex flex-col gap-4', className)}>
-      <Card variant="muted" className="border-[#8b6f47]/30 bg-black/40 p-4">
-        <div className="flex items-start gap-4">
-          {Icon && (
-            <div className="mt-1 rounded border border-[#ffd700]/20 bg-[#ffd700]/10 p-2">
-              <Icon className="h-5 w-5 text-[#ffd700]" />
-            </div>
-          )}
-          <div className="flex-1">
-            <h3 className="mb-1 text-lg font-bold tracking-wider text-[#ffd700] uppercase">
-              {title}
-            </h3>
-            <p className="text-sm leading-relaxed text-[#8b7355] italic">
-              &quot;{description}&quot;
-            </p>
-          </div>
-          {aside}
-        </div>
+    <VStack gap="md" fullWidth>
+      <Card variant="muted" fullWidth>
+        <Card.Content>
+          <HStack align="start" gap="md" fullWidth>
+            {Icon && <GameIcon icon={Icon} color="gold" mt="xs" />}
+            <VStack flex="1">
+              <GoldTitle as="h3" mb="xs">
+                {title}
+              </GoldTitle>
+              <RichText content={description} italic size="sm" color="gold-muted" />
+            </VStack>
+            {aside}
+          </HStack>
+        </Card.Content>
       </Card>
 
-      <div className="grid grid-cols-1 gap-4">{children}</div>
-    </div>
+      <VStack display="grid" gridCols="1" gap="md" fullWidth>
+        {children}
+      </VStack>
+    </VStack>
   )
 }

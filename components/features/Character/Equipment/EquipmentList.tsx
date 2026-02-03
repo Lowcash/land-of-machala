@@ -3,8 +3,11 @@ import { Shield } from 'lucide-react'
 import { getSlotName } from '@/lib/game/utils'
 import type { CharacterItem } from '@/lib/types/game'
 
+import { DetailRow, GameIcon, StatDisplay } from '@/components/ui/display'
 import { GameCard } from '@/components/ui/game-card'
 import { GameList } from '@/components/ui/game-list'
+import { HStack, VStack } from '@/components/ui/stack'
+import { H4 } from '@/components/ui/typography'
 
 interface EquipmentListProps {
   equipped: CharacterItem[]
@@ -12,7 +15,7 @@ interface EquipmentListProps {
 
 export function EquipmentList({ equipped }: EquipmentListProps) {
   return (
-    <GameCard title="Výbava" icon={Shield} className="h-full">
+    <GameCard title="Výbava" icon={Shield}>
       <GameList
         data={equipped}
         keyExtractor={(item) => item.id}
@@ -20,42 +23,50 @@ export function EquipmentList({ equipped }: EquipmentListProps) {
         renderItem={(item) => {
           const Icon = item.icon || Shield
           return (
-            <div className="group relative flex items-center gap-3 rounded-lg border border-[#8b6f47]/50 bg-black/60 p-3 transition-all hover:border-[#ffd700] hover:bg-black/80 hover:shadow-[0_0_15px_rgba(255,215,0,0.1)]">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-[#8b6f47] bg-linear-to-br from-black/60 to-[#8b6f47]/20 shadow-inner transition-colors group-hover:border-[#d4a574]">
-                <Icon className="h-5 w-5 text-[#d4a574] drop-shadow-md group-hover:text-[#ffd700]" />
-              </div>
+            <VStack
+              position="relative"
+              rounded="lg"
+              border="game"
+              bg="black-60"
+              p="md"
+              fullWidth
+              _internalClassName="group transition-all hover:border-game-gold hover:bg-black-80 hover:shadow-[0_0_15px_var(--color-game-gold-muted)]"
+            >
+              <HStack align="center" gap="md" fullWidth>
+                <GameIcon icon={Icon} color="gold" bgOpacity="20" />
 
-              <div className="min-w-0 flex-1">
-                <div className="flex items-center justify-between">
-                  <h4
-                    className="truncate text-sm text-[#f5e6d3] group-hover:text-[#ffd700]"
-                    style={{ fontFamily: 'var(--font-fantasy)' }}
-                  >
-                    {item.name}
-                  </h4>
-                  <span className="ml-2 shrink-0 text-[9px] tracking-widest text-[#8b7355] uppercase">
-                    {getSlotName(item.slot || '')}
-                  </span>
-                </div>
+                <VStack flex="1" _internalClassName="min-w-0" gap="xs">
+                  <DetailRow
+                    label={
+                      <H4 color="copper" truncate>
+                        {item.name}
+                      </H4>
+                    }
+                    value={getSlotName(item.slot || '').toUpperCase()}
+                    py="none"
+                  />
 
-                <div className="mt-1 flex items-center gap-3 text-[10px]">
-                  {(item.attack || item.damage) && (
-                    <span className="flex items-center gap-1">
-                      <span className="text-[#8b7355]">Útok</span>
-                      <span className="font-bold text-[#ff6b6b]">
-                        +{item.attack || item.damage}
-                      </span>
-                    </span>
-                  )}
-                  {item.defense && (
-                    <span className="flex items-center gap-1">
-                      <span className="text-[#8b7355]">Obrana</span>
-                      <span className="font-bold text-[#69ccf0]">+{item.defense}</span>
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
+                  <HStack align="center" gap="md" fullWidth>
+                    {(item.attack || item.damage) && (
+                      <StatDisplay
+                        value={`+${item.attack || item.damage}`}
+                        label="Útok"
+                        color="danger"
+                        size="sm"
+                      />
+                    )}
+                    {item.defense && (
+                      <StatDisplay
+                        value={`+${item.defense}`}
+                        label="Obrana"
+                        color="cold"
+                        size="sm"
+                      />
+                    )}
+                  </HStack>
+                </VStack>
+              </HStack>
+            </VStack>
           )
         }}
       />

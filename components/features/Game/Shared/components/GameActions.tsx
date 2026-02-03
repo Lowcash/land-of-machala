@@ -5,8 +5,9 @@ import { ArrowLeft, Home, type LucideIcon } from 'lucide-react'
 import { type Direction, GAME_ACTION_LABELS, GAME_DIRECTIONS } from '@/lib/constants/game-actions'
 
 import { GameActionPanel } from '@/components/features/Game/Shared/components/GameActionPanel'
-import { ActionGrid, ActionItem } from '@/components/ui/Action'
+import { ActionGrid, ActionItem } from '@/components/ui/action'
 import { Button } from '@/components/ui/button'
+import { VStack } from '@/components/ui/stack'
 
 interface GameActionsProps {
   children?: ReactNode
@@ -34,34 +35,38 @@ export function GameActions({
   if (showDirections) {
     return (
       <GameActionPanel title={title} icon={Icon}>
-        <div className="mb-4">
+        <VStack mb="md" fullWidth>
           <Button
-            variant="game-primary"
+            variant="primary"
             onClick={onStay ?? onToggleDirections}
-            className="w-full gap-2"
-          >
-            <Home className="h-4 w-4" />
-            <span>{GAME_ACTION_LABELS.STAY_IN_TOWN}</span>
-          </Button>
-        </div>
+            fullWidth
+            label={GAME_ACTION_LABELS.STAY_IN_TOWN}
+            icon={Home}
+          />
+        </VStack>
 
         <ActionGrid columns={{ default: 1, md: 2 }}>
           {GAME_DIRECTIONS.map((d) => (
-            <ActionItem
+            <VStack
               key={d.direction}
-              label={d.label}
-              subLabel={d.subLabel}
-              icon={d.icon}
-              onClick={() => onMove?.(d.direction)}
-              className="relative justify-start p-4! hover:brightness-110"
-              layout="col"
-              style={{
+              rounded="md"
+              overflow="hidden"
+              _internalClassName="relative transition-all hover:brightness-110"
+              _internalStyle={{
                 backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${d.bg})`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 textShadow: '1px 1px 2px black',
               }}
-            />
+            >
+              <ActionItem
+                label={d.label}
+                subLabel={d.subLabel}
+                icon={d.icon}
+                onClick={() => onMove?.(d.direction)}
+                layout="col"
+              />
+            </VStack>
           ))}
         </ActionGrid>
       </GameActionPanel>
@@ -76,10 +81,13 @@ export function GameActions({
       mainContent={children}
       footer={
         onBack && (
-          <Button variant="game-primary" onClick={onBack} className="w-full gap-2">
-            <ArrowLeft className="h-4 w-4" />
-            {GAME_ACTION_LABELS.BACK_TO_TOWN}
-          </Button>
+          <Button
+            variant="primary"
+            onClick={onBack}
+            fullWidth
+            label={GAME_ACTION_LABELS.BACK_TO_TOWN}
+            icon={ArrowLeft}
+          />
         )
       }
     />

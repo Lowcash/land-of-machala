@@ -4,8 +4,10 @@ import { redirect } from 'next/navigation'
 import { CharacterClass } from '@prisma/client'
 
 import { viewData } from '@/lib/game/constants/views'
+import { getIconFromName } from '@/lib/icons'
 import { getGamePageData } from '@/lib/loaders/game-loader'
-import type { CharacterData, CharacterItem, View } from '@/lib/types/game'
+import type { CharacterData, CharacterItem, InventoryEntry, View } from '@/lib/types/game'
+import type { MarketItem } from '@/lib/types/market'
 
 import { CombatClient } from '@/components/features/Combat/CombatClient'
 import {
@@ -20,6 +22,7 @@ import { ActionsArea } from '@/components/features/Game/Dashboard/ActionsArea'
 import { HealerShop } from '@/components/features/Game/Locations/Shops/HealerShop'
 import { SmithShop } from '@/components/features/Game/Locations/Shops/SmithShop'
 import { GenericGameLayout } from '@/components/features/Game/Shared/layouts/GenericGameLayout'
+import type { MergedQuest } from '@/components/features/Quest/Shared/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -48,18 +51,34 @@ export default async function GamePage({ searchParams }: PageProps) {
       combatEnemyId?: string
     }
 
-    const inventory = character.inventory.map((i: unknown) => {
-      const inv = i as { item: CharacterItem }
-      return { ...inv.item, ...inv } as unknown as CharacterItem
-    })
+    const combatInventory = (character.inventory || []).map((entry) => {
+      const invEntry = entry as unknown as InventoryEntry
+      return {
+        ...invEntry.item,
+        equipped: invEntry.equipped,
+        quantity: invEntry.quantity,
+        icon: getIconFromName(invEntry.item.iconName),
+      }
+    }) as CharacterItem[]
 
     return (
-      <CombatClient character={combatCharacter} inventory={inventory} footer={<GameFooter />} />
+      <CombatClient
+        character={combatCharacter}
+        inventory={combatInventory}
+        footer={<GameFooter />}
+      />
     )
   }
 
-  /* eslint-disable @typescript-eslint/no-explicit-any */
-  const dash = dashboardData as any
+  /* Use typed dashboardData */
+  const dash = dashboardData as unknown as CharacterData
+  const dashboardInventory = (dash.inventory || []).map((entry) => ({
+    ...entry.item,
+    price: entry.item.value,
+    equipped: entry.equipped,
+    quantity: entry.quantity,
+    icon: getIconFromName(entry.item.iconName || 'Backpack'),
+  })) as MarketItem[]
 
   return (
     <GameDashboardProvider>
@@ -79,7 +98,7 @@ export default async function GamePage({ searchParams }: PageProps) {
         footer={<GameFooter />}
         backgroundImage={currentViewConfig.bg}
         rightPanel={
-          <GameActivityPanel className="mx-3 h-[140px] shrink-0 bg-black/60 transition-colors">
+          <GameActivityPanel>
             <GameDashboardActivity viewDesc={currentViewConfig.desc} />
           </GameActivityPanel>
         }
@@ -92,8 +111,8 @@ export default async function GamePage({ searchParams }: PageProps) {
             mana={character.mana}
             manaMax={character.maxMana}
             xp={character.experience}
-            xpMax={dash.xpToNextLevel}
-            stats={dash.stats}
+            xpMax={dash.xpToNextLevel || 0}
+            stats={dash.stats || { strength: 0, intelligence: 0, agility: 0, stamina: 0 }}
             isEnemy={false}
             resourceType={
               character.class === CharacterClass.WARRIOR || character.class === CharacterClass.ROGUE
@@ -108,18 +127,17 @@ export default async function GamePage({ searchParams }: PageProps) {
           <ActionsArea
             currentView={currentView}
             gold={character.gold}
-            inventory={dash.inventory}
-            activeBuffs={dash.activeBuffs}
-            bankGold={dash.bankGold}
-            quests={data.quests as any}
+            inventory={dashboardInventory}
+            activeBuffs={dash.activeBuffs || []}
+            bankGold={dash.bankGold || 0}
+            quests={data.quests as MergedQuest[]}
             smithShopSlot={<SmithShop gold={character.gold} />}
             healerShopSlot={
-              <HealerShop activeBuffs={character.buffs as any} gold={character.gold} />
+              <HealerShop activeBuffs={dash.activeBuffs || []} gold={character.gold} />
             }
           />
         }
       />
     </GameDashboardProvider>
   )
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 }

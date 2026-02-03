@@ -9,15 +9,15 @@ import { cn } from '@/lib/utils'
 
 import { ScrollIndicator } from '@/components/ui/scroll-indicator'
 
-interface ScrollAreaProps extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
-  viewportClassName?: string
+interface ScrollAreaProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>,
+  'className'
+> {
   showIndicators?: boolean
 }
 
 export function ScrollArea({
-  className,
   children,
-  viewportClassName,
   showIndicators = true,
   ref,
   ...props
@@ -27,7 +27,7 @@ export function ScrollArea({
   return (
     <ScrollAreaPrimitive.Root
       ref={ref}
-      className={cn('relative overflow-hidden', className)}
+      className="relative h-full w-full overflow-hidden"
       {...props}
     >
       {showIndicators && (
@@ -35,7 +35,7 @@ export function ScrollArea({
       )}
       <ScrollAreaPrimitive.Viewport
         ref={viewportRef}
-        className={cn('h-full w-full rounded-[inherit] hover:cursor-auto', viewportClassName)}
+        className="h-full w-full rounded-[inherit] hover:cursor-auto"
       >
         {children}
       </ScrollAreaPrimitive.Viewport>
@@ -46,11 +46,13 @@ export function ScrollArea({
 }
 
 export function ScrollBar({
-  className,
   orientation = 'vertical',
   ref,
   ...props
-}: React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> & {
+}: Omit<
+  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  'className'
+> & {
   ref?: React.Ref<React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>>
 }) {
   return (
@@ -60,8 +62,7 @@ export function ScrollBar({
       className={cn(
         'flex touch-none transition-colors select-none',
         orientation === 'vertical' && 'h-full w-2.5 border-l border-transparent p-px',
-        orientation === 'horizontal' && 'h-2.5 flex-col border-t border-transparent p-px',
-        className
+        orientation === 'horizontal' && 'h-2.5 flex-col border-t border-transparent p-px'
       )}
       {...props}
     >

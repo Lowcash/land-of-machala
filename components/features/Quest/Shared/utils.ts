@@ -1,5 +1,22 @@
 import type { QuestCategory } from './types'
 
+export function getCategoryTypographyColor(
+  category: QuestCategory
+): 'gold' | 'cold' | 'nature' | 'magic' | 'default' {
+  switch (category) {
+    case 'MAIN':
+      return 'gold'
+    case 'SIDE':
+      return 'cold'
+    case 'DAILY':
+      return 'nature'
+    case 'EVENT':
+      return 'magic'
+    default:
+      return 'default'
+  }
+}
+
 export function getCategoryColor(category: QuestCategory) {
   switch (category) {
     case 'MAIN':
@@ -13,16 +30,20 @@ export function getCategoryColor(category: QuestCategory) {
   }
 }
 
-export function getCategoryBadge(category: QuestCategory) {
+export type QuestBadgeVariant = 'gold' | 'cold' | 'nature' | 'magic' | 'default'
+
+export function getCategoryBadge(category: QuestCategory): QuestBadgeVariant {
   switch (category) {
     case 'MAIN':
-      return 'bg-[#ffd700]/10 text-[#ffd700] border border-[#ffd700]/50'
+      return 'gold'
     case 'SIDE':
-      return 'bg-[#69ccf0]/10 text-[#69ccf0] border border-[#69ccf0]/50'
+      return 'cold'
     case 'DAILY':
-      return 'bg-[#6fbf6f]/10 text-[#6fbf6f] border border-[#6fbf6f]/50'
+      return 'nature'
     case 'EVENT':
-      return 'bg-[#b66bd4]/10 text-[#b66bd4] border border-[#b66bd4]/50'
+      return 'magic'
+    default:
+      return 'default'
   }
 }
 

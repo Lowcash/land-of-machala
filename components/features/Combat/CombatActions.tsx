@@ -1,7 +1,8 @@
 import { COMBAT_ACTIONS } from '@/lib/game/constants/combat'
 
 import { GameActionPanel } from '@/components/features/Game/Shared/components/GameActionPanel'
-import { ActionGrid, ActionItem } from '@/components/ui/Action'
+import { ActionGrid, ActionItem } from '@/components/ui/action'
+import type { ActionItemProps } from '@/components/ui/action/ActionItem'
 
 interface CombatActionsProps {
   onAction: (action: 'attack' | 'defend' | 'special' | 'flee') => void
@@ -28,9 +29,8 @@ export function CombatActions({ onAction, isPending }: CombatActionsProps) {
       icon={action.icon}
       onClick={() => handleAction(action.action)}
       disabled={isPending}
-      variant={action.variant}
+      variant={action.variant as ActionItemProps['variant']}
       layout="row"
-      className={action.className}
     />
   )
 

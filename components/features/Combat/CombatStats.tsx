@@ -1,6 +1,9 @@
 import type { CharacterData } from '@/lib/types/game'
 
 import { CharacterBox } from '@/components/features/Game'
+import { GameFeedback } from '@/components/ui/display'
+import { GameGrid } from '@/components/ui/game-grid'
+import { VStack } from '@/components/ui/stack'
 
 interface CombatStatsProps {
   character: CharacterData
@@ -24,34 +27,9 @@ export function CombatStats({
   enemyHp,
   effects,
 }: CombatStatsProps) {
-  // 4. Sub-components (Render helpers)
-  const FloatingFeedback = ({ type, isEnemy }: { type: string; isEnemy: boolean }) => {
-    const isActive = effects.includes(`${isEnemy ? 'enemy' : 'player'}-${type}`)
-    if (!isActive) return null
-
-    const config = {
-      crit: { text: 'KRIT!', color: 'text-yellow-400' },
-      dodge: { text: 'ÚHYB!', color: 'text-blue-400' },
-    }
-
-    const { text, color } = config[type as keyof typeof config] || {
-      text: type,
-      color: 'text-white',
-    }
-
-    return (
-      <div
-        className={`pointer-events-none absolute -top-8 left-1/2 z-50 -translate-x-1/2 animate-bounce font-black tracking-tighter shadow-black drop-shadow-md ${color}`}
-        style={{ fontFamily: 'var(--font-fantasy)', fontSize: '1.5rem' }}
-      >
-        {text}
-      </div>
-    )
-  }
-
   return (
-    <div className="grid w-full grid-cols-1 gap-3 md:grid-cols-2">
-      <div className="relative">
+    <GameGrid columns={{ default: 1, md: 2 }} fullHeight={false}>
+      <VStack position="relative">
         <CharacterBox
           name={character.name}
           level={character.level}
@@ -67,11 +45,11 @@ export function CombatStats({
           }}
           isEnemy={false}
         />
-        <FloatingFeedback type="crit" isEnemy={false} />
-        <FloatingFeedback type="dodge" isEnemy={false} />
-      </div>
+        <GameFeedback type="crit" active={effects.includes('player-crit')} />
+        <GameFeedback type="dodge" active={effects.includes('player-dodge')} />
+      </VStack>
 
-      <div className="relative">
+      <VStack position="relative">
         <CharacterBox
           name={enemy.name}
           level={enemy.level}
@@ -88,9 +66,9 @@ export function CombatStats({
           isEnemy={true}
           image="/assets/enemies/wolf.png"
         />
-        <FloatingFeedback type="crit" isEnemy={true} />
-        <FloatingFeedback type="dodge" isEnemy={true} />
-      </div>
-    </div>
+        <GameFeedback type="crit" active={effects.includes('enemy-crit')} />
+        <GameFeedback type="dodge" active={effects.includes('enemy-dodge')} />
+      </VStack>
+    </GameGrid>
   )
 }

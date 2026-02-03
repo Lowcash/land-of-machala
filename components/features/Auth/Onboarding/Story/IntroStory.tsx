@@ -1,10 +1,10 @@
-import Link from 'next/link'
-
 import { BookOpen, SkipForward } from 'lucide-react'
 
 import { storySteps } from '@/lib/game/onboarding'
 
 import { Button } from '@/components/ui/button'
+import { HStack, VStack } from '@/components/ui/stack'
+import { GoldTitle } from '@/components/ui/typography'
 
 import { Layout } from '../../Shared/Layout'
 
@@ -19,19 +19,25 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
 
   return (
     <Layout backgroundImage="/assets/locations/city-background.jpg">
-      <div className="animate-in fade-in w-full max-w-2xl space-y-8 text-center duration-700">
-        <BookOpen className="mx-auto mb-4 h-12 w-12 text-[#ffd700]" />
+      <VStack
+        _internalClassName="animate-in fade-in max-w-2xl duration-700"
+        align="center"
+        gap="xl"
+        fullWidth
+      >
+        <VStack>
+          <BookOpen className="text-game-gold h-12 w-12" />
+        </VStack>
 
-        <div className="flex min-h-32 flex-col justify-center sm:min-h-28">
-          <h1
-            className="text-xl leading-relaxed text-[#d4a574] italic sm:text-2xl"
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            &quot;{currentStory.text}&quot;
-          </h1>
-        </div>
+        <VStack _internalClassName="min-h-[7rem]" justify="center" align="center" fullWidth>
+          <VStack _internalClassName="text-xl sm:text-2xl" fullWidth>
+            <GoldTitle italic align="center">
+              &quot;{currentStory.text}&quot;
+            </GoldTitle>
+          </VStack>
+        </VStack>
 
-        <div className="mt-8 space-y-3">
+        <VStack gap="sm" fullWidth>
           {currentStory.choices.map((choice, idx) => {
             const nextParams = new URLSearchParams()
             if (choice.nextStep === 'end') {
@@ -46,34 +52,25 @@ export function IntroStory({ storyIndex }: IntroStoryProps) {
             return (
               <Button
                 key={idx}
-                asChild
-                variant="game-choice"
-                className="w-full justify-center text-xs sm:text-sm md:text-base"
-              >
-                <Link href={`?${nextParams.toString()}`}>
-                  <span className="flex items-center gap-3">
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-[#8b6f47] text-xs text-[#8b7355] group-hover:border-[#ffd700] group-hover:text-[#ffd700]">
-                      {String.fromCharCode(65 + idx)}
-                    </span>
-                    <span>{choice.text}</span>
-                  </span>
-                </Link>
-              </Button>
+                variant="choice"
+                fullWidth
+                indicator={String.fromCharCode(65 + idx)}
+                label={choice.text}
+                href={`?${nextParams.toString()}`}
+              />
             )
           })}
-        </div>
+        </VStack>
 
-        <Button
-          asChild
-          variant="game-link-subtle"
-          className="mx-auto mt-8 flex w-fit items-center justify-center gap-2 text-xs sm:text-sm"
-        >
-          <Link href="?step=1">
-            <SkipForward className="h-3 w-3 sm:h-4 sm:w-4" />
-            Přeskočit úvod (Jsem zkušený hráč)
-          </Link>
-        </Button>
-      </div>
+        <HStack justify="center" fullWidth>
+          <Button
+            variant="link_game"
+            icon={SkipForward}
+            label="Přeskočit úvod (Jsem zkušený hráč)"
+            href="?step=1"
+          />
+        </HStack>
+      </VStack>
     </Layout>
   )
 }

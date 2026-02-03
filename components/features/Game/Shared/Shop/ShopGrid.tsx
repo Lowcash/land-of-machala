@@ -1,5 +1,7 @@
 import { cn } from '@/lib/utils'
 
+import { GameGrid } from '@/components/ui/game-grid'
+
 interface ShopGridProps {
   children: React.ReactNode
   className?: string
@@ -7,13 +9,8 @@ interface ShopGridProps {
 
 export function ShopGrid({ children, className }: ShopGridProps) {
   return (
-    <div
-      className={cn(
-        'grid grid-cols-2 gap-3 pb-20 sm:grid-cols-3 lg:grid-cols-4', // pb-20 for bottom safe area
-        className
-      )}
-    >
+    <GameGrid columns={{ default: 2, sm: 3, lg: 4 }} className={cn('pb-20', className)}>
       {children}
-    </div>
+    </GameGrid>
   )
 }

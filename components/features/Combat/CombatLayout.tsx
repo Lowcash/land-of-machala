@@ -46,12 +46,7 @@ export function CombatLayout({
       header={<GameHeader title="Souboj" icon={Swords} />}
       footer={footer}
       backgroundImage="/assets/locations/forest.jpg"
-      rightPanel={
-        <GameActivityPanel
-          logs={logs}
-          className="mx-3 h-[140px] shrink-0 rounded border border-[#d4a574]/50 bg-black/60 p-4 backdrop-blur-sm"
-        />
-      }
+      rightPanel={<GameActivityPanel logs={logs} />}
       topContent={
         <CombatStats
           character={character}

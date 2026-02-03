@@ -1,6 +1,8 @@
 import { TOWN_ACTIONS, TOWN_CONFIG } from '@/lib/game/constants/locations'
 import type { View } from '@/lib/types/game'
 
+import { ActionGrid } from '@/components/ui/action'
+
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'
 
@@ -20,18 +22,18 @@ export function TownActions({ onView }: TownActionsProps) {
 
   return (
     <LocationLayout title={TOWN_CONFIG.title} description={TOWN_CONFIG.description}>
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+      <ActionGrid columns={{ default: 2, sm: 3 }}>
         {TOWN_ACTIONS.map((action) => (
           <LocationAction
             key={action.id}
-            variant={action.variant}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            variant={(action.variantOverride || action.variant) as any}
             title={action.title}
             icon={action.icon}
-            className={action.className}
             onClick={() => handleAction(action.view)}
           />
         ))}
-      </div>
+      </ActionGrid>
     </LocationLayout>
   )
 }

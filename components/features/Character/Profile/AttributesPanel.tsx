@@ -14,6 +14,9 @@ import { STAT_CONFIG } from '@/lib/game/constants/stats'
 import { GAME_CONSTANTS } from '@/lib/game/constants/values'
 
 import { Button } from '@/components/ui/button'
+import { HStack, VStack } from '@/components/ui/stack'
+import { StatRow } from '@/components/ui/stat-row'
+import { Caption, GoldTitle } from '@/components/ui/typography'
 
 interface AttributesPanelProps {
   stats: {
@@ -75,57 +78,46 @@ export function AttributesPanel({ stats, talentPoints }: AttributesPanelProps) {
     const canAllocate = optimisticState.talentPoints > 0
 
     return (
-      <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
-        <div className="flex items-center gap-2">
-          <config.icon className={`h-4 w-4 ${config.color}`} />
-          <span className="text-xs text-[#8b7355]">{config.label}</span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span
-            className={`text-sm font-bold ${config.color}`}
-            style={{ fontFamily: 'var(--font-fantasy)' }}
-          >
-            {currentValue}
-          </span>
-
-          {talentPoints > 0 && (
+      <StatRow
+        label={config.label}
+        value={currentValue}
+        icon={config.icon}
+        iconColor={config.color}
+        extra={
+          talentPoints > 0 && (
             <Button
               disabled={!canAllocate || isPending}
               onClick={() => handleAllocate(stat)}
-              size="icon"
-              variant="ghost"
-              className={`h-5 w-5 ${config.border} ${config.bg} p-0 ${config.color} hover:bg-opacity-40`}
-            >
-              <Plus className="h-3 w-3" />
-            </Button>
-          )}
-        </div>
-      </div>
+              size="icon-xs"
+              variant="ghost_game"
+              icon={Plus}
+            />
+          )
+        }
+      />
     )
   }
 
   return (
-    <div className="space-y-2">
-      <h3
-        className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
-        style={{ fontFamily: 'var(--font-fantasy)' }}
-      >
-        <BicepsFlexed className="h-4 w-4" />
-        Atributy
-      </h3>
+    <VStack gap="sm" fullWidth>
+      <HStack gap="sm" align="center">
+        <BicepsFlexed className="text-game-gold h-4 w-4" />
+        <GoldTitle>Atributy</GoldTitle>
+      </HStack>
 
-      <div className="grid grid-cols-1 gap-2">
+      <VStack gap="sm" fullWidth>
         {Object.values(Stats).map((stat) => (
           <AttributeRow key={stat} stat={stat} />
         ))}
-      </div>
+      </VStack>
 
       {optimisticState.talentPoints > 0 && (
-        <div className="mt-2 text-center text-[10px] text-[#ffd700]">
-          Volné body: {optimisticState.talentPoints}
-        </div>
+        <VStack align="center" fullWidth>
+          <Caption color="gold" font="fantasy">
+            Volné body: {optimisticState.talentPoints}
+          </Caption>
+        </VStack>
       )}
-    </div>
+    </VStack>
   )
 }

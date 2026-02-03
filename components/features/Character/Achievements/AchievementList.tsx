@@ -7,13 +7,20 @@ import {
   ACHIEVEMENT_SEARCH_PLACEHOLDER,
   getAchievementIcon,
 } from '@/lib/constants/achievements'
+import type { FilterType } from '@/lib/hooks/game/useAchievementFilters'
 import { useAchievementFilters } from '@/lib/hooks/game/useAchievementFilters'
 import type { Achievement } from '@/lib/types/game'
+import { ItemRarity } from '@/lib/types/game'
+import { cn } from '@/lib/utils'
 
 import { Button } from '@/components/ui/button'
+import { DetailRow } from '@/components/ui/display'
 import { GameCard } from '@/components/ui/game-card'
 import { GameList } from '@/components/ui/game-list'
+import { IconBox } from '@/components/ui/icon-box'
 import { Input } from '@/components/ui/input'
+import { HStack, VStack } from '@/components/ui/stack'
+import { H4, P, Span } from '@/components/ui/typography'
 
 interface AchievementListProps {
   achievements: Achievement[]
@@ -30,92 +37,121 @@ export function AchievementList({ achievements }: AchievementListProps) {
     <GameCard
       title={`Úspěchy (${unlockedCount}/${achievements.length})`}
       icon={getAchievementIcon('trophy')}
-      className="flex h-full flex-col"
     >
-      <div className="flex flex-col gap-3 border-b border-[#3e3e3e] p-3">
-        <div className="flex gap-2">
-          {ACHIEVEMENT_FILTER_BUTTONS.map((button) => (
-            <Button
-              key={button.id}
-              variant={filter === button.id ? 'default' : 'outline'}
-              size="sm"
-              onClick={() => actions.setFilter(button.id)}
-              className="flex-1"
-            >
-              {button.label}
-            </Button>
-          ))}
-        </div>
-        <div className="relative">
-          <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
-          <Input
-            placeholder={ACHIEVEMENT_SEARCH_PLACEHOLDER}
-            value={search}
-            onChange={(e) => actions.setSearch(e.target.value)}
-            className="pl-8"
-          />
-        </div>
-      </div>
+      <VStack border="game-b" p="md" fullWidth>
+        <VStack gap="md" fullWidth>
+          <HStack gap="sm" fullWidth>
+            {ACHIEVEMENT_FILTER_BUTTONS.map((button) => (
+              <VStack key={button.id} flex="1">
+                <Button
+                  variant={filter === button.id ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => actions.setFilter(button.id as FilterType)}
+                  label={button.label}
+                  fullWidth
+                />
+              </VStack>
+            ))}
+          </HStack>
+          <VStack position="relative" fullWidth>
+            <VStack position="absolute" top="0" left="0" p="sm" interactive="none">
+              <Search className="text-muted-foreground h-4 w-4" />
+            </VStack>
+            <Input
+              variant="subtle"
+              hasIcon
+              placeholder={ACHIEVEMENT_SEARCH_PLACEHOLDER}
+              value={search}
+              onChange={(e) => actions.setSearch(e.target.value)}
+            />
+          </VStack>
+        </VStack>
+      </VStack>
 
-      <div className="flex-1 overflow-hidden">
+      <VStack flex="1" overflow="hidden" fullWidth>
         <GameList
           data={filteredAchievements}
           keyExtractor={(item) => item.id}
           renderItem={(achievement) => {
-            const IconComponent = getAchievementIcon(achievement.icon)
+            const Icon = getAchievementIcon(achievement.icon)
 
             return (
-              <div
-                className={`flex items-start gap-3 rounded border p-3 transition-colors ${
-                  achievement.unlocked
-                    ? 'border-[#ffd700]/30 bg-[#ffd700]/5'
-                    : 'border-[#8b6f47]/30 bg-black/40 opacity-60 grayscale'
-                }`}
+              <VStack
+                p="md"
+                gap="md"
+                rounded="lg"
+                border={achievement.unlocked ? 'gold' : 'game'}
+                bg={achievement.unlocked ? 'black-60' : 'black-40'}
+                opacity={achievement.unlocked ? '100' : '60'}
+                _internalClassName={cn(
+                  achievement.unlocked && 'shadow-[inset_0_0_20px_rgba(255,215,0,0.05)]'
+                )}
+                fullWidth
               >
-                <div
-                  className={`mt-0.5 flex items-center justify-center rounded-full p-2 ${achievement.unlocked ? 'bg-[#ffd700]/20' : 'bg-black/40'}`}
-                >
-                  <IconComponent
-                    className={`h-5 w-5 ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
+                <HStack align="start" gap="md" fullWidth>
+                  <IconBox
+                    icon={Icon}
+                    rarity={achievement.unlocked ? ItemRarity.LEGENDARY : ItemRarity.COMMON}
+                    isLocked={!achievement.unlocked}
+                    _internalClassName="h-12 w-12 shrink-0"
+                    square
                   />
-                </div>
-                <div className="flex min-w-0 flex-1 flex-col">
-                  <div className="flex items-start justify-between">
-                    <h4
-                      className={`text-sm font-bold ${achievement.unlocked ? 'text-[#ffd700]' : 'text-[#8b7355]'}`}
-                    >
-                      {achievement.title}
-                    </h4>
-                    {achievement.unlocked && achievement.unlockedAt && (
-                      <span className="text-muted-foreground/60 ml-2 text-[10px] whitespace-nowrap">
-                        {new Date(achievement.unlockedAt).toLocaleDateString()}
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-xs text-[#8b7355]">{achievement.description}</p>
+                  <VStack flex="1" gap="xs">
+                    <DetailRow
+                      label={
+                        <H4 color={achievement.unlocked ? 'gold' : 'muted'} bold>
+                          {achievement.title}
+                        </H4>
+                      }
+                      value={
+                        achievement.unlocked &&
+                        achievement.unlockedAt && (
+                          <Span color="muted" size="xs">
+                            {new Date(achievement.unlockedAt).toLocaleDateString()}
+                          </Span>
+                        )
+                      }
+                      py="none"
+                    />
 
-                  {/* Progress Bar (if not unlocked) */}
-                  {!achievement.unlocked && achievement.maxProgress > 1 && (
-                    <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-black/40">
-                      <div
-                        className="h-full bg-[#8b7355]"
-                        style={{
-                          width: `${Math.min(100, ((achievement.progress || 0) / achievement.maxProgress) * 100)}%`,
-                        }}
-                      />
-                    </div>
-                  )}
-                  {!achievement.unlocked && achievement.maxProgress > 1 && (
-                    <p className="text-muted-foreground mt-0.5 text-right text-[10px]">
-                      {achievement.progress || 0} / {achievement.maxProgress}
-                    </p>
-                  )}
-                </div>
-              </div>
+                    <P color="muted" size="sm" leading="relaxed">
+                      {achievement.description}
+                    </P>
+
+                    {/* Progress Bar (if not unlocked) */}
+                    {!achievement.unlocked && achievement.maxProgress > 1 && (
+                      <VStack gap="xs" fullWidth mt="sm">
+                        <VStack
+                          h="1.5"
+                          fullWidth
+                          rounded="full"
+                          bg="black"
+                          border="game"
+                          overflow="hidden"
+                        >
+                          <VStack
+                            fullHeight
+                            bg="gold"
+                            opacity="60"
+                            _internalStyle={{
+                              width: `${Math.min(100, ((achievement.progress || 0) / achievement.maxProgress) * 100)}%`,
+                            }}
+                          />
+                        </VStack>
+                        <DetailRow
+                          label=""
+                          value={`${achievement.progress || 0} / ${achievement.maxProgress}`}
+                          py="none"
+                        />
+                      </VStack>
+                    )}
+                  </VStack>
+                </HStack>
+              </VStack>
             )
           }}
         />
-      </div>
+      </VStack>
     </GameCard>
   )
 }

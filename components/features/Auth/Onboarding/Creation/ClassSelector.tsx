@@ -1,6 +1,11 @@
 import { classes, isCasterClass, isTankClass } from '@/lib/game/onboarding'
 import { cn } from '@/lib/utils'
 
+import { Card } from '@/components/ui/card'
+import { DetailRow } from '@/components/ui/display'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, Label, Span } from '@/components/ui/typography'
+
 import { EntitySelector } from './EntitySelector'
 
 interface SelectorProps {
@@ -28,48 +33,63 @@ function ClassInfo({ classData }: { classData: (typeof classes)[0] }) {
   const isTank = isTankClass(classData.id)
 
   return (
-    <div className="border-game-copper rounded border bg-black/60 p-3">
-      <p className="text-game-gold-muted mb-2 text-xs leading-relaxed">{classData.desc}</p>
-      <div className="mb-2">
-        <span
-          className={cn(
-            'inline-block rounded border px-2 py-0.5 text-[10px]',
-            isCaster
-              ? 'border-purple-400 bg-purple-400/20 text-purple-400'
-              : isTank
-                ? 'border-red-400 bg-red-400/20 text-red-400'
-                : 'border-game-gold bg-game-gold/20 text-game-gold'
-          )}
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          {isCaster ? 'Kouzlící' : isTank ? 'Tank' : 'Hybrid'}
-        </span>
-      </div>
-      <div className="border-game-copper/30 mt-2 space-y-2 border-t pt-2">
-        <p className="text-game-gold text-xs" style={{ fontFamily: 'var(--font-fantasy)' }}>
+    <VStack gap="md" fullWidth>
+      <VStack p="sm" fullWidth>
+        <Card variant="muted" fullWidth>
+          <Card.Content>
+            <VStack gap="sm" fullWidth>
+              <Caption color="gold-muted">{classData.desc}</Caption>
+
+              <HStack>
+                <VStack
+                  rounded="sm"
+                  border={isCaster ? 'magic' : isTank ? 'danger' : 'gold'}
+                  bg={isCaster ? 'magic' : isTank ? 'danger' : 'gold'}
+                  opacity="20"
+                  px="sm"
+                  py="xs"
+                >
+                  <Label
+                    font="fantasy"
+                    _internalClassName={cn(
+                      isCaster ? 'text-game-magic' : isTank ? 'text-game-danger' : 'text-game-gold'
+                    )}
+                  >
+                    {isCaster ? 'Kouzlící' : isTank ? 'Tank' : 'Hybrid'}
+                  </Label>
+                </VStack>
+              </HStack>
+            </VStack>
+          </Card.Content>
+        </Card>
+      </VStack>
+
+      <VStack border="game-t" pt="sm" gap="sm" fullWidth>
+        <Label font="fantasy" color="gold">
           Bonusy povolání:
-        </p>
-        {Object.entries(classData.statMod)
-          .filter(([_, val]) => val !== 0)
-          .map(([stat, val]) => (
-            <div key={stat} className="space-y-1">
-              <div className="flex justify-between text-[10px]">
-                <span className="text-game-gold-muted capitalize">{stat}</span>
-                <span className={val > 0 ? 'text-game-success' : 'text-game-danger'}>
-                  {val > 0 ? '+' : ''}
-                  {val}
-                </span>
-              </div>
-              <div className="h-1 w-full overflow-hidden rounded-full bg-black/60">
-                <div
-                  className={`h-full ${val > 0 ? 'bg-game-success' : 'bg-game-danger'}`}
-                  style={{ width: `${Math.abs(val) * 10}%` }}
-                ></div>
-              </div>
-            </div>
-          ))}
-        <p className="text-[10px] text-[#8b7355] italic">{classData.bonuses}</p>
-      </div>
-    </div>
+        </Label>
+        <VStack gap="xs" fullWidth>
+          {Object.entries(classData.statMod)
+            .filter(([_, val]) => val !== 0)
+            .map(([stat, val]) => (
+              <DetailRow
+                key={stat}
+                label={stat}
+                labelVariant="span"
+                value={
+                  <Span color={val > 0 ? 'success' : 'danger'} bold>
+                    {val > 0 ? '+' : ''}
+                    {val}
+                  </Span>
+                }
+                className="capitalize"
+              />
+            ))}
+        </VStack>
+        <Caption color="muted" italic>
+          {classData.bonuses}
+        </Caption>
+      </VStack>
+    </VStack>
   )
 }

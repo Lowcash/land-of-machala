@@ -1,5 +1,9 @@
 import { Castle, Home, MapPin, Mountain, Skull, Trees } from 'lucide-react'
 
+import { DecorativeGrid, FloatingTag, GameMarker } from '@/components/ui/display'
+import { VStack } from '@/components/ui/stack'
+import { Caption, Span } from '@/components/ui/typography'
+
 import type { Location, LocationType } from '../Shared/types'
 import { MapMarker } from './MapMarker'
 
@@ -42,15 +46,15 @@ function getLocationIcon(type: LocationType) {
 function getLocationColor(type: LocationType | string) {
   switch (type) {
     case 'TOWN':
-      return 'text-[#ffd700]'
+      return 'text-game-gold'
     case 'DUNGEON':
-      return 'text-[#ff6b6b]'
+      return 'text-game-danger'
     case 'WILDERNESS':
-      return 'text-[#6fbf6f]'
+      return 'text-game-success'
     case 'LANDMARK':
-      return 'text-[#b66bd4]'
+      return 'text-game-magic'
     default:
-      return 'text-[#d4a574]'
+      return 'text-game-gold-muted'
   }
 }
 
@@ -72,22 +76,18 @@ export function MapCanvas({
   const playerPercent = toPercent(playerPosition.x, playerPosition.y)
 
   return (
-    <div className="relative h-full w-full p-8 select-none">
+    <VStack position="relative" fullWidth fullHeight p="lg" _internalClassName="select-none">
       {/* Decorative grid */}
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            'linear-gradient(#8b6f47 1px, transparent 1px), linear-gradient(90deg, #8b6f47 1px, transparent 1px)',
-          backgroundSize: '50px 50px',
-          opacity: 0.1,
-        }}
-      ></div>
+      <DecorativeGrid opacity={0.1} size="50px" />
 
       {/* Coordinates Display */}
-      <div className="absolute top-2 right-2 z-50 rounded border border-[#d4a574] bg-black/80 px-2 py-1 font-mono text-xs text-[#ffd700]">
-        X: {playerPosition.x} Y: {playerPosition.y}
-      </div>
+      <VStack position="absolute" top="2" right="2" z="top">
+        <FloatingTag>
+          <Span font="mono" size="xs" color="gold" _internalClassName="whitespace-nowrap">
+            X: {playerPosition.x} Y: {playerPosition.y}
+          </Span>
+        </FloatingTag>
+      </VStack>
 
       {/* Roads connecting to player position */}
       <svg className="pointer-events-none absolute inset-0 h-full w-full" style={{ zIndex: 1 }}>
@@ -103,9 +103,10 @@ export function MapCanvas({
               y1={`${playerPercent.y}%`}
               x2={`${locPercent.x}%`}
               y2={`${locPercent.y}%`}
-              stroke="#8b6f47"
-              strokeWidth="2"
-              strokeDasharray="5,5"
+              stroke="currentColor"
+              className="text-game-copper-muted"
+              strokeWidth="1.5"
+              strokeDasharray="4,4"
               opacity="0.3"
             />
           )
@@ -113,37 +114,47 @@ export function MapCanvas({
       </svg>
 
       {/* Player position marker */}
-      <div
-        className="absolute -mt-4 -ml-4 h-8 w-8 animate-pulse"
-        style={{
+      <VStack
+        position="absolute"
+        h="8"
+        w="8"
+        z="50"
+        _internalClassName="-mt-4 -ml-4"
+        _internalStyle={{
           left: `${playerPercent.x}%`,
           top: `${playerPercent.y}%`,
-          zIndex: 50,
         }}
       >
-        <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-white bg-[#69ccf0] shadow-lg">
-          <MapPin className="h-4 w-4 text-white" />
-        </div>
-        <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 rounded bg-black/70 px-2 py-0.5 text-[10px] font-bold whitespace-nowrap text-[#69ccf0]">
-          Jsi zde
-        </div>
-      </div>
+        <GameMarker icon={MapPin} color="player" glow />
+        <VStack
+          position="absolute"
+          z="top"
+          _internalClassName="-bottom-6 left-1/2 -translate-x-1/2"
+        >
+          <FloatingTag>
+            <Caption font="fantasy" bold color="info">
+              Jsi zde
+            </Caption>
+          </FloatingTag>
+        </VStack>
+      </VStack>
 
       {/* Loot Pile Marker */}
       {deathLocation && (
-        <div
-          className="absolute -mt-4 -ml-4 h-8 w-8 animate-bounce cursor-pointer"
-          style={{
+        <VStack
+          position="absolute"
+          h="8"
+          w="8"
+          z="40"
+          _internalClassName="-mt-4 -ml-4 animate-bounce cursor-pointer"
+          _internalStyle={{
             left: `${toPercent(deathLocation.x, deathLocation.y).x}%`,
             top: `${toPercent(deathLocation.x, deathLocation.y).y}%`,
-            zIndex: 45,
           }}
           title={`Smrt - Expirace: ${new Date(deathLocation.expiresAt).toLocaleDateString()}`}
         >
-          <div className="flex h-full w-full items-center justify-center rounded-full border-2 border-[#ff6b6b] bg-black/80 shadow-lg shadow-[#ff6b6b]/50">
-            <Skull className="h-5 w-5 text-[#ff6b6b]" />
-          </div>
-        </div>
+          <GameMarker icon={Skull} color="danger" />
+        </VStack>
       )}
 
       {/* Locations */}
@@ -161,6 +172,6 @@ export function MapCanvas({
           getColor={getLocationColor}
         />
       ))}
-    </div>
+    </VStack>
   )
 }

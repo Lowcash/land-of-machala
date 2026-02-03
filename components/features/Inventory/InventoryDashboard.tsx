@@ -3,6 +3,10 @@ import { Shield, Sword } from 'lucide-react'
 import type { CharacterData } from '@/lib/types/game'
 
 import { SplitLayout } from '@/components/layout'
+import { StatDisplay } from '@/components/ui/display'
+import { InfoBar } from '@/components/ui/info-bar'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption } from '@/components/ui/typography'
 
 import { ItemDetailView } from './Detail/ItemDetailView'
 import { InventoryGrid } from './Grid/InventoryGrid'
@@ -33,33 +37,30 @@ export function InventoryDashboard({
       asideWidth="lg"
       hideMobileAside={!selectedItemId}
       main={
-        <div className="flex h-full flex-col">
-          <div className="border-game-copper/30 flex shrink-0 items-center justify-between border-b bg-black/40 px-4 py-3 backdrop-blur-md">
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-2">
-                <Sword className="h-4 w-4 text-[#ff6b6b]" />
-                <span className="text-sm font-bold text-[#f5e6d3]">
-                  {character.stats?.strength || 10}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Shield className="h-4 w-4 text-[#69ccf0]" />
-                <span className="text-sm font-bold text-[#f5e6d3]">
-                  {character.stats?.stamina || 10}
-                </span>
-              </div>
-            </div>
-            <div
-              className="text-xs font-bold text-[#d4a574]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
+        <VStack fullHeight gap="none" fullWidth>
+          <InfoBar>
+            <HStack gap="md">
+              <StatDisplay
+                icon={Sword}
+                value={character.stats?.strength || 10}
+                color="danger"
+                size="sm"
+              />
+              <StatDisplay
+                icon={Shield}
+                value={character.stats?.stamina || 10}
+                color="cold"
+                size="sm"
+              />
+            </HStack>
+            <Caption font="fantasy" color="copper" bold>
               {inventory.length} / {maxSlots}
-            </div>
-          </div>
-          <div className="flex-1 p-4">
+            </Caption>
+          </InfoBar>
+          <VStack flex="1" p="md" fullWidth>
             <InventoryGrid inventory={inventory} selectedItem={selectedItemId} />
-          </div>
-        </div>
+          </VStack>
+        </VStack>
       }
       aside={<ItemDetailView item={selectedItem} characterLevel={character.level} />}
     />

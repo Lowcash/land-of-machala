@@ -1,5 +1,9 @@
 import { type classes, type races } from '@/lib/game/onboarding'
 
+import { GameGrid } from '@/components/ui/game-grid'
+import { VStack } from '@/components/ui/stack'
+import { MedievalTitle, P } from '@/components/ui/typography'
+
 import { Layout } from '../Shared/Layout'
 import { ClassSelector } from './Creation/ClassSelector'
 import { NameForm } from './Creation/NameForm'
@@ -35,52 +39,48 @@ export function OnboardingCreation({
 }: OnboardingCreationProps) {
   return (
     <Layout backgroundImage="/assets/locations/city-background.jpg" centered={false}>
-      <div className="scrollbar-custom relative z-10 flex min-h-0 flex-1 flex-col items-center overflow-y-auto p-2 sm:p-4">
-        <div className="my-auto w-full max-w-4xl py-4 sm:py-8">
-          <div className="mb-6 text-center">
-            <h1
-              className="text-game-gold mb-1 text-2xl sm:text-4xl lg:text-5xl"
-              style={{
-                fontFamily: 'var(--font-medieval)',
-                textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
-              }}
-            >
-              Vytvoř svého hrdinu
-            </h1>
-            <p className="text-game-gold-muted text-sm sm:text-base">
-              Tvá legenda začíná v zemi Machala
-            </p>
-          </div>
+      <VStack
+        fullHeight
+        fullWidth
+        align="center"
+        overflow="scroll"
+        p="sm"
+        _internalClassName="scrollbar-custom relative z-10"
+      >
+        <VStack maxW="4xl" py="lg" gap="xl" fullWidth>
+          <VStack align="center" gap="xs" fullWidth>
+            <MedievalTitle size="lg">Vytvoř svého hrdinu</MedievalTitle>
+            <P color="gold-muted">Tvá legenda začíná v zemi Machala</P>
+          </VStack>
 
-          <div className="grid gap-6 lg:grid-cols-12 lg:items-start">
-            <div className="space-y-4 lg:col-span-4">
+          <GameGrid columns={{ default: 1, lg: 3 }} fullHeight={false} className="lg:items-start">
+            <VStack gap="md" fullWidth>
               <NameForm race={race.id} characterClass={characterClass.id} />
-
               <StatsDisplay race={race} classData={characterClass} finalStats={finalStats} />
-            </div>
+            </VStack>
 
-            <div className="lg:col-span-4 lg:hidden">
-              {/* Mobile View: Simple Stack instead of Accordion for Server Component simplicity */}
-              <div className="space-y-4">
-                <RaceSelector selectedId={race.id} searchParams={searchParams} isMobile={true} />
-                <ClassSelector
-                  selectedId={characterClass.id}
-                  searchParams={searchParams}
-                  isMobile={true}
-                />
-              </div>
-            </div>
+            {/* Mobile Selectors */}
+            <VStack display="hidden-lg" gap="md" fullWidth>
+              <RaceSelector selectedId={race.id} searchParams={searchParams} isMobile={true} />
+              <ClassSelector
+                selectedId={characterClass.id}
+                searchParams={searchParams}
+                isMobile={true}
+              />
+            </VStack>
 
-            <div className="hidden lg:col-span-4 lg:block">
+            {/* Desktop Selectors (Race) */}
+            <VStack display="none-lg" fullWidth>
               <RaceSelector selectedId={race.id} searchParams={searchParams} />
-            </div>
+            </VStack>
 
-            <div className="hidden lg:col-span-4 lg:block">
+            {/* Desktop Selectors (Class) */}
+            <VStack display="none-lg" fullWidth>
               <ClassSelector selectedId={characterClass.id} searchParams={searchParams} />
-            </div>
-          </div>
-        </div>
-      </div>
+            </VStack>
+          </GameGrid>
+        </VStack>
+      </VStack>
     </Layout>
   )
 }

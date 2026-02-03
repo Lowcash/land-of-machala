@@ -21,8 +21,8 @@ export const HEALER_SERVICES: HealerService[] = [
     description: 'Obnoví zdraví',
     price: 50,
     icon: Heart,
-    iconColor: 'text-[#6fbf6f]',
-    iconBg: 'bg-[#6fbf6f]/20',
+    iconColor: 'text-game-success',
+    iconBg: 'bg-game-success/20',
     action: ServiceActions.HEAL,
   },
   {
@@ -31,8 +31,8 @@ export const HEALER_SERVICES: HealerService[] = [
     description: '+5 Síla (Do odpočinku)',
     price: 100,
     icon: Sparkles,
-    iconColor: 'text-[#ffd700]',
-    iconBg: 'bg-[#ffd700]/20',
+    iconColor: 'text-game-gold',
+    iconBg: 'bg-game-gold/20',
     action: ServiceActions.BUFF_STRENGTH,
   },
   {
@@ -41,8 +41,8 @@ export const HEALER_SERVICES: HealerService[] = [
     description: '+5 Stamina (Do odpočinku)',
     price: 100,
     icon: Sparkles,
-    iconColor: 'text-[#ffd700]',
-    iconBg: 'bg-[#ffd700]/20',
+    iconColor: 'text-game-gold',
+    iconBg: 'bg-game-gold/20',
     action: ServiceActions.BUFF_STAMINA,
   },
   {
@@ -51,8 +51,8 @@ export const HEALER_SERVICES: HealerService[] = [
     description: 'Vyléčí otravu',
     price: 20,
     icon: FlaskConical,
-    iconColor: 'text-[#69ccf0]',
-    iconBg: 'bg-[#69ccf0]/20',
+    iconColor: 'text-game-info',
+    iconBg: 'bg-game-info/20',
     action: ServiceActions.ANTIDOTE,
   },
 ]

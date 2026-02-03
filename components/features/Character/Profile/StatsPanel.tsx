@@ -2,8 +2,13 @@ import { Shield, Swords } from 'lucide-react'
 
 import { calculateCritChance, calculateDodgeChance } from '@/lib/game/formulas'
 import type { CharacterData } from '@/lib/types/game'
+import { cn } from '@/lib/utils'
 
+import { Divider, SectionHeader } from '@/components/ui/display'
 import { GameCard } from '@/components/ui/game-card'
+import { GameGrid } from '@/components/ui/game-grid'
+import { HStack, VStack } from '@/components/ui/stack'
+import { StatRow } from '@/components/ui/stat-row'
 
 import { AttributesPanel } from './AttributesPanel'
 
@@ -27,120 +32,67 @@ export function StatsPanel({
   const stats = character.stats || { strength: 0, intelligence: 0, agility: 0, stamina: 0 }
 
   return (
-    <GameCard className="h-full space-y-3 p-3">
-      {/* Attributes Panel (Optimistic) */}
-      <AttributesPanel stats={stats} talentPoints={talentPoints} />
+    <GameCard>
+      <VStack p="sm" gap="md" fullWidth>
+        {/* Attributes Panel (Optimistic) */}
+        <AttributesPanel stats={stats} talentPoints={talentPoints} />
 
-      <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
+        <VStack fullWidth py="sm">
+          <Divider className="opacity-50" />
+        </VStack>
 
-      {/* Combat Stats */}
-      <div>
-        <h3
-          className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Swords className="h-4 w-4" />
-          Bojové statistiky
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
-            <span className="text-xs text-[#8b7355]">Útok</span>
-            <span
-              className="text-sm font-bold text-[#ff6b6b]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {totalAttack}
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
-            <span className="text-xs text-[#8b7355]">Obrana</span>
-            <span
-              className="text-sm font-bold text-[#69ccf0]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {totalDefense}
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
-            <span className="text-xs text-[#8b7355]">Crit</span>
-            <span
-              className="text-sm font-bold text-[#ffd700]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {critChance}%
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1.5">
-            <span className="text-xs text-[#8b7355]">Dodge</span>
-            <span
-              className="text-sm font-bold text-[#ffd700]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {dodgeChance}%
-            </span>
-          </div>
-        </div>
-      </div>
+        {/* Combat Stats */}
+        <VStack gap="sm" fullWidth>
+          <HStack align="center" gap="sm">
+            <Swords className="text-game-gold h-4 w-4" />
+            <SectionHeader align="left" color="gold">
+              Bojové statistiky
+            </SectionHeader>
+          </HStack>
+          <GameGrid columns={{ default: 2 }} fullHeight={false}>
+            <StatRow label="Útok" value={totalAttack} valueColor="danger" />
+            <StatRow label="Obrana" value={totalDefense} valueColor="cold" />
+            <StatRow label="Crit" value={critChance} suffix="%" />
+            <StatRow label="Dodge" value={dodgeChance} suffix="%" />
+          </GameGrid>
+        </VStack>
 
-      <div className="h-px w-full bg-linear-to-r from-transparent via-[#8b6f47] to-transparent opacity-50"></div>
+        <VStack fullWidth py="sm">
+          <Divider className="opacity-50" />
+        </VStack>
 
-      {/* Resistances */}
-      <div>
-        <h3
-          className="mb-2 flex items-center gap-2 text-sm text-[#ffd700]"
-          style={{ fontFamily: 'var(--font-fantasy)' }}
-        >
-          <Shield className="h-4 w-4" />
-          Odolnosti
-        </h3>
-        <div className="grid grid-cols-2 gap-2">
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-            <span className="text-[10px] text-[#8b7355]">Fyzická</span>
-            <span
-              className="text-xs font-bold text-[#d4a574]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {character.physicalResistance}%
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-            <span className="text-[10px] text-[#8b7355]">Magická</span>
-            <span
-              className="text-xs font-bold text-[#b66bd4]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {character.magicalResistance}%
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-            <span className="text-[10px] text-[#8b7355]">Oheň</span>
-            <span
-              className="text-xs font-bold text-[#ff6b6b]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {character.fireResistance}%
-            </span>
-          </div>
-          <div className="flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-            <span className="text-[10px] text-[#8b7355]">Chlad</span>
-            <span
-              className="text-xs font-bold text-[#69ccf0]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {character.coldResistance}%
-            </span>
-          </div>
-          <div className="col-span-2 flex items-center justify-between rounded border border-[#8b6f47]/30 bg-black/40 px-2 py-1">
-            <span className="text-[10px] text-[#8b7355]">Jed</span>
-            <span
-              className="text-xs font-bold text-[#6fbf6f]"
-              style={{ fontFamily: 'var(--font-fantasy)' }}
-            >
-              {character.poisonResistance}%
-            </span>
-          </div>
-        </div>
-      </div>
+        {/* Resistances */}
+        <VStack gap="sm" fullWidth>
+          <HStack align="center" gap="sm">
+            <Shield className="text-game-gold h-4 w-4" />
+            <SectionHeader align="left" color="gold">
+              Odolnosti
+            </SectionHeader>
+          </HStack>
+          <GameGrid columns={{ default: 2 }} fullHeight={false}>
+            {[
+              { label: 'Fyzická', value: character.physicalResistance, color: 'copper' as const },
+              { label: 'Magická', value: character.magicalResistance, color: 'magic' as const },
+              { label: 'Oheň', value: character.fireResistance, color: 'danger' as const },
+              { label: 'Chlad', value: character.coldResistance, color: 'cold' as const },
+              {
+                label: 'Jed',
+                value: character.poisonResistance,
+                color: 'nature' as const,
+                fullWidth: true,
+              },
+            ].map((res) => (
+              <VStack
+                key={res.label}
+                _internalClassName={cn(res.fullWidth ? 'col-span-2' : '')}
+                fullWidth
+              >
+                <StatRow label={res.label} value={res.value} suffix="%" valueColor={res.color} />
+              </VStack>
+            ))}
+          </GameGrid>
+        </VStack>
+      </VStack>
     </GameCard>
   )
 }

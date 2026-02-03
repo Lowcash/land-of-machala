@@ -8,8 +8,10 @@ import { BANK_CONFIG } from '@/lib/game/constants/interactive'
 import { useBankActions } from '@/lib/hooks/game'
 
 import { Card } from '@/components/ui/card'
+import { StatDisplay } from '@/components/ui/display'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, Label, MutedText, Span } from '@/components/ui/typography'
 
 import { LocationAction } from '../Shared/components/LocationAction'
 import { LocationLayout } from '../Shared/components/LocationLayout'
@@ -53,17 +55,15 @@ export function BankActions({ gold, balance }: BankActionsProps) {
     onAction: () => void
     actionConfig: { title: string; icon: LucideIcon }
   }) => (
-    <div className="space-y-2">
-      <Label className="text-game-copper-muted text-[10px] font-bold tracking-tight uppercase">
-        {title}
-      </Label>
-      <div className="flex gap-2">
+    <VStack gap="xs">
+      <Label color="muted">{title}</Label>
+      <HStack gap="sm">
         <Input
           type="number"
+          variant="subtle"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
           placeholder="Množství..."
-          className="h-10 bg-black/40"
         />
         <LocationAction
           title={actionConfig.title}
@@ -71,10 +71,9 @@ export function BankActions({ gold, balance }: BankActionsProps) {
           onClick={onAction}
           disabled={!amount || Number(amount) <= 0 || Number(amount) > maxAmount || isPending}
           loading={isPending}
-          className="p-1"
         />
-      </div>
-    </div>
+      </HStack>
+    </VStack>
   )
 
   return (
@@ -82,30 +81,34 @@ export function BankActions({ gold, balance }: BankActionsProps) {
       title="Strážnice pokladů"
       description="Tvé zlato je u nás v bezpečí, poutníku. Žádné poplatky, čistá důvěra."
     >
-      <div className="space-y-4 px-1">
-        <Card variant="game" className="bg-black/40 p-3">
-          <div className="text-game-gold text-[10px] font-bold tracking-wider uppercase opacity-70">
-            Zůstatek v bance
-          </div>
-          <div className="flex items-center gap-2">
-            <Landmark className="h-4 w-4 text-[#ffd700]" />
-            <span className="text-xl font-bold text-[#f5e6d3]">{balance}g</span>
-          </div>
+      <VStack gap="md">
+        <Card variant="muted" textured>
+          <Card.Content>
+            <VStack gap="xs">
+              <MutedText uppercase letterSpacing="wider" size="xs">
+                Zůstatek v bance
+              </MutedText>
+              <StatDisplay icon={Landmark} value={balance} label="zl" color="gold" />
+            </VStack>
+          </Card.Content>
         </Card>
 
-        <div className="space-y-3">
-          <BankOperationRow
-            title={BANK_CONFIG.depositTitle}
-            amount={depositAmount}
-            setAmount={setDepositAmount}
-            maxAmount={gold}
-            onAction={onDeposit}
-            actionConfig={BANK_CONFIG.depositAction}
-          />
-
-          <div className="-mt-2 text-right text-[10px] text-[#8b7355]">
-            V měšci: <span className="text-[#ffd700]">{gold}g</span>
-          </div>
+        <VStack gap="md">
+          <VStack gap="xs">
+            <BankOperationRow
+              title={BANK_CONFIG.depositTitle}
+              amount={depositAmount}
+              setAmount={setDepositAmount}
+              maxAmount={gold}
+              onAction={onDeposit}
+              actionConfig={BANK_CONFIG.depositAction}
+            />
+            <HStack justify="end">
+              <Caption color="muted">
+                V měšci: <Span color="gold">{gold}g</Span>
+              </Caption>
+            </HStack>
+          </VStack>
 
           <BankOperationRow
             title={BANK_CONFIG.withdrawTitle}
@@ -115,8 +118,8 @@ export function BankActions({ gold, balance }: BankActionsProps) {
             onAction={onWithdraw}
             actionConfig={BANK_CONFIG.withdrawAction}
           />
-        </div>
-      </div>
+        </VStack>
+      </VStack>
     </LocationLayout>
   )
 }

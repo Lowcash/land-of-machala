@@ -21,6 +21,7 @@ export interface ShopItem {
   readonly description: string
   readonly price: number
   readonly iconName: string
+  readonly icon?: LucideIcon
   readonly category?: string
   readonly requirements?: {
     readonly level?: number

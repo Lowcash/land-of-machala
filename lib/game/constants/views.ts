@@ -7,25 +7,25 @@ export const viewData: Record<View, ViewConfig> = {
     bg: '/assets/locations/city-background.jpg',
     title: 'Město Machala',
     icon: Home,
-    desc: 'Nacházíš se v centru města <span class="text-[#ffd700]">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-[#6fbf6f]">léčitele</span> pro pomoc a léčení, <span class="text-[#ffd700]">zbrojíře</span> pro zbraně a zbroje, nebo <span class="text-[#ffd700]">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-[#ff6b6b]">prozkoumat</span> neznámé končiny plné nebezpečí.',
+    desc: 'Nacházíš se v centru města <span class="text-game-gold">Machala</span>, pulzujícího srdce obchodu a dobrodružství. Kolem tebe pobíhají kupci, dobrodruzi a místní obyvatelé. Můžeš navštívit <span class="text-game-success">léčitele</span> pro pomoc a léčení, <span class="text-game-gold">zbrojíře</span> pro zbraně a zbroje, nebo <span class="text-game-gold">banku</span> pro uložení cenností. Za městskými hradbami lze <span class="text-game-danger">prozkoumat</span> neznámé končiny plné nebezpečí.',
   },
   smith: {
     bg: '/assets/locations/armory-background.jpg',
     title: 'Zbrojíř',
     icon: Hammer,
-    desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-[#ffd700]">zbraní a zbrojí</span> k prodeji. V zadní části dílny můžeš s ním také <span class="text-[#69ccf0]">promluvit</span> o zakázkách a speciálních předmětech. Oheň v dílně plane a kladivo je připravené.',
+    desc: 'Vůně kovu a žhavého uhlí naplňuje vzduch v této dílně. Zbrojíř má široký výběr <span class="text-game-gold">zbraní a zbrojí</span> k prodeji. V zadní části dílny můžeš s ním také <span class="text-game-info">promluvit</span> o zakázkách a speciálních předmětech. Oheň v dílně plane a kladivo je připravené.',
   },
   bank: {
     bg: '/assets/locations/bank-background.jpg',
     title: 'Banka',
     icon: Landmark,
-    desc: 'Masivní <span class="text-[#ffd700]">trezor</span> za pultem vzbuzuje důvěru. Tvé cennosti budou v bezpečí za těmito silnými zdmi. Můžeš zde <span class="text-[#ffd700]">uložit</span> peníze i vzácné předměty, které nepoužíváš. Nebo si své uložené <span class="text-[#ffd700]">zlato</span> zase <span class="text-[#69ccf0]">vybrat</span>. Bankéř na tebe přátelsky pokývne.',
+    desc: 'Masivní <span class="text-game-gold">trezor</span> za pultem vzbuzuje důvěru. Tvé cennosti budou v bezpečí za těmito silnými zdmi. Můžeš zde <span class="text-game-gold">uložit</span> peníze i vzácné předměty, které nepoužíváš. Nebo si své uložené <span class="text-game-gold">zlato</span> zase <span class="text-game-info">vybrat</span>. Bankéř na tebe přátelsky pokývne.',
   },
   healer: {
     bg: '/assets/locations/healer-background.jpg',
     title: 'Léčitel',
     icon: Cross,
-    desc: 'Bylinková vůně a tichá atmosféra tě okamžitě uklidňují. Léčitel může <span class="text-[#6fbf6f]">uzdravit</span> tvá zranění a prodává účinné <span class="text-[#6fbf6f]">lektvary</span>. Na policích vidíš desítky lahviček s různobarevnými tekutinami. Možná pro tebe má i nějaký zajímavý <span class="text-[#ffd700]">quest</span>.',
+    desc: 'Bylinková vůně a tichá atmosféra tě okamžitě uklidňují. Léčitel může <span class="text-game-success">uzdravit</span> tvá zranění a prodává účinné <span class="text-game-success">lektvary</span>. Na policích vidíš desítky lahviček s různobarevnými tekutinami. Možná pro tebe má i nějaký zajímavý <span class="text-game-gold">quest</span>.',
   },
   tavern: {
     bg: '/assets/tavern-background.jpg',
@@ -49,6 +49,6 @@ export const viewData: Record<View, ViewConfig> = {
     bg: '/assets/locations/forest.jpg',
     title: 'Temný Hvozd',
     icon: Trees,
-    desc: 'Hustý, neprostupný les se rozkládá za hradbami města. V korunách stromů šumí vítr a ve stínech se skrývá nebezpečí i kořist. Je to ideální místo pro <span class="text-[#ff6b6b]">lov</span> a získávání zkušeností.',
+    desc: 'Hustý, neprostupný les se rozkládá za hradbami města. V korunách stromů šumí vítr a ve stínech se skrývá nebezpečí i kořist. Je to idealní místo pro <span class="text-game-danger">lov</span> a získávání zkušeností.',
   },
 }

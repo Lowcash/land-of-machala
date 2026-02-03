@@ -1,4 +1,5 @@
 import { PageLayout } from '@/components/layout/PageLayout'
+import { VStack } from '@/components/ui/stack'
 
 interface GenericGameLayoutProps {
   header: React.ReactNode
@@ -21,16 +22,33 @@ export function GenericGameLayout({
     <PageLayout
       header={header}
       footer={footer}
-      rightPanel={rightPanel}
+      showInfoLog={false} // Force vertical stack
       backgroundImage={backgroundImage}
     >
-      <div className="flex min-w-0 flex-1 flex-col gap-3">
-        {/* Top Content (Character Box, Stats, etc.) - Always has top padding */}
-        {topContent && <div className="w-full max-w-md px-3 pt-3">{topContent}</div>}
+      <VStack flex="1" _internalClassName="min-w-0">
+        <VStack gap="md" fullWidth>
+          {/* Top Content (Character Box, Stats, etc.) */}
+          {topContent && (
+            <VStack pt="md" px="md" maxW="md" fullWidth>
+              {topContent}
+            </VStack>
+          )}
 
-        {/* Bottom Content (Actions, Shops, etc.) - Always has bottom padding and fills space */}
-        {bottomContent && <div className="relative min-h-0 flex-1 px-3 pb-3">{bottomContent}</div>}
-      </div>
+          {/* Activity Log - Restored to main flow for balanced look and mobile visibility */}
+          {rightPanel && (
+            <VStack px="md" fullWidth>
+              {rightPanel}
+            </VStack>
+          )}
+
+          {/* Bottom Content (Actions, Shops, etc.) */}
+          {bottomContent && (
+            <VStack position="relative" flex="1" px="md" pb="md" _internalClassName="min-h-0">
+              {bottomContent}
+            </VStack>
+          )}
+        </VStack>
+      </VStack>
     </PageLayout>
   )
 }

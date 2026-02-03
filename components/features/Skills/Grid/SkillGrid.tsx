@@ -1,13 +1,17 @@
 import Link from 'next/link'
 
-import { Check, Lock } from 'lucide-react'
+import { Check } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
+import { DetailRow, RankIndicator, SectionHeader, StatDisplay } from '@/components/ui/display'
 import { GameGrid } from '@/components/ui/game-grid'
+import { IconBox } from '@/components/ui/icon-box'
+import { HStack, VStack } from '@/components/ui/stack'
+import { H3, MutedText, P, Span } from '@/components/ui/typography'
 
 import { getIconFromName } from '../Shared/iconMap'
-import { getCategoryBg, getCategoryColor, getCategoryGradient } from '../Shared/styles'
+import { getCategoryBg, getCategoryColor, getCategoryTypographyColor } from '../Shared/styles'
 import type { MergedSkill, SkillCategory } from '../Shared/types'
 import { SkillCategoryFilter } from './SkillCategoryFilter'
 
@@ -32,122 +36,126 @@ export function SkillGrid({
   return (
     <>
       {/* Mobile: Sticky Category Filter */}
-      <div className="sticky z-10 shrink-0 md:hidden">
+      <VStack position="sticky" z="10" shrink="0" display="hidden-md">
         <SkillCategoryFilter selectedCategory={selectedCategory} />
-      </div>
+      </VStack>
 
       {/* Desktop: Side-by-side layout */}
-      <div className="flex flex-1 flex-col overflow-hidden md:flex-row">
+      <HStack fullWidth fullHeight align="stretch" gap="none" overflow="hidden">
         {/* Left: Category Filter (Desktop only) */}
-        <div className="hidden shrink-0 border-r border-[#8b6f47] bg-black/60 md:block md:w-48 lg:w-56">
+        <VStack
+          display="none-md"
+          shrink="0"
+          border="game-r"
+          bg="black-60"
+          _internalClassName="md:w-48 lg:w-56"
+        >
           <SkillCategoryFilter selectedCategory={selectedCategory} />
-        </div>
+        </VStack>
 
         {/* Right: Skills Grid */}
-        <div className="relative flex flex-1 flex-col overflow-hidden">
-          <div className="shrink-0 p-4 pb-0 text-center">
-            <h2
-              className="mb-1 text-2xl text-[#ffd700]"
-              style={{ fontFamily: 'var(--font-medieval)' }}
-            >
-              Strom dovedností
-            </h2>
-            <p className="text-sm text-[#d4a574]">
-              Dostupné body: <span className="text-[#ffd700]">{talentPoints}</span> • Naučeno:{' '}
-              <span className="text-[#ffd700]">
+        <VStack position="relative" flex="1" overflow="hidden" gap="none">
+          <VStack shrink="0" p="md" pb="none" align="center" gap="xs">
+            <SectionHeader color="gold">Strom dovedností</SectionHeader>
+            <P color="copper">
+              Dostupné body: <Span color="gold">{talentPoints}</Span> • Naučeno:{' '}
+              <Span color="gold">
                 {totalSkillsLearned}/{skills.length}
-              </span>
-            </p>
-          </div>
+              </Span>
+            </P>
+          </VStack>
 
-          <GameGrid columns={{ default: 1, sm: 2, lg: 2, xl: 3 }}>
-            {filteredSkills.map((skill) => {
-              const Icon = getIconFromName(skill.iconName)
-              const maxed = skill.currentLevel >= skill.maxRank
-              const canUpgrade =
-                skill.unlocked && skill.currentLevel < skill.maxRank && talentPoints >= skill.cost
+          <VStack flex="1" overflowY="auto" p="md">
+            <GameGrid columns={{ default: 1, sm: 2, lg: 2, xl: 3 }}>
+              {filteredSkills.map((skill) => {
+                const Icon = getIconFromName(skill.iconName)
+                const maxed = skill.currentLevel >= skill.maxRank
+                const canUpgrade =
+                  skill.unlocked && skill.currentLevel < skill.maxRank && talentPoints >= skill.cost
 
-              const href = {
-                pathname: '/game/skills',
-                query:
-                  selectedCategory === 'all'
-                    ? { skillId: skill.id }
-                    : { category: selectedCategory, skillId: skill.id },
-              }
+                const href = {
+                  pathname: '/game/skills',
+                  query:
+                    selectedCategory === 'all'
+                      ? { skillId: skill.id }
+                      : { category: selectedCategory, skillId: skill.id },
+                }
 
-              return (
-                <Link
-                  key={skill.id}
-                  href={href}
-                  className={cn(
-                    'flex h-auto min-h-[80px] w-full flex-col items-start rounded-lg border-2 p-4 text-left transition-all sm:min-h-0',
-                    selectedSkill === skill.id
-                      ? `${getCategoryBg(skill.category)} scale-105 shadow-lg`
-                      : skill.unlocked
-                        ? 'border-[#8b6f47] bg-black/60 hover:border-[#d4a574] hover:bg-black/70'
-                        : 'border-[#8b6f47]/50 bg-black/40 hover:border-[#8b6f47] hover:bg-black/50'
-                  )}
-                >
-                  <div className="mb-3 flex items-center gap-3">
-                    <div
-                      className={`h-14 w-14 rounded-lg ${getCategoryBg(skill.category)} flex shrink-0 items-center justify-center`}
-                    >
-                      {skill.unlocked ? (
-                        <Icon className={`h-7 w-7 ${getCategoryColor(skill.category)}`} />
-                      ) : (
-                        <Lock className="h-7 w-7 text-[#d4a574]" />
-                      )}
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <h3
-                        className={`text-base leading-tight ${skill.unlocked ? getCategoryColor(skill.category) : 'text-[#d4a574]'}`}
-                        style={{ fontFamily: 'var(--font-fantasy)' }}
-                        title={skill.name}
-                      >
-                        {skill.name}
-                      </h3>
-                      <p className="mt-0.5 text-xs text-[#8b7355]">
-                        Level {skill.currentLevel}/{skill.maxRank}
-                      </p>
-                    </div>
-                  </div>
+                return (
+                  <Link
+                    key={skill.id}
+                    href={href}
+                    className={cn(
+                      'group relative rounded-lg border-2 p-4 transition-all hover:scale-[1.02]',
+                      selectedSkill === skill.id
+                        ? `${getCategoryBg(skill.category)} shadow-lg`
+                        : skill.unlocked
+                          ? 'border-game-wood bg-black-60 hover:border-game-gold-muted hover:bg-black-70'
+                          : 'border-game-wood/50 bg-black-40 hover:border-game-wood hover:bg-black-50'
+                    )}
+                  >
+                    <VStack gap="md">
+                      <HStack align="center" gap="sm">
+                        <IconBox
+                          icon={Icon}
+                          isLocked={!skill.unlocked}
+                          _internalClassName={cn(
+                            'h-12 w-12 shrink-0 transition-colors',
+                            getCategoryBg(skill.category)
+                          )}
+                          iconClassName={getCategoryColor(skill.category)}
+                          square
+                        />
+                        <VStack flex="1" _internalClassName="min-w-0" gap="none">
+                          <H3
+                            font="fantasy"
+                            color={
+                              skill.unlocked ? getCategoryTypographyColor(skill.category) : 'copper'
+                            }
+                            truncate
+                          >
+                            {skill.name}
+                          </H3>
+                          <DetailRow
+                            label={`Level ${skill.currentLevel}`}
+                            value={`Max ${skill.maxRank}`}
+                            py="none"
+                          />
+                        </VStack>
+                      </HStack>
 
-                  {/* Level dots */}
-                  <div className="mb-2 flex gap-1">
-                    {Array.from({ length: skill.maxRank }).map((_, i) => (
-                      <div
-                        key={i}
-                        className={cn(
-                          'h-1.5 flex-1 rounded-full',
-                          i < skill.currentLevel
-                            ? `bg-linear-to-r ${getCategoryGradient(skill.category)}`
-                            : 'bg-black/60'
-                        )}
+                      {/* Rank Indicator */}
+                      <RankIndicator
+                        current={skill.currentLevel}
+                        max={skill.maxRank}
+                        variant={skill.category}
                       />
-                    ))}
-                  </div>
 
-                  {maxed && skill.unlocked && (
-                    <div className="flex items-center gap-1 text-[10px] text-[#6fbf6f]">
-                      <Check className="h-3 w-3" />
-                      <span>Maximální level</span>
-                    </div>
-                  )}
+                      <VStack mt="auto">
+                        {maxed && skill.unlocked && (
+                          <HStack align="center" gap="xs">
+                            <Check className="text-game-success h-3 w-3" />
+                            <MutedText color="success">Maximální level</MutedText>
+                          </HStack>
+                        )}
 
-                  {!maxed && skill.unlocked && (
-                    <div className="text-[10px] text-[#8b7355]">
-                      Cena:{' '}
-                      <span className={canUpgrade ? 'text-[#ffd700]' : 'text-[#ff6b6b]'}>
-                        {skill.cost} bodů
-                      </span>
-                    </div>
-                  )}
-                </Link>
-              )
-            })}
-          </GameGrid>
-        </div>
-      </div>
+                        {!maxed && skill.unlocked && (
+                          <StatDisplay
+                            value={`${skill.cost} bodů`}
+                            label="Cena"
+                            color={canUpgrade ? 'gold' : 'danger'}
+                            size="sm"
+                          />
+                        )}
+                      </VStack>
+                    </VStack>
+                  </Link>
+                )
+              })}
+            </GameGrid>
+          </VStack>
+        </VStack>
+      </HStack>
     </>
   )
 }

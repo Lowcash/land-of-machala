@@ -1,4 +1,6 @@
-import { cn } from '@/lib/utils'
+import { Card } from '@/components/ui/card'
+import { VStack } from '@/components/ui/stack'
+import { MutedText } from '@/components/ui/typography'
 
 interface LoreQuoteProps {
   className?: string
@@ -7,13 +9,14 @@ interface LoreQuoteProps {
 
 export function LoreQuote({ className, text }: LoreQuoteProps) {
   return (
-    <div
-      className={cn(
-        'border-game-copper/50 text-game-copper-muted rounded-lg border bg-black/60 p-4 text-center text-sm italic',
-        className
-      )}
-    >
-      {text}
-    </div>
+    <VStack p="md" align="center" className={className} fullWidth>
+      <Card variant="muted" fullWidth>
+        <Card.Content>
+          <MutedText italic align="center">
+            {text}
+          </MutedText>
+        </Card.Content>
+      </Card>
+    </VStack>
   )
 }

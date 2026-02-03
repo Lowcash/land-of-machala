@@ -35,6 +35,7 @@ export const SMITH_SHOP_ITEMS: ShopItem[] = SMITH_STOCK.map((item) => ({
   description: item.description,
   price: item.price,
   iconName: 'sword', // Default fallback or map based on type
+  icon: item.icon,
 }))
 
 export const HEALER_SHOP_ITEMS: ShopItem[] = HEALER_SERVICES.map((s) => ({
@@ -43,4 +44,5 @@ export const HEALER_SHOP_ITEMS: ShopItem[] = HEALER_SERVICES.map((s) => ({
   description: s.description,
   price: s.price,
   iconName: 'heart', // Default for healer services
+  icon: s.icon,
 }))

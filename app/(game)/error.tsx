@@ -5,7 +5,9 @@ import { useEffect } from 'react'
 import { AlertTriangle } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card } from '@/components/ui/card'
+import { HStack, VStack } from '@/components/ui/stack'
+import { P, Span } from '@/components/ui/typography'
 
 export default function Error({
   error,
@@ -20,28 +22,34 @@ export default function Error({
   }, [error])
 
   return (
-    <div className="flex h-[calc(100vh-4rem)] items-center justify-center p-4">
-      <Card variant="game" className="w-full max-w-md border-red-900/50 bg-black/80">
-        <CardHeader className="text-center">
-          <div className="flex justify-center pb-4">
-            <AlertTriangle className="text-game-gold h-12 w-12" />
-          </div>
-          <CardTitle className="text-red-500">Magická anomálie</CardTitle>
-        </CardHeader>
-        <CardContent className="text-center">
-          <p className="text-game-copper-muted mb-4">
-            Něco se pokazilo v tkanivu reality. Vaše poslední akce nemohla být dokončena.
-          </p>
-          <p className="rounded border border-red-900/30 bg-black/50 p-2 font-mono text-xs text-red-400">
-            {error.message || 'Neznámá chyba'}
-          </p>
-        </CardContent>
-        <CardFooter className="justify-center">
-          <Button variant="game-primary" onClick={() => reset()}>
-            Zkusit znovu
-          </Button>
-        </CardFooter>
-      </Card>
-    </div>
+    <VStack fullHeight align="center" justify="center" p="md" bg="black" backdrop>
+      <VStack maxW="2xl" fullWidth>
+        <Card variant="danger" textured>
+          <Card.Header>
+            <VStack align="center" gap="md" fullWidth>
+              <AlertTriangle className="text-game-gold h-12 w-12 animate-pulse" />
+              <Card.Title color="danger">Magická anomálie</Card.Title>
+            </VStack>
+          </Card.Header>
+          <Card.Content>
+            <VStack align="center" gap="md" fullWidth>
+              <P color="copper" align="center">
+                Něco se pokazilo v tkanivu reality. Vaše poslední akce nemohla být dokončena.
+              </P>
+              <VStack fullWidth rounded="md" border="danger" bg="black-40" p="sm" align="center">
+                <Span font="mono" color="danger">
+                  {error.message || 'Neznámá chyba'}
+                </Span>
+              </VStack>
+            </VStack>
+          </Card.Content>
+          <Card.Footer>
+            <HStack justify="center" fullWidth>
+              <Button variant="primary" onClick={() => reset()} label="Zkusit znovu" />
+            </HStack>
+          </Card.Footer>
+        </Card>
+      </VStack>
+    </VStack>
   )
 }

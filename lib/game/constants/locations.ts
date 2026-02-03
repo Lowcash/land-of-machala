@@ -22,6 +22,7 @@ export interface TownAction {
   icon: LucideIcon
   view: View
   variant: 'large' | 'compact'
+  variantOverride?: 'primary' | 'secondary' | 'danger' | 'success' | 'forest' | 'ghost' | 'default'
   className?: string
 }
 
@@ -75,6 +76,7 @@ export const TOWN_ACTIONS: TownAction[] = [
     icon: Trees,
     view: 'forest',
     variant: 'large',
-    className: 'col-span-full border-green-900/40 hover:border-green-500/50 hover:bg-green-950/20',
+    className: 'col-span-full',
+    variantOverride: 'forest',
   },
 ]

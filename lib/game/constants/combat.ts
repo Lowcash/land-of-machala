@@ -10,7 +10,6 @@ export const COMBAT_ACTIONS = [
     group: 'offensive',
     variant: 'primary',
     icon: Zap,
-    className: undefined,
   },
   {
     id: 'strong-attack',
@@ -21,7 +20,6 @@ export const COMBAT_ACTIONS = [
     group: 'offensive',
     variant: 'danger',
     icon: Target,
-    className: undefined,
   },
   {
     id: 'defend',
@@ -32,7 +30,6 @@ export const COMBAT_ACTIONS = [
     group: 'defensive',
     variant: 'secondary',
     icon: Shield,
-    className: undefined,
   },
   {
     id: 'special',
@@ -40,10 +37,9 @@ export const COMBAT_ACTIONS = [
     subLabel: '-30 Mana',
     loadingLabel: 'Vyvolávám...',
     action: 'special',
-    variant: 'secondary',
+    variant: 'magic',
     group: 'offensive',
     icon: Sparkles,
-    className: 'border-game-magic text-game-magic hover:bg-game-magic/10',
   },
   {
     id: 'flee',
@@ -51,10 +47,9 @@ export const COMBAT_ACTIONS = [
     subLabel: 'Šance 50%',
     loadingLabel: 'Utíkám...',
     action: 'flee',
-    variant: 'ghost',
+    variant: 'muted',
     group: 'defensive',
     icon: ArrowLeft,
-    className: 'text-[#8b7355] hover:text-[#d4a574]',
   },
 ] as const
 

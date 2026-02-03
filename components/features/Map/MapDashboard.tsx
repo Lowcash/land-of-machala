@@ -1,6 +1,10 @@
-import { Map as MapIcon } from 'lucide-react'
+import { Eye, Map as MapIcon } from 'lucide-react'
 
 import { SplitLayout } from '@/components/layout'
+import { StatDisplay } from '@/components/ui/display'
+import { InfoBar } from '@/components/ui/info-bar'
+import { HStack, VStack } from '@/components/ui/stack'
+import { Caption, P } from '@/components/ui/typography'
 
 import { LocationDetails } from './Detail/LocationDetails'
 import { MapGrid } from './Grid/MapGrid'
@@ -34,44 +38,55 @@ export function MapDashboard({
       asideWidth="lg"
       hideMobileAside={!selectedLocationId}
       main={
-        <div className="flex h-full flex-col">
+        <VStack gap="none" fullWidth fullHeight>
           {/* Info Bar */}
-          <div className="border-game-copper/30 flex shrink-0 items-center justify-between border-b bg-black/40 px-4 py-3 backdrop-blur-md">
-            <div className="flex items-center gap-2">
-              <span className="text-game-gold text-xs font-bold tracking-wider uppercase">
-                Lokace: {locations.length}
-              </span>
-              <span className="text-game-copper-muted">|</span>
-              <span className="text-game-gold text-xs font-bold tracking-wider uppercase">
-                Prozkoumáno: {Math.floor(locations.length * 0.1)}%
-              </span>
-            </div>
-            <div className="text-game-gold font-mono text-xs">
+          <InfoBar>
+            <HStack align="center" gap="md">
+              <StatDisplay
+                icon={MapIcon}
+                label="Lokace"
+                value={locations.length}
+                color="gold"
+                size="sm"
+              />
+              <StatDisplay
+                icon={Eye}
+                label="Prozkoumáno"
+                value={`${Math.floor(locations.length * 0.1)}%`}
+                color="gold"
+                size="sm"
+              />
+            </HStack>
+            <Caption font="mono" color="gold">
               {currentLocation?.positionX}, {currentLocation?.positionY}
-            </div>
-          </div>
+            </Caption>
+          </InfoBar>
 
           {/* Map Grid Container */}
-          <MapGrid
-            locations={locations}
-            discoveredLocations={discoveredLocations}
-            questMarkers={questMarkers}
-            deathLocation={deathLocation}
-            currentLocationId={currentLocationId}
-            selectedLocationId={selectedLocationId}
-          />
-        </div>
+          <VStack flex="1" minH="0" fullWidth>
+            <MapGrid
+              locations={locations}
+              discoveredLocations={discoveredLocations}
+              questMarkers={questMarkers}
+              deathLocation={deathLocation}
+              currentLocationId={currentLocationId}
+              selectedLocationId={selectedLocationId}
+            />
+          </VStack>
+        </VStack>
       }
       aside={
         selectedLocation ? (
           <LocationDetails location={selectedLocation} />
         ) : (
-          <div className="flex h-full flex-col items-center justify-center p-8 text-center">
-            <MapIcon className="text-game-copper-muted mb-4 h-12 w-12 opacity-20" />
-            <p className="text-game-copper-muted italic">
-              Vyber lokaci na mapě pro zobrazení detailů.
-            </p>
-          </div>
+          <VStack p="xl" align="center" justify="center" fullHeight fullWidth>
+            <VStack align="center" justify="center" gap="md">
+              <MapIcon className="text-game-copper-muted h-12 w-12 opacity-20" />
+              <P color="copper" italic align="center">
+                Vyber lokaci na mapě pro zobrazení detailů.
+              </P>
+            </VStack>
+          </VStack>
         )
       }
     />

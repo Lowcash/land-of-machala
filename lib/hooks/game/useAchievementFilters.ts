@@ -1,3 +1,5 @@
+'use client'
+
 import { useMemo, useState } from 'react'
 
 export type FilterType = 'all' | 'unlocked' | 'locked'

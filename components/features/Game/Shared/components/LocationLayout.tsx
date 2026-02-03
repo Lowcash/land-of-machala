@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react'
 
-import { cn } from '@/lib/utils'
-
 import { Card } from '@/components/ui/card'
+import { VStack } from '@/components/ui/stack'
+import { Caption, SectionHeading } from '@/components/ui/typography'
 
 interface LocationLayoutProps {
   /** Optional title for the location info box */
@@ -11,34 +11,36 @@ interface LocationLayoutProps {
   description?: string | ReactNode
   /** Main content of the location */
   children: ReactNode
-  /** Additional container classes */
-  className?: string
 }
 
 /**
  * Shared layout for all location action views (Town, Bank, Shops, etc.)
  * Provides a consistent info card at the top and standard spacing.
  */
-export function LocationLayout({ title, description, children, className }: LocationLayoutProps) {
+export function LocationLayout({ title, description, children }: LocationLayoutProps) {
   return (
-    <div className={cn('space-y-4', className)}>
+    <VStack gap="md" fullWidth>
       {(title || description) && (
-        <Card variant="muted" className="mb-2 p-3">
-          {title && (
-            <h4 className="mb-1 text-xs font-bold tracking-wider text-[#d4a574] uppercase">
-              {title}
-            </h4>
-          )}
-          {description && typeof description === 'string' ? (
-            <p className="text-[11px] leading-relaxed text-[#8b7355] italic">
-              &quot;{description}&quot;
-            </p>
-          ) : (
-            description
-          )}
+        <Card variant="muted" fullWidth>
+          <Card.Content>
+            <VStack gap="none">
+              {title && <SectionHeading>{title}</SectionHeading>}
+              {description && typeof description === 'string' ? (
+                <VStack leading="relaxed">
+                  <Caption color="muted" italic>
+                    &quot;{description}&quot;
+                  </Caption>
+                </VStack>
+              ) : (
+                description
+              )}
+            </VStack>
+          </Card.Content>
         </Card>
       )}
-      <div className="space-y-4">{children}</div>
-    </div>
+      <VStack gap="md" fullWidth>
+        {children}
+      </VStack>
+    </VStack>
   )
 }
