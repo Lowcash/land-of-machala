@@ -1,40 +1,47 @@
-import react from '@vitejs/plugin-react'
-import path from 'path'
+import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
+import { playwright } from '@vitest/browser-playwright'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { defineConfig } from 'vitest/config'
 
+const dirname =
+  typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
+
+// More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
 export default defineConfig({
-  plugins: [react()],
-  test: {
-    environment: 'jsdom',
-    setupFiles: ['./vitest.setup.ts'],
-    globals: true,
-    env: {
-      USE_MOCK_DATA: 'true',
-    },
-    exclude: ['node_modules/', '.next/', '__tests__/e2e/**'],
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html', 'lcov'],
-      exclude: [
-        'node_modules/',
-        '.next/',
-        'coverage/',
-        '**/*.config.*',
-        '**/*.d.ts',
-        'prisma/',
-        '__tests__/',
-      ],
-      thresholds: {
-        lines: 75,
-        functions: 75,
-        branches: 75,
-        statements: 75,
-      },
-    },
-  },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './'),
+      '@': path.resolve(dirname, './src'),
     },
+  },
+  test: {
+    projects: [
+      {
+        test: {
+          name: 'core',
+          globals: true,
+          environment: 'jsdom',
+          dir: 'src',
+          include: ['**/*.test.{ts,tsx}'],
+          setupFiles: ['./src/test/setup.ts'],
+        },
+      },
+      {
+        extends: true,
+        plugins: [
+          storybookTest({ configDir: path.join(dirname, '.storybook') }),
+        ],
+        test: {
+          name: 'storybook',
+          browser: {
+            enabled: true,
+            headless: true,
+            provider: playwright({}),
+            instances: [{ browser: 'chromium' }],
+          },
+          setupFiles: ['.storybook/vitest.setup.ts'],
+        },
+      },
+    ],
   },
 })
