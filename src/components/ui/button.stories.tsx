@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { IconBadge } from './icon-badge'
+import { UserIcon } from './icons/user-icon'
 import { Button } from './button'
 
 const meta: Meta<typeof Button> = {
@@ -17,6 +19,22 @@ export const Default: Story = {
   },
 }
 
+export const DefaultWithIcon: Story = {
+  args: {
+    children: 'Profile Settings',
+    icon: <UserIcon />,
+  },
+}
+
+export const SecondaryLargeWithBadge: Story = {
+  args: {
+    variant: 'secondary',
+    size: 'lg',
+    children: 'Warrior Class Select',
+    icon: <IconBadge variant="outline-secondary">A</IconBadge>,
+  },
+}
+
 export const Loading: Story = {
   args: {
     children: 'Processing...',
@@ -28,6 +46,6 @@ export const Disabled: Story = {
   args: {
     children: 'Locked Action',
     disabled: true,
-    loading: false,
   },
 }
+
