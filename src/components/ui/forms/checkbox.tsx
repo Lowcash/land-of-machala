@@ -1,0 +1,51 @@
+import * as React from 'react'
+import { cn } from '../../../lib/utils'
+
+interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  label?: string
+}
+
+export function Checkbox({ className, label, id: providedId, ...props }: CheckboxProps) {
+  const generatedId = React.useId()
+  const id = providedId || generatedId
+
+  return (
+    <label 
+      htmlFor={id} 
+      className="group flex cursor-pointer items-center gap-2 select-none"
+    >
+      <div className="relative flex h-5 w-5 shrink-0 items-center justify-center">
+        <input
+          id={id}
+          type="checkbox"
+          className="peer sr-only"
+          {...props}
+        />
+        <div className={cn(
+          "h-full w-full rounded border-2 border-(--color-secondary)/60 bg-black/40 shadow-sm transition-all",
+          "peer-checked:border-(--color-primary) peer-checked:bg-(--color-primary)/20",
+          "peer-focus-visible:ring-2 peer-focus-visible:ring-(--color-primary) peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-black",
+          "group-hover:border-(--color-primary)/60",
+          className
+        )} />
+        <svg
+          className="pointer-events-none absolute h-3.5 w-3.5 text-(--color-primary) opacity-0 transition-opacity peer-checked:opacity-100"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <polyline points="20 6 9 17 4 12" />
+        </svg>
+      </div>
+      {label && (
+        <span className="font-fantasy text-sm text-(--color-ivory)/80 transition-colors group-hover:text-(--color-ivory)">
+          {label}
+        </span>
+      )}
+    </label>
+  )
+}

@@ -1,36 +1,35 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { IconBadge } from './icon-badge'
+import { Badge } from './badge'
 
-const meta: Meta<typeof IconBadge> = {
-  title: 'UI/IconBadge',
-  component: IconBadge,
+const meta: Meta<typeof Badge> = {
+  title: 'Core/Badge',
+  component: Badge,
   tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof IconBadge>
+type Story = StoryObj<typeof Badge>
 
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    children: '1',
+    children: 'P',
   },
 }
 
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    children: 'A',
+    children: 'S',
   },
 }
 
-export const Ghost: Story = {
+export const Outline: Story = {
   args: {
-    variant: 'ghost',
-    children: 'G',
+    variant: 'outline',
+    children: 'O',
   },
 }
-
 
 export const OutlineSecondary: Story = {
   args: {

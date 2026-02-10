@@ -1,11 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { IconBadge } from './icon-badge'
-import { UserIcon } from './icons/user-icon'
+import { Badge } from './badge'
 import { Button } from './button'
 
 const meta: Meta<typeof Button> = {
-  title: 'UI/Button',
+  title: 'Core/Button',
   component: Button,
   tags: ['autodocs'],
 }
@@ -15,29 +14,20 @@ type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
   args: {
-    children: 'Default Button',
+    variant: 'default',
+    children: 'Play Now',
   },
 }
 
-export const DefaultWithIcon: Story = {
-  args: {
-    children: 'Profile Settings',
-    icon: <UserIcon />,
-  },
-}
-
-export const SecondaryLargeWithBadge: Story = {
+export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    size: 'lg',
-    children: 'Warrior Class Select',
-    icon: <IconBadge variant="outline-secondary">A</IconBadge>,
+    children: 'Settings',
   },
 }
 
 export const Loading: Story = {
   args: {
-    children: 'Processing...',
     loading: true,
   },
 }
@@ -49,3 +39,15 @@ export const Disabled: Story = {
   },
 }
 
+export const SecondaryLargeWithBadge: Story = {
+  args: {
+    variant: 'secondary',
+    size: 'lg',
+    children: (
+      <>
+        <span>Profile</span>
+        <Badge variant="secondary">3</Badge>
+      </>
+    ),
+  },
+}
