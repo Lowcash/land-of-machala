@@ -33,6 +33,7 @@ export function AuthHero() {
       >
         Tvá legenda čeká na sepsání...
       </Text>
-    </VStack>
+      </VStack>
+    </div>
   )
 }
