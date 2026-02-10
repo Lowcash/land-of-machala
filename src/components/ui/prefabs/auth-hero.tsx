@@ -5,8 +5,9 @@ import { SparklesIcon } from '@/components/ui/icons'
 
 export function AuthHero() {
   return (
-    <VStack align="center" gap="xs" className="mb-8">
-      <Heading
+    <div className="mb-8">
+      <VStack align="center" gap="xs">
+        <Heading
         level="h1"
         font="medieval"
         color="gold"
