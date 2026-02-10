@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { UsersIcon } from '@/components/ui/icons'
-import { SectionHeader } from '@/components/ui/prefabs/section-header'
+import { SectionHeader } from '@/components/ui/shared/section-header'
 
 export function Stats() {
   return (

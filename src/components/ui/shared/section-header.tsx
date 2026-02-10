@@ -6,6 +6,10 @@ interface SectionHeaderProps {
   icon?: React.ReactNode
 }
 
+/**
+ * Shared header component for cards and sections.
+ * Combines an icon with a fantasy-styled title.
+ */
 export function SectionHeader({ title, icon }: SectionHeaderProps) {
   return (
     <HStack gap="sm" align="center">

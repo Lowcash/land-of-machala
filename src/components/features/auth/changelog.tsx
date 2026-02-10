@@ -5,7 +5,7 @@ import { List, ListItem } from '@/components/ui/core/list'
 import { Text } from '@/components/ui/core/typography'
 import { ScrollIcon } from '@/components/ui/icons'
 import { ChangelogEntry as ChangelogData } from '@/lib/game/constants/changelog'
-import { SectionHeader } from '@/components/ui/prefabs/section-header'
+import { SectionHeader } from '@/components/ui/shared/section-header'
 
 export function Changelog() {
   return (

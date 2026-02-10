@@ -19,9 +19,7 @@ export function Field({ label, error, children, className, ...props }: FieldProp
     <div className={cn('flex flex-col gap-2', className)} {...props}>
       {label && <Label htmlFor={id}>{label}</Label>}
       {React.cloneElement(child, { id: child.props.id || id })}
-      {error && (
-        <span className="text-xs font-medium text-red-500/80">{error}</span>
-      )}
+      {error && <span className="text-xs font-medium text-red-500/80">{error}</span>}
     </div>
   )
 }

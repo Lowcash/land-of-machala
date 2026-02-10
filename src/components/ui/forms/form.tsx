@@ -1,6 +1,7 @@
 'use client'
 
 import * as React from 'react'
+
 import { Slot } from '@radix-ui/react-slot'
 import {
   Controller,
@@ -10,15 +11,16 @@ import {
   FormProvider,
   useFormContext,
 } from 'react-hook-form'
-
-import { cn } from '@/lib/utils'
-import { Label } from './label'
-import { Input } from './input'
-import { Checkbox } from './checkbox'
-
 import { UseFormReturn } from 'react-hook-form'
 
-interface FormRootProps<TFieldValues extends FieldValues> extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'className'> {
+import { Checkbox } from './checkbox'
+import { Input } from './input'
+import { Label } from './label'
+
+interface FormRootProps<TFieldValues extends FieldValues> extends Omit<
+  React.FormHTMLAttributes<HTMLFormElement>,
+  'onSubmit' | 'className'
+> {
   form: UseFormReturn<TFieldValues>
   onSubmit: (values: TFieldValues) => void | Promise<void>
 }
@@ -31,11 +33,7 @@ const FormRoot = <TFieldValues extends FieldValues>({
 }: FormRootProps<TFieldValues>) => {
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6"
-        {...props}
-      >
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" {...props}>
         {children}
       </form>
     </Form>
@@ -58,9 +56,7 @@ const FormFieldContainer = ({ control, name, label, children }: FormFieldContain
     render={({ field }) => (
       <FormItem>
         {label && <FormLabel>{label}</FormLabel>}
-        <FormControl>
-          {children(field)}
-        </FormControl>
+        <FormControl>{children(field)}</FormControl>
         <FormMessage />
       </FormItem>
     )}
@@ -81,7 +77,10 @@ const FormInput = ({ name, label, control, ...props }: FormInputProps) => {
   )
 }
 
-interface FormCheckboxProps extends Omit<React.ComponentPropsWithoutRef<typeof Checkbox>, 'name' | 'checked' | 'onChange'> {
+interface FormCheckboxProps extends Omit<
+  React.ComponentPropsWithoutRef<typeof Checkbox>,
+  'name' | 'checked' | 'onChange'
+> {
   name: string
   label?: string
   control: any
@@ -108,9 +107,7 @@ type FormFieldContextValue<
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-)
+const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -152,11 +149,12 @@ type FormItemContextValue = {
   id: string
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-)
+const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
 
-const FormItem = ({ children, ...props }: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) => {
+const FormItem = ({
+  children,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) => {
   const id = React.useId()
 
   return (
@@ -173,13 +171,7 @@ const FormLabel = ({
 }: Omit<React.ComponentPropsWithoutRef<typeof Label>, 'className'>) => {
   const { error, formItemId } = useFormField()
 
-  return (
-    <Label
-      htmlFor={formItemId}
-      variant={error ? 'default' : 'highlight'}
-      {...props}
-    />
-  )
+  return <Label htmlFor={formItemId} variant={error ? 'default' : 'highlight'} {...props} />
 }
 
 const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) => {
@@ -188,11 +180,7 @@ const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) 
   return (
     <Slot
       id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
+      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
       aria-invalid={!!error}
       {...props}
     />
@@ -211,11 +199,7 @@ const FormMessage = ({
   }
 
   return (
-    <p
-      id={formMessageId}
-      className="text-xs font-medium text-red-500/80"
-      {...props}
-    >
+    <p id={formMessageId} className="text-xs font-medium text-red-500/80" {...props}>
       {body}
     </p>
   )

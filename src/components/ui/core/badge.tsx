@@ -1,4 +1,5 @@
 import * as React from 'react'
+import { cn } from '@/lib/utils'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -7,27 +8,34 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'border-(--color-primary) bg-black/80 text-(--color-primary)',
-        secondary: 'border-(--color-secondary) bg-black/60 text-(--color-ivory)',
-        ghost: 'border-transparent bg-transparent text-inherit shadow-none',
-        success: 'border-green-500/50 bg-green-500/10 text-green-500',
-        magic: 'border-purple-500/50 bg-purple-500/10 text-purple-500',
-        danger: 'border-red-500/50 bg-red-500/10 text-red-500',
-        info: 'border-blue-500/50 bg-blue-500/10 text-blue-500',
-        gold: 'border-[#ffd700]/50 bg-[#ffd700]/10 text-[#ffd700]',
-        copper: 'border-[#8b6f47]/50 bg-[#8b6f47]/10 text-[#8b6f47]',
+        primary: 'border-(--color-primary) text-(--color-primary)',
+        secondary: 'border-(--color-secondary) text-(--color-ivory)',
+        ghost: 'border-transparent text-inherit shadow-none',
+        success: 'border-green-500/50 text-green-500',
+        magic: 'border-purple-500/50 text-purple-500',
+        danger: 'border-red-500/50 text-red-500',
+        info: 'border-blue-500/50 text-blue-500',
+        gold: 'border-[#ffd700]/50 text-[#ffd700]',
+        copper: 'border-[#8b6f47]/50 text-[#8b6f47]',
+      },
+      mode: {
+        solid: 'bg-black/60',
+        outline: 'bg-transparent',
       },
     },
     defaultVariants: {
       variant: 'primary',
+      mode: 'solid',
     },
   }
 )
 
-interface BadgeProps extends Omit<VariantProps<typeof badgeVariants>, 'className'> {
-  children: React.ReactNode
-}
+interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement>, VariantProps<typeof badgeVariants> {}
 
-export function Badge({ children, variant }: BadgeProps) {
-  return <span className={badgeVariants({ variant })}>{children}</span>
+export function Badge({ children, variant, mode, className, ...props }: BadgeProps) {
+  return (
+    <span className={cn(badgeVariants({ variant, mode }), className)} {...props}>
+      {children}
+    </span>
+  )
 }

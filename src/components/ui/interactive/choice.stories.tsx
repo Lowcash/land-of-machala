@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Choice } from './choice'
-import * as React from 'react'
 
 const meta: Meta<typeof Choice> = {
   title: 'Interactive/Choice',

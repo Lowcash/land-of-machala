@@ -4,25 +4,14 @@ import { Lock, User } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Badge } from '@/components/ui/core/badge'
+import { Heading, Text } from '@/components/ui/core/typography'
+import { VStack, Stack } from '@/components/ui/core/stack'
 import { Button } from '@/components/ui/core/button'
 import { Card } from '@/components/ui/core/card'
 import { AuthHero } from '@/components/features/auth/hero'
 import { Form } from '@/components/ui/forms/form'
 import { Stats } from '@/components/features/auth/stats'
 import { Changelog } from '@/components/features/auth/changelog'
-
-// Mock icons if lucide-react integration is tricky, but assuming it works or standard icons
-// I'll use placeholders if needed, but imported above should work if installed.
-// Codebase has lucide-react? I haven't checked package.json but it's standard.
-// Step 1419 showed `import { UserIcon } from '@/components/ui/icons/user-icon'`
-// I should probably use the project's icons if available, or just Lucide if installed.
-// Project has `lucide-react`? `package.json` check?
-// I'll stick to simple text icons or check for `lucide-react` in `package.json`.
-// Let's assume standard Lucide import works fine for Storybook.
-// 
-// Note: Changelog uses LATEST_CHANGES constant which might need to be exported or mocked if strictly in Storybook.
-// But it's already imported in changelog.tsx.
 
 const meta: Meta = {
   title: 'Examples/Login Page',
@@ -96,22 +85,26 @@ function LoginForm() {
   )
 }
 
-export const FullPage: StoryObj = {
+export const FullPage: Story = {
   render: () => (
-    <div className="bg-no-repeat/10 font-fantasy flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black/90 bg-[url('/images/background.jpg')] bg-cover bg-center p-8">
-      <AuthHero />
+    <div className="bg-no-repeat/10 flex min-h-screen w-full flex-col items-center justify-center bg-black/90 bg-[url('/images/background.jpg')] bg-cover bg-center p-8">
+      <div className="w-full max-w-5xl">
+        <VStack align="center" gap="xxl" fullWidth>
+          <AuthHero />
 
-      <div className="grid w-full max-w-5xl gap-8 lg:grid-cols-[1fr_350px]">
-        <div className="flex flex-col gap-8">
-          <div className="grid gap-8 md:grid-cols-2">
-            <Stats />
-            <Changelog />
+          <div className="grid w-full gap-8 lg:grid-cols-[1fr_350px]">
+            <VStack gap="xl">
+              <div className="grid gap-8 md:grid-cols-2">
+                <Stats />
+                <Changelog />
+              </div>
+            </VStack>
+
+            <VStack align="center" justify="center">
+              <LoginForm />
+            </VStack>
           </div>
-        </div>
-
-        <div className="flex justify-center">
-          <LoginForm />
-        </div>
+        </VStack>
       </div>
     </div>
   ),

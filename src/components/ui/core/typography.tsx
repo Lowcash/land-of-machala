@@ -1,5 +1,7 @@
 import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+
+import { type VariantProps, cva } from 'class-variance-authority'
+
 import { cn } from '@/lib/utils'
 
 const headingVariants = cva('font-fantasy font-bold tracking-tight', {
@@ -33,16 +35,19 @@ const headingVariants = cva('font-fantasy font-bold tracking-tight', {
   },
 })
 
-interface HeadingProps extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>, VariantProps<typeof headingVariants> {
+interface HeadingProps
+  extends
+    Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>,
+    VariantProps<typeof headingVariants> {
   as?: 'h1' | 'h2' | 'h3' | 'h4'
 }
 
 export function Heading({ level, font, color, className, as, ...props }: HeadingProps) {
   const Component = as || level || 'h1'
   return (
-    <Component 
-      className={cn(headingVariants({ level, font, color: color as any }), className)} 
-      {...props} 
+    <Component
+      className={cn(headingVariants({ level, font, color: color as any }), className)}
+      {...props}
     />
   )
 }
@@ -81,15 +86,25 @@ const textVariants = cva('leading-relaxed', {
   },
 })
 
-interface TextProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>, VariantProps<typeof textVariants> {
+interface TextProps
+  extends
+    Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
+    VariantProps<typeof textVariants> {
   as?: 'p' | 'span' | 'div'
 }
 
-export function Text({ variant, font, color, className, as: Component = 'p', ...props }: TextProps) {
+export function Text({
+  variant,
+  font,
+  color,
+  className,
+  as: Component = 'p',
+  ...props
+}: TextProps) {
   return (
-    <Component 
-      className={cn(textVariants({ variant, font, color: color as any }), className)} 
-      {...props} 
+    <Component
+      className={cn(textVariants({ variant, font, color: color as any }), className)}
+      {...props}
     />
   )
 }
