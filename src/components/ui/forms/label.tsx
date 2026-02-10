@@ -7,12 +7,12 @@ const labelVariants = cva(
   {
     variants: {
       variant: {
-        default: 'text-(--color-ivory)/80',
+        primary: 'text-(--color-ivory)/80',
         highlight: 'text-(--color-primary)',
       },
     },
     defaultVariants: {
-      variant: 'default',
+      variant: 'primary',
     },
   }
 )

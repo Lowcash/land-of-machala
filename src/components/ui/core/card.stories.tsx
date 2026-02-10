@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { Card } from './card'
+
+import { ScrollIcon } from '@/components/ui/icons'
+
+import { MutedText } from '../prefabs/typography/shared'
 import { Button } from './button'
+import { Card } from './card'
 import { Text } from './typography'
 
 const meta: Meta<typeof Card> = {
@@ -35,11 +39,11 @@ export const Primary: Story = {
   render: (args) => (
     <Card variant={args.variant} padding={args.padding}>
       <Card.Header>
-        <Card.Title icon={<span>⚔️</span>}>Quest Log</Card.Title>
+        <Card.Title icon={<ScrollIcon />}>Quest Log</Card.Title>
       </Card.Header>
       <Card.Content>
         <Text>This is a premium primary card with a gold border.</Text>
-        <Text variant="muted">Current Objective: Survive.</Text>
+        <MutedText>Current Objective: Survive.</MutedText>
       </Card.Content>
     </Card>
   ),

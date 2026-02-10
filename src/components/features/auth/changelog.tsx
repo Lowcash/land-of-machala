@@ -1,22 +1,29 @@
-import { LATEST_CHANGES } from '@/lib/game/constants/changelog'
-import { ChangelogEntry as ChangelogData } from '@/lib/game/constants/changelog'
+import { type ChangelogEntry as ChangelogData } from '@/lib/game/constants/changelog'
 
 import { Card } from '@/components/ui/core/card'
 import { List, ListItem } from '@/components/ui/core/list'
 import { Text } from '@/components/ui/core/typography'
 import { ScrollIcon } from '@/components/ui/icons'
-import { SectionHeader } from '@/components/ui/shared/section-header'
+import { MutedText } from '@/components/ui/prefabs/typography/shared'
 
-export function Changelog() {
+interface ChangelogProps {
+  changes: ChangelogData[]
+}
+
+export function Changelog({ changes }: ChangelogProps) {
   return (
-    <Card variant="primary" padding="lg" gap="md">
-      <SectionHeader title="Nejnovější změny" icon={<ScrollIcon />} />
+    <Card padding="lg">
+      <Card.Header>
+        <Card.Title icon={<ScrollIcon />}>Nejnovější změny</Card.Title>
+      </Card.Header>
 
-      <List>
-        {LATEST_CHANGES.map((entry, index) => (
-          <ChangelogEntry key={index} entry={entry} />
-        ))}
-      </List>
+      <Card.Content>
+        <List>
+          {changes.map((entry, i) => (
+            <ChangelogEntry key={i} entry={entry} />
+          ))}
+        </List>
+      </Card.Content>
     </Card>
   )
 }
@@ -24,14 +31,14 @@ export function Changelog() {
 function ChangelogEntry({ entry }: { entry: ChangelogData }) {
   return (
     <ListItem>
-      <Text variant="small" color="primary">
+      <MutedText color="primary" className="text-sm">
         {entry.category && (
           <Text as="span" variant="small" color={entry.color as any}>
             {entry.category}:{' '}
           </Text>
         )}
         {entry.description}
-      </Text>
+      </MutedText>
     </ListItem>
   )
 }

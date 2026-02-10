@@ -13,14 +13,19 @@ import {
 } from 'react-hook-form'
 import { UseFormReturn } from 'react-hook-form'
 
+import { cn } from '@/lib/utils'
+
+import { StackProps, stackVariants } from '../core/stack'
 import { Checkbox } from './checkbox'
 import { Input } from './input'
 import { Label } from './label'
 
-interface FormRootProps<TFieldValues extends FieldValues> extends Omit<
-  React.FormHTMLAttributes<HTMLFormElement>,
-  'onSubmit' | 'className'
-> {
+type FormHTMLProps = React.FormHTMLAttributes<HTMLFormElement>
+
+interface FormRootProps<TFieldValues extends FieldValues>
+  extends
+    Omit<FormHTMLProps, 'onSubmit' | 'className' | keyof StackProps>,
+    Omit<StackProps, 'onSubmit'> {
   form: UseFormReturn<TFieldValues>
   onSubmit: (values: TFieldValues) => void | Promise<void>
 }
@@ -29,11 +34,38 @@ const FormRoot = <TFieldValues extends FieldValues>({
   form,
   onSubmit,
   children,
+  display,
+  direction = 'col',
+  cols,
+  align,
+  justify,
+  gap = 'md',
+  fullWidth,
+  fullHeight,
+  wrap,
+  p,
+  flex,
   ...props
 }: FormRootProps<TFieldValues>) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" {...props}>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className={stackVariants({
+          display,
+          direction,
+          cols,
+          align,
+          justify,
+          gap,
+          fullWidth,
+          fullHeight,
+          wrap,
+          p,
+          flex,
+        })}
+        {...props}
+      >
         {children}
       </form>
     </Form>
@@ -46,15 +78,22 @@ interface FormFieldContainerProps {
   control: any
   name: string
   label?: string
+  horizontal?: boolean
   children: (field: any) => React.ReactNode
 }
 
-const FormFieldContainer = ({ control, name, label, children }: FormFieldContainerProps) => (
+const FormFieldContainer = ({
+  control,
+  name,
+  label,
+  horizontal,
+  children,
+}: FormFieldContainerProps) => (
   <FormField
     control={control}
     name={name}
     render={({ field }) => (
-      <FormItem>
+      <FormItem horizontal={horizontal}>
         {label && <FormLabel>{label}</FormLabel>}
         <FormControl>{children(field)}</FormControl>
         <FormMessage />
@@ -88,12 +127,13 @@ interface FormCheckboxProps extends Omit<
 
 const FormCheckbox = ({ name, label, control, ...props }: FormCheckboxProps) => {
   return (
-    <FormFieldContainer control={control} name={name} label={label}>
+    <FormFieldContainer control={control} name={name} horizontal>
       {(field) => (
         <Checkbox
           {...props}
+          label={label}
           checked={field.value}
-          onChange={(e) => field.onChange((e.target as HTMLInputElement).checked)}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.checked)}
         />
       )}
     </FormFieldContainer>
@@ -153,13 +193,17 @@ const FormItemContext = React.createContext<FormItemContextValue>({} as FormItem
 
 const FormItem = ({
   children,
+  horizontal,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) => {
+}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & { horizontal?: boolean }) => {
   const id = React.useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div className="flex flex-col gap-2" {...props}>
+      <div
+        className={cn('flex gap-2', horizontal ? 'flex-row items-center' : 'flex-col')}
+        {...props}
+      >
         {children}
       </div>
     </FormItemContext.Provider>
@@ -171,7 +215,7 @@ const FormLabel = ({
 }: Omit<React.ComponentPropsWithoutRef<typeof Label>, 'className'>) => {
   const { error, formItemId } = useFormField()
 
-  return <Label htmlFor={formItemId} variant={error ? 'default' : 'highlight'} {...props} />
+  return <Label htmlFor={formItemId} variant={error ? 'primary' : 'highlight'} {...props} />
 }
 
 const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) => {

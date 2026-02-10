@@ -17,17 +17,3 @@ export const Primary: Story = {
   },
 }
 
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-    children: 'S',
-  },
-}
-
-export const Ghost: Story = {
-  args: {
-    variant: 'ghost',
-    children: '7',
-  },
-}
-

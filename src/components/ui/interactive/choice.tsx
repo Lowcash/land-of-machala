@@ -1,9 +1,10 @@
 import * as React from 'react'
-import { Button } from '@/components/ui/core/button'
-import { Badge } from '@/components/ui/core/badge'
 
+import { Badge } from '@/components/ui/core/badge'
+import { Button } from '@/components/ui/core/button'
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
+import { MutedText } from '@/components/ui/prefabs/typography/shared'
 
 interface ChoiceProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   index: number | string
@@ -16,34 +17,12 @@ const Choice = React.forwardRef<HTMLButtonElement, ChoiceProps>(
     const letter = typeof index === 'number' ? String.fromCharCode(65 + index) : index
 
     return (
-      <Button
-        ref={ref}
-        variant="choice"
-        {...props}
-      >
+      <Button ref={ref} variant="choice" {...props}>
         <HStack align="center" gap="md">
-          <Badge
-            variant="secondary"
-            mode="outline"
-            className="h-8 w-8 text-sm group-hover:border-(--color-primary) group-hover:text-(--color-primary)"
-          >
-            {letter}
-          </Badge>
+          <Badge size="md">{letter}</Badge>
           <VStack gap="none">
-            <Text 
-              font="body" 
-              className="text-base font-medium text-(--color-ivory) group-hover:text-(--color-primary) transition-colors"
-            >
-              {title}
-            </Text>
-            {description && (
-              <Text 
-                variant="muted" 
-                className="text-xs text-(--color-secondary)/80"
-              >
-                {description}
-              </Text>
-            )}
+            <Text font="body">{title}</Text>
+            {description && <MutedText>{description}</MutedText>}
           </VStack>
         </HStack>
       </Button>

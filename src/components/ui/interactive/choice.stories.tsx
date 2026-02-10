@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+
 import { Choice } from './choice'
 
 const meta: Meta<typeof Choice> = {
@@ -20,17 +21,9 @@ export const Default: Story = {
 
 export const MultipleChoices = {
   render: () => (
-    <div className="flex flex-col gap-4 max-w-md">
-      <Choice
-        index={0}
-        title="Postava v těžké zbroji"
-        description="Cítíš z ní sílu a odhodlání."
-      />
-      <Choice
-        index={1}
-        title="Postava v kápi"
-        description="Kolem ní jiskří modravá magie."
-      />
+    <div className="flex max-w-md flex-col gap-4">
+      <Choice index={0} title="Postava v těžké zbroji" description="Cítíš z ní sílu a odhodlání." />
+      <Choice index={1} title="Postava v kápi" description="Kolem ní jiskří modravá magie." />
       <Choice
         index={2}
         title="Postava ve stínech"

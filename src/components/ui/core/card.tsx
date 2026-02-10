@@ -2,67 +2,71 @@ import * as React from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
+import { cn } from '@/lib/utils'
+
+import { CardTitle } from '@/components/ui/prefabs/typography/card'
+
+import { StackProps, stackVariants } from './stack'
+
 const cardVariants = cva(
   'flex transition-all backdrop-blur-md rounded-lg shadow-lg shadow-black/40',
   {
     variants: {
       variant: {
-        default: 'border border-(--color-secondary)/40 bg-black/60',
         primary: 'border border-(--color-secondary) bg-black/80 shadow-xl',
+        secondary: 'border border-(--color-secondary)/40 bg-black/60',
         subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
-      },
-      padding: {
-        none: '',
-        sm: 'p-2',
-        md: 'p-3',
-        lg: 'p-4',
-        xl: 'p-6',
-      },
-      gap: {
-        none: 'gap-0',
-        xs: 'gap-1',
-        sm: 'gap-2',
-        md: 'gap-4',
-        lg: 'gap-6',
-        xl: 'gap-8',
-      },
-      direction: {
-        row: 'flex-row',
-        col: 'flex-col',
-      },
-      fullHeight: {
-        true: 'h-full',
-        false: '',
       },
     },
     defaultVariants: {
-      variant: 'default',
-      padding: 'md',
-      gap: 'none',
-      direction: 'col',
-      fullHeight: false,
+      variant: 'primary',
     },
   }
 )
 
-interface CardRootProps
-  extends
-    Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
-    VariantProps<typeof cardVariants> {}
+interface CardRootProps extends StackProps, VariantProps<typeof cardVariants> {
+  /** Map padding to Stack's p prop for backward compatibility */
+  padding?: StackProps['p']
+}
 
 function CardRoot({
   variant,
   padding,
   gap,
   direction,
+  as: Component = 'div',
   fullHeight,
   children,
+  display,
+  cols,
+  align,
+  justify,
+  wrap,
+  p,
+  flex,
   ...props
 }: CardRootProps) {
+  // Map padding to p if not explicitly provided
+  const finalPadding = p || padding || 'md'
+
   return (
     <div
       data-slot="card"
-      className={cardVariants({ variant, padding, gap, direction, fullHeight })}
+      className={cn(
+        cardVariants({ variant }),
+        stackVariants({
+          display,
+          direction: direction || 'col',
+          gap: gap || 'none',
+          fullHeight,
+          cols,
+          align,
+          justify,
+          wrap,
+          p: finalPadding,
+          flex,
+        })
+      )}
       {...props}
     >
       {children}
@@ -70,35 +74,40 @@ function CardRoot({
   )
 }
 
-function CardHeader({ children }: { children: React.ReactNode }) {
+function CardHeader({
+  children,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   return (
-    <div className="mb-4 flex items-center justify-between border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0">
+    <div
+      className="mb-4 flex items-center justify-between border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0"
+      {...props}
+    >
       {children}
     </div>
   )
 }
 
-interface CardTitleProps {
-  children: React.ReactNode
-  icon?: React.ReactNode
-}
-
-function CardTitle({ children, icon }: CardTitleProps) {
+function CardContent({
+  children,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   return (
-    <h3 className="font-fantasy flex items-center gap-2 text-xl font-bold text-(--color-primary)">
-      {icon && <span className="flex h-6 w-6 items-center justify-center">{icon}</span>}
+    <div className="text-(--color-ivory)/90" {...props}>
       {children}
-    </h3>
+    </div>
   )
 }
 
-function CardContent({ children }: { children: React.ReactNode }) {
-  return <div className="text-(--color-ivory)/90">{children}</div>
-}
-
-function CardFooter({ children }: { children: React.ReactNode }) {
+function CardFooter({
+  children,
+  ...props
+}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
   return (
-    <div className="mt-4 flex items-center justify-end border-t border-(--color-secondary)/20 pt-4">
+    <div
+      className="mt-4 flex items-center justify-end border-t border-(--color-secondary)/20 pt-4"
+      {...props}
+    >
       {children}
     </div>
   )

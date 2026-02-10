@@ -55,7 +55,7 @@ export function Heading({ level, font, color, className, as, ...props }: Heading
 const textVariants = cva('leading-relaxed', {
   variants: {
     variant: {
-      default: 'text-base',
+      primary: 'text-base',
       lead: 'text-xl',
       large: 'text-lg font-semibold',
       small: 'text-sm font-medium leading-none',
@@ -80,7 +80,7 @@ const textVariants = cva('leading-relaxed', {
     },
   },
   defaultVariants: {
-    variant: 'default',
+    variant: 'primary',
     font: 'body',
     color: 'ivory',
   },

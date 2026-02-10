@@ -1,10 +1,7 @@
-import { Scroll, User, Users, Sparkles, Swords, type LucideIcon } from 'lucide-react'
+import { type LucideIcon, Scroll, Sparkles, Swords, User, Users } from 'lucide-react'
+
 import { cn } from '@/lib/utils'
 
-/**
- * Icon properties to ensure design consistency.
- * Size is restricted to predefined values.
- */
 const ICON_SIZES = {
   xs: 'h-3 w-3',
   sm: 'h-4 w-4',
@@ -18,20 +15,22 @@ interface IconProps {
   color?: 'gold' | 'secondary' | 'ivory'
 }
 
-function BaseIcon({ 
-  icon: Icon, 
-  size = 'sm', 
-  color = 'gold' 
-}: { 
-  icon: LucideIcon; 
-  size?: keyof typeof ICON_SIZES; 
-  color?: 'gold' | 'secondary' | 'ivory' 
+function BaseIcon({
+  icon: Icon,
+  size = 'sm',
+  color,
+}: {
+  icon: LucideIcon
+  size?: keyof typeof ICON_SIZES
+  color?: 'gold' | 'secondary' | 'ivory'
 }) {
-  const colorClass = {
-    gold: 'text-(--color-gold)',
-    secondary: 'text-(--color-secondary)',
-    ivory: 'text-(--color-ivory)',
-  }[color]
+  const colorClass = color
+    ? {
+        gold: 'text-(--color-gold)',
+        secondary: 'text-(--color-secondary)',
+        ivory: 'text-(--color-ivory)',
+      }[color]
+    : ''
 
   return <Icon className={cn(ICON_SIZES[size], colorClass)} />
 }
@@ -69,10 +68,12 @@ export function LogoIcon({ size = 'xl' }: { size?: 'lg' | 'xl' | 'xxl' }) {
   return (
     <div className="relative mb-4 inline-block">
       <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl" />
-      <div className={cn(
-        "relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-2xl",
-        containerSizes[size as keyof typeof containerSizes] || containerSizes.xl
-      )}>
+      <div
+        className={cn(
+          'relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-2xl',
+          containerSizes[size as keyof typeof containerSizes] || containerSizes.xl
+        )}
+      >
         <SwordsIcon size={size === 'xxl' ? 'xl' : size} />
       </div>
     </div>

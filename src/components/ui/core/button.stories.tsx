@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Badge } from './badge'
 import { Button } from './button'
 
 const meta: Meta<typeof Button> = {
@@ -14,7 +13,7 @@ type Story = StoryObj<typeof Button>
 
 export const Default: Story = {
   args: {
-    variant: 'default',
+    variant: 'primary',
     children: 'Play Now',
   },
 }
@@ -38,5 +37,3 @@ export const Disabled: Story = {
     disabled: true,
   },
 }
-
-

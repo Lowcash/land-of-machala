@@ -11,8 +11,8 @@ export function Checkbox({ label, id: providedId, ...props }: Omit<CheckboxProps
   const id = providedId || generatedId
 
   return (
-    <label 
-      htmlFor={id} 
+    <label
+      htmlFor={id}
       className={cn(
         'group flex cursor-pointer items-center gap-2 select-none',
         props.disabled && 'cursor-not-allowed'
@@ -43,10 +43,12 @@ export function Checkbox({ label, id: providedId, ...props }: Omit<CheckboxProps
         </svg>
       </div>
       {label && (
-        <span className={cn(
-          "font-fantasy text-sm text-(--color-ivory)/80 transition-colors group-hover:text-(--color-ivory)",
-          "peer-disabled:text-(--color-ivory)/40 peer-disabled:group-hover:text-(--color-ivory)/40"
-        )}>
+        <span
+          className={cn(
+            'font-fantasy text-sm whitespace-nowrap text-(--color-ivory)/80 transition-colors group-hover:text-(--color-ivory)',
+            'peer-disabled:text-(--color-ivory)/40 peer-disabled:group-hover:text-(--color-ivory)/40'
+          )}
+        >
           {label}
         </span>
       )}

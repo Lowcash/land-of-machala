@@ -3,8 +3,8 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import { playwright } from '@vitest/browser-playwright'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
@@ -17,23 +17,22 @@ export default (defineConfig as any)({
       '@': path.resolve(dirname, './src'),
     },
   },
+
   test: {
     projects: [
       {
+        extends: true,
         test: {
           name: 'core',
           globals: true,
           environment: 'jsdom',
-          dir: 'src',
-          include: ['**/*.test.{ts,tsx}'],
+          include: ['src/**/*.test.{ts,tsx}'],
           setupFiles: ['./src/test/setup.ts'],
         },
       },
       {
         extends: true,
-        plugins: [
-          storybookTest({ configDir: path.join(dirname, '.storybook') }),
-        ],
+        plugins: [storybookTest({ configDir: path.join(dirname, '.storybook') })],
         test: {
           name: 'storybook',
           browser: {
@@ -48,4 +47,3 @@ export default (defineConfig as any)({
     ],
   },
 })
-

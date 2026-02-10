@@ -1,26 +1,28 @@
 import * as React from 'react'
 
-import { cn } from '@/lib/utils'
+import { StackProps, stackVariants } from './stack'
 
-const List = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
-  ({ className, ...props }, ref) => (
-    <ul ref={ref} className={cn('flex flex-col gap-3', className)} {...props} />
+interface ListProps
+  extends
+    Omit<React.HTMLAttributes<HTMLUListElement>, 'className' | keyof StackProps>,
+    StackProps {}
+
+const List = React.forwardRef<HTMLUListElement, ListProps>(
+  ({ display = 'flex', direction = 'col', gap = 'sm', ...props }, ref) => (
+    <ul ref={ref} className={stackVariants({ display, direction, gap })} {...props} />
   )
 )
 List.displayName = 'List'
 
-interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
+interface ListItemProps extends Omit<React.HTMLAttributes<HTMLLIElement>, 'className'> {
   icon?: React.ReactNode
 }
 
 const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
-  ({ children, icon, className, ...props }, ref) => (
+  ({ children, icon, ...props }, ref) => (
     <li
       ref={ref}
-      className={cn(
-        'relative flex items-center gap-2 text-sm leading-relaxed text-(--color-ivory)/90',
-        className
-      )}
+      className="relative flex items-center gap-2 text-sm leading-relaxed text-(--color-ivory)/90"
       {...props}
     >
       <span className="flex flex-none items-center justify-center text-(--color-gold)">

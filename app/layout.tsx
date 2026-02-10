@@ -30,7 +30,9 @@ export const metadata: Metadata = {
 
 export function RootWrapper({ children }: { children: React.ReactNode }) {
   return (
-    <div className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased`}>
+    <div
+      className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased`}
+    >
       {children}
     </div>
   )
