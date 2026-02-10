@@ -81,7 +81,7 @@ const stackVariants = cva('', {
 })
 
 export interface StackProps
-  extends React.HTMLAttributes<HTMLElement>,
+  extends Omit<React.HTMLAttributes<HTMLElement>, 'className' | 'style'>,
     VariantProps<typeof stackVariants> {
   as?: React.ElementType
 }
@@ -101,7 +101,6 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       wrap,
       p,
       flex,
-      className,
       ...props
     },
     ref
@@ -109,22 +108,19 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
     return (
       <Component
         ref={ref}
-        className={cn(
-          stackVariants({ 
-            display,
-            direction,
-            cols,
-            align, 
-            justify, 
-            gap, 
-            fullWidth, 
-            fullHeight, 
-            wrap,
-            p,
-            flex
-          }),
-          className
-        )}
+        className={stackVariants({ 
+          display,
+          direction,
+          cols,
+          align, 
+          justify, 
+          gap, 
+          fullWidth, 
+          fullHeight, 
+          wrap,
+          p,
+          flex
+        })}
         {...props}
       />
     )

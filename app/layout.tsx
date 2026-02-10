@@ -28,14 +28,24 @@ export const metadata: Metadata = {
   description: 'An epic RPG adventure',
 }
 
+export function RootWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <div className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased`}>
+      {children}
+    </div>
+  )
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}>
-      <body className="antialiased">{children}</body>
+    <html lang="en">
+      <body>
+        <RootWrapper>{children}</RootWrapper>
+      </body>
     </html>
   )
 }

@@ -11,7 +11,7 @@ function Input({ type, leftIcon, rightIcon, ...props }: InputProps) {
   return (
     <div className="relative flex w-full items-center">
       {leftIcon && (
-        <div className="absolute left-3 flex items-center justify-center text-(--color-secondary)/60">
+        <div className="absolute left-3 flex items-center justify-center text-(--color-secondary)/80">
           {leftIcon}
         </div>
       )}
@@ -26,7 +26,7 @@ function Input({ type, leftIcon, rightIcon, ...props }: InputProps) {
         {...props}
       />
       {rightIcon && (
-        <div className="absolute right-3 flex items-center justify-center text-(--color-secondary)/60">
+        <div className="absolute right-3 flex items-center justify-center text-(--color-secondary)/40">
           {rightIcon}
         </div>
       )}

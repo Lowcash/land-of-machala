@@ -4,7 +4,7 @@ import { HeroTitle, HeroSubtitle, HeroDescription } from '@/components/ui/prefab
 
 export function AuthHero() {
   return (
-    <VStack align="center" gap="sm" className="mb-8">
+    <VStack align="center" gap="sm">
       <LogoIcon />
       
       <VStack align="center" gap="xs">

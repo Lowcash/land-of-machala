@@ -30,9 +30,9 @@ interface HeroSubtitleProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
 }
 
-export function HeroSubtitle({ children, className, ...props }: HeroSubtitleProps) {
+export function HeroSubtitle({ children, ...props }: Omit<HeroSubtitleProps, 'className'>) {
   return (
-    <HStack align="center" justify="center" gap="xs" className={className} {...props}>
+    <HStack align="center" justify="center" gap="xs" {...props}>
       <SparklesIcon />
       <Text color={'secondary' as any} className="text-sm sm:text-base">
         {children}
