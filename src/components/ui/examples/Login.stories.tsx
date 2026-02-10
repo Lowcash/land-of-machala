@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { Badge } from '@/components/ui/core/badge'
 import { Button } from '@/components/ui/core/button'
 import { Card } from '@/components/ui/core/card'
-import { HeroHeader } from '@/components/ui/core/hero-header'
+import { AuthHero } from '@/components/features/auth/hero'
 import { Form } from '@/components/ui/forms/form'
 import { Stats } from '@/components/features/auth/stats'
 import { Changelog } from '@/components/features/auth/changelog'
@@ -99,11 +99,7 @@ function LoginForm() {
 export const FullPage: StoryObj = {
   render: () => (
     <div className="bg-no-repeat/10 font-fantasy flex min-h-screen w-full flex-col items-center justify-center gap-12 bg-black/90 bg-[url('/images/background.jpg')] bg-cover bg-center p-8">
-      {/* <HeroHeader
-        title="Land of Machala"
-        subtitle="Textová fantasy hra"
-        description="Tvá legenda čeká na sepsání..."
-      /> */}
+      <AuthHero />
 
       <div className="grid w-full max-w-5xl gap-8 lg:grid-cols-[1fr_350px]">
         <div className="flex flex-col gap-8">

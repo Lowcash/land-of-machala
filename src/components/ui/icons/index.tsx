@@ -1,4 +1,4 @@
-import { Scroll, User, Users, Sparkles } from 'lucide-react'
+import { Scroll, User, Users, Sparkles, Swords } from 'lucide-react'
 
 /**
  * Icon prefabs with fixed styling to ensure design consistency.
@@ -19,4 +19,8 @@ export function ScrollIcon() {
 
 export function SparklesIcon() {
   return <Sparkles className="h-3 w-3 text-(--color-secondary)" />
+}
+
+export function SwordsIcon() {
+  return <Swords className="h-10 w-10 text-(--color-gold)" />
 }

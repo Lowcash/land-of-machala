@@ -1,4 +1,3 @@
-import * as React from 'react'
 import { HStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 
