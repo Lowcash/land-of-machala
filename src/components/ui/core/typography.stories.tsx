@@ -1,6 +1,5 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta } from '@storybook/react'
 import { Heading, Text } from './typography'
-import * as React from 'react'
 
 const meta: Meta = {
   title: 'UI/Typography',

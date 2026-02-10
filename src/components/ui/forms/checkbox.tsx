@@ -1,11 +1,11 @@
 import * as React from 'react'
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 
 interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string
 }
 
-export function Checkbox({ className, label, id: providedId, ...props }: CheckboxProps) {
+export function Checkbox({ label, id: providedId, ...props }: Omit<CheckboxProps, 'className'>) {
   const generatedId = React.useId()
   const id = providedId || generatedId
 
@@ -25,8 +25,7 @@ export function Checkbox({ className, label, id: providedId, ...props }: Checkbo
           "h-full w-full rounded border-2 border-(--color-secondary)/60 bg-black/40 shadow-sm transition-all",
           "peer-checked:border-(--color-primary) peer-checked:bg-(--color-primary)/20",
           "peer-focus-visible:ring-2 peer-focus-visible:ring-(--color-primary) peer-focus-visible:ring-offset-2 peer-focus-visible:ring-offset-black",
-          "group-hover:border-(--color-primary)/60",
-          className
+          "group-hover:border-(--color-primary)/60"
         )} />
         <svg
           className="pointer-events-none absolute h-3.5 w-3.5 text-(--color-primary) opacity-0 transition-opacity peer-checked:opacity-100"

@@ -1,7 +1,8 @@
-import type { Meta } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/react'
 import { List, ListItem } from './list'
-import { Text } from './typography'
-import * as React from 'react'
+import { Badge } from './badge'
+import { Heading, Text } from './typography'
+import { Stack } from './stack'
 
 const meta: Meta = {
   title: 'Core/List',
@@ -23,21 +24,21 @@ export const Default = {
   ),
 }
 
-export const WithTypography = {
+export const Changelog: StoryObj = {
   render: () => (
-    <div className="max-w-md p-6 border-2 border-(--color-secondary)/40 bg-black/60 rounded-lg">
-      <Text variant="large" className="mb-4 text-(--color-primary)">Nejnovější změny</Text>
+    <Stack p="lg" border="game" bg="black-60" rounded="lg">
+      <Heading level="h3" color="primary">Nejnovější změny</Heading>
       <List>
-        <ListItem>
-          <Text variant="default" className="inline">Optimalizace zbrojíře pro rychlejší nákup.</Text>
+        <ListItem icon={<Badge variant="success">Novinka</Badge>}>
+          <Text variant="default">Optimalizace zbrojíře pro rychlejší nákup.</Text>
         </ListItem>
-        <ListItem>
-          <Text variant="small" className="inline text-(--color-secondary)">Vylepšená navigace v dungeonu.</Text>
+        <ListItem icon={<Badge variant="magic">Update</Badge>}>
+          <Text variant="muted" color="secondary">Vylepšená navigace v dungeonu.</Text>
         </ListItem>
-        <ListItem>
-          <Text variant="default" className="inline">Přidány nové úkoly pro začínající hrdiny.</Text>
+        <ListItem icon={<Badge>Fix</Badge>}>
+          <Text variant="default">Přidány nové úkoly pro začínající hrdiny.</Text>
         </ListItem>
       </List>
-    </div>
+    </Stack>
   ),
 }

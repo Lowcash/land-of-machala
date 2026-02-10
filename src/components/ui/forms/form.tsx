@@ -11,15 +11,14 @@ import {
   useFormContext,
 } from 'react-hook-form'
 
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 import { Label } from './label'
 import { Input } from './input'
 import { Checkbox } from './checkbox'
 
 import { UseFormReturn } from 'react-hook-form'
 
-
-interface FormRootProps<TFieldValues extends FieldValues> extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit'> {
+interface FormRootProps<TFieldValues extends FieldValues> extends Omit<React.FormHTMLAttributes<HTMLFormElement>, 'onSubmit' | 'className'> {
   form: UseFormReturn<TFieldValues>
   onSubmit: (values: TFieldValues) => void | Promise<void>
 }
@@ -28,14 +27,13 @@ const FormRoot = <TFieldValues extends FieldValues>({
   form,
   onSubmit,
   children,
-  className,
   ...props
 }: FormRootProps<TFieldValues>) => {
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={cn('space-y-6', className)}
+        className="space-y-6"
         {...props}
       >
         {children}
@@ -158,25 +156,25 @@ const FormItemContext = React.createContext<FormItemContextValue>(
   {} as FormItemContextValue
 )
 
-const FormItem = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+const FormItem = ({ children, ...props }: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) => {
   const id = React.useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div className={cn('flex flex-col gap-2', className)} {...props} />
+      <div className="flex flex-col gap-2" {...props}>
+        {children}
+      </div>
     </FormItemContext.Provider>
   )
 }
 
 const FormLabel = ({
-  className,
   ...props
-}: React.ComponentPropsWithoutRef<typeof Label>) => {
+}: Omit<React.ComponentPropsWithoutRef<typeof Label>, 'className'>) => {
   const { error, formItemId } = useFormField()
 
   return (
     <Label
-      className={cn(error && 'text-red-500/80', className)}
       htmlFor={formItemId}
       variant={error ? 'default' : 'highlight'}
       {...props}
@@ -202,10 +200,9 @@ const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) 
 }
 
 const FormMessage = ({
-  className,
   children,
   ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) => {
+}: Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className'>) => {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message) : children
 
@@ -216,7 +213,7 @@ const FormMessage = ({
   return (
     <p
       id={formMessageId}
-      className={cn('text-xs font-medium text-red-500/80', className)}
+      className="text-xs font-medium text-red-500/80"
       {...props}
     >
       {body}

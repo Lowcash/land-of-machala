@@ -2,6 +2,8 @@
 
 @theme {
   --font-fantasy: var(--font-cinzel), serif;
+  --font-medieval: var(--font-medieval), serif;
+  --font-body: var(--font-philosopher), sans-serif;
 }
 
 @layer base {
@@ -20,5 +22,11 @@
     --color-primary: #d4a574;
     --color-secondary: #8b6f47;
     --color-ivory: #f5f2e8;
+    
+    /* Semantic Colors */
+    --color-gold: #ffd700;
+    --color-danger: #ff6b6b;
+    --color-success: #6fbf6f;
+    --color-info: #69ccf0;
   }
 }

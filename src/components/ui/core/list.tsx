@@ -1,13 +1,10 @@
 import * as React from 'react'
-import { cn } from '../../../lib/utils'
+
+import { cn } from '@/lib/utils'
 
 const List = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
   ({ className, ...props }, ref) => (
-    <ul
-      ref={ref}
-      className={cn('flex flex-col gap-2', className)}
-      {...props}
-    />
+    <ul ref={ref} className={cn('flex flex-col gap-3', className)} {...props} />
   )
 )
 List.displayName = 'List'
@@ -17,19 +14,17 @@ interface ListItemProps extends React.HTMLAttributes<HTMLLIElement> {
 }
 
 const ListItem = React.forwardRef<HTMLLIElement, ListItemProps>(
-  ({ className, children, icon, ...props }, ref) => (
+  ({ children, icon, className, ...props }, ref) => (
     <li
       ref={ref}
       className={cn(
-        'relative flex items-start gap-4 text-sm text-(--color-ivory)/90',
+        'relative flex items-center gap-2 text-sm leading-relaxed text-(--color-ivory)/90',
         className
       )}
       {...props}
     >
-      <span className="mt-1 flex h-4 w-4 shrink-0 items-center justify-center">
-        {icon || (
-          <span className="h-1.5 w-1.5 rounded-sm bg-(--color-primary)/60" />
-        )}
+      <span className="flex flex-none items-center justify-center text-(--color-gold)">
+        {icon || '•'}
       </span>
       <span>{children}</span>
     </li>

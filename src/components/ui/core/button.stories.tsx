@@ -39,15 +39,4 @@ export const Disabled: Story = {
   },
 }
 
-export const SecondaryLargeWithBadge: Story = {
-  args: {
-    variant: 'secondary',
-    size: 'lg',
-    children: (
-      <>
-        <span>Profile</span>
-        <Badge variant="secondary">3</Badge>
-      </>
-    ),
-  },
-}
+

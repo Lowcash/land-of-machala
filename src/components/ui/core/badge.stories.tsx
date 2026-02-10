@@ -24,16 +24,10 @@ export const Secondary: Story = {
   },
 }
 
-export const Outline: Story = {
+export const Ghost: Story = {
   args: {
-    variant: 'outline',
-    children: 'O',
+    variant: 'ghost',
+    children: '7',
   },
 }
 
-export const OutlineSecondary: Story = {
-  args: {
-    variant: 'outline-secondary',
-    children: 'S',
-  },
-}

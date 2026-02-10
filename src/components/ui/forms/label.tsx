@@ -1,15 +1,15 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 
 const labelVariants = cva(
   'font-fantasy text-sm font-medium leading-none select-none transition-colors peer-disabled:cursor-not-allowed peer-disabled:opacity-70',
   {
     variants: {
       variant: {
-        default: 'text-[var(--color-ivory)]/80',
-        highlight: 'text-[var(--color-primary)]',
+        default: 'text-(--color-ivory)/80',
+        highlight: 'text-(--color-primary)',
       },
     },
     defaultVariants: {
@@ -19,14 +19,13 @@ const labelVariants = cva(
 )
 
 function Label({
-  className,
   variant,
   ...props
-}: React.ComponentProps<'label'> & VariantProps<typeof labelVariants>) {
+}: Omit<React.ComponentProps<'label'>, 'className'> & VariantProps<typeof labelVariants>) {
   return (
     <label
       data-slot="label"
-      className={cn(labelVariants({ variant }), className)}
+      className={labelVariants({ variant })}
       {...props}
     />
   )

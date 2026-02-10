@@ -46,27 +46,29 @@ export const SimplifiedExample = {
     }
 
     return (
-      <Card className="max-w-md">
-        <FormRoot form={form} onSubmit={onSubmit}>
-          <FormInput
-            control={form.control}
-            name="username"
-            label="Character Name"
-            placeholder="Enter your name..."
-          />
-          <FormInput
-            control={form.control}
-            name="email"
-            label="Email Scroll"
-            placeholder="messenger@realm.com"
-          />
-          <FormCheckbox
-            control={form.control}
-            name="agree"
-            label="I agree to the laws of Machala"
-          />
-          <Button type="submit">Submit Decree</Button>
-        </FormRoot>
+      <Card>
+        <Card.Content>
+          <FormRoot form={form} onSubmit={onSubmit}>
+            <FormInput
+              control={form.control}
+              name="username"
+              label="Character Name"
+              placeholder="Enter your name..."
+            />
+            <FormInput
+              control={form.control}
+              name="email"
+              label="Email Scroll"
+              placeholder="messenger@realm.com"
+            />
+            <FormCheckbox
+              control={form.control}
+              name="agree"
+              label="I agree to the laws of Machala"
+            />
+            <Button type="submit">Submit Decree</Button>
+          </FormRoot>
+        </Card.Content>
       </Card>
     )
   }

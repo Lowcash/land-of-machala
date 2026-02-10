@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { cva, type VariantProps } from 'class-variance-authority'
-import { cn } from '../../../lib/utils'
+import { cn } from '@/lib/utils'
 
-const headingVariants = cva('font-fantasy font-bold tracking-tight text-(--color-primary)', {
+const headingVariants = cva('font-fantasy font-bold tracking-tight', {
   variants: {
     level: {
       h1: 'text-4xl lg:text-5xl',
@@ -10,40 +10,86 @@ const headingVariants = cva('font-fantasy font-bold tracking-tight text-(--color
       h3: 'text-2xl lg:text-3xl',
       h4: 'text-xl lg:text-2xl',
     },
+    font: {
+      fantasy: 'font-fantasy',
+      medieval: 'font-medieval',
+    },
+    color: {
+      primary: 'text-(--color-primary)',
+      secondary: 'text-(--color-secondary)',
+      ivory: 'text-(--color-ivory)',
+      success: 'text-(--color-success)',
+      danger: 'text-(--color-danger)',
+      magic: 'text-purple-500',
+      gold: 'text-(--color-gold)',
+      info: 'text-(--color-info)',
+      copper: 'text-(--color-secondary)',
+    },
   },
   defaultVariants: {
     level: 'h1',
+    font: 'fantasy',
+    color: 'primary',
   },
 })
 
-interface HeadingProps extends React.HTMLAttributes<HTMLHeadingElement>, VariantProps<typeof headingVariants> {
+interface HeadingProps extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>, VariantProps<typeof headingVariants> {
   as?: 'h1' | 'h2' | 'h3' | 'h4'
 }
 
-export function Heading({ level, as, className, ...props }: HeadingProps) {
+export function Heading({ level, font, color, className, as, ...props }: HeadingProps) {
   const Component = as || level || 'h1'
-  return <Component className={cn(headingVariants({ level }), className)} {...props} />
+  return (
+    <Component 
+      className={cn(headingVariants({ level, font, color: color as any }), className)} 
+      {...props} 
+    />
+  )
 }
 
-const textVariants = cva('text-(--color-ivory)/90 leading-relaxed', {
+const textVariants = cva('leading-relaxed', {
   variants: {
     variant: {
       default: 'text-base',
-      lead: 'text-xl text-(--color-ivory)',
+      lead: 'text-xl',
       large: 'text-lg font-semibold',
       small: 'text-sm font-medium leading-none',
-      muted: 'text-sm text-(--color-secondary)/80',
+      muted: 'text-sm opacity-80',
+      'fantasy-value': 'text-lg',
+    },
+    font: {
+      body: 'font-body',
+      fantasy: 'font-fantasy',
+      medieval: 'font-medieval',
+    },
+    color: {
+      primary: 'text-(--color-primary)',
+      secondary: 'text-(--color-secondary)',
+      ivory: 'text-(--color-ivory)',
+      success: 'text-(--color-success)',
+      danger: 'text-(--color-danger)',
+      magic: 'text-purple-500',
+      gold: 'text-(--color-gold)',
+      info: 'text-(--color-info)',
+      copper: 'text-(--color-secondary)',
     },
   },
   defaultVariants: {
     variant: 'default',
+    font: 'body',
+    color: 'ivory',
   },
 })
 
-interface TextProps extends React.HTMLAttributes<HTMLParagraphElement>, VariantProps<typeof textVariants> {
+interface TextProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>, VariantProps<typeof textVariants> {
   as?: 'p' | 'span' | 'div'
 }
 
-export function Text({ variant, as: Component = 'p', className, ...props }: TextProps) {
-  return <Component className={cn(textVariants({ variant }), className)} {...props} />
+export function Text({ variant, font, color, className, as: Component = 'p', ...props }: TextProps) {
+  return (
+    <Component 
+      className={cn(textVariants({ variant, font, color: color as any }), className)} 
+      {...props} 
+    />
+  )
 }

@@ -1,7 +1,7 @@
 import * as React from 'react'
-import { cn } from '../../../lib/utils'
-import { Button } from '../core/button'
-import { Badge } from '../core/badge'
+import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/core/button'
+import { Badge } from '@/components/ui/core/badge'
 
 interface ChoiceProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   index: number | string
@@ -16,12 +16,8 @@ const Choice = React.forwardRef<HTMLButtonElement, ChoiceProps>(
     return (
       <Button
         ref={ref}
-        variant="secondary"
-        className={cn(
-          'group flex min-h-16 w-full transform items-start justify-start p-4 text-left transition-all hover:scale-[1.02] hover:border-(--color-primary) hover:bg-(--color-primary)/10',
-          className
-        )}
-        style={{ fontFamily: 'var(--font-fantasy)' }}
+        variant="choice"
+        className={cn('group', className)}
         {...props}
       >
         <div className="flex items-center gap-4">

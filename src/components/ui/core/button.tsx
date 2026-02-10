@@ -3,7 +3,6 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { type VariantProps, cva } from 'class-variance-authority'
 
-import { cn } from '../../../lib/utils'
 import { Loader } from './loader'
 
 const buttonVariants = cva(
@@ -12,24 +11,32 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          'w-full rounded-lg border-2 border-[var(--color-primary)] bg-black/80 text-center text-[var(--color-primary)] hover:scale-[1.02] hover:bg-[var(--color-primary)]/20 disabled:border-[var(--color-secondary)]/40 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-secondary)]',
+          'rounded-lg border-2 border-[var(--color-primary)] bg-black/80 text-center text-[var(--color-primary)] hover:scale-[1.02] hover:bg-[var(--color-primary)]/20 disabled:border-[var(--color-secondary)]/40 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-secondary)]',
         secondary:
-          'w-full rounded-lg border border-[var(--color-secondary)]/40 bg-black/60 text-[var(--color-ivory)] hover:scale-[1.02] hover:border-[var(--color-ivory)]/40 hover:bg-black/80 hover:text-[var(--color-primary)] disabled:border-[var(--color-secondary)]/30 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-ivory)]/40',
+          'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-[var(--color-ivory)] hover:scale-[1.02] hover:border-[var(--color-ivory)]/40 hover:bg-black/80 hover:text-[var(--color-primary)] disabled:border-[var(--color-secondary)]/30 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-ivory)]/40',
+        choice:
+          'flex-col items-start justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-left text-[var(--color-ivory)] hover:scale-[1.02] hover:border-(--color-primary) hover:bg-(--color-primary)/10',
       },
       size: {
         default: 'p-2',
         lg: 'min-h-16 p-4',
       },
+      fullWidth: {
+        true: 'w-full',
+        false: 'w-fit',
+      },
     },
     defaultVariants: {
       variant: 'default',
       size: 'default',
+      fullWidth: true,
     },
   }
 )
 
 export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends
+    Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
   loading?: boolean
@@ -39,9 +46,9 @@ export interface ButtonProps
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      className,
       variant,
       size,
+      fullWidth,
       asChild = false,
       loading = false,
       icon,
@@ -58,7 +65,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         ref={ref}
         data-slot="button"
-        className={cn(buttonVariants({ variant, size }), className)}
+        className={buttonVariants({ variant, size, fullWidth })}
         disabled={isActuallyDisabled}
         {...props}
       >
