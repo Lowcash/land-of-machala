@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { UserIcon } from '@/components/ui/icons'
 import { Input } from './input'
 
 const meta: Meta<typeof Input> = {
@@ -22,8 +23,6 @@ export const Password: Story = {
     placeholder: 'Enter secret password...',
   },
 }
-
-import { UserIcon } from '@/components/ui/icons/user-icon'
 
 export const WithLeftIcon: Story = {
   args: {

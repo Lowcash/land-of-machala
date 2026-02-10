@@ -4,14 +4,14 @@ import { Lock, User } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-import { Heading, Text } from '@/components/ui/core/typography'
-import { VStack, Stack } from '@/components/ui/core/stack'
+import { VStack } from '@/components/ui/core/stack'
 import { Button } from '@/components/ui/core/button'
 import { Card } from '@/components/ui/core/card'
 import { AuthHero } from '@/components/features/auth/hero'
 import { Form } from '@/components/ui/forms/form'
 import { Stats } from '@/components/features/auth/stats'
 import { Changelog } from '@/components/features/auth/changelog'
+import { AuthLayout } from '@/components/ui/shared/auth-layout'
 
 const meta: Meta = {
   title: 'Examples/Login Page',
@@ -87,25 +87,23 @@ function LoginForm() {
 
 export const FullPage: Story = {
   render: () => (
-    <div className="bg-no-repeat/10 flex min-h-screen w-full flex-col items-center justify-center bg-black/90 bg-[url('/images/background.jpg')] bg-cover bg-center p-8">
-      <div className="w-full max-w-5xl">
-        <VStack align="center" gap="xxl" fullWidth>
-          <AuthHero />
+    <AuthLayout>
+      <VStack align="center" gap="xxl" fullWidth>
+        <AuthHero />
 
-          <div className="grid w-full gap-8 lg:grid-cols-[1fr_350px]">
-            <VStack gap="xl">
-              <div className="grid gap-8 md:grid-cols-2">
-                <Stats />
-                <Changelog />
-              </div>
-            </VStack>
+        <div className="grid w-full gap-8 lg:grid-cols-[1fr_350px]">
+          <VStack gap="xl">
+            <div className="grid gap-8 md:grid-cols-2">
+              <Stats />
+              <Changelog />
+            </div>
+          </VStack>
 
-            <VStack align="center" justify="center">
-              <LoginForm />
-            </VStack>
-          </div>
-        </VStack>
-      </div>
-    </div>
+          <VStack align="center" justify="center">
+            <LoginForm />
+          </VStack>
+        </div>
+      </VStack>
+    </AuthLayout>
   ),
 }

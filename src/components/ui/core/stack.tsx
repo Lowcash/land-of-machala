@@ -1,6 +1,8 @@
 import * as React from 'react'
 import { type VariantProps, cva } from 'class-variance-authority'
 
+import { cn } from '@/lib/utils'
+
 const stackVariants = cva('', {
   variants: {
     display: {
@@ -79,7 +81,7 @@ const stackVariants = cva('', {
 })
 
 export interface StackProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, 'className' | 'style'>,
+  extends React.HTMLAttributes<HTMLElement>,
     VariantProps<typeof stackVariants> {
   as?: React.ElementType
 }
@@ -99,6 +101,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       wrap,
       p,
       flex,
+      className,
       ...props
     },
     ref
@@ -106,19 +109,22 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
     return (
       <Component
         ref={ref}
-        className={stackVariants({ 
-          display,
-          direction,
-          cols,
-          align, 
-          justify, 
-          gap, 
-          fullWidth, 
-          fullHeight, 
-          wrap,
-          p,
-          flex
-        })}
+        className={cn(
+          stackVariants({ 
+            display,
+            direction,
+            cols,
+            align, 
+            justify, 
+            gap, 
+            fullWidth, 
+            fullHeight, 
+            wrap,
+            p,
+            flex
+          }),
+          className
+        )}
         {...props}
       />
     )

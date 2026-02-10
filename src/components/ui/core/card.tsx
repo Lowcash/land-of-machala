@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { cva, type VariantProps } from 'class-variance-authority'
+
+import { type VariantProps, cva } from 'class-variance-authority'
 
 const cardVariants = cva(
   'flex transition-all backdrop-blur-md rounded-lg shadow-lg shadow-black/40',
@@ -45,10 +46,19 @@ const cardVariants = cva(
 )
 
 interface CardRootProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
+  extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, 'className' | 'style'>,
     VariantProps<typeof cardVariants> {}
 
-function CardRoot({ variant, padding, gap, direction, fullHeight, children, ...props }: CardRootProps) {
+function CardRoot({
+  variant,
+  padding,
+  gap,
+  direction,
+  fullHeight,
+  children,
+  ...props
+}: CardRootProps) {
   return (
     <div
       data-slot="card"
@@ -75,7 +85,7 @@ interface CardTitleProps {
 
 function CardTitle({ children, icon }: CardTitleProps) {
   return (
-    <h3 className="flex items-center gap-2 font-fantasy text-xl font-bold text-(--color-primary)">
+    <h3 className="font-fantasy flex items-center gap-2 text-xl font-bold text-(--color-primary)">
       {icon && <span className="flex h-6 w-6 items-center justify-center">{icon}</span>}
       {children}
     </h3>
