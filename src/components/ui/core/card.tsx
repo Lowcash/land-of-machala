@@ -74,13 +74,42 @@ function CardRoot({
   )
 }
 
+interface CardHeaderProps extends Omit<StackProps, 'className'> {}
+
 function CardHeader({
+  display,
+  direction,
+  cols,
+  align,
+  justify,
+  gap,
+  fullWidth,
+  fullHeight,
+  wrap,
+  p,
+  flex,
   children,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
+}: CardHeaderProps) {
   return (
     <div
-      className="mb-4 flex items-center justify-between border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0"
+      data-slot="card-header"
+      className={cn(
+        'mb-4 border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
+        stackVariants({
+          display: display || 'flex',
+          direction: direction || 'row',
+          align: align || 'center',
+          justify: justify || 'between',
+          gap: gap || 'none',
+          cols,
+          fullWidth,
+          fullHeight,
+          wrap,
+          p,
+          flex,
+        })
+      )}
       {...props}
     >
       {children}
@@ -112,11 +141,11 @@ function CardContent({
         'text-(--color-ivory)/90',
         stackVariants({
           display,
-          direction,
+          direction: direction || 'col',
           cols,
-          align,
-          justify,
-          gap,
+          align: align || 'stretch',
+          justify: justify || 'start',
+          gap: gap || 'none',
           fullWidth,
           fullHeight,
           wrap,
@@ -131,13 +160,42 @@ function CardContent({
   )
 }
 
+interface CardFooterProps extends Omit<StackProps, 'className'> {}
+
 function CardFooter({
+  display,
+  direction,
+  cols,
+  align,
+  justify,
+  gap,
+  fullWidth,
+  fullHeight,
+  wrap,
+  p,
+  flex,
   children,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
+}: CardFooterProps) {
   return (
     <div
-      className="mt-4 flex items-center justify-end border-t border-(--color-secondary)/20 pt-4"
+      data-slot="card-footer"
+      className={cn(
+        'mt-4 border-t border-(--color-secondary)/20 pt-4',
+        stackVariants({
+          display: display || 'flex',
+          direction: direction || 'row',
+          align: align || 'center',
+          justify: justify || 'end',
+          gap: gap || 'none',
+          cols,
+          fullWidth,
+          fullHeight,
+          wrap,
+          p,
+          flex,
+        })
+      )}
       {...props}
     >
       {children}
