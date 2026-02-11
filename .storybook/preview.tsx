@@ -1,7 +1,6 @@
 import type { Preview } from '@storybook/nextjs-vite'
 
 import '../app/globals.css'
-import { RootWrapper } from '../app/layout'
 
 const preview: Preview = {
   parameters: {
@@ -15,13 +14,7 @@ const preview: Preview = {
     },
   },
 
-  decorators: [
-    (Story) => (
-      <RootWrapper>
-        <Story />
-      </RootWrapper>
-    ),
-  ],
+  decorators: [(Story) => <Story />],
 }
 
 export default preview
