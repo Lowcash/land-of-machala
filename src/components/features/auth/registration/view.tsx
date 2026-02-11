@@ -1,10 +1,10 @@
 import { REGISTRATION_BENEFITS } from '@/lib/game/constants/registration'
 
-import { VStack } from '@/components/ui/core/stack'
+import { HStack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { TextLink } from '@/components/ui/prefabs/typography/shared'
+import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { RegistrationBenefits } from './benefits'
@@ -20,9 +20,10 @@ export function RegistrationView() {
         <BrandedHero subtitle="Začni svou legendu" description="Tvá cesta začíná právě zde..." />
         <VStack gap="md" pb="md" fullWidth>
           <RegistrationCard />
-          <TextLink href="/login" align="center">
-            Již máš účet? Přihlas se zde
-          </TextLink>
+          <HStack gap="xs" justify="center">
+            <MutedText>Již máš účet?</MutedText>
+            <TextLink href="/login">Přihlas se zde</TextLink>
+          </HStack>
         </VStack>
       </VStack>
 

@@ -1,7 +1,3 @@
-'use client'
-
-import { useRouter } from 'next/navigation'
-
 import { LATEST_CHANGES } from '@/lib/game/constants/changelog'
 import { SERVER_STATS } from '@/lib/game/constants/stats'
 
@@ -18,15 +14,13 @@ import { Changelog } from './changelog'
 export const revalidate = 3600 // Revalidate every hour
 
 export function LoginView() {
-  const router = useRouter()
-
   return (
     <>
       {/* Left Column: Hero & Auth */}
       <VStack gap="md" fullWidth>
         <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
         <VStack gap="md" pb="md" fullWidth>
-          <LoginCard onRegister={() => router.push('/register')} />
+          <LoginCard />
         </VStack>
       </VStack>
 
