@@ -2,10 +2,12 @@
 
 import * as React from 'react'
 import type { ReactNode } from 'react'
+
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
+
 import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 
@@ -63,9 +65,7 @@ const AccordionContent = React.forwardRef<
     )}
     {...props}
   >
-    <div className="pt-1 pb-4">
-      {children}
-    </div>
+    <div className="pt-1 pb-4">{children}</div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
@@ -110,11 +110,7 @@ export function GameAccordion({
           value={item.value}
           className={cn('border-none', passthroughOnDesktop && 'lg:border-none')}
         >
-          <AccordionTrigger
-            className={cn(
-              passthroughOnDesktop && 'lg:hidden'
-            )}
-          >
+          <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
             {item.title}
           </AccordionTrigger>
           <AccordionContent

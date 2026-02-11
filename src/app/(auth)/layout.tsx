@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: React.PropsWithChildren) {
       <Stack
         fullWidth
         maxWidth="5xl"
-        gap="xxl"
+        gap="xl"
         align="end"
         justify="center"
         lg={{ direction: 'row' }}

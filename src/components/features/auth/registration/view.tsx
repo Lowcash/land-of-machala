@@ -4,7 +4,7 @@ import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { TextLink } from '@/components/ui/prefabs/typography/shared'
+import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { RegistrationBenefits } from './benefits'
@@ -16,18 +16,21 @@ export function RegistrationView() {
   return (
     <>
       {/* Left Column: Hero & Registration */}
-      <VStack gap="lg" fullWidth>
+      <VStack gap="md" fullWidth>
         <BrandedHero subtitle="Začni svou legendu" description="Tvá cesta začíná právě zde..." />
-        <VStack gap="md" fullWidth>
+        <VStack gap="md" pb="xl" fullWidth>
           <RegistrationCard />
-          <TextLink href="/login" align="center">
-            Již máš účet? Přihlas se zde
-          </TextLink>
+          <VStack gap="xs" align="center">
+            <MutedText align="center">Již máš účet?</MutedText>
+            <TextLink href="/login" align="center">
+              Přihlas se zde
+            </TextLink>
+          </VStack>
         </VStack>
       </VStack>
 
       {/* Right Column: Benefits & Lore */}
-      <VStack gap="lg" fullWidth>
+      <VStack gap="md" fullWidth>
         <GameAccordion
           passthroughOnDesktop
           items={[

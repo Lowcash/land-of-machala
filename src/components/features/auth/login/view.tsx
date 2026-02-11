@@ -6,7 +6,7 @@ import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { TextLink } from '@/components/ui/prefabs/typography/shared'
+import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { LoginCard } from './card'
@@ -18,18 +18,21 @@ export function LoginView() {
   return (
     <>
       {/* Left Column: Hero & Auth */}
-      <VStack gap="lg" fullWidth>
+      <VStack gap="md" fullWidth>
         <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
-        <VStack gap="md" fullWidth>
+        <VStack gap="md" pb="xl" fullWidth>
           <LoginCard />
-          <TextLink href="/register" align="center">
-            Ještě nemáš účet? Zaregistruj se zde
-          </TextLink>
+          <VStack gap="xs" align="center">
+            <MutedText align="center">Ještě nemáš účet?</MutedText>
+            <TextLink href="/register" align="center">
+              Zaregistruj se zde
+            </TextLink>
+          </VStack>
         </VStack>
       </VStack>
 
       {/* Right Column: Info & Footer */}
-      <VStack gap="lg" fullWidth>
+      <VStack gap="md" fullWidth>
         <GameAccordion
           passthroughOnDesktop
           items={[

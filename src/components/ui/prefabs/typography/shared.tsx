@@ -114,7 +114,11 @@ export interface TextLinkProps
 }
 
 export function TextLink({ className, variant, align, ...props }: TextLinkProps) {
-  return <Link className={cn(textLinkVariants({ variant }), className)} {...props}>
-    <Text as="span" align={align} color="inherit">{props.children}</Text>
-  </Link>
+  return (
+    <Link className={cn(textLinkVariants({ variant }), className)} {...props}>
+      <Text as="span" align={align} color="inherit">
+        {props.children}
+      </Text>
+    </Link>
+  )
 }
