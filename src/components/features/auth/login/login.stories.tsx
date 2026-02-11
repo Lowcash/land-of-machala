@@ -1,14 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { SERVER_STATS } from '@/lib/game/constants/stats'
-import { LoginCard } from './login.card'
-import { LoginForm } from './login.form'
-import { LoginView } from './login.view'
-import { Stats } from './stats'
+import AuthLayout from '@/app/(auth)/layout'
+
+import { LoginCard } from './card'
+import { LoginForm } from './form'
+import { LoginView } from './view'
 
 const meta: Meta<typeof LoginView> = {
   title: 'Features/Auth/Login',
   component: LoginView,
+  decorators: [
+    (Story) => (
+      <AuthLayout>
+        <Story />
+      </AuthLayout>
+    ),
+  ],
   tags: ['autodocs'],
 }
 
@@ -27,8 +34,4 @@ export const FormOnly: StoryObj<typeof LoginForm> = {
 
 export const CardOnly: StoryObj<typeof LoginCard> = {
   render: () => <LoginCard />,
-}
-
-export const StatsOnly: StoryObj<typeof Stats> = {
-  render: () => <Stats stats={SERVER_STATS} />,
 }

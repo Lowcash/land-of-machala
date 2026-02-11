@@ -2,7 +2,6 @@ import { type ChangelogEntry as ChangelogData } from '@/lib/game/constants/chang
 
 import { Card } from '@/components/ui/core/card'
 import { List, ListItem } from '@/components/ui/core/list'
-import { Text } from '@/components/ui/core/typography'
 import { ScrollIcon } from '@/components/ui/icons'
 import { Legend, MutedText } from '@/components/ui/prefabs/typography/shared'
 

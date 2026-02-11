@@ -1,8 +1,8 @@
 import { Card } from '@/components/ui/core/card'
 import { Divider } from '@/components/ui/shared/divider'
 
-import { LoginActions } from './login.actions'
-import { LoginForm } from './login.form'
+import { LoginActions } from './actions'
+import { LoginForm } from './form'
 
 interface LoginCardProps {
   onLogin?: (values: any) => void

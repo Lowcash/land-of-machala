@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { LoginView } from '@/components/features/auth/login.view'
+import { LoginView } from '@/components/features/auth/login/view'
 
 export const metadata: Metadata = {
   title: 'Login | Land of Machala',

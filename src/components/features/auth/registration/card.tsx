@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/core/card'
-import { RegistrationForm, RegistrationFormValues } from './registration.form'
+
+import { RegistrationForm, RegistrationFormValues } from './form'
 
 interface RegistrationCardProps {
   onRegister?: (values: RegistrationFormValues) => void

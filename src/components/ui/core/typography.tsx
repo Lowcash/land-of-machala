@@ -26,6 +26,7 @@ const headingVariants = cva('font-fantasy font-bold tracking-tight', {
       gold: 'text-(--color-gold)',
       info: 'text-(--color-info)',
       copper: 'text-(--color-secondary)',
+      inherit: 'text-inherit',
     },
     align: {
       left: 'text-left',
@@ -83,6 +84,7 @@ const textVariants = cva('leading-relaxed', {
       gold: 'text-(--color-gold)',
       info: 'text-(--color-info)',
       copper: 'text-(--color-secondary)',
+      inherit: 'text-inherit',
     },
     align: {
       left: 'text-left',

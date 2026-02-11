@@ -1,5 +1,9 @@
 import * as React from 'react'
 
+import Link from 'next/link'
+
+import { type VariantProps, cva } from 'class-variance-authority'
+
 import { cn } from '@/lib/utils'
 
 import { Text } from '@/components/ui/core/typography'
@@ -84,4 +88,33 @@ export function Legend({ align, bold, ...props }: TypographyPrefabProps) {
       {...props}
     />
   )
+}
+
+const textLinkVariants = cva('transition-colors hover:underline', {
+  variants: {
+    variant: {
+      primary: 'text-(--color-primary)',
+      secondary: 'text-(--color-secondary)',
+      ivory: 'text-(--color-ivory)',
+      danger: 'text-(--color-danger)',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+})
+
+export interface TextLinkProps
+  extends
+    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'color'>,
+    VariantProps<typeof textLinkVariants> {
+  href: string
+  className?: string
+  align?: 'left' | 'center' | 'right' | 'justify'
+}
+
+export function TextLink({ className, variant, align, ...props }: TextLinkProps) {
+  return <Link className={cn(textLinkVariants({ variant }), className)} {...props}>
+    <Text as="span" align={align} color="inherit">{props.children}</Text>
+  </Link>
 }
