@@ -13,7 +13,7 @@ export const revalidate = 3600 // Revalidate every hour
 
 export function LoginView() {
   return (
-    <VStack gap="xl" align="center" fullWidth={true}>
+    <VStack gap="xl" align="center">
       <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
       <LoginCard />
       <LoreQuote />
