@@ -18,11 +18,14 @@ type TypographyColor =
   | 'info'
   | 'copper'
 
-interface TypographyPrefabProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className' | 'color'> {
+interface TypographyPrefabProps extends Omit<
+  React.HTMLAttributes<HTMLParagraphElement>,
+  'className' | 'color'
+> {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
+  bold?: boolean
 }
 
 export function Value({ ...props }: TypographyPrefabProps) {
@@ -38,13 +41,7 @@ export function Value({ ...props }: TypographyPrefabProps) {
 }
 
 export function MutedText({ ...props }: TypographyPrefabProps) {
-  return (
-    <Text
-      variant="muted"
-      color={'secondary' as any}
-      {...props}
-    />
-  )
+  return <Text variant="muted" color={'secondary' as any} {...props} />
 }
 
 export function Description({ ...props }: TypographyPrefabProps) {
@@ -71,12 +68,6 @@ export function Decoration({ ...props }: TypographyPrefabProps) {
   )
 }
 
-export function Label({ ...props }: TypographyPrefabProps) {
-  return (
-    <Text
-      variant="small"
-      font="body"
-      {...props}
-    />
-  )
+export function Legend({ bold, ...props }: TypographyPrefabProps) {
+  return <Text variant="small" font="body" className={cn(bold && 'font-bold')} {...props} />
 }

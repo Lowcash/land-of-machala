@@ -88,12 +88,44 @@ function CardHeader({
   )
 }
 
+interface CardContentProps extends Omit<StackProps, 'className'> {}
+
 function CardContent({
+  display,
+  direction,
+  cols,
+  align,
+  justify,
+  gap,
+  fullWidth,
+  fullHeight,
+  wrap,
+  p,
+  flex,
   children,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'>) {
+}: CardContentProps) {
   return (
-    <div className="text-(--color-ivory)/90" {...props}>
+    <div
+      data-slot="card-content"
+      className={cn(
+        'text-(--color-ivory)/90',
+        stackVariants({
+          display,
+          direction,
+          cols,
+          align,
+          justify,
+          gap,
+          fullWidth,
+          fullHeight,
+          wrap,
+          p,
+          flex,
+        })
+      )}
+      {...props}
+    >
       {children}
     </div>
   )
