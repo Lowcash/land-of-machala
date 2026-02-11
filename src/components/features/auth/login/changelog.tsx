@@ -22,9 +22,20 @@ export function Changelog({ changes, minimal }: ChangelogProps) {
 
   if (minimal) {
     return (
-      <Card variant="subtle" padding="none">
-        <Card.Content>{content}</Card.Content>
-      </Card>
+      <>
+        {/* Mobile Accordion Mode */}
+        <Card variant="subtle" padding="none" lg={{ display: 'none' }}>
+          <Card.Content>{content}</Card.Content>
+        </Card>
+
+        {/* Desktop Normal Mode */}
+        <Card display="none" lg={{ display: 'flex' }} padding="lg">
+          <Card.Header>
+            <Card.Title icon={<ScrollIcon />}>Nejnovější změny</Card.Title>
+          </Card.Header>
+          <Card.Content>{content}</Card.Content>
+        </Card>
+      </>
     )
   }
 

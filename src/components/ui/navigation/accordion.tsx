@@ -102,13 +102,13 @@ export function GameAccordion({
       type="single"
       collapsible
       defaultValue={defaultValue}
-      className={cn('w-full', passthroughOnDesktop && 'lg:space-y-4', className)}
+      className={cn('flex flex-col gap-4 w-full', passthroughOnDesktop && 'lg:space-y-4', className)}
     >
       {items.map((item) => (
         <AccordionItem
           key={item.value}
           value={item.value}
-          className={cn('border-none', passthroughOnDesktop && 'lg:border-none')}
+          className={cn('border-none flex flex-col', passthroughOnDesktop && 'lg:border-none')}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
             {item.title}
@@ -123,7 +123,7 @@ export function GameAccordion({
               ]
             )}
           >
-            <VStack gap="md" pt="sm" lg={{ pt: 'none' }}>
+            <VStack gap="none" p="md" pt="none" lg={{ p: 'none' }}>
               {item.content}
             </VStack>
           </AccordionContent>

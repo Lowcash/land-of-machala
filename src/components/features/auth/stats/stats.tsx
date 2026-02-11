@@ -21,9 +21,20 @@ export function Stats({ stats, minimal }: StatsProps) {
 
   if (minimal) {
     return (
-      <Card variant="subtle" padding="none">
-        {content}
-      </Card>
+      <>
+        {/* Mobile Accordion Mode */}
+        <Card variant="subtle" padding="none" lg={{ display: 'none' }}>
+          {content}
+        </Card>
+
+        {/* Desktop Normal Mode (Minimal override) */}
+        <Card display="none" lg={{ display: 'flex' }} padding="lg">
+          <Card.Header>
+            <Card.Title icon={<UsersIcon />}>Statistiky serveru</Card.Title>
+          </Card.Header>
+          {content}
+        </Card>
+      </>
     )
   }
 

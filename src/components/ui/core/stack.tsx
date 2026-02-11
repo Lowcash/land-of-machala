@@ -9,6 +9,7 @@ export const stackVariants = cva('', {
     display: {
       flex: 'flex',
       grid: 'grid',
+      none: 'hidden',
     },
     direction: {
       row: 'flex-row',
@@ -143,6 +144,7 @@ const responsiveMaps = {
   display: {
     flex: { sm: 'sm:flex', md: 'md:flex', lg: 'lg:flex', xl: 'xl:flex' },
     grid: { sm: 'sm:grid', md: 'md:grid', lg: 'lg:grid', xl: 'xl:grid' },
+    none: { sm: 'sm:hidden', md: 'md:hidden', lg: 'lg:hidden', xl: 'xl:hidden' },
   },
   direction: {
     row: { sm: 'sm:flex-row', md: 'md:flex-row', lg: 'lg:flex-row', xl: 'xl:flex-row' },

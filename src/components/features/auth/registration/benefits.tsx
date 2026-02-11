@@ -26,9 +26,20 @@ export function RegistrationBenefits({ benefits, minimal }: RegistrationBenefits
 
   if (minimal) {
     return (
-      <Card variant="subtle" padding="none">
-        {content}
-      </Card>
+      <>
+        {/* Mobile Accordion Mode */}
+        <Card variant="subtle" padding="none" lg={{ display: 'none' }}>
+          {content}
+        </Card>
+
+        {/* Desktop Normal Mode */}
+        <Card display="none" lg={{ display: 'flex' }} padding="lg">
+          <Card.Header>
+            <Card.Title icon={<SparklesIcon size="md" />}>Začni své dobrodružství</Card.Title>
+          </Card.Header>
+          {content}
+        </Card>
+      </>
     )
   }
 
