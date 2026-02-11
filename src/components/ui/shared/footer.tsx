@@ -7,7 +7,7 @@ export function Footer() {
 
   return (
     <footer className="w-full border-t border-(--color-secondary)/20 py-6 text-center">
-      <MutedText as="span" textAlign="center" suppressHydrationWarning>
+      <MutedText as="span" suppressHydrationWarning>
         Verze {version} • © {year} Land of Machala
       </MutedText>
     </footer>

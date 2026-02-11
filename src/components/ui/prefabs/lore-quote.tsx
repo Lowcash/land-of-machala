@@ -9,9 +9,11 @@ export function LoreQuote() {
   return (
     <Card variant="subtle">
       <Card.Content>
-        <MutedText textAlign="center">
-          {quote}
-        </MutedText>
+        <div className="text-center">
+          <MutedText>
+            {quote}
+          </MutedText>
+        </div>
       </Card.Content>
     </Card>
   )

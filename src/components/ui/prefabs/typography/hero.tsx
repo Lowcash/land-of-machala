@@ -45,11 +45,7 @@ export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
 }
 
 export function HeroDescription({ children, ...props }: React.ComponentProps<typeof Description>) {
-  return (
-    <Description {...props}>
-      {children}
-    </Description>
-  )
+  return <Description {...props}>{children}</Description>
 }
 
 export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Decoration>) {

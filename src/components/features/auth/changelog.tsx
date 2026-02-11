@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/core/card'
 import { List, ListItem } from '@/components/ui/core/list'
 import { Text } from '@/components/ui/core/typography'
 import { ScrollIcon } from '@/components/ui/icons'
-import { MutedText } from '@/components/ui/prefabs/typography/shared'
+import { Label, MutedText } from '@/components/ui/prefabs/typography/shared'
 
 interface ChangelogProps {
   changes: ChangelogData[]
@@ -33,9 +33,9 @@ function ChangelogEntry({ entry }: { entry: ChangelogData }) {
     <ListItem>
       <MutedText>
         {entry.category && (
-          <Text as="span" variant="small" color={entry.color as any}>
+          <Label as="span" color={entry.color as any}>
             {entry.category}:{' '}
-          </Text>
+          </Label>
         )}
         {entry.description}
       </MutedText>
