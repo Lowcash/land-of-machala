@@ -20,12 +20,9 @@ export function RegistrationView() {
         <BrandedHero subtitle="Začni svou legendu" description="Tvá cesta začíná právě zde..." />
         <VStack gap="md" pb="xl" fullWidth>
           <RegistrationCard />
-          <VStack gap="xs" align="center">
-            <MutedText align="center">Již máš účet?</MutedText>
-            <TextLink href="/login" align="center">
-              Přihlas se zde
-            </TextLink>
-          </VStack>
+          <TextLink href="/login" align="center">
+            Již máš účet? Přihlas se zde
+          </TextLink>
         </VStack>
       </VStack>
 

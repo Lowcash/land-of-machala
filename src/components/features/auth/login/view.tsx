@@ -22,12 +22,9 @@ export function LoginView() {
         <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
         <VStack gap="md" pb="xl" fullWidth>
           <LoginCard />
-          <VStack gap="xs" align="center">
-            <MutedText align="center">Ještě nemáš účet?</MutedText>
-            <TextLink href="/register" align="center">
-              Zaregistruj se zde
-            </TextLink>
-          </VStack>
+          <TextLink href="/register" align="center">
+            Zaregistruj se zde
+          </TextLink>
         </VStack>
       </VStack>
 
