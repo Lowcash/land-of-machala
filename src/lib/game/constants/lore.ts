@@ -1,7 +1,3 @@
-export const LORE_QUOTES = [
-  'V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako ti před tebou?',
-  'Tvá cesta začíná právě teď. Každé rozhodnutí formuje tvůj osud.',
-  'Machala volá své hrdiny. Odpovíš na volání?',
-  'Nebezpečí číhá za každým rohem, ale s odvahou přichází sláva.',
-  'Dávné legendy praví o hrdinech, kteří změnili osud světa. Tvůj příběh začíná zde.',
-]
+import loreJson from './lore.json'
+
+export const LORE_QUOTES = loreJson as string[]

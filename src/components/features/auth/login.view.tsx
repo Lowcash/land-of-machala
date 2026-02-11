@@ -9,10 +9,8 @@ import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
 import { Footer } from '@/components/ui/shared/footer'
 
-/**
- * Main view for the login page.
- * Includes the branded hero, login card, lore quote, server stats, and changelog.
- */
+export const dynamic = 'force-dynamic'
+
 export function LoginView() {
   return (
     <VStack gap="xl" align="center" fullWidth={true}>
