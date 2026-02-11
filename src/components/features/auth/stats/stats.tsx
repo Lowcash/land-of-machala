@@ -7,20 +7,28 @@ import { MutedText, Value } from '@/components/ui/prefabs/typography/shared'
 
 interface StatsProps {
   stats: ServerStat[]
+  minimal?: boolean
 }
 
-export function Stats({ stats }: StatsProps) {
+export function Stats({ stats, minimal }: StatsProps) {
+  const content = (
+    <Stack display="grid" cols="2" gap="md">
+      {stats.map((stat) => (
+        <StatBlock key={stat.label} stat={stat} />
+      ))}
+    </Stack>
+  )
+
+  if (minimal) {
+    return content
+  }
+
   return (
     <Card padding="lg">
       <Card.Header>
         <Card.Title icon={<UsersIcon />}>Statistiky serveru</Card.Title>
       </Card.Header>
-
-      <Stack display="grid" cols="2" gap="md">
-        {stats.map((stat) => (
-          <StatBlock key={stat.label} stat={stat} />
-        ))}
-      </Stack>
+      {content}
     </Card>
   )
 }

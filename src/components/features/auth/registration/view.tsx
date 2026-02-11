@@ -37,8 +37,8 @@ export function RegistrationView() {
           items={[
             {
               value: 'benefits',
-              title: 'Výhody registrace',
-              content: <RegistrationBenefits benefits={REGISTRATION_BENEFITS} />,
+              title: 'Začni své dobrodružství',
+              content: <RegistrationBenefits benefits={REGISTRATION_BENEFITS} minimal />,
             },
           ]}
         />

@@ -339,7 +339,7 @@ const getResponsiveClasses = (breakpoint: Breakpoint, value?: BreakpointValue) =
 
 export interface StackProps
   extends
-    Omit<React.HTMLAttributes<HTMLElement>, 'className' | 'style'>,
+    Omit<React.HTMLAttributes<HTMLElement>, 'style'>,
     VariantProps<typeof stackVariants> {
   as?: React.ElementType
   sm?: BreakpointValue

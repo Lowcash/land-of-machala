@@ -31,13 +31,13 @@ export function LoginView() {
           items={[
             {
               value: 'stats',
-              title: 'Statistiky světa',
-              content: <Stats stats={SERVER_STATS} />,
+              title: 'Statistiky serveru',
+              content: <Stats stats={SERVER_STATS} minimal />,
             },
             {
               value: 'changelog',
               title: 'Poslední změny',
-              content: <Changelog changes={LATEST_CHANGES} />,
+              content: <Changelog changes={LATEST_CHANGES} minimal />,
             },
           ]}
         />

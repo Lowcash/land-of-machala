@@ -5,13 +5,11 @@ import { Stack, VStack } from '@/components/ui/core/stack'
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <VStack
-      fullHeight
       justify="center"
       align="center"
-      px="md"
-      py="xl"
-      md={{ px: 'lg' }}
-      lg={{ p: 'xl' }}
+      p="md"
+      md={{ p: 'xl' }}
+      className="min-h-dvh"
     >
       <Stack
         fullWidth
