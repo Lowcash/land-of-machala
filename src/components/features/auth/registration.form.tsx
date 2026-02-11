@@ -8,14 +8,16 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
 
-const registrationSchema = z.object({
-  email: z.string().email('Zadejte platný email'),
-  password: z.string().min(6, 'Heslo musí mít alespoň 6 znaků'),
-  confirmPassword: z.string().min(1, 'Potvrzení hesla je povinné'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Hesla se neshodují',
-  path: ['confirmPassword'],
-})
+const registrationSchema = z
+  .object({
+    email: z.string().email('Zadejte platný email'),
+    password: z.string().min(6, 'Heslo musí mít alespoň 6 znaků'),
+    confirmPassword: z.string().min(1, 'Potvrzení hesla je povinné'),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: 'Hesla se neshodují',
+    path: ['confirmPassword'],
+  })
 
 export type RegistrationFormValues = z.infer<typeof registrationSchema>
 
