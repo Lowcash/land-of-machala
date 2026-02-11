@@ -48,15 +48,7 @@ interface HeadingProps
   as?: 'h1' | 'h2' | 'h3' | 'h4'
 }
 
-export function Heading({
-  level,
-  font,
-  color,
-  align,
-  className,
-  as,
-  ...props
-}: HeadingProps) {
+export function Heading({ level, font, color, align, className, as, ...props }: HeadingProps) {
   const Component = as || level || 'h1'
   return (
     <Component
