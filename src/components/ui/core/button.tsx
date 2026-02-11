@@ -11,11 +11,11 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'rounded-lg border-2 border-[var(--color-primary)] bg-black/80 text-center text-[var(--color-primary)] hover:scale-[0.99] hover:bg-[var(--color-primary)]/20 disabled:border-[var(--color-secondary)]/40 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-secondary)]',
+          'rounded-lg border-2 border-[var(--color-primary)] bg-black/80 text-center text-[var(--color-primary)] enabled:hover:scale-[0.99] enabled:hover:bg-[var(--color-primary)]/20 disabled:border-[var(--color-secondary)]/40 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-secondary)]',
         secondary:
-          'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-[var(--color-ivory)] hover:scale-[0.99] hover:border-[var(--color-ivory)]/40 hover:bg-black/80 hover:text-[var(--color-primary)] disabled:border-[var(--color-secondary)]/30 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-ivory)]/40',
+          'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-[var(--color-ivory)] enabled:hover:scale-[0.99] enabled:hover:border-[var(--color-ivory)]/40 enabled:hover:bg-black/80 enabled:hover:text-[var(--color-primary)] disabled:border-[var(--color-secondary)]/30 disabled:bg-[var(--color-secondary)]/10 disabled:text-[var(--color-ivory)]/40',
         choice:
-          'flex-col items-start justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-left text-[var(--color-ivory)] hover:scale-[0.99] hover:border-(--color-primary) hover:bg-(--color-primary)/10',
+          'flex-col items-start justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-left text-[var(--color-ivory)] enabled:hover:scale-[0.99] enabled:hover:border-(--color-primary) enabled:hover:bg-(--color-primary)/10',
       },
       size: {
         default: 'p-2',
