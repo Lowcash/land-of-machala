@@ -1,3 +1,7 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
+
 import { LATEST_CHANGES } from '@/lib/game/constants/changelog'
 import { SERVER_STATS } from '@/lib/game/constants/stats'
 
@@ -6,7 +10,6 @@ import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { LoginCard } from './card'
@@ -15,16 +18,15 @@ import { Changelog } from './changelog'
 export const revalidate = 3600 // Revalidate every hour
 
 export function LoginView() {
+  const router = useRouter()
+
   return (
     <>
       {/* Left Column: Hero & Auth */}
       <VStack gap="md" fullWidth>
         <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
-        <VStack gap="md" pb="xl" fullWidth>
-          <LoginCard />
-          <TextLink href="/register" align="center">
-            Zaregistruj se zde
-          </TextLink>
+        <VStack gap="md" pb="md" fullWidth>
+          <LoginCard onRegister={() => router.push('/register')} />
         </VStack>
       </VStack>
 

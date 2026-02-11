@@ -6,7 +6,7 @@ export function Footer() {
   const { year, version } = resolveFooterData()
 
   return (
-    <footer className="w-full border-t border-(--color-secondary)/20 py-6 text-center">
+    <footer className="w-full border-t border-(--color-secondary)/20 py-4 text-center">
       <MutedText as="span" suppressHydrationWarning>
         Verze {version} • © {year} Land of Machala
       </MutedText>
