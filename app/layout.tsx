@@ -23,6 +23,8 @@ const philosopher = Philosopher({
   display: 'swap',
 })
 
+import { Background } from '@/components/ui/shared/background'
+
 export const metadata: Metadata = {
   title: 'Land of Machala',
   description: 'An epic RPG adventure',
@@ -31,8 +33,9 @@ export const metadata: Metadata = {
 export function RootWrapper({ children }: { children: React.ReactNode }) {
   return (
     <div
-      className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased`}
+      className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)`}
     >
+      <Background />
       {children}
     </div>
   )
@@ -44,8 +47,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="bg-black">
+      <body className="bg-(--color-background) text-(--color-ivory)">
         <RootWrapper>{children}</RootWrapper>
       </body>
     </html>
