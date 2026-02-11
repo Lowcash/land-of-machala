@@ -24,11 +24,7 @@ export const DividerWithLabel: StoryObj<typeof Divider> = {
 }
 
 export const FooterBasic: StoryObj<typeof Footer> = {
-  render: () => (
-    <div className="border border-white/10 p-4">
-      <Footer />
-    </div>
-  ),
+  render: () => <Footer />,
 }
 
 export const LoreQuoteBasic: StoryObj<typeof LoreQuote> = {
