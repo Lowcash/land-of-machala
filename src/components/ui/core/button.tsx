@@ -6,7 +6,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import { Loader } from './loader'
 
 const buttonVariants = cva(
-  'group flex items-center justify-center gap-3 font-fantasy text-sm shadow-lg shadow-black/40 backdrop-blur-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:pointer-events-none',
+  'group flex items-center justify-center gap-3 font-fantasy text-sm shadow-lg shadow-black/40 backdrop-blur-md transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-primary)] disabled:cursor-not-allowed',
   {
     variants: {
       variant: {
