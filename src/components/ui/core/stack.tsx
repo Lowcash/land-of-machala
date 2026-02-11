@@ -78,6 +78,10 @@ export const stackVariants = cva('', {
       full: 'max-w-full',
       prose: 'max-w-prose',
     },
+    mx: {
+      none: '',
+      auto: 'mx-auto',
+    },
   },
   defaultVariants: {
     display: 'flex',
@@ -89,6 +93,7 @@ export const stackVariants = cva('', {
     fullHeight: false,
     wrap: false,
     maxWidth: 'none',
+    mx: 'none',
   },
 })
 
@@ -115,6 +120,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       p,
       flex,
       maxWidth,
+      mx,
       ...props
     },
     ref
@@ -135,6 +141,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
           p,
           flex,
           maxWidth,
+          mx,
         })}
         {...props}
       />

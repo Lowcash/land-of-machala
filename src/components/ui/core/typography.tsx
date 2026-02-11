@@ -7,10 +7,10 @@ import { cn } from '@/lib/utils'
 const headingVariants = cva('font-fantasy font-bold tracking-tight', {
   variants: {
     level: {
-      h1: 'text-4xl lg:text-5xl',
-      h2: 'text-3xl lg:text-4xl',
-      h3: 'text-2xl lg:text-3xl',
-      h4: 'text-xl lg:text-2xl',
+      h1: 'text-4xl',
+      h2: 'text-3xl',
+      h3: 'text-2xl',
+      h4: 'text-xl',
     },
     font: {
       fantasy: 'font-fantasy',
@@ -27,6 +27,12 @@ const headingVariants = cva('font-fantasy font-bold tracking-tight', {
       info: 'text-(--color-info)',
       copper: 'text-(--color-secondary)',
     },
+    align: {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+      justify: 'text-justify',
+    },
   },
   defaultVariants: {
     level: 'h1',
@@ -42,11 +48,19 @@ interface HeadingProps
   as?: 'h1' | 'h2' | 'h3' | 'h4'
 }
 
-export function Heading({ level, font, color, className, as, ...props }: HeadingProps) {
+export function Heading({
+  level,
+  font,
+  color,
+  align,
+  className,
+  as,
+  ...props
+}: HeadingProps) {
   const Component = as || level || 'h1'
   return (
     <Component
-      className={cn(headingVariants({ level, font, color: color as any }), className)}
+      className={cn(headingVariants({ level, font, color: color as any, align }), className)}
       {...props}
     />
   )
@@ -78,6 +92,12 @@ const textVariants = cva('leading-relaxed', {
       info: 'text-(--color-info)',
       copper: 'text-(--color-secondary)',
     },
+    align: {
+      left: 'text-left',
+      center: 'text-center',
+      right: 'text-right',
+      justify: 'text-justify',
+    },
   },
   defaultVariants: {
     variant: 'primary',
@@ -97,13 +117,14 @@ export function Text({
   variant,
   font,
   color,
+  align,
   className,
   as: Component = 'p',
   ...props
 }: TextProps) {
   return (
     <Component
-      className={cn(textVariants({ variant, font, color: color as any }), className)}
+      className={cn(textVariants({ variant, font, color: color as any, align }), className)}
       {...props}
     />
   )

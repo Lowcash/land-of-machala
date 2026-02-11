@@ -27,49 +27,61 @@ interface TypographyPrefabProps extends Omit<
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
+  align?: 'left' | 'center' | 'right' | 'justify'
   bold?: boolean
 }
 
-export function Value({ ...props }: TypographyPrefabProps) {
+export function Value({ align, ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="fantasy-value"
       font="fantasy"
       color={'ivory' as any}
+      align={align}
       className="tracking-wider"
       {...props}
     />
   )
 }
 
-export function MutedText({ ...props }: TypographyPrefabProps) {
-  return <Text variant="muted" color={'secondary' as any} {...props} />
+export function MutedText({ align, ...props }: TypographyPrefabProps) {
+  return <Text variant="muted" color={'secondary' as any} align={align} {...props} />
 }
 
-export function Description({ ...props }: TypographyPrefabProps) {
+export function Description({ align, ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="muted"
       font="body"
       color={'secondary' as any}
+      align={align}
       className="text-xs italic sm:text-sm"
       {...props}
     />
   )
 }
 
-export function Decoration({ ...props }: TypographyPrefabProps) {
+export function Decoration({ align, ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="small"
       color={'secondary' as any}
       font="fantasy"
+      align={align}
       className="tracking-widest uppercase opacity-60"
       {...props}
     />
   )
 }
 
-export function Legend({ bold, ...props }: TypographyPrefabProps) {
-  return <Text variant="small" font="body" className={cn(bold && 'font-bold')} {...props} />
+export function Legend({ align, bold, ...props }: TypographyPrefabProps) {
+  return (
+    <Text
+      variant="small"
+      font="body"
+      align={align}
+      className={cn(bold && 'font-bold')}
+      {...props}
+    />
+  )
 }

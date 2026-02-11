@@ -16,13 +16,16 @@ export function LoginView() {
     <VStack fullHeight justify="center" p="xl" align="center">
       <HStack gap="xxl" align="start" justify="center" wrap fullWidth maxWidth="full">
         {/* Left Column: Hero & Auth */}
-        <VStack gap="xl" flex="1" align="center" maxWidth="xl">
-          <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
+        <VStack gap="xl" maxWidth="md" fullWidth mx="auto">
+          <BrandedHero
+            subtitle="Vytvoř si nový účet"
+            description="Tvá legenda čeká na sepsání..."
+          />
           <LoginCard />
         </VStack>
 
         {/* Right Column: Info & Footer */}
-        <VStack gap="lg" flex="1" maxWidth="2xl">
+        <VStack gap="lg" maxWidth="md" fullWidth mx="auto">
           <Stats stats={SERVER_STATS} />
           <Changelog changes={LATEST_CHANGES} />
           <LoreQuote />

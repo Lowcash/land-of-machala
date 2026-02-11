@@ -8,8 +8,8 @@ export function LoreQuote() {
 
   return (
     <Card variant="subtle">
-      <Card.Content align="center">
-        <MutedText>{quote}</MutedText>
+      <Card.Content>
+        <MutedText align="center">{quote}</MutedText>
       </Card.Content>
     </Card>
   )
