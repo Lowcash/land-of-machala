@@ -5,6 +5,7 @@ import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
 import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
+import { Text } from '@/components/ui/core/typography'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { RegistrationBenefits } from './benefits'
@@ -21,7 +22,9 @@ export function RegistrationView() {
         <VStack gap="md" pb="md" fullWidth>
           <RegistrationCard />
           <HStack gap="xs" justify="center">
-            <MutedText>Již máš účet?</MutedText>
+            <Text variant="primary" color="secondary">
+              Již máš účet?
+            </Text>
             <TextLink href="/login">Přihlas se zde</TextLink>
           </HStack>
         </VStack>

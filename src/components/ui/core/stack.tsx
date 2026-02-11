@@ -79,6 +79,22 @@ export const stackVariants = cva('', {
       lg: 'pb-6',
       xl: 'pb-8',
     },
+    px: {
+      none: 'px-0',
+      xs: 'px-1',
+      sm: 'px-2',
+      md: 'px-4',
+      lg: 'px-6',
+      xl: 'px-8',
+    },
+    py: {
+      none: 'py-0',
+      xs: 'py-1',
+      sm: 'py-2',
+      md: 'py-4',
+      lg: 'py-6',
+      xl: 'py-8',
+    },
     flex: {
       '1': 'flex-1',
       auto: 'flex-auto',
@@ -219,6 +235,22 @@ const responsiveMaps = {
     lg: { sm: 'sm:pb-6', md: 'md:pb-6', lg: 'lg:pb-6', xl: 'xl:pb-6' },
     xl: { sm: 'sm:pb-8', md: 'md:pb-8', lg: 'lg:pb-8', xl: 'xl:pb-8' },
   },
+  px: {
+    none: { sm: 'sm:px-0', md: 'md:px-0', lg: 'lg:px-0', xl: 'xl:px-0' },
+    xs: { sm: 'sm:px-1', md: 'md:px-1', lg: 'lg:px-1', xl: 'xl:px-1' },
+    sm: { sm: 'sm:px-2', md: 'md:px-2', lg: 'lg:px-2', xl: 'xl:px-2' },
+    md: { sm: 'sm:px-4', md: 'md:px-4', lg: 'lg:px-4', xl: 'xl:px-4' },
+    lg: { sm: 'sm:px-6', md: 'md:px-6', lg: 'lg:px-6', xl: 'xl:px-6' },
+    xl: { sm: 'sm:px-8', md: 'md:px-8', lg: 'lg:px-8', xl: 'xl:px-8' },
+  },
+  py: {
+    none: { sm: 'sm:py-0', md: 'md:py-0', lg: 'lg:py-0', xl: 'xl:py-0' },
+    xs: { sm: 'sm:py-1', md: 'md:py-1', lg: 'lg:py-1', xl: 'xl:py-1' },
+    sm: { sm: 'sm:py-2', md: 'md:py-2', lg: 'lg:py-2', xl: 'xl:py-2' },
+    md: { sm: 'sm:py-4', md: 'md:py-4', lg: 'lg:py-4', xl: 'xl:py-4' },
+    lg: { sm: 'sm:py-6', md: 'md:py-6', lg: 'lg:py-6', xl: 'xl:py-6' },
+    xl: { sm: 'sm:py-8', md: 'md:py-8', lg: 'lg:py-8', xl: 'xl:py-8' },
+  },
   flex: {
     '1': { sm: 'sm:flex-1', md: 'md:flex-1', lg: 'lg:flex-1', xl: 'xl:flex-1' },
     auto: { sm: 'sm:flex-auto', md: 'md:flex-auto', lg: 'lg:flex-auto', xl: 'xl:flex-auto' },
@@ -258,6 +290,8 @@ type BreakpointValue = {
   p?: keyof typeof responsiveMaps.p
   pt?: keyof typeof responsiveMaps.pt
   pb?: keyof typeof responsiveMaps.pb
+  px?: keyof typeof responsiveMaps.px
+  py?: keyof typeof responsiveMaps.py
   flex?: keyof typeof responsiveMaps.flex
   maxWidth?: keyof typeof responsiveMaps.maxWidth
   mx?: keyof typeof responsiveMaps.mx
@@ -282,6 +316,8 @@ const getResponsiveClasses = (breakpoint: Breakpoint, value?: BreakpointValue) =
   if (value.p) classes.push(responsiveMaps.p[value.p][breakpoint])
   if (value.pt) classes.push(responsiveMaps.pt[value.pt][breakpoint])
   if (value.pb) classes.push(responsiveMaps.pb[value.pb][breakpoint])
+  if (value.px) classes.push(responsiveMaps.px[value.px][breakpoint])
+  if (value.py) classes.push(responsiveMaps.py[value.py][breakpoint])
   if (value.flex) classes.push(responsiveMaps.flex[value.flex][breakpoint])
   if (value.maxWidth) classes.push(responsiveMaps.maxWidth[value.maxWidth][breakpoint])
   if (value.mx) classes.push(responsiveMaps.mx[value.mx][breakpoint])
@@ -328,6 +364,8 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       p,
       pt,
       pb,
+      px,
+      py,
       flex,
       maxWidth,
       mx,
@@ -356,6 +394,8 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
             p,
             pt,
             pb,
+            px,
+            py,
             flex,
             maxWidth,
             mx,
