@@ -31,7 +31,7 @@ export function Changelog({ changes }: ChangelogProps) {
 function ChangelogEntry({ entry }: { entry: ChangelogData }) {
   return (
     <ListItem>
-      <MutedText color="primary" className="text-sm">
+      <MutedText>
         {entry.category && (
           <Text as="span" variant="small" color={entry.color as any}>
             {entry.category}:{' '}

@@ -1,18 +1,17 @@
-import { LORE_QUOTES } from '@/lib/game/constants/lore'
+import { resolveLoreQuote } from '@/lib/game/utils/resolvers'
 
 import { Card } from '@/components/ui/core/card'
-import { Text } from '@/components/ui/core/typography'
+import { MutedText } from '@/components/ui/prefabs/typography/shared'
 
 export function LoreQuote() {
-  const randomIndex = Math.floor(Math.random() * LORE_QUOTES.length)
-  const quote = LORE_QUOTES[randomIndex]
+  const quote = resolveLoreQuote()
 
   return (
     <Card variant="subtle">
       <Card.Content>
-        <Text font="body" variant="muted" className="text-center italic">
+        <MutedText textAlign="center">
           {quote}
-        </Text>
+        </MutedText>
       </Card.Content>
     </Card>
   )

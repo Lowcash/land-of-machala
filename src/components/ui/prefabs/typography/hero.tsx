@@ -46,7 +46,7 @@ export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
 
 export function HeroDescription({ children, ...props }: React.ComponentProps<typeof Description>) {
   return (
-    <Description className="text-[#8b7355]" {...props}>
+    <Description {...props}>
       {children}
     </Description>
   )

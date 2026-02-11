@@ -7,53 +7,70 @@ import { Text } from '@/components/ui/core/typography'
  * Use these instead of raw Text components with repetitive props.
  */
 
-interface TypographyPrefabProps extends React.HTMLAttributes<HTMLParagraphElement> {
+interface TypographyPrefabProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className'> {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
+  textAlign?: 'left' | 'center' | 'right'
 }
 
-export function Value({ className, ...props }: TypographyPrefabProps) {
+export function Value({ textAlign = 'left', ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="fantasy-value"
       font="fantasy"
       color={'ivory' as any}
-      className={cn('tracking-wider', className)}
+      className={cn('tracking-wider', {
+        'text-left': textAlign === 'left',
+        'text-center': textAlign === 'center',
+        'text-right': textAlign === 'right',
+      })}
       {...props}
     />
   )
 }
 
-export function MutedText({ className, ...props }: TypographyPrefabProps) {
+export function MutedText({ textAlign = 'left', ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="muted"
       color={'secondary' as any}
-      className={className}
+      className={cn({
+        'text-left': textAlign === 'left',
+        'text-center': textAlign === 'center',
+        'text-right': textAlign === 'right',
+      })}
       {...props}
     />
   )
 }
 
-export function Description({ className, ...props }: TypographyPrefabProps) {
+export function Description({ textAlign = 'left', ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="muted"
       font="body"
       color={'secondary' as any}
-      className={cn('text-xs italic sm:text-sm', className)}
+      className={cn('text-xs italic sm:text-sm', {
+        'text-left': textAlign === 'left',
+        'text-center': textAlign === 'center',
+        'text-right': textAlign === 'right',
+      })}
       {...props}
     />
   )
 }
 
-export function Decoration({ className, ...props }: TypographyPrefabProps) {
+export function Decoration({ textAlign = 'left', ...props }: TypographyPrefabProps) {
   return (
     <Text
       variant="small"
       color={'secondary' as any}
       font="fantasy"
-      className={cn('tracking-widest uppercase opacity-60', className)}
+      className={cn('tracking-widest uppercase opacity-60', {
+        'text-left': textAlign === 'left',
+        'text-center': textAlign === 'center',
+        'text-right': textAlign === 'right',
+      })}
       {...props}
     />
   )

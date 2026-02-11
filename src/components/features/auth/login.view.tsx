@@ -9,7 +9,7 @@ import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
 import { Footer } from '@/components/ui/shared/footer'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600 // Revalidate every hour
 
 export function LoginView() {
   return (

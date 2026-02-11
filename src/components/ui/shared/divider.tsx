@@ -9,7 +9,7 @@ export function Divider({ label }: DividerProps) {
   return (
     <HStack align="center" gap="md" fullWidth>
       <div className="h-px flex-1 bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent"></div>
-      {label && <DecorativeLabel className="text-xs">{label}</DecorativeLabel>}
+      {label && <DecorativeLabel>{label}</DecorativeLabel>}
       <div className="h-px flex-1 bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent"></div>
     </HStack>
   )
