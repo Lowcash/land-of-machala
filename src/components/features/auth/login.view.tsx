@@ -4,7 +4,7 @@ import { SERVER_STATS } from '@/lib/game/constants/stats'
 import { Changelog } from '@/components/features/auth/changelog'
 import { LoginCard } from '@/components/features/auth/login.card'
 import { Stats } from '@/components/features/auth/stats'
-import { VStack } from '@/components/ui/core/stack'
+import { HStack, VStack } from '@/components/ui/core/stack'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
 import { Footer } from '@/components/ui/shared/footer'
@@ -13,22 +13,22 @@ export const revalidate = 3600 // Revalidate every hour
 
 export function LoginView() {
   return (
-    <main className="container mx-auto flex min-h-screen max-w-6xl items-center justify-center p-6 py-12 lg:py-24">
-      <div className="grid w-full grid-cols-1 gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
-        {/* Left Column: Hero & Auth Form */}
-        <VStack gap="xl" align="center">
+    <VStack fullHeight justify="center" p="xl" align="center">
+      <HStack gap="xxl" align="start" justify="center" wrap fullWidth maxWidth="full">
+        {/* Left Column: Hero & Auth */}
+        <VStack gap="xl" flex="1" align="center" maxWidth="xl">
           <BrandedHero subtitle="Vytvoř si nový účet" description="Tvá legenda čeká na sepsání..." />
           <LoginCard />
         </VStack>
 
-        {/* Right Column: Secondary Info */}
-        <VStack gap="xl">
+        {/* Right Column: Info & Footer */}
+        <VStack gap="lg" flex="1" maxWidth="2xl">
           <Stats stats={SERVER_STATS} />
           <Changelog changes={LATEST_CHANGES} />
           <LoreQuote />
           <Footer />
         </VStack>
-      </div>
-    </main>
+      </HStack>
+    </VStack>
   )
 }
