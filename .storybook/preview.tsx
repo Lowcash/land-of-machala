@@ -14,7 +14,13 @@ const preview: Preview = {
     },
   },
 
-  decorators: [(Story) => <Story />],
+  decorators: [
+    (Story) => (
+      <div className="font-body antialiased">
+        <Story />
+      </div>
+    ),
+  ],
 }
 
 export default preview

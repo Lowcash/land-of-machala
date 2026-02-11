@@ -5,7 +5,7 @@ import { LoginForm } from '@/components/features/auth/login.form'
 import { LoginView } from '@/components/features/auth/login.view'
 
 const meta: Meta<typeof LoginView> = {
-  title: 'Examples/Login Page',
+  title: 'Features/Auth/Login',
   component: LoginView,
 }
 
@@ -21,5 +21,8 @@ export const FormOnly: Story = {
 }
 
 export const FullPage: Story = {
+  parameters: {
+    layout: 'fullscreen',
+  },
   render: () => <LoginView />,
 }

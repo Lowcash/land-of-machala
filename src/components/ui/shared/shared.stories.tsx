@@ -5,7 +5,7 @@ import { Divider } from './divider'
 import { Footer } from './footer'
 
 const meta: Meta<typeof Divider> = {
-  title: 'Shared/Components',
+  title: 'Shared/Layout',
   component: Divider,
   parameters: {
     layout: 'centered',

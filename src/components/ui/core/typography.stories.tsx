@@ -6,7 +6,7 @@ import { Stack } from './stack'
 import { Heading, Text } from './typography'
 
 const meta: Meta<typeof Heading> = {
-  title: 'UI/Typography',
+  title: 'Core/Typography',
   tags: ['autodocs'],
 }
 
