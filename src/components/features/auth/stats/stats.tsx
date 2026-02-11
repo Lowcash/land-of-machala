@@ -20,7 +20,11 @@ export function Stats({ stats, minimal }: StatsProps) {
   )
 
   if (minimal) {
-    return content
+    return (
+      <Card variant="subtle" padding="none">
+        {content}
+      </Card>
+    )
   }
 
   return (

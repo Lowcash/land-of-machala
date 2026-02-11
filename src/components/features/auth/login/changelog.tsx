@@ -21,7 +21,11 @@ export function Changelog({ changes, minimal }: ChangelogProps) {
   )
 
   if (minimal) {
-    return content
+    return (
+      <Card variant="subtle" padding="none">
+        <Card.Content>{content}</Card.Content>
+      </Card>
+    )
   }
 
   return (

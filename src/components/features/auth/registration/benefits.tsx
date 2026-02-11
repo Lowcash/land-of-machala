@@ -25,7 +25,11 @@ export function RegistrationBenefits({ benefits, minimal }: RegistrationBenefits
   )
 
   if (minimal) {
-    return <VStack gap="md">{content}</VStack>
+    return (
+      <Card variant="subtle" padding="none">
+        {content}
+      </Card>
+    )
   }
 
   return (

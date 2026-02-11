@@ -117,6 +117,12 @@ export const stackVariants = cva('', {
       none: '',
       auto: 'mx-auto',
     },
+    minHeight: {
+      none: '',
+      screen: 'min-h-screen',
+      dvh: 'min-h-dvh',
+      full: 'min-h-full',
+    },
   },
   defaultVariants: {
     display: 'flex',
@@ -278,6 +284,17 @@ const responsiveMaps = {
     none: { sm: 'sm:mx-0', md: 'md:mx-0', lg: 'lg:mx-0', xl: 'xl:mx-0' },
     auto: { sm: 'sm:mx-auto', md: 'md:mx-auto', lg: 'lg:mx-auto', xl: 'xl:mx-auto' },
   },
+  minHeight: {
+    none: { sm: 'sm:min-h-0', md: 'md:min-h-0', lg: 'lg:min-h-0', xl: 'xl:min-h-0' },
+    screen: {
+      sm: 'sm:min-h-screen',
+      md: 'md:min-h-screen',
+      lg: 'lg:min-h-screen',
+      xl: 'xl:min-h-screen',
+    },
+    dvh: { sm: 'sm:min-h-dvh', md: 'md:min-h-dvh', lg: 'lg:min-h-dvh', xl: 'xl:min-h-dvh' },
+    full: { sm: 'sm:min-h-full', md: 'md:min-h-full', lg: 'lg:min-h-full', xl: 'xl:min-h-full' },
+  },
 }
 
 type BreakpointValue = {
@@ -295,6 +312,7 @@ type BreakpointValue = {
   flex?: keyof typeof responsiveMaps.flex
   maxWidth?: keyof typeof responsiveMaps.maxWidth
   mx?: keyof typeof responsiveMaps.mx
+  minHeight?: keyof typeof responsiveMaps.minHeight
   fullWidth?: boolean
   fullHeight?: boolean
   wrap?: boolean
@@ -321,6 +339,7 @@ const getResponsiveClasses = (breakpoint: Breakpoint, value?: BreakpointValue) =
   if (value.flex) classes.push(responsiveMaps.flex[value.flex][breakpoint])
   if (value.maxWidth) classes.push(responsiveMaps.maxWidth[value.maxWidth][breakpoint])
   if (value.mx) classes.push(responsiveMaps.mx[value.mx][breakpoint])
+  if (value.minHeight) classes.push(responsiveMaps.minHeight[value.minHeight][breakpoint])
 
   if (value.fullWidth !== undefined) {
     classes.push(`${breakpoint}:${value.fullWidth ? 'w-full' : 'w-auto'}`)
@@ -339,7 +358,7 @@ const getResponsiveClasses = (breakpoint: Breakpoint, value?: BreakpointValue) =
 
 export interface StackProps
   extends
-    Omit<React.HTMLAttributes<HTMLElement>, 'style'>,
+    Omit<React.HTMLAttributes<HTMLElement>, 'className' | 'style'>,
     VariantProps<typeof stackVariants> {
   as?: React.ElementType
   sm?: BreakpointValue
@@ -369,6 +388,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       flex,
       maxWidth,
       mx,
+      minHeight,
       sm,
       md,
       lg,
@@ -399,6 +419,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
             flex,
             maxWidth,
             mx,
+            minHeight,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
