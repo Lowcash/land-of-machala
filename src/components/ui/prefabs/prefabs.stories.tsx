@@ -36,14 +36,12 @@ export const TypographyPrefabs: StoryObj = {
 
 export const ChangelogBasic: StoryObj<typeof Changelog> = {
   render: () => (
-    <div className="w-[500px]">
-      <Changelog 
-        changes={[
-          { category: 'Oprava', color: 'danger', description: 'Opraveno padání hry při startu.' },
-          { category: 'Novinka', color: 'success', description: 'Přidán systém dynamického pozadí.' },
-          { category: 'Vylepšení', color: 'gold', description: 'Optimalizace vykreslování UI.' },
-        ]} 
-      />
-    </div>
+    <Changelog 
+      changes={[
+        { category: 'Oprava', color: 'danger', description: 'Opraveno padání hry při startu.' },
+        { category: 'Novinka', color: 'success', description: 'Přidán systém dynamického pozadí.' },
+        { category: 'Vylepšení', color: 'gold', description: 'Optimalizace vykreslování UI.' },
+      ]} 
+    />
   ),
 }

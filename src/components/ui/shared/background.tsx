@@ -2,24 +2,10 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
-import { usePathname } from 'next/navigation'
-
-/**
- * Maps application paths to background location names.
- */
-const PATH_TO_LOCATION: Record<string, string> = {
-  '/login': 'city',
-  '/': 'city', // Default for landing page
-}
-
-const BACKGROUNDS: Record<string, string> = {
-  city: '/assets/locations/city.jpg',
-}
+import { useBackground } from '@/hooks/game/use-background'
 
 export function Background() {
-  const pathname = usePathname()
-  const location = PATH_TO_LOCATION[pathname] || 'city'
-  const src = BACKGROUNDS[location]
+  const { src } = useBackground()
 
   if (!src) return null
 
@@ -46,8 +32,8 @@ export function Background() {
             sizes="100vw"
             quality={85}
           />
-          {/* Vignette overlay for better text readability */}
-          <div className="absolute inset-0 bg-radial-[at_50%_50%] from-transparent via-black/20 to-black/60" />
+          {/* Linear gradient overlay for better text readability */}
+          <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90" />
         </motion.div>
       </AnimatePresence>
     </div>

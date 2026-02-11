@@ -15,33 +15,21 @@ const meta: Meta<typeof Divider> = {
 export default meta
 
 export const DividerBasic: StoryObj<typeof Divider> = {
-  render: () => (
-    <div className="w-[400px]">
-      <Divider />
-    </div>
-  ),
+  render: () => <Divider />,
 }
 
 export const DividerWithLabel: StoryObj<typeof Divider> = {
-  render: () => (
-    <div className="w-[400px]">
-      <Divider label="Nebo" />
-    </div>
-  ),
+  render: () => <Divider label="Nebo" />,
 }
 
 export const FooterBasic: StoryObj<typeof Footer> = {
   render: () => (
-    <div className="w-[600px] border border-white/10 p-4">
+    <div className="border border-white/10 p-4">
       <Footer />
     </div>
   ),
 }
 
 export const LoreQuoteBasic: StoryObj<typeof LoreQuote> = {
-  render: () => (
-    <div className="max-w-[500px]">
-      <LoreQuote />
-    </div>
-  ),
+  render: () => <LoreQuote />,
 }
