@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
+
+import { LoreQuote } from '../prefabs/lore-quote'
 import { Divider } from './divider'
 import { Footer } from './footer'
-import { LoreQuote } from '../prefabs/lore-quote'
 
 const meta: Meta<typeof Divider> = {
   title: 'Shared/Components',

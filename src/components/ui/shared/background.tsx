@@ -1,8 +1,9 @@
 'use client'
 
-import { motion, AnimatePresence } from 'framer-motion'
 import Image from 'next/image'
+
 import { useBackground } from '@/hooks/game/use-background'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export function Background() {
   const { src } = useBackground()
@@ -10,10 +11,7 @@ export function Background() {
   if (!src) return null
 
   return (
-    <div 
-      className="fixed inset-0 -z-50 overflow-hidden bg-(--color-background)"
-      aria-hidden="true"
-    >
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-(--color-background)" aria-hidden="true">
       <AnimatePresence mode="popLayout">
         <motion.div
           key={src}

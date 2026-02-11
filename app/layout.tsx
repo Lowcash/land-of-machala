@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
 
+import { Background } from '@/components/ui/shared/background'
+
 import './globals.css'
 
 const cinzel = Cinzel({
@@ -23,22 +25,9 @@ const philosopher = Philosopher({
   display: 'swap',
 })
 
-import { Background } from '@/components/ui/shared/background'
-
 export const metadata: Metadata = {
   title: 'Land of Machala',
   description: 'An epic RPG adventure',
-}
-
-export function RootWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)`}
-    >
-      <Background />
-      {children}
-    </div>
-  )
 }
 
 export default function RootLayout({
@@ -48,8 +37,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <RootWrapper>{children}</RootWrapper>
+      <body
+        className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)`}
+      >
+        <Background />
+        {children}
       </body>
     </html>
   )
