@@ -320,27 +320,42 @@ type BreakpointValue = {
   wrap?: boolean
 }
 
-type Breakpoint = 'sm' | 'md' | 'lg' | 'xl'
+export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl'
 
-const getResponsiveClasses = (breakpoint: Breakpoint, value?: BreakpointValue) => {
+export function getResponsiveClasses(breakpoint: Breakpoint, value?: BreakpointValue) {
   if (!value) return ''
 
   const classes: string[] = []
 
+  // @ts-ignore - indexing complex responsive maps
   if (value.display) classes.push(responsiveMaps.display[value.display][breakpoint])
+  // @ts-ignore
   if (value.direction) classes.push(responsiveMaps.direction[value.direction][breakpoint])
+  // @ts-ignore
   if (value.cols) classes.push(responsiveMaps.cols[value.cols][breakpoint])
+  // @ts-ignore
   if (value.align) classes.push(responsiveMaps.align[value.align][breakpoint])
+  // @ts-ignore
   if (value.justify) classes.push(responsiveMaps.justify[value.justify][breakpoint])
+  // @ts-ignore
   if (value.gap) classes.push(responsiveMaps.gap[value.gap][breakpoint])
+  // @ts-ignore
   if (value.p) classes.push(responsiveMaps.p[value.p][breakpoint])
+  // @ts-ignore
   if (value.pt) classes.push(responsiveMaps.pt[value.pt][breakpoint])
+  // @ts-ignore
   if (value.pb) classes.push(responsiveMaps.pb[value.pb][breakpoint])
+  // @ts-ignore
   if (value.px) classes.push(responsiveMaps.px[value.px][breakpoint])
+  // @ts-ignore
   if (value.py) classes.push(responsiveMaps.py[value.py][breakpoint])
+  // @ts-ignore
   if (value.flex) classes.push(responsiveMaps.flex[value.flex][breakpoint])
+  // @ts-ignore
   if (value.maxWidth) classes.push(responsiveMaps.maxWidth[value.maxWidth][breakpoint])
+  // @ts-ignore
   if (value.mx) classes.push(responsiveMaps.mx[value.mx][breakpoint])
+  // @ts-ignore
   if (value.minHeight) classes.push(responsiveMaps.minHeight[value.minHeight][breakpoint])
 
   if (value.fullWidth !== undefined) {

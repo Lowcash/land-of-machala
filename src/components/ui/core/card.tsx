@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils'
 
 import { CardTitle } from '@/components/ui/prefabs/typography/card'
 
-import { StackProps, stackVariants } from './stack'
+import { StackProps, getResponsiveClasses, stackVariants } from './stack'
 
 const cardVariants = cva(
   'flex transition-all backdrop-blur-md rounded-lg shadow-lg shadow-black/40',
@@ -42,6 +42,10 @@ function CardRoot({
   wrap,
   p,
   flex,
+  sm,
+  md,
+  lg,
+  xl,
   ...props
 }: CardRootProps) {
   // Map padding to p if not explicitly provided
@@ -63,7 +67,11 @@ function CardRoot({
           wrap,
           p: finalPadding,
           flex,
-        })
+        }),
+        getResponsiveClasses('sm', sm),
+        getResponsiveClasses('md', md),
+        getResponsiveClasses('lg', lg),
+        getResponsiveClasses('xl', xl)
       )}
       {...props}
     >
@@ -86,6 +94,10 @@ function CardHeader({
   wrap,
   p,
   flex,
+  sm,
+  md,
+  lg,
+  xl,
   children,
   ...props
 }: CardHeaderProps) {
@@ -106,7 +118,11 @@ function CardHeader({
           wrap,
           p,
           flex,
-        })
+        }),
+        getResponsiveClasses('sm', sm),
+        getResponsiveClasses('md', md),
+        getResponsiveClasses('lg', lg),
+        getResponsiveClasses('xl', xl)
       )}
       {...props}
     >
@@ -129,6 +145,10 @@ function CardContent({
   wrap,
   p,
   flex,
+  sm,
+  md,
+  lg,
+  xl,
   children,
   ...props
 }: CardContentProps) {
@@ -149,7 +169,11 @@ function CardContent({
           wrap,
           p,
           flex,
-        })
+        }),
+        getResponsiveClasses('sm', sm),
+        getResponsiveClasses('md', md),
+        getResponsiveClasses('lg', lg),
+        getResponsiveClasses('xl', xl)
       )}
       {...props}
     >
@@ -172,6 +196,10 @@ function CardFooter({
   wrap,
   p,
   flex,
+  sm,
+  md,
+  lg,
+  xl,
   children,
   ...props
 }: CardFooterProps) {
@@ -192,7 +220,11 @@ function CardFooter({
           wrap,
           p,
           flex,
-        })
+        }),
+        getResponsiveClasses('sm', sm),
+        getResponsiveClasses('md', md),
+        getResponsiveClasses('lg', lg),
+        getResponsiveClasses('xl', xl)
       )}
       {...props}
     >

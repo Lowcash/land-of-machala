@@ -13,7 +13,7 @@ interface LoginCardProps {
 
 export function LoginCard({ onLogin, onRegister, onGuestAccess, isLoading }: LoginCardProps) {
   return (
-    <Card variant="primary" padding="xl" gap="md">
+    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="md">
       <LoginForm onLogin={onLogin} isLoading={isLoading} />
 
       <Divider label="Nebo" />

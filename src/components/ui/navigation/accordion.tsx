@@ -60,7 +60,7 @@ const AccordionContent = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className={cn(
-      'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm transition-all',
+      'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm',
       className
     )}
     {...props}
@@ -102,13 +102,17 @@ export function GameAccordion({
       type="single"
       collapsible
       defaultValue={defaultValue}
-      className={cn('flex flex-col gap-4 w-full', passthroughOnDesktop && 'lg:space-y-4', className)}
+      className={cn(
+        'flex w-full flex-col gap-4',
+        passthroughOnDesktop && 'lg:space-y-4',
+        className
+      )}
     >
       {items.map((item) => (
         <AccordionItem
           key={item.value}
           value={item.value}
-          className={cn('border-none flex flex-col', passthroughOnDesktop && 'lg:border-none')}
+          className={cn('flex flex-col border-none', passthroughOnDesktop && 'lg:border-none')}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
             {item.title}
@@ -123,7 +127,7 @@ export function GameAccordion({
               ]
             )}
           >
-            <VStack gap="none" p="md" pt="none" lg={{ p: 'none' }}>
+            <VStack gap="none" fullWidth>
               {item.content}
             </VStack>
           </AccordionContent>

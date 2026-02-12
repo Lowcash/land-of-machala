@@ -4,14 +4,14 @@ import { Card } from '@/components/ui/core/card'
 import { List, ListItem } from '@/components/ui/core/list'
 import { ScrollIcon } from '@/components/ui/icons'
 import { Legend, MutedText } from '@/components/ui/prefabs/typography/shared'
-import { VStack } from '@/components/ui/core/stack'
 
 interface ChangelogProps {
   changes: ChangelogData[]
   minimal?: boolean
+  forceMinimal?: boolean
 }
 
-export function Changelog({ changes, minimal }: ChangelogProps) {
+export function Changelog({ changes, minimal, forceMinimal }: ChangelogProps) {
   const content = (
     <List>
       {changes.map((entry, i) => (
@@ -20,16 +20,24 @@ export function Changelog({ changes, minimal }: ChangelogProps) {
     </List>
   )
 
+  if (forceMinimal) {
+    return (
+      <Card variant="subtle" padding="md">
+        <Card.Content>{content}</Card.Content>
+      </Card>
+    )
+  }
+
   if (minimal) {
     return (
       <>
         {/* Mobile Accordion Mode */}
-        <Card variant="subtle" padding="none" lg={{ display: 'none' }}>
+        <Card variant="subtle" padding="md" lg={{ display: 'none' }}>
           <Card.Content>{content}</Card.Content>
         </Card>
 
         {/* Desktop Normal Mode */}
-        <Card display="none" lg={{ display: 'flex' }} padding="lg">
+        <Card variant="primary" display="none" lg={{ display: 'flex' }} padding="lg">
           <Card.Header>
             <Card.Title icon={<ScrollIcon />}>Nejnovější změny</Card.Title>
           </Card.Header>

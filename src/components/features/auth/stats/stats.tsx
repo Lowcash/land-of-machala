@@ -8,9 +8,10 @@ import { MutedText, Value } from '@/components/ui/prefabs/typography/shared'
 interface StatsProps {
   stats: ServerStat[]
   minimal?: boolean
+  forceMinimal?: boolean
 }
 
-export function Stats({ stats, minimal }: StatsProps) {
+export function Stats({ stats, minimal, forceMinimal }: StatsProps) {
   const content = (
     <Stack display="grid" cols="2" gap="md">
       {stats.map((stat) => (
@@ -19,16 +20,24 @@ export function Stats({ stats, minimal }: StatsProps) {
     </Stack>
   )
 
+  if (forceMinimal) {
+    return (
+      <Card variant="subtle" padding="md">
+        {content}
+      </Card>
+    )
+  }
+
   if (minimal) {
     return (
       <>
         {/* Mobile Accordion Mode */}
-        <Card variant="subtle" padding="none" lg={{ display: 'none' }}>
+        <Card variant="subtle" padding="md" lg={{ display: 'none' }}>
           {content}
         </Card>
 
         {/* Desktop Normal Mode (Minimal override) */}
-        <Card display="none" lg={{ display: 'flex' }} padding="lg">
+        <Card variant="primary" display="none" lg={{ display: 'flex' }} padding="lg">
           <Card.Header>
             <Card.Title icon={<UsersIcon />}>Statistiky serveru</Card.Title>
           </Card.Header>

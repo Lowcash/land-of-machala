@@ -1,11 +1,11 @@
 import { REGISTRATION_BENEFITS } from '@/lib/game/constants/registration'
 
 import { HStack, VStack } from '@/components/ui/core/stack'
+import { Text } from '@/components/ui/core/typography'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { MutedText, TextLink } from '@/components/ui/prefabs/typography/shared'
-import { Text } from '@/components/ui/core/typography'
+import { TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Footer } from '@/components/ui/shared/footer'
 
 import { RegistrationBenefits } from './benefits'
