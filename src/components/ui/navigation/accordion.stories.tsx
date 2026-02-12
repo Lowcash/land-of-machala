@@ -9,6 +9,9 @@ const meta: Meta<typeof GameAccordion> = {
   title: 'Navigation/Accordion',
   component: GameAccordion,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
   argTypes: {
     defaultValue: {
       control: 'text',
@@ -31,8 +34,8 @@ const defaultItems = [
     content: (
       <Card variant="subtle" padding="md">
         <MutedText>
-          Obsah první sekce s několika řádky textu, aby byla vidět animace výšky.
-          Používáme prefab MutedText uvnitř subtle karty pro věrnější ukázku.
+          Obsah první sekce s několika řádky textu, aby byla vidět animace výšky. Používáme prefab
+          MutedText uvnitř subtle karty pro věrnější ukázku.
         </MutedText>
       </Card>
     ),
@@ -61,13 +64,6 @@ export const Default: Story = {
   args: {
     items: defaultItems,
   },
-  decorators: [
-    (Story) => (
-      <div className="max-w-md w-full">
-        <Story />
-      </div>
-    ),
-  ],
 }
 
 export const PassthroughDesktop: Story = {
@@ -75,11 +71,4 @@ export const PassthroughDesktop: Story = {
     items: defaultItems,
     passthroughOnDesktop: true,
   },
-  decorators: [
-    (Story) => (
-      <div className="w-full">
-        <Story />
-      </div>
-    ),
-  ],
 }

@@ -9,11 +9,11 @@ import { ChevronDown } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { VStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
+import { Heading, Text } from '@/components/ui/core/typography'
 
 const Accordion = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Root>
+  AccordionPrimitive.AccordionSingleProps | AccordionPrimitive.AccordionMultipleProps
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...props} />
 ))
@@ -25,7 +25,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('border-b border-(--color-secondary)/30 last:border-0', className)}
+    className={cn('w-full border-b border-(--color-secondary)/30 last:border-0', className)}
     {...props}
   />
 ))
@@ -35,20 +35,21 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ children, className, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        'group flex flex-1 items-center justify-between rounded-lg border border-(--color-secondary)/50 bg-black/40 px-4 py-3 text-left transition-all hover:bg-(--color-secondary)/10 [&[data-state=open]>svg]:rotate-180',
-        className
-      )}
-      {...props}
-    >
-      <Text color="gold" font="fantasy" className="text-lg">
-        {children}
-      </Text>
-      <ChevronDown className="h-4 w-4 shrink-0 text-(--color-primary) transition-transform duration-200" />
-    </AccordionPrimitive.Trigger>
+  <AccordionPrimitive.Header asChild>
+    <Heading level="h2" as="h2" className={cn('w-full', className)}>
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          'group flex w-full cursor-pointer items-center justify-between rounded-lg border border-(--color-secondary)/50 bg-black/40 px-4 py-3 text-left transition-all hover:bg-(--color-secondary)/10 [&[data-state=open]>svg]:rotate-180'
+        )}
+        {...props}
+      >
+        <Text color="gold" font="fantasy" className="text-lg">
+          {children}
+        </Text>
+        <ChevronDown className="h-4 w-4 shrink-0 text-(--color-primary) transition-transform duration-200" />
+      </AccordionPrimitive.Trigger>
+    </Heading>
   </AccordionPrimitive.Header>
 ))
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
@@ -112,7 +113,10 @@ export function GameAccordion({
         <AccordionItem
           key={item.value}
           value={item.value}
-          className={cn('flex flex-col border-none', passthroughOnDesktop && 'lg:border-none')}
+          className={cn(
+            'flex w-full flex-col border-none',
+            passthroughOnDesktop && 'lg:border-none'
+          )}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
             {item.title}
