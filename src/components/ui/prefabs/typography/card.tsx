@@ -9,12 +9,21 @@ import { Heading } from '@/components/ui/core/typography'
 interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode
   icon?: React.ReactNode | LucideIcon
+  level?: 'h1' | 'h2' | 'h3' | 'h4'
 }
 
-export function CardTitle({ children, icon: Icon, className, ...props }: CardTitleProps) {
+export function CardTitle({
+  children,
+  icon: Icon,
+  className,
+  level = 'h2',
+  ...props
+}: CardTitleProps) {
+  if (!children) return null
+
   return (
     <Heading
-      level="h3"
+      level={level}
       font="fantasy"
       color={'gold' as any}
       className={cn('flex items-center gap-2 text-base font-normal', className)}

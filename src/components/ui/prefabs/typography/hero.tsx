@@ -11,6 +11,8 @@ interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 }
 
 export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'className'>) {
+  if (!children) return null
+
   return (
     <Heading
       level="h1"
