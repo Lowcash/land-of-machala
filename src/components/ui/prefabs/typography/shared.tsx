@@ -1,7 +1,6 @@
 import * as React from 'react'
 
-import Link from 'next/link'
-
+import { Link } from '@/i18n/routing'
 import { type VariantProps, cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'

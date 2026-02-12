@@ -1,3 +1,5 @@
+import { useTranslations } from 'next-intl'
+
 import { REGISTRATION_BENEFITS } from '@/lib/game/constants/registration'
 
 import { HStack, VStack } from '@/components/ui/core/stack'
@@ -14,18 +16,20 @@ import { RegistrationCard } from './card'
 export const revalidate = 3600
 
 export function RegistrationView() {
+  const t = useTranslations('Auth.Registration')
+
   return (
     <>
       {/* Left Column: Hero & Registration */}
       <VStack gap="md" fullWidth>
-        <BrandedHero subtitle="Začni svou legendu" description="Tvá cesta začíná právě zde..." />
+        <BrandedHero subtitle={t('subtitle')} description={t('description')} />
         <VStack gap="md" pb="md" fullWidth>
           <RegistrationCard />
           <HStack gap="xs" justify="center">
             <Text variant="primary" color="secondary">
-              Již máš účet?
+              {t('form.hasAccount')}
             </Text>
-            <TextLink href="/login">Přihlas se zde</TextLink>
+            <TextLink href="/login">{t('form.login')}</TextLink>
           </HStack>
         </VStack>
       </VStack>

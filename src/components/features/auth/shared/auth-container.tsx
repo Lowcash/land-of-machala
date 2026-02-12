@@ -2,7 +2,11 @@ import * as React from 'react'
 
 import { Stack, VStack } from '@/components/ui/core/stack'
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+interface AuthContainerProps {
+  children: React.ReactNode
+}
+
+export function AuthContainer({ children }: AuthContainerProps) {
   return (
     <VStack minHeight="dvh" fullWidth justify="center" align="center" p="md" md={{ p: 'xl' }}>
       <Stack

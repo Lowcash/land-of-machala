@@ -1,0 +1,45 @@
+{
+  "Auth": {
+    "Login": {
+      "title": "Přihlášení",
+      "subtitle": "Vítej zpět, poutníku",
+      "description": "Tvé dobrodružství pokračuje tam, kde jsi přestal.",
+      "form": {
+        "email": "Emailová adresa",
+        "username": "Uživatelské jméno",
+        "password": "Heslo",
+        "rememberMe": "Zapamatovat si mě",
+        "submit": "Vstoupit do světa",
+        "noAccount": "Ještě nemáš účet?",
+        "register": "Zaregistruj se zde",
+        "validation": {
+          "emailInvalid": "Zadejte platný email",
+          "passwordRequired": "Heslo je povinné"
+        }
+      }
+    },
+    "Registration": {
+      "title": "Registrace",
+      "subtitle": "Začni svou legendu",
+      "description": "Tvá cesta začíná právě zde...",
+      "form": {
+        "username": "Uživatelské jméno",
+        "email": "Emailová adresa",
+        "password": "Heslo",
+        "confirmPassword": "Potvrzení hesla",
+        "submit": "Stvořit hrdinu",
+        "hasAccount": "Již máš účet?",
+        "login": "Přihlas se zde",
+        "validation": {
+          "passwordMismatch": "Hesla se neshodují"
+        }
+      }
+    }
+  },
+  "Common": {
+    "loading": "Načítání...",
+    "error": "Něco se pokazilo",
+    "error_description": "Tvé dobrodružství bylo nečekaně přerušeno temnou magií. Prosím, zkus se vrátit zpět do světa.",
+    "try_again": "Zkusit znovu"
+  }
+}

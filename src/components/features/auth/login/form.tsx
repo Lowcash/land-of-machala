@@ -2,19 +2,21 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Lock, Mail } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
 
-const loginSchema = z.object({
-  email: z.string().email('Zadejte platný email'),
-  password: z.string().min(1, 'Heslo je povinné'),
-  rememberMe: z.boolean(),
-})
+const getLoginSchema = (t: any) =>
+  z.object({
+    email: z.string().email(t('form.validation.emailInvalid')),
+    password: z.string().min(1, t('form.validation.passwordRequired')),
+    rememberMe: z.boolean(),
+  })
 
-type LoginFormValues = z.infer<typeof loginSchema>
+export type LoginFormValues = z.infer<ReturnType<typeof getLoginSchema>>
 
 interface LoginFormProps {
   onLogin?: (values: LoginFormValues) => void
@@ -22,6 +24,9 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
+  const t = useTranslations('Auth.Login')
+  const loginSchema = getLoginSchema(t)
+
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -40,8 +45,8 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
       <Form.Input
         control={form.control}
         name="email"
-        label="Email"
-        placeholder="Zadej email..."
+        label={t('form.email')}
+        placeholder={t('form.email') + '...'}
         disabled={isLoading}
         leftIcon={<Mail className="h-4 w-4" />}
         autoComplete="email"
@@ -50,9 +55,9 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
       <Form.Input
         control={form.control}
         name="password"
-        label="Heslo"
+        label={t('form.password')}
         type="password"
-        placeholder="Zadej heslo..."
+        placeholder={t('form.password') + '...'}
         disabled={isLoading}
         leftIcon={<Lock className="h-4 w-4" />}
         autoComplete="current-password"
@@ -61,7 +66,7 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
       <Form.Checkbox
         control={form.control}
         name="rememberMe"
-        label="Zapamatovat si mě"
+        label={t('form.rememberMe')}
         disabled={isLoading}
       />
 
@@ -71,7 +76,7 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
         loading={isLoading}
         disabled={!form.watch('email') || !form.watch('password')}
       >
-        Přihlásit se
+        {t('form.submit')}
       </Button>
     </Form.Root>
   )

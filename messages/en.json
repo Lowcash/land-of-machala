@@ -1,0 +1,45 @@
+{
+  "Auth": {
+    "Login": {
+      "title": "Login",
+      "subtitle": "Welcome back, traveler",
+      "description": "Your adventure continues where you left off.",
+      "form": {
+        "email": "Email Address",
+        "username": "Username",
+        "password": "Password",
+        "rememberMe": "Remember me",
+        "submit": "Enter the World",
+        "noAccount": "Don't have an account yet?",
+        "register": "Register here",
+        "validation": {
+          "emailInvalid": "Enter a valid email",
+          "passwordRequired": "Password is required"
+        }
+      }
+    },
+    "Registration": {
+      "title": "Registration",
+      "subtitle": "Begin your legend",
+      "description": "Your journey starts right here...",
+      "form": {
+        "username": "Username",
+        "email": "Email Address",
+        "password": "Password",
+        "confirmPassword": "Confirm Password",
+        "submit": "Create Hero",
+        "hasAccount": "Already have an account?",
+        "login": "Login here",
+        "validation": {
+          "passwordMismatch": "Passwords do not match"
+        }
+      }
+    }
+  },
+  "Common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "error_description": "Your adventure was unexpectedly interrupted by dark magic. Please try to return to the world.",
+    "try_again": "Try again"
+  }
+}

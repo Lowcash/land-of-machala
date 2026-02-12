@@ -1,8 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { AuthContainer } from '@/components/features/auth/shared/auth-container'
 import { VStack } from '@/components/ui/core/stack'
-
-import AuthLayout from '@/app/(auth)/layout'
 
 import { RegistrationCard } from './card'
 import { RegistrationForm } from './form'
@@ -16,9 +15,9 @@ const meta: Meta<typeof RegistrationView> = {
   },
   decorators: [
     (Story) => (
-      <AuthLayout>
+      <AuthContainer>
         <Story />
-      </AuthLayout>
+      </AuthContainer>
     ),
   ],
   tags: ['autodocs'],
