@@ -16,16 +16,6 @@ export default meta
 
 export const Default: StoryObj<typeof List> = {
   render: () => (
-    <List>
-      <ListItem>První významná změna v království.</ListItem>
-      <ListItem>Oprava chyby s mizejícími zlaťáky.</ListItem>
-      <ListItem>Nová lokace: Temný les byla přidána na mapu.</ListItem>
-    </List>
-  ),
-}
-
-export const WithBadges: StoryObj = {
-  render: () => (
     <Card gap="md" padding="lg">
       <Card.Header>
         <Card.Title>Status Updates</Card.Title>

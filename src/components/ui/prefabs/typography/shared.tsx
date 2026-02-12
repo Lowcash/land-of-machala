@@ -48,13 +48,12 @@ export function Value({ align, ...props }: TypographyPrefabProps) {
 }
 
 export function MutedText({ align, ...props }: TypographyPrefabProps) {
-  return <Text variant="muted" color={'secondary' as any} align={align} {...props} />
+  return <Text color={'secondary' as any} align={align} {...props} />
 }
 
 export function Description({ align, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant="muted"
       font="body"
       color={'secondary' as any}
       align={align}
@@ -71,7 +70,7 @@ export function Decoration({ align, ...props }: TypographyPrefabProps) {
       color={'secondary' as any}
       font="fantasy"
       align={align}
-      className="tracking-widest uppercase opacity-60"
+      className="tracking-widest uppercase"
       {...props}
     />
   )
@@ -89,7 +88,7 @@ export function Legend({ align, bold, ...props }: TypographyPrefabProps) {
   )
 }
 
-const textLinkVariants = cva('transition-colors hover:underline', {
+const textLinkVariants = cva('cursor-pointer transition-colors hover:underline', {
   variants: {
     variant: {
       primary: 'text-(--color-primary)',

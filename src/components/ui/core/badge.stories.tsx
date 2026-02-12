@@ -13,7 +13,6 @@ type Story = StoryObj<typeof Badge>
 export const Primary: Story = {
   args: {
     variant: 'primary',
-    children: 'P',
+    children: '1',
   },
 }
-
