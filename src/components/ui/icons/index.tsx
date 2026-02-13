@@ -67,10 +67,10 @@ export function LogoIcon({ size = 'xl' }: { size?: 'lg' | 'xl' | 'xxl' }) {
 
   return (
     <div className="relative mb-4 inline-block">
-      <div className="absolute inset-0 rounded-full bg-linear-to-br from-[#ffd700]/20 to-[#8b6f47]/20 blur-2xl" />
+      <div className="absolute inset-0 rounded-full bg-linear-to-br from-(--color-gold)/20 to-(--color-secondary)/20 blur-2xl" />
       <div
         className={cn(
-          'relative rounded-full border-2 border-[#ffd700] bg-linear-to-br from-[#8b6f47] to-[#6d5a3e] shadow-2xl',
+          'relative rounded-full border-2 border-(--color-gold) bg-linear-to-br from-(--color-secondary) to-black/40 shadow-2xl',
           containerSizes[size as keyof typeof containerSizes] || containerSizes.xl
         )}
       >
