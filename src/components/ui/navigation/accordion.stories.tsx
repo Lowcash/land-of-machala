@@ -8,10 +8,6 @@ import { GameAccordion } from './accordion'
 const meta: Meta<typeof GameAccordion> = {
   title: 'Navigation/Accordion',
   component: GameAccordion,
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
   argTypes: {
     defaultValue: {
       control: 'text',
@@ -63,12 +59,5 @@ const defaultItems = [
 export const Default: Story = {
   args: {
     items: defaultItems,
-  },
-}
-
-export const PassthroughDesktop: Story = {
-  args: {
-    items: defaultItems,
-    passthroughOnDesktop: true,
   },
 }

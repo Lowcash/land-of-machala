@@ -1,7 +1,7 @@
 import type { Preview } from '@storybook/nextjs-vite'
 import { NextIntlClientProvider } from 'next-intl'
 
-import messages from '../messages/cs.json'
+import messages from '../messages/en.json'
 import '../src/app/globals.css'
 import { Background } from '../src/components/ui/shared/background'
 
@@ -36,7 +36,7 @@ const preview: Preview = {
           }
         }}
       >
-        <NextIntlClientProvider locale="cs" messages={messages}>
+        <NextIntlClientProvider locale="en" messages={messages}>
           <div className="font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)">
             <Background />
             <Story />

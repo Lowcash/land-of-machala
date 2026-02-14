@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-14]
+
+### Added
+- **Auth**: Split `LoginView` and `RegisterView` into Server Components (for data/translations) and Pure UI Components (`LoginViewUI`, `RegisterViewUI`).
+- **Storybook**: Implemented "Top-Down" story ordering strategy (FullPage -> CardOnly -> FormOnly).
+
+### Fixed
+- **Navigation**: Resolved circular reference error in `Accordion` Storybook docs by simplifying prop exports and standardizing `displayName`.
+- **Storybook**: Fixed `async` component errors in authentication stories by using synchronous UI views with mock data.
+- **Storybook**: Restored `fullscreen` layout for all page-level authentication stories.
+
 ## [2026-02-10]
 
 ### Added
