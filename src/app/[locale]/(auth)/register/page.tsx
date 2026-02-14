@@ -1,6 +1,6 @@
 import { type Metadata } from 'next'
 
-import { RegistrationView } from '@/components/features/auth/registration/view'
+import { RegisterView } from '@/components/features/auth/register/view'
 
 export const metadata: Metadata = {
   title: 'Registrace | Land of Machala',
@@ -8,5 +8,5 @@ export const metadata: Metadata = {
 }
 
 export default function RegisterPage() {
-  return <RegistrationView />
+  return <RegisterView />
 }

@@ -1,15 +1,18 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Lock, Mail } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
+import { LockIcon, MailIcon } from '@/components/ui/icons'
 
-const getLoginSchema = (t: any) =>
+/**
+ * Returns the validation schema for the login form.
+ */
+const getLoginSchema = (t: (key: string) => string) =>
   z.object({
     email: z.string().email(t('form.validation.emailInvalid')),
     password: z.string().min(1, t('form.validation.passwordRequired')),
@@ -23,12 +26,14 @@ interface LoginFormProps {
   isLoading?: boolean
 }
 
+/**
+ * A login Form component.
+ */
 export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
   const t = useTranslations('Auth.Login')
-  const loginSchema = getLoginSchema(t)
 
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(loginSchema),
+    resolver: zodResolver(getLoginSchema(t)),
     defaultValues: {
       email: '',
       password: '',
@@ -36,19 +41,15 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
     },
   })
 
-  const onSubmit = (values: LoginFormValues) => {
-    onLogin?.(values)
-  }
-
   return (
-    <Form.Root<LoginFormValues> form={form} onSubmit={onSubmit}>
+    <Form.Root<LoginFormValues> form={form} onSubmit={onLogin || (() => {})}>
       <Form.Input
         control={form.control}
         name="email"
         label={t('form.email')}
         placeholder={t('form.email') + '...'}
         disabled={isLoading}
-        leftIcon={<Mail className="h-4 w-4" />}
+        leftIcon={<MailIcon />}
         autoComplete="email"
       />
 
@@ -59,7 +60,7 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
         type="password"
         placeholder={t('form.password') + '...'}
         disabled={isLoading}
-        leftIcon={<Lock className="h-4 w-4" />}
+        leftIcon={<LockIcon />}
         autoComplete="current-password"
       />
 

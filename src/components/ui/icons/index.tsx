@@ -1,4 +1,14 @@
-import { type LucideIcon, Scroll, Sparkles, Swords, User, Users } from 'lucide-react'
+import {
+  Lock,
+  type LucideIcon,
+  Mail,
+  RefreshCcw,
+  Scroll,
+  Sparkles,
+  Swords,
+  User,
+  Users,
+} from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -53,6 +63,18 @@ export function SparklesIcon({ size, color }: IconProps) {
 
 export function SwordsIcon({ size, color }: IconProps) {
   return <BaseIcon icon={Swords} size={size || 'xl'} color={color} />
+}
+
+export function RefreshIcon({ size, color }: IconProps) {
+  return <BaseIcon icon={RefreshCcw} size={size} color={color} />
+}
+
+export function MailIcon({ size, color }: IconProps) {
+  return <BaseIcon icon={Mail} size={size} color={color} />
+}
+
+export function LockIcon({ size, color }: IconProps) {
+  return <BaseIcon icon={Lock} size={size} color={color} />
 }
 
 /**

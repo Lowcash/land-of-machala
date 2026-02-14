@@ -9,16 +9,33 @@ interface LoginCardProps {
   onRegister?: () => void
   onGuestAccess?: () => void
   isLoading?: boolean
+  guestLabel: string
+  registerLabel: string
+  orLabel: string
 }
 
-export function LoginCard({ onLogin, onRegister, onGuestAccess, isLoading }: LoginCardProps) {
+export function LoginCard({
+  onLogin,
+  onRegister,
+  onGuestAccess,
+  isLoading,
+  guestLabel,
+  registerLabel,
+  orLabel,
+}: LoginCardProps) {
   return (
     <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="md">
       <LoginForm onLogin={onLogin} isLoading={isLoading} />
 
-      <Divider label="Nebo" />
+      <Divider label={orLabel} />
 
-      <LoginActions onRegister={onRegister} onGuestAccess={onGuestAccess} isLoading={isLoading} />
+      <LoginActions
+        onRegister={onRegister}
+        onGuestAccess={onGuestAccess}
+        isLoading={isLoading}
+        guestLabel={guestLabel}
+        registerLabel={registerLabel}
+      />
     </Card>
   )
 }

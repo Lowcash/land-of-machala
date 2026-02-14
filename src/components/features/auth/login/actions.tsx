@@ -1,6 +1,6 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 
 import { Button } from '@/components/ui/core/button'
 import { VStack } from '@/components/ui/core/stack'
@@ -9,9 +9,17 @@ interface LoginActionsProps {
   onRegister?: () => void
   onGuestAccess?: () => void
   isLoading?: boolean
+  guestLabel: string
+  registerLabel: string
 }
 
-export function LoginActions({ onRegister, onGuestAccess, isLoading }: LoginActionsProps) {
+export function LoginActions({
+  onRegister,
+  onGuestAccess,
+  isLoading,
+  guestLabel,
+  registerLabel,
+}: LoginActionsProps) {
   const router = useRouter()
 
   const handleRegister = () => {
@@ -25,11 +33,11 @@ export function LoginActions({ onRegister, onGuestAccess, isLoading }: LoginActi
   return (
     <VStack gap="md">
       <Button variant="secondary" fullWidth onClick={onGuestAccess} disabled={isLoading}>
-        Zkusit hru jako host (bez registrace)
+        {guestLabel}
       </Button>
 
       <Button variant="primary" fullWidth onClick={handleRegister} disabled={isLoading}>
-        Vytvořit nový účet
+        {registerLabel}
       </Button>
     </VStack>
   )

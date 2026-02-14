@@ -1,53 +1,116 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations } from 'next-intl/server'
 
-import { LATEST_CHANGES } from '@/lib/game/constants/changelog'
-import { SERVER_STATS } from '@/lib/game/constants/stats'
+import {
+  resolveFooterProps,
+  resolveTranslatedChangelog,
+  resolveTranslatedLoreQuote,
+  resolveTranslatedStats,
+} from '@/lib/game/utils/resolvers'
 
-import { Stats } from '@/components/features/auth/stats/stats'
 import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
-import { Footer } from '@/components/ui/shared/footer'
+import {
+  Changelog,
+  type TranslatedChangelogEntry,
+} from '@/components/ui/prefabs/narrative/changelog'
+import { Stats, type TranslatedServerStat } from '@/components/ui/prefabs/narrative/stats'
+import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { LoginCard } from './card'
-import { Changelog } from './changelog'
 
-export const revalidate = 3600 // Revalidate every hour
+interface LoginViewUIProps {
+  hero: {
+    title: string
+    subtitle: string
+    description: string
+  }
+  card: {
+    guestLabel: string
+    registerLabel: string
+    orLabel: string
+  }
+  accordion: {
+    statsTitle: string
+    changelogTitle: string
+  }
+  quote: string
+  stats: TranslatedServerStat[]
+  changes: TranslatedChangelogEntry[]
+  footer: FooterProps
+}
 
-export function LoginView() {
-  const t = useTranslations('Auth.Login')
-
+export function LoginViewUI({
+  hero,
+  card,
+  accordion,
+  quote,
+  stats,
+  changes,
+  footer,
+}: LoginViewUIProps) {
   return (
     <>
-      {/* Left Column: Hero & Auth */}
       <VStack gap="md" fullWidth>
-        <BrandedHero subtitle={t('subtitle')} description={t('description')} />
+        <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
         <VStack gap="md" pb="md" fullWidth>
-          <LoginCard />
+          <LoginCard
+            guestLabel={card.guestLabel}
+            registerLabel={card.registerLabel}
+            orLabel={card.orLabel}
+          />
         </VStack>
       </VStack>
 
-      {/* Right Column: Info & Footer */}
       <VStack gap="md" fullWidth>
         <GameAccordion
           passthroughOnDesktop
           items={[
             {
               value: 'stats',
-              title: 'Statistiky serveru',
-              content: <Stats stats={SERVER_STATS} minimal />,
+              title: accordion.statsTitle,
+              content: <Stats title={accordion.statsTitle} stats={stats} />,
             },
             {
               value: 'changelog',
-              title: 'Poslední změny',
-              content: <Changelog changes={LATEST_CHANGES} minimal />,
+              title: accordion.changelogTitle,
+              content: <Changelog title={accordion.changelogTitle} changes={changes} minimal />,
             },
           ]}
         />
-        <LoreQuote />
-        <Footer />
+        <LoreQuote quote={quote} />
+        <Footer {...footer} />
       </VStack>
     </>
+  )
+}
+
+export async function LoginView() {
+  const t = await getTranslations('Auth.Login')
+  const tc = await getTranslations('Common')
+  const tg = await getTranslations('Game')
+
+  return (
+    <LoginViewUI
+      hero={{
+        title: 'Land of Machala',
+        subtitle: t('subtitle'),
+        description: t('description'),
+      }}
+      card={{
+        guestLabel: t('actions.guest'),
+        registerLabel: t('actions.register'),
+        orLabel: tc('or'),
+      }}
+      accordion={{
+        statsTitle: t('stats_title'),
+        changelogTitle: t('changelog_title'),
+      }}
+      quote={resolveTranslatedLoreQuote(tg)}
+      stats={resolveTranslatedStats(tg)}
+      changes={resolveTranslatedChangelog(tg)}
+      footer={resolveFooterProps(tc)}
+    />
   )
 }
