@@ -1,0 +1,8 @@
+[
+  { "id": "warrior", "nameKey": "Game.Classes.warrior" },
+  { "id": "paladin", "nameKey": "Game.Classes.paladin" },
+  { "id": "rogue", "nameKey": "Game.Classes.rogue" },
+  { "id": "mage", "nameKey": "Game.Classes.mage" },
+  { "id": "ranger", "nameKey": "Game.Classes.ranger" },
+  { "id": "necromancer", "nameKey": "Game.Classes.necromancer" }
+]

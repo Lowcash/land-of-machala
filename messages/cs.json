@@ -16,6 +16,10 @@
           "emailInvalid": "Zadejte platný email",
           "passwordRequired": "Heslo je povinné"
         }
+      },
+      "actions": {
+        "guest": "Zkusit hru jako host (bez registrace)",
+        "register": "Vstoupit do říše"
       }
     },
     "Registration": {
@@ -27,12 +31,41 @@
         "email": "Emailová adresa",
         "password": "Heslo",
         "confirmPassword": "Potvrzení hesla",
-        "submit": "Stvořit hrdinu",
+        "submit": "Vytvořit účet",
         "hasAccount": "Již máš účet?",
         "login": "Přihlas se zde",
         "validation": {
+          "emailInvalid": "Zadejte platný email",
+          "passwordRequired": "Heslo je povinné",
+          "passwordLength": "Heslo musí mít alespoň 6 znaků",
           "passwordMismatch": "Hesla se neshodují"
         }
+      },
+      "benefits_title": "Začni svoje dobrodružství",
+      "benefits_title_description": "Registrací získáš přístup do světa Machala, kde můžeš:",
+      "changelog_title": "Poslední změny",
+      "actions": {
+        "login": "Máš již účet?"
+      }
+    },
+    "Origins": {
+      "title": "Počátek tvé cesty",
+      "subtitle": "Staň se legendou",
+      "description": "Každý hrdina má svůj příběh. Jaký bude ten tvůj?",
+      "benefits_title": "Proč hrát Machalu?",
+      "changelog_title": "Poslední změny",
+      "tutorial": {
+        "skip": "Přeskočit úvod (Jsem zkušený hráč)"
+      },
+      "narrative": {
+        "step_0_text": "Probouzíš se v husté mlze. Nevíš, kdo jsi, ani jak jsi se sem dostal. Před sebou vidíš obrysy tří postav. Která z nich tě nejvíce přitahuje?",
+        "step_0_choice_0": "Postava v těžké zbroji s velkým mečem",
+        "step_0_choice_1": "Postava v kápi, kolem které jiskří magie",
+        "step_0_choice_2": "Postava ve stínech s dýkami v rukou",
+        "step_1_text": "Postava k tobě přistoupí. Cítíš z ní zvláštní energii. Najednou se ozve hlasitý řev z lesa. Jak zareaguješ?",
+        "step_1_choice_0": "Okamžitě tasíš zbraň a připravíš se k boji",
+        "step_1_choice_1": "Rychle se schováš a vyhodnotíš situaci",
+        "step_1_choice_2": "Využiješ magii k vytvoření ochranné bariéry"
       }
     }
   },
@@ -40,6 +73,64 @@
     "loading": "Načítání...",
     "error": "Něco se pokazilo",
     "error_description": "Tvé dobrodružství bylo nečekaně přerušeno temnou magií. Prosím, zkus se vrátit zpět do světa.",
-    "try_again": "Zkusit znovu"
+    "error_digest": "Kód chyby: {digest}",
+    "try_again": "Zkusit znovu",
+    "or": "Nebo",
+    "footer": {
+      "version": "Verze",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "V dobách temnoty se rodí legendy. Budeš jednou z nich, nebo padneš v zapomnění jako ti před tebou?",
+      "Tvá cesta začíná právě teď. Každé rozhodnutí formuje tvůj osud.",
+      "Machala volá své hrdiny. Odpovíš na volání?",
+      "Nebezpečí číhá za každým rohem, ale s odvahou přichází sláva.",
+      "Dávné legendy praví o hrdinech, kteří změnili osud světa. Tvůj příběh začíná zde."
+    ],
+    "Races": {
+      "human": "Člověk",
+      "dwarf": "Trpaslík",
+      "elf": "Elf",
+      "orc": "Ork",
+      "halfling": "Půlčík",
+      "dragonborn": "Dračí rod"
+    },
+    "Classes": {
+      "warrior": "Válečník",
+      "paladin": "Paladin",
+      "rogue": "Lotr",
+      "mage": "Mág",
+      "ranger": "Hraničář",
+      "necromancer": "Nekromant"
+    },
+    "Stats": {
+      "active_players": "Aktivní hráči",
+      "boss_kills": "Zabití bossů",
+      "top_level": "Top level",
+      "quests": "Questy"
+    },
+    "Registration": {
+      "benefits": [
+        "Vytvořit svého hrdinu z 6 ras a povolání",
+        "Bojovat s monstry a získávat legendární předměty",
+        "Plnit questy a odhalovat příběh země Machala",
+        "Rozvíjet dovednosti ve 3 větvích talentů"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Rozšíření dovedností",
+        "talent": "WoW-style talent systém",
+        "movement": "Movement systém"
+      },
+      "descriptions": {
+        "skills": "19 skills ve 3 větvích (Combat, Defense, Magic)",
+        "talent": "3-tier progrese s unlock požadavky",
+        "movement": "Směrové pohyby (N/S/E/W) + náhodné souboje",
+        "redesign": "Kompaktní CharacterBox redesign s medieval fantasy stylem"
+      }
+    }
   }
 }

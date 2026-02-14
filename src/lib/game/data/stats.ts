@@ -1,7 +1,8 @@
 import statsData from './stats.json'
 
 export interface ServerStat {
-  label: string
+  id: string
+  labelKey: string
   value: string
   color: 'gold' | 'danger' | 'success' | 'info'
 }

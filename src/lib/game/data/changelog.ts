@@ -1,8 +1,8 @@
 import changelogData from './changelog.json'
 
 export interface ChangelogEntry {
-  category?: string
-  description: string
+  categoryKey?: string
+  descriptionKey: string
   color?: 'success' | 'info' | 'danger' | 'gold' | 'secondary'
 }
 

@@ -1,0 +1,6 @@
+[
+  { "id": "active_players", "labelKey": "Game.Stats.active_players", "value": "1,247", "color": "gold" },
+  { "id": "boss_kills", "labelKey": "Game.Stats.boss_kills", "value": "89", "color": "danger" },
+  { "id": "top_level", "labelKey": "Game.Stats.top_level", "value": "87", "color": "success" },
+  { "id": "quests", "labelKey": "Game.Stats.quests", "value": "12k+", "color": "info" }
+]

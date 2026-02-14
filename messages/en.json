@@ -16,7 +16,13 @@
           "emailInvalid": "Enter a valid email",
           "passwordRequired": "Password is required"
         }
-      }
+      },
+      "actions": {
+        "guest": "Try as guest (no registration)",
+        "register": "Join the Realm"
+      },
+      "stats_title": "Server Stats",
+      "changelog_title": "Latest Changes"
     },
     "Registration": {
       "title": "Registration",
@@ -27,12 +33,37 @@
         "email": "Email Address",
         "password": "Password",
         "confirmPassword": "Confirm Password",
-        "submit": "Create Hero",
+        "submit": "Create Account",
         "hasAccount": "Already have an account?",
         "login": "Login here",
         "validation": {
           "passwordMismatch": "Passwords do not match"
         }
+      },
+      "actions": {
+        "login": "Already have an account?"
+      },
+      "benefits_title": "Why play Machala?",
+      "benefits_title_description": "By registering, you gain access to the world of Machala, where you can:"
+    },
+    "Origins": {
+      "title": "The Beginning of Your Path",
+      "subtitle": "Become a Legend",
+      "description": "Every hero has a story. What will yours be?",
+      "benefits_title": "Why Play Machala?",
+      "changelog_title": "Latest Changes",
+      "tutorial": {
+        "skip": "Skip Intro (I am an experienced player)"
+      },
+      "narrative": {
+        "step_0_text": "You wake up in a thick mist. You don't know who you are or how you got here. Before you, you see the outlines of three figures. Which one attracts you the most?",
+        "step_0_choice_0": "A figure in heavy armor with a greatsword",
+        "step_0_choice_1": "A cloaked figure with sparking magic around them",
+        "step_0_choice_2": "A figure in the shadows with daggers in hand",
+        "step_1_text": "The figure approaches you. You feel a strange energy from them. Suddenly, a loud roar echoes from the forest. How do you react?",
+        "step_1_choice_0": "Immediately draw your weapon and prepare for battle",
+        "step_1_choice_1": "Quickly hide and evaluate the situation",
+        "step_1_choice_2": "Use magic to create a protective barrier"
       }
     }
   },
@@ -40,6 +71,64 @@
     "loading": "Loading...",
     "error": "Something went wrong",
     "error_description": "Your adventure was unexpectedly interrupted by dark magic. Please try to return to the world.",
-    "try_again": "Try again"
+    "error_digest": "Error code: {digest}",
+    "try_again": "Try again",
+    "or": "Or",
+    "footer": {
+      "version": "Version",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "In times of darkness, legends are born. Will you be one of them, or will you fall into oblivion like those before you?",
+      "Your journey begins now. Every decision shapes your destiny.",
+      "Machala calls its heroes. Do you answer the call?",
+      "Danger lurks around every corner, but with courage comes glory.",
+      "Ancient legends speak of heroes who changed the fate of the world. Your story begins here."
+    ],
+    "Races": {
+      "human": "Human",
+      "dwarf": "Dwarf",
+      "elf": "Elf",
+      "orc": "Orc",
+      "halfling": "Halfling",
+      "dragonborn": "Dragonborn"
+    },
+    "Classes": {
+      "warrior": "Warrior",
+      "paladin": "Paladin",
+      "rogue": "Rogue",
+      "mage": "Mage",
+      "ranger": "Ranger",
+      "necromancer": "Necromancer"
+    },
+    "Stats": {
+      "active_players": "Active Players",
+      "boss_kills": "Boss Kills",
+      "top_level": "Top Level",
+      "quests": "Quests"
+    },
+    "Registration": {
+      "benefits": [
+        "Create your hero from 6 races and classes",
+        "Fight monsters and gain legendary items",
+        "Complete quests and uncover the story of Machala",
+        "Develop skills in 3 talent branches"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Skill Extension",
+        "talent": "WoW-style talent system",
+        "movement": "Movement system"
+      },
+      "descriptions": {
+        "skills": "19 skills in 3 branches (Combat, Defense, Magic)",
+        "talent": "3-tier progression with unlock requirements",
+        "movement": "Directional movement (N/S/E/W) + random encounters",
+        "redesign": "Compact CharacterBox redesign with medieval fantasy style"
+      }
+    }
   }
 }

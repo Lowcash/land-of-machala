@@ -1,0 +1,20 @@
+[
+  {
+    "categoryKey": "Game.Changelog.categories.skills",
+    "descriptionKey": "Game.Changelog.descriptions.skills",
+    "color": "success"
+  },
+  {
+    "categoryKey": "Game.Changelog.categories.talent",
+    "descriptionKey": "Game.Changelog.descriptions.talent",
+    "color": "info"
+  },
+  {
+    "categoryKey": "Game.Changelog.categories.movement",
+    "descriptionKey": "Game.Changelog.descriptions.movement",
+    "color": "danger"
+  },
+  {
+    "descriptionKey": "Game.Changelog.descriptions.redesign"
+  }
+]

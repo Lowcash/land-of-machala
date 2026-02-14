@@ -1,0 +1,8 @@
+[
+  { "id": "human", "nameKey": "Game.Races.human" },
+  { "id": "dwarf", "nameKey": "Game.Races.dwarf" },
+  { "id": "elf", "nameKey": "Game.Races.elf" },
+  { "id": "orc", "nameKey": "Game.Races.orc" },
+  { "id": "halfling", "nameKey": "Game.Races.halfling" },
+  { "id": "dragonborn", "nameKey": "Game.Races.dragonborn" }
+]
