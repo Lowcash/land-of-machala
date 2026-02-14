@@ -23,10 +23,3 @@ export const Default: Story = {
     description: 'Tvá legenda čeká na sepsání...',
   },
 }
-
-export const Registration: Story = {
-  args: {
-    subtitle: 'Začni svou legendu',
-    description: 'Tvá cesta začíná právě zde...',
-  },
-}

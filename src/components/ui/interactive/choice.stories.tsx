@@ -1,34 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Choice } from './choice'
+import { Choice, ChoiceItem } from './choice'
 
-const meta: Meta<typeof Choice> = {
+const meta: Meta<typeof ChoiceItem> = {
   title: 'Shared/Choice',
-  component: Choice,
+  component: ChoiceItem,
   tags: ['autodocs'],
 }
 
 export default meta
-type Story = StoryObj<typeof Choice>
+type Story = StoryObj<typeof ChoiceItem>
 
 export const Default: Story = {
   args: {
     index: 0,
     title: 'Warrior',
-    description: 'A master of combat and heavy armor.',
   },
 }
 
 export const MultipleChoices = {
   render: () => (
-    <div className="flex max-w-md flex-col gap-4">
-      <Choice index={0} title="Postava v těžké zbroji" description="Cítíš z ní sílu a odhodlání." />
-      <Choice index={1} title="Postava v kápi" description="Kolem ní jiskří modravá magie." />
-      <Choice
-        index={2}
-        title="Postava ve stínech"
-        description="Sotva ji vidíš, ale cítíš chlad oceli."
-      />
-    </div>
+    <Choice>
+      <ChoiceItem index={0} title="Postava v těžké zbroji" />
+      <ChoiceItem index={1} title="Postava v kápi" />
+      <ChoiceItem index={2} title="Postava ve stínech" />
+    </Choice>
   ),
 }

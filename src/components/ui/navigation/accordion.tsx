@@ -11,65 +11,93 @@ import { cn } from '@/lib/utils'
 import { VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 
-const Accordion = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Root>,
-  AccordionPrimitive.AccordionSingleProps | AccordionPrimitive.AccordionMultipleProps
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...props} />
-))
+/**
+ * Custom Props to avoid exposing Radix primitives to docgen which causes circularity.
+ * We explicitly define ONLY what we want to expose.
+ */
+interface AccordionRootProps {
+  children: ReactNode
+  type: 'single' | 'multiple'
+  defaultValue?: string
+  value?: string
+  collapsible?: boolean
+  className?: string
+  onValueChange?: (value: string) => void
+}
+
+const Accordion = React.forwardRef<HTMLDivElement, AccordionRootProps>(
+  ({ className, ...props }, ref) => (
+    <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...(props as any)} />
+  )
+)
 Accordion.displayName = 'Accordion'
 
-const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn('w-full border-b border-(--color-secondary)/30 last:border-0', className)}
-    {...props}
-  />
-))
+interface AccordionItemProps {
+  children: ReactNode
+  value: string
+  disabled?: boolean
+  className?: string
+}
+
+const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
+  ({ className, ...props }, ref) => (
+    <AccordionPrimitive.Item
+      ref={ref}
+      className={cn('w-full border-b border-(--color-secondary)/30 last:border-0', className)}
+      {...props}
+    />
+  )
+)
 AccordionItem.displayName = 'AccordionItem'
 
-const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
->(({ children, className, ...props }, ref) => (
-  <AccordionPrimitive.Header asChild>
-    <Heading level="h2" as="h2" className={cn('w-full', className)}>
-      <AccordionPrimitive.Trigger
-        ref={ref}
-        className={cn(
-          'group flex w-full cursor-pointer items-center justify-between rounded-lg border border-(--color-secondary)/50 bg-black/40 px-4 py-3 text-left transition-all hover:bg-(--color-secondary)/10 [&[data-state=open]>svg]:rotate-180'
-        )}
-        {...props}
-      >
-        <Text color="gold" font="fantasy" className="text-lg">
-          {children}
-        </Text>
-        <ChevronDown className="h-4 w-4 shrink-0 text-(--color-primary) transition-transform duration-200" />
-      </AccordionPrimitive.Trigger>
-    </Heading>
-  </AccordionPrimitive.Header>
-))
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
+interface AccordionTriggerProps {
+  children: ReactNode
+  className?: string
+}
 
-const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content>
->(({ children, className, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(
-      'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm',
-      className
-    )}
-    {...props}
-  >
-    {children}
-  </AccordionPrimitive.Content>
-))
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
+const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(
+  ({ children, className, ...props }, ref) => (
+    <AccordionPrimitive.Header asChild>
+      <Heading level="h2" as="h2" className={cn('w-full', className)}>
+        <AccordionPrimitive.Trigger
+          ref={ref}
+          className={cn(
+            'group flex w-full cursor-pointer items-center justify-between rounded-lg border border-(--color-secondary)/50 bg-black/40 px-4 py-3 text-left transition-all hover:bg-(--color-secondary)/10 [&[data-state=open]>svg]:rotate-180'
+          )}
+          {...props}
+        >
+          <Text color="gold" font="fantasy" className="text-lg">
+            {children}
+          </Text>
+          <ChevronDown className="h-4 w-4 shrink-0 text-(--color-primary) transition-transform duration-200" />
+        </AccordionPrimitive.Trigger>
+      </Heading>
+    </AccordionPrimitive.Header>
+  )
+)
+AccordionTrigger.displayName = 'AccordionTrigger'
+
+interface AccordionContentProps {
+  children: ReactNode
+  className?: string
+  forceMount?: true
+}
+
+const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(
+  ({ children, className, ...props }, ref) => (
+    <AccordionPrimitive.Content
+      ref={ref}
+      className={cn(
+        'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm',
+        className
+      )}
+      {...props}
+    >
+      {children}
+    </AccordionPrimitive.Content>
+  )
+)
+AccordionContent.displayName = 'AccordionContent'
 
 // ===================================================================
 // High-Level Component (Game Accordion)

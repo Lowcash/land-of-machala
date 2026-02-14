@@ -12,6 +12,18 @@ import { Text } from '@/components/ui/core/typography'
  * Use these instead of raw Text components with repetitive props.
  */
 
+export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
+  return (
+    <Text
+      font="fantasy"
+      color={'primary' as any}
+      align={align || 'center'}
+      className="text-xl leading-relaxed italic sm:text-2xl"
+      {...props}
+    />
+  )
+}
+
 type TypographyColor =
   | 'primary'
   | 'secondary'
@@ -25,7 +37,7 @@ type TypographyColor =
 
 interface TypographyPrefabProps extends Omit<
   React.HTMLAttributes<HTMLParagraphElement>,
-  'className' | 'color'
+  'color' | 'className'
 > {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'

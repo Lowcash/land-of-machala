@@ -28,7 +28,7 @@ export function Background() {
             priority
             className="object-cover"
             sizes="100vw"
-            quality={85}
+            quality={75}
           />
           {/* Linear gradient overlay for better text readability */}
           <div className="absolute inset-0 bg-linear-to-b from-black/85 via-black/75 to-black/90" />

@@ -15,11 +15,12 @@ const buttonVariants = cva(
         secondary:
           'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-ivory)/40 enabled:hover:bg-black/80 enabled:hover:text-(--color-primary) disabled:border-(--color-secondary)/30 disabled:bg-(--color-secondary)/10 disabled:text-(--color-ivory)/40',
         choice:
-          'flex-col items-start justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-left text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-primary) enabled:hover:bg-(--color-primary)/10',
+          'flex-col items-center justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-center text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-primary) enabled:hover:bg-(--color-primary)/10',
       },
       size: {
         default: 'p-2',
         lg: 'min-h-16 p-4',
+        feature: 'h-20 p-4',
       },
       fullWidth: {
         true: 'w-full',

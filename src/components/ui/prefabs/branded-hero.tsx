@@ -2,7 +2,7 @@ import { VStack } from '@/components/ui/core/stack'
 import { LogoIcon } from '@/components/ui/icons'
 import { HeroDescription, HeroSubtitle, HeroTitle } from '@/components/ui/prefabs/typography/hero'
 
-interface BrandedHeroProps {
+export interface BrandedHeroProps {
   title?: string
   subtitle?: string
   description?: string
@@ -13,16 +13,18 @@ export function BrandedHero({
   title = 'Land of Machala',
   subtitle,
   description,
-  logo = <LogoIcon />,
+  logo,
 }: BrandedHeroProps) {
   return (
-    <VStack align="center" gap="sm">
-      {logo}
-
+    <VStack align="center" gap="md" py="xl">
       <VStack align="center" gap="xs">
+        {logo || <LogoIcon size="xl" />}
         <HeroTitle>{title}</HeroTitle>
+      </VStack>
+
+      <VStack align="center" gap="xs" maxWidth="md">
         {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
-        {description && <HeroDescription>{description}</HeroDescription>}
+        {description && <HeroDescription align="center">{description}</HeroDescription>}
       </VStack>
     </VStack>
   )
