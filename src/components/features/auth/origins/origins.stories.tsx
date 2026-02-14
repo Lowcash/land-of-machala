@@ -10,13 +10,6 @@ const meta: Meta<typeof OriginsViewUI> = {
   title: 'Features/Auth/Origins',
   component: OriginsViewUI,
   tags: ['autodocs'],
-  decorators: [
-    (Story) => (
-      <AuthPageLayout>
-        <Story />
-      </AuthPageLayout>
-    ),
-  ],
 }
 
 export default meta
@@ -27,6 +20,13 @@ export const FullPage: Story = {
   parameters: {
     layout: 'fullscreen',
   },
+  decorators: [
+    (Story) => (
+      <AuthPageLayout>
+        <Story />
+      </AuthPageLayout>
+    ),
+  ],
 }
 
 export const TutorialStepStory: StoryObj<typeof TutorialStep> = {
