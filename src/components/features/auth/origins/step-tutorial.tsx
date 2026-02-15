@@ -24,7 +24,7 @@ export function TutorialStep({ step, onChoice, onSkip }: TutorialStepProps) {
   return (
     <VStack align="center" justify="center" fullWidth>
       <FadeIn key={step.id}>
-        <VStack align="center" gap="lg">
+        <VStack align="center" gap="md">
           <FeatureIcon icon={BookOpen} color="gold" />
 
           <NarrativeText>{t(step.textKey)}</NarrativeText>

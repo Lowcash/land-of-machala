@@ -1,4 +1,5 @@
 import {
+  Dices,
   Lock,
   type LucideIcon,
   Mail,
@@ -75,6 +76,10 @@ export function MailIcon({ size, color }: IconProps) {
 
 export function LockIcon({ size, color }: IconProps) {
   return <BaseIcon icon={Lock} size={size} color={color} />
+}
+
+export function DicesIcon({ size, color }: IconProps) {
+  return <BaseIcon icon={Dices} size={size} color={color} />
 }
 
 /**

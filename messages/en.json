@@ -64,6 +64,21 @@
         "step_1_choice_0": "Immediately draw your weapon and prepare for battle",
         "step_1_choice_1": "Quickly hide and evaluate the situation",
         "step_1_choice_2": "Use magic to create a protective barrier"
+      },
+      "creation": {
+        "title": "Create Your Hero",
+        "subtitle": "Your legend begins in the Land of Machala",
+        "nameLabel": "Hero Name",
+        "namePlaceholder": "Enter name...",
+        "randomize": "Random Character",
+        "randomize_button": "Randomize",
+        "statsTitle": "Your Stats",
+        "raceLabel": "Choose Your Race",
+        "classLabel": "Choose Your Class",
+        "raceBonuses": "Race Bonuses:",
+        "classBonuses": "Class Bonuses:",
+        "heroName": "Hero Name",
+        "finish": "Enter the World"
       }
     }
   },
@@ -88,20 +103,74 @@
       "Ancient legends speak of heroes who changed the fate of the world. Your story begins here."
     ],
     "Races": {
-      "human": "Human",
-      "dwarf": "Dwarf",
-      "elf": "Elf",
-      "orc": "Orc",
-      "halfling": "Halfling",
-      "dragonborn": "Dragonborn"
+      "human": {
+        "name": "Human",
+        "description": "Versatile and adaptable warriors. Humans are known for their balance in all aspects of combat. They have good health and decent magic abilities.",
+        "bonuses": "Balanced stats, +10% faster learning"
+      },
+      "dwarf": {
+        "name": "Dwarf",
+        "description": "Resilient and strong warriors from underground halls. Dwarves are masters of smithing and defense. Their robust bodies can take much more punishment.",
+        "bonuses": "+20 HP, +5 Stamina, +2 Strength, -3 Agility"
+      },
+      "elf": {
+        "name": "Elf",
+        "description": "Fast and magically gifted forest dwellers. Elves have an innate affinity for magic and nature. They are masters of archery and elemental magic.",
+        "bonuses": "+40 Mana, +7 Intelligence, +4 Agility, -20 HP"
+      },
+      "orc": {
+        "name": "Orc",
+        "description": "Brutal strength of the wilderness. Orcs are the strongest race in close combat. Their muscles and fury have no competition in war.",
+        "bonuses": "+40 HP, +8 Strength, +2 Stamina, -5 Intelligence"
+      },
+      "halfling": {
+        "name": "Halfling",
+        "description": "Small but agile and clever. Halflings are masters of evasion and surprise strikes from the shadows. Their small size makes them excellent rogues.",
+        "bonuses": "+6 Agility, higher evasion and crit chance"
+      },
+      "dragonborn": {
+        "name": "Dragonborn",
+        "description": "Heirs of dragon blood with balanced power. Descendants of ancient dragons combine strength, magic, and agility. They have innate magic resistance.",
+        "bonuses": "+10 HP, +20 Mana, +3 Strength, +4 Intelligence, dragon breath"
+      }
     },
     "Classes": {
-      "warrior": "Warrior",
-      "paladin": "Paladin",
-      "rogue": "Rogue",
-      "mage": "Mage",
-      "ranger": "Ranger",
-      "necromancer": "Necromancer"
+      "warrior": {
+        "name": "Warrior",
+        "type": "Tank",
+        "description": "Master of close combat and heavy armor. Warriors are frontal fighters trained in the use of all weapons.",
+        "bonuses": "Total +5 Strength, +5 Stamina, heavy armor proficiency"
+      },
+      "paladin": {
+        "name": "Paladin",
+        "type": "Tank",
+        "description": "Holy protector with magic and defense. Paladins combine combat skills with healing and protective magic.",
+        "bonuses": "+8 Stamina, +3 Intelligence, +3 Strength, healing magic"
+      },
+      "rogue": {
+        "name": "Rogue",
+        "type": "Hybrid",
+        "description": "Fast killer from the shadows. Rogues are masters of stealth and critical strikes. They rely on speed and precision.",
+        "bonuses": "+8 Agility, +4 Strength, critical strikes"
+      },
+      "mage": {
+        "name": "Mage",
+        "type": "Caster",
+        "description": "Master of mystic forces and destructive magic. Mages control elemental magic - fire, ice, lightning. They are physically weak.",
+        "bonuses": "+12 Intelligence, +2 Agility, -2 Stamina"
+      },
+      "ranger": {
+        "name": "Ranger",
+        "type": "Hybrid",
+        "description": "Archer and tracker of the wilderness. Rangers are connected to nature and master ranged combat.",
+        "bonuses": "+6 Strength, +6 Agility, +2 Stamina, archery"
+      },
+      "necromancer": {
+        "name": "Necromancer",
+        "type": "Caster",
+        "description": "Dark sorcerer controlling death. Necromancers manipulate death and raise servants.",
+        "bonuses": "+10 Intelligence, +3 Agility, life drain"
+      }
     },
     "Stats": {
       "active_players": "Active Players",

@@ -44,12 +44,13 @@ interface TypographyPrefabProps extends Omit<
   color?: TypographyColor
   align?: 'left' | 'center' | 'right' | 'justify'
   bold?: boolean
+  variant?: 'primary' | 'lead' | 'large' | 'small' | 'muted' | 'fantasy-value'
 }
 
-export function Value({ align, ...props }: TypographyPrefabProps) {
+export function Value({ align, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant="fantasy-value"
+      variant={variant || 'fantasy-value'}
       font="fantasy"
       color={'ivory' as any}
       align={align}
@@ -83,6 +84,18 @@ export function Decoration({ align, ...props }: TypographyPrefabProps) {
       font="fantasy"
       align={align}
       className="tracking-widest uppercase"
+      {...props}
+    />
+  )
+}
+
+export function Label({ align, ...props }: TypographyPrefabProps) {
+  return (
+    <Text
+      font="fantasy"
+      color={'gold' as any}
+      align={align || 'center'}
+      className="text-base sm:text-xl"
       {...props}
     />
   )

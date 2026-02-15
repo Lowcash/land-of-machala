@@ -2,31 +2,28 @@ import * as React from 'react'
 
 import { LucideIcon } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
+import { Heading, TextProps } from '@/components/ui/core/typography'
 
-import { Heading } from '@/components/ui/core/typography'
-
-interface CardTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+interface CardTitleProps extends Omit<
+  React.HTMLAttributes<HTMLHeadingElement>,
+  'className' | 'style' | 'color'
+> {
   children: React.ReactNode
   icon?: React.ReactNode | LucideIcon
   level?: 'h1' | 'h2' | 'h3' | 'h4'
+  align?: TextProps['align']
 }
 
-export function CardTitle({
-  children,
-  icon: Icon,
-  className,
-  level = 'h2',
-  ...props
-}: CardTitleProps) {
+export function CardTitle({ children, icon: Icon, level = 'h2', align, ...props }: CardTitleProps) {
   if (!children) return null
 
   return (
     <Heading
       level={level}
       font="fantasy"
-      color={'gold' as any}
-      className={cn('flex items-center gap-2 text-base font-normal', className)}
+      color="gold"
+      align={align}
+      className="flex items-center gap-2 text-base font-normal"
       {...props}
     >
       {Icon && (

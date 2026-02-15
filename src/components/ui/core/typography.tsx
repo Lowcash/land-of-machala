@@ -101,7 +101,7 @@ const textVariants = cva('leading-relaxed', {
   },
 })
 
-interface TextProps
+export interface TextProps
   extends
     Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'>,
     VariantProps<typeof textVariants> {

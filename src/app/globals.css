@@ -61,6 +61,14 @@
     --color-danger: #ff6b6b;
     --color-success: #6fbf6f;
     --color-info: #69ccf0;
+
+    /* Stat Colors */
+    --color-stat-hp: #ff6b6b;
+    --color-stat-mana: #69ccf0;
+    --color-stat-strength: #ff6b6b;
+    --color-stat-intelligence: #c084fc;
+    --color-stat-agility: #ffd700;
+    --color-stat-stamina: #69ccf0;
   }
 
   html,

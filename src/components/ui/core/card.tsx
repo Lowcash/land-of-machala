@@ -13,7 +13,7 @@ const cardVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'border border-(--color-secondary) bg-black/80 shadow-xl',
+        primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
         secondary: 'border border-(--color-secondary)/40 bg-black/60',
         subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
       },

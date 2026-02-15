@@ -66,6 +66,21 @@
         "step_1_choice_0": "Okamžitě tasíš zbraň a připravíš se k boji",
         "step_1_choice_1": "Rychle se schováš a vyhodnotíš situaci",
         "step_1_choice_2": "Využiješ magii k vytvoření ochranné bariéry"
+      },
+      "creation": {
+        "title": "Vytvoř svého hrdinu",
+        "subtitle": "Tvá legenda začíná v zemi Machala",
+        "nameLabel": "Jméno hrdiny",
+        "namePlaceholder": "Zadej jméno...",
+        "randomize": "Náhodná postava",
+        "randomize_button": "Náhodně",
+        "statsTitle": "Tvé statistiky",
+        "raceLabel": "Vyber svou rasu",
+        "classLabel": "Vyber své povolání",
+        "raceBonuses": "Bonusy rasy:",
+        "classBonuses": "Bonusy povolání:",
+        "heroName": "Jméno hrdiny",
+        "finish": "Vstoupit do světa"
       }
     }
   },
@@ -90,20 +105,74 @@
       "Dávné legendy praví o hrdinech, kteří změnili osud světa. Tvůj příběh začíná zde."
     ],
     "Races": {
-      "human": "Člověk",
-      "dwarf": "Trpaslík",
-      "elf": "Elf",
-      "orc": "Ork",
-      "halfling": "Půlčík",
-      "dragonborn": "Dračí rod"
+      "human": {
+        "name": "Člověk",
+        "description": "Všestranní a adaptabilní bojovníci. Lidé jsou známí svou vyrovnaností ve všech aspektech boje. Mají dobré zdraví, slušné magické schopnosti a vyvážené bojové vlastnosti.",
+        "bonuses": "Vyvážené statistiky, +10% rychlejší učení"
+      },
+      "dwarf": {
+        "name": "Trpaslík",
+        "description": "Odolní a silní bojovníci z podzemních hal. Trpaslíci jsou mistři v kovářství a obraně. Jejich robustní těla snesou mnohem více ran než ostatní rasy.",
+        "bonuses": "+20 HP, +5 Výdrž, +2 Síla, -3 Obratnost"
+      },
+      "elf": {
+        "name": "Elf",
+        "description": "Rychlí a magicky nadaní lesní obyvatelé. Elfové mají vrozenou afinitu k magii a přírodě. Jsou mistři v lukostřelbě a magii živlů.",
+        "bonuses": "+40 Mana, +7 Inteligence, +4 Obratnost, -20 HP"
+      },
+      "orc": {
+        "name": "Ork",
+        "description": "Brutální síla divočiny. Orkové jsou nejsilnější rasou v blízkém boju. Jejich svaly a zuřivost nemají ve válce konkurenci.",
+        "bonuses": "+40 HP, +8 Síla, +2 Výdrž, -5 Inteligence"
+      },
+      "halfling": {
+        "name": "Půlčík",
+        "description": "Malí, ale obratní a šikovní. Půlčíci jsou mistři ve vyhýbání se útokům a překvapivém úderu ze stínů. Jejich malá postava z nich dělá vynikající zloděje.",
+        "bonuses": "+6 Obratnost, vyšší šance na únik a kritický zásah"
+      },
+      "dragonborn": {
+        "name": "Dračí rod",
+        "description": "Dědicové dračí krve s vyváženou silou. Potomci starověkých draků kombinují sílu, magii i obratnost. Mají vrozenou odolnost vůči magii.",
+        "bonuses": "+10 HP, +20 Mana, +3 Síla, +4 Inteligence, dračí dech"
+      }
     },
     "Classes": {
-      "warrior": "Válečník",
-      "paladin": "Paladin",
-      "rogue": "Lotr",
-      "mage": "Mág",
-      "ranger": "Hraničář",
-      "necromancer": "Nekromant"
+      "warrior": {
+        "name": "Válečník",
+        "type": "Tank",
+        "description": "Mistr blízkého boje a těžké zbroje. Válečníci jsou frontální bojovníci trénovaní v použití všech zbraní.",
+        "bonuses": "+5 Síla, +5 Výdrž, těžké zbroje"
+      },
+      "paladin": {
+        "name": "Paladin",
+        "type": "Tank",
+        "description": "Svatý ochránce s magií a obranou. Paladinové kombinují bojové dovednosti s léčivou a ochrannou magií.",
+        "bonuses": "+8 Výdrž, +3 Inteligence, +3 Síla, léčení"
+      },
+      "rogue": {
+        "name": "Lotr",
+        "type": "Hybrid",
+        "description": "Rychlý zabiják ze stínů. Lotři jsou mistři nenápadnosti a kritických úderů. Spoléhají na rychlost a přesnost.",
+        "bonuses": "+8 Obratnost, +4 Síla, kritické údery"
+      },
+      "mage": {
+        "name": "Mág",
+        "type": "Kouzlící",
+        "description": "Mistr mystických sil a ničivé magie. Mágové ovládají živelnou magii - oheň, led, blesk. Jsou však fyzicky slabí.",
+        "bonuses": "+12 Inteligence, +2 Obratnost, -2 Výdrž"
+      },
+      "ranger": {
+        "name": "Hraničář",
+        "type": "Hybrid",
+        "description": "Lučištník a stopař divočiny. Hraničáři jsou spojení s přírodou a ovládají boj na dálku.",
+        "bonuses": "+6 Síla, +6 Obratnost, +2 Výdrž, lukostřelba"
+      },
+      "necromancer": {
+        "name": "Nekromant",
+        "type": "Kouzlící",
+        "description": "Temný kouzelník ovládající smrt. Nekromanti manipulují se smrtí a oživují služebníky.",
+        "bonuses": "+10 Inteligence, +3 Obratnost, vysávání života"
+      }
     },
     "Stats": {
       "active_players": "Aktivní hráči",

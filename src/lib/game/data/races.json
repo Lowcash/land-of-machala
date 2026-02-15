@@ -1,8 +1,50 @@
 [
-  { "id": "human", "nameKey": "Game.Races.human" },
-  { "id": "dwarf", "nameKey": "Game.Races.dwarf" },
-  { "id": "elf", "nameKey": "Game.Races.elf" },
-  { "id": "orc", "nameKey": "Game.Races.orc" },
-  { "id": "halfling", "nameKey": "Game.Races.halfling" },
-  { "id": "dragonborn", "nameKey": "Game.Races.dragonborn" }
+  {
+    "id": "human",
+    "nameKey": "Game.Races.human.name",
+    "descriptionKey": "Game.Races.human.description",
+    "bonusKey": "Game.Races.human.bonuses",
+    "icon": "User",
+    "stats": { "hp": 100, "mana": 80, "strength": 10, "intelligence": 8, "agility": 10, "stamina": 10 }
+  },
+  {
+    "id": "dwarf",
+    "nameKey": "Game.Races.dwarf.name",
+    "descriptionKey": "Game.Races.dwarf.description",
+    "bonusKey": "Game.Races.dwarf.bonuses",
+    "icon": "Shield",
+    "stats": { "hp": 120, "mana": 60, "strength": 12, "intelligence": 5, "agility": 7, "stamina": 15 }
+  },
+  {
+    "id": "elf",
+    "nameKey": "Game.Races.elf.name",
+    "descriptionKey": "Game.Races.elf.description",
+    "bonusKey": "Game.Races.elf.bonuses",
+    "icon": "Zap",
+    "stats": { "hp": 80, "mana": 120, "strength": 8, "intelligence": 15, "agility": 14, "stamina": 7 }
+  },
+  {
+    "id": "orc",
+    "nameKey": "Game.Races.orc.name",
+    "descriptionKey": "Game.Races.orc.description",
+    "bonusKey": "Game.Races.orc.bonuses",
+    "icon": "Swords",
+    "stats": { "hp": 140, "mana": 40, "strength": 18, "intelligence": 3, "agility": 6, "stamina": 12 }
+  },
+  {
+    "id": "halfling",
+    "nameKey": "Game.Races.halfling.name",
+    "descriptionKey": "Game.Races.halfling.description",
+    "bonusKey": "Game.Races.halfling.bonuses",
+    "icon": "Target",
+    "stats": { "hp": 90, "mana": 70, "strength": 9, "intelligence": 7, "agility": 16, "stamina": 8 }
+  },
+  {
+    "id": "dragonborn",
+    "nameKey": "Game.Races.dragonborn.name",
+    "descriptionKey": "Game.Races.dragonborn.description",
+    "bonusKey": "Game.Races.dragonborn.bonuses",
+    "icon": "Sparkles",
+    "stats": { "hp": 110, "mana": 100, "strength": 13, "intelligence": 12, "agility": 9, "stamina": 11 }
+  }
 ]
