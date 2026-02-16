@@ -301,7 +301,8 @@ const responsiveMaps = {
     auto: { sm: 'sm:mx-auto', md: 'md:mx-auto', lg: 'lg:mx-auto', xl: 'xl:mx-auto' },
   },
   minHeight: {
-    none: { sm: 'sm:min-h-0', md: 'md:min-h-0', lg: 'lg:min-h-0', xl: 'xl:min-h-0' },
+    zero: { sm: 'sm:min-h-0', md: 'md:min-h-0', lg: 'lg:min-h-0', xl: 'xl:min-h-0' },
+    none: { sm: 'sm:min-h-none', md: 'md:min-h-none', lg: 'lg:min-h-none', xl: 'xl:min-h-none' },
     screen: {
       sm: 'sm:min-h-screen',
       md: 'md:min-h-screen',
@@ -321,9 +322,9 @@ const responsiveMaps = {
     full: { sm: 'sm:h-full', md: 'md:h-full', lg: 'lg:h-full', xl: 'xl:h-full' },
     creation: {
       sm: 'sm:h-auto',
-      md: 'md:h-[460px]',
-      lg: 'lg:h-[460px]',
-      xl: 'xl:h-[460px]',
+      md: 'md:h-[480px]',
+      lg: 'lg:h-[480px]',
+      xl: 'xl:h-[480px]',
     },
   },
 }

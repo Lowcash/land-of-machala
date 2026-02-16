@@ -61,8 +61,10 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
-          'group font-fantasy flex flex-1 cursor-pointer items-center justify-between px-4 py-3.5 text-left text-lg transition-all active:scale-[0.99] sm:text-xl',
-          'text-(--color-ivory)/90 hover:bg-(--color-secondary)/10 hover:text-(--color-primary)',
+          'group flex flex-1 cursor-pointer items-center justify-between px-4 py-3.5 text-left transition-all active:scale-[0.99]',
+          'font-fantasy text-lg sm:text-xl text-(--color-ivory)/90',
+          'border-b border-(--color-secondary)/20 last:border-0',
+          'hover:bg-(--color-secondary)/10 hover:text-(--color-primary)',
           'data-[state=open]:bg-(--color-primary)/5 data-[state=open]:text-(--color-primary) [&[data-state=open]>svg]:rotate-180',
           className
         )}
@@ -137,7 +139,7 @@ export function GameAccordion({
             passthroughOnDesktop && 'lg:border-none lg:bg-transparent lg:shadow-none'
           )}
         >
-          <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
+          <AccordionTrigger className={cn('border-none', passthroughOnDesktop && 'lg:hidden')}>
             <div className="flex w-full items-center justify-between gap-2">
               <span>{item.title}</span>
               {item.selectedLabel && (

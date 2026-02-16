@@ -23,7 +23,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
   const gt = useTranslations('Game')
 
   return (
-    <Card p="md" variant="secondary">
+    <Card p="md" variant="secondary" flex="1" minHeight="zero">
       <Card.Header align="center" justify="center">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>

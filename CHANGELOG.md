@@ -2,14 +2,16 @@
  
 All notable changes to this project will be documented in this file.
  
-- [2026-02-17] - Unified Component APIs & SSR-Friendly Responsiveness
+- [2026-02-17] - Origins Layout Refinement & UI Consistency
 - 
 - ### Changed
-- - Unified `Changelog`, `Stats`, `Benefits`, and `SelectionBox` APIs into a single `variant` prop (`primary`, `flat`, `responsive`).
-- - Implemented a "Two-Card" CSS strategy for the `responsive` variant to preserve Server-Side Rendering (SSR).
-- - Removed `useMediaQuery` dependency from `StepCreation` to ensure full SSR compatibility.
-- - Replaced JS-based layout toggles with CSS-only visibility (`lg:display="none"`/`lg:display="flex"`) in Auth and Origins views.
-- - Unified padding to `md` for all mobile (ghost) card variants to improve content spacing.
+- - Standardized `height="creation"` to 480px across all components for perfect column alignment.
+- - Unified `Card` borders: Primary cards now use `border-2`, and Secondary cards use `border-1` with consistent opacity.
+- - Refined `AccordionTrigger` aesthetic (fantasy font, hover transitions, active scale anim) to match `Button` components.
+- - Fixed `SelectionBox` scrolling regression by optimizing flex container constraints (`min-h-0`).
+- - Optimized `CharacterIdentity` layout to ensure column parity in the Origins wizard.
+- 
+- ## [2026-02-17] - Unified Component APIs & SSR-Friendly Responsiveness
 - 
 - ## [2026-02-16] - Origins Refinements & Architecture Cleanup
 - Extracted business logic (icon mapping, stats) to `src/lib/game/origins/utils.ts`.

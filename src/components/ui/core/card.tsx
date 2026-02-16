@@ -11,8 +11,8 @@ import { StackProps, getResponsiveClasses, stackVariants } from './stack'
 const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-black/40', {
   variants: {
     variant: {
-      primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
-      secondary: 'border border-(--color-secondary)/40 bg-black/60',
+      primary: 'border-2 border-(--color-primary) bg-black/80 shadow-xl',
+      secondary: 'border border-(--color-secondary)/30 bg-black/60',
       subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
       ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
     },
@@ -132,7 +132,7 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
         data-slot="card-header"
         ref={ref}
         className={cn(
-          'border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
+          'border-b-2 border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
           stackVariants({
             display: display || 'flex',
             direction: direction || 'row',

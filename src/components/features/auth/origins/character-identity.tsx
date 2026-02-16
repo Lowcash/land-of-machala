@@ -26,7 +26,7 @@ export function CharacterIdentity({
   const t = useTranslations('Auth.Origins.creation')
 
   return (
-    <VStack gap="md" height="creation">
+    <VStack gap="md" height="creation" minHeight="none">
       <CharacterNameCard
         name={name}
         label={t('nameLabel')}

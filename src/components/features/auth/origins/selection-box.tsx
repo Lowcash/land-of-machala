@@ -32,8 +32,14 @@ export function SelectionBox({
   const translationKey = type === 'race' ? 'Races' : 'Classes'
 
   const content = (
-    <Card.Content gap="md" display="flex" direction="col" flex={variant === 'flat' ? 'none' : '1'}>
-      <Stack display="grid" cols="3" gap="xs" md={{ gap: 'sm' }}>
+    <Card.Content
+      gap="md"
+      display="flex"
+      direction="col"
+      flex={variant === 'flat' ? 'none' : '1'}
+      minHeight="zero"
+    >
+      <Stack display="grid" cols="3" gap="xs" md={{ gap: 'sm' }} flex="none">
         {items.map((item) => {
           const Icon = getSelectionIcon(item.icon)
           const isSelected = selectedId === item.id
@@ -56,7 +62,7 @@ export function SelectionBox({
 
   if (variant === 'responsive') {
     return (
-      <>
+      <VStack fullWidth height="auto" md={{ height: 'creation', minHeight: 'none' }}>
         {/* Mobile/Accordion: Flat view */}
         <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
           {content}
@@ -70,13 +76,14 @@ export function SelectionBox({
           lg={{ display: 'flex' }}
           direction="col"
           height="creation"
+          minHeight="zero"
         >
           <Card.Header align="center" justify="center">
             <Card.Title align="center">{title}</Card.Title>
           </Card.Header>
           {content}
         </Card>
-      </>
+      </VStack>
     )
   }
 
@@ -88,6 +95,7 @@ export function SelectionBox({
       p="md"
       direction="col"
       height={isFlat ? 'auto' : 'creation'}
+      minHeight={isFlat ? 'none' : 'zero'}
     >
       {!isFlat && (
         <Card.Header align="center" justify="center">
