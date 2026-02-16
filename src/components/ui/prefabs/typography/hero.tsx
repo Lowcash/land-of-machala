@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-import { HStack } from '@/components/ui/core/stack'
+import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 import { SparklesIcon } from '@/components/ui/icons'
 
@@ -38,7 +38,7 @@ export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
   return (
     <HStack align="center" gap="xs" {...props}>
       <SparklesIcon />
-      <Text color={'secondary' as any} className="text-sm sm:text-base">
+      <Text align="center" color={'secondary' as any} className="text-sm sm:text-base">
         {children}
       </Text>
       <SparklesIcon />
@@ -52,4 +52,18 @@ export function HeroDescription({ children, ...props }: React.ComponentProps<typ
 
 export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Decoration>) {
   return <Decoration {...props}>{children}</Decoration>
+}
+
+interface PageHeaderProps {
+  title: string
+  subtitle?: string
+}
+
+export function PageHeader({ title, subtitle }: PageHeaderProps) {
+  return (
+    <VStack align="center" gap="xs" fullWidth>
+      <HeroTitle>{title}</HeroTitle>
+      {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
+    </VStack>
+  )
 }
