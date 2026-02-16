@@ -20,6 +20,7 @@ const buttonVariants = cva(
       size: {
         default: 'p-2',
         lg: 'min-h-16 p-4',
+        action: 'min-h-20 p-4 py-6',
         feature: 'h-20 p-4',
       },
       fullWidth: {

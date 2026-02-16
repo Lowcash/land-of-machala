@@ -46,7 +46,15 @@ export function StepCreation({
       <PageHeader title={t('title')} subtitle={t('subtitle')} />
 
       {/* Main content grid */}
-      <Stack display="grid" cols="1" gap="md" fullWidth maxWidth="5xl" md={{ cols: '3' }}>
+      <Stack
+        display="grid"
+        cols="1"
+        gap="md"
+        fullWidth
+        maxWidth="5xl"
+        md={{ cols: '3' }}
+        height="creation"
+      >
         {/* Column 1: Identity & Stats */}
         <CharacterIdentity
           name={name}

@@ -23,8 +23,8 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
   const bonusLabel = type === 'race' ? ot('raceBonuses') : ot('classBonuses')
 
   return (
-    <Card p="none">
-      <ScrollArea>
+    <Card p="none" flex="1" minHeight="zero">
+      <ScrollArea className="h-full">
         <VStack gap="md" p="md">
           <Description>{t(`${translationKey}.${item.id}.description`)}</Description>
 
