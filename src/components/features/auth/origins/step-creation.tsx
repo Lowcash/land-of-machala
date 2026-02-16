@@ -7,7 +7,6 @@ import { RACES } from '@/lib/game/data/races'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { PageHeader } from '@/components/ui/prefabs/typography/page-header'
 
 import { CharacterIdentity } from './character-identity'
@@ -62,47 +61,23 @@ export function StepCreation({
           stats={stats}
         />
 
-        {/* Column 2 & 3: Race & Class wrapped in Accordion for Mobile */}
-        <div className="contents md:col-span-2">
-          <GameAccordion
-            breakpoint="md"
-            passthroughOnDesktop
-            defaultValue="race"
-            fullHeight
-            gap="md" /* Mobile Gap */
-            md={{ display: 'grid', cols: '2', gap: 'sm' }} /* Desktop Grid */
-            items={[
-              {
-                value: 'race',
-                title: t('raceLabel'),
-                content: (
-                  <SelectionBox
-                    title={t('raceLabel')}
-                    items={RACES}
-                    selectedId={selectedRaceId}
-                    onSelect={onRaceSelect}
-                    type="race"
-                    suppressHeaderOnMobile
-                  />
-                ),
-              },
-              {
-                value: 'class',
-                title: t('classLabel'),
-                content: (
-                  <SelectionBox
-                    title={t('classLabel')}
-                    items={CLASSES}
-                    selectedId={selectedClassId}
-                    onSelect={onClassSelect}
-                    type="class"
-                    suppressHeaderOnMobile
-                  />
-                ),
-              },
-            ]}
-          />
-        </div>
+        {/* Column 2: Race Selection */}
+        <SelectionBox
+          title={t('raceLabel')}
+          items={RACES}
+          selectedId={selectedRaceId}
+          onSelect={onRaceSelect}
+          type="race"
+        />
+
+        {/* Column 3: Class Selection */}
+        <SelectionBox
+          title={t('classLabel')}
+          items={CLASSES}
+          selectedId={selectedClassId}
+          onSelect={onClassSelect}
+          type="class"
+        />
       </Stack>
 
       {/* Finish button relocated to bottom */}

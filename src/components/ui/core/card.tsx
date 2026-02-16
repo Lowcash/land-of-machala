@@ -8,21 +8,18 @@ import { CardTitle } from '@/components/ui/prefabs/typography/card'
 
 import { StackProps, getResponsiveClasses, stackVariants } from './stack'
 
-const cardVariants = cva(
-  'flex transition-all backdrop-blur-md rounded-lg shadow-lg shadow-black/40',
-  {
-    variants: {
-      variant: {
-        primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
-        secondary: 'border border-(--color-secondary)/40 bg-black/60',
-        subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
-      },
+const cardVariants = cva('flex transition-all backdrop-blur-md rounded shadow-lg shadow-black/40', {
+  variants: {
+    variant: {
+      primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
+      secondary: 'border border-(--color-secondary)/40 bg-black/60',
+      subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
     },
-    defaultVariants: {
-      variant: 'primary',
-    },
-  }
-)
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+})
 
 interface CardRootProps extends StackProps, VariantProps<typeof cardVariants> {
   /** Map padding to Stack's p prop for backward compatibility */

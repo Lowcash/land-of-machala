@@ -120,7 +120,7 @@ export function Decoration({ align, variant, ...props }: TypographyPrefabProps) 
 
 export function Label({ align, variant, ...props }: TypographyPrefabProps) {
   // Map our preset variant to the base Text variant where appropriate
-  const baseVariant = (variant === 'small' || variant === 'tiny') ? 'small' : 'primary'
+  const baseVariant = variant === 'tiny' || variant === 'small' ? 'small' : 'primary'
 
   return (
     <Text
