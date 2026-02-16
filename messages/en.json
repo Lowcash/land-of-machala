@@ -173,6 +173,12 @@
       }
     },
     "Stats": {
+      "hp": "HP",
+      "mana": "Mana",
+      "strength": "Strength",
+      "intelligence": "Intel.",
+      "agility": "Agility",
+      "stamina": "Stamina",
       "active_players": "Active Players",
       "boss_kills": "Boss Kills",
       "top_level": "Top Level",

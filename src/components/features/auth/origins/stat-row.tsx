@@ -1,42 +1,25 @@
 import { type LucideIcon } from 'lucide-react'
 
 import { HStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
+import { Icon, type IconColor } from '@/components/ui/icons'
 import { Decoration, Value } from '@/components/ui/prefabs/typography/shared'
 
 interface StatRowProps {
   icon: LucideIcon
   label: string
   value: string | number
-  iconColor?: string
-  labelColor?: string
-  valueColor?: string
+  color?: IconColor
   compact?: boolean
 }
 
-export function StatRow({ 
-  icon: Icon, 
-  label, 
-  value,
-  iconColor,
-  labelColor,
-  valueColor,
-  compact = false
-}: StatRowProps) {
+export function StatRow({ icon: SimpleIcon, label, value, color, compact = false }: StatRowProps) {
   if (compact) {
     return (
       <HStack align="center" gap="xs">
-        <Icon 
-          size={10} 
-          style={iconColor ? { color: iconColor } : undefined} 
-        />
-        <Text 
-          variant="small"
-          style={labelColor ? { color: labelColor } : undefined}
-          className="text-[9px] sm:text-[10px]"
-        >
+        <Icon icon={SimpleIcon} size="xs" color={color} />
+        <Value variant="small" color="secondary">
           {value} {label}
-        </Text>
+        </Value>
       </HStack>
     )
   }
@@ -44,18 +27,10 @@ export function StatRow({
   return (
     <HStack align="center" justify="between" fullWidth>
       <HStack align="center" gap="sm">
-        <Icon 
-          size={14} 
-          style={iconColor ? { color: iconColor } : undefined} 
-        />
-        <Decoration style={labelColor ? { color: labelColor } : undefined}>
-          {label}
-        </Decoration>
+        <Icon icon={SimpleIcon} size="sm" color={color} />
+        <Decoration color="secondary">{label}</Decoration>
       </HStack>
-      <Value 
-        variant="small" 
-        style={valueColor ? { color: valueColor } : undefined}
-      >
+      <Value variant="small" color={color as any}>
         {value}
       </Value>
     </HStack>

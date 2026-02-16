@@ -58,7 +58,7 @@ export function ScrollArea({
         </div>
       )}
 
-      <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto p-2 sm:p-3">
+      <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto">
         {children}
       </div>
 

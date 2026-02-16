@@ -15,7 +15,7 @@ const buttonVariants = cva(
         secondary:
           'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-ivory)/40 enabled:hover:bg-black/80 enabled:hover:text-(--color-primary) disabled:border-(--color-secondary)/30 disabled:bg-(--color-secondary)/10 disabled:text-(--color-ivory)/40',
         choice:
-          'flex-col items-center justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-center text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-primary) enabled:hover:bg-(--color-primary)/10',
+          'flex-col items-center justify-center rounded-lg border border-(--color-secondary)/40 bg-black/60 p-4 text-center text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-primary) enabled:hover:bg-(--color-primary)/10 disabled:opacity-50 disabled:border-(--color-secondary)/20 disabled:bg-black/40 disabled:text-(--color-ivory)/40',
       },
       size: {
         default: 'p-2',

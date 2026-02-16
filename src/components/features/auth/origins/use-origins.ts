@@ -10,9 +10,6 @@ import { STORY_STEPS } from '@/lib/game/data/origins'
 import type { OriginsChoice } from '@/lib/game/data/origins'
 import { RACES } from '@/lib/game/data/races'
 
-/**
- * Hook to manage character creation state.
- */
 function useCharacterCreation() {
   const [name, setName] = React.useState('')
   const [selectedRaceId, setSelectedRaceId] = React.useState(RACES[0].id)
@@ -93,9 +90,6 @@ function useOriginsNarrative(onEnd: () => void) {
   }
 }
 
-/**
- * Main Origins orchestrator hook.
- */
 export function useOrigins() {
   const router = useRouter()
   const [phase, setPhase] = React.useState<'tutorial' | 'creation'>('tutorial')
@@ -113,5 +107,6 @@ export function useOrigins() {
     ...character,
     handleSkip: () => setPhase('creation'),
     handleFinish,
+    canFinish: character.characterName.trim().length > 0,
   }
 }

@@ -1,6 +1,4 @@
-import * as React from 'react'
-
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { Stack } from '@/components/ui/core/stack'
 
 interface AuthPageLayoutProps {
   children: React.ReactNode
@@ -8,17 +6,10 @@ interface AuthPageLayoutProps {
 
 export function AuthPageLayout({ children }: AuthPageLayoutProps) {
   return (
-    <VStack minHeight="dvh" fullWidth justify="center" align="center" p="md" md={{ p: 'xl' }}>
-      <Stack
-        fullWidth
-        maxWidth="5xl"
-        gap="xl"
-        align="end"
-        justify="center"
-        lg={{ direction: 'row' }}
-      >
+    <Stack fullWidth minHeight="dvh" justify="center" align="center" p="xl">
+      <Stack fullWidth maxWidth="5xl">
         {children}
       </Stack>
-    </VStack>
+    </Stack>
   )
 }

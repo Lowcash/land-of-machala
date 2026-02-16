@@ -34,6 +34,12 @@ type TypographyColor =
   | 'gold'
   | 'info'
   | 'copper'
+  | 'hp'
+  | 'mana'
+  | 'strength'
+  | 'intelligence'
+  | 'agility'
+  | 'stamina'
 
 interface TypographyPrefabProps extends Omit<
   React.HTMLAttributes<HTMLParagraphElement>,

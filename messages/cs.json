@@ -175,6 +175,12 @@
       }
     },
     "Stats": {
+      "hp": "HP",
+      "mana": "Mana",
+      "strength": "Síla",
+      "intelligence": "Intel.",
+      "agility": "Obrat.",
+      "stamina": "Výdrž",
       "active_players": "Aktivní hráči",
       "boss_kills": "Zabití bossů",
       "top_level": "Top level",

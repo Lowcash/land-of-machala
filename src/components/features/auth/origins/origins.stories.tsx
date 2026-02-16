@@ -43,19 +43,30 @@ const CreationWrapper = () => {
   const [raceId, setRaceId] = React.useState(RACES[0].id)
   const [classId, setClassId] = React.useState('warrior')
 
-  const selectedRace = RACES.find((r) => r.id === raceId) || RACES[0]
+  const selectedRace = React.useMemo(() => RACES.find((r) => r.id === raceId) || RACES[0], [raceId])
+
+  const randomize = React.useCallback(() => {
+    const randomRace = RACES[Math.floor(Math.random() * RACES.length)]
+    const classes = ['warrior', 'paladin', 'rogue', 'mage', 'ranger', 'necromancer']
+    const randomClass = classes[Math.floor(Math.random() * classes.length)]
+
+    setRaceId(randomRace.id)
+    setClassId(randomClass)
+    setName('Random Hero')
+  }, [])
 
   return (
     <StepCreation
       name={name}
       onNameChange={setName}
-      onRandomize={() => setName('Náhodný Hrdina')}
+      onRandomize={randomize}
       onFinish={() => {}}
       selectedRaceId={raceId}
       onRaceSelect={setRaceId}
       selectedClassId={classId}
       onClassSelect={setClassId}
       stats={selectedRace.stats}
+      canFinish={name.trim().length > 0}
     />
   )
 }

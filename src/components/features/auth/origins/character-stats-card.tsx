@@ -14,15 +14,14 @@ interface CharacterStatsCardProps {
     agility: number
     stamina: number
   }
-  fullHeight?: boolean
-  flex?: 'none' | '1' | 'auto' | null
 }
 
-export function CharacterStatsCard({ stats, fullHeight, flex }: CharacterStatsCardProps) {
+export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
   const t = useTranslations('Auth.Origins.creation')
+  const gt = useTranslations('Game')
 
   return (
-    <Card p="md" fullHeight={fullHeight} flex={flex}>
+    <Card p="md" fullHeight>
       <Card.Header align="center" justify="center">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>
@@ -33,48 +32,12 @@ export function CharacterStatsCard({ stats, fullHeight, flex }: CharacterStatsCa
         gap="lg"
         sm={{ display: 'flex', direction: 'col', gap: 'md' }}
       >
-        <StatRow
-          icon={Heart}
-          label="HP"
-          value={stats.hp}
-          iconColor="var(--color-stat-hp)"
-          labelColor="var(--color-secondary)"
-        />
-        <StatRow
-          icon={Droplet}
-          label="Mana"
-          value={stats.mana}
-          iconColor="var(--color-stat-mana)"
-          labelColor="var(--color-secondary)"
-        />
-        <StatRow
-          icon={Sword}
-          label="Síla"
-          value={stats.strength}
-          iconColor="var(--color-stat-strength)"
-          labelColor="var(--color-secondary)"
-        />
-        <StatRow
-          icon={Brain}
-          label="Intel."
-          value={stats.intelligence}
-          iconColor="var(--color-stat-intelligence)"
-          labelColor="var(--color-secondary)"
-        />
-        <StatRow
-          icon={Wind}
-          label="Obrat."
-          value={stats.agility}
-          iconColor="var(--color-stat-agility)"
-          labelColor="var(--color-secondary)"
-        />
-        <StatRow
-          icon={Activity}
-          label="Výdrž"
-          value={stats.stamina}
-          iconColor="var(--color-stat-stamina)"
-          labelColor="var(--color-secondary)"
-        />
+        <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
+        <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />
+        <StatRow icon={Sword} label={gt('Stats.strength')} value={stats.strength} color="strength" />
+        <StatRow icon={Brain} label={gt('Stats.intelligence')} value={stats.intelligence} color="intelligence" />
+        <StatRow icon={Wind} label={gt('Stats.agility')} value={stats.agility} color="agility" />
+        <StatRow icon={Activity} label={gt('Stats.stamina')} value={stats.stamina} color="stamina" />
       </Card.Content>
     </Card>
   )

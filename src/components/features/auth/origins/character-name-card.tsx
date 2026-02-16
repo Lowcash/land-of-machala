@@ -13,7 +13,9 @@ export function CharacterNameCard({ name, label, placeholder, onChange }: Charac
   return (
     <Card p="md" variant="primary">
       <Card.Header align="center" justify="center">
-        <Card.Title align="center">{label}</Card.Title>
+        <Card.Title align="center" variant="large">
+          {label}
+        </Card.Title>
       </Card.Header>
 
       <Card.Content>

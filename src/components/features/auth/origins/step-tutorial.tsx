@@ -22,7 +22,7 @@ export function TutorialStep({ step, onChoice, onSkip }: TutorialStepProps) {
   const t = useTranslations('Auth.Origins')
 
   return (
-    <VStack align="center" justify="center" fullWidth>
+    <VStack fullWidth align="center" justify="center">
       <FadeIn key={step.id}>
         <VStack align="center" gap="md">
           <FeatureIcon icon={BookOpen} color="gold" />

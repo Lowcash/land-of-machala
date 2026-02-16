@@ -6,7 +6,7 @@ import {
   resolveTranslatedLoreQuote,
 } from '@/lib/game/utils/resolvers'
 
-import { HStack, VStack } from '@/components/ui/core/stack'
+import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
@@ -48,7 +48,7 @@ export function RegisterViewUI({
   footer,
 }: RegisterViewUIProps) {
   return (
-    <>
+    <Stack gap="xl" fullWidth align="end" justify="center" lg={{ direction: 'row' }}>
       <VStack gap="md" fullWidth>
         <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
         <VStack gap="md" pb="md" fullWidth>
@@ -84,7 +84,7 @@ export function RegisterViewUI({
         <LoreQuote quote={quote} />
         <Footer {...footer} />
       </VStack>
-    </>
+    </Stack>
   )
 }
 

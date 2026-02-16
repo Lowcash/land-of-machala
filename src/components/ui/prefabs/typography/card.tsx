@@ -2,6 +2,8 @@ import * as React from 'react'
 
 import { LucideIcon } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
+
 import { Heading, TextProps } from '@/components/ui/core/typography'
 
 interface CardTitleProps extends Omit<
@@ -12,10 +14,21 @@ interface CardTitleProps extends Omit<
   icon?: React.ReactNode | LucideIcon
   level?: 'h1' | 'h2' | 'h3' | 'h4'
   align?: TextProps['align']
+  variant?: 'primary' | 'large' | 'fantasy-value'
 }
 
-export function CardTitle({ children, icon: Icon, level = 'h2', align, ...props }: CardTitleProps) {
+export function CardTitle({
+  children,
+  icon: Icon,
+  level = 'h2',
+  align,
+  variant = 'primary',
+  ...props
+}: CardTitleProps) {
   if (!children) return null
+
+  const sizeClass =
+    variant === 'large' ? 'text-xl' : variant === 'fantasy-value' ? 'text-lg' : 'text-base'
 
   return (
     <Heading
@@ -23,7 +36,7 @@ export function CardTitle({ children, icon: Icon, level = 'h2', align, ...props 
       font="fantasy"
       color="gold"
       align={align}
-      className="flex items-center gap-2 text-base font-normal"
+      className={cn('flex items-center gap-2 font-normal', sizeClass)}
       {...props}
     >
       {Icon && (

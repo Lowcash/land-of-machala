@@ -7,7 +7,7 @@ import {
   resolveTranslatedStats,
 } from '@/lib/game/utils/resolvers'
 
-import { VStack } from '@/components/ui/core/stack'
+import { Stack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
@@ -51,7 +51,7 @@ export function LoginViewUI({
   footer,
 }: LoginViewUIProps) {
   return (
-    <>
+    <Stack gap="xl" fullWidth align="end" justify="center" lg={{ direction: 'row' }}>
       <VStack gap="md" fullWidth>
         <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
         <VStack gap="md" pb="md" fullWidth>
@@ -82,7 +82,7 @@ export function LoginViewUI({
         <LoreQuote quote={quote} />
         <Footer {...footer} />
       </VStack>
-    </>
+    </Stack>
   )
 }
 

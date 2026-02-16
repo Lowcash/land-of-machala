@@ -11,8 +11,7 @@ import { Text } from '@/components/ui/core/typography'
 import { DicesIcon } from '@/components/ui/icons'
 import { PageHeader } from '@/components/ui/prefabs/typography/page-header'
 
-import { CharacterNameCard } from './character-name-card'
-import { CharacterStatsCard } from './character-stats-card'
+import { CharacterIdentity } from './character-identity'
 import { SelectionBox } from './selection-box'
 
 interface StepCreationProps {
@@ -25,6 +24,7 @@ interface StepCreationProps {
   selectedClassId: string
   onClassSelect: (id: string) => void
   stats: any
+  canFinish: boolean
 }
 
 export function StepCreation({
@@ -37,38 +37,23 @@ export function StepCreation({
   selectedClassId,
   onClassSelect,
   stats,
+  canFinish,
 }: StepCreationProps) {
   const t = useTranslations('Auth.Origins.creation')
 
   return (
-    <VStack align="center" gap="lg" fullWidth>
+    <VStack gap="lg" align="center">
       <PageHeader title={t('title')} subtitle={t('subtitle')} />
 
       {/* Main content grid */}
-      <Stack
-        display="grid"
-        cols="1"
-        gap="md"
-        fullWidth
-        maxWidth="5xl"
-        md={{ cols: '3', align: 'stretch' }}
-      >
+      <Stack display="grid" cols="1" gap="md" fullWidth maxWidth="5xl" md={{ cols: '3' }}>
         {/* Column 1: Identity & Stats */}
-        <VStack gap="md" fullHeight>
-          <CharacterNameCard
-            name={name}
-            label={t('nameLabel')}
-            placeholder={t('namePlaceholder')}
-            onChange={onNameChange}
-          />
-
-          <Button variant="primary" onClick={onRandomize}>
-            <DicesIcon size="md" />
-            <Text font="fantasy">{t('randomize_button')}</Text>
-          </Button>
-
-          <CharacterStatsCard stats={stats} fullHeight />
-        </VStack>
+        <CharacterIdentity
+          name={name}
+          onNameChange={onNameChange}
+          onRandomize={onRandomize}
+          stats={stats}
+        />
 
         {/* Column 2: Race Selection */}
         <SelectionBox
@@ -90,7 +75,7 @@ export function StepCreation({
       </Stack>
 
       {/* Finish button relocated to bottom */}
-      <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!name.trim()}>
+      <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
         {t('finish')}
       </Button>
     </VStack>

@@ -21,65 +21,82 @@ const ICON_SIZES = {
   xl: 'h-10 w-10',
 } as const
 
-interface IconProps {
+export type IconColor =
+  | 'gold'
+  | 'secondary'
+  | 'ivory'
+  | 'hp'
+  | 'mana'
+  | 'strength'
+  | 'intelligence'
+  | 'agility'
+  | 'stamina'
+
+export interface IconProps {
   size?: keyof typeof ICON_SIZES
-  color?: 'gold' | 'secondary' | 'ivory'
+  color?: IconColor
 }
 
-function BaseIcon({
-  icon: Icon,
+export function Icon({
+  icon: SimpleIcon,
   size = 'sm',
   color,
 }: {
   icon: LucideIcon
   size?: keyof typeof ICON_SIZES
-  color?: 'gold' | 'secondary' | 'ivory'
+  color?: IconColor
 }) {
   const colorClass = color
     ? {
         gold: 'text-(--color-gold)',
         secondary: 'text-(--color-secondary)',
         ivory: 'text-(--color-ivory)',
+        hp: 'text-(--color-stat-hp)',
+        mana: 'text-(--color-stat-mana)',
+        strength: 'text-(--color-stat-strength)',
+        intelligence: 'text-(--color-stat-intelligence)',
+        agility: 'text-(--color-stat-agility)',
+        stamina: 'text-(--color-stat-stamina)',
       }[color]
     : ''
 
-  return <Icon className={cn(ICON_SIZES[size], colorClass)} />
+  return <SimpleIcon className={cn(ICON_SIZES[size], colorClass)} />
 }
 
 export function UserIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={User} size={size} color={color} />
+  return <Icon icon={User} size={size} color={color} />
 }
 
 export function UsersIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Users} size={size || 'md'} color={color} />
+  return <Icon icon={Users} size={size || 'md'} color={color} />
 }
 
 export function ScrollIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Scroll} size={size || 'md'} color={color} />
+  return <Icon icon={Scroll} size={size || 'md'} color={color} />
 }
 
 export function SparklesIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Sparkles} size={size || 'xs'} color={color || 'secondary'} />
+  return <Icon icon={Sparkles} size={size || 'xs'} color={color || 'secondary'} />
 }
 
 export function SwordsIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Swords} size={size || 'xl'} color={color} />
+  return <Icon icon={Swords} size={size || 'xl'} color={color} />
 }
 
 export function RefreshIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={RefreshCcw} size={size} color={color} />
+  return <Icon icon={RefreshCcw} size={size} color={color} />
 }
 
 export function MailIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Mail} size={size} color={color} />
+  return <Icon icon={Mail} size={size} color={color} />
 }
 
 export function LockIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Lock} size={size} color={color} />
+  return <Icon icon={Lock} size={size} color={color} />
 }
 
 export function DicesIcon({ size, color }: IconProps) {
-  return <BaseIcon icon={Dices} size={size} color={color} />
+  return <Icon icon={Dices} size={size} color={color} />
 }
 
 /**
