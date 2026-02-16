@@ -7,6 +7,7 @@ import { RACES } from '@/lib/game/data/races'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
+import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { PageHeader } from '@/components/ui/prefabs/typography/page-header'
 
 import { CharacterIdentity } from './character-identity'
@@ -50,7 +51,7 @@ export function StepCreation({
         gap="md"
         fullWidth
         maxWidth="5xl"
-        md={{ cols: '3' }}
+        lg={{ cols: '3' }}
         height="creation"
       >
         {/* Column 1: Identity & Stats */}
@@ -61,22 +62,39 @@ export function StepCreation({
           stats={stats}
         />
 
-        {/* Column 2: Race Selection */}
-        <SelectionBox
-          title={t('raceLabel')}
-          items={RACES}
-          selectedId={selectedRaceId}
-          onSelect={onRaceSelect}
-          type="race"
-        />
-
-        {/* Column 3: Class Selection */}
-        <SelectionBox
-          title={t('classLabel')}
-          items={CLASSES}
-          selectedId={selectedClassId}
-          onSelect={onClassSelect}
-          type="class"
+        <GameAccordion
+          passthroughOnDesktop
+          className="lg:col-span-2 lg:grid lg:grid-cols-2 lg:gap-md"
+          items={[
+            {
+              value: 'race',
+              title: t('raceLabel'),
+              content: (
+                <SelectionBox
+                  title={t('raceLabel')}
+                  items={RACES}
+                  selectedId={selectedRaceId}
+                  onSelect={onRaceSelect}
+                  type="race"
+                  minimal
+                />
+              ),
+            },
+            {
+              value: 'class',
+              title: t('classLabel'),
+              content: (
+                <SelectionBox
+                  title={t('classLabel')}
+                  items={CLASSES}
+                  selectedId={selectedClassId}
+                  onSelect={onClassSelect}
+                  type="class"
+                  minimal
+                />
+              ),
+            },
+          ]}
         />
       </Stack>
 
