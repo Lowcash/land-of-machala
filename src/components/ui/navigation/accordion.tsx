@@ -78,6 +78,12 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
 )
 AccordionTrigger.displayName = 'AccordionTrigger'
 
+interface AccordionContentProps {
+  children: ReactNode
+  className?: string
+  forceMount?: true
+}
+
 const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(
   ({ children, className, ...props }, ref) => (
     <AccordionPrimitive.Content
