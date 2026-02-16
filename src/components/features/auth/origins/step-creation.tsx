@@ -7,6 +7,7 @@ import { RACES } from '@/lib/game/data/races'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
+import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { PageHeader } from '@/components/ui/prefabs/typography/page-header'
 
 import { CharacterIdentity } from './character-identity'
@@ -61,22 +62,42 @@ export function StepCreation({
           stats={stats}
         />
 
-        {/* Column 2: Race Selection */}
-        <SelectionBox
-          title={t('raceLabel')}
-          items={RACES}
-          selectedId={selectedRaceId}
-          onSelect={onRaceSelect}
-          type="race"
-        />
-
-        {/* Column 3: Class Selection */}
-        <SelectionBox
-          title={t('classLabel')}
-          items={CLASSES}
-          selectedId={selectedClassId}
-          onSelect={onClassSelect}
-          type="class"
+        {/* Column 2 & 3: Race & Class wrapped in Accordion for Mobile */}
+        <GameAccordion
+          className="md:col-span-2 md:grid md:grid-cols-2 md:gap-sm md:space-y-0"
+          breakpoint="md"
+          passthroughOnDesktop
+          defaultValue="race"
+          items={[
+            {
+              value: 'race',
+              title: t('raceLabel'),
+              content: (
+                <SelectionBox
+                  title={t('raceLabel')}
+                  items={RACES}
+                  selectedId={selectedRaceId}
+                  onSelect={onRaceSelect}
+                  type="race"
+                  suppressHeaderOnMobile
+                />
+              ),
+            },
+            {
+              value: 'class',
+              title: t('classLabel'),
+              content: (
+                <SelectionBox
+                  title={t('classLabel')}
+                  items={CLASSES}
+                  selectedId={selectedClassId}
+                  onSelect={onClassSelect}
+                  type="class"
+                  suppressHeaderOnMobile
+                />
+              ),
+            },
+          ]}
         />
       </Stack>
 

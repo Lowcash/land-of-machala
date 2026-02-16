@@ -8,7 +8,9 @@ interface DividerProps {
 
 export function Divider({ label, variant = 'default' }: DividerProps) {
   if (variant === 'solid') {
-    return <div className="h-px w-full bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent" />
+    return (
+      <div className="h-px w-full bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent" />
+    )
   }
 
   return (

@@ -51,12 +51,22 @@ interface TypographyPrefabProps extends Omit<
   color?: TypographyColor
   align?: 'left' | 'center' | 'right' | 'justify'
   bold?: boolean
-  variant?: 'primary' | 'lead' | 'large' | 'small' | 'muted' | 'fantasy-value' | 'detail' | 'bonus' | 'tiny'
+  variant?:
+    | 'primary'
+    | 'lead'
+    | 'large'
+    | 'small'
+    | 'muted'
+    | 'fantasy-value'
+    | 'detail'
+    | 'bonus'
+    | 'tiny'
 }
 
 export function Value({ align, variant, ...props }: TypographyPrefabProps) {
   // Map our preset variant to the base Text variant where appropriate
-  const baseVariant = (variant === 'tiny' || variant === 'small') ? 'small' : (variant || 'fantasy-value')
+  const baseVariant =
+    variant === 'tiny' || variant === 'small' ? 'small' : variant || 'fantasy-value'
 
   return (
     <Text
@@ -64,10 +74,7 @@ export function Value({ align, variant, ...props }: TypographyPrefabProps) {
       font="fantasy"
       color={'ivory' as any}
       align={align}
-      className={cn(
-        'tracking-wider',
-        variant === 'tiny' && 'text-[10px] sm:text-xs'
-      )}
+      className={cn('tracking-wider', variant === 'tiny' && 'text-[10px] sm:text-xs')}
       {...props}
     />
   )
@@ -84,7 +91,7 @@ export function Description({ align, variant, ...props }: TypographyPrefabProps)
     bonus: 'text-[10px] italic sm:text-[11px]',
   }
   const sizeClass = (sizes as any)[variant as any] || sizes.primary
-  const baseVariant = (variant === 'bonus' || variant === 'small') ? 'small' : 'primary'
+  const baseVariant = variant === 'bonus' || variant === 'small' ? 'small' : 'primary'
 
   return (
     <Text
@@ -113,7 +120,7 @@ export function Decoration({ align, variant, ...props }: TypographyPrefabProps) 
 
 export function Label({ align, variant, ...props }: TypographyPrefabProps) {
   // Map our preset variant to the base Text variant where appropriate
-  const baseVariant = variant === 'small' ? 'small' : 'primary'
+  const baseVariant = (variant === 'small' || variant === 'tiny') ? 'small' : 'primary'
 
   return (
     <Text
@@ -123,7 +130,8 @@ export function Label({ align, variant, ...props }: TypographyPrefabProps) {
       align={align || 'center'}
       className={cn(
         'text-base sm:text-xl',
-        variant === 'small' && 'text-sm! sm:text-base!'
+        variant === 'small' && 'text-sm! sm:text-base!',
+        variant === 'tiny' && 'text-xs! sm:text-sm!'
       )}
       {...props}
     />
@@ -133,7 +141,7 @@ export function Label({ align, variant, ...props }: TypographyPrefabProps) {
 export function Legend({ align, bold, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant={variant === 'small' ? 'small' : 'small' as any}
+      variant={variant === 'small' ? 'small' : ('small' as any)}
       font="body"
       align={align}
       className={cn(bold && 'font-bold')}

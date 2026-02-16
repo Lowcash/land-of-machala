@@ -6,8 +6,8 @@ import { useTranslations } from 'next-intl'
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { Divider } from '@/components/ui/shared/divider'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
+import { Divider } from '@/components/ui/shared/divider'
 
 import { StatRow } from './stat-row'
 
@@ -26,7 +26,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
   return (
     <Card p="none" flex="1" minHeight="zero">
       <ScrollArea>
-        <VStack gap="sm" p="md">
+        <VStack gap="xs" p="md">
           <Description variant="detail">
             {t(`${translationKey}.${item.id}.description`)}
           </Description>
@@ -34,7 +34,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
           <Divider variant="solid" />
 
           <VStack gap="xs">
-            <Label align="left" variant="small">
+            <Label align="left" variant="tiny">
               {bonusLabel}
             </Label>
 
@@ -114,9 +114,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
               )}
             </Stack>
 
-            <Description variant="bonus">
-              {t(`${translationKey}.${item.id}.bonuses`)}
-            </Description>
+            <Description variant="bonus">{t(`${translationKey}.${item.id}.bonuses`)}</Description>
           </VStack>
         </VStack>
       </ScrollArea>

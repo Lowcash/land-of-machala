@@ -54,7 +54,7 @@ export function ScrollArea({
       {/* Top Arrow & Gradient */}
       {showTopArrow && (
         <>
-          <div className="pointer-events-none absolute top-1 left-1/2 z-10 -translate-x-1/2 animate-bounce text-(--color-gold)">
+          <div className="pointer-events-none absolute top-3 left-1/2 z-10 -translate-x-1/2 animate-bounce text-(--color-gold)">
             <ChevronUp size={16} />
           </div>
           <div className="pointer-events-none absolute top-0 left-0 z-5 h-8 w-full bg-linear-to-b from-black/80 to-transparent" />
@@ -68,7 +68,7 @@ export function ScrollArea({
       {/* Bottom Arrow & Gradient */}
       {showBottomArrow && (
         <>
-          <div className="pointer-events-none absolute bottom-1 left-1/2 z-10 -translate-x-1/2 animate-bounce text-(--color-gold)">
+          <div className="pointer-events-none absolute bottom-3 left-1/2 z-10 -translate-x-1/2 animate-bounce text-(--color-gold)">
             <ChevronDown size={16} />
           </div>
           <div className="pointer-events-none absolute bottom-0 left-0 z-5 h-8 w-full bg-linear-to-t from-black/80 to-transparent" />

@@ -17,6 +17,7 @@ import {
 } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
+import { cn } from '@/lib/utils'
 import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/stack'
 
@@ -45,16 +46,28 @@ interface SelectionBoxProps {
   selectedId: string | null
   onSelect: (id: string) => void
   type: 'race' | 'class'
+  suppressHeaderOnMobile?: boolean
 }
 
-export function SelectionBox({ title, items, selectedId, onSelect, type }: SelectionBoxProps) {
+export function SelectionBox({
+  title,
+  items,
+  selectedId,
+  onSelect,
+  type,
+  suppressHeaderOnMobile,
+}: SelectionBoxProps) {
   const t = useTranslations('Game')
   const selectedItem = items.find((i) => i.id === selectedId)
   const translationKey = type === 'race' ? 'Races' : 'Classes'
 
   return (
     <Card variant="primary" p="md" direction="col" height="creation" flex="1" minHeight="zero">
-      <Card.Header align="center" justify="center">
+      <Card.Header
+        align="center"
+        justify="center"
+        className={cn(suppressHeaderOnMobile && 'hidden md:flex')}
+      >
         <Card.Title align="center">{title}</Card.Title>
       </Card.Header>
 
