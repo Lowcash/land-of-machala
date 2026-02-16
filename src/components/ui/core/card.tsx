@@ -8,16 +8,22 @@ import { CardTitle } from '@/components/ui/prefabs/typography/card'
 
 import { StackProps, getResponsiveClasses, stackVariants } from './stack'
 
-const cardVariants = cva('flex transition-all backdrop-blur-md rounded shadow-lg shadow-black/40', {
+const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-black/40', {
   variants: {
     variant: {
       primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
       secondary: 'border border-(--color-secondary)/40 bg-black/60',
       subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
     },
+    rounded: {
+      lg: 'rounded-lg',
+      base: 'rounded',
+      none: 'rounded-none',
+    },
   },
   defaultVariants: {
     variant: 'primary',
+    rounded: 'lg',
   },
 })
 
@@ -30,6 +36,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
   (
     {
       variant,
+      rounded,
       padding,
       gap,
       direction,
@@ -61,7 +68,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
         data-slot="card"
         ref={ref}
         className={cn(
-          cardVariants({ variant }),
+          cardVariants({ variant, rounded }),
           stackVariants({
             display,
             direction: direction || 'col',
