@@ -63,42 +63,46 @@ export function StepCreation({
         />
 
         {/* Column 2 & 3: Race & Class wrapped in Accordion for Mobile */}
-        <GameAccordion
-          className="md:col-span-2 md:grid md:grid-cols-2 md:gap-sm md:space-y-0"
-          breakpoint="md"
-          passthroughOnDesktop
-          defaultValue="race"
-          items={[
-            {
-              value: 'race',
-              title: t('raceLabel'),
-              content: (
-                <SelectionBox
-                  title={t('raceLabel')}
-                  items={RACES}
-                  selectedId={selectedRaceId}
-                  onSelect={onRaceSelect}
-                  type="race"
-                  suppressHeaderOnMobile
-                />
-              ),
-            },
-            {
-              value: 'class',
-              title: t('classLabel'),
-              content: (
-                <SelectionBox
-                  title={t('classLabel')}
-                  items={CLASSES}
-                  selectedId={selectedClassId}
-                  onSelect={onClassSelect}
-                  type="class"
-                  suppressHeaderOnMobile
-                />
-              ),
-            },
-          ]}
-        />
+        <div className="contents md:col-span-2">
+          <GameAccordion
+            breakpoint="md"
+            passthroughOnDesktop
+            defaultValue="race"
+            fullHeight
+            gap="md" /* Mobile Gap */
+            md={{ display: 'grid', cols: '2', gap: 'sm' }} /* Desktop Grid */
+            items={[
+              {
+                value: 'race',
+                title: t('raceLabel'),
+                content: (
+                  <SelectionBox
+                    title={t('raceLabel')}
+                    items={RACES}
+                    selectedId={selectedRaceId}
+                    onSelect={onRaceSelect}
+                    type="race"
+                    suppressHeaderOnMobile
+                  />
+                ),
+              },
+              {
+                value: 'class',
+                title: t('classLabel'),
+                content: (
+                  <SelectionBox
+                    title={t('classLabel')}
+                    items={CLASSES}
+                    selectedId={selectedClassId}
+                    onSelect={onClassSelect}
+                    type="class"
+                    suppressHeaderOnMobile
+                  />
+                ),
+              },
+            ]}
+          />
+        </div>
       </Stack>
 
       {/* Finish button relocated to bottom */}

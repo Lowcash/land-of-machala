@@ -7,8 +7,12 @@ import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
-
-import { VStack } from '@/components/ui/core/stack'
+import {
+  StackProps,
+  VStack,
+  getResponsiveClasses,
+  stackVariants,
+} from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 
 /**
@@ -109,10 +113,9 @@ interface GameAccordionItem {
   content: ReactNode
 }
 
-interface GameAccordionProps {
+interface GameAccordionProps extends Omit<StackProps, 'className'> {
   items: GameAccordionItem[]
   defaultValue?: string
-  className?: string
   /**
    * If true, accordion headers disappear on larger screens,
    * making content a standard vertical stack.
@@ -128,9 +131,33 @@ interface GameAccordionProps {
 export function GameAccordion({
   items,
   defaultValue,
-  className,
   passthroughOnDesktop = false,
   breakpoint = 'lg',
+  // Stack Props
+  display,
+  direction,
+  cols,
+  align,
+  justify,
+  gap,
+  fullWidth = true, // Default to full width
+  fullHeight,
+  wrap,
+  p,
+  pt,
+  pb,
+  px,
+  py,
+  flex,
+  maxWidth,
+  mx,
+  minHeight,
+  height,
+  sm,
+  md,
+  lg,
+  xl,
+  ...props
 }: GameAccordionProps) {
   // We need explicit classes because Tailwind doesn't support dynamic class construction
   const passthroughClasses = {
@@ -142,6 +169,7 @@ export function GameAccordion({
         'max-md:data-[state=closed]:hidden',
         'md:block! md:h-auto! md:overflow-visible md:pt-0 md:opacity-100!',
         'md:data-[state=closed]:animate-none md:data-[state=open]:animate-none',
+        'md:h-full!', // Ensure content fills height in passthrough mode
       ],
     },
     lg: {
@@ -152,11 +180,15 @@ export function GameAccordion({
         'max-lg:data-[state=closed]:hidden',
         'lg:block! lg:h-auto! lg:overflow-visible lg:pt-0 lg:opacity-100!',
         'lg:data-[state=closed]:animate-none lg:data-[state=open]:animate-none',
+        'lg:h-full!', // Ensure content fills height in passthrough mode
       ],
     },
   }
 
   const bpClasses = passthroughClasses[breakpoint]
+
+  // Helper to check if we are switching to grid at the breakpoint
+  const isGridAtBreakpoint = (breakpoint === 'md' && md?.display === 'grid') || (breakpoint === 'lg' && lg?.display === 'grid')
 
   return (
     <Accordion
@@ -164,9 +196,35 @@ export function GameAccordion({
       collapsible
       defaultValue={defaultValue}
       className={cn(
-        'flex w-full flex-col gap-4',
-        passthroughOnDesktop && bpClasses.container,
-        className
+        // Base defaults (can be overridden by Stack props)
+        stackVariants({
+          display: display || 'flex',
+          direction: direction || 'col',
+          gap: gap || 'md',
+          fullWidth,
+          fullHeight,
+          cols,
+          align,
+          justify,
+          wrap,
+          p,
+          pt,
+          pb,
+          px,
+          py,
+          flex,
+          maxWidth,
+          mx,
+          minHeight,
+          height,
+        }),
+        getResponsiveClasses('sm', sm),
+        getResponsiveClasses('md', md),
+        getResponsiveClasses('lg', lg),
+        getResponsiveClasses('xl', xl),
+        // Passthrough logic 
+        // We only apply container spacing if NOT a grid at the breakpoint
+        passthroughOnDesktop && !isGridAtBreakpoint && bpClasses.container
       )}
     >
       {items.map((item) => (
@@ -175,7 +233,9 @@ export function GameAccordion({
           value={item.value}
           className={cn(
             'flex w-full flex-col border-none',
-            passthroughOnDesktop && bpClasses.item
+            passthroughOnDesktop && bpClasses.item,
+            // Ensure Item fills height if parent is a grid/flex container
+            (fullHeight || height) && 'h-full'
           )}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && bpClasses.trigger)}>
@@ -185,7 +245,7 @@ export function GameAccordion({
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(passthroughOnDesktop && bpClasses.content)}
           >
-            <VStack gap="none" fullWidth>
+            <VStack gap="none" fullWidth fullHeight>
               {item.content}
             </VStack>
           </AccordionContent>

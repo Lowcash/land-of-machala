@@ -94,9 +94,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
 
 CardRoot.displayName = 'Card'
 
-interface CardHeaderProps extends Omit<StackProps, 'className'> {
-  className?: string
-}
+interface CardHeaderProps extends Omit<StackProps, 'className'> {}
 
 const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
   (
@@ -119,7 +117,6 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
       height,
       minHeight,
       as: Component = 'div',
-      className,
       children,
       ...props
     },
@@ -131,7 +128,6 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
         ref={ref}
         className={cn(
           'border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
-          className,
           stackVariants({
             display: display || 'flex',
             direction: direction || 'row',

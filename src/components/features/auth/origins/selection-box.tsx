@@ -66,7 +66,8 @@ export function SelectionBox({
       <Card.Header
         align="center"
         justify="center"
-        className={cn(suppressHeaderOnMobile && 'hidden md:flex')}
+        display={suppressHeaderOnMobile ? 'none' : 'flex'}
+        md={{ display: 'flex' }}
       >
         <Card.Title align="center">{title}</Card.Title>
       </Card.Header>
