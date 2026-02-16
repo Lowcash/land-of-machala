@@ -6,6 +6,7 @@ import { useTranslations } from 'next-intl'
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { Stack, VStack } from '@/components/ui/core/stack'
+import { Divider } from '@/components/ui/shared/divider'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
 
 import { StatRow } from './stat-row'
@@ -23,13 +24,19 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
   const bonusLabel = type === 'race' ? ot('raceBonuses') : ot('classBonuses')
 
   return (
-    <Card p="none">
+    <Card p="none" flex="1" minHeight="zero">
       <ScrollArea>
         <VStack gap="md" p="md">
-          <Description>{t(`${translationKey}.${item.id}.description`)}</Description>
+          <Description className="text-[11px] leading-relaxed sm:text-[13px]">
+            {t(`${translationKey}.${item.id}.description`)}
+          </Description>
+
+          <Divider />
 
           <VStack gap="xs">
-            <Label align="left">{bonusLabel}</Label>
+            <Label align="left" className="text-sm! sm:text-base!">
+              {bonusLabel}
+            </Label>
 
             <Stack display="grid" cols="2" gap="sm">
               {type === 'race' ? (
@@ -107,7 +114,9 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
               )}
             </Stack>
 
-            <Description>{t(`${translationKey}.${item.id}.bonuses`)}</Description>
+            <Description className="text-[10px] sm:text-[11px]">
+              {t(`${translationKey}.${item.id}.bonuses`)}
+            </Description>
           </VStack>
         </VStack>
       </ScrollArea>

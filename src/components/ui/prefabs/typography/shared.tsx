@@ -12,13 +12,13 @@ import { Text } from '@/components/ui/core/typography'
  * Use these instead of raw Text components with repetitive props.
  */
 
-export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
+export function NarrativeText({ align, className, ...props }: TypographyPrefabProps) {
   return (
     <Text
       font="fantasy"
       color={'primary' as any}
       align={align || 'center'}
-      className="text-xl leading-relaxed italic sm:text-2xl"
+      className={cn('text-xl leading-relaxed italic sm:text-2xl', className)}
       {...props}
     />
   )
@@ -43,7 +43,7 @@ type TypographyColor =
 
 interface TypographyPrefabProps extends Omit<
   React.HTMLAttributes<HTMLParagraphElement>,
-  'color' | 'className'
+  'color'
 > {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
@@ -51,6 +51,7 @@ interface TypographyPrefabProps extends Omit<
   align?: 'left' | 'center' | 'right' | 'justify'
   bold?: boolean
   variant?: 'primary' | 'lead' | 'large' | 'small' | 'muted' | 'fantasy-value'
+  className?: string
 }
 
 export function Value({ align, variant, ...props }: TypographyPrefabProps) {
@@ -70,13 +71,13 @@ export function MutedText({ align, ...props }: TypographyPrefabProps) {
   return <Text color={'secondary' as any} align={align} {...props} />
 }
 
-export function Description({ align, ...props }: TypographyPrefabProps) {
+export function Description({ align, className, ...props }: TypographyPrefabProps) {
   return (
     <Text
       font="body"
       color={'secondary' as any}
       align={align}
-      className="text-xs italic sm:text-sm"
+      className={cn('text-xs italic sm:text-sm', className)}
       {...props}
     />
   )
@@ -95,13 +96,13 @@ export function Decoration({ align, ...props }: TypographyPrefabProps) {
   )
 }
 
-export function Label({ align, ...props }: TypographyPrefabProps) {
+export function Label({ align, className, ...props }: TypographyPrefabProps) {
   return (
     <Text
       font="fantasy"
       color={'gold' as any}
       align={align || 'center'}
-      className="text-base sm:text-xl"
+      className={cn('text-base sm:text-xl', className)}
       {...props}
     />
   )
