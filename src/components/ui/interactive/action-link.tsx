@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { Link } from '@/i18n/routing'
 import { LucideIcon } from 'lucide-react'
 

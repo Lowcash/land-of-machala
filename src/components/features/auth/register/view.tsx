@@ -75,7 +75,7 @@ export function RegisterViewUI({
                   title={benefits.title}
                   description={benefits.description}
                   benefits={benefits.items}
-                  minimal
+                  variant="responsive"
                 />
               ),
             },

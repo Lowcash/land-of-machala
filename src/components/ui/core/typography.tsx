@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { type VariantProps, cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
@@ -105,11 +103,26 @@ const textVariants = cva('leading-relaxed', {
       right: 'text-right',
       justify: 'text-justify',
     },
+    truncate: {
+      true: 'truncate',
+      false: '',
+    },
+    shrink: {
+      true: 'shrink-0',
+      false: 'shrink',
+    },
+    grow: {
+      true: 'grow',
+      false: 'grow-0',
+    },
   },
   defaultVariants: {
     variant: 'primary',
     font: 'body',
     color: 'ivory',
+    truncate: false,
+    shrink: false,
+    grow: false,
   },
 })
 
@@ -125,13 +138,19 @@ export function Text({
   font,
   color,
   align,
+  truncate,
+  shrink,
+  grow,
   className,
   as: Component = 'p',
   ...props
 }: TextProps) {
   return (
     <Component
-      className={cn(textVariants({ variant, font, color: color as any, align }), className)}
+      className={cn(
+        textVariants({ variant, font, color: color as any, align, truncate, shrink, grow }),
+        className
+      )}
       {...props}
     />
   )

@@ -10,7 +10,7 @@ import { STORY_STEPS } from '@/lib/game/data/origins'
 import type { OriginsChoice } from '@/lib/game/data/origins'
 import { RACES } from '@/lib/game/data/races'
 
-function useCharacterCreation() {
+export function useCharacterCreation() {
   const [name, setName] = React.useState('')
   const [selectedRaceId, setSelectedRaceId] = React.useState(RACES[0].id)
   const [selectedClassId, setSelectedClassId] = React.useState(CLASSES[0].id)

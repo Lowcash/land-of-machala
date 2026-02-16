@@ -8,7 +8,7 @@ import { ChevronDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
-import { VStack } from '@/components/ui/core/stack'
+import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 
 /**
@@ -57,38 +57,31 @@ interface AccordionTriggerProps {
 
 const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   ({ children, className, ...props }, ref) => (
-    <AccordionPrimitive.Header asChild>
-      <Heading level="h2" as="h2" className={cn('w-full', className)}>
-        <AccordionPrimitive.Trigger
-          ref={ref}
-          className={cn(
-            'group flex w-full cursor-pointer items-center justify-between rounded-lg border border-(--color-secondary)/50 bg-black/40 px-4 py-3 text-left transition-all hover:bg-(--color-secondary)/10 [&[data-state=open]>svg]:rotate-180'
-          )}
-          {...props}
-        >
-          <Text color="gold" font="fantasy" className="text-lg">
-            {children}
-          </Text>
-          <ChevronDown className="h-4 w-4 shrink-0 text-(--color-primary) transition-transform duration-200" />
-        </AccordionPrimitive.Trigger>
-      </Heading>
+    <AccordionPrimitive.Header className="flex">
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          'group font-fantasy flex flex-1 cursor-pointer items-center justify-between px-4 py-3.5 text-left text-lg transition-all active:scale-[0.99] sm:text-xl',
+          'text-(--color-ivory)/90 hover:bg-(--color-secondary)/10 hover:text-(--color-primary)',
+          'data-[state=open]:bg-(--color-primary)/5 data-[state=open]:text-(--color-primary) [&[data-state=open]>svg]:rotate-180',
+          className
+        )}
+        {...props}
+      >
+        <span>{children}</span>
+        <ChevronDown className="h-5 w-5 shrink-0 text-(--color-primary) opacity-60 transition-all duration-300 group-hover:opacity-100 group-data-[state=open]:opacity-100" />
+      </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   )
 )
 AccordionTrigger.displayName = 'AccordionTrigger'
-
-interface AccordionContentProps {
-  children: ReactNode
-  className?: string
-  forceMount?: true
-}
 
 const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(
   ({ children, className, ...props }, ref) => (
     <AccordionPrimitive.Content
       ref={ref}
       className={cn(
-        'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm',
+        'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm transition-all',
         className
       )}
       {...props}
@@ -107,6 +100,7 @@ interface GameAccordionItem {
   value: string
   title: string
   content: ReactNode
+  selectedLabel?: string
 }
 
 interface GameAccordionProps {
@@ -131,37 +125,39 @@ export function GameAccordion({
       type="single"
       collapsible
       defaultValue={defaultValue}
-      className={cn(
-        'flex w-full flex-col gap-4',
-        passthroughOnDesktop && 'lg:space-y-4',
-        className
-      )}
+      className={cn('flex w-full flex-col gap-3', passthroughOnDesktop && 'lg:gap-4', className)}
     >
       {items.map((item) => (
         <AccordionItem
           key={item.value}
           value={item.value}
           className={cn(
-            'flex w-full flex-col border-none',
-            passthroughOnDesktop && 'lg:border-none'
+            'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/30 bg-black/40 transition-all duration-500',
+            'shadow-lg data-[state=open]:border-(--color-primary)/50 data-[state=open]:bg-black/80',
+            passthroughOnDesktop && 'lg:border-none lg:bg-transparent lg:shadow-none'
           )}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
-            {item.title}
+            <div className="flex w-full items-center justify-between gap-2">
+              <span>{item.title}</span>
+              {item.selectedLabel && (
+                <span className="font-fantasy text-xs text-(--color-secondary) decoration-(--color-secondary)/30 underline-offset-4 opacity-80 group-data-[state=open]:opacity-100">
+                  {item.selectedLabel}
+                </span>
+              )}
+            </div>
           </AccordionTrigger>
           <AccordionContent
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(
               passthroughOnDesktop && [
                 'max-lg:data-[state=closed]:hidden',
-                'lg:block! lg:h-auto! lg:overflow-visible lg:pt-0 lg:opacity-100!',
+                'lg:block! lg:h-auto! lg:overflow-visible lg:p-0! lg:opacity-100!',
                 'lg:data-[state=closed]:animate-none lg:data-[state=open]:animate-none',
               ]
             )}
           >
-            <VStack gap="none" fullWidth>
-              {item.content}
-            </VStack>
+            {item.content}
           </AccordionContent>
         </AccordionItem>
       ))}

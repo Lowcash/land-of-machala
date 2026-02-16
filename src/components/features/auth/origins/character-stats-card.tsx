@@ -1,3 +1,5 @@
+'use client'
+
 import { Activity, Brain, Droplet, Heart, Sword, Wind } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
@@ -21,16 +23,17 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
   const gt = useTranslations('Game')
 
   return (
-    <Card p="md">
+    <Card p="md" variant="secondary">
       <Card.Header align="center" justify="center">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>
 
       <Card.Content
         display="grid"
-        cols="2"
-        gap="lg"
-        sm={{ display: 'flex', direction: 'col', gap: 'md' }}
+        cols="1"
+        gap="md"
+        sm={{ cols: '2', gap: 'lg' }}
+        md={{ display: 'flex', direction: 'col' }}
       >
         <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
         <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />

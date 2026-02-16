@@ -34,7 +34,7 @@ export function CharacterIdentity({
         onChange={onNameChange}
       />
 
-      <Button variant="primary" size="action" onClick={onRandomize}>
+      <Button variant="secondary" size="action" onClick={onRandomize}>
         <DicesIcon size="md" />
         <Text font="fantasy">{t('randomize_button')}</Text>
       </Button>

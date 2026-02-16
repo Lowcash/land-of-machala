@@ -70,12 +70,18 @@ export function LoginViewUI({
             {
               value: 'stats',
               title: accordion.statsTitle,
-              content: <Stats title={accordion.statsTitle} stats={stats} />,
+              content: <Stats title={accordion.statsTitle} stats={stats} variant="responsive" />,
             },
             {
               value: 'changelog',
               title: accordion.changelogTitle,
-              content: <Changelog title={accordion.changelogTitle} changes={changes} minimal />,
+              content: (
+                <Changelog
+                  title={accordion.changelogTitle}
+                  changes={changes}
+                  variant="responsive"
+                />
+              ),
             },
           ]}
         />

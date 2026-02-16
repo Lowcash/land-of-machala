@@ -7,11 +7,10 @@ interface BenefitsProps {
   title: string
   description: string
   benefits: string[]
-  minimal?: boolean
-  forceMinimal?: boolean
+  variant?: 'primary' | 'flat' | 'responsive'
 }
 
-export function Benefits({ title, description, benefits, minimal, forceMinimal }: BenefitsProps) {
+export function Benefits({ title, description, benefits, variant = 'primary' }: BenefitsProps) {
   const content = (
     <Card.Content gap="md">
       <MutedText>{description}</MutedText>
@@ -26,22 +25,16 @@ export function Benefits({ title, description, benefits, minimal, forceMinimal }
     </Card.Content>
   )
 
-  if (forceMinimal) {
-    return (
-      <Card variant="subtle" padding="md">
-        {content}
-      </Card>
-    )
-  }
-
-  if (minimal) {
+  if (variant === 'responsive') {
     return (
       <>
-        <Card variant="subtle" padding="md" lg={{ display: 'none' }}>
+        {/* Mobile/Accordion: Flat view */}
+        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
           {content}
         </Card>
 
-        <Card variant="primary" display="none" lg={{ display: 'flex' }} padding="lg">
+        {/* Desktop: Primary card view */}
+        <Card variant="primary" padding="md" display="none" lg={{ display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<SparklesIcon size="md" />}>{title}</Card.Title>
           </Card.Header>
@@ -51,11 +44,16 @@ export function Benefits({ title, description, benefits, minimal, forceMinimal }
     )
   }
 
+  const isFlat = variant === 'flat'
+
   return (
-    <Card padding="lg">
-      <Card.Header>
-        <Card.Title icon={<SparklesIcon size="md" />}>{title}</Card.Title>
-      </Card.Header>
+    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+      {!isFlat && (
+        <Card.Header>
+          <Card.Title icon={<SparklesIcon size="md" />}>{title}</Card.Title>
+        </Card.Header>
+      )}
+
       {content}
     </Card>
   )

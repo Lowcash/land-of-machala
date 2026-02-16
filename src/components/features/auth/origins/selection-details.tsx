@@ -1,7 +1,8 @@
 'use client'
 
-import { Activity, Brain, Droplet, Heart, Sword, Wind } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+
+import { getStatIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
@@ -43,42 +44,42 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
                 <>
                   <StatRow
                     compact
-                    icon={Heart}
+                    icon={getStatIcon('hp')}
                     label={t('Stats.hp')}
                     value={item.stats.hp}
                     color="hp"
                   />
                   <StatRow
                     compact
-                    icon={Droplet}
+                    icon={getStatIcon('mana')}
                     label={t('Stats.mana')}
                     value={item.stats.mana}
                     color="mana"
                   />
                   <StatRow
                     compact
-                    icon={Sword}
+                    icon={getStatIcon('strength')}
                     label={t('Stats.strength')}
                     value={item.stats.strength}
                     color="strength"
                   />
                   <StatRow
                     compact
-                    icon={Brain}
+                    icon={getStatIcon('intelligence')}
                     label={t('Stats.intelligence')}
                     value={item.stats.intelligence}
                     color="intelligence"
                   />
                   <StatRow
                     compact
-                    icon={Wind}
+                    icon={getStatIcon('agility')}
                     label={t('Stats.agility')}
                     value={item.stats.agility}
                     color="agility"
                   />
                   <StatRow
                     compact
-                    icon={Activity}
+                    icon={getStatIcon('stamina')}
                     label={t('Stats.stamina')}
                     value={item.stats.stamina}
                     color="stamina"
@@ -88,17 +89,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
                 Object.entries(item.statMod).map(([stat, val]: [string, any]) => {
                   if (val === 0) return null
                   const isPositive = val > 0
-
-                  // Map stat mod names to appropriate icons
-                  const statIcons: Record<string, any> = {
-                    strength: Sword,
-                    intelligence: Brain,
-                    agility: Wind,
-                    stamina: Activity,
-                    hp: Heart,
-                    mana: Droplet,
-                  }
-                  const Icon = statIcons[stat] || Activity
+                  const Icon = getStatIcon(stat)
 
                   return (
                     <StatRow

@@ -39,6 +39,7 @@ export function StepCreation({
   canFinish,
 }: StepCreationProps) {
   const t = useTranslations('Auth.Origins.creation')
+  const gt = useTranslations('Game')
 
   return (
     <VStack gap="lg" align="center" fullWidth>
@@ -62,13 +63,16 @@ export function StepCreation({
           stats={stats}
         />
 
-        {/* Mobile: Accordion Selection (Hidden on desktop) */}
-        <div className="md:hidden">
+        {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
+        <VStack md={{ display: 'none' }} fullWidth>
           <GameAccordion
             items={[
               {
                 value: 'race',
                 title: t('raceLabel'),
+                selectedLabel: RACES.find((r) => r.id === selectedRaceId)
+                  ? gt(`Races.${selectedRaceId}.name`)
+                  : undefined,
                 content: (
                   <SelectionBox
                     title={t('raceLabel')}
@@ -76,13 +80,16 @@ export function StepCreation({
                     selectedId={selectedRaceId}
                     onSelect={onRaceSelect}
                     type="race"
-                    minimal
+                    variant="responsive"
                   />
                 ),
               },
               {
                 value: 'class',
                 title: t('classLabel'),
+                selectedLabel: CLASSES.find((c) => c.id === selectedClassId)
+                  ? gt(`Classes.${selectedClassId}.name`)
+                  : undefined,
                 content: (
                   <SelectionBox
                     title={t('classLabel')}
@@ -90,35 +97,35 @@ export function StepCreation({
                     selectedId={selectedClassId}
                     onSelect={onClassSelect}
                     type="class"
-                    minimal
+                    variant="responsive"
                   />
                 ),
               },
             ]}
           />
-        </div>
+        </VStack>
 
-        {/* Desktop: Race Selection (Hidden on mobile) */}
-        <div className="max-md:hidden">
-          <SelectionBox
-            title={t('raceLabel')}
-            items={RACES}
-            selectedId={selectedRaceId}
-            onSelect={onRaceSelect}
-            type="race"
-          />
-        </div>
+        {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
+        <SelectionBox
+          display="none"
+          md={{ display: 'flex' }}
+          title={t('raceLabel')}
+          items={RACES}
+          selectedId={selectedRaceId}
+          onSelect={onRaceSelect}
+          type="race"
+        />
 
-        {/* Desktop: Class Selection (Hidden on mobile) */}
-        <div className="max-md:hidden">
-          <SelectionBox
-            title={t('classLabel')}
-            items={CLASSES}
-            selectedId={selectedClassId}
-            onSelect={onClassSelect}
-            type="class"
-          />
-        </div>
+        {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
+        <SelectionBox
+          display="none"
+          md={{ display: 'flex' }}
+          title={t('classLabel')}
+          items={CLASSES}
+          selectedId={selectedClassId}
+          onSelect={onClassSelect}
+          type="class"
+        />
       </Stack>
 
       {/* Finish button relocated to bottom */}

@@ -12,11 +12,10 @@ export interface TranslatedChangelogEntry {
 interface ChangelogProps {
   title: string
   changes: TranslatedChangelogEntry[]
-  minimal?: boolean
-  forceMinimal?: boolean
+  variant?: 'primary' | 'flat' | 'responsive'
 }
 
-export function Changelog({ title, changes, minimal, forceMinimal }: ChangelogProps) {
+export function Changelog({ title, changes, variant = 'primary' }: ChangelogProps) {
   const content = (
     <List>
       {changes.map((entry, i) => (
@@ -25,22 +24,16 @@ export function Changelog({ title, changes, minimal, forceMinimal }: ChangelogPr
     </List>
   )
 
-  if (forceMinimal) {
-    return (
-      <Card variant="subtle" padding="md">
-        <Card.Content>{content}</Card.Content>
-      </Card>
-    )
-  }
-
-  if (minimal) {
+  if (variant === 'responsive') {
     return (
       <>
-        <Card variant="subtle" padding="md" lg={{ display: 'none' }}>
+        {/* Mobile/Accordion: Flat view */}
+        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
           <Card.Content>{content}</Card.Content>
         </Card>
 
-        <Card variant="primary" display="none" lg={{ display: 'flex' }} padding="lg">
+        {/* Desktop: Primary card view */}
+        <Card variant="primary" padding="md" display="none" lg={{ display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -50,11 +43,15 @@ export function Changelog({ title, changes, minimal, forceMinimal }: ChangelogPr
     )
   }
 
+  const isFlat = variant === 'flat'
+
   return (
-    <Card padding="lg">
-      <Card.Header>
-        <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
-      </Card.Header>
+    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+      {!isFlat && (
+        <Card.Header>
+          <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
+        </Card.Header>
+      )}
 
       <Card.Content>{content}</Card.Content>
     </Card>

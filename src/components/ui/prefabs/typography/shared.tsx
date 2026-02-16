@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import { Link } from '@/i18n/routing'
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -50,6 +48,9 @@ interface TypographyPrefabProps extends Omit<
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
   align?: 'left' | 'center' | 'right' | 'justify'
+  truncate?: boolean
+  shrink?: boolean
+  grow?: boolean
   bold?: boolean
   variant?:
     | 'primary'
@@ -74,6 +75,9 @@ export function Value({ align, variant, ...props }: TypographyPrefabProps) {
       font="fantasy"
       color={'ivory' as any}
       align={align}
+      truncate={props.truncate}
+      shrink={props.shrink}
+      grow={props.grow}
       className={cn('tracking-wider', variant === 'tiny' && 'text-[10px] sm:text-xs')}
       {...props}
     />
@@ -112,6 +116,9 @@ export function Decoration({ align, variant, ...props }: TypographyPrefabProps) 
       color={'secondary' as any}
       font="fantasy"
       align={align}
+      truncate={props.truncate}
+      shrink={props.shrink}
+      grow={props.grow}
       className="tracking-widest uppercase"
       {...props}
     />

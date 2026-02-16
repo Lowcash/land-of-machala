@@ -125,10 +125,15 @@ export const stackVariants = cva('', {
       dvh: 'min-h-dvh',
       full: 'min-h-full',
     },
+    minWidth: {
+      zero: 'min-w-0',
+      none: '',
+      full: 'min-w-full',
+    },
     height: {
       auto: 'h-auto',
       full: 'h-full',
-      creation: 'h-auto md:h-[460px]',
+      creation: 'h-auto md:h-[480px]',
     },
   },
   defaultVariants: {
@@ -143,6 +148,7 @@ export const stackVariants = cva('', {
     maxWidth: 'none',
     mx: 'none',
     minHeight: 'none',
+    minWidth: 'none',
     height: 'auto',
   },
 })
@@ -305,6 +311,11 @@ const responsiveMaps = {
     dvh: { sm: 'sm:min-h-dvh', md: 'md:min-h-dvh', lg: 'lg:min-h-dvh', xl: 'xl:min-h-dvh' },
     full: { sm: 'sm:min-h-full', md: 'md:min-h-full', lg: 'lg:min-h-full', xl: 'xl:min-h-full' },
   },
+  minWidth: {
+    zero: { sm: 'sm:min-w-0', md: 'md:min-w-0', lg: 'lg:min-w-0', xl: 'xl:min-w-0' },
+    none: { sm: 'sm:min-w-none', md: 'md:min-w-none', lg: 'lg:min-w-none', xl: 'xl:min-w-none' },
+    full: { sm: 'sm:min-w-full', md: 'md:min-w-full', lg: 'lg:min-w-full', xl: 'xl:min-w-full' },
+  },
   height: {
     auto: { sm: 'sm:h-auto', md: 'md:h-auto', lg: 'lg:h-auto', xl: 'xl:h-auto' },
     full: { sm: 'sm:h-full', md: 'md:h-full', lg: 'lg:h-full', xl: 'xl:h-full' },
@@ -333,6 +344,7 @@ type BreakpointValue = {
   maxWidth?: keyof typeof responsiveMaps.maxWidth
   mx?: keyof typeof responsiveMaps.mx
   minHeight?: keyof typeof responsiveMaps.minHeight
+  minWidth?: keyof typeof responsiveMaps.minWidth
   height?: keyof typeof responsiveMaps.height
   fullWidth?: boolean
   fullHeight?: boolean
@@ -376,6 +388,8 @@ export function getResponsiveClasses(breakpoint: Breakpoint, value?: BreakpointV
   if (value.mx) classes.push(responsiveMaps.mx[value.mx][breakpoint])
   // @ts-ignore
   if (value.minHeight) classes.push(responsiveMaps.minHeight[value.minHeight][breakpoint])
+  // @ts-ignore
+  if (value.minWidth) classes.push(responsiveMaps.minWidth[value.minWidth][breakpoint])
   // @ts-ignore
   if (value.height) classes.push(responsiveMaps.height[value.height][breakpoint])
 
@@ -427,6 +441,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
       maxWidth,
       mx,
       minHeight,
+      minWidth,
       height,
       sm,
       md,
@@ -459,6 +474,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
             maxWidth,
             mx,
             minHeight,
+            minWidth,
             height,
           }),
           getResponsiveClasses('sm', sm),

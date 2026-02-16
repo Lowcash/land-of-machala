@@ -13,11 +13,10 @@ export interface TranslatedServerStat {
 interface StatsProps {
   title: string
   stats: TranslatedServerStat[]
-  minimal?: boolean
-  forceMinimal?: boolean
+  variant?: 'primary' | 'flat' | 'responsive'
 }
 
-export function Stats({ title, stats, minimal, forceMinimal }: StatsProps) {
+export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
   const content = (
     <Stack display="grid" cols="2" gap="md">
       {stats.map((stat) => (
@@ -26,22 +25,16 @@ export function Stats({ title, stats, minimal, forceMinimal }: StatsProps) {
     </Stack>
   )
 
-  if (forceMinimal) {
-    return (
-      <Card variant="subtle" padding="md">
-        {content}
-      </Card>
-    )
-  }
-
-  if (minimal) {
+  if (variant === 'responsive') {
     return (
       <>
-        <Card variant="subtle" padding="md" lg={{ display: 'none' }}>
+        {/* Mobile/Accordion: Flat view */}
+        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
           {content}
         </Card>
 
-        <Card variant="primary" display="none" lg={{ display: 'flex' }} padding="lg">
+        {/* Desktop: Primary card view */}
+        <Card variant="primary" padding="md" display="none" lg={{ display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -51,11 +44,16 @@ export function Stats({ title, stats, minimal, forceMinimal }: StatsProps) {
     )
   }
 
+  const isFlat = variant === 'flat'
+
   return (
-    <Card padding="lg">
-      <Card.Header>
-        <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
-      </Card.Header>
+    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+      {!isFlat && (
+        <Card.Header>
+          <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
+        </Card.Header>
+      )}
+
       {content}
     </Card>
   )

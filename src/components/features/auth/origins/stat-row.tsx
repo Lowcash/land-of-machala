@@ -25,12 +25,14 @@ export function StatRow({ icon: SimpleIcon, label, value, color, compact = false
   }
 
   return (
-    <HStack align="center" justify="between" fullWidth>
-      <HStack align="center" gap="sm">
+    <HStack align="center" justify="between" fullWidth gap="sm">
+      <HStack align="center" gap="sm" flex="1" minWidth="zero">
         <Icon icon={SimpleIcon} size="sm" color={color} />
-        <Decoration color="secondary">{label}</Decoration>
+        <Decoration color="secondary" truncate>
+          {label}
+        </Decoration>
       </HStack>
-      <Value variant="small" color={color as any}>
+      <Value variant="small" color={color as any} shrink>
         {value}
       </Value>
     </HStack>
