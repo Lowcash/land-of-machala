@@ -53,12 +53,12 @@ export function SelectionBox({ title, items, selectedId, onSelect, type }: Selec
   const translationKey = type === 'race' ? 'Races' : 'Classes'
 
   return (
-    <Card variant="primary" p="none" direction="col" fullHeight>
-      <Card.Header align="center" justify="center" p="md">
+    <Card variant="primary" p="md" direction="col" height="creation" flex="1" minHeight="zero">
+      <Card.Header align="center" justify="center">
         <Card.Title align="center">{title}</Card.Title>
       </Card.Header>
 
-      <Card.Content p="md" gap="md" display="flex" direction="col">
+      <Card.Content gap="md" display="flex" direction="col" flex="1" minHeight="zero">
         <Stack display="grid" cols="3" gap="xs" md={{ gap: 'sm' }}>
           {items.map((item) => {
             const Icon = (ICON_MAP as any)[item.icon] || User

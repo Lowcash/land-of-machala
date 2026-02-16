@@ -50,6 +50,8 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
       md,
       lg,
       xl,
+      height,
+      minHeight,
       ...props
     },
     ref
@@ -66,7 +68,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
           stackVariants({
             display,
             direction: direction || 'col',
-            gap: gap || 'none',
+            gap: gap || 'md',
             fullHeight,
             cols,
             align,
@@ -74,6 +76,8 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
             wrap,
             p: finalPadding as any,
             flex,
+            height,
+            minHeight,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
@@ -110,6 +114,8 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
       md,
       lg,
       xl,
+      height,
+      minHeight,
       as: Component = 'div',
       children,
       ...props
@@ -121,7 +127,7 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
         data-slot="card-header"
         ref={ref}
         className={cn(
-          'mb-4 border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
+          'border-b border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
           stackVariants({
             display: display || 'flex',
             direction: direction || 'row',
@@ -134,6 +140,8 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
             wrap,
             p,
             flex,
+            height,
+            minHeight,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
@@ -170,6 +178,8 @@ const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
       md,
       lg,
       xl,
+      height,
+      minHeight,
       as: Component = 'div',
       children,
       ...props
@@ -194,6 +204,8 @@ const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
             wrap,
             p,
             flex,
+            height,
+            minHeight,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
@@ -230,6 +242,8 @@ const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
       md,
       lg,
       xl,
+      height,
+      minHeight,
       as: Component = 'div',
       children,
       ...props
@@ -241,7 +255,7 @@ const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
         data-slot="card-footer"
         ref={ref}
         className={cn(
-          'mt-4 border-t border-(--color-secondary)/20 pt-4',
+          'border-t border-(--color-secondary)/20 pt-4',
           stackVariants({
             display: display || 'flex',
             direction: direction || 'row',
@@ -254,6 +268,8 @@ const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
             wrap,
             p,
             flex,
+            height,
+            minHeight,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),

@@ -21,7 +21,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
   const gt = useTranslations('Game')
 
   return (
-    <Card p="md" fullHeight flex="1" minHeight="zero">
+    <Card p="md">
       <Card.Header align="center" justify="center">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>
@@ -34,10 +34,25 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
       >
         <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
         <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />
-        <StatRow icon={Sword} label={gt('Stats.strength')} value={stats.strength} color="strength" />
-        <StatRow icon={Brain} label={gt('Stats.intelligence')} value={stats.intelligence} color="intelligence" />
+        <StatRow
+          icon={Sword}
+          label={gt('Stats.strength')}
+          value={stats.strength}
+          color="strength"
+        />
+        <StatRow
+          icon={Brain}
+          label={gt('Stats.intelligence')}
+          value={stats.intelligence}
+          color="intelligence"
+        />
         <StatRow icon={Wind} label={gt('Stats.agility')} value={stats.agility} color="agility" />
-        <StatRow icon={Activity} label={gt('Stats.stamina')} value={stats.stamina} color="stamina" />
+        <StatRow
+          icon={Activity}
+          label={gt('Stats.stamina')}
+          value={stats.stamina}
+          color="stamina"
+        />
       </Card.Content>
     </Card>
   )

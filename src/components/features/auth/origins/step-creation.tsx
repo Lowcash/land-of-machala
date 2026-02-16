@@ -7,8 +7,6 @@ import { RACES } from '@/lib/game/data/races'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
-import { DicesIcon } from '@/components/ui/icons'
 import { PageHeader } from '@/components/ui/prefabs/typography/page-header'
 
 import { CharacterIdentity } from './character-identity'
