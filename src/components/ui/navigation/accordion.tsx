@@ -143,7 +143,7 @@ export function GameAccordion({
           value={item.value}
           className={cn(
             'flex w-full flex-col border-none',
-            passthroughOnDesktop && 'lg:h-full lg:border-none'
+            passthroughOnDesktop && 'lg:border-none'
           )}
         >
           <AccordionTrigger className={cn(passthroughOnDesktop && 'lg:hidden')}>
@@ -154,12 +154,12 @@ export function GameAccordion({
             className={cn(
               passthroughOnDesktop && [
                 'max-lg:data-[state=closed]:hidden',
-                'lg:block! lg:h-full! lg:overflow-visible lg:pt-0 lg:opacity-100!',
+                'lg:block! lg:h-auto! lg:overflow-visible lg:pt-0 lg:opacity-100!',
                 'lg:data-[state=closed]:animate-none lg:data-[state=open]:animate-none',
               ]
             )}
           >
-            <VStack gap="none" fullWidth height={passthroughOnDesktop ? 'full' : 'auto'}>
+            <VStack gap="none" fullWidth>
               {item.content}
             </VStack>
           </AccordionContent>
