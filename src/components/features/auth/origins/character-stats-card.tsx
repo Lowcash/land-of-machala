@@ -23,7 +23,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
   const gt = useTranslations('Game')
 
   return (
-    <Card p="md" variant="secondary" flex="1" minHeight="zero">
+    <Card p="md" variant="primary">
       <Card.Header align="center" justify="center">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>
@@ -32,8 +32,9 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
         display="grid"
         cols="1"
         gap="md"
-        sm={{ cols: '2', gap: 'lg' }}
-        md={{ display: 'flex', direction: 'col' }}
+        sm={{ cols: '2', gap: 'md' }}
+        md={{ cols: '2', gap: 'sm' }}
+        lg={{ cols: '2', gap: 'md' }}
       >
         <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
         <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />

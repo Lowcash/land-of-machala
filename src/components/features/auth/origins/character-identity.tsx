@@ -26,7 +26,7 @@ export function CharacterIdentity({
   const t = useTranslations('Auth.Origins.creation')
 
   return (
-    <VStack gap="md" height="creation" minHeight="none">
+    <VStack gap="md" height="creation">
       <CharacterNameCard
         name={name}
         label={t('nameLabel')}
@@ -34,7 +34,7 @@ export function CharacterIdentity({
         onChange={onNameChange}
       />
 
-      <Button variant="secondary" size="action" onClick={onRandomize}>
+      <Button variant="primary" size="action" onClick={onRandomize}>
         <DicesIcon size="md" />
         <Text font="fantasy">{t('randomize_button')}</Text>
       </Button>
