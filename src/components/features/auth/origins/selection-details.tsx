@@ -26,15 +26,15 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
   return (
     <Card p="none" flex="1" minHeight="zero">
       <ScrollArea>
-        <VStack gap="md" p="md">
-          <Description className="text-[11px] leading-relaxed sm:text-[13px]">
+        <VStack gap="sm" p="md">
+          <Description variant="detail">
             {t(`${translationKey}.${item.id}.description`)}
           </Description>
 
-          <Divider />
+          <Divider variant="solid" />
 
           <VStack gap="xs">
-            <Label align="left" className="text-sm! sm:text-base!">
+            <Label align="left" variant="small">
               {bonusLabel}
             </Label>
 
@@ -114,7 +114,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
               )}
             </Stack>
 
-            <Description className="text-[10px] sm:text-[11px]">
+            <Description variant="bonus">
               {t(`${translationKey}.${item.id}.bonuses`)}
             </Description>
           </VStack>

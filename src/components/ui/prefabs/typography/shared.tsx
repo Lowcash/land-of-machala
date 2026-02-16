@@ -12,13 +12,14 @@ import { Text } from '@/components/ui/core/typography'
  * Use these instead of raw Text components with repetitive props.
  */
 
-export function NarrativeText({ align, className, ...props }: TypographyPrefabProps) {
+export function NarrativeText({ align, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
       font="fantasy"
+      variant={variant as any}
       color={'primary' as any}
       align={align || 'center'}
-      className={cn('text-xl leading-relaxed italic sm:text-2xl', className)}
+      className="text-xl leading-relaxed italic sm:text-2xl"
       {...props}
     />
   )
@@ -43,50 +44,64 @@ type TypographyColor =
 
 interface TypographyPrefabProps extends Omit<
   React.HTMLAttributes<HTMLParagraphElement>,
-  'color'
+  'color' | 'className'
 > {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
   align?: 'left' | 'center' | 'right' | 'justify'
   bold?: boolean
-  variant?: 'primary' | 'lead' | 'large' | 'small' | 'muted' | 'fantasy-value'
-  className?: string
+  variant?: 'primary' | 'lead' | 'large' | 'small' | 'muted' | 'fantasy-value' | 'detail' | 'bonus' | 'tiny'
 }
 
 export function Value({ align, variant, ...props }: TypographyPrefabProps) {
+  // Map our preset variant to the base Text variant where appropriate
+  const baseVariant = (variant === 'tiny' || variant === 'small') ? 'small' : (variant || 'fantasy-value')
+
   return (
     <Text
-      variant={variant || 'fantasy-value'}
+      variant={baseVariant as any}
       font="fantasy"
       color={'ivory' as any}
       align={align}
-      className="tracking-wider"
+      className={cn(
+        'tracking-wider',
+        variant === 'tiny' && 'text-[10px] sm:text-xs'
+      )}
       {...props}
     />
   )
 }
 
-export function MutedText({ align, ...props }: TypographyPrefabProps) {
-  return <Text color={'secondary' as any} align={align} {...props} />
+export function MutedText({ align, variant, ...props }: TypographyPrefabProps) {
+  return <Text color={'secondary' as any} variant={variant as any} align={align} {...props} />
 }
 
-export function Description({ align, className, ...props }: TypographyPrefabProps) {
+export function Description({ align, variant, ...props }: TypographyPrefabProps) {
+  const sizes = {
+    primary: 'text-xs italic sm:text-sm',
+    detail: 'text-[11px] leading-relaxed italic sm:text-[13px]',
+    bonus: 'text-[10px] italic sm:text-[11px]',
+  }
+  const sizeClass = (sizes as any)[variant as any] || sizes.primary
+  const baseVariant = (variant === 'bonus' || variant === 'small') ? 'small' : 'primary'
+
   return (
     <Text
       font="body"
+      variant={baseVariant as any}
       color={'secondary' as any}
       align={align}
-      className={cn('text-xs italic sm:text-sm', className)}
+      className={sizeClass}
       {...props}
     />
   )
 }
 
-export function Decoration({ align, ...props }: TypographyPrefabProps) {
+export function Decoration({ align, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant="small"
+      variant={variant === 'small' ? 'small' : 'small'}
       color={'secondary' as any}
       font="fantasy"
       align={align}
@@ -96,22 +111,29 @@ export function Decoration({ align, ...props }: TypographyPrefabProps) {
   )
 }
 
-export function Label({ align, className, ...props }: TypographyPrefabProps) {
+export function Label({ align, variant, ...props }: TypographyPrefabProps) {
+  // Map our preset variant to the base Text variant where appropriate
+  const baseVariant = variant === 'small' ? 'small' : 'primary'
+
   return (
     <Text
       font="fantasy"
+      variant={baseVariant as any}
       color={'gold' as any}
       align={align || 'center'}
-      className={cn('text-base sm:text-xl', className)}
+      className={cn(
+        'text-base sm:text-xl',
+        variant === 'small' && 'text-sm! sm:text-base!'
+      )}
       {...props}
     />
   )
 }
 
-export function Legend({ align, bold, ...props }: TypographyPrefabProps) {
+export function Legend({ align, bold, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant="small"
+      variant={variant === 'small' ? 'small' : 'small' as any}
       font="body"
       align={align}
       className={cn(bold && 'font-bold')}

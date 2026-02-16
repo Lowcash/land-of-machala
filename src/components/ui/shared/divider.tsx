@@ -3,9 +3,14 @@ import { DecorativeLabel } from '@/components/ui/prefabs/typography/hero'
 
 interface DividerProps {
   label?: string
+  variant?: 'default' | 'solid'
 }
 
-export function Divider({ label }: DividerProps) {
+export function Divider({ label, variant = 'default' }: DividerProps) {
+  if (variant === 'solid') {
+    return <div className="h-px w-full bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent" />
+  }
+
   return (
     <HStack align="center" gap="md" fullWidth>
       <div className="h-px flex-1 bg-linear-to-r from-transparent via-(--color-secondary)/40 to-transparent"></div>

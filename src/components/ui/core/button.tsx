@@ -19,7 +19,7 @@ const buttonVariants = cva(
       },
       size: {
         default: 'p-2',
-        lg: 'min-h-16 p-4 text-xl sm:text-2xl',
+        lg: 'min-h-16 p-4 text-xl',
         action: 'p-4',
         feature: 'h-20 p-4',
       },

@@ -17,7 +17,7 @@ export function StatRow({ icon: SimpleIcon, label, value, color, compact = false
     return (
       <HStack align="center" gap="xs">
         <Icon icon={SimpleIcon} size="xs" color={color} />
-        <Value variant="small" color="secondary">
+        <Value variant="tiny" color="secondary">
           {value} {label}
         </Value>
       </HStack>
