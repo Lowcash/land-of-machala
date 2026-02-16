@@ -50,8 +50,7 @@ export function StepCreation({
         cols="1"
         gap="md"
         fullWidth
-        maxWidth="5xl"
-        lg={{ cols: '3' }}
+        lg={{ cols: '3', maxWidth: '5xl' }}
         height="creation"
       >
         {/* Column 1: Identity & Stats */}
@@ -64,7 +63,7 @@ export function StepCreation({
 
         <GameAccordion
           passthroughOnDesktop
-          className="lg:col-span-2 lg:grid lg:grid-cols-2 lg:gap-md"
+          className="lg:col-span-2 lg:h-full lg:grid lg:grid-cols-2 lg:gap-md"
           items={[
             {
               value: 'race',

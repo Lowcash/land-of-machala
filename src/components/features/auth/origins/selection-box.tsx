@@ -90,7 +90,15 @@ export function SelectionBox({
           {content}
         </Card>
 
-        <Card variant="primary" p="md" direction="col" height="creation" flex="1" lg={{ display: 'flex' }}>
+        <Card
+          variant="primary"
+          p="md"
+          direction="col"
+          height="creation"
+          flex="1"
+          minHeight="zero"
+          lg={{ display: 'flex' }}
+        >
           <Card.Header align="center" justify="center">
             <Card.Title align="center">{title}</Card.Title>
           </Card.Header>
