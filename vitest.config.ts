@@ -1,4 +1,5 @@
 /// <reference types="vitest" />
+
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import { playwright } from '@vitest/browser-playwright'
 import path from 'node:path'

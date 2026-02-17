@@ -46,7 +46,7 @@ export const SemanticPrefabs: Story = {
   render: () => (
     <Stack gap="md">
       <Stack gap="xs">
-        <Prefabs.Decoration>Decoration Label</Prefabs.Decoration>
+        <Prefabs.Label>Decoration Label</Prefabs.Label>
         <Prefabs.Value>1,234 Gold</Prefabs.Value>
         <Prefabs.MutedText>This is a muted text prefab.</Prefabs.MutedText>
         <Prefabs.Description>

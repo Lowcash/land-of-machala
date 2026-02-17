@@ -9,7 +9,7 @@ interface RegisterCardProps {
 
 export function RegisterCard({ onRegister, isLoading }: RegisterCardProps) {
   return (
-    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="md">
+    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
       <RegisterForm onRegister={onRegister} isLoading={isLoading} />
     </Card>
   )

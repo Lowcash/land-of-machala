@@ -24,7 +24,7 @@ export function LoginCard({
   orLabel,
 }: LoginCardProps) {
   return (
-    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="md">
+    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
       <LoginForm onLogin={onLogin} isLoading={isLoading} />
 
       <Divider label={orLabel} />

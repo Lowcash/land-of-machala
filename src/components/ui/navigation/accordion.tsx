@@ -70,7 +70,7 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
         )}
         {...props}
       >
-        <span>{children}</span>
+        <div className="min-w-0 flex-1 text-left">{children}</div>
         <ChevronDown className="h-5 w-5 shrink-0 text-(--color-primary) opacity-60 transition-all duration-300 group-hover:opacity-100 group-data-[state=open]:opacity-100" />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
@@ -89,7 +89,9 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
     <AccordionPrimitive.Content
       ref={ref}
       className={cn(
-        'data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm transition-all',
+        'overflow-hidden text-sm transition-all',
+        'data-[state=closed]:h-0 data-[state=closed]:opacity-0', // Base state for initial mount
+        'data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up',
         className
       )}
       {...props}
@@ -140,18 +142,20 @@ export function GameAccordion({
           key={item.value}
           value={item.value}
           className={cn(
-            'flex w-full flex-col overflow-hidden rounded-lg border-2 border-(--color-secondary)/40 bg-black/40 transition-all duration-500',
+            'flex w-full flex-col overflow-hidden rounded-lg border-2 border-(--color-secondary)/40 bg-black/40',
             'shadow-lg data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
             passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
           )}
         >
           <AccordionTrigger className={cn('border-none', passthroughOnDesktop && 'md:hidden')}>
-            <div className="flex w-full items-center justify-between gap-2">
-              <span>{item.title}</span>
+            <div className="flex w-full items-center justify-between gap-4 overflow-hidden">
+              <div className="flex-1 min-w-0 pr-8 whitespace-nowrap overflow-hidden mask-[linear-gradient(to_right,black_calc(100%-8px),transparent_100%)]">
+                {item.title}
+              </div>
               {item.selectedLabel && (
-                <span className="font-fantasy text-xs text-(--color-secondary) decoration-(--color-secondary)/30 underline-offset-4 opacity-80 group-data-[state=open]:opacity-100">
+                <div className="shrink-0 max-w-[140px] font-fantasy text-xs text-(--color-secondary) decoration-(--color-secondary)/30 underline-offset-4 opacity-80 group-data-[state=open]:opacity-100 whitespace-nowrap overflow-hidden mask-[linear-gradient(to_right,black_calc(100%-8px),transparent_100%)]">
                   {item.selectedLabel}
-                </span>
+                </div>
               )}
             </div>
           </AccordionTrigger>
@@ -159,9 +163,7 @@ export function GameAccordion({
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(
               passthroughOnDesktop && [
-                'max-md:data-[state=closed]:hidden',
                 'md:block! md:h-auto! md:overflow-visible md:p-0! md:opacity-100!',
-                'md:data-[state=closed]:animate-none md:data-[state=open]:animate-none',
               ]
             )}
           >

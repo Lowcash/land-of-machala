@@ -51,16 +51,14 @@ export function RegisterViewUI({
     <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
       <VStack gap="md" fullWidth>
         <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
-        <VStack gap="md" pb="md" fullWidth>
-          <RegisterCard />
+        <RegisterCard />
 
-          <HStack gap="xs" justify="center" fullWidth>
-            <Text variant="primary" color="secondary">
-              {footerLinks.hasAccount}
-            </Text>
-            <TextLink href="/login">{footerLinks.login}</TextLink>
-          </HStack>
-        </VStack>
+        <HStack gap="xs" justify="center" fullWidth>
+          <Text variant="primary" color="secondary">
+            {footerLinks.hasAccount}
+          </Text>
+          <TextLink href="/login">{footerLinks.login}</TextLink>
+        </HStack>
       </VStack>
 
       <VStack gap="md" fullWidth>

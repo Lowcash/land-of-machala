@@ -3,7 +3,7 @@ import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { FormationStatus } from '@/components/ui/prefabs/narrative/formation-status'
+import { StatusIcon } from '@/components/ui/icons'
 
 import { StatRow } from './stat-row'
 
@@ -24,12 +24,13 @@ export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) 
   const gt = useTranslations('Game')
 
   return (
-    <Card p="md" variant="primary" flex="1">
-      <Card.Header align="center" justify="center">
+    <Card p="md" flex="1" variant="subtle">
+      <Card.Header align="center" justify="center" gap="sm">
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
+        {isReady && <StatusIcon icon={ShieldCheck} />}
       </Card.Header>
 
-      <Card.Content display="flex" direction="col" gap="sm" height="full" justify="between" py="sm">
+      <Card.Content gap="sm" height="full" justify="between">
         <Stack
           display="grid"
           cols="1"
@@ -61,12 +62,6 @@ export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) 
             color="stamina"
           />
         </Stack>
-
-        {isReady && (
-          <FormationStatus icon={ShieldCheck}>
-            {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
-          </FormationStatus>
-        )}
       </Card.Content>
     </Card>
   )

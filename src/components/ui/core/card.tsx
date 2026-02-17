@@ -23,7 +23,7 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
     },
   },
   defaultVariants: {
-    variant: 'primary',
+    variant: 'subtle',
     rounded: 'lg',
   },
 })

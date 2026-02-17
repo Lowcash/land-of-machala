@@ -36,8 +36,8 @@
     }
   }
 
-  --animate-accordion-down: accordion-down 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-  --animate-accordion-up: accordion-up 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --animate-accordion-down: accordion-down 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  --animate-accordion-up: accordion-up 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   --animate-fade-in: fade-in 0.5s ease-out forwards;
 }
 

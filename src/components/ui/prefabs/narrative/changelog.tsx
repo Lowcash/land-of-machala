@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/core/card'
 import { List, ListItem } from '@/components/ui/core/list'
 import { ScrollIcon } from '@/components/ui/icons'
-import { Legend, MutedText } from '@/components/ui/prefabs/typography/shared'
+import { Description, MutedText } from '@/components/ui/prefabs/typography/shared'
 
 export interface TranslatedChangelogEntry {
   category?: string
@@ -63,9 +63,9 @@ function ChangelogEntry({ entry }: { entry: TranslatedChangelogEntry }) {
     <ListItem>
       <MutedText>
         {entry.category && (
-          <Legend as="span" color={entry.color as any} bold>
+          <Description as="span" color={entry.color as any} bold>
             {entry.category}:{' '}
-          </Legend>
+          </Description>
         )}
         {entry.description}
       </MutedText>

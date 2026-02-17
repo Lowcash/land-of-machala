@@ -11,11 +11,16 @@ describe('Card', () => {
 
   it('renders primary variant', () => {
     const { container } = render(<Card variant="primary">Primary Card</Card>)
-    expect(container.firstChild).toHaveClass('border-(--color-secondary)')
+    expect(container.firstChild).toHaveClass('border-(--color-primary)')
   })
 
   it('renders secondary variant', () => {
     const { container } = render(<Card variant="secondary">Secondary Card</Card>)
     expect(container.firstChild).toHaveClass('border-(--color-secondary)/40')
+  })
+
+  it('renders subtle variant (default)', () => {
+    const { container } = render(<Card>Subtle Card</Card>)
+    expect(container.firstChild).toHaveClass('border-(--color-secondary)/20')
   })
 })

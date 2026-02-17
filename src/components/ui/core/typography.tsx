@@ -64,15 +64,19 @@ export function Heading({ level, font, color, align, className, as, ...props }: 
   )
 }
 
-const textVariants = cva('leading-relaxed', {
+const textVariants = cva('leading-relaxed transition-colors', {
   variants: {
     variant: {
       primary: 'text-base',
-      lead: 'text-xl',
+      lead: 'text-xl sm:text-2xl font-fantasy italic leading-relaxed',
       large: 'text-lg font-semibold',
       small: 'text-sm font-medium leading-none',
       muted: 'text-sm opacity-80',
-      'fantasy-value': 'text-lg',
+      detail: 'text-[11px] sm:text-[13px] leading-relaxed italic font-body',
+      bonus: 'text-[10px] sm:text-[11px] italic font-body',
+      'fantasy-value': 'text-lg font-fantasy tracking-wider',
+      decoration: 'text-xs sm:text-sm font-fantasy tracking-widest uppercase',
+      tiny: 'text-[10px] sm:text-xs font-fantasy tracking-wider',
     },
     font: {
       body: 'font-body',

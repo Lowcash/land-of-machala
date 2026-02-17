@@ -20,8 +20,8 @@ const ICON_SIZES = {
   lg: 'h-6 w-6',
   xl: 'h-10 w-10',
 } as const
-
 export type IconColor =
+  | 'primary'
   | 'gold'
   | 'secondary'
   | 'ivory'
@@ -35,32 +35,33 @@ export type IconColor =
 export interface IconProps {
   size?: keyof typeof ICON_SIZES
   color?: IconColor
+  className?: string
 }
 
 export function Icon({
   icon: SimpleIcon,
   size = 'sm',
   color,
-}: {
-  icon: LucideIcon
-  size?: keyof typeof ICON_SIZES
-  color?: IconColor
-}) {
+  className,
+}: { icon: LucideIcon } & IconProps) {
   const colorClass = color
-    ? {
-        gold: 'text-(--color-gold)',
-        secondary: 'text-(--color-secondary)',
-        ivory: 'text-(--color-ivory)',
-        hp: 'text-(--color-stat-hp)',
-        mana: 'text-(--color-stat-mana)',
-        strength: 'text-(--color-stat-strength)',
-        intelligence: 'text-(--color-stat-intelligence)',
-        agility: 'text-(--color-stat-agility)',
-        stamina: 'text-(--color-stat-stamina)',
-      }[color]
+    ? (
+        {
+          primary: 'text-(--color-primary)',
+          gold: 'text-(--color-gold)',
+          secondary: 'text-(--color-secondary)',
+          ivory: 'text-(--color-ivory)',
+          hp: 'text-(--color-stat-hp)',
+          mana: 'text-(--color-stat-mana)',
+          strength: 'text-(--color-stat-strength)',
+          intelligence: 'text-(--color-stat-intelligence)',
+          agility: 'text-(--color-stat-agility)',
+          stamina: 'text-(--color-stat-stamina)',
+        } as Record<IconColor, string>
+      )[color]
     : ''
 
-  return <SimpleIcon className={cn(ICON_SIZES[size], colorClass)} />
+  return <SimpleIcon className={cn(ICON_SIZES[size], colorClass, className)} />
 }
 
 export function UserIcon({ size, color }: IconProps) {
@@ -97,6 +98,22 @@ export function LockIcon({ size, color }: IconProps) {
 
 export function DicesIcon({ size, color }: IconProps) {
   return <Icon icon={Dices} size={size} color={color} />
+}
+
+/**
+ * A standard prefab for status/indicator icons.
+ * Includes a subtle fade-in animation by default.
+ */
+export function StatusIcon({
+  icon,
+  size = 'sm',
+  color = 'primary',
+}: {
+  icon: LucideIcon
+  size?: keyof typeof ICON_SIZES
+  color?: IconColor
+}) {
+  return <Icon icon={icon} size={size} color={color} className="animate-fade-in" />
 }
 
 /**

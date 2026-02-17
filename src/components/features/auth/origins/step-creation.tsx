@@ -51,7 +51,6 @@ export function StepCreation({
         cols="1"
         gap="md"
         fullWidth
-        maxWidth="none"
         md={{ cols: '3', maxWidth: '5xl' }}
         height="creation"
       >
@@ -131,7 +130,7 @@ export function StepCreation({
       </Stack>
 
       <VStack md={{ display: 'none' }} fullWidth>
-        <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
+        <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
           {t('finish')}
         </Button>
       </VStack>

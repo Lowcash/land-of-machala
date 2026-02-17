@@ -4,7 +4,7 @@ import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 import { SparklesIcon } from '@/components/ui/icons'
 
-import { Decoration, Description } from './shared'
+import { Description, Label } from './shared'
 
 interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode
@@ -50,8 +50,8 @@ export function HeroDescription({ children, ...props }: React.ComponentProps<typ
   return <Description {...props}>{children}</Description>
 }
 
-export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Decoration>) {
-  return <Decoration {...props}>{children}</Decoration>
+export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Label>) {
+  return <Label {...props}>{children}</Label>
 }
 
 interface PageHeaderProps {

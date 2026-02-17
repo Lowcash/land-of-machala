@@ -2,7 +2,7 @@ import { type LucideIcon } from 'lucide-react'
 
 import { HStack } from '@/components/ui/core/stack'
 import { Icon, type IconColor } from '@/components/ui/icons'
-import { Decoration, Value } from '@/components/ui/prefabs/typography/shared'
+import { Label, Value } from '@/components/ui/prefabs/typography/shared'
 
 interface StatRowProps {
   icon: LucideIcon
@@ -28,9 +28,9 @@ export function StatRow({ icon: SimpleIcon, label, value, color, compact = false
     <HStack align="center" justify="between" fullWidth gap="sm">
       <HStack align="center" gap="sm" flex="1" minWidth="zero">
         <Icon icon={SimpleIcon} size="sm" color={color} />
-        <Decoration color="secondary" truncate>
+        <Label color="secondary" truncate>
           {label}
-        </Decoration>
+        </Label>
       </HStack>
       <Value variant="small" color={color as any} shrink>
         {value}

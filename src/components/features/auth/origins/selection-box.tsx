@@ -34,9 +34,8 @@ export function SelectionBox({
   const content = (
     <Card.Content
       gap="md"
-      display="flex"
-      direction="col"
       flex={variant === 'flat' ? 'none' : '1'}
+      /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
       <Stack display="grid" cols="3" gap="xs" md={{ gap: 'sm' }} flex="none">
@@ -70,7 +69,7 @@ export function SelectionBox({
 
         {/* Desktop: Primary card view */}
         <Card
-          variant="primary"
+          variant="secondary"
           padding="md"
           display="none"
           md={{ display: 'flex' }}
@@ -91,7 +90,7 @@ export function SelectionBox({
 
   return (
     <Card
-      variant={isFlat ? 'ghost' : 'primary'}
+      variant={isFlat ? 'ghost' : 'secondary'}
       p="md"
       direction="col"
       height={isFlat ? 'auto' : 'creation'}

@@ -7,6 +7,11 @@ import { Background } from '../src/components/ui/shared/background'
 
 const preview: Preview = {
   parameters: {
+    options: {
+      storySort: {
+        order: ['Features', ['Auth', ['Login', 'Register', 'Origins']], 'Core'],
+      },
+    },
     layout: 'centered',
 
     a11y: {

@@ -1,21 +1,38 @@
 # Changelog
- 
+
 All notable changes to this project will be documented in this file.
- 
-- [2026-02-17] - Origins Layout Refinement & UI Consistency
-- 
-- ### Changed
-- - Standardized `height="creation"` to 480px across all components for perfect column alignment.
-- - Unified `Card` borders: Primary cards now use `border-2`, and Secondary cards use `border-1` with consistent opacity.
-- - Refined `AccordionTrigger` aesthetic (fantasy font, hover transitions, active scale anim) to match `Button` components.
-- - Fixed `SelectionBox` scrolling regression by optimizing flex container constraints (`min-h-0`).
-- - Optimized `CharacterIdentity` layout to ensure column parity in the Origins wizard.
-- 
-- ## [2026-02-17] - Unified Component APIs & SSR-Friendly Responsiveness
-- 
-- ## [2026-02-16] - Origins Refinements & Architecture Cleanup
+
+## [2026-02-17] - Typography Unification & Visual Hierarchy Refinement
+
+### Added
+- Created `FRONTEND_STANDARDS.md` to document the "Rule of Zero" and typography architecture.
+- Established `StatusIcon` prefab in `icons/index.tsx` for consistent animated indicators.
+- Added `fantasy-value`, `decoration`, and `tiny` variants to core `Typography`.
+
+### Changed
+- **Typography**: Refactored all typography prefabs (`Label`, `Legend`, `Description`) to use the core unified system.
+- **Visual Hierarchy**: Standardized `Card` to default to `subtle` variant; reserved `primary` (Gold) for active selections/focus.
+- **Animations**: Added `forwards` to global accordion and fade-in animations to ensure state persistence with `forceMount`.
+- **Smart Fade**: Replaced aggressive truncation with space-aware linear-gradient masks (8px intensity).
+- **Auth Views**: Synchronized spacing and margins across Login, Register, and Origins.
+
+### Fixed
+- **Accordion**: Resolved "open by default" bug in Login/Register views on mobile.
+- **Selection**: Fixed TypeScript regression in `SelectionItem` regarding `IconColor`.
+- **Origins**: Fixed double-button layout shift in the wizard footer.
+
+## [2026-02-17] - Origins Layout Refinement & UI Consistency
+
+### Changed
+- Standardized `height="creation"` to 480px across all components for perfect column alignment.
+- Unified `Card` borders: Primary cards now use `border-2`, and Secondary cards use `border-1` with consistent opacity.
+- Refined `AccordionTrigger` aesthetic (fantasy font, hover transitions, active scale anim) to match `Button` components.
+- Fixed `SelectionBox` scrolling regression by optimizing flex container constraints (`min-h-0`).
+- Optimized `CharacterIdentity` layout to ensure column parity in the Origins wizard.
+
+## [2026-02-16] - Origins Refinements & Architecture Cleanup
 - Extracted business logic (icon mapping, stats) to `src/lib/game/origins/utils.ts`.
- 
+
 ## [2026-02-14]
 
 ### Added

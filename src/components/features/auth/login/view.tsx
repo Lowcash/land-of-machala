@@ -54,13 +54,11 @@ export function LoginViewUI({
     <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
       <VStack gap="md" fullWidth>
         <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
-        <VStack gap="md" pb="md" fullWidth>
-          <LoginCard
-            guestLabel={card.guestLabel}
-            registerLabel={card.registerLabel}
-            orLabel={card.orLabel}
-          />
-        </VStack>
+        <LoginCard
+          guestLabel={card.guestLabel}
+          registerLabel={card.registerLabel}
+          orLabel={card.orLabel}
+        />
       </VStack>
 
       <VStack gap="md" fullWidth>
