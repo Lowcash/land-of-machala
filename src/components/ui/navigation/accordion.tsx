@@ -61,11 +61,11 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
       <AccordionPrimitive.Trigger
         ref={ref}
         className={cn(
-          'group flex flex-1 cursor-pointer items-center justify-between px-4 py-3.5 text-left transition-all active:scale-[0.99]',
-          'font-fantasy text-lg text-(--color-ivory)/90 sm:text-xl',
-          'border-b border-(--color-secondary)/20 last:border-0',
-          'hover:bg-(--color-secondary)/10 hover:text-(--color-primary)',
-          'data-[state=open]:bg-(--color-primary)/5 data-[state=open]:text-(--color-primary) [&[data-state=open]>svg]:rotate-180',
+          'group flex flex-1 cursor-pointer items-center justify-between px-4 py-3 text-left transition-all active:scale-[0.99]',
+          'font-fantasy text-base text-(--color-ivory)/90 sm:text-lg',
+          'border-b border-(--color-secondary)/10 last:border-0',
+          'hover:bg-(--color-primary)/5 hover:text-(--color-primary) hover:shadow-[0_0_15px_-5px_var(--color-primary)]',
+          'data-[state=open]:bg-(--color-primary)/10 data-[state=open]:text-(--color-primary) [&[data-state=open]>svg]:rotate-180',
           className
         )}
         {...props}

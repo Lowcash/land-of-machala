@@ -33,18 +33,18 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
       <Card.Content
         display="flex"
         direction="col"
-        gap="md"
+        gap="sm"
         height="full"
         justify="between"
-        py="md"
+        py="sm"
       >
         <Stack
           display="grid"
           cols="1"
-          gap="md"
+          gap="sm"
           sm={{ cols: '2', gap: 'md' }}
-          md={{ cols: '2', gap: 'sm' }}
-          lg={{ cols: '2', gap: 'md' }}
+          md={{ cols: '2', gap: 'xs' }}
+          lg={{ cols: '2', gap: 'sm' }}
           flex="none"
         >
         <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
@@ -70,9 +70,9 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
         />
         </Stack>
 
-        <VStack align="center" gap="xs" pt="sm">
-          <ShieldCheck size={16} className="text-(--color-primary)" />
-          <Text variant="small" color="secondary" font="fantasy">
+        <VStack align="center" gap="none" pt="xs" flex="none">
+          <ShieldCheck size={14} className="text-(--color-primary)/60" />
+          <Text variant="small" color="secondary" font="fantasy" className="scale-90 opacity-60">
             {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
           </Text>
         </VStack>

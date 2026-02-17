@@ -30,29 +30,25 @@ export function CharacterIdentity({
   const t = useTranslations('Auth.Origins.creation')
 
   return (
-    <VStack gap="md" height="creation" justify="between">
-      <CharacterNameCard
-        name={name}
-        label={t('nameLabel')}
-        placeholder={t('namePlaceholder')}
-        onChange={onNameChange}
-      />
+    <VStack gap="md" height="creation" justify="between" fullWidth flex="none">
+      <VStack gap="md" flex="none" fullWidth>
+        <CharacterNameCard
+          name={name}
+          label={t('nameLabel')}
+          placeholder={t('namePlaceholder')}
+          onChange={onNameChange}
+        />
 
-      <Button variant="primary" size="action" onClick={onRandomize}>
-        <DicesIcon size="md" />
-        <Text font="fantasy">{t('randomize_button')}</Text>
-      </Button>
+        <Button variant="primary" size="action" onClick={onRandomize}>
+          <DicesIcon size="md" />
+          <Text font="fantasy">{t('randomize_button')}</Text>
+        </Button>
+      </VStack>
 
       <CharacterStatsCard stats={stats} />
 
-      <VStack display="none" md={{ display: 'flex' }} fullWidth>
-        <Button
-          variant="choice"
-          size="lg"
-          fullWidth
-          onClick={onFinish}
-          disabled={!canFinish}
-        >
+      <VStack display="none" md={{ display: 'flex' }} fullWidth flex="none">
+        <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
           {t('finish')}
         </Button>
       </VStack>
