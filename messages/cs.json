@@ -131,10 +131,10 @@
         "description": "Malí, ale obratní a šikovní. Půlčíci jsou mistři ve vyhýbání se útokům a překvapivém úderu ze stínů. Jejich malá postava z nich dělá vynikající zloděje.",
         "bonuses": "+6 Obratnost, vyšší šance na únik a kritický zásah"
       },
-      "dragonborn": {
-        "name": "Dračí rod",
-        "description": "Dědicové dračí krve s vyváženou silou. Potomci starověkých draků kombinují sílu, magii i obratnost. Mají vrozenou odolnost vůči magii.",
-        "bonuses": "+10 HP, +20 Mana, +3 Síla, +4 Inteligence, dračí dech"
+      "drak": {
+        "name": "Drak",
+        "description": "Dědici prastaré moci. Spojují magii s fyzickou silou.",
+        "bonuses": "+10 HP, +20 Mana, +3 Síla, +4 Inteligence"
       }
     },
     "Classes": {
@@ -168,11 +168,11 @@
         "description": "Lučištník a stopař divočiny. Hraničáři jsou spojení s přírodou a ovládají boj na dálku.",
         "bonuses": "+6 Síla, +6 Obratnost, +2 Výdrž, lukostřelba"
       },
-      "necromancer": {
-        "name": "Nekromant",
-        "type": "Kouzlící",
-        "description": "Temný kouzelník ovládající smrt. Nekromanti manipulují se smrtí a oživují služebníky.",
-        "bonuses": "+10 Inteligence, +3 Obratnost, vysávání života"
+      "monk": {
+        "name": "Mnich",
+        "type": "Hybrid",
+        "description": "Mistr bojových umění a vnitřního klidu. Spoléhá na obratnost a ducha.",
+        "bonuses": "+5 Síla, +5 Výdrž, +5 Inteligence, +8 Obratnost"
       }
     },
     "Stats": {

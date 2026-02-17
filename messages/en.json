@@ -129,10 +129,10 @@
         "description": "Small but agile and clever. Halflings are masters of evasion and surprise strikes from the shadows. Their small size makes them excellent rogues.",
         "bonuses": "+6 Agility, higher evasion and crit chance"
       },
-      "dragonborn": {
-        "name": "Dragonborn",
-        "description": "Heirs of dragon blood with balanced power. Descendants of ancient dragons combine strength, magic, and agility. They have innate magic resistance.",
-        "bonuses": "+10 HP, +20 Mana, +3 Strength, +4 Intelligence, dragon breath"
+      "drak": {
+        "name": "Dragon",
+        "description": "Heirs of ancient power. They combine magic with physical prowess.",
+        "bonuses": "+10 HP, +20 Mana, +3 Strength, +4 Intelligence"
       }
     },
     "Classes": {
@@ -166,11 +166,11 @@
         "description": "Archer and tracker of the wilderness. Rangers are connected to nature and master ranged combat.",
         "bonuses": "+6 Strength, +6 Agility, +2 Stamina, archery"
       },
-      "necromancer": {
-        "name": "Necromancer",
-        "type": "Caster",
-        "description": "Dark sorcerer controlling death. Necromancers manipulate death and raise servants.",
-        "bonuses": "+10 Intelligence, +3 Agility, life drain"
+      "monk": {
+        "name": "Monk",
+        "type": "Hybrid",
+        "description": "Master of martial arts and inner peace. Monks rely on agility and spirit.",
+        "bonuses": "+5 Strength, +5 Stamina, +5 Intelligence, +8 Agility"
       }
     },
     "Stats": {

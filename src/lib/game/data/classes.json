@@ -47,11 +47,11 @@
     "statMod": { "hp": 0, "mana": 0, "strength": 6, "stamina": 2, "intelligence": 0, "agility": 6 }
   },
   {
-    "id": "necromancer",
-    "nameKey": "Game.Classes.necromancer.name",
-    "descriptionKey": "Game.Classes.necromancer.description",
-    "bonusKey": "Game.Classes.necromancer.bonuses",
-    "icon": "Skull",
-    "statMod": { "hp": 0, "mana": 0, "strength": 0, "stamina": 0, "intelligence": 10, "agility": 3 }
+    "id": "monk",
+    "nameKey": "Game.Classes.monk.name",
+    "descriptionKey": "Game.Classes.monk.description",
+    "bonusKey": "Game.Classes.monk.bonuses",
+    "icon": "Activity",
+    "statMod": { "hp": 0, "mana": 0, "strength": 5, "stamina": 5, "intelligence": 5, "agility": 8 }
   }
 ]

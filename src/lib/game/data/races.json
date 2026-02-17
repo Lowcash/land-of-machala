@@ -40,10 +40,10 @@
     "stats": { "hp": 90, "mana": 70, "strength": 9, "intelligence": 7, "agility": 16, "stamina": 8 }
   },
   {
-    "id": "dragonborn",
-    "nameKey": "Game.Races.dragonborn.name",
-    "descriptionKey": "Game.Races.dragonborn.description",
-    "bonusKey": "Game.Races.dragonborn.bonuses",
+    "id": "drak",
+    "nameKey": "Game.Races.drak.name",
+    "descriptionKey": "Game.Races.drak.description",
+    "bonusKey": "Game.Races.drak.bonuses",
     "icon": "Sparkles",
     "stats": { "hp": 110, "mana": 100, "strength": 13, "intelligence": 12, "agility": 9, "stamina": 11 }
   }
