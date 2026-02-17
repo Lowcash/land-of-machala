@@ -4,6 +4,8 @@ import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucid
 import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/core/card'
+import { Stack, VStack } from '@/components/ui/core/stack'
+import { Text } from '@/components/ui/core/typography'
 
 import { StatRow } from './stat-row'
 
