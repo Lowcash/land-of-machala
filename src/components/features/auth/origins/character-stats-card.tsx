@@ -7,6 +7,15 @@ import { FormationStatus } from '@/components/ui/prefabs/narrative/formation-sta
 
 import { StatRow } from './stat-row'
 
+interface CharacterStatsCardProps {
+  stats: {
+    hp: number
+    mana: number
+    strength: number
+    intelligence: number
+    agility: number
+    stamina: number
+  }
   isReady?: boolean
 }
 
