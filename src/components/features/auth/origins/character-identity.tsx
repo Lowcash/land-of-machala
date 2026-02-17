@@ -45,7 +45,7 @@ export function CharacterIdentity({
         </Button>
       </VStack>
 
-      <CharacterStatsCard stats={stats} />
+      <CharacterStatsCard stats={stats} isReady={canFinish} />
 
       <VStack display="none" md={{ display: 'flex' }} fullWidth flex="none">
         <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>

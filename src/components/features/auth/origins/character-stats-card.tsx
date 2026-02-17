@@ -7,18 +7,10 @@ import { FormationStatus } from '@/components/ui/prefabs/narrative/formation-sta
 
 import { StatRow } from './stat-row'
 
-interface CharacterStatsCardProps {
-  stats: {
-    hp: number
-    mana: number
-    strength: number
-    intelligence: number
-    agility: number
-    stamina: number
-  }
+  isReady?: boolean
 }
 
-export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
+export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) {
   const t = useTranslations('Auth.Origins.creation')
   const gt = useTranslations('Game')
 
@@ -28,14 +20,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
         <Card.Title align="center">{t('statsTitle')}</Card.Title>
       </Card.Header>
 
-      <Card.Content
-        display="flex"
-        direction="col"
-        gap="sm"
-        height="full"
-        justify="between"
-        py="sm"
-      >
+      <Card.Content display="flex" direction="col" gap="sm" height="full" justify="between" py="sm">
         <Stack
           display="grid"
           cols="1"
@@ -68,9 +53,11 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
           />
         </Stack>
 
-        <FormationStatus icon={ShieldCheck}>
-          {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
-        </FormationStatus>
+        {isReady && (
+          <FormationStatus icon={ShieldCheck}>
+            {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
+          </FormationStatus>
+        )}
       </Card.Content>
     </Card>
   )
