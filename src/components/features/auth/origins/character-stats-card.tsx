@@ -1,11 +1,9 @@
-'use client'
-
 import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
+import { FormationStatus } from '@/components/ui/prefabs/narrative/formation-status'
 
 import { StatRow } from './stat-row'
 
@@ -47,35 +45,32 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
           lg={{ cols: '2', gap: 'sm' }}
           flex="none"
         >
-        <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
-        <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />
-        <StatRow
-          icon={Sword}
-          label={gt('Stats.strength')}
-          value={stats.strength}
-          color="strength"
-        />
-        <StatRow
-          icon={Brain}
-          label={gt('Stats.intelligence')}
-          value={stats.intelligence}
-          color="intelligence"
-        />
-        <StatRow icon={Wind} label={gt('Stats.agility')} value={stats.agility} color="agility" />
-        <StatRow
-          icon={Activity}
-          label={gt('Stats.stamina')}
-          value={stats.stamina}
-          color="stamina"
-        />
+          <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
+          <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />
+          <StatRow
+            icon={Sword}
+            label={gt('Stats.strength')}
+            value={stats.strength}
+            color="strength"
+          />
+          <StatRow
+            icon={Brain}
+            label={gt('Stats.intelligence')}
+            value={stats.intelligence}
+            color="intelligence"
+          />
+          <StatRow icon={Wind} label={gt('Stats.agility')} value={stats.agility} color="agility" />
+          <StatRow
+            icon={Activity}
+            label={gt('Stats.stamina')}
+            value={stats.stamina}
+            color="stamina"
+          />
         </Stack>
 
-        <VStack align="center" gap="none" pt="xs" flex="none">
-          <ShieldCheck size={14} className="text-(--color-primary)/60" />
-          <Text variant="small" color="secondary" font="fantasy" className="scale-90 opacity-60">
-            {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
-          </Text>
-        </VStack>
+        <FormationStatus icon={ShieldCheck}>
+          {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
+        </FormationStatus>
       </Card.Content>
     </Card>
   )
