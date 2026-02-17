@@ -2,6 +2,8 @@
 
 import { useTranslations } from 'next-intl'
 
+import type { ClassInfo } from '@/lib/game/data/classes'
+import type { RaceInfo } from '@/lib/game/data/races'
 import { getStatIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
@@ -13,7 +15,7 @@ import { Divider } from '@/components/ui/shared/divider'
 import { StatRow } from './stat-row'
 
 interface SelectionDetailsProps {
-  item: any
+  item: RaceInfo | ClassInfo
   type: 'race' | 'class'
 }
 
@@ -33,7 +35,7 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
       minHeight="zero"
     >
       <ScrollArea>
-        <VStack gap="xs" p="md">
+        <VStack gap="sm" p="md">
           <Description variant="detail">
             {t(`${translationKey}.${item.id}.description`)}
           </Description>
@@ -52,47 +54,47 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
                     compact
                     icon={getStatIcon('hp')}
                     label={t('Stats.hp')}
-                    value={item.stats.hp}
+                    value={(item as RaceInfo).stats.hp}
                     color="hp"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('mana')}
                     label={t('Stats.mana')}
-                    value={item.stats.mana}
+                    value={(item as RaceInfo).stats.mana}
                     color="mana"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('strength')}
                     label={t('Stats.strength')}
-                    value={item.stats.strength}
+                    value={(item as RaceInfo).stats.strength}
                     color="strength"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('intelligence')}
                     label={t('Stats.intelligence')}
-                    value={item.stats.intelligence}
+                    value={(item as RaceInfo).stats.intelligence}
                     color="intelligence"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('agility')}
                     label={t('Stats.agility')}
-                    value={item.stats.agility}
+                    value={(item as RaceInfo).stats.agility}
                     color="agility"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('stamina')}
                     label={t('Stats.stamina')}
-                    value={item.stats.stamina}
+                    value={(item as RaceInfo).stats.stamina}
                     color="stamina"
                   />
                 </>
               ) : (
-                Object.entries(item.statMod).map(([stat, val]: [string, any]) => {
+                Object.entries((item as ClassInfo).statMod).map(([stat, val]: [string, number]) => {
                   if (val === 0) return null
                   const isPositive = val > 0
                   const Icon = getStatIcon(stat)
