@@ -8,8 +8,7 @@ import { ChevronDown } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
-import { HStack, VStack } from '@/components/ui/core/stack'
-import { Heading, Text } from '@/components/ui/core/typography'
+import { Text } from '@/components/ui/core/typography'
 
 /**
  * Custom Props to avoid exposing Radix primitives to docgen which causes circularity.
@@ -89,8 +88,8 @@ const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>
     <AccordionPrimitive.Content
       ref={ref}
       className={cn(
-        'overflow-hidden text-sm transition-all',
-        'data-[state=closed]:h-0 data-[state=closed]:opacity-0', // Base state for initial mount
+        'overflow-hidden text-sm',
+        'data-[state=closed]:h-0 data-[state=closed]:opacity-0',
         'data-[state=open]:animate-accordion-down data-[state=closed]:animate-accordion-up',
         className
       )}
@@ -138,27 +137,30 @@ export function GameAccordion({
       className={cn('flex w-full flex-col gap-3', passthroughOnDesktop && 'md:gap-4', className)}
     >
       {items.map((item) => (
-        <AccordionItem
-          key={item.value}
-          value={item.value}
-          className={cn(
-            'flex w-full flex-col overflow-hidden rounded-lg border-2 border-(--color-secondary)/40 bg-black/40',
-            'shadow-lg data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
-            passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
-          )}
-        >
-          <AccordionTrigger className={cn('border-none', passthroughOnDesktop && 'md:hidden')}>
-            <div className="flex w-full items-center justify-between gap-4 overflow-hidden">
-              <div className="flex-1 min-w-0 pr-8 whitespace-nowrap overflow-hidden mask-[linear-gradient(to_right,black_calc(100%-8px),transparent_100%)]">
-                {item.title}
+          <AccordionItem
+            key={item.value}
+            value={item.value}
+            className={cn(
+              // Match Button 'secondary' variant
+              'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/60',
+              'transition-all duration-300',
+              // Open state: clearer distinction but seamless flow
+              'data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
+              passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
+            )}
+          >
+            <AccordionTrigger className={cn('border-none p-4', passthroughOnDesktop && 'md:hidden')}>
+              <div className="flex w-full items-center justify-between gap-6">
+                <Text variant="primary" font="fantasy" truncate className="text-left text-base sm:text-lg">
+                  {item.title}
+                </Text>
+                {item.selectedLabel && (
+                  <Text variant="small" color="secondary" truncate className="shrink-0 opacity-80 group-data-[state=open]:opacity-100">
+                    {item.selectedLabel}
+                  </Text>
+                )}
               </div>
-              {item.selectedLabel && (
-                <div className="shrink-0 max-w-[140px] font-fantasy text-xs text-(--color-secondary) decoration-(--color-secondary)/30 underline-offset-4 opacity-80 group-data-[state=open]:opacity-100 whitespace-nowrap overflow-hidden mask-[linear-gradient(to_right,black_calc(100%-8px),transparent_100%)]">
-                  {item.selectedLabel}
-                </div>
-              )}
-            </div>
-          </AccordionTrigger>
+            </AccordionTrigger>
           <AccordionContent
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(

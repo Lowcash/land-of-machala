@@ -11,7 +11,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          'rounded-lg border-2 border-(--color-primary) bg-black/80 text-center text-(--color-primary) enabled:hover:scale-[0.99] enabled:hover:bg-(--color-primary)/20 disabled:border-(--color-secondary)/40 disabled:bg-(--color-secondary)/10 disabled:text-(--color-secondary)',
+          'rounded-lg border border-(--color-primary) bg-black/80 text-center text-(--color-primary) enabled:hover:scale-[0.99] enabled:hover:bg-(--color-primary)/20 disabled:border-(--color-secondary)/40 disabled:bg-(--color-secondary)/10 disabled:text-(--color-secondary)',
         secondary:
           'rounded-lg border border-(--color-secondary)/40 bg-black/60 text-(--color-ivory) enabled:hover:scale-[0.99] enabled:hover:border-(--color-ivory)/40 enabled:hover:bg-black/80 enabled:hover:text-(--color-primary) disabled:border-(--color-secondary)/30 disabled:bg-(--color-secondary)/10 disabled:text-(--color-ivory)/40',
         choice:
@@ -21,7 +21,7 @@ const buttonVariants = cva(
         default: 'p-2',
         lg: 'min-h-16 p-4 text-xl',
         action: 'p-4',
-        feature: 'h-20 p-4',
+        feature: 'h-20 p-2 sm:p-4',
       },
       fullWidth: {
         true: 'w-full',
