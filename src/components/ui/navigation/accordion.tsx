@@ -140,8 +140,8 @@ export function GameAccordion({
           key={item.value}
           value={item.value}
           className={cn(
-            'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/30 bg-black/40 transition-all duration-500',
-            'shadow-lg data-[state=open]:border-(--color-primary)/50 data-[state=open]:bg-black/80',
+            'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/40 transition-all duration-500',
+            'shadow-lg data-[state=open]:border-(--color-primary)/60 data-[state=open]:bg-black/80',
             passthroughOnDesktop && 'lg:border-none lg:bg-transparent lg:shadow-none'
           )}
         >

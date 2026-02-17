@@ -20,7 +20,7 @@ function Input({
       type={type}
       data-slot="input"
       className={cn(
-        'flex h-10 w-full rounded-md border border-(--color-secondary)/40 bg-black/40 px-3 py-2 text-sm text-(--color-ivory) caret-white shadow-sm backdrop-blur-sm transition-all file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:tracking-widest placeholder:text-(--color-secondary)/60 focus-visible:border-(--color-primary)/60 focus-visible:ring-1 focus-visible:ring-(--color-primary) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        'flex h-10 w-full rounded-md border border-(--color-secondary)/30 bg-black/40 px-3 py-2 text-sm text-(--color-ivory) caret-(--color-primary) shadow-sm backdrop-blur-sm transition-all file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:tracking-widest placeholder:text-(--color-secondary)/40 focus-visible:border-(--color-primary)/80 focus-visible:ring-1 focus-visible:ring-(--color-primary) focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
         font === 'fantasy'
           ? 'font-fantasy placeholder:font-fantasy'
           : 'font-body placeholder:font-body',

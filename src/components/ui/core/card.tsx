@@ -12,8 +12,8 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
   variants: {
     variant: {
       primary: 'border-2 border-(--color-primary) bg-black/80 shadow-xl',
-      secondary: 'border border-(--color-secondary)/30 bg-black/60',
-      subtle: 'border border-(--color-secondary)/30 bg-black/40 shadow-none',
+      secondary: 'border border-(--color-secondary)/40 bg-black/60',
+      subtle: 'border border-(--color-secondary)/20 bg-black/40 shadow-none',
       ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
     },
     rounded: {
