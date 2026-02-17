@@ -34,7 +34,7 @@ export function Benefits({ title, description, benefits, variant = 'primary' }: 
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="primary" padding="md" display="none" md={{ display: 'flex' }}>
+        <Card variant="secondary" p="md" display="none" md={{ p: 'lg', display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<SparklesIcon size="md" />}>{title}</Card.Title>
           </Card.Header>
@@ -47,7 +47,7 @@ export function Benefits({ title, description, benefits, variant = 'primary' }: 
   const isFlat = variant === 'flat'
 
   return (
-    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+    <Card variant={isFlat ? 'ghost' : 'secondary'} p="md" md={{ p: 'lg' }}>
       {!isFlat && (
         <Card.Header>
           <Card.Title icon={<SparklesIcon size="md" />}>{title}</Card.Title>

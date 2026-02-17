@@ -7,12 +7,15 @@ import { getSelectionIcon } from '@/lib/game/origins/utils'
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
 
+import type { ClassInfo } from '@/lib/game/data/classes'
+import type { RaceInfo } from '@/lib/game/data/races'
+
 import { SelectionDetails } from './selection-details'
 import { SelectionItem } from './selection-item'
 
 interface SelectionBoxProps {
   title: string
-  items: any[]
+  items: (RaceInfo | ClassInfo)[]
   selectedId: string | null
   onSelect: (id: string) => void
   type: 'race' | 'class'
@@ -38,7 +41,7 @@ export function SelectionBox({
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
-      <Stack display="grid" cols="3" gap="xs" md={{ gap: 'sm' }} flex="none">
+      <Stack display="grid" cols="2" gap="xs" md={{ gap: 'sm' }} flex="none">
         {items.map((item) => {
           const Icon = getSelectionIcon(item.icon)
           const isSelected = selectedId === item.id
@@ -69,7 +72,7 @@ export function SelectionBox({
 
         {/* Desktop: Primary card view */}
         <Card
-          variant="secondary"
+          variant="primary"
           padding="md"
           display="none"
           md={{ display: 'flex' }}

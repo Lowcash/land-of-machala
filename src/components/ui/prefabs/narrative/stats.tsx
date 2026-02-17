@@ -34,7 +34,7 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="primary" padding="md" display="none" md={{ display: 'flex' }}>
+        <Card variant="secondary" p="md" display="none" md={{ p: 'lg', display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -47,7 +47,7 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
   const isFlat = variant === 'flat'
 
   return (
-    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+    <Card variant={isFlat ? 'ghost' : 'secondary'} p="md" md={{ p: 'lg' }}>
       {!isFlat && (
         <Card.Header>
           <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
@@ -63,7 +63,7 @@ function StatBlock({ stat }: { stat: TranslatedServerStat }) {
   return (
     <Card variant="subtle" padding="md" gap="xs">
       <MutedText>{stat.label}</MutedText>
-      <Value color={stat.color as any}>{stat.value}</Value>
+      <Value color={stat.color}>{stat.value}</Value>
     </Card>
   )
 }

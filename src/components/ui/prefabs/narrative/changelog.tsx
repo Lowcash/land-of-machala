@@ -33,7 +33,7 @@ export function Changelog({ title, changes, variant = 'primary' }: ChangelogProp
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="primary" padding="md" display="none" md={{ display: 'flex' }}>
+        <Card variant="secondary" p="md" display="none" md={{ p: 'lg', display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -46,7 +46,7 @@ export function Changelog({ title, changes, variant = 'primary' }: ChangelogProp
   const isFlat = variant === 'flat'
 
   return (
-    <Card variant={isFlat ? 'ghost' : 'primary'} padding="md">
+    <Card variant={isFlat ? 'ghost' : 'secondary'} p="md" md={{ p: 'lg' }}>
       {!isFlat && (
         <Card.Header>
           <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
@@ -63,7 +63,7 @@ function ChangelogEntry({ entry }: { entry: TranslatedChangelogEntry }) {
     <ListItem>
       <MutedText>
         {entry.category && (
-          <Description as="span" color={entry.color as any} bold>
+          <Description as="span" color={entry.color} bold>
             {entry.category}:{' '}
           </Description>
         )}
