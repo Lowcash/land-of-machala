@@ -62,7 +62,7 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
         ref={ref}
         className={cn(
           'group flex flex-1 cursor-pointer items-center justify-between px-4 py-3.5 text-left transition-all active:scale-[0.99]',
-          'font-fantasy text-lg sm:text-xl text-(--color-ivory)/90',
+          'font-fantasy text-lg text-(--color-ivory)/90 sm:text-xl',
           'border-b border-(--color-secondary)/20 last:border-0',
           'hover:bg-(--color-secondary)/10 hover:text-(--color-primary)',
           'data-[state=open]:bg-(--color-primary)/5 data-[state=open]:text-(--color-primary) [&[data-state=open]>svg]:rotate-180',
@@ -141,11 +141,11 @@ export function GameAccordion({
           value={item.value}
           className={cn(
             'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/40 transition-all duration-500',
-            'shadow-lg data-[state=open]:border-(--color-primary)/60 data-[state=open]:bg-black/80',
-            passthroughOnDesktop && 'lg:border-none lg:bg-transparent lg:shadow-none'
+            'shadow-lg data-[state=open]:border-2 data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
+            passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
           )}
         >
-          <AccordionTrigger className={cn('border-none', passthroughOnDesktop && 'lg:hidden')}>
+          <AccordionTrigger className={cn('border-none', passthroughOnDesktop && 'md:hidden')}>
             <div className="flex w-full items-center justify-between gap-2">
               <span>{item.title}</span>
               {item.selectedLabel && (
@@ -159,9 +159,9 @@ export function GameAccordion({
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(
               passthroughOnDesktop && [
-                'max-lg:data-[state=closed]:hidden',
-                'lg:block! lg:h-auto! lg:overflow-visible lg:p-0! lg:opacity-100!',
-                'lg:data-[state=closed]:animate-none lg:data-[state=open]:animate-none',
+                'max-md:data-[state=closed]:hidden',
+                'md:block! md:h-auto! md:overflow-visible md:p-0! md:opacity-100!',
+                'md:data-[state=closed]:animate-none md:data-[state=open]:animate-none',
               ]
             )}
           >

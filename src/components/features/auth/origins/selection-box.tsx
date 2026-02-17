@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
-import { Stack } from '@/components/ui/core/stack'
+import { Stack, VStack } from '@/components/ui/core/stack'
 
 import { SelectionDetails } from './selection-details'
 import { SelectionItem } from './selection-item'
@@ -64,7 +64,7 @@ export function SelectionBox({
     return (
       <VStack fullWidth height="auto" md={{ height: 'creation', minHeight: 'none' }}>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
+        <Card variant="ghost" padding="md" md={{ display: 'none' }}>
           {content}
         </Card>
 
@@ -73,7 +73,7 @@ export function SelectionBox({
           variant="primary"
           padding="md"
           display="none"
-          lg={{ display: 'flex' }}
+          md={{ display: 'flex' }}
           direction="col"
           height="creation"
           minHeight="zero"

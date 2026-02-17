@@ -61,6 +61,8 @@ export function StepCreation({
           onNameChange={onNameChange}
           onRandomize={onRandomize}
           stats={stats}
+          onFinish={onFinish}
+          canFinish={canFinish}
         />
 
         {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
@@ -129,7 +131,14 @@ export function StepCreation({
       </Stack>
 
       {/* Finish button relocated to bottom */}
-      <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
+      <Button
+        variant="choice"
+        size="lg"
+        fullWidth
+        onClick={onFinish}
+        disabled={!canFinish}
+        md={{ display: 'none' }}
+      >
         {t('finish')}
       </Button>
     </VStack>

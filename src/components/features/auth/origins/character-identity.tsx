@@ -15,6 +15,8 @@ interface CharacterIdentityProps {
   onNameChange: (name: string) => void
   onRandomize: () => void
   stats: any
+  onFinish: () => void
+  canFinish: boolean
 }
 
 export function CharacterIdentity({
@@ -22,6 +24,8 @@ export function CharacterIdentity({
   onNameChange,
   onRandomize,
   stats,
+  onFinish,
+  canFinish,
 }: CharacterIdentityProps) {
   const t = useTranslations('Auth.Origins.creation')
 
@@ -40,6 +44,18 @@ export function CharacterIdentity({
       </Button>
 
       <CharacterStatsCard stats={stats} />
+
+      <Button
+        variant="choice"
+        size="lg"
+        fullWidth
+        onClick={onFinish}
+        disabled={!canFinish}
+        display="none"
+        md={{ display: 'flex' }}
+      >
+        {t('finish')}
+      </Button>
     </VStack>
   )
 }

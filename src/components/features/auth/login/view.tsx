@@ -51,7 +51,7 @@ export function LoginViewUI({
   footer,
 }: LoginViewUIProps) {
   return (
-    <Stack gap="xl" fullWidth align="end" justify="center" lg={{ direction: 'row' }}>
+    <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
       <VStack gap="md" fullWidth>
         <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
         <VStack gap="md" pb="md" fullWidth>
