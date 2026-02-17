@@ -43,7 +43,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
           cols="1"
           gap="sm"
           sm={{ cols: '2', gap: 'md' }}
-          md={{ cols: '2', gap: 'xs' }}
+          md={{ cols: '2', gap: 'sm' }}
           lg={{ cols: '2', gap: 'sm' }}
           flex="none"
         >
