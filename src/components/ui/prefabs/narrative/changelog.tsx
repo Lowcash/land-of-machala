@@ -28,12 +28,12 @@ export function Changelog({ title, changes, variant = 'primary' }: ChangelogProp
     return (
       <>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
+        <Card variant="ghost" padding="md" md={{ display: 'none' }}>
           <Card.Content>{content}</Card.Content>
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="primary" padding="md" display="none" lg={{ display: 'flex' }}>
+        <Card variant="primary" padding="md" display="none" md={{ display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
           </Card.Header>

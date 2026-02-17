@@ -45,17 +45,17 @@ export function CharacterIdentity({
 
       <CharacterStatsCard stats={stats} />
 
-      <Button
-        variant="choice"
-        size="lg"
-        fullWidth
-        onClick={onFinish}
-        disabled={!canFinish}
-        display="none"
-        md={{ display: 'flex' }}
-      >
-        {t('finish')}
-      </Button>
+      <VStack display="none" md={{ display: 'flex' }} fullWidth>
+        <Button
+          variant="choice"
+          size="lg"
+          fullWidth
+          onClick={onFinish}
+          disabled={!canFinish}
+        >
+          {t('finish')}
+        </Button>
+      </VStack>
     </VStack>
   )
 }

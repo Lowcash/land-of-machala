@@ -29,12 +29,12 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
     return (
       <>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" lg={{ display: 'none' }}>
+        <Card variant="ghost" padding="md" md={{ display: 'none' }}>
           {content}
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="primary" padding="md" display="none" lg={{ display: 'flex' }}>
+        <Card variant="primary" padding="md" display="none" md={{ display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
           </Card.Header>
