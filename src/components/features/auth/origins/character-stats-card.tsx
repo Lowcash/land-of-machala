@@ -70,7 +70,7 @@ export function CharacterStatsCard({ stats }: CharacterStatsCardProps) {
         />
         </Stack>
 
-        <VStack align="center" gap="xs" pt="sm" className="opacity-60">
+        <VStack align="center" gap="xs" pt="sm">
           <ShieldCheck size={16} className="text-(--color-primary)" />
           <Text variant="small" color="secondary" font="fantasy">
             {t('ready_to_start', { defaultValue: 'Ready for the Journey' })}
