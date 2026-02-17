@@ -43,7 +43,7 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
   ({ className, ...props }, ref) => (
     <AccordionPrimitive.Item
       ref={ref}
-      className={cn('w-full border-b border-(--color-secondary)/30 last:border-0', className)}
+      className={cn('w-full border-2 border-(--color-secondary)/30 last:border-0', className)}
       {...props}
     />
   )
@@ -140,8 +140,8 @@ export function GameAccordion({
           key={item.value}
           value={item.value}
           className={cn(
-            'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/40 transition-all duration-500',
-            'shadow-lg data-[state=open]:border-2 data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
+            'flex w-full flex-col overflow-hidden rounded-lg border-2 border-(--color-secondary)/40 bg-black/40 transition-all duration-500',
+            'shadow-lg data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
             passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
           )}
         >

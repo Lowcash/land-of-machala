@@ -108,39 +108,33 @@ export function StepCreation({
         </VStack>
 
         {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
-        <SelectionBox
-          display="none"
-          md={{ display: 'flex' }}
-          title={t('raceLabel')}
-          items={RACES}
-          selectedId={selectedRaceId}
-          onSelect={onRaceSelect}
-          type="race"
-        />
+        <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
+          <SelectionBox
+            title={t('raceLabel')}
+            items={RACES}
+            selectedId={selectedRaceId}
+            onSelect={onRaceSelect}
+            type="race"
+          />
+        </VStack>
 
         {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
-        <SelectionBox
-          display="none"
-          md={{ display: 'flex' }}
-          title={t('classLabel')}
-          items={CLASSES}
-          selectedId={selectedClassId}
-          onSelect={onClassSelect}
-          type="class"
-        />
+        <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
+          <SelectionBox
+            title={t('classLabel')}
+            items={CLASSES}
+            selectedId={selectedClassId}
+            onSelect={onClassSelect}
+            type="class"
+          />
+        </VStack>
       </Stack>
 
-      {/* Finish button relocated to bottom */}
-      <Button
-        variant="choice"
-        size="lg"
-        fullWidth
-        onClick={onFinish}
-        disabled={!canFinish}
-        md={{ display: 'none' }}
-      >
-        {t('finish')}
-      </Button>
+      <VStack md={{ display: 'none' }} fullWidth>
+        <Button variant="choice" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
+          {t('finish')}
+        </Button>
+      </VStack>
     </VStack>
   )
 }
