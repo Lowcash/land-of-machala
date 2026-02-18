@@ -1,9 +1,4 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
-
-import type { ClassInfo } from '@/lib/game/data/classes'
-import type { RaceInfo } from '@/lib/game/data/races'
+import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getStatIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
@@ -15,19 +10,20 @@ import { Divider } from '@/components/ui/shared/divider'
 import { StatRow } from './stat-row'
 
 interface SelectionDetailsProps {
-  item: RaceInfo | ClassInfo
+  item: TranslatedRaceInfo | TranslatedClassInfo
   type: 'race' | 'class'
-  maxHeight?: string | number
   flex?: string | boolean | number
+  statLabels: Record<string, string>
+  uiLabels: any
 }
 
-export function SelectionDetails({ item, type, maxHeight, flex = '1' }: SelectionDetailsProps) {
-  const t = useTranslations('Game')
-  const ot = useTranslations('Auth.Origins.creation')
-
-  const translationKey = type === 'race' ? 'Races' : 'Classes'
-  const bonusLabel = type === 'race' ? ot('raceBonuses') : ot('classBonuses')
-
+export function SelectionDetails({
+  item,
+  type,
+  flex = '1',
+  statLabels,
+  uiLabels,
+}: SelectionDetailsProps) {
   return (
     <Card
       p="none"
@@ -36,19 +32,15 @@ export function SelectionDetails({ item, type, maxHeight, flex = '1' }: Selectio
       /** Prevent flex-shrink overflow in parent scroll area */
       minHeight="zero"
     >
-      <ScrollArea
-        flex="1"
-      >
+      <ScrollArea flex="1">
         <VStack gap="sm" p="md">
-          <Description variant="detail">
-            {t(`${translationKey}.${item.id}.description`)}
-          </Description>
+          <Description variant="detail">{item.description}</Description>
 
           <Divider variant="solid" />
 
           <VStack gap="xs">
             <Label align="left" variant="tiny">
-              {bonusLabel}
+              {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
             </Label>
 
             <Stack display="grid" cols="2" gap="sm">
@@ -57,67 +49,69 @@ export function SelectionDetails({ item, type, maxHeight, flex = '1' }: Selectio
                   <StatRow
                     compact
                     icon={getStatIcon('hp')}
-                    label={t('Stats.hp')}
-                    value={(item as RaceInfo).stats.hp}
+                    label={statLabels.hp}
+                    value={(item as TranslatedRaceInfo).stats.hp}
                     color="hp"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('mana')}
-                    label={t('Stats.mana')}
-                    value={(item as RaceInfo).stats.mana}
+                    label={statLabels.mana}
+                    value={(item as TranslatedRaceInfo).stats.mana}
                     color="mana"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('strength')}
-                    label={t('Stats.strength')}
-                    value={(item as RaceInfo).stats.strength}
+                    label={statLabels.strength}
+                    value={(item as TranslatedRaceInfo).stats.strength}
                     color="strength"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('intelligence')}
-                    label={t('Stats.intelligence')}
-                    value={(item as RaceInfo).stats.intelligence}
+                    label={statLabels.intelligence}
+                    value={(item as TranslatedRaceInfo).stats.intelligence}
                     color="intelligence"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('agility')}
-                    label={t('Stats.agility')}
-                    value={(item as RaceInfo).stats.agility}
+                    label={statLabels.agility}
+                    value={(item as TranslatedRaceInfo).stats.agility}
                     color="agility"
                   />
                   <StatRow
                     compact
                     icon={getStatIcon('stamina')}
-                    label={t('Stats.stamina')}
-                    value={(item as RaceInfo).stats.stamina}
+                    label={statLabels.stamina}
+                    value={(item as TranslatedRaceInfo).stats.stamina}
                     color="stamina"
                   />
                 </>
               ) : (
-                Object.entries((item as ClassInfo).statMod).map(([stat, val]: [string, number]) => {
-                  if (val === 0) return null
-                  const isPositive = val > 0
-                  const Icon = getStatIcon(stat)
+                Object.entries((item as TranslatedClassInfo).statMod).map(
+                  ([stat, val]: [string, number]) => {
+                    if (val === 0) return null
+                    const isPositive = val > 0
+                    const Icon = getStatIcon(stat)
 
-                  return (
-                    <StatRow
-                      key={stat}
-                      compact
-                      icon={Icon}
-                      label={t(`Stats.${stat}`)}
-                      value={`${isPositive ? '+' : ''}${val}`}
-                      color="gold"
-                    />
-                  )
-                })
+                    return (
+                      <StatRow
+                        key={stat}
+                        compact
+                        icon={Icon}
+                        label={statLabels[stat]}
+                        value={`${isPositive ? '+' : ''}${val}`}
+                        color="gold"
+                      />
+                    )
+                  }
+                )
               )}
             </Stack>
 
-            <Description variant="bonus">{t(`${translationKey}.${item.id}.bonuses`)}</Description>
+            <Description variant="bonus">{item.bonuses}</Description>
           </VStack>
         </VStack>
       </ScrollArea>

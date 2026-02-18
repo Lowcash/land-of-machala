@@ -2,16 +2,31 @@
 
 import { AnimatePresence } from 'framer-motion'
 
+import type {
+  TranslatedClassInfo,
+  TranslatedRaceInfo,
+  TranslatedStoryStep,
+} from '@/lib/game/data/shared'
+
 import { FadeIn } from '@/components/ui/core/animations/fade-in'
 
 import { StepCreation } from './step-creation'
 import { TutorialStep } from './step-tutorial'
 import { useOrigins } from './use-origins'
 
-export function OriginsViewUI() {
+interface OriginsViewProps {
+  races: TranslatedRaceInfo[]
+  classes: TranslatedClassInfo[]
+  steps: TranslatedStoryStep[]
+  statLabels: Record<string, string>
+  uiLabels: any
+}
+
+export function OriginsViewUI({ races, classes, steps, statLabels, uiLabels }: OriginsViewProps) {
   const {
     phase,
     currentStep,
+    stepIndex,
     characterName,
     selectedRaceId,
     selectedClassId,
@@ -24,16 +39,17 @@ export function OriginsViewUI() {
     handleRandomize,
     handleFinish,
     canFinish,
-  } = useOrigins()
+  } = useOrigins({ races, classes, steps })
 
   return (
     <AnimatePresence mode="wait">
       {phase === 'tutorial' ? (
         <TutorialStep
-          key={currentStep.id}
-          step={currentStep}
+          key={stepIndex}
+          step={currentStep as TranslatedStoryStep}
           onChoice={handleChoice}
           onSkip={handleSkip}
+          uiLabels={uiLabels.tutorial}
         />
       ) : (
         <FadeIn key="creation">
@@ -48,6 +64,10 @@ export function OriginsViewUI() {
             onClassSelect={setSelectedClassId}
             stats={totalStats}
             canFinish={canFinish}
+            races={races}
+            classes={classes}
+            statLabels={statLabels}
+            uiLabels={uiLabels.creation}
           />
         </FadeIn>
       )}
@@ -55,6 +75,6 @@ export function OriginsViewUI() {
   )
 }
 
-export function OriginsView() {
-  return <OriginsViewUI />
+export function OriginsView(props: OriginsViewProps) {
+  return <OriginsViewUI {...props} />
 }

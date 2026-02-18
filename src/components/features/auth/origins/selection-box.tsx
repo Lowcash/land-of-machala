@@ -1,9 +1,4 @@
-'use client'
-
-import { useTranslations } from 'next-intl'
-
-import type { ClassInfo } from '@/lib/game/data/classes'
-import type { RaceInfo } from '@/lib/game/data/races'
+import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
@@ -14,11 +9,13 @@ import { SelectionItem } from './selection-item'
 
 interface SelectionBoxProps {
   title: string
-  items: (RaceInfo | ClassInfo)[]
+  items: (TranslatedRaceInfo | TranslatedClassInfo)[]
   selectedId: string | null
   onSelect: (id: string) => void
   type: 'race' | 'class'
   variant?: 'primary' | 'flat' | 'responsive'
+  statLabels: Record<string, string>
+  uiLabels: any
 }
 
 export function SelectionBox({
@@ -28,10 +25,10 @@ export function SelectionBox({
   onSelect,
   type,
   variant = 'primary',
+  statLabels,
+  uiLabels,
 }: SelectionBoxProps) {
-  const t = useTranslations('Game')
   const selectedItem = items.find((i) => i.id === selectedId)
-  const translationKey = type === 'race' ? 'Races' : 'Classes'
 
   const content = (
     <Card.Content
@@ -50,7 +47,7 @@ export function SelectionBox({
           return (
             <SelectionItem
               key={item.id}
-              name={t(`${translationKey}.${item.id}.name`)}
+              name={item.name}
               icon={Icon}
               isSelected={isSelected}
               onClick={() => onSelect(item.id)}
@@ -59,7 +56,15 @@ export function SelectionBox({
         })}
       </Stack>
 
-      {selectedItem && <SelectionDetails item={selectedItem} type={type} flex="1" />}
+      {selectedItem && (
+        <SelectionDetails
+          item={selectedItem}
+          type={type}
+          flex="1"
+          statLabels={statLabels}
+          uiLabels={uiLabels}
+        />
+      )}
     </Card.Content>
   )
 
@@ -99,8 +104,6 @@ export function SelectionBox({
       direction="col"
       height={'creation'}
       minHeight={'zero'}
-      // height={isFlat ? 'auto' : 'creation'}
-      // minHeight={isFlat ? 'none' : 'zero'}
     >
       {!isFlat && (
         <Card.Header align="center" justify="center">

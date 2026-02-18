@@ -1,9 +1,6 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
-import { CLASSES } from '@/lib/game/data/classes'
-import { RACES } from '@/lib/game/data/races'
+import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
@@ -24,6 +21,10 @@ interface StepCreationProps {
   onClassSelect: (id: string) => void
   stats: any
   canFinish: boolean
+  races: TranslatedRaceInfo[]
+  classes: TranslatedClassInfo[]
+  statLabels: Record<string, string>
+  uiLabels: any
 }
 
 export function StepCreation({
@@ -37,13 +38,14 @@ export function StepCreation({
   onClassSelect,
   stats,
   canFinish,
+  races,
+  classes,
+  statLabels,
+  uiLabels,
 }: StepCreationProps) {
-  const t = useTranslations('Auth.Origins.creation')
-  const gt = useTranslations('Game')
-
   return (
     <VStack gap="lg" align="center" fullWidth>
-      <PageHeader title={t('title')} subtitle={t('subtitle')} />
+      <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}
       <Stack
@@ -62,6 +64,8 @@ export function StepCreation({
           stats={stats}
           onFinish={onFinish}
           canFinish={canFinish}
+          statLabels={statLabels}
+          uiLabels={uiLabels}
         />
 
         {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
@@ -70,35 +74,35 @@ export function StepCreation({
             items={[
               {
                 value: 'race',
-                title: t('raceLabel'),
-                selectedLabel: RACES.find((r) => r.id === selectedRaceId)
-                  ? gt(`Races.${selectedRaceId}.name`)
-                  : undefined,
+                title: uiLabels.raceLabel,
+                selectedLabel: races.find((r) => r.id === selectedRaceId)?.name,
                 content: (
                   <SelectionBox
-                    title={t('raceLabel')}
-                    items={RACES}
+                    title={uiLabels.raceLabel}
+                    items={races}
                     selectedId={selectedRaceId}
                     onSelect={onRaceSelect}
                     type="race"
                     variant="responsive"
+                    statLabels={statLabels}
+                    uiLabels={uiLabels}
                   />
                 ),
               },
               {
                 value: 'class',
-                title: t('classLabel'),
-                selectedLabel: CLASSES.find((c) => c.id === selectedClassId)
-                  ? gt(`Classes.${selectedClassId}.name`)
-                  : undefined,
+                title: uiLabels.classLabel,
+                selectedLabel: classes.find((c) => c.id === selectedClassId)?.name,
                 content: (
                   <SelectionBox
-                    title={t('classLabel')}
-                    items={CLASSES}
+                    title={uiLabels.classLabel}
+                    items={classes}
                     selectedId={selectedClassId}
                     onSelect={onClassSelect}
                     type="class"
                     variant="responsive"
+                    statLabels={statLabels}
+                    uiLabels={uiLabels}
                   />
                 ),
               },
@@ -109,29 +113,33 @@ export function StepCreation({
         {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
         <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
           <SelectionBox
-            title={t('raceLabel')}
-            items={RACES}
+            title={uiLabels.raceLabel}
+            items={races}
             selectedId={selectedRaceId}
             onSelect={onRaceSelect}
             type="race"
+            statLabels={statLabels}
+            uiLabels={uiLabels}
           />
         </VStack>
 
         {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
         <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
           <SelectionBox
-            title={t('classLabel')}
-            items={CLASSES}
+            title={uiLabels.classLabel}
+            items={classes}
             selectedId={selectedClassId}
             onSelect={onClassSelect}
             type="class"
+            statLabels={statLabels}
+            uiLabels={uiLabels}
           />
         </VStack>
       </Stack>
 
       <VStack md={{ display: 'none' }} fullWidth>
         <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
-          {t('finish')}
+          {uiLabels.finish}
         </Button>
       </VStack>
     </VStack>

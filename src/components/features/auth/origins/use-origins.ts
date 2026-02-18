@@ -4,25 +4,37 @@ import * as React from 'react'
 
 import { useRouter } from 'next/navigation'
 
-import { CLASSES } from '@/lib/game/data/classes'
 import { generateRandomName } from '@/lib/game/data/names'
-import { STORY_STEPS } from '@/lib/game/data/origins'
 import type { OriginsChoice } from '@/lib/game/data/origins'
-import { RACES } from '@/lib/game/data/races'
+import type {
+  TranslatedClassInfo,
+  TranslatedRaceInfo,
+  TranslatedStoryStep,
+} from '@/lib/game/data/shared'
 
-export function useCharacterCreation() {
+interface UseCharacterCreationProps {
+  races: TranslatedRaceInfo[]
+  classes: TranslatedClassInfo[]
+}
+
+interface UseOriginsNarrativeProps {
+  steps: TranslatedStoryStep[]
+  onEnd: () => void
+}
+
+export function useCharacterCreation({ races, classes }: UseCharacterCreationProps) {
   const [name, setName] = React.useState('')
-  const [selectedRaceId, setSelectedRaceId] = React.useState(RACES[0].id)
-  const [selectedClassId, setSelectedClassId] = React.useState(CLASSES[0].id)
+  const [selectedRaceId, setSelectedRaceId] = React.useState(races[0].id)
+  const [selectedClassId, setSelectedClassId] = React.useState(classes[0].id)
 
   const selectedRace = React.useMemo(
-    () => RACES.find((r) => r.id === selectedRaceId) || RACES[0],
-    [selectedRaceId]
+    () => races.find((r) => r.id === selectedRaceId) || races[0],
+    [selectedRaceId, races]
   )
 
   const selectedClass = React.useMemo(
-    () => CLASSES.find((c) => c.id === selectedClassId) || CLASSES[0],
-    [selectedClassId]
+    () => classes.find((c) => c.id === selectedClassId) || classes[0],
+    [selectedClassId, classes]
   )
 
   const totalStats = React.useMemo(() => {
@@ -39,12 +51,12 @@ export function useCharacterCreation() {
   }, [selectedRace, selectedClass])
 
   const handleRandomize = React.useCallback(() => {
-    const randomRace = RACES[Math.floor(Math.random() * RACES.length)]
-    const randomClass = CLASSES[Math.floor(Math.random() * CLASSES.length)]
+    const randomRace = races[Math.floor(Math.random() * races.length)]
+    const randomClass = classes[Math.floor(Math.random() * classes.length)]
     setSelectedRaceId(randomRace.id)
     setSelectedClassId(randomClass.id)
     setName(generateRandomName())
-  }, [])
+  }, [races, classes])
 
   return {
     characterName: name,
@@ -63,10 +75,10 @@ export function useCharacterCreation() {
 /**
  * Hook to manage the Origins narrative steps.
  */
-function useOriginsNarrative(onEnd: () => void) {
+function useOriginsNarrative({ steps, onEnd }: UseOriginsNarrativeProps) {
   const [stepIndex, setStepIndex] = React.useState(0)
 
-  const currentStep = React.useMemo(() => STORY_STEPS[stepIndex], [stepIndex])
+  const currentStep = React.useMemo(() => steps[stepIndex], [stepIndex, steps])
 
   const handleChoice = React.useCallback(
     (choice: OriginsChoice) => {
@@ -74,28 +86,33 @@ function useOriginsNarrative(onEnd: () => void) {
         return onEnd()
       }
 
-      const nextIndex = STORY_STEPS.findIndex((s) => s.id === choice.nextStep)
+      const nextIndex = steps.findIndex((s) => s.id === choice.nextStep)
       if (nextIndex === -1) {
         return onEnd()
       }
 
       setStepIndex(nextIndex)
     },
-    [onEnd]
+    [onEnd, steps]
   )
 
   return {
     currentStep,
+    stepIndex,
     handleChoice,
   }
 }
 
-export function useOrigins() {
+export function useOrigins({
+  races,
+  classes,
+  steps,
+}: UseCharacterCreationProps & { steps: TranslatedStoryStep[] }) {
   const router = useRouter()
   const [phase, setPhase] = React.useState<'tutorial' | 'creation'>('tutorial')
 
-  const character = useCharacterCreation()
-  const narrative = useOriginsNarrative(() => setPhase('creation'))
+  const character = useCharacterCreation({ races, classes })
+  const narrative = useOriginsNarrative({ steps, onEnd: () => setPhase('creation') })
 
   const handleFinish = React.useCallback(() => {
     router.push('/')

@@ -1,9 +1,6 @@
-'use client'
-
 import { BookOpen, SkipForward } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 
-import { OriginsChoice, StoryStep } from '@/lib/game/data/origins'
+import type { TranslatedStoryStep } from '@/lib/game/data/shared'
 
 import { FadeIn } from '@/components/ui/core/animations/fade-in'
 import { HStack, VStack } from '@/components/ui/core/stack'
@@ -13,28 +10,29 @@ import { FeatureIcon } from '@/components/ui/prefabs/feature-icon'
 import { NarrativeText } from '@/components/ui/prefabs/typography/shared'
 
 interface TutorialStepProps {
-  step: StoryStep
-  onChoice: (choice: OriginsChoice) => void
+  step: TranslatedStoryStep
+  onChoice: (choice: any) => void
   onSkip: () => void
+  uiLabels: {
+    skip: string
+  }
 }
 
-export function TutorialStep({ step, onChoice, onSkip }: TutorialStepProps) {
-  const t = useTranslations('Auth.Origins')
-
+export function TutorialStep({ step, onChoice, onSkip, uiLabels }: TutorialStepProps) {
   return (
     <VStack fullWidth align="center" justify="center">
       <FadeIn key={step.id}>
         <VStack align="center" gap="md">
           <FeatureIcon icon={BookOpen} color="gold" />
 
-          <NarrativeText>{t(step.textKey)}</NarrativeText>
+          <NarrativeText>{step.text}</NarrativeText>
 
           <Choice>
-            {step.choices.map((choice: OriginsChoice, idx: number) => (
+            {step.choices.map((choice, idx: number) => (
               <ChoiceItem
                 key={idx}
                 index={idx}
-                title={t(choice.textKey)}
+                title={choice.text}
                 onClick={() => onChoice(choice)}
               />
             ))}
@@ -42,7 +40,7 @@ export function TutorialStep({ step, onChoice, onSkip }: TutorialStepProps) {
 
           <HStack justify="center" fullWidth>
             <ActionLink icon={SkipForward} onClick={onSkip}>
-              {t('tutorial.skip')}
+              {uiLabels.skip}
             </ActionLink>
           </HStack>
         </VStack>

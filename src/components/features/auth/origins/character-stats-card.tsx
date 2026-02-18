@@ -1,5 +1,4 @@
 import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucide-react'
-import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/stack'
@@ -17,16 +16,20 @@ interface CharacterStatsCardProps {
     stamina: number
   }
   isReady?: boolean
+  statLabels: Record<string, string>
+  uiLabels: any
 }
 
-export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) {
-  const t = useTranslations('Auth.Origins.creation')
-  const gt = useTranslations('Game')
-
+export function CharacterStatsCard({
+  stats,
+  isReady,
+  statLabels,
+  uiLabels,
+}: CharacterStatsCardProps) {
   return (
     <Card p="md" flex="1" variant="subtle">
       <Card.Header align="center" justify="center" gap="sm">
-        <Card.Title align="center">{t('statsTitle')}</Card.Title>
+        <Card.Title align="center">{uiLabels.statsTitle}</Card.Title>
         {isReady && <StatusIcon icon={ShieldCheck} />}
       </Card.Header>
 
@@ -40,24 +43,24 @@ export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) 
           lg={{ cols: '2', gap: 'md' }}
           flex="none"
         >
-          <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />
-          <StatRow icon={Droplet} label={gt('Stats.mana')} value={stats.mana} color="mana" />
+          <StatRow icon={Heart} label={statLabels.hp} value={stats.hp} color="hp" />
+          <StatRow icon={Droplet} label={statLabels.mana} value={stats.mana} color="mana" />
           <StatRow
             icon={Sword}
-            label={gt('Stats.strength')}
+            label={statLabels.strength}
             value={stats.strength}
             color="strength"
           />
           <StatRow
             icon={Brain}
-            label={gt('Stats.intelligence')}
+            label={statLabels.intelligence}
             value={stats.intelligence}
             color="intelligence"
           />
-          <StatRow icon={Wind} label={gt('Stats.agility')} value={stats.agility} color="agility" />
+          <StatRow icon={Wind} label={statLabels.agility} value={stats.agility} color="agility" />
           <StatRow
             icon={Activity}
-            label={gt('Stats.stamina')}
+            label={statLabels.stamina}
             value={stats.stamina}
             color="stamina"
           />

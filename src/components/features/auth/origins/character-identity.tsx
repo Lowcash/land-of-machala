@@ -1,7 +1,5 @@
 'use client'
 
-import { useTranslations } from 'next-intl'
-
 import { Button } from '@/components/ui/core/button'
 import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
@@ -17,6 +15,8 @@ interface CharacterIdentityProps {
   stats: any
   onFinish: () => void
   canFinish: boolean
+  statLabels: Record<string, string>
+  uiLabels: any
 }
 
 export function CharacterIdentity({
@@ -26,32 +26,37 @@ export function CharacterIdentity({
   stats,
   onFinish,
   canFinish,
+  statLabels,
+  uiLabels,
 }: CharacterIdentityProps) {
-  const t = useTranslations('Auth.Origins.creation')
-
   return (
     <VStack gap="md" md={{ height: 'creation' }} height="auto" justify="between" fullWidth>
       <VStack gap="md" flex="none" fullWidth>
         <CharacterNameCard
           name={name}
-          label={t('nameLabel')}
-          placeholder={t('namePlaceholder')}
+          label={uiLabels.nameLabel}
+          placeholder={uiLabels.namePlaceholder}
           onChange={onNameChange}
         />
 
         <Button variant="secondary" size="action" onClick={onRandomize}>
           <DicesIcon size="md" />
           <Text variant="small" font="fantasy">
-            {t('randomize_button')}
+            {uiLabels.randomize}
           </Text>
         </Button>
       </VStack>
 
-      <CharacterStatsCard stats={stats} isReady={canFinish} />
+      <CharacterStatsCard
+        stats={stats}
+        isReady={canFinish}
+        statLabels={statLabels}
+        uiLabels={uiLabels}
+      />
 
       <VStack display="none" md={{ display: 'flex' }} fullWidth>
         <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
-          {t('finish')}
+          {uiLabels.finish}
         </Button>
       </VStack>
     </VStack>
