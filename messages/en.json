@@ -1,6 +1,8 @@
 {
   "Auth": {
     "Login": {
+      "meta_title": "Login | Land of Machala",
+      "meta_description": "Enter the world of legends. Your journey begin here.",
       "title": "Login",
       "subtitle": "Welcome back, traveler",
       "description": "Your adventure continues where you left off.",
@@ -25,6 +27,8 @@
       "changelog_title": "Latest Changes"
     },
     "Registration": {
+      "meta_title": "Registration | Land of Machala",
+      "meta_description": "Begin your adventure in the Land of Machala. Create an account and become a legend.",
       "title": "Registration",
       "subtitle": "Begin your legend",
       "description": "Your journey starts right here...",
@@ -47,6 +51,8 @@
       "benefits_title_description": "By registering, you gain access to the world of Machala, where you can:"
     },
     "Origins": {
+      "meta_title": "Welcome to Machala | Origins",
+      "meta_description": "Your legend begins right now.",
       "title": "The Beginning of Your Path",
       "subtitle": "Become a Legend",
       "description": "Every hero has a story. What will yours be?",

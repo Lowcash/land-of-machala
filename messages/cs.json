@@ -1,6 +1,8 @@
 {
   "Auth": {
     "Login": {
+      "meta_title": "Přihlášení | Land of Machala",
+      "meta_description": "Vstup do světa legend. Tvá cesta začíná zde.",
       "title": "Přihlášení",
       "subtitle": "Vítej zpět, poutníku",
       "description": "Tvé dobrodružství pokračuje tam, kde jsi přestal.",
@@ -23,6 +25,8 @@
       }
     },
     "Registration": {
+      "meta_title": "Registrace | Land of Machala",
+      "meta_description": "Začni své dobrodružství v zemi Machala. Vytvoř si účet a staň se legendou.",
       "title": "Registrace",
       "subtitle": "Začni svou legendu",
       "description": "Tvá cesta začíná právě zde...",
@@ -49,6 +53,8 @@
       }
     },
     "Origins": {
+      "meta_title": "Vítej v Machale | Origins",
+      "meta_description": "Tvá legenda začíná právě teď.",
       "title": "Počátek tvé cesty",
       "subtitle": "Staň se legendou",
       "description": "Každý hrdina má svůj příběh. Jaký bude ten tvůj?",
