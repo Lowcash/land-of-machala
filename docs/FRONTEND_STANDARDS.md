@@ -42,8 +42,22 @@ Prefabs are semantic "shells" that combine Tier 1 variants with the correct **Co
 - **Buttons**: Use `choice` for secondary options and `primary` for the "Golden Path" (the main action the user should take).
 - **Icons**: Use `IconProps` to pass semantic colors (`primary`, `hp`, etc.) instead of manual tailwind color classes. Use the `StatusIcon` prefab for animated indicators.
 
-## 5. Animation & Stability
+## 6. Translation Standards
 
-- **Transitions**: All interactive components (Accordion, Tab, Button) must have stable layouts. Use `min-h-0` on flex containers to prevent layout "jumps".
-- **Fill Mode**: CSS animations must use `forwards` to maintain their final state, especially when components use `forceMount`.
-- **Masking**: Use "Smart Fade" masks for truncation instead of abrupt `overflow-hidden` to maintain a premium feel.
+To reduce boilerplate when dealing with multiple namespaces (e.g., `Game` and `Feature`), use the **Scoped Translation Pattern**.
+
+- **Pattern**: Use the `useScopedTranslations` hook.
+- **Naming**: Always name the primary feature translator `t` and the global game translator `g`.
+- **Boilerplate Zero**: Avoid manual `find` or `translationKey` logic inside presentation components; move it to the hook or a dedicated utility.
+
+```tsx
+// Preferred
+const { t, g } = useScopedTranslations(['Auth.Origins.creation', 'Game'])
+```
+
+## 7. Server vs Client Boundaries
+
+- **Rule**: If a component has interactivity (State, Hooks, Events), it MUST be a Client Component (`'use client'`).
+- **Optimization**: Purely visual "leaf" components (Icons, simple Text wrappers) should remain Server Components when possible.
+- **Import Rule**: You do NOT need `'use client'` on a parent just because it imports a client component. The parent can still be a Server Component that passes serializable data (strings, numbers, simple objects) to its client children.
+- **Wizard Pattern**: For multi-step flows (Login, Origins), the `view.tsx` entry point is typically a Client Component to manage transition states and complex logic.
