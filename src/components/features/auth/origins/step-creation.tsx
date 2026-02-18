@@ -51,8 +51,8 @@ export function StepCreation({
         cols="1"
         gap="md"
         fullWidth
-        md={{ cols: '3', maxWidth: '5xl' }}
-        height="creation"
+        md={{ cols: '3', maxWidth: '5xl', height: 'creation' }}
+        height="auto"
       >
         {/* Column 1: Identity & Stats */}
         <CharacterIdentity

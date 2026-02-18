@@ -2,13 +2,12 @@
 
 import { useTranslations } from 'next-intl'
 
+import type { ClassInfo } from '@/lib/game/data/classes'
+import type { RaceInfo } from '@/lib/game/data/races'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
-
-import type { ClassInfo } from '@/lib/game/data/classes'
-import type { RaceInfo } from '@/lib/game/data/races'
 
 import { SelectionDetails } from './selection-details'
 import { SelectionItem } from './selection-item'
@@ -37,7 +36,9 @@ export function SelectionBox({
   const content = (
     <Card.Content
       gap="md"
-      flex={variant === 'flat' ? 'none' : '1'}
+      flex={variant === 'primary' ? '1' : 'none'}
+      /** Fixed height for mobile accordion to match desktop behavior */
+      height={variant === 'responsive' ? 'creation' : undefined}
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
@@ -58,7 +59,7 @@ export function SelectionBox({
         })}
       </Stack>
 
-      {selectedItem && <SelectionDetails item={selectedItem} type={type} />}
+      {selectedItem && <SelectionDetails item={selectedItem} type={type} flex="1" />}
     </Card.Content>
   )
 
@@ -96,8 +97,10 @@ export function SelectionBox({
       variant={isFlat ? 'ghost' : 'secondary'}
       p="md"
       direction="col"
-      height={isFlat ? 'auto' : 'creation'}
-      minHeight={isFlat ? 'none' : 'zero'}
+      height={'creation'}
+      minHeight={'zero'}
+      // height={isFlat ? 'auto' : 'creation'}
+      // minHeight={isFlat ? 'none' : 'zero'}
     >
       {!isFlat && (
         <Card.Header align="center" justify="center">

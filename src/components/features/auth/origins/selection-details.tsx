@@ -17,9 +17,11 @@ import { StatRow } from './stat-row'
 interface SelectionDetailsProps {
   item: RaceInfo | ClassInfo
   type: 'race' | 'class'
+  maxHeight?: string | number
+  flex?: string | boolean | number
 }
 
-export function SelectionDetails({ item, type }: SelectionDetailsProps) {
+export function SelectionDetails({ item, type, maxHeight, flex = '1' }: SelectionDetailsProps) {
   const t = useTranslations('Game')
   const ot = useTranslations('Auth.Origins.creation')
 
@@ -29,12 +31,14 @@ export function SelectionDetails({ item, type }: SelectionDetailsProps) {
   return (
     <Card
       p="none"
-      flex="1"
+      flex={flex as any}
       rounded="base"
       /** Prevent flex-shrink overflow in parent scroll area */
       minHeight="zero"
     >
-      <ScrollArea>
+      <ScrollArea
+        flex="1"
+      >
         <VStack gap="sm" p="md">
           <Description variant="detail">
             {t(`${translationKey}.${item.id}.description`)}

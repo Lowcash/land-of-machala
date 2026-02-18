@@ -133,7 +133,7 @@ export const stackVariants = cva('', {
     height: {
       auto: 'h-auto',
       full: 'h-full',
-      creation: 'h-auto md:h-[480px]',
+      creation: 'h-[480px]',
     },
   },
   defaultVariants: {
@@ -321,7 +321,7 @@ const responsiveMaps = {
     auto: { sm: 'sm:h-auto', md: 'md:h-auto', lg: 'lg:h-auto', xl: 'xl:h-auto' },
     full: { sm: 'sm:h-full', md: 'md:h-full', lg: 'lg:h-full', xl: 'xl:h-full' },
     creation: {
-      sm: 'sm:h-auto',
+      sm: 'sm:h-[480px]',
       md: 'md:h-[480px]',
       lg: 'lg:h-[480px]',
       xl: 'xl:h-[480px]',

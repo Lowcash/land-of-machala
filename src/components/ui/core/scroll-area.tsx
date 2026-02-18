@@ -10,6 +10,7 @@ interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   showGradient?: boolean
   maxHeight?: string | number
+  flex?: string | boolean | number
 }
 
 export function ScrollArea({
@@ -17,6 +18,7 @@ export function ScrollArea({
   showGradient = true,
   maxHeight,
   className,
+  flex,
   ...props
 }: ScrollAreaProps) {
   const scrollRef = React.useRef<HTMLDivElement>(null)
@@ -49,8 +51,12 @@ export function ScrollArea({
 
   return (
     <div
-      className={cn('relative flex min-h-0 flex-1 flex-col overflow-hidden', className)}
-      style={{ maxHeight }}
+      className={cn(
+        'relative flex min-h-0 flex-col overflow-hidden',
+        flex ? 'flex-1' : '',
+        className
+      )}
+      style={{ maxHeight, flex: flex ? '1 1 0%' : undefined }}
       {...props}
     >
       {showTopArrow && (

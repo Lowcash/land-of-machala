@@ -2,7 +2,7 @@ import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucid
 import { useTranslations } from 'next-intl'
 
 import { Card } from '@/components/ui/core/card'
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { Stack } from '@/components/ui/core/stack'
 import { StatusIcon } from '@/components/ui/icons'
 
 import { StatRow } from './stat-row'
@@ -36,8 +36,8 @@ export function CharacterStatsCard({ stats, isReady }: CharacterStatsCardProps) 
           cols="1"
           gap="sm"
           sm={{ cols: '2', gap: 'md' }}
-          md={{ cols: '2', gap: 'sm' }}
-          lg={{ cols: '2', gap: 'sm' }}
+          md={{ cols: '2', gap: 'md' }}
+          lg={{ cols: '2', gap: 'md' }}
           flex="none"
         >
           <StatRow icon={Heart} label={gt('Stats.hp')} value={stats.hp} color="hp" />

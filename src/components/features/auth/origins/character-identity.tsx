@@ -30,7 +30,7 @@ export function CharacterIdentity({
   const t = useTranslations('Auth.Origins.creation')
 
   return (
-    <VStack gap="md" height="creation" justify="between" fullWidth>
+    <VStack gap="md" md={{ height: 'creation' }} height="auto" justify="between" fullWidth>
       <VStack gap="md" flex="none" fullWidth>
         <CharacterNameCard
           name={name}
@@ -50,13 +50,7 @@ export function CharacterIdentity({
       <CharacterStatsCard stats={stats} isReady={canFinish} />
 
       <VStack display="none" md={{ display: 'flex' }} fullWidth>
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          onClick={onFinish}
-          disabled={!canFinish}
-        >
+        <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
           {t('finish')}
         </Button>
       </VStack>
