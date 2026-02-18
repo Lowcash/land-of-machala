@@ -12,7 +12,7 @@ import { LockIcon, MailIcon } from '@/components/ui/icons'
 /**
  * Returns the validation schema for the registration form.
  */
-const getRegisterSchema = (t: any) =>
+const getRegisterSchema = (t: (key: string) => string) =>
   z
     .object({
       email: z.string().email(t('form.validation.emailInvalid')),
