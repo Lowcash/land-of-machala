@@ -1,10 +1,16 @@
 import type { Metadata } from 'next'
 
+import { getScopedTranslations } from '@/lib/i18n'
+
 import { LoginView } from '@/components/features/auth/login/view'
 
-export const metadata: Metadata = {
-  title: 'Login | Land of Machala',
-  description: 'Vstup do světa legend. Tvá cesta začíná zde.',
+export async function generateMetadata(): Promise<Metadata> {
+  const { t } = await getScopedTranslations('Auth.Login')
+
+  return {
+    title: t('meta_title'),
+    description: t('meta_description'),
+  }
 }
 
 export default function LoginPage() {
