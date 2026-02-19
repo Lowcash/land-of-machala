@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -12,15 +11,15 @@ import { LockIcon, MailIcon } from '@/components/ui/icons'
 /**
  * Returns the validation schema for the registration form.
  */
-const getRegisterSchema = (t: (key: string) => string) =>
+const getRegisterSchema = (ui: any) =>
   z
     .object({
-      email: z.string().email(t('form.validation.emailInvalid')),
-      password: z.string().min(6, t('form.validation.passwordLength')),
-      confirmPassword: z.string().min(1, t('form.validation.passwordRequired')),
+      email: z.email(ui.validation.emailInvalid),
+      password: z.string().min(6, ui.validation.passwordLength),
+      confirmPassword: z.string().min(1, ui.validation.passwordRequired),
     })
     .refine((data) => data.password === data.confirmPassword, {
-      message: t('form.validation.passwordMismatch'),
+      message: ui.validation.passwordMismatch,
       path: ['confirmPassword'],
     })
 
@@ -29,16 +28,15 @@ export type RegisterFormValues = z.infer<ReturnType<typeof getRegisterSchema>>
 interface RegisterFormProps {
   onRegister?: (values: RegisterFormValues) => void
   isLoading?: boolean
+  uiLabels: any
 }
 
 /**
  * A registration form component.
  */
-export function RegisterForm({ onRegister, isLoading }: RegisterFormProps) {
-  const t = useTranslations('Auth.Registration')
-
+export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormProps) {
   const form = useForm<RegisterFormValues>({
-    resolver: zodResolver(getRegisterSchema(t)),
+    resolver: zodResolver(getRegisterSchema(uiLabels)),
     defaultValues: {
       email: '',
       password: '',
@@ -47,12 +45,12 @@ export function RegisterForm({ onRegister, isLoading }: RegisterFormProps) {
   })
 
   return (
-    <Form.Root<RegisterFormValues> form={form} onSubmit={onRegister || (() => {})}>
+    <Form.Root<RegisterFormValues> form={form} onSubmit={onRegister || (() => {})} gap="md">
       <Form.Input
         control={form.control}
         name="email"
-        label={t('form.email')}
-        placeholder={t('form.email') + '...'}
+        label={uiLabels.email}
+        placeholder={uiLabels.email + '...'}
         disabled={isLoading}
         leftIcon={<MailIcon />}
         autoComplete="email"
@@ -61,9 +59,9 @@ export function RegisterForm({ onRegister, isLoading }: RegisterFormProps) {
       <Form.Input
         control={form.control}
         name="password"
-        label={t('form.password')}
+        label={uiLabels.password}
         type="password"
-        placeholder={t('form.password') + '...'}
+        placeholder={uiLabels.password + '...'}
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="new-password"
@@ -72,9 +70,9 @@ export function RegisterForm({ onRegister, isLoading }: RegisterFormProps) {
       <Form.Input
         control={form.control}
         name="confirmPassword"
-        label={t('form.confirmPassword')}
+        label={uiLabels.confirmPassword}
         type="password"
-        placeholder={t('form.confirmPassword') + '...'}
+        placeholder={uiLabels.confirmPassword + '...'}
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="new-password"
@@ -84,9 +82,9 @@ export function RegisterForm({ onRegister, isLoading }: RegisterFormProps) {
         type="submit"
         fullWidth
         loading={isLoading}
-        disabled={!form.formState.isDirty || !form.formState.isValid}
+        disabled={!form.watch('email') || !form.watch('password') || !form.watch('confirmPassword')}
       >
-        {t('form.submit')}
+        {uiLabels.submit}
       </Button>
     </Form.Root>
   )

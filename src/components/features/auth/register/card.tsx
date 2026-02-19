@@ -5,12 +5,13 @@ import { RegisterForm, RegisterFormValues } from './form'
 interface RegisterCardProps {
   onRegister?: (values: RegisterFormValues) => void
   isLoading?: boolean
+  uiLabels: any
 }
 
-export function RegisterCard({ onRegister, isLoading }: RegisterCardProps) {
+export function RegisterCard({ onRegister, isLoading, uiLabels }: RegisterCardProps) {
   return (
-    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
-      <RegisterForm onRegister={onRegister} isLoading={isLoading} />
+    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="xl">
+      <RegisterForm onRegister={onRegister} isLoading={isLoading} uiLabels={uiLabels} />
     </Card>
   )
 }

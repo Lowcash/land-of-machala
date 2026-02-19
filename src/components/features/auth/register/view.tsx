@@ -13,6 +13,7 @@ import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
 import { Benefits } from '@/components/ui/prefabs/narrative/benefits'
 import { TextLink } from '@/components/ui/prefabs/typography/shared'
+import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { RegisterCard } from './card'
@@ -37,6 +38,8 @@ interface RegisterViewUIProps {
   }
   quote: string
   footer: FooterProps
+  uiLabels: any
+  backgroundSrc: string
 }
 
 export function RegisterViewUI({
@@ -46,50 +49,68 @@ export function RegisterViewUI({
   benefits,
   quote,
   footer,
+  uiLabels,
+  backgroundSrc,
 }: RegisterViewUIProps) {
   return (
-    <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
-      <VStack gap="md" fullWidth>
-        <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
-        <RegisterCard />
+    <>
+      <Background src={backgroundSrc} />
+      <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
+        <VStack gap="xl" fullWidth>
+          <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
+          <RegisterCard uiLabels={uiLabels} />
 
-        <HStack gap="xs" justify="center" fullWidth>
-          <Text variant="primary" color="secondary">
-            {footerLinks.hasAccount}
-          </Text>
-          <TextLink href="/login">{footerLinks.login}</TextLink>
-        </HStack>
-      </VStack>
+          <HStack gap="xs" justify="center" fullWidth>
+            <Text variant="primary" color="secondary">
+              {footerLinks.hasAccount}
+            </Text>
+            <TextLink href="/login">{footerLinks.login}</TextLink>
+          </HStack>
+        </VStack>
 
-      <VStack gap="md" fullWidth>
-        <GameAccordion
-          passthroughOnDesktop
-          items={[
-            {
-              value: 'benefits',
-              title: accordion.benefitsTitle,
-              content: (
-                <Benefits
-                  title={benefits.title}
-                  description={benefits.description}
-                  benefits={benefits.items}
-                  variant="responsive"
-                />
-              ),
-            },
-          ]}
-        />
-        <LoreQuote quote={quote} />
-        <Footer {...footer} />
-      </VStack>
-    </Stack>
+        <VStack gap="xl" fullWidth>
+          <GameAccordion
+            passthroughOnDesktop
+            items={[
+              {
+                value: 'benefits',
+                title: accordion.benefitsTitle,
+                content: (
+                  <Benefits
+                    title={benefits.title}
+                    description={benefits.description}
+                    benefits={benefits.items}
+                    variant="responsive"
+                  />
+                ),
+              },
+            ]}
+          />
+          <LoreQuote quote={quote} />
+          <Footer {...footer} />
+        </VStack>
+      </Stack>
+    </>
   )
 }
 
-export async function RegisterView() {
+export async function RegisterView({ backgroundSrc }: { backgroundSrc: string }) {
   const t = await getTranslations('Auth.Registration')
   const tc = await getTranslations('Common')
   const tg = await getTranslations('Game')
+
+  const uiLabels = {
+    email: t('form.email'),
+    password: t('form.password'),
+    confirmPassword: t('form.confirmPassword'),
+    submit: t('form.submit'),
+    validation: {
+      emailInvalid: t('form.validation.emailInvalid'),
+      passwordLength: t('form.validation.passwordLength'),
+      passwordRequired: t('form.validation.passwordRequired'),
+      passwordMismatch: t('form.validation.passwordMismatch'),
+    },
+  }
 
   return (
     <RegisterViewUI
@@ -112,6 +133,8 @@ export async function RegisterView() {
       }}
       quote={resolveTranslatedLoreQuote(tg)}
       footer={resolveFooterProps(tc)}
+      uiLabels={uiLabels}
+      backgroundSrc={backgroundSrc}
     />
   )
 }

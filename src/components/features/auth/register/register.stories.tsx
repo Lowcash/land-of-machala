@@ -17,6 +17,19 @@ const meta: Meta<typeof RegisterViewUI> = {
 export default meta
 type Story = StoryObj<typeof RegisterViewUI>
 
+const MOCK_UI_LABELS = {
+  email: 'Email Address',
+  password: 'Password',
+  confirmPassword: 'Confirm Password',
+  submit: 'Register Now',
+  validation: {
+    emailInvalid: 'Invalid email',
+    passwordLength: 'Password too short (min 6)',
+    passwordRequired: 'Required',
+    passwordMismatch: 'Passwords do not match',
+  },
+}
+
 export const FullPage: Story = {
   args: {
     hero: {
@@ -38,6 +51,7 @@ export const FullPage: Story = {
     },
     quote: MOCK_LORE_QUOTE,
     footer: MOCK_FOOTER,
+    uiLabels: MOCK_UI_LABELS,
   },
   parameters: {
     layout: 'fullscreen',
@@ -53,10 +67,10 @@ export const FullPage: Story = {
 
 export const CardOnly: StoryObj<typeof RegisterCard> = {
   name: 'RegisterCard',
-  render: () => <RegisterCard />,
+  render: () => <RegisterCard uiLabels={MOCK_UI_LABELS} />,
 }
 
 export const FormOnly: StoryObj<typeof RegisterForm> = {
   name: 'RegisterForm',
-  render: () => <RegisterForm />,
+  render: () => <RegisterForm uiLabels={MOCK_UI_LABELS} />,
 }
