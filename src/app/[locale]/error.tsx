@@ -13,6 +13,10 @@ import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
 import { StatusIcon } from '@/components/ui/prefabs/status-icon'
 import { MutedText } from '@/components/ui/prefabs/typography/shared'
 
+/**
+ * Global Error Boundary.
+ * Strictly uses the 'Common' translation namespace to prevent asset/lore leakage.
+ */
 export default function Error({
   error,
   reset,
@@ -23,7 +27,8 @@ export default function Error({
   const t = useTranslations('Common')
 
   useEffect(() => {
-    console.error(error)
+    // Report to error logging service if available
+    console.error('Application Error:', error)
   }, [error])
 
   return (
@@ -37,9 +42,7 @@ export default function Error({
 
         {error.digest && (
           <VStack fullWidth align="center" p="xs">
-            <MutedText align="center">
-              {t('error_digest')} #{error.digest}
-            </MutedText>
+            <MutedText align="center">{t('error_digest', { digest: error.digest })}</MutedText>
           </VStack>
         )}
 

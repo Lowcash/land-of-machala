@@ -6,8 +6,6 @@ import { routing } from '@/i18n/routing'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
-import { Background } from '@/components/ui/shared/background'
-
 import '../globals.css'
 
 const cinzel = Cinzel({
@@ -56,15 +54,19 @@ export default async function LocaleLayout({
 
   const messages = await getMessages()
 
+  // Security: Only expose non-sensitive namespaces to the client.
+  // Game data (Lore, Stats, etc.) must be passed as props from Server Components.
+  const safeMessages = {
+    Common: messages.Common,
+    Auth: messages.Auth,
+  }
+
   return (
     <html lang={locale}>
       <body
         className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)`}
       >
-        <NextIntlClientProvider messages={messages}>
-          <Background />
-          {children}
-        </NextIntlClientProvider>
+        <NextIntlClientProvider messages={safeMessages}>{children}</NextIntlClientProvider>
       </body>
     </html>
   )
