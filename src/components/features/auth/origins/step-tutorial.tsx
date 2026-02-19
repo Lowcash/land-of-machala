@@ -21,7 +21,7 @@ interface TutorialStepProps {
 export function TutorialStep({ step, onChoice, onSkip, uiLabels }: TutorialStepProps) {
   return (
     <VStack fullWidth align="center" justify="center">
-      <FadeIn key={step.id} duration={0.2}>
+      <FadeIn key={step.id} duration={0.5}>
         <VStack align="center" gap="md">
           <FeatureIcon icon={BookOpen} color="gold" />
 

@@ -9,6 +9,7 @@ import type {
 } from '@/lib/game/data/shared'
 
 import { FadeIn } from '@/components/ui/core/animations/fade-in'
+import { Background } from '@/components/ui/shared/background'
 
 import { StepCreation } from './step-creation'
 import { TutorialStep } from './step-tutorial'
@@ -20,9 +21,17 @@ interface OriginsViewProps {
   steps: TranslatedStoryStep[]
   statLabels: Record<string, string>
   uiLabels: any
+  backgroundSrc: string
 }
 
-export function OriginsViewUI({ races, classes, steps, statLabels, uiLabels }: OriginsViewProps) {
+export function OriginsViewUI({
+  races,
+  classes,
+  steps,
+  statLabels,
+  uiLabels,
+  backgroundSrc,
+}: OriginsViewProps) {
   const {
     phase,
     currentStep,
@@ -42,36 +51,39 @@ export function OriginsViewUI({ races, classes, steps, statLabels, uiLabels }: O
   } = useOrigins({ races, classes, steps })
 
   return (
-    <AnimatePresence mode="wait">
-      {phase === 'tutorial' ? (
-        <TutorialStep
-          key={stepIndex}
-          step={currentStep as TranslatedStoryStep}
-          onChoice={handleChoice}
-          onSkip={handleSkip}
-          uiLabels={uiLabels.tutorial}
-        />
-      ) : (
-        <FadeIn key="creation">
-          <StepCreation
-            name={characterName}
-            onNameChange={setName}
-            onRandomize={handleRandomize}
-            onFinish={handleFinish}
-            selectedRaceId={selectedRaceId}
-            onRaceSelect={setSelectedRaceId}
-            selectedClassId={selectedClassId}
-            onClassSelect={setSelectedClassId}
-            stats={totalStats}
-            canFinish={canFinish}
-            races={races}
-            classes={classes}
-            statLabels={statLabels}
-            uiLabels={uiLabels.creation}
+    <>
+      <Background src={backgroundSrc} />
+      <AnimatePresence mode="wait">
+        {phase === 'tutorial' ? (
+          <TutorialStep
+            key={stepIndex}
+            step={currentStep as TranslatedStoryStep}
+            onChoice={handleChoice}
+            onSkip={handleSkip}
+            uiLabels={uiLabels.tutorial}
           />
-        </FadeIn>
-      )}
-    </AnimatePresence>
+        ) : (
+          <FadeIn key="creation">
+            <StepCreation
+              name={characterName}
+              onNameChange={setName}
+              onRandomize={handleRandomize}
+              onFinish={handleFinish}
+              selectedRaceId={selectedRaceId}
+              onRaceSelect={setSelectedRaceId}
+              selectedClassId={selectedClassId}
+              onClassSelect={setSelectedClassId}
+              stats={totalStats}
+              canFinish={canFinish}
+              races={races}
+              classes={classes}
+              statLabels={statLabels}
+              uiLabels={uiLabels.creation}
+            />
+          </FadeIn>
+        )}
+      </AnimatePresence>
+    </>
   )
 }
 

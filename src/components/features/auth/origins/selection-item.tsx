@@ -1,3 +1,6 @@
+'use client'
+
+import { motion } from 'framer-motion'
 import { type LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/core/button'
@@ -22,15 +25,17 @@ export function SelectionItem({ name, icon: SimpleIcon, isSelected, onClick }: S
     >
       <VStack align="center" gap="xs" fullWidth minWidth="zero">
         <Icon icon={SimpleIcon} size="md" color={isSelected ? 'primary' : 'secondary'} />
-        <Text
-          variant={isSelected ? 'fantasy-value' : 'small'}
-          font="fantasy"
-          color={isSelected ? 'primary' : 'secondary'}
-          align="center"
-          className="w-full truncate px-1 text-sm"
-        >
-          {name}
-        </Text>
+        <motion.div layout className="w-full truncate px-1">
+          <Text
+            variant={isSelected ? 'fantasy-value' : 'small'}
+            font="fantasy"
+            color={isSelected ? 'primary' : 'secondary'}
+            align="center"
+            className="text-sm"
+          >
+            {name}
+          </Text>
+        </motion.div>
       </VStack>
     </Button>
   )
