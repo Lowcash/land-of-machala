@@ -2,7 +2,7 @@
 
 import * as React from 'react'
 
-import { useRouter } from 'next/navigation'
+import { useRouter } from '@/i18n/routing'
 
 import { generateRandomName } from '@/lib/game/data/names'
 import type { OriginsChoice } from '@/lib/game/data/origins'

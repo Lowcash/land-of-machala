@@ -12,6 +12,11 @@ const meta: Meta<typeof OriginsView> = {
   title: 'Features/Auth/Origins',
   component: OriginsView,
   tags: ['autodocs'],
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+    },
+  },
 }
 
 export default meta

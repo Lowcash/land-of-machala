@@ -8,6 +8,7 @@ import type {
   TranslatedRaceInfo,
   TranslatedStoryStep,
 } from '@/lib/game/data/shared'
+import { resolveBackground } from '@/lib/game/utils/background'
 import { getScopedTranslations } from '@/lib/i18n'
 
 import { OriginsView } from '@/components/features/auth/origins/view'
@@ -83,6 +84,7 @@ export default async function OriginsPage() {
       steps={translatedStorySteps}
       statLabels={statLabels}
       uiLabels={uiLabels}
+      backgroundSrc={resolveBackground('origins')}
     />
   )
 }

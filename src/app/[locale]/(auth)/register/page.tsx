@@ -1,5 +1,6 @@
 import { type Metadata } from 'next'
 
+import { resolveBackground } from '@/lib/game/utils/background'
 import { getScopedTranslations } from '@/lib/i18n'
 
 import { RegisterView } from '@/components/features/auth/register/view'
@@ -14,5 +15,5 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function RegisterPage() {
-  return <RegisterView />
+  return <RegisterView backgroundSrc={resolveBackground('auth')} />
 }
