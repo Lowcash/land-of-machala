@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-20] - MotionStack & Translation Security
+
+### Added
+- **Core Animations**: Introduced `MotionStack`, `MotionHStack`, and `MotionVStack` to support layout animations without `className` or inline styles.
+
+### Changed
+- **Refactor**: Replaced `motion.div` with `MotionStack` in `SelectionBox` and `SelectionItem` (Auth Origins feature).
+- **Security**: Restricted `safeMessages` in the root layout to essential error keys only, preventing dictionary leaks to the client.
+
+### Fixed
+- **Performance**: Reduced client bundle size by stripping unnecessary `Auth` and `Game` translation namespaces from the root provider.
+
 ## [2026-02-18] - Enterprise i18n & Security Strategy
  
 ### Added
