@@ -22,6 +22,17 @@ const meta: Meta<typeof LoginViewUI> = {
 export default meta
 type Story = StoryObj<typeof LoginViewUI>
 
+const MOCK_UI_LABELS = {
+  email: 'Email Address',
+  password: 'Password',
+  submit: 'Login Now',
+  rememberMe: 'Remember Me',
+  validation: {
+    emailInvalid: 'Invalid email',
+    passwordRequired: 'Password is required',
+  },
+}
+
 export const FullPage: Story = {
   args: {
     hero: {
@@ -42,6 +53,7 @@ export const FullPage: Story = {
     stats: MOCK_SERVER_STATS,
     changes: MOCK_CHANGELOG,
     footer: MOCK_FOOTER,
+    uiLabels: MOCK_UI_LABELS,
   },
   parameters: {
     layout: 'fullscreen',
@@ -62,11 +74,12 @@ export const CardOnly: StoryObj<typeof LoginCard> = {
       guestLabel="Try as a guest (without registration)"
       registerLabel="Establish your legacy"
       orLabel="Or"
+      uiLabels={MOCK_UI_LABELS}
     />
   ),
 }
 
 export const FormOnly: StoryObj<typeof LoginForm> = {
   name: 'LoginForm',
-  render: () => <LoginForm />,
+  render: () => <LoginForm uiLabels={MOCK_UI_LABELS} />,
 }

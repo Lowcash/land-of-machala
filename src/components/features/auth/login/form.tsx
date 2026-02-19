@@ -1,7 +1,6 @@
 'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useTranslations } from 'next-intl'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -12,10 +11,10 @@ import { LockIcon, MailIcon } from '@/components/ui/icons'
 /**
  * Returns the validation schema for the login form.
  */
-const getLoginSchema = (t: (key: string) => string) =>
+const getLoginSchema = (ui: any) =>
   z.object({
-    email: z.string().email(t('form.validation.emailInvalid')),
-    password: z.string().min(1, t('form.validation.passwordRequired')),
+    email: z.email(ui.validation.emailInvalid),
+    password: z.string().min(1, ui.validation.passwordRequired),
     rememberMe: z.boolean(),
   })
 
@@ -24,16 +23,15 @@ export type LoginFormValues = z.infer<ReturnType<typeof getLoginSchema>>
 interface LoginFormProps {
   onLogin?: (values: LoginFormValues) => void
   isLoading?: boolean
+  uiLabels: any
 }
 
 /**
  * A login Form component.
  */
-export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
-  const t = useTranslations('Auth.Login')
-
+export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
   const form = useForm<LoginFormValues>({
-    resolver: zodResolver(getLoginSchema(t)),
+    resolver: zodResolver(getLoginSchema(uiLabels)),
     defaultValues: {
       email: '',
       password: '',
@@ -42,12 +40,12 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
   })
 
   return (
-    <Form.Root<LoginFormValues> form={form} onSubmit={onLogin || (() => {})}>
+    <Form.Root<LoginFormValues> form={form} onSubmit={onLogin || (() => {})} gap="md">
       <Form.Input
         control={form.control}
         name="email"
-        label={t('form.email')}
-        placeholder={t('form.email') + '...'}
+        label={uiLabels.email}
+        placeholder={uiLabels.email + '...'}
         disabled={isLoading}
         leftIcon={<MailIcon />}
         autoComplete="email"
@@ -56,9 +54,9 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
       <Form.Input
         control={form.control}
         name="password"
-        label={t('form.password')}
+        label={uiLabels.password}
         type="password"
-        placeholder={t('form.password') + '...'}
+        placeholder={uiLabels.password + '...'}
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="current-password"
@@ -67,7 +65,7 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
       <Form.Checkbox
         control={form.control}
         name="rememberMe"
-        label={t('form.rememberMe')}
+        label={uiLabels.rememberMe}
         disabled={isLoading}
       />
 
@@ -77,7 +75,7 @@ export function LoginForm({ onLogin, isLoading }: LoginFormProps) {
         loading={isLoading}
         disabled={!form.watch('email') || !form.watch('password')}
       >
-        {t('form.submit')}
+        {uiLabels.submit}
       </Button>
     </Form.Root>
   )

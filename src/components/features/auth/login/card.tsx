@@ -12,6 +12,7 @@ interface LoginCardProps {
   guestLabel: string
   registerLabel: string
   orLabel: string
+  uiLabels: any
 }
 
 export function LoginCard({
@@ -22,10 +23,11 @@ export function LoginCard({
   guestLabel,
   registerLabel,
   orLabel,
+  uiLabels,
 }: LoginCardProps) {
   return (
-    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
-      <LoginForm onLogin={onLogin} isLoading={isLoading} />
+    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="xl">
+      <LoginForm onLogin={onLogin} isLoading={isLoading} uiLabels={uiLabels} />
 
       <Divider label={orLabel} />
 
