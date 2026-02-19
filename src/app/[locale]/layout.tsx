@@ -54,11 +54,16 @@ export default async function LocaleLayout({
 
   const messages = await getMessages()
 
-  // Security: Only expose non-sensitive namespaces to the client.
-  // Game data (Lore, Stats, etc.) must be passed as props from Server Components.
+  // Security: Only expose essential namespaces to the client.
+  // We explicitly select only strings required by global client components like `error.tsx`
+  // so we don't leak full `Auth` or `Game` dictionaries to the client bundle.
   const safeMessages = {
-    Common: messages.Common,
-    Auth: messages.Auth,
+    Common: {
+      error: messages.Common.error,
+      error_description: messages.Common.error_description,
+      error_digest: messages.Common.error_digest,
+      try_again: messages.Common.try_again,
+    },
   }
 
   return (
