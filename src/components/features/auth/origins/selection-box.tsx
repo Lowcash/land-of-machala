@@ -68,7 +68,7 @@ export function SelectionBox({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: 'easeOut' }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
             style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
           >
             <SelectionDetails
