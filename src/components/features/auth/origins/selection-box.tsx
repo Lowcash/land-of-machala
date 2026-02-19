@@ -1,3 +1,7 @@
+'use client'
+
+import { AnimatePresence, motion } from 'framer-motion'
+
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
@@ -56,15 +60,27 @@ export function SelectionBox({
         })}
       </Stack>
 
-      {selectedItem && (
-        <SelectionDetails
-          item={selectedItem}
-          type={type}
-          flex="1"
-          statLabels={statLabels}
-          uiLabels={uiLabels}
-        />
-      )}
+      <AnimatePresence mode="wait">
+        {selectedItem && (
+          <motion.div
+            key={selectedItem.id}
+            layout="position"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.5, ease: 'easeOut' }}
+            style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
+          >
+            <SelectionDetails
+              item={selectedItem}
+              type={type}
+              flex="1"
+              statLabels={statLabels}
+              uiLabels={uiLabels}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Card.Content>
   )
 
@@ -77,20 +93,22 @@ export function SelectionBox({
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card
-          variant="primary"
-          padding="md"
-          display="none"
-          md={{ display: 'flex' }}
-          direction="col"
-          height="creation"
-          minHeight="zero"
-        >
-          <Card.Header align="center" justify="center">
-            <Card.Title align="center">{title}</Card.Title>
-          </Card.Header>
-          {content}
-        </Card>
+        <motion.div layout className="flex flex-col flex-1">
+          <Card
+            variant="primary"
+            padding="md"
+            display="none"
+            md={{ display: 'flex' }}
+            direction="col"
+            height="creation"
+            minHeight="zero"
+          >
+            <Card.Header align="center" justify="center">
+              <Card.Title align="center">{title}</Card.Title>
+            </Card.Header>
+            {content}
+          </Card>
+        </motion.div>
       </VStack>
     )
   }
@@ -98,20 +116,22 @@ export function SelectionBox({
   const isFlat = variant === 'flat'
 
   return (
-    <Card
-      variant={isFlat ? 'ghost' : 'secondary'}
-      p="md"
-      direction="col"
-      height={'creation'}
-      minHeight={'zero'}
-    >
-      {!isFlat && (
-        <Card.Header align="center" justify="center">
-          <Card.Title align="center">{title}</Card.Title>
-        </Card.Header>
-      )}
+    <motion.div layout className="flex flex-col h-full min-h-0">
+      <Card
+        variant={isFlat ? 'ghost' : 'secondary'}
+        p="md"
+        direction="col"
+        height={'creation'}
+        minHeight={'zero'}
+      >
+        {!isFlat && (
+          <Card.Header align="center" justify="center">
+            <Card.Title align="center">{title}</Card.Title>
+          </Card.Header>
+        )}
 
-      {content}
-    </Card>
+        {content}
+      </Card>
+    </motion.div>
   )
 }
