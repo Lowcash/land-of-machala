@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
+import { MotionStack, MotionVStack } from '@/components/ui/core/animations/motion-stack'
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
 
@@ -62,14 +63,15 @@ export function SelectionBox({
 
       <AnimatePresence mode="wait">
         {selectedItem && (
-          <motion.div
+          <MotionVStack
             key={selectedItem.id}
             layout="position"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}
+            flex="1"
+            minHeight="zero"
           >
             <SelectionDetails
               item={selectedItem}
@@ -78,7 +80,7 @@ export function SelectionBox({
               statLabels={statLabels}
               uiLabels={uiLabels}
             />
-          </motion.div>
+          </MotionVStack>
         )}
       </AnimatePresence>
     </Card.Content>
@@ -93,7 +95,7 @@ export function SelectionBox({
         </Card>
 
         {/* Desktop: Primary card view */}
-        <motion.div layout className="flex flex-col flex-1">
+        <MotionVStack layout flex="1">
           <Card
             variant="primary"
             padding="md"
@@ -108,7 +110,7 @@ export function SelectionBox({
             </Card.Header>
             {content}
           </Card>
-        </motion.div>
+        </MotionVStack>
       </VStack>
     )
   }
@@ -116,7 +118,7 @@ export function SelectionBox({
   const isFlat = variant === 'flat'
 
   return (
-    <motion.div layout className="flex flex-col h-full min-h-0">
+    <MotionVStack layout fullHeight minHeight="zero">
       <Card
         variant={isFlat ? 'ghost' : 'secondary'}
         p="md"
@@ -132,6 +134,6 @@ export function SelectionBox({
 
         {content}
       </Card>
-    </motion.div>
+    </MotionVStack>
   )
 }
