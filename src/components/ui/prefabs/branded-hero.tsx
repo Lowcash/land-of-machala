@@ -16,7 +16,7 @@ export function BrandedHero({
   logo,
 }: BrandedHeroProps) {
   return (
-    <VStack align="center" gap="md" py="xl">
+    <VStack align="center" gap="md">
       <VStack align="center" gap="xs">
         {logo || <LogoIcon size="xl" />}
         <HeroTitle>{title}</HeroTitle>
