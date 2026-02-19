@@ -64,7 +64,7 @@ export function Heading({ level, font, color, align, className, as, ...props }: 
   )
 }
 
-const textVariants = cva('leading-relaxed transition-colors', {
+const textVariants = cva('leading-tight transition-colors', {
   variants: {
     variant: {
       primary: 'text-base',
@@ -119,6 +119,10 @@ const textVariants = cva('leading-relaxed transition-colors', {
       true: 'grow',
       false: 'grow-0',
     },
+    bold: {
+      true: 'font-bold',
+      false: '',
+    },
   },
   defaultVariants: {
     variant: 'primary',
@@ -127,6 +131,7 @@ const textVariants = cva('leading-relaxed transition-colors', {
     truncate: false,
     shrink: false,
     grow: false,
+    bold: false,
   },
 })
 
@@ -145,6 +150,7 @@ export function Text({
   truncate,
   shrink,
   grow,
+  bold,
   className,
   as: Component = 'p',
   ...props
@@ -152,7 +158,7 @@ export function Text({
   return (
     <Component
       className={cn(
-        textVariants({ variant, font, color: color as any, align, truncate, shrink, grow }),
+        textVariants({ variant, font, color: color as any, align, truncate, shrink, grow, bold }),
         className
       )}
       {...props}

@@ -62,7 +62,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
     ref
   ) => {
     // Map padding to p if not explicitly provided
-    const finalPadding = p || padding || 'md'
+    const finalPadding = p || padding || 'lg'
 
     return (
       <Component
