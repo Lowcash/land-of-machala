@@ -3,6 +3,7 @@
 This document outlines the architectural principles, coding standards, and "design soul" of the Land of Machala frontend.
 
 ## 1. Principles
+
 - **Aesthetic First**: Every component must feel premium and medieval. Use gold sparingly.
 - **Soulful Architecture**: The "Core" (`ui/core`) is the foundation. "Prefabs" (`ui/prefabs`) are the semantic layer. "Features" (`features/*`) are the implementation.
 - **No Inline Styles**: Ad-hoc `className` usage is prohibited in feature components. Use Props or Prefabs.
@@ -12,9 +13,11 @@ This document outlines the architectural principles, coding standards, and "desi
 ## 2. The Rule of Zero
 
 A healthy Feature component should have **zero** occurrences of the word `className` in its return statement.
+
 1. Need to center a button? Use `<VStack align="center" ... />`.
 2. Need to overlap an icon? Create a `StackedIcon` prefab or add a `composite` variant to the component.
 3. Need a specific width? Use the `size` prop or a layout container.
+
 - **Zero magic numbers** in spacing or colors. Use tokens exclusively.
 - **Zero ad-hoc animations**. Use standardized core animation components or prefabs.
 
@@ -23,7 +26,9 @@ A healthy Feature component should have **zero** occurrences of the word `classN
 We use a two-tier typography system to ensure consistency and prevent "font-drift".
 
 ### Tier 1: Core Variants (`core/typography.tsx`)
+
 The `Text` component owns the physical scaling and font-family combinations.
+
 - `lead`: High-impact introductory text.
 - `fantasy-value`: Tracking-wide fantasy numbers.
 - `decoration`: Uppercase tracking-wide labels.
@@ -31,7 +36,9 @@ The `Text` component owns the physical scaling and font-family combinations.
 - `tiny`: Extreme information density.
 
 ### Tier 2: Semantic Prefabs (`ui/prefabs/typography/shared.tsx`)
+
 Prefabs are semantic "shells" that combine Tier 1 variants with the correct **Color** and **Font**. Feature components MUST use these prefabs.
+
 - `Label`: Standard field labels (Decoration variant + Gold/Primary).
 - `Legend`: Supporting context or footnotes (Detail variant + Secondary).
 - `Value`: Formatted data display (Fantasy-value variant + Ivory/Primary).
@@ -44,15 +51,16 @@ Prefabs are semantic "shells" that combine Tier 1 variants with the correct **Co
 
 ## 6. Translation Standards
 
-To reduce boilerplate when dealing with multiple namespaces (e.g., `Game` and `Feature`), use the **Scoped Translation Pattern**.
+To prevent leaking sensitive data (lore, full locale objects) to the client bundle, we enforce a **Server Translations First** pattern.
 
-- **Pattern**: Use the `useScopedTranslations` hook.
-- **Naming**: Always name the primary feature translator `t` and the global game translator `g`.
-- **Boilerplate Zero**: Avoid manual `find` or `translationKey` logic inside presentation components; move it to the hook or a dedicated utility.
+- **Pattern**: Server Components fetch translations via `getTranslations('Namespace')` or `getMessages()`.
+- **Props**: Only the required translated strings are passed down to Client Components as strings.
+- **Client Providers**: Reduce `NextIntlClientProvider` usage. We only provide the absolute minimum `messages` required for global client boundaries (like `error.tsx`).
 
 ```tsx
-// Preferred
-const { t, g } = useScopedTranslations(['Auth.Origins.creation', 'Game'])
+// Preferred: Server Component fetching translations and passing strings
+const t = await getTranslations('Auth.Origins.creation')
+return <ClientWizard title={t('title')} subtitle={t('subtitle')} />
 ```
 
 ## 7. Server vs Client Boundaries
