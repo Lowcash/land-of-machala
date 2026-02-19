@@ -41,6 +41,9 @@
         "hasAccount": "Already have an account?",
         "login": "Login here",
         "validation": {
+          "emailInvalid": "Enter a valid email",
+          "passwordRequired": "Password is required",
+          "passwordLength": "Password must be at least 6 characters",
           "passwordMismatch": "Passwords do not match"
         }
       },

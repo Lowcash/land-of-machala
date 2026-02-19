@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-02-17] - Typography Unification & Visual Hierarchy Refinement
+## [2026-02-18] - Enterprise i18n & Security Strategy
+ 
+### Added
+- **Core i18n**: Introduced `getScopedTranslations` server-side helper to maintain `t/g` pattern without client-side overhead.
+- **Shared Models**: Created `TranslatedRaceInfo`, `TranslatedClassInfo`, and `TranslatedStoryStep` types for safe data propagation.
+- **Security**: Implemented dynamic `generateMetadata` for all Auth pages to localize titles/descriptions on the server.
+ 
+### Changed
+- **Performance**: High-density features (Origins) are now 100% pre-translated on the server.
+- **Architecture**: Stripped all `useTranslations` and `useScopedTranslations` hooks from presentational client components.
+- **Cleanup**: Deleted unused `useScopedTranslations` client hook.
+ 
+### Fixed
+- **Security**: Prevented "Data Leaks" where raw translation JSON files were visible in the browser's Network tab.
+- **Layout**: Restored 3-column desktop layout for Origins and 2-column layout for Login/Register.
+ 
 
 ### Added
 - Created `FRONTEND_STANDARDS.md` to document the "Rule of Zero" and typography architecture.

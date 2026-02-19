@@ -22,7 +22,9 @@
       "actions": {
         "guest": "Zkusit hru jako host (bez registrace)",
         "register": "Vstoupit do říše"
-      }
+      },
+      "stats_title": "Statistiky serveru",
+      "changelog_title": "Poslední změny"
     },
     "Registration": {
       "meta_title": "Registrace | Land of Machala",
@@ -45,9 +47,8 @@
           "passwordMismatch": "Hesla se neshodují"
         }
       },
-      "benefits_title": "Začni svoje dobrodružství",
+      "benefits_title": "Proč hrát Machalu?",
       "benefits_title_description": "Registrací získáš přístup do světa Machala, kde můžeš:",
-      "changelog_title": "Poslední změny",
       "actions": {
         "login": "Máš již účet?"
       }
