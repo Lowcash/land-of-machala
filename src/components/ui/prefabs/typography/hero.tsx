@@ -1,38 +1,44 @@
 import * as React from 'react'
 
-import { HStack, Stack, VStack } from '@/components/ui/core/stack'
+import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
 import { SparklesIcon } from '@/components/ui/icons'
 
 import { Description, Label } from './shared'
 
-interface HeroTitleProps {
+interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   children: React.ReactNode
 }
 
-export function HeroTitle({ children }: HeroTitleProps) {
+export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'className'>) {
   if (!children) return null
 
   return (
-    <Stack position="relative">
-      <Heading level={1} font="medieval" color="gold" align="center">
-        {/* We use a shadow effect through the stack or variants if available, 
-            but for now we keep it clean. */}
-        {children}
-      </Heading>
-    </Stack>
+    <Heading
+      level="h1"
+      font="medieval"
+      color={'gold' as any}
+      className="text-3xl whitespace-nowrap sm:text-4xl lg:text-5xl"
+      style={{
+        textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
+        ...props.style,
+      }}
+      {...props}
+    >
+      {children}
+    </Heading>
   )
 }
 
-interface HeroSubtitleProps {
+interface HeroSubtitleProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> {
   children: React.ReactNode
 }
 
-export function HeroSubtitle({ children }: HeroSubtitleProps) {
+export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
   return (
-    <HStack align="center" gap="xs" justify="center">
+    <HStack align="center" gap="xs" {...props}>
       <SparklesIcon />
-      <Text align="center" color="secondary" variant="small" sm={{ variant: 'base' }}>
+      <Text align="center" color={'secondary' as any} className="text-sm sm:text-base">
         {children}
       </Text>
       <SparklesIcon />
@@ -41,19 +47,11 @@ export function HeroSubtitle({ children }: HeroSubtitleProps) {
 }
 
 export function HeroDescription({ children, ...props }: React.ComponentProps<typeof Description>) {
-  return (
-    <Description {...props} align="center">
-      {children}
-    </Description>
-  )
+  return <Description {...props}>{children}</Description>
 }
 
 export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Label>) {
-  return (
-    <Label {...props} align="center">
-      {children}
-    </Label>
-  )
+  return <Label {...props}>{children}</Label>
 }
 
 interface PageHeaderProps {

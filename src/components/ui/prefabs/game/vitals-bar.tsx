@@ -1,61 +1,73 @@
-import { Progress } from '@/components/ui/core/progress'
+import { Progress, type ProgressProps } from '@/components/ui/core/progress'
 import { HStack, VStack } from '@/components/ui/core/stack'
+import { Tooltip } from '@/components/ui/core/tooltip'
 import { Label, Value } from '@/components/ui/prefabs/typography/shared'
 
-export interface VitalsBarProps {
+interface VitalsBarProps {
   label: string
-  current: number
+  value: number
   max: number
-  type: 'hp' | 'mana' | 'energy' | 'xp' | 'gold'
-  size?: 'sm' | 'md'
-  showValue?: boolean
+  variant: 'hp' | 'mana' | 'energy' | 'xp' | 'gold'
+  showText?: boolean
   compact?: boolean
-  sm?: Partial<Omit<VitalsBarProps, 'sm' | 'md' | 'lg' | 'xl' | 'label' | 'type'>>
 }
 
 export function VitalsBar({
   label,
-  current,
+  value,
   max,
-  type,
-  size = 'md',
-  showValue = true,
+  variant,
+  showText = true,
   compact = false,
-  sm,
 }: VitalsBarProps) {
-  const percentage = Math.min(100, Math.max(0, (current / max) * 100))
-  const textColor = type === 'hp' ? 'hp' : type === 'mana' ? 'mana' : 'ivory'
-
-  // Basic responsive merge (can be expanded to md/lg/xl if needed)
-  const isCompact = sm?.compact !== undefined ? sm.compact : compact
-  const currentSize = sm?.size || size
-  const shouldShowValue = sm?.showValue !== undefined ? sm.showValue : showValue
+  const textColor = variant === 'hp' ? 'hp' : variant === 'mana' ? 'mana' : 'ivory'
 
   return (
-    <VStack gap="none" fullWidth>
-      {!isCompact && shouldShowValue && (
+    <VStack gap="xs" fullWidth>
+      {!compact && (
         <HStack align="center" justify="between" fullWidth px="xs">
           <Label variant="tiny" color="secondary">
             {label}
           </Label>
-          <HStack align="baseline" gap="xxs" flex="none">
-            <Value variant="tiny" color={textColor} tabularNums bold>
-              {Math.round(current)}
-            </Value>
-            <Value variant="tiny" color="secondary" opacity="50">
-              /
-            </Value>
-            <Value variant="tiny" color="secondary" tabularNums>
-              {Math.round(max)}
-            </Value>
-          </HStack>
+          {showText && (
+            <HStack align="baseline" gap="xs" flex="none">
+              <Value variant="tiny" color={textColor} tabularNums>
+                {Math.round(value)}
+              </Value>
+              <Value variant="tiny" color="secondary">
+                /
+              </Value>
+              <Value variant="tiny" color="secondary" tabularNums>
+                {max}
+              </Value>
+            </HStack>
+          )}
         </HStack>
       )}
-      <Progress
-        value={percentage}
-        variant={type}
-        size={currentSize}
-      />
+      <Tooltip
+        content={
+          <HStack align="baseline" gap="xs">
+            <Value variant="tiny" color={textColor}>
+              {Math.round(value)}
+            </Value>
+            <Value variant="tiny" color="secondary">
+              /
+            </Value>
+            <Value variant="tiny" color="secondary">
+              {max}
+            </Value>
+          </HStack>
+        }
+        side="top"
+        align="center"
+      >
+        <Progress
+          value={value}
+          max={max}
+          variant={variant as ProgressProps['variant']}
+          size={compact ? 'sm' : 'md'}
+        />
+      </Tooltip>
     </VStack>
   )
 }
