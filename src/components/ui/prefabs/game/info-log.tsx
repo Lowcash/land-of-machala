@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { VStack } from '@/components/ui/core/stack'
+import { Text } from '@/components/ui/core/typography'
 import { Description } from '@/components/ui/prefabs/typography/shared'
 import { cn } from '@/lib/utils'
 
@@ -25,17 +26,17 @@ export interface LogEntry {
 }
 
 const typeConfig: Record<LogEntryType, { color: string; border: string }> = {
-  playerAttack: { color: 'text-(--color-gold)', border: 'border-l-(--color-gold)' },
-  enemyAttack: { color: 'text-red-400', border: 'border-l-red-500' },
-  defend: { color: 'text-blue-400', border: 'border-l-blue-500' },
+  playerAttack: { color: 'text-orange-400', border: 'border-l-orange-500' },
+  enemyAttack: { color: 'text-red-500', border: 'border-l-red-600' },
+  defend: { color: 'text-sky-400', border: 'border-l-sky-500' },
   heal: { color: 'text-emerald-400', border: 'border-l-emerald-500' },
-  mana: { color: 'text-purple-400', border: 'border-l-purple-500' },
+  mana: { color: 'text-indigo-400', border: 'border-l-indigo-500' },
   info: { color: 'text-(--color-secondary)', border: 'border-l-(--color-secondary)' },
   travel: { color: 'text-amber-600', border: 'border-l-amber-700' },
   discovery: { color: 'text-fuchsia-400', border: 'border-l-fuchsia-500' },
   quest: { color: 'text-yellow-500', border: 'border-l-yellow-600' },
-  loot: { color: 'text-green-400', border: 'border-l-green-500' },
-  death: { color: 'text-red-600', border: 'border-l-red-700' },
+  loot: { color: 'text-lime-400', border: 'border-l-lime-500' },
+  death: { color: 'text-rose-600', border: 'border-l-rose-700 font-bold' },
 }
 
 interface InfoLogProps {
@@ -50,7 +51,7 @@ export function InfoLog({ logs, maxHeight = 300, variant = 'full' }: InfoLogProp
   return (
     <Card variant={isTicker ? 'ghost' : 'secondary'} p="none" border={isTicker ? 'none' : 'base'}>
       <ScrollArea maxHeight={maxHeight}>
-        <VStack gap="xs" p={isTicker ? 'none' : 'sm'}>
+        <VStack gap="xs" p={isTicker ? 'none' : 'xs'}>
           {logs.length === 0 ? (
             !isTicker && <Description align="center">No entries in the log yet...</Description>
           ) : (
@@ -62,8 +63,8 @@ export function InfoLog({ logs, maxHeight = 300, variant = 'full' }: InfoLogProp
                 <div
                   key={log.id}
                   className={cn(
-                    "flex flex-row items-start gap-3 transform-gpu transition-colors",
-                    !isTicker && "p-2 rounded-sm border-l-2 bg-black/20 hover:bg-black/40",
+                    "flex flex-row items-center gap-4 transform-gpu transition-colors",
+                    !isTicker && "p-2 pl-4 rounded-sm border-l-2 bg-black/20 hover:bg-black/40",
                     !isTicker && config.border,
                     isTicker && "px-2 py-0.5 opacity-80 hover:opacity-100"
                   )}
@@ -77,15 +78,15 @@ export function InfoLog({ logs, maxHeight = 300, variant = 'full' }: InfoLogProp
                       })}
                     </span>
                   )}
-                  <Description
+                  <Text
                     variant="tiny"
                     font="fantasy"
                     style={{ color: `var(${color})` }}
-                    className={cn(isTicker && "truncate")}
+                    className={cn(isTicker && 'truncate')}
                   >
                     {isTicker && <span className="mr-2 opacity-50">»</span>}
                     {log.message}
-                  </Description>
+                  </Text>
                 </div>
               )
             })
