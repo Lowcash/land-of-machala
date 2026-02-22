@@ -5,20 +5,21 @@ import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react'
 import { cva, type VariantProps } from 'class-variance-authority'
 import { motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
-import { Label, Description } from '@/components/ui/prefabs/typography/shared'
+import { Description, Label } from '@/components/ui/prefabs/typography/shared'
+import { Text } from '@/components/ui/core/typography'
 import { stackVariants } from './stack'
 
 const alertVariants = cva(
-  'relative w-full overflow-hidden rounded-lg border-2 backdrop-blur-md shadow-lg shadow-black/40',
+  'relative w-full overflow-hidden rounded-lg border shadow-lg shadow-black/40',
   {
     variants: {
       variant: {
-        default: 'border-(--color-secondary)/40 bg-black/80 text-(--color-ivory)',
-        ornamental: 'border-(--color-gold) bg-black/90 text-(--color-gold) shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.1)]',
-        success: 'border-(--color-success)/60 bg-black/80 text-(--color-success)',
-        danger: 'border-(--color-danger)/60 bg-black/80 text-(--color-danger)',
-        warning: 'border-(--color-warning)/60 bg-black/80 text-(--color-warning)',
-        info: 'border-(--color-info)/60 bg-black/80 text-(--color-info)',
+        default: 'border-(--color-secondary)/40 bg-black/60 text-(--color-ivory)',
+        ornamental: 'border-(--color-gold) bg-black/80 text-(--color-gold) shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.1)]',
+        success: 'border-(--color-success)/60 bg-black/60 text-(--color-success)',
+        danger: 'border-(--color-danger)/60 bg-black/60 text-(--color-danger)',
+        warning: 'border-(--color-warning)/60 bg-black/60 text-(--color-warning)',
+        info: 'border-(--color-info)/60 bg-black/60 text-(--color-info)',
       },
       size: {
         default: 'p-4',
@@ -107,9 +108,9 @@ export function Alert({
               {title}
             </Label>
           )}
-          <Description align="left" color="inherit" opacity="90">
+          <Text variant="small" align="left" className="opacity-90 text-inherit">
             {children}
-          </Description>
+          </Text>
         </div>
       </div>
     </motion.div>
