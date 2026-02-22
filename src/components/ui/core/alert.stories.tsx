@@ -72,7 +72,7 @@ export const Info: Story = {
 
 export const Comparison: Story = {
   render: () => (
-    <Stack gap="md" p="xl" maxWidth="md">
+    <Stack gap="md">
       <Alert title="Danger Alert" variant="danger">
         Red border and red side strip. Used for Health and critical errors.
       </Alert>
