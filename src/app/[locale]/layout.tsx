@@ -77,7 +77,10 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <RootShell className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}>
+      <RootShell
+        as="body"
+        className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}
+      >
         <NextIntlClientProvider messages={safeMessages}>
           <NotificationProvider>{children}</NotificationProvider>
         </NextIntlClientProvider>
