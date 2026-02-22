@@ -1,12 +1,11 @@
 /* eslint-disable storybook/no-renderer-packages */
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Card } from '@/components/ui/core/card'
+import { HStack, Stack, VStack } from '@/components/ui/core/stack'
+import { Value } from '@/components/ui/prefabs/typography/shared'
 
 import { CharacterBox } from './character-box'
-
-import { Value } from '@/components/ui/prefabs/typography/shared'
 
 const meta: Meta<typeof CharacterBox> = {
   title: 'Features/Game/CharacterBox',
@@ -36,7 +35,7 @@ export const Melee: Story = {
     resourceMax: 100,
     resourceType: 'energy',
     gold: 1250,
-    location: 'Železný vrch',
+    location: 'Iron Peak',
     stats: mockHeroStats,
   },
 }
@@ -51,7 +50,7 @@ export const Mage: Story = {
     resourceMax: 600,
     resourceType: 'mana',
     gold: 8400,
-    location: 'Věž ticha',
+    location: 'Tower of Silence',
     stats: {
       strength: 8,
       intelligence: 42,
@@ -63,7 +62,7 @@ export const Mage: Story = {
 
 export const Enemy: Story = {
   args: {
-    name: 'Kostlivec vzteklý',
+    name: 'Enraged Skeleton',
     level: 8,
     hp: 120,
     hpMax: 120,
@@ -93,7 +92,7 @@ export const Combat: Story = {
         />
         <Value font="fantasy" variant="large" color="gold" shrink>VS</Value>
         <CharacterBox
-          name="Kostlivec"
+          name="Skeleton"
           level={8}
           hp={120}
           hpMax={120}
@@ -114,7 +113,7 @@ export const LongName: Story = {
   },
   args: {
     ...Melee.args,
-    name: 'Sir Rowen z dalekých zemí a horoucího slunce',
+    name: 'Sir Rowen of the Distant Lands and the Scorching Sun',
     xp: 99999,
     xpMax: 100000,
   },

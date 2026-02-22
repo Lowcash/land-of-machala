@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { MutedText } from '@/components/ui/prefabs/typography/shared'
+
 import { Divider } from './divider'
 
 const meta: Meta<typeof Divider> = {
@@ -8,11 +10,11 @@ const meta: Meta<typeof Divider> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      /* 
-         VStack wrapper ensures we have a width container. 
-         Without this, centered layout in storybook might collapse width to 0.
+      /*
+        Full-width container prevents the divider from collapsing in
+        Storybook's centered layout. max-w-xs keeps it visually bounded.
       */
-      <div className="flex w-96 flex-col items-center justify-center py-10">
+      <div className="flex w-full max-w-xs flex-col items-center justify-center py-10">
         <Story />
       </div>
     ),
@@ -26,6 +28,19 @@ export const Default: Story = {}
 
 export const WithLabel: Story = {
   args: {
-    label: 'Nebo',
+    label: 'or',
+  },
+}
+
+export const Solid: Story = {
+  args: {
+    variant: 'solid',
+  },
+}
+
+export const SolidWithLabel: Story = {
+  args: {
+    variant: 'solid',
+    label: 'and',
   },
 }

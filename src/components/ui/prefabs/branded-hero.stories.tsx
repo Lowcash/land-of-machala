@@ -19,7 +19,7 @@ type Story = StoryObj<typeof BrandedHero>
 export const Default: Story = {
   args: {
     title: 'Land of Machala',
-    subtitle: 'Vytvoř si nový účet',
-    description: 'Tvá legenda čeká na sepsání...',
+    subtitle: 'Create your account',
+    description: 'Your legend awaits to be written...',
   },
 }

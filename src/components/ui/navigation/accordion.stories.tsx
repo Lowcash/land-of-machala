@@ -26,31 +26,31 @@ type Story = StoryObj<typeof GameAccordion>
 const defaultItems = [
   {
     value: 'item-1',
-    title: 'První sekce',
+    title: 'Character Origins',
     content: (
       <Card variant="subtle" padding="md">
         <MutedText>
-          Obsah první sekce s několika řádky textu, aby byla vidět animace výšky. Používáme prefab
-          MutedText uvnitř subtle karty pro věrnější ukázku.
+          Your bloodline shapes your starting attributes. Choose wisely — each race carries
+          ancient strengths forged over centuries of war and hardship.
         </MutedText>
       </Card>
     ),
   },
   {
     value: 'item-2',
-    title: 'Druhá sekce',
+    title: 'Class Selection',
     content: (
       <Card variant="subtle" padding="md">
-        <MutedText>Obsah druhé sekce. Krátký text.</MutedText>
+        <MutedText>Select a class to define your combat style and skill progression.</MutedText>
       </Card>
     ),
   },
   {
     value: 'item-3',
-    title: 'Třetí sekce',
+    title: 'Stat Bonuses',
     content: (
       <Card variant="subtle" padding="md">
-        <MutedText>Obsah třetí sekce.</MutedText>
+        <MutedText>Each choice grants unique stat modifiers to your hero.</MutedText>
       </Card>
     ),
   },
@@ -59,5 +59,13 @@ const defaultItems = [
 export const Default: Story = {
   args: {
     items: defaultItems,
+  },
+}
+
+export const PassthroughDesktop: Story = {
+  args: {
+    items: defaultItems,
+    passthroughOnDesktop: true,
+    defaultValue: 'item-1',
   },
 }

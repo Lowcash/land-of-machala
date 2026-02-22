@@ -21,9 +21,9 @@ export const Default: Story = {
 export const MultipleChoices = {
   render: () => (
     <Choice>
-      <ChoiceItem index={0} title="Postava v těžké zbroji" />
-      <ChoiceItem index={1} title="Postava v kápi" />
-      <ChoiceItem index={2} title="Postava ve stínech" />
+      <ChoiceItem index={0} title="Heavy Armored Fighter" />
+      <ChoiceItem index={1} title="Hooded Ranger" />
+      <ChoiceItem index={2} title="Shadow Rogue" />
     </Choice>
   ),
 }

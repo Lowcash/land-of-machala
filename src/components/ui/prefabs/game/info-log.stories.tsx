@@ -17,45 +17,51 @@ const mockLogs: LogEntry[] = [
   {
     id: '1',
     timestamp: new Date(),
-    message: 'Získal jsi 15 zlatých z truhly.',
+    message: 'You found 15 gold coins in the chest.',
     type: 'loot',
   },
   {
     id: '2',
     timestamp: new Date(),
-    message: 'Tvé kouzlo zasáhlo Kostlivce za 24 poškození.',
+    message: 'Your spell hit the Skeleton for 24 damage.',
     type: 'playerAttack',
   },
   {
     id: '3',
     timestamp: new Date(),
-    message: 'Kostlivec tě zasáhl za 12 poškození.',
+    message: 'The Skeleton struck you for 12 damage.',
     type: 'enemyAttack',
   },
   {
     id: '4',
     timestamp: new Date(),
-    message: 'Vypil jsi lektvar léčení (+50 HP).',
+    message: 'You drank a healing potion (+50 HP).',
     type: 'heal',
   },
   {
     id: '5',
     timestamp: new Date(),
-    message: 'Objevil jsi skrytou stezku do Černého lesa.',
+    message: 'You discovered a hidden path leading into the Dark Forest.',
     type: 'discovery',
   },
   {
     id: '6',
     timestamp: new Date(),
-    message: 'Tvá mana se obnovuje (+5 MP).',
+    message: 'Your mana regenerates (+5 MP).',
     type: 'mana',
+  },
+  {
+    id: '7',
+    timestamp: new Date(),
+    message: 'You perished in battle. The darkness claims you.',
+    type: 'death',
   },
 ]
 
 export const Default: Story = {
   args: {
     logs: mockLogs,
-    maxHeight: 250,
+    maxHeight: 300,
   },
 }
 
@@ -66,9 +72,16 @@ export const Empty: Story = {
   },
 }
 
+export const Ticker: Story = {
+  args: {
+    logs: mockLogs,
+    variant: 'ticker',
+  },
+}
+
 export const LongHistory: Story = {
   args: {
-    logs: [...mockLogs, ...mockLogs.map((l) => ({ ...l, id: l.id + '_1' }))],
+    logs: [...mockLogs, ...mockLogs.map((l) => ({ ...l, id: l.id + '_2' }))],
     maxHeight: 300,
   },
 }
