@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { MutedText } from '@/components/ui/prefabs/typography/shared'
-
 import { Divider } from './divider'
 
 const meta: Meta<typeof Divider> = {
@@ -35,12 +33,5 @@ export const WithLabel: Story = {
 export const Solid: Story = {
   args: {
     variant: 'solid',
-  },
-}
-
-export const SolidWithLabel: Story = {
-  args: {
-    variant: 'solid',
-    label: 'and',
   },
 }

@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { Button } from '@/components/ui/core/button'
 import { HStack, VStack } from '@/components/ui/core/stack'
-import { Label } from '@/components/ui/prefabs/typography/shared'
 
 import { NotificationProvider, useNotification } from './notification-provider'
 
