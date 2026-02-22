@@ -15,10 +15,10 @@ const alertVariants = cva(
       variant: {
         default: 'border-(--color-secondary)/40 bg-black/80 text-(--color-ivory)',
         ornamental: 'border-(--color-gold) bg-black/90 text-(--color-gold) shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.1)]',
-        success: 'border-(--color-success)/60 bg-(--color-success)/10 text-(--color-success)',
-        danger: 'border-(--color-danger)/60 bg-(--color-danger)/10 text-(--color-danger)',
-        warning: 'border-(--color-warning)/60 bg-(--color-warning)/10 text-(--color-warning)',
-        info: 'border-(--color-info)/60 bg-(--color-info)/10 text-(--color-info)',
+        success: 'border-(--color-success)/60 bg-black/80 text-(--color-success)',
+        danger: 'border-(--color-danger)/60 bg-black/80 text-(--color-danger)',
+        warning: 'border-(--color-warning)/60 bg-black/80 text-(--color-warning)',
+        info: 'border-(--color-info)/60 bg-black/80 text-(--color-info)',
       },
       size: {
         default: 'p-4',

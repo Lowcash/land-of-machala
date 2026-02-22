@@ -77,7 +77,7 @@ const RESPONSIVE_LOOKUP = {
     height: { auto: 'sm:h-auto', full: 'sm:h-full', creation: 'sm:h-[480px]' },
     top: { '24': 'sm:top-24', auto: 'sm:top-auto' },
     bottom: { '6': 'sm:bottom-6', auto: 'sm:bottom-auto' },
-    right: { md: 'sm:right-4', lg: 'sm:right-6', auto: 'sm:right-auto' },
+    right: { '0': 'sm:right-0', '4': 'sm:right-4', '6': 'sm:right-6', auto: 'sm:right-auto' },
     fullWidth: 'sm:w-full', fullHeight: 'sm:h-full', wrap: 'sm:flex-wrap', nowrap: 'sm:flex-nowrap'
   },
   md: {
