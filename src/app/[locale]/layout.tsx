@@ -6,6 +6,8 @@ import { routing } from '@/i18n/routing'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
+import { NotificationProvider } from '@/providers/notification-provider'
+
 import '../globals.css'
 
 const cinzel = Cinzel({
@@ -69,9 +71,13 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body
-        className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)`}
+        className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory) min-h-dvh flex flex-col`}
       >
-        <NextIntlClientProvider messages={safeMessages}>{children}</NextIntlClientProvider>
+        <NextIntlClientProvider messages={safeMessages}>
+          <NotificationProvider>
+            {children}
+          </NotificationProvider>
+        </NextIntlClientProvider>
       </body>
     </html>
   )

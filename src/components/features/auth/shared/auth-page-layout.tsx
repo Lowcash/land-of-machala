@@ -6,8 +6,8 @@ interface AuthPageLayoutProps {
 
 export function AuthPageLayout({ children }: AuthPageLayoutProps) {
   return (
-    <Stack fullWidth minHeight="dvh" justify="center" align="center" p="lg">
-      <Stack fullWidth maxWidth="5xl">
+    <Stack fullWidth flex="1" justify="center" align="center" p="md" sm={{ p: 'lg' }} overflow="auto">
+      <Stack fullWidth maxWidth="5xl" py="lg" sm={{ py: 'xl' }}>
         {children}
       </Stack>
     </Stack>

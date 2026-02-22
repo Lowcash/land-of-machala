@@ -60,15 +60,16 @@
     --color-gold: #ffd700;
     --color-danger: #ff6b6b;
     --color-success: #6fbf6f;
+    --color-warning: #f59e0b;
     --color-info: #69ccf0;
 
     /* Stat Colors */
     --color-stat-hp: #ff6b6b;
     --color-stat-mana: #69ccf0;
-    --color-stat-strength: #ff6b6b;
+    --color-stat-strength: #f59e0b;
     --color-stat-intelligence: #c084fc;
-    --color-stat-agility: #ffd700;
-    --color-stat-stamina: #69ccf0;
+    --color-stat-agility: #fbbf24;
+    --color-stat-stamina: #10b981;
   }
 
   html,

@@ -49,3 +49,17 @@ We use a two‑tier typography system (`core/typography.tsx` and `ui/prefabs/typ
 
 - Prettier formatting: use single quotes, no semicolons and trailing commas as defined in `prettier.config.js`.
 - AI‑generated code must adhere to the existing project format to minimize Prettier rewrite conflicts and noisy diffs.
+
+## 8. React Import Standards
+
+- Do not import React just to use JSX in React 18+/Next.js.
+- Prefer named hook and type imports:
+
+```ts
+  import { useState, useMemo } from 'react'
+  import type { ReactNode } from 'react'
+```
+
+- Avoid import * as React from 'react' unless you really need the namespace (for example React.forwardRef and you do not import it individually).
+
+- Do not mix import * as React with named imports in the same file; keep a single style per file.
