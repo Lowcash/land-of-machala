@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { LoreQuote } from './lore-quote'
 
 const meta: Meta<typeof LoreQuote> = {
-  title: 'Prefabs/LoreQuote',
+  title: 'Prefabs/Display/LoreQuote',
   component: LoreQuote,
   tags: ['autodocs'],
 }
