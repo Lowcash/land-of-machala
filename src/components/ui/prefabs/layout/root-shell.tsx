@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
-interface RootShellProps extends React.HTMLAttributes<HTMLElement> {
+interface RootShellProps {
   children: React.ReactNode
   className?: string
   as?: React.ElementType
@@ -13,7 +13,7 @@ interface RootShellProps extends React.HTMLAttributes<HTMLElement> {
  * It enforces the full viewport height and consistent typography/antialiasing.
  * Used in the App Root (layout.tsx) and Storybook decorators.
  */
-export function RootShell({ children, className, as: Component = 'div', ...props }: RootShellProps) {
+export function RootShell({ children, className, as: Component = 'div' }: RootShellProps) {
   return (
     <Component
       className={cn(
@@ -21,7 +21,6 @@ export function RootShell({ children, className, as: Component = 'div', ...props
         'flex min-h-dvh flex-col',
         className
       )}
-      {...props}
     >
       {children}
     </Component>

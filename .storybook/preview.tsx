@@ -2,7 +2,6 @@ import type { Preview } from '@storybook/nextjs-vite'
 import { NextIntlClientProvider } from 'next-intl'
 
 import messages from '../messages/en.json'
-import { RootShell } from '../src/components/ui/prefabs/layout/root-shell'
 import '../src/app/globals.css'
 
 const preview: Preview = {
@@ -32,7 +31,7 @@ const preview: Preview = {
 
   decorators: [
     (Story) => (
-      <RootShell
+      <div
         onClick={(e) => {
           const target = e.target as HTMLElement
           const link = target.closest('a')
@@ -44,7 +43,7 @@ const preview: Preview = {
         <NextIntlClientProvider locale="en" messages={messages}>
           <Story />
         </NextIntlClientProvider>
-      </RootShell>
+      </div>
     ),
   ],
 }
