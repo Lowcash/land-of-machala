@@ -39,8 +39,8 @@ export function SelectionBox({
     <Card.Content
       gap="md"
       flex={variant === 'primary' ? '1' : 'none'}
-      /** Fixed height for desktop only to match layout creation height */
-      height={variant === 'primary' ? 'creation' : undefined}
+      /** Use full height for flex stretching */
+      height={variant === 'primary' ? 'full' : undefined}
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
@@ -88,14 +88,14 @@ export function SelectionBox({
 
   if (variant === 'responsive') {
     return (
-      <VStack fullWidth height="auto" md={{ height: 'full', minHeight: 'none' }}>
+      <VStack fullWidth height="auto" md={{ height: 'full', minHeight: 'creation' }}>
         {/* Mobile/Accordion: Flat view */}
         <Card variant="ghost" padding="md" md={{ p: 'lg', display: 'none' }}>
           {content}
         </Card>
 
         {/* Desktop: Primary card view */}
-        <MotionVStack layout flex="1">
+        <MotionVStack layout flex="1" height="full">
           <Card
             variant="primary"
             p="md"
