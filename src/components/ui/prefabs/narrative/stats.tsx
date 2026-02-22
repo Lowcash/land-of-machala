@@ -29,12 +29,12 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
     return (
       <>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" p="lg" md={{ display: 'none' }}>
+        <Card variant="ghost" p="md" md={{ display: 'none' }}>
           {content}
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="secondary" p="lg" display="none" md={{ p: 'xl', display: 'flex' }}>
+        <Card variant="secondary" p="md" display="none" md={{ p: 'lg', display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<UsersIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -47,7 +47,7 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
   const isFlat = variant === 'flat'
 
   return (
-    <Card variant={isFlat ? 'ghost' : 'secondary'} p="lg" md={{ p: 'xl' }}>
+    <Card variant={isFlat ? 'ghost' : 'secondary'} p="md" md={{ p: 'lg' }}>
       {!isFlat && (
         <Card.Header>
           <Card.Title icon={<UsersIcon />}>{title}</Card.Title>

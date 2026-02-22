@@ -7,10 +7,16 @@ interface LoreQuoteProps {
 
 export function LoreQuote({ quote }: LoreQuoteProps) {
   return (
-    <Card variant="subtle">
-      <Card.Content>
-        <MutedText align="center">{quote}</MutedText>
-      </Card.Content>
+    <Card
+      variant="subtle"
+      p="md"
+      md={{ p: 'lg' }}
+      justify="center"
+      align="center"
+      minHeight="zero"
+      fullWidth
+    >
+      <MutedText align="center">{quote}</MutedText>
     </Card>
   )
 }

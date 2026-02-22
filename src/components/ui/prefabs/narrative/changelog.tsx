@@ -28,12 +28,12 @@ export function Changelog({ title, changes, variant = 'primary' }: ChangelogProp
     return (
       <>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" p="lg" md={{ display: 'none' }}>
+        <Card variant="ghost" p="md" md={{ display: 'none' }}>
           <Card.Content>{content}</Card.Content>
         </Card>
 
         {/* Desktop: Primary card view */}
-        <Card variant="secondary" p="lg" display="none" md={{ p: 'xl', display: 'flex' }}>
+        <Card variant="secondary" p="md" display="none" md={{ p: 'lg', display: 'flex' }}>
           <Card.Header>
             <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
           </Card.Header>
@@ -46,7 +46,7 @@ export function Changelog({ title, changes, variant = 'primary' }: ChangelogProp
   const isFlat = variant === 'flat'
 
   return (
-    <Card variant={isFlat ? 'ghost' : 'secondary'} p="lg" md={{ p: 'xl' }}>
+    <Card variant={isFlat ? 'ghost' : 'secondary'} p="md" md={{ p: 'lg' }}>
       {!isFlat && (
         <Card.Header>
           <Card.Title icon={<ScrollIcon />}>{title}</Card.Title>
