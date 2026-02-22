@@ -27,7 +27,7 @@ export function CharacterStatsCard({
   uiLabels,
 }: CharacterStatsCardProps) {
   return (
-    <Card p="md" flex="1" variant="subtle">
+    <Card p="md" md={{ p: 'lg' }} flex="1" variant="subtle">
       <Card.Header align="center" justify="center" gap="sm">
         <Card.Title align="center">{uiLabels.statsTitle}</Card.Title>
         {isReady && <StatusIcon icon={ShieldCheck} />}

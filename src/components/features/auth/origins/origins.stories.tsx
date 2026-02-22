@@ -5,8 +5,10 @@ import { STORY_STEPS } from '@/lib/game/data/origins'
 import { StepCreation } from '@/components/features/auth/origins/step-creation'
 import { TutorialStep } from '@/components/features/auth/origins/step-tutorial'
 import { useOrigins } from '@/components/features/auth/origins/use-origins'
-import { OriginsView } from '@/components/features/auth/origins/view'
-import { AuthPageLayout } from '@/components/features/auth/shared/auth-page-layout'
+import { AuthShell } from '@/components/ui/prefabs/layout/auth-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
+
+import { OriginsView } from './view'
 
 const meta: Meta<typeof OriginsView> = {
   title: 'Features/Auth/Origins',
@@ -79,9 +81,11 @@ export const FullPage: Story = {
   },
   decorators: [
     (Story) => (
-      <AuthPageLayout>
-        <Story />
-      </AuthPageLayout>
+      <RootShell>
+        <AuthShell>
+          <Story />
+        </AuthShell>
+      </RootShell>
     ),
   ],
 }

@@ -11,7 +11,7 @@ interface CharacterNameCardProps {
 
 export function CharacterNameCard({ name, label, placeholder, onChange }: CharacterNameCardProps) {
   return (
-    <Card p="md" variant="subtle">
+    <Card p="md" md={{ p: 'lg' }} variant="subtle">
       <Card.Header align="center" justify="center">
         <Card.Title align="center" variant="large">
           {label}
