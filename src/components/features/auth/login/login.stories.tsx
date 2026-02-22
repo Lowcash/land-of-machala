@@ -7,7 +7,8 @@ import {
   MOCK_SERVER_STATS,
 } from '@/lib/game/data/mocks'
 
-import { AuthPageLayout } from '@/components/features/auth/shared/auth-page-layout'
+import { AuthShell } from '@/components/ui/prefabs/layout/auth-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import { LoginCard } from './card'
 import { LoginForm } from './form'
@@ -60,9 +61,11 @@ export const FullPage: Story = {
   },
   decorators: [
     (Story) => (
-      <AuthPageLayout>
-        <Story />
-      </AuthPageLayout>
+      <RootShell>
+        <AuthShell>
+          <Story />
+        </AuthShell>
+      </RootShell>
     ),
   ],
 }

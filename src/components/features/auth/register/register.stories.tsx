@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { MOCK_BENEFITS, MOCK_FOOTER, MOCK_LORE_QUOTE } from '@/lib/game/data/mocks'
 
-import { AuthPageLayout } from '@/components/features/auth/shared/auth-page-layout'
+import { AuthShell } from '@/components/ui/prefabs/layout/auth-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import { RegisterCard } from './card'
 import { RegisterForm } from './form'
@@ -58,9 +59,11 @@ export const FullPage: Story = {
   },
   decorators: [
     (Story) => (
-      <AuthPageLayout>
-        <Story />
-      </AuthPageLayout>
+      <RootShell>
+        <AuthShell>
+          <Story />
+        </AuthShell>
+      </RootShell>
     ),
   ],
 }

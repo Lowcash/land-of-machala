@@ -26,7 +26,7 @@ export function LoginCard({
   uiLabels,
 }: LoginCardProps) {
   return (
-    <Card variant="primary" p="lg" md={{ p: 'xl' }} gap="xl">
+    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
       <LoginForm onLogin={onLogin} isLoading={isLoading} uiLabels={uiLabels} />
 
       <Divider label={orLabel} />
