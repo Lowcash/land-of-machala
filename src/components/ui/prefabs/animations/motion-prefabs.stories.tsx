@@ -7,9 +7,6 @@ import { FadeIn, PresenceSwap, ScaleIn, SlideUp, StaggeredList } from './motion-
 
 const meta: Meta = {
   title: 'Prefabs/Animations',
-  parameters: {
-    layout: 'centered',
-  },
 }
 
 export default meta
@@ -51,11 +48,19 @@ export const ScaleInDemo: Story = {
 export const StaggeredListDemo: Story = {
   name: 'StaggeredList',
   render: () => (
-    <StaggeredList className="flex flex-col gap-2 min-w-48" stagger={0.1}>
-      <Card p="sm"><MutedText>First item</MutedText></Card>
-      <Card p="sm"><MutedText>Second item</MutedText></Card>
-      <Card p="sm"><MutedText>Third item</MutedText></Card>
-      <Card p="sm"><MutedText>Fourth item</MutedText></Card>
+    <StaggeredList className="flex min-w-48 flex-col gap-2" stagger={0.1}>
+      <Card p="sm">
+        <MutedText>First item</MutedText>
+      </Card>
+      <Card p="sm">
+        <MutedText>Second item</MutedText>
+      </Card>
+      <Card p="sm">
+        <MutedText>Third item</MutedText>
+      </Card>
+      <Card p="sm">
+        <MutedText>Fourth item</MutedText>
+      </Card>
     </StaggeredList>
   ),
 }

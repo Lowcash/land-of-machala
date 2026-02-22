@@ -5,9 +5,6 @@ import { InfoLog, type LogEntry } from './info-log'
 const meta: Meta<typeof InfoLog> = {
   title: 'Prefabs/Game/InfoLog',
   component: InfoLog,
-  parameters: {
-    layout: 'centered',
-  },
 }
 
 export default meta

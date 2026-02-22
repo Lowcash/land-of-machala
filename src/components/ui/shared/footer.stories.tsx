@@ -11,9 +11,6 @@ const meta: Meta<typeof Footer> = {
   title: 'Shared/Footer',
   component: Footer,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
   args: {
     versionLabel: 'Version',
     copyrightLabel: 'Land of Machala. All rights reserved.',

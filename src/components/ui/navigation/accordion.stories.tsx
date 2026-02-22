@@ -30,8 +30,8 @@ const defaultItems = [
     content: (
       <Card variant="subtle" padding="md">
         <MutedText>
-          Your bloodline shapes your starting attributes. Choose wisely — each race carries
-          ancient strengths forged over centuries of war and hardship.
+          Your bloodline shapes your starting attributes. Choose wisely — each race carries ancient
+          strengths forged over centuries of war and hardship.
         </MutedText>
       </Card>
     ),

@@ -10,9 +10,6 @@ import { CharacterBox } from './character-box'
 const meta: Meta<typeof CharacterBox> = {
   title: 'Features/Game/CharacterBox',
   component: CharacterBox,
-  parameters: {
-    layout: 'centered',
-  },
 }
 
 export default meta

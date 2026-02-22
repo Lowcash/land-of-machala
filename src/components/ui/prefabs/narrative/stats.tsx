@@ -61,7 +61,7 @@ export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
 
 function StatBlock({ stat }: { stat: TranslatedServerStat }) {
   return (
-    <Card variant="subtle" padding="sm" gap="xs">
+    <Card variant="subtle" padding="sm" gap="xs" fullHeight justify="between">
       <MutedText>{stat.label}</MutedText>
       <Value color={stat.color}>{stat.value}</Value>
     </Card>

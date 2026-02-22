@@ -14,7 +14,7 @@ const meta: Meta<typeof Divider> = {
         Full-width container prevents the divider from collapsing in
         Storybook's centered layout. max-w-xs keeps it visually bounded.
       */
-      <div className="flex w-full max-w-xs flex-col items-center justify-center py-10">
+      <div className="flex w-64 flex-col items-center justify-center py-10">
         <Story />
       </div>
     ),
