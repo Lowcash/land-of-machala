@@ -45,6 +45,22 @@ export const MotionStack = React.forwardRef<HTMLDivElement, MotionStackProps>(
       'minHeight',
       'minWidth',
       'height',
+      'width',
+      'position',
+      'top',
+      'bottom',
+      'left',
+      'right',
+      'inset',
+      'rounded',
+      'border',
+      'borderColor',
+      'bgColor',
+      'overflow',
+      'scrollbar',
+      'shadow',
+      'zIndex',
+      'pointerEvents',
     ]
     keys.forEach((key) => {
       if (key in motionProps) {
