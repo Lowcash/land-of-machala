@@ -35,12 +35,14 @@ export function SelectionBox({
 }: SelectionBoxProps) {
   const selectedItem = items.find((i) => i.id === selectedId)
 
+  const isPrimaryOrResponsive = variant === 'primary' || variant === 'responsive'
+
   const content = (
     <Card.Content
       gap="md"
-      flex={variant === 'primary' ? '1' : 'none'}
+      flex={isPrimaryOrResponsive ? '1' : 'none'}
       /** Use full height for flex stretching */
-      height={variant === 'primary' ? 'full' : undefined}
+      height={isPrimaryOrResponsive ? 'full' : undefined}
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
@@ -88,9 +90,9 @@ export function SelectionBox({
 
   if (variant === 'responsive') {
     return (
-      <VStack fullWidth height="auto" md={{ height: 'full', minHeight: 'creation' }}>
+      <VStack fullWidth height="selection" md={{ height: 'full' }}>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" md={{ p: 'lg', display: 'none' }}>
+        <Card variant="ghost" padding="md" height="full" flex="1" md={{ p: 'lg', display: 'none' }}>
           {content}
         </Card>
 
