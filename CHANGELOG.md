@@ -5,16 +5,18 @@ All notable changes to this project will be documented in this file.
 ## [2026-02-22] - Auth Architecture & UI Consistency (Revised)
 
 ### Added
-- **Origins Flow**: Refined desktop column balance (`minHeight: 'creation'`) and optimized mobile accordion height (shrunk to fit content).
+- **Core UI**: Added `top-2` (0.5rem) variant to `Stack` component to support tighter mobile layouts.
 
 ### Changed
+- **Origins Flow**: Refined desktop column balance (switched to `height="full"` with `minHeight="creation"`) to ensure all columns stretch equally.
 - **Unified Padding**: Standardized padding across `Login`, `Register`, `Origins`, `Stats`, `Benefits`, `Changelog`, and `LoreQuote`.
-- **Storybook Context**: Refactored Storybook decorators to use the new `RootShell` and `AuthShell` context.
+- **GameAccordion**: Reduced header gap to `gap-4` and added `mr-2` to `selectedLabel` for better mobile fit and separation from chevron.
 
 ### Fixed
+- **AlertStack**: Repositioned to `top="2"` on mobile to ensure stacked alerts stay within view on small devices.
+- **SelectionDetails**: Cleaned up redundant internal padding to fix double-padding issues in Origins.
+- **Storybook Context**: Refactored Storybook decorators to use the new `RootShell` and `AuthShell` context.
 - **Padding Regressions**: Resolved issues where desktop viewports incorrectly inherited mobile-only padding in narrative components.
-- **Spacing**: Increased accordion label-to-chevron spacing to `gap-14` for better readability.
-- **Rule of Zero**: Completed moving `AlertStack` to Core UI and removing all remaining `className` overrides.
 
 ## [2026-02-20] - MotionStack & Translation Security
 

@@ -30,7 +30,7 @@ export const stackVariants = cva('', {
     height: { auto: 'h-auto', full: 'h-full', px: 'h-px', creation: 'h-[480px]', avatar: 'h-20', 'avatar-sm': 'h-16', 'avatar-xs': 'h-12', 'vitals-label': 'h-4', 'vitals-progress': 'h-2', 'vitals-progress-md': 'h-3', 'vitals-footer': 'h-6' },
     width: { auto: 'w-auto', full: 'w-full', avatar: 'w-20', 'avatar-sm': 'w-16', 'avatar-xs': 'w-12' },
     position: { relative: 'relative', absolute: 'absolute', fixed: 'fixed', sticky: 'sticky', static: 'static' },
-    top: { '0': 'top-0', '4': 'top-4', '16': 'top-16', '20': 'top-20', '24': 'top-24', auto: 'top-auto' },
+    top: { '0': 'top-0', '2': 'top-2', '4': 'top-4', '16': 'top-16', '20': 'top-20', '24': 'top-24', auto: 'top-auto' },
     bottom: { '0': 'bottom-0', '4': 'bottom-4', '6': 'bottom-6', '20': 'bottom-20', auto: 'bottom-auto' },
     left: { '0': 'left-0', md: 'left-4', lg: 'left-6', auto: 'left-auto' },
     right: { '0': 'right-0', '4': 'right-4', md: 'right-4', lg: 'right-6', auto: 'right-auto' },

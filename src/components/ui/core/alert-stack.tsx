@@ -30,7 +30,7 @@ export function AlertStack({ items, onDismiss }: AlertStackProps) {
       // Desktop: Right side, below header (top-24)
       sm={{ top: '24', bottom: 'auto', right: 'lg' }}
       // Mobile: Centered top (top-4)
-      top="4"
+      top="2"
       bottom="auto"
       p="md"
       pointerEvents="none"
