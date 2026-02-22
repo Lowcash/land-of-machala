@@ -61,6 +61,7 @@ export const MotionStack = React.forwardRef<HTMLDivElement, MotionStackProps>(
       'shadow',
       'zIndex',
       'pointerEvents',
+      'opacity',
     ]
     keys.forEach((key) => {
       if (key in motionProps) {

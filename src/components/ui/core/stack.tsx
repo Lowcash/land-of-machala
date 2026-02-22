@@ -39,7 +39,7 @@ export const stackVariants = cva('', {
     border: { none: '', base: 'border', '2': 'border-2' },
     borderColor: { none: '', secondary: 'border-(--color-secondary)/40' },
     bgColor: { none: '', black: 'bg-black/40', secondary: 'bg-(--color-secondary)' },
-    opacity: { none: '', '10': 'opacity-10', '20': 'opacity-20', '50': 'opacity-50' },
+    opacity: { none: '', '10': 'opacity-10', '20': 'opacity-20', '50': 'opacity-50', '80': 'opacity-80', '100': 'opacity-100' },
     overflow: { none: '', auto: 'overflow-auto', hidden: 'overflow-hidden' },
     scrollbar: { none: 'scrollbar-none' },
     shadow: { none: '', inner: 'shadow-inner' },
@@ -164,7 +164,7 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
     const elementProps: Record<string, unknown> = { ...props }
     
     // Simple extraction of variants
-    const keys = ['display', 'direction', 'cols', 'align', 'justify', 'gap', 'fullWidth', 'fullHeight', 'wrap', 'p', 'pt', 'pb', 'px', 'py', 'flex', 'maxWidth', 'maxHeight', 'm', 'mx', 'minHeight', 'minWidth', 'height', 'width', 'position', 'top', 'bottom', 'left', 'right', 'inset', 'rounded', 'border', 'borderColor', 'bgColor', 'overflow', 'scrollbar', 'shadow', 'zIndex', 'pointerEvents']
+    const keys = ['display', 'direction', 'cols', 'align', 'justify', 'gap', 'fullWidth', 'fullHeight', 'wrap', 'p', 'pt', 'pb', 'px', 'py', 'flex', 'maxWidth', 'maxHeight', 'm', 'mx', 'minHeight', 'minWidth', 'height', 'width', 'position', 'top', 'bottom', 'left', 'right', 'inset', 'rounded', 'border', 'borderColor', 'bgColor', 'opacity', 'overflow', 'scrollbar', 'shadow', 'zIndex', 'pointerEvents']
     keys.forEach(key => {
       if (key in elementProps) {
         variantProps[key] = elementProps[key]

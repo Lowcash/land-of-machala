@@ -60,6 +60,8 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
       xl,
       height,
       minHeight,
+      fullWidth,
+      opacity,
       ...props
     },
     ref
@@ -86,6 +88,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
             flex,
             height,
             minHeight,
+            opacity,
           }),
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
@@ -126,6 +129,7 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
       minHeight,
       as: Component = 'div',
       children,
+      opacity,
       ...props
     },
     ref
@@ -145,6 +149,7 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
             cols,
             fullWidth,
             fullHeight,
+            opacity,
             wrap,
             p,
             flex,
@@ -190,6 +195,7 @@ const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
       minHeight,
       as: Component = 'div',
       children,
+      opacity,
       ...props
     },
     ref
@@ -209,6 +215,7 @@ const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
             gap: gap || 'none',
             fullWidth,
             fullHeight,
+            opacity,
             wrap,
             p,
             flex,
@@ -254,6 +261,7 @@ const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
       minHeight,
       as: Component = 'div',
       children,
+      opacity,
       ...props
     },
     ref
@@ -273,6 +281,7 @@ const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
             cols,
             fullWidth,
             fullHeight,
+            opacity,
             wrap,
             p,
             flex,
