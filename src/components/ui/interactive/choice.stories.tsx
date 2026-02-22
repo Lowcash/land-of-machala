@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Choice, ChoiceItem } from './choice'
 
 const meta: Meta<typeof ChoiceItem> = {
-  title: 'Shared/Choice',
+  title: 'Interactive/Choice',
   component: ChoiceItem,
   tags: ['autodocs'],
 }

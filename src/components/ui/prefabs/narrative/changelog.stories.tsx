@@ -5,7 +5,7 @@ import { MOCK_CHANGELOG } from '@/lib/game/data/mocks'
 import { Changelog } from './changelog'
 
 const meta: Meta<typeof Changelog> = {
-  title: 'UI/Prefabs/Narrative/Changelog',
+  title: 'Prefabs/Narrative/Changelog',
   component: Changelog,
   tags: ['autodocs'],
 }

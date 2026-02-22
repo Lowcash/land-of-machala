@@ -5,7 +5,7 @@ import { MOCK_SERVER_STATS } from '@/lib/game/data/mocks'
 import { Stats } from './stats'
 
 const meta: Meta<typeof Stats> = {
-  title: 'UI/Prefabs/Narrative/Stats',
+  title: 'Prefabs/Narrative/Stats',
   component: Stats,
   tags: ['autodocs'],
 }
