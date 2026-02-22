@@ -28,9 +28,12 @@ export function CardTitle({
   const sizeClass =
     variant === 'large' ? 'text-xl' : variant === 'fantasy-value' ? 'text-lg' : 'text-base'
 
+  const levelMap = { h1: 1, h2: 2, h3: 3, h4: 4 } as const
+  const numericLevel = levelMap[level]
+
   return (
     <Heading
-      level={level}
+      level={numericLevel}
       font="fantasy"
       color="gold"
       align={align}

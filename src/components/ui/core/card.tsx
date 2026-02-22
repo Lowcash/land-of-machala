@@ -15,10 +15,13 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
       secondary: 'border border-(--color-secondary)/40 bg-black/60',
       subtle: 'border border-(--color-secondary)/20 bg-black/40 shadow-none',
       ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
+      ornamental: 'border-2 border-(--color-secondary)/40 bg-black/80 shadow-xl ring-1 ring-white/5',
     },
     rounded: {
       lg: 'rounded-lg',
+      md: 'rounded-md',
       base: 'rounded',
+      full: 'rounded-full',
       none: 'rounded-none',
     },
   },
@@ -28,7 +31,7 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
   },
 })
 
-interface CardRootProps extends StackProps, VariantProps<typeof cardVariants> {
+interface CardRootProps extends Omit<StackProps, 'rounded'>, VariantProps<typeof cardVariants> {
   /** Map padding to Stack's p prop for backward compatibility */
   padding?: StackProps['p']
 }
@@ -79,7 +82,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
             align,
             justify,
             wrap,
-            p: finalPadding as any,
+            p: finalPadding,
             flex,
             height,
             minHeight,
@@ -99,7 +102,7 @@ const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
 
 CardRoot.displayName = 'Card'
 
-interface CardHeaderProps extends Omit<StackProps, 'className'> {}
+type CardHeaderProps = Omit<StackProps, 'className'>
 
 const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
   (
@@ -163,7 +166,7 @@ const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
 
 CardHeader.displayName = 'CardHeader'
 
-interface CardContentProps extends Omit<StackProps, 'className'> {}
+type CardContentProps = Omit<StackProps, 'className'>
 
 const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
   (
@@ -227,7 +230,7 @@ const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
 
 CardContent.displayName = 'CardContent'
 
-interface CardFooterProps extends Omit<StackProps, 'className'> {}
+type CardFooterProps = Omit<StackProps, 'className'>
 
 const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
   (

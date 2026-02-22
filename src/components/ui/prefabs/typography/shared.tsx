@@ -3,67 +3,32 @@ import { type VariantProps, cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
 
-import { Text } from '@/components/ui/core/typography'
+import { Text, type TextProps } from '@/components/ui/core/typography'
+import { type BreakpointValue } from '@/components/ui/core/stack'
 
 /**
  * Semantic typography prefabs to ensure consistency across the application.
  * Use these instead of raw Text components with repetitive props.
  */
 
-export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
-  return <Text variant="lead" color="primary" align={align || 'center'} {...props} />
+export interface TypographyPrefabProps extends Omit<TextProps, 'sm' | 'md' | 'lg' | 'xl'> {
+  sm?: BreakpointValue
+  md?: BreakpointValue
+  lg?: BreakpointValue
+  xl?: BreakpointValue
 }
 
-type TypographyColor =
-  | 'primary'
-  | 'secondary'
-  | 'ivory'
-  | 'success'
-  | 'danger'
-  | 'magic'
-  | 'gold'
-  | 'info'
-  | 'copper'
-  | 'hp'
-  | 'mana'
-  | 'strength'
-  | 'intelligence'
-  | 'agility'
-  | 'stamina'
-
-interface TypographyPrefabProps extends Omit<
-  React.HTMLAttributes<HTMLParagraphElement>,
-  'color' | 'className'
-> {
-  children: React.ReactNode
-  as?: 'p' | 'span' | 'div'
-  color?: TypographyColor
-  align?: 'left' | 'center' | 'right' | 'justify'
-  truncate?: boolean
-  shrink?: boolean
-  grow?: boolean
-  bold?: boolean
-  variant?:
-    | 'primary'
-    | 'lead'
-    | 'large'
-    | 'small'
-    | 'muted'
-    | 'fantasy-value'
-    | 'detail'
-    | 'bonus'
-    | 'tiny'
+export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
+  return <Text variant="lead" color="primary" align={align || 'center'} {...props} />
 }
 
 export function Value({ align, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant={variant === 'tiny' ? 'tiny' : 'fantasy-value'}
+      variant={variant || 'fantasy-value'}
       color={props.color || 'ivory'}
       align={align}
-      truncate={props.truncate}
-      shrink={props.shrink}
-      grow={props.grow}
+      bold
       {...props}
     />
   )
@@ -84,19 +49,19 @@ export function Description({ align, variant, ...props }: TypographyPrefabProps)
   )
 }
 
-/**
- * Combined Label/Decoration prefab.
- * Uses the decoration variant by default (tracking-widest, uppercase).
- */
 export function Label({ align, variant, ...props }: TypographyPrefabProps) {
   return (
     <Text
-      variant={variant === 'tiny' ? 'tiny' : 'decoration'}
+      variant={variant || 'decoration'}
       color={props.color || 'gold'}
       align={align || 'center'}
       {...props}
     />
   )
+}
+
+export function Legend({ children, ...props }: TypographyPrefabProps) {
+  return <Text variant="detail" italic color="secondary" {...props}>{children}</Text>
 }
 
 const textLinkVariants = cva('cursor-pointer transition-colors hover:underline', {
@@ -115,16 +80,15 @@ const textLinkVariants = cva('cursor-pointer transition-colors hover:underline',
 
 export interface TextLinkProps
   extends
-    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'color'>,
+    Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'color' | 'className'>,
     VariantProps<typeof textLinkVariants> {
   href: string
-  className?: string
   align?: 'left' | 'center' | 'right' | 'justify'
 }
 
-export function TextLink({ className, variant, align, ...props }: TextLinkProps) {
+export function TextLink({ variant, align, ...props }: TextLinkProps) {
   return (
-    <Link className={cn(textLinkVariants({ variant }), className)} {...props}>
+    <Link className={cn(textLinkVariants({ variant }))} {...props}>
       <Text as="span" align={align} color="inherit">
         {props.children}
       </Text>

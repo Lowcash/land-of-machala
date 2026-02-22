@@ -26,6 +26,6 @@ export const Minimal: Story = {
     title: 'Benefits',
     description: 'By registering, you gain:',
     benefits: MOCK_BENEFITS.slice(0, 2),
-    forceMinimal: true,
+    variant: 'flat',
   },
 }

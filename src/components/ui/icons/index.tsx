@@ -7,6 +7,9 @@ import {
   Scroll,
   Sparkles,
   Swords,
+  Shield,
+  Zap,
+  Flame,
   User,
   Users,
 } from 'lucide-react'
@@ -15,6 +18,7 @@ import { cn } from '@/lib/utils'
 
 const ICON_SIZES = {
   xs: 'h-3 w-3',
+  stat: 'h-[14px] w-[14px]',
   sm: 'h-4 w-4',
   md: 'h-5 w-5',
   lg: 'h-6 w-6',
@@ -98,6 +102,18 @@ export function LockIcon({ size, color }: IconProps) {
 
 export function DicesIcon({ size, color }: IconProps) {
   return <Icon icon={Dices} size={size} color={color} />
+}
+
+export function ShieldIcon({ size, color }: IconProps) {
+  return <Icon icon={Shield} size={size} color={color} />
+}
+
+export function ZapIcon({ size, color }: IconProps) {
+  return <Icon icon={Zap} size={size} color={color} />
+}
+
+export function FlameIcon({ size, color }: IconProps) {
+  return <Icon icon={Flame} size={size} color={color} />
 }
 
 /**

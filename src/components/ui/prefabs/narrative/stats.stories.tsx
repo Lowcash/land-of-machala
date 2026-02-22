@@ -24,6 +24,6 @@ export const Minimal: Story = {
   args: {
     title: 'Status',
     stats: MOCK_SERVER_STATS,
-    forceMinimal: true,
+    variant: 'flat',
   },
 }

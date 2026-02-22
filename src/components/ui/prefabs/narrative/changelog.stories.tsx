@@ -24,6 +24,6 @@ export const Minimal: Story = {
   args: {
     title: 'Changes',
     changes: MOCK_CHANGELOG,
-    forceMinimal: true,
+    variant: 'flat',
   },
 }
