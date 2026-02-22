@@ -1,12 +1,13 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Cinzel, MedievalSharp, Philosopher } from 'next/font/google'
 import { notFound } from 'next/navigation'
 
 import { routing } from '@/i18n/routing'
+import { NotificationProvider } from '@/providers/notification-provider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
-import { NotificationProvider } from '@/providers/notification-provider'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import '../globals.css'
 
@@ -37,6 +38,12 @@ export function generateStaticParams() {
 export const metadata: Metadata = {
   title: 'Land of Machala',
   description: 'An epic RPG adventure',
+}
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default async function LocaleLayout({
@@ -70,15 +77,11 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale}>
-      <body
-        className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable} font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory) min-h-dvh flex flex-col`}
-      >
+      <RootShell className={`${cinzel.variable} ${medievalSharp.variable} ${philosopher.variable}`}>
         <NextIntlClientProvider messages={safeMessages}>
-          <NotificationProvider>
-            {children}
-          </NotificationProvider>
+          <NotificationProvider>{children}</NotificationProvider>
         </NextIntlClientProvider>
-      </body>
+      </RootShell>
     </html>
   )
 }

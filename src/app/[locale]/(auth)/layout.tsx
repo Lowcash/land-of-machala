@@ -1,6 +1,6 @@
 import { setRequestLocale } from 'next-intl/server'
 
-import { AuthPageLayout } from '@/components/features/auth/shared/auth-page-layout'
+import { AuthShell } from '@/components/ui/prefabs/layout/auth-shell'
 
 export default async function AuthLayout({
   children,
@@ -12,5 +12,5 @@ export default async function AuthLayout({
   const { locale } = await params
   setRequestLocale(locale)
 
-  return <AuthPageLayout>{children}</AuthPageLayout>
+  return <AuthShell>{children}</AuthShell>
 }

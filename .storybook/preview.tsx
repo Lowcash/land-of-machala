@@ -41,9 +41,7 @@ const preview: Preview = {
         }}
       >
         <NextIntlClientProvider locale="en" messages={messages}>
-          <div className="font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)">
-            <Story />
-          </div>
+          <Story />
         </NextIntlClientProvider>
       </div>
     ),
