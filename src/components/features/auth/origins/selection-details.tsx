@@ -33,7 +33,7 @@ export function SelectionDetails({
       minHeight="zero"
     >
       <ScrollArea flex="1">
-        <VStack gap="sm" p="md">
+        <VStack gap="sm" p="md" md={{ p: 'lg' }}>
           <Description variant="detail">{item.description}</Description>
 
           <Divider variant="solid" />

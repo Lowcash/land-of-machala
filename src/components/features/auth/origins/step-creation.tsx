@@ -53,7 +53,8 @@ export function StepCreation({
         cols="1"
         gap="md"
         fullWidth
-        md={{ cols: '3', maxWidth: '5xl', height: 'creation' }}
+        md={{ cols: '3', maxWidth: '5xl', minHeight: 'creation' }}
+        minHeight="zero"
         height="auto"
       >
         {/* Column 1: Identity & Stats */}
@@ -111,7 +112,7 @@ export function StepCreation({
         </VStack>
 
         {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
-        <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
+        <VStack display="none" md={{ display: 'flex' }} fullWidth height="full">
           <SelectionBox
             title={uiLabels.raceLabel}
             items={races}
@@ -124,7 +125,7 @@ export function StepCreation({
         </VStack>
 
         {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
-        <VStack display="none" md={{ display: 'flex' }} fullWidth height="creation">
+        <VStack display="none" md={{ display: 'flex' }} fullWidth height="full">
           <SelectionBox
             title={uiLabels.classLabel}
             items={classes}

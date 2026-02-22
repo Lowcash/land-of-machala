@@ -1,11 +1,11 @@
 'use client'
 
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
-import { MotionStack, MotionVStack } from '@/components/ui/core/animations/motion-stack'
+import { MotionVStack } from '@/components/ui/core/animations/motion-stack'
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
 
@@ -39,8 +39,8 @@ export function SelectionBox({
     <Card.Content
       gap="md"
       flex={variant === 'primary' ? '1' : 'none'}
-      /** Fixed height for mobile accordion to match desktop behavior */
-      height={variant === 'responsive' ? 'creation' : undefined}
+      /** Fixed height for desktop only to match layout creation height */
+      height={variant === 'primary' ? 'creation' : undefined}
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
@@ -88,9 +88,9 @@ export function SelectionBox({
 
   if (variant === 'responsive') {
     return (
-      <VStack fullWidth height="auto" md={{ height: 'creation', minHeight: 'none' }}>
+      <VStack fullWidth height="auto" md={{ height: 'full', minHeight: 'none' }}>
         {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" md={{ display: 'none' }}>
+        <Card variant="ghost" padding="md" md={{ p: 'lg', display: 'none' }}>
           {content}
         </Card>
 
@@ -98,11 +98,11 @@ export function SelectionBox({
         <MotionVStack layout flex="1">
           <Card
             variant="primary"
-            padding="md"
+            p="md"
+            md={{ p: 'lg', display: 'flex' }}
             display="none"
-            md={{ display: 'flex' }}
             direction="col"
-            height="creation"
+            height="full"
             minHeight="zero"
           >
             <Card.Header align="center" justify="center">
@@ -122,8 +122,9 @@ export function SelectionBox({
       <Card
         variant={isFlat ? 'ghost' : 'secondary'}
         p="md"
+        md={{ p: 'lg' }}
         direction="col"
-        height={'creation'}
+        height={isFlat ? 'auto' : 'full'}
         minHeight={'zero'}
       >
         {!isFlat && (

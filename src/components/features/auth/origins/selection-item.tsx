@@ -2,11 +2,10 @@
 
 import { type LucideIcon } from 'lucide-react'
 
-import { MotionStack } from '@/components/ui/core/animations/motion-stack'
 import { Button } from '@/components/ui/core/button'
 import { VStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
 import { Icon } from '@/components/ui/icons'
+import { Value } from '@/components/ui/prefabs/typography/shared'
 
 interface SelectionItemProps {
   name: string
@@ -20,17 +19,9 @@ export function SelectionItem({ name, icon: SimpleIcon, isSelected, onClick }: S
     <Button variant={isSelected ? 'primary' : 'choice'} onClick={onClick} fullWidth size="feature">
       <VStack align="center" gap="xs" fullWidth minWidth="zero">
         <Icon icon={SimpleIcon} size="md" color={isSelected ? 'primary' : 'secondary'} />
-        <MotionStack layout fullWidth px="xs">
-          <Text
-            variant={isSelected ? 'fantasy-value' : 'small'}
-            font="fantasy"
-            color={isSelected ? 'primary' : 'secondary'}
-            align="center"
-            truncate
-          >
-            {name}
-          </Text>
-        </MotionStack>
+        <Value variant="small" color={isSelected ? 'primary' : 'ivory'} align="center" truncate>
+          {name}
+        </Value>
       </VStack>
     </Button>
   )
