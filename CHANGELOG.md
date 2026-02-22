@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-22] - Auth Architecture & UI Consistency (Revised)
+
+### Added
+- **Origins Flow**: Refined desktop column balance (`minHeight: 'creation'`) and optimized mobile accordion height (shrunk to fit content).
+
+### Changed
+- **Unified Padding**: Standardized padding across `Login`, `Register`, `Origins`, `Stats`, `Benefits`, `Changelog`, and `LoreQuote`.
+- **Storybook Context**: Refactored Storybook decorators to use the new `RootShell` and `AuthShell` context.
+
+### Fixed
+- **Padding Regressions**: Resolved issues where desktop viewports incorrectly inherited mobile-only padding in narrative components.
+- **Spacing**: Increased accordion label-to-chevron spacing to `gap-14` for better readability.
+- **Rule of Zero**: Completed moving `AlertStack` to Core UI and removing all remaining `className` overrides.
+
 ## [2026-02-20] - MotionStack & Translation Security
 
 ### Added
