@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { Sword } from 'lucide-react'
+
 import { Heading, Text } from './typography'
+import { HStack } from './stack'
 
 const meta: Meta<typeof Heading> = {
   title: 'UI/Core/Typography',
@@ -36,5 +39,14 @@ export const Texts: Story = {
       </Text>
       <Text variant="fantasy-value">1234567890 (Fantasy Value)</Text>
     </>
+  ),
+}
+
+export const WithIcon: Story = {
+  render: () => (
+    <HStack align="center" gap="sm">
+      <Sword className="text-(--color-gold)" size={20} />
+      <Heading level="h3">The Warrior's Path</Heading>
+    </HStack>
   ),
 }

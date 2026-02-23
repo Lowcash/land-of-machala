@@ -16,6 +16,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - **Visuals**: Resolved text overflow and cramped layout issues in `Progress` and `VitalsBar`.
 - **Linting**: Fixed TypeScript errors in `VitalsBar` and `Typography` stories.
+- **Storybook**: Restored broken "With Icon" story in `Typography` using standard `HStack` layout.
+- **Standards**: Replaced styled `span` in `Progress` stories with the semantic `Value` prefab to adhere to the "Rule of Zero".
 
 
 ## [2026-02-22] - Auth Architecture & UI Consistency (Revised)

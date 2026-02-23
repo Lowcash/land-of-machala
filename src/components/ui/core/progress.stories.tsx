@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { Progress } from './progress'
+import { Value } from '../prefabs/typography/shared'
 
 const meta: Meta<typeof Progress> = {
   title: 'UI/Core/Progress',
@@ -68,9 +69,9 @@ export const WithText: Story = {
     max: 2000,
     size: 'lg',
     children: (
-      <span className="font-fantasy text-[10px] text-white drop-shadow-md">
+      <Value variant="tiny" color="primary" tabularNums>
         1250 / 2000 XP
-      </span>
+      </Value>
     ),
   },
 }
