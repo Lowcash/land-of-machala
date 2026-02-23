@@ -1,14 +1,12 @@
 'use client'
 
-import { AnimatePresence } from 'framer-motion'
-
 import type {
   TranslatedClassInfo,
   TranslatedRaceInfo,
   TranslatedStoryStep,
 } from '@/lib/game/data/shared'
 
-import { FadeIn } from '@/components/ui/core/animations/fade-in'
+import { FadeIn, Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
 import { Background } from '@/components/ui/shared/background'
 
 import { StepCreation } from './step-creation'
@@ -53,7 +51,7 @@ export function OriginsViewUI({
   return (
     <>
       <Background src={backgroundSrc} />
-      <AnimatePresence mode="wait">
+      <Presence mode="wait">
         {phase === 'tutorial' ? (
           <TutorialStep
             key={stepIndex}
@@ -82,7 +80,7 @@ export function OriginsViewUI({
             />
           </FadeIn>
         )}
-      </AnimatePresence>
+      </Presence>
     </>
   )
 }

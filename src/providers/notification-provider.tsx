@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { type ReactNode, createContext, useCallback, useContext, useState } from 'react'
 
 import { AlertProps } from '@/components/ui/core/alert'
 import { AlertStack } from '@/components/ui/core/alert-stack'
@@ -10,7 +10,7 @@ type NotificationVariant = AlertProps['variant']
 export interface Notification {
   id: string
   title?: string
-  message: React.ReactNode
+  message: ReactNode
   variant?: NotificationVariant
   duration?: number
   action?: {
@@ -28,20 +28,20 @@ interface NotificationContextType {
   info: (message: React.ReactNode, title?: string) => string
 }
 
-const NotificationContext = React.createContext<NotificationContextType | undefined>(undefined)
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
 
 /**
  * Global Notification Provider.
  * Renders floating alerts in a queue.
  */
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
-  const [notifications, setNotifications] = React.useState<Notification[]>([])
+export function NotificationProvider({ children }: { children: ReactNode }) {
+  const [notifications, setNotifications] = useState<Notification[]>([])
 
-  const dismiss = React.useCallback((id: string) => {
+  const dismiss = useCallback((id: string) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id))
   }, [])
 
-  const notify = React.useCallback(
+  const notify = useCallback(
     (notification: Omit<Notification, 'id'>) => {
       const id = Math.random().toString(36).substring(2, 11)
       setNotifications((prev) => [...prev, { ...notification, id }])
@@ -57,23 +57,23 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     [dismiss]
   )
 
-  const success = React.useCallback(
-    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'success' }),
+  const success = useCallback(
+    (message: ReactNode, title?: string) => notify({ message, title, variant: 'success' }),
     [notify]
   )
 
-  const error = React.useCallback(
-    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'danger' }),
+  const error = useCallback(
+    (message: ReactNode, title?: string) => notify({ message, title, variant: 'danger' }),
     [notify]
   )
 
-  const warn = React.useCallback(
-    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'warning' }),
+  const warn = useCallback(
+    (message: ReactNode, title?: string) => notify({ message, title, variant: 'warning' }),
     [notify]
   )
 
-  const info = React.useCallback(
-    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'info' }),
+  const info = useCallback(
+    (message: ReactNode, title?: string) => notify({ message, title, variant: 'info' }),
     [notify]
   )
 
@@ -89,7 +89,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
  * Hook to trigger global notifications.
  */
 export function useNotification() {
-  const context = React.useContext(NotificationContext)
+  const context = useContext(NotificationContext)
   if (!context) {
     throw new Error('useNotification must be used within a NotificationProvider')
   }

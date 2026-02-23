@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
 import { useRouter } from '@/i18n/routing'
 
@@ -23,21 +23,21 @@ interface UseOriginsNarrativeProps {
 }
 
 export function useCharacterCreation({ races, classes }: UseCharacterCreationProps) {
-  const [name, setName] = React.useState('')
-  const [selectedRaceId, setSelectedRaceId] = React.useState(races[0].id)
-  const [selectedClassId, setSelectedClassId] = React.useState(classes[0].id)
+  const [name, setName] = useState('')
+  const [selectedRaceId, setSelectedRaceId] = useState(races[0].id)
+  const [selectedClassId, setSelectedClassId] = useState(classes[0].id)
 
-  const selectedRace = React.useMemo(
+  const selectedRace = useMemo(
     () => races.find((r) => r.id === selectedRaceId) || races[0],
     [selectedRaceId, races]
   )
 
-  const selectedClass = React.useMemo(
+  const selectedClass = useMemo(
     () => classes.find((c) => c.id === selectedClassId) || classes[0],
     [selectedClassId, classes]
   )
 
-  const totalStats = React.useMemo(() => {
+  const totalStats = useMemo(() => {
     const base = selectedRace.stats
     const mod = selectedClass.statMod
     return {
@@ -50,7 +50,7 @@ export function useCharacterCreation({ races, classes }: UseCharacterCreationPro
     }
   }, [selectedRace, selectedClass])
 
-  const handleRandomize = React.useCallback(() => {
+  const handleRandomize = useCallback(() => {
     const randomRace = races[Math.floor(Math.random() * races.length)]
     const randomClass = classes[Math.floor(Math.random() * classes.length)]
     setSelectedRaceId(randomRace.id)
@@ -76,11 +76,11 @@ export function useCharacterCreation({ races, classes }: UseCharacterCreationPro
  * Hook to manage the Origins narrative steps.
  */
 function useOriginsNarrative({ steps, onEnd }: UseOriginsNarrativeProps) {
-  const [stepIndex, setStepIndex] = React.useState(0)
+  const [stepIndex, setStepIndex] = useState(0)
 
-  const currentStep = React.useMemo(() => steps[stepIndex], [stepIndex, steps])
+  const currentStep = useMemo(() => steps[stepIndex], [stepIndex, steps])
 
-  const handleChoice = React.useCallback(
+  const handleChoice = useCallback(
     (choice: OriginsChoice) => {
       if (choice.nextStep === 'end') {
         return onEnd()
@@ -109,12 +109,12 @@ export function useOrigins({
   steps,
 }: UseCharacterCreationProps & { steps: TranslatedStoryStep[] }) {
   const router = useRouter()
-  const [phase, setPhase] = React.useState<'tutorial' | 'creation'>('tutorial')
+  const [phase, setPhase] = useState<'tutorial' | 'creation'>('tutorial')
 
   const character = useCharacterCreation({ races, classes })
   const narrative = useOriginsNarrative({ steps, onEnd: () => setPhase('creation') })
 
-  const handleFinish = React.useCallback(() => {
+  const handleFinish = useCallback(() => {
     router.push('/')
   }, [router])
 

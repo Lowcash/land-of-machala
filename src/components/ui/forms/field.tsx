@@ -1,21 +1,28 @@
 'use client'
 
-import * as React from 'react'
+import {
+  Children,
+  type HTMLAttributes,
+  type ReactElement,
+  type ReactNode,
+  cloneElement,
+  useId,
+} from 'react'
 
 import { cn } from '@/lib/utils'
 
 import { Label } from './label'
 
-interface FieldProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   label?: string
   error?: string
   horizontal?: boolean
-  children: React.ReactNode
+  children: ReactNode
 }
 
 export function Field({ label, error, horizontal, children, className, ...props }: FieldProps) {
-  const id = React.useId()
-  const child = React.Children.only(children) as React.ReactElement & {
+  const id = useId()
+  const child = Children.only(children) as ReactElement & {
     props: { id?: string }
   }
 
@@ -30,7 +37,7 @@ export function Field({ label, error, horizontal, children, className, ...props 
     >
       {label && <Label htmlFor={id}>{label}</Label>}
       <div className={cn(horizontal ? 'flex-1' : 'w-full')}>
-        {React.cloneElement(child, { id: child.props.id || id })}
+        {cloneElement(child, { id: child.props.id || id })}
       </div>
       {error && <span className="text-xs font-medium text-red-500/80">{error}</span>}
     </div>

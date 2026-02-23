@@ -1,25 +1,28 @@
 'use client'
 
-import * as React from 'react'
+import { type VariantProps, cva } from 'class-variance-authority'
 import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { motion } from 'framer-motion'
+
 import { cn } from '@/lib/utils'
+
+import { Heading } from '@/components/ui/core/typography'
+import { Expand } from '@/components/ui/prefabs/animations/motion-prefabs'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
-import { Text } from '@/components/ui/core/typography'
-import { stackVariants } from './stack'
+
+import { VStack, stackVariants } from './stack'
 
 const alertVariants = cva(
   'relative w-full overflow-hidden rounded-lg border shadow-lg shadow-black/40',
   {
     variants: {
       variant: {
-        default: 'border-(--color-secondary)/40 bg-black/60 text-(--color-ivory)',
-        ornamental: 'border-(--color-gold) bg-black/80 text-(--color-gold) shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.1)]',
-        success: 'border-(--color-success)/60 bg-black/60 text-(--color-success)',
-        danger: 'border-(--color-danger)/60 bg-black/60 text-(--color-danger)',
-        warning: 'border-(--color-warning)/60 bg-black/60 text-(--color-warning)',
-        info: 'border-(--color-info)/60 bg-black/60 text-(--color-info)',
+        default: 'border-(--color-secondary)/40 bg-black/90 text-(--color-ivory) backdrop-blur-md',
+        ornamental:
+          'border-(--color-gold) bg-black/95 text-(--color-gold) shadow-[0_0_15px_rgba(var(--color-gold-rgb),0.1)] backdrop-blur-md',
+        success: 'border-(--color-success)/60 bg-black/85 text-(--color-success) backdrop-blur-md',
+        danger: 'border-(--color-danger)/60 bg-black/85 text-(--color-danger) backdrop-blur-md',
+        warning: 'border-(--color-warning)/60 bg-black/85 text-(--color-warning) backdrop-blur-md',
+        info: 'border-(--color-info)/60 bg-black/85 text-(--color-info) backdrop-blur-md',
       },
       size: {
         default: 'p-4',
@@ -44,8 +47,7 @@ const iconMap = {
 }
 
 export interface AlertProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof alertVariants> {
+  extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof alertVariants> {
   title?: string
   icon?: React.ElementType
   showIcon?: boolean
@@ -63,20 +65,9 @@ export function Alert({
   const IconComponent = icon || iconMap[variant as keyof typeof iconMap] || Info
 
   return (
-    <motion.div
-      initial={{ height: 0, opacity: 0, y: 10 }}
-      animate={{ height: 'auto', opacity: 1, y: 0 }}
-      exit={{ height: 0, opacity: 0, y: 10 }}
-      transition={{ 
-        type: 'spring', 
-        damping: 30, 
-        stiffness: 250,
-        opacity: { duration: 0.2 }
-      }}
-      style={{ originY: 0 }}
-      role="alert"
-    >
-      <div 
+    <Expand>
+      <div
+        role="alert"
         className={cn(
           alertVariants({ variant, size }),
           stackVariants({ direction: 'row', align: 'start', gap: 'md' })
@@ -85,13 +76,13 @@ export function Alert({
       >
         {/* Heraldic color strip on the left for certain variants */}
         {variant !== 'default' && variant !== 'ornamental' && (
-          <div 
+          <div
             className={cn(
-              "absolute left-0 top-0 bottom-0 w-1",
-              variant === 'success' && "bg-(--color-success)",
-              variant === 'danger' && "bg-(--color-danger)",
-              variant === 'warning' && "bg-(--color-warning)",
-              variant === 'info' && "bg-(--color-info)"
+              'absolute top-0 bottom-0 left-0 w-1',
+              variant === 'success' && 'bg-(--color-success)',
+              variant === 'danger' && 'bg-(--color-danger)',
+              variant === 'warning' && 'bg-(--color-warning)',
+              variant === 'info' && 'bg-(--color-info)'
             )}
           />
         )}
@@ -102,17 +93,15 @@ export function Alert({
           </div>
         )}
 
-        <div className={cn(stackVariants({ direction: 'col', gap: 'xs', flex: '1' }))}>
+        <VStack gap="xs" flex="1">
           {title && (
             <Label align="left" color="primary">
               {title}
             </Label>
           )}
-          <Text variant="small" align="left" className="opacity-90 text-inherit">
-            {children}
-          </Text>
-        </div>
+          <Description align="left">{children}</Description>
+        </VStack>
       </div>
-    </motion.div>
+    </Expand>
   )
 }

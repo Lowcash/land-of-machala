@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useId } from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -9,7 +9,7 @@ interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>
 }
 
 export function Checkbox({ label, id: providedId, ...props }: Omit<CheckboxProps, 'className'>) {
-  const generatedId = React.useId()
+  const generatedId = useId()
   const id = providedId || generatedId
 
   return (

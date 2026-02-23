@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { ChevronDown, ChevronUp } from 'lucide-react'
 
@@ -21,18 +21,18 @@ export function ScrollArea({
   flex,
   ...props
 }: ScrollAreaProps) {
-  const scrollRef = React.useRef<HTMLDivElement>(null)
-  const [showTopArrow, setShowTopArrow] = React.useState(false)
-  const [showBottomArrow, setShowBottomArrow] = React.useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
+  const [showTopArrow, setShowTopArrow] = useState(false)
+  const [showBottomArrow, setShowBottomArrow] = useState(false)
 
-  const handleScroll = React.useCallback(() => {
+  const handleScroll = useCallback(() => {
     if (!scrollRef.current) return
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
     setShowTopArrow(scrollTop > 10)
     setShowBottomArrow(scrollHeight - scrollTop - clientHeight > 10)
   }, [])
 
-  React.useEffect(() => {
+  useEffect(() => {
     const scrollArea = scrollRef.current
     if (scrollArea) {
       handleScroll()

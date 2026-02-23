@@ -1,6 +1,15 @@
 'use client'
 
-import * as React from 'react'
+import {
+  type ChangeEvent,
+  type ComponentPropsWithoutRef,
+  type FormHTMLAttributes,
+  type HTMLAttributes,
+  type ReactNode,
+  createContext,
+  useContext,
+  useId,
+} from 'react'
 
 import { Slot } from '@radix-ui/react-slot'
 import {
@@ -20,7 +29,7 @@ import { Checkbox } from './checkbox'
 import { Input } from './input'
 import { Label } from './label'
 
-type FormHTMLProps = React.FormHTMLAttributes<HTMLFormElement>
+type FormHTMLProps = FormHTMLAttributes<HTMLFormElement>
 
 interface FormRootProps<TFieldValues extends FieldValues>
   extends
@@ -79,7 +88,7 @@ interface FormFieldContainerProps {
   name: string
   label?: string
   horizontal?: boolean
-  children: (field: any) => React.ReactNode
+  children: (field: any) => ReactNode
 }
 
 const FormFieldContainer = ({
@@ -102,7 +111,7 @@ const FormFieldContainer = ({
   />
 )
 
-interface FormInputProps extends Omit<React.ComponentPropsWithoutRef<typeof Input>, 'name'> {
+interface FormInputProps extends Omit<ComponentPropsWithoutRef<typeof Input>, 'name'> {
   name: string
   label?: string
   control: any
@@ -117,7 +126,7 @@ const FormInput = ({ name, label, control, ...props }: FormInputProps) => {
 }
 
 interface FormCheckboxProps extends Omit<
-  React.ComponentPropsWithoutRef<typeof Checkbox>,
+  ComponentPropsWithoutRef<typeof Checkbox>,
   'name' | 'checked' | 'onChange'
 > {
   name: string
@@ -133,7 +142,7 @@ const FormCheckbox = ({ name, label, control, ...props }: FormCheckboxProps) => 
           {...props}
           label={label}
           checked={field.value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => field.onChange(e.target.checked)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => field.onChange(e.target.checked)}
         />
       )}
     </FormFieldContainer>
@@ -147,7 +156,7 @@ type FormFieldContextValue<
   name: TName
 }
 
-const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue)
+const FormFieldContext = createContext<FormFieldContextValue>({} as FormFieldContextValue)
 
 const FormField = <
   TFieldValues extends FieldValues = FieldValues,
@@ -163,8 +172,8 @@ const FormField = <
 }
 
 const useFormField = () => {
-  const fieldContext = React.useContext(FormFieldContext)
-  const itemContext = React.useContext(FormItemContext)
+  const fieldContext = useContext(FormFieldContext)
+  const itemContext = useContext(FormItemContext)
   const { getFieldState, formState } = useFormContext()
 
   const fieldState = getFieldState(fieldContext.name, formState)
@@ -189,14 +198,14 @@ type FormItemContextValue = {
   id: string
 }
 
-const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue)
+const FormItemContext = createContext<FormItemContextValue>({} as FormItemContextValue)
 
 const FormItem = ({
   children,
   horizontal,
   ...props
-}: Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & { horizontal?: boolean }) => {
-  const id = React.useId()
+}: Omit<HTMLAttributes<HTMLDivElement>, 'className'> & { horizontal?: boolean }) => {
+  const id = useId()
 
   return (
     <FormItemContext.Provider value={{ id }}>
@@ -210,15 +219,13 @@ const FormItem = ({
   )
 }
 
-const FormLabel = ({
-  ...props
-}: Omit<React.ComponentPropsWithoutRef<typeof Label>, 'className'>) => {
+const FormLabel = ({ ...props }: Omit<ComponentPropsWithoutRef<typeof Label>, 'className'>) => {
   const { error, formItemId } = useFormField()
 
   return <Label htmlFor={formItemId} variant={error ? 'primary' : 'highlight'} {...props} />
 }
 
-const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) => {
+const FormControl = ({ ...props }: ComponentPropsWithoutRef<typeof Slot>) => {
   const { error, formItemId, formMessageId } = useFormField()
 
   return (
@@ -234,7 +241,7 @@ const FormControl = ({ ...props }: React.ComponentPropsWithoutRef<typeof Slot>) 
 const FormMessage = ({
   children,
   ...props
-}: Omit<React.HTMLAttributes<HTMLParagraphElement>, 'className'>) => {
+}: Omit<HTMLAttributes<HTMLParagraphElement>, 'className'>) => {
   const { error, formMessageId } = useFormField()
   const body = error ? String(error?.message) : children
 
