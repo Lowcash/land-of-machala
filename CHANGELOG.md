@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-23] - Storybook Standardization & Documentation Audit
+
+### Added
+- **Progress**: Added internal children support to `Progress` component for centered labels/values.
+- **Storybook**: Added `WithText` story for `Progress`.
+
+### Changed
+- **VitalsBar**: Refactored to render values inside the `Progress` bar, preventing layout collisions with long labels.
+- **Storybook**: Refactored `ScrollArea`, `Field`, `Hero`, and `Shared` stories to use core layout components (`VStack`, `Card`) and adhere to the "Rule of Zero".
+- **Storybook**: Replaced raw `<Input type="checkbox" />` with the official `<Checkbox />` component in forms.
+
+### Fixed
+- **Visuals**: Resolved text overflow and cramped layout issues in `Progress` and `VitalsBar`.
+- **Linting**: Fixed TypeScript errors in `VitalsBar` and `Typography` stories.
+
+
 ## [2026-02-22] - Auth Architecture & UI Consistency (Revised)
 
 ### Added
