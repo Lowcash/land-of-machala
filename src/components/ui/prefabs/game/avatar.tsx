@@ -30,17 +30,6 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
   
   return (
     <Stack
-      height={
-        currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
-          ? currentSize
-          : currentSize === 'lg'
-            ? 'avatar-lg'
-            : currentSize === 'md'
-              ? 'avatar'
-              : currentSize === 'sm'
-                ? 'avatar-sm'
-                : 'auto'
-      }
       width={
         currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
@@ -48,17 +37,16 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
             ? 'avatar-lg'
             : currentSize === 'md'
               ? 'avatar'
-              : currentSize === 'sm'
-                ? 'avatar-sm'
-                : 'auto'
+              : 'avatar-sm'
       }
+      aspect="portrait"
       position="relative"
       overflow="hidden"
       rounded={currentSize === 'avatar-xs' ? 'md' : 'lg'}
       border={currentSize === 'avatar-xs' ? 'base' : '2'}
       borderColor="secondary"
       bgColor="black"
-      shadow={currentVariant === 'hero' ? 'inner' : 'inner'}
+      shadow="inner"
       className={cn(
         currentVariant === 'hero' && 'border-(--color-primary) ring-2 ring-(--color-primary)/20 shadow-[0_0_15px_-5px_var(--color-primary)]'
       )}

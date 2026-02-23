@@ -27,8 +27,8 @@ export const stackVariants = cva('', {
     mx: { none: '', auto: 'mx-auto' },
     minHeight: { zero: 'min-h-0', none: '', screen: 'min-h-screen', dvh: 'min-h-dvh', full: 'min-h-full', character: 'min-h-[160px]' },
     minWidth: { zero: 'min-w-0', none: '', full: 'min-w-full' },
-    height: { zero: 'h-0', auto: 'h-auto', full: 'h-full', px: 'h-px', creation: 'h-[480px]', selection: 'h-[360px]', 'avatar-lg': 'h-32', avatar: 'h-20', 'avatar-sm': 'h-16', 'avatar-xs': 'h-12', 'vitals-label': 'h-4', 'vitals-progress': 'h-2', 'vitals-progress-md': 'h-3', 'vitals-footer': 'h-6' },
-    width: { auto: 'w-auto', full: 'w-full', 'avatar-lg': 'w-32', avatar: 'w-20', 'avatar-sm': 'w-16', 'avatar-xs': 'w-12' },
+    height: { zero: 'h-0', auto: 'h-auto', full: 'h-full', px: 'h-px', creation: 'h-[480px]', selection: 'h-[360px]', 'avatar-lg': 'h-40', avatar: 'h-24', 'avatar-sm': 'h-18', 'avatar-xs': 'h-14', 'vitals-label': 'h-4', 'vitals-progress': 'h-2', 'vitals-progress-md': 'h-3', 'vitals-footer': 'h-6' },
+    width: { auto: 'w-auto', full: 'w-full', 'avatar-lg': 'w-32', avatar: 'w-20', 'avatar-sm': 'w-14', 'avatar-xs': 'w-10' },
     position: { relative: 'relative', absolute: 'absolute', fixed: 'fixed', sticky: 'sticky', static: 'static' },
     top: { '0': 'top-0', '2': 'top-2', '4': 'top-4', '16': 'top-16', '20': 'top-20', '24': 'top-24', auto: 'top-auto' },
     bottom: { '0': 'bottom-0', '4': 'bottom-4', '6': 'bottom-6', '20': 'bottom-20', auto: 'bottom-auto' },
@@ -45,6 +45,7 @@ export const stackVariants = cva('', {
     shadow: { none: '', inner: 'shadow-inner' },
     zIndex: { '0': 'z-0', '10': 'z-10', '50': 'z-50', '600': 'z-600', auto: 'z-auto' },
     pointerEvents: { none: 'pointer-events-none', auto: 'pointer-events-auto' },
+    aspect: { none: '', square: 'aspect-square', portrait: 'aspect-[3/4]', landscape: 'aspect-[4/3]', video: 'aspect-video' },
   },
   defaultVariants: {
     display: 'flex', direction: 'col', align: 'stretch', justify: 'start',

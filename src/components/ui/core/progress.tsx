@@ -5,7 +5,7 @@ import { type VariantProps, cva } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 const progressVariants = cva(
-  'relative w-full overflow-hidden rounded bg-black/60 ring-1 ring-white/10 shadow-inner',
+  'progress-bar relative w-full overflow-hidden rounded bg-black/60 ring-1 ring-white/10 shadow-inner border border-white/5 min-h-2',
   {
     variants: {
       variant: {
@@ -28,7 +28,7 @@ const progressVariants = cva(
   }
 )
 
-const indicatorVariants = cva('h-full w-full flex-1 transition-all duration-300 ease-in-out', {
+const indicatorVariants = cva('h-full block transition-all duration-300 ease-in-out', {
   variants: {
     variant: {
       hp: 'bg-linear-to-r from-red-900 via-red-700 to-red-600',
@@ -66,7 +66,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
       >
         <div
           className={cn(indicatorVariants({ variant }))}
-          style={{ transform: `translateX(-${100 - percentage}%)` }}
+          style={{ width: `${percentage}%` }}
         />
         {/* Shimmer/Highlights */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/10 to-transparent" />
