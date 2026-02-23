@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { Alert } from './alert'
 import { AlertStack } from '@/components/ui/core/alert-stack'
-import { VStack } from './stack'
 
 const meta: Meta<typeof Alert> = {
   title: 'UI/Core/Alert',
@@ -73,36 +72,34 @@ export const Info: Story = {
 
 export const Comparison: Story = {
   render: () => (
-    <VStack align="center" gap="lg" px="md" py="xl" fullWidth>
-      <AlertStack
-        items={[
-          {
-            id: '1',
-            title: 'Danger Alert',
-            variant: 'danger',
-            message: 'Red border and red side strip. Used for Health and critical errors.',
-          },
-          {
-            id: '2',
-            title: 'Warning Alert',
-            variant: 'warning',
-            message: 'Amber border and amber side strip. Used for Strength and warnings.',
-          },
-          {
-            id: '3',
-            title: 'Success Alert',
-            variant: 'success',
-            message: 'Green border for successful actions.',
-          },
-          {
-            id: '4',
-            title: 'Info Alert',
-            variant: 'info',
-            message: 'Blue border for informational messages.',
-          },
-        ]}
-        onDismiss={() => {}}
-      />
-    </VStack>
+    <AlertStack
+      items={[
+        {
+          id: '1',
+          title: 'Danger Alert',
+          variant: 'danger',
+          message: 'Red border and red side strip. Used for Health and critical errors.',
+        },
+        {
+          id: '2',
+          title: 'Warning Alert',
+          variant: 'warning',
+          message: 'Amber border and amber side strip. Used for Strength and warnings.',
+        },
+        {
+          id: '3',
+          title: 'Success Alert',
+          variant: 'success',
+          message: 'Green border for successful actions.',
+        },
+        {
+          id: '4',
+          title: 'Info Alert',
+          variant: 'info',
+          message: 'Blue border for informational messages.',
+        },
+      ]}
+      onDismiss={() => {}}
+    />
   ),
 }

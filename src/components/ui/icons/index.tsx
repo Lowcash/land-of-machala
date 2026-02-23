@@ -1,17 +1,17 @@
 import {
   Dices,
+  Flame,
   Lock,
   type LucideIcon,
   Mail,
   RefreshCcw,
   Scroll,
+  Shield,
   Sparkles,
   Swords,
-  Shield,
-  Zap,
-  Flame,
   User,
   Users,
+  Zap,
 } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
