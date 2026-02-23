@@ -66,7 +66,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
       >
         <div
           className={cn(indicatorVariants({ variant }))}
-          style={{ width: `${percentage}%` }}
+          style={{ width: `${percentage}%`, height: '100%' }}
         />
         {/* Shimmer/Highlights */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/10 to-transparent" />

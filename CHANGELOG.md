@@ -16,10 +16,10 @@ All notable changes to this project will be documented in this file.
 - **Accordion**: Added `pr-6` to triggger wrapper to prevent text overlap with the chevron.
 - **Progress**: Refactored stories to use `VStack` decorators and fixed height visibility.
 - **Avatar**: Fixed collapsing in Hero story by mapping standard sizes to avatar tokens.
-- **Avatar**: Added `avatar-lg` (h-32) token and updated scaling so Hero variants feel significantly larger.
-- **CardTitle**: Fixed React child error by properly handling icon component objects via `React.isValidElement`.
-- **Progress**: Restore height visibility in stories by removing conflicting `h-full` in base component and refining layout decorators.
-- **Icons**: Restored specialized prefab defaults (e.g. `xl` for `SwordsIcon`) to ensure standalone application usage remains functional.
+- **Avatar**: Solidified rectangular portrait layout (3/4 aspect ratio) and fixed oversized scaling in stories.
+- **Progress**: Switched to width-based animation for better stability and fixed visibility issues in Storybook decorators.
+- **Icons**: Removed default props from specialized icons (`UserIcon`, `SparklesIcon`, `SwordsIcon`) to avoid unintended branding in text contexts.
+- **Typography**: Fixed decorative `SparklesIcon` in Hero subtitle to be small and gold by default.
 - **Storybook**: Replaced raw `<Input type="checkbox" />` with the official `<Checkbox />` component in forms.
 
 ### Fixed

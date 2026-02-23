@@ -40,7 +40,6 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
               ? 'avatar'
               : 'avatar-sm'
       }
-      aspect="portrait"
       position="relative"
       overflow="hidden"
       rounded={currentSize === 'avatar-xs' ? 'md' : 'lg'}
@@ -48,6 +47,7 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
       borderColor="secondary"
       bgColor="black"
       shadow="inner"
+      style={{ aspectRatio: '3/4' }}
       className={cn(
         'group',
         currentVariant === 'hero' && 'border-(--color-primary) ring-2 ring-(--color-primary)/20 shadow-[0_0_15px_-5px_var(--color-primary)]'

@@ -20,8 +20,8 @@ const meta: Meta<typeof Progress> = {
   },
   decorators: [
     (Story) => (
-      <VStack align="center" justify="center" p="xl" fullWidth minHeight="character">
-        <VStack maxWidth="md" fullWidth gap="md" align="stretch">
+      <VStack align="center" justify="center" p="xl" fullWidth minHeight="character" bgColor="black">
+        <VStack maxWidth="md" fullWidth gap="md" align="stretch" style={{ width: '100%', minWidth: '320px' }}>
           <Story />
         </VStack>
       </VStack>
