@@ -3,6 +3,7 @@
 import { Coins, MapPin } from 'lucide-react'
 import { HStack } from '@/components/ui/core/stack'
 import { Label, Value } from '@/components/ui/prefabs/typography/shared'
+import { Icon } from '@/components/ui/icons'
 
 interface IndicatorProps {
   label: string
@@ -12,7 +13,7 @@ interface IndicatorProps {
 export function LocationIndicator({ label, size = 'sm' }: IndicatorProps) {
   return (
     <HStack gap="xs" align="center">
-      <MapPin className={size === 'xs' ? 'h-3 w-3 text-(--color-secondary)' : 'h-4 w-4 text-(--color-secondary)'} />
+      <Icon icon={MapPin} size={size === 'xs' ? 'xs' : 'sm'} color="secondary" />
       <Label variant={size === 'xs' ? 'tiny' : 'small'} color="secondary">
         {label}
       </Label>
@@ -23,7 +24,7 @@ export function LocationIndicator({ label, size = 'sm' }: IndicatorProps) {
 export function CurrencyIndicator({ amount }: { amount: number }) {
   return (
     <HStack gap="xs" align="center">
-      <Coins className="h-3 w-3 text-(--color-gold)" />
+      <Icon icon={Coins} size="xs" color="gold" />
       <Value variant="tiny" color="gold" bold tabularNums>
         {amount} zl
       </Value>

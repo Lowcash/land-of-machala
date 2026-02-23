@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Sword } from 'lucide-react'
-
 import { Heading, Text } from './typography'
 import { HStack } from './stack'
+import { SwordsIcon } from '../icons'
 
 const meta: Meta<typeof Heading> = {
   title: 'UI/Core/Typography',
+  component: Heading,
   tags: ['autodocs'],
 }
 
@@ -42,10 +42,10 @@ export const Texts: Story = {
   ),
 }
 
-export const WithIcon: Story = {
+export const WithIcon: StoryObj<typeof Heading> = {
   render: () => (
     <HStack align="center" gap="sm">
-      <Sword className="text-(--color-gold)" size={20} />
+      <SwordsIcon color="gold" size="md" />
       <Heading level="h3">The Warrior's Path</Heading>
     </HStack>
   ),
