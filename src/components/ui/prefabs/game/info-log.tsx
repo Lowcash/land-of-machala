@@ -1,9 +1,10 @@
+import { cn } from '@/lib/utils'
+
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { Description } from '@/components/ui/prefabs/typography/shared'
-import { cn } from '@/lib/utils'
 
 export type LogEntryType =
   | 'playerAttack'
@@ -42,18 +43,15 @@ const typeConfig: Record<LogEntryType, { color: string; border: string }> = {
 interface InfoLogProps {
   logs: LogEntry[]
   maxHeight?: string | number
-  variant?: 'ticker' | 'compact' | 'full'
 }
 
-export function InfoLog({ logs, maxHeight = 300, variant = 'full' }: InfoLogProps) {
-  const isTicker = variant === 'ticker'
-  
+export function InfoLog({ logs, maxHeight = 300 }: InfoLogProps) {
   return (
-    <Card variant={isTicker ? 'ghost' : 'secondary'} p="none" border={isTicker ? 'none' : 'base'}>
+    <Card variant="secondary" p="none" border="base">
       <ScrollArea maxHeight={maxHeight}>
-        <VStack gap="xs" p={isTicker ? 'none' : 'xs'}>
+        <VStack gap="xs" p="xs">
           {logs.length === 0 ? (
-            !isTicker && <Description align="center">No entries in the log yet...</Description>
+            <Description align="center">No entries in the log yet...</Description>
           ) : (
             logs.map((log) => {
               const config = typeConfig[log.type] || typeConfig.info
@@ -63,30 +61,21 @@ export function InfoLog({ logs, maxHeight = 300, variant = 'full' }: InfoLogProp
                 <div
                   key={log.id}
                   className={cn(
-                    "flex flex-row items-center gap-4 transform-gpu transition-colors",
-                    !isTicker && "p-2 pl-4 rounded-sm border-l-2 bg-black/20 hover:bg-black/40",
-                    !isTicker && config.border,
-                    isTicker && "px-2 py-0.5 opacity-80 hover:opacity-100"
+                    'flex transform-gpu flex-row items-center gap-4 transition-colors',
+                    'rounded-sm border-l-2 bg-black/20 p-2 pl-4 hover:bg-black/40',
+                    config.border
                   )}
                 >
-                  {!isTicker && (
-                    <span className="font-fantasy mt-0.5 shrink-0 text-[10px] opacity-30">
-                      {log.timestamp.toLocaleTimeString([], {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                      })}
-                    </span>
-                  )}
-                  <Text
-                    variant="tiny"
-                    font="fantasy"
-                    style={{ color: `var(${color})` }}
-                    className={cn(isTicker && 'truncate')}
-                  >
-                    {isTicker && <span className="mr-2 opacity-50">»</span>}
+                  <span className="font-fantasy mt-0.5 shrink-0 text-[10px] opacity-30">
+                    {log.timestamp.toLocaleTimeString([], {
+                      hour: '2-digit',
+                      minute: '2-digit',
+                      second: '2-digit',
+                    })}
+                  </span>
+                  <Description variant="tiny" font="fantasy" style={{ color: `var(${color})` }}>
                     {log.message}
-                  </Text>
+                  </Description>
                 </div>
               )
             })

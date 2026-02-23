@@ -1,9 +1,8 @@
-import { AnimatePresence } from 'framer-motion'
 import { type LucideIcon } from 'lucide-react'
 
-import { FadeIn } from '@/components/ui/core/animations/fade-in'
 import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
+import { FadeIn, Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
 
 interface FormationStatusProps {
   icon: LucideIcon
@@ -17,15 +16,15 @@ interface FormationStatusProps {
  */
 export function FormationStatus({ icon: Icon, children }: FormationStatusProps) {
   return (
-    <AnimatePresence>
+    <Presence>
       <FadeIn duration={0.8}>
         <VStack align="center" gap="none" pt="xs" flex="none">
-          <Icon size={14} className="text-(--color-primary)/60" />
-          <Text variant="small" color="secondary" font="fantasy" className="scale-90 opacity-60">
+          <Icon size={14} color="secondary" />
+          <Text variant="tiny" color="secondary" align="center" font="fantasy">
             {children}
           </Text>
         </VStack>
       </FadeIn>
-    </AnimatePresence>
+    </Presence>
   )
 }

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type ComponentProps, type HTMLAttributes, type ReactNode } from 'react'
 
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
@@ -6,8 +6,8 @@ import { SparklesIcon } from '@/components/ui/icons'
 
 import { Description, Label } from './shared'
 
-interface HeroTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
-  children: React.ReactNode
+interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  children: ReactNode
 }
 
 export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'className'>) {
@@ -18,7 +18,7 @@ export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'classNam
       level="h1"
       font="medieval"
       color={'gold' as any}
-      className="text-3xl whitespace-nowrap sm:text-4xl lg:text-5xl"
+      className="text-3xl sm:text-4xl lg:text-5xl"
       style={{
         textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
         ...props.style,
@@ -30,8 +30,8 @@ export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'classNam
   )
 }
 
-interface HeroSubtitleProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> {
-  children: React.ReactNode
+interface HeroSubtitleProps extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
+  children: ReactNode
 }
 
 export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
@@ -46,11 +46,11 @@ export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
   )
 }
 
-export function HeroDescription({ children, ...props }: React.ComponentProps<typeof Description>) {
+export function HeroDescription({ children, ...props }: ComponentProps<typeof Description>) {
   return <Description {...props}>{children}</Description>
 }
 
-export function DecorativeLabel({ children, ...props }: React.ComponentProps<typeof Label>) {
+export function DecorativeLabel({ children, ...props }: ComponentProps<typeof Label>) {
   return <Label {...props}>{children}</Label>
 }
 
