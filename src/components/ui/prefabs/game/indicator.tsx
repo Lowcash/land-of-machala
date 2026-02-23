@@ -1,9 +1,10 @@
 'use client'
 
 import { Coins, MapPin } from 'lucide-react'
+
 import { HStack } from '@/components/ui/core/stack'
-import { Label, Value } from '@/components/ui/prefabs/typography/shared'
 import { Icon } from '@/components/ui/icons'
+import { Label, Value } from '@/components/ui/prefabs/typography/shared'
 
 interface IndicatorProps {
   label: string

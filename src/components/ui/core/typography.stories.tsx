@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Heading, Text } from './typography'
-import { HStack } from './stack'
 import { SwordsIcon } from '../icons'
+import { HStack } from './stack'
+import { Heading, Text } from './typography'
 
 const meta: Meta<typeof Heading> = {
   title: 'UI/Core/Typography',
