@@ -44,7 +44,7 @@ export interface IconProps {
 
 export function Icon({
   icon: SimpleIcon,
-  size = 'sm',
+  size = 'md',
   color,
   className,
 }: { icon: LucideIcon } & IconProps) {
@@ -73,19 +73,19 @@ export function UserIcon({ size, color }: IconProps) {
 }
 
 export function UsersIcon({ size, color }: IconProps) {
-  return <Icon icon={Users} size={size || 'md'} color={color} />
+  return <Icon icon={Users} size={size} color={color} />
 }
 
 export function ScrollIcon({ size, color }: IconProps) {
-  return <Icon icon={Scroll} size={size || 'md'} color={color} />
+  return <Icon icon={Scroll} size={size} color={color} />
 }
 
 export function SparklesIcon({ size, color }: IconProps) {
-  return <Icon icon={Sparkles} size={size || 'xs'} color={color || 'secondary'} />
+  return <Icon icon={Sparkles} size={size} color={color} />
 }
 
 export function SwordsIcon({ size, color }: IconProps) {
-  return <Icon icon={Swords} size={size || 'xl'} color={color} />
+  return <Icon icon={Swords} size={size} color={color} />
 }
 
 export function RefreshIcon({ size, color }: IconProps) {

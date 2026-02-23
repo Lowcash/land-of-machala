@@ -36,27 +36,31 @@ export const Ornamental: Story = {
 
 export const Directions: Story = {
   render: () => (
-    <Stack display="grid" cols="2" sm={{ cols: '4' }} gap="md" align="center" justify="center">
+    <Stack display="grid" cols="3" gap="xl" align="center" justify="center" maxWidth="sm" mx="auto">
+      {/* Row 1 */}
+      <div />
       <Tooltip content={<Value variant="tiny">Tooltip on Top</Value>} side="top">
-        <Button variant="secondary" fullWidth={false}>
-          Top
-        </Button>
+        <Button variant="secondary">Top</Button>
       </Tooltip>
-      <Tooltip content={<Value variant="tiny">Tooltip on Bottom</Value>} side="bottom">
-        <Button variant="secondary" fullWidth={false}>
-          Bottom
-        </Button>
-      </Tooltip>
+      <div />
+
+      {/* Row 2 */}
       <Tooltip content={<Value variant="tiny">Tooltip on Left</Value>} side="left">
-        <Button variant="secondary" fullWidth={false}>
-          Left
-        </Button>
+        <Button variant="secondary">Left</Button>
       </Tooltip>
+      <Stack align="center" justify="center" p="md" rounded="full" border="base" borderColor="secondary">
+        <Label variant="tiny">Compass</Label>
+      </Stack>
       <Tooltip content={<Value variant="tiny">Tooltip on Right</Value>} side="right">
-        <Button variant="secondary" fullWidth={false}>
-          Right
-        </Button>
+        <Button variant="secondary">Right</Button>
       </Tooltip>
+
+      {/* Row 3 */}
+      <div />
+      <Tooltip content={<Value variant="tiny">Tooltip on Bottom</Value>} side="bottom">
+        <Button variant="secondary">Bottom</Button>
+      </Tooltip>
+      <div />
     </Stack>
   ),
 }

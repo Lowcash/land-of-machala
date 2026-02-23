@@ -52,10 +52,10 @@ export const Colors: Story = {
   render: () => (
     <VStack gap="lg">
       <HStack gap="md">
-        <SwordsIcon color="primary" />
-        <SwordsIcon color="gold" />
-        <SwordsIcon color="secondary" />
-        <SwordsIcon color="ivory" />
+        <UserIcon color="primary" />
+        <UserIcon color="gold" />
+        <UserIcon color="secondary" />
+        <UserIcon color="ivory" />
       </HStack>
       <HStack gap="md">
         <ShieldIcon color="hp" />
@@ -92,9 +92,17 @@ export const Logo: Story = {
 function IconItem({ label, icon }: { label: string; icon: React.ReactNode }) {
   return (
     <VStack align="center" gap="sm">
-      <div className="text-gold flex h-12 w-12 items-center justify-center rounded-lg bg-black/20">
+      <Stack
+        align="center"
+        justify="center"
+        width="avatar-xs"
+        height="avatar-xs"
+        rounded="md"
+        bgColor="black"
+        opacity="20"
+      >
         {icon}
-      </div>
+      </Stack>
       <MutedText variant="tiny">{label}</MutedText>
     </VStack>
   )
