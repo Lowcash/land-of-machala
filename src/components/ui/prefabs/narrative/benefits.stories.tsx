@@ -5,7 +5,7 @@ import { MOCK_BENEFITS } from '@/lib/game/data/mocks'
 import { Benefits } from './benefits'
 
 const meta: Meta<typeof Benefits> = {
-  title: 'Prefabs/Narrative/Benefits',
+  title: 'UI/Prefabs/Narrative/Benefits',
   component: Benefits,
   tags: ['autodocs'],
 }

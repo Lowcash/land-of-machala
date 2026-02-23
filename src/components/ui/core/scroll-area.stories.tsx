@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { Card } from './card'
 import { ScrollArea } from './scroll-area'
-import { HStack, VStack } from './stack'
+import { VStack } from './stack'
 import { Heading, Text } from './typography'
 
 const meta: Meta<typeof ScrollArea> = {

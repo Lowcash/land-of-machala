@@ -6,7 +6,7 @@ import { MutedText } from '@/components/ui/prefabs/typography/shared'
 import { FadeIn, PresenceSwap, ScaleIn, SlideUp, StaggeredList } from './motion-prefabs'
 
 const meta: Meta = {
-  title: 'Prefabs/Animations/MotionPrefabs',
+  title: 'UI/Prefabs/Animations/MotionPrefabs',
 }
 
 export default meta
@@ -48,7 +48,7 @@ export const ScaleInDemo: Story = {
 export const StaggeredListDemo: Story = {
   name: 'StaggeredList',
   render: () => (
-    <StaggeredList className="flex min-w-48 flex-col gap-2" stagger={0.1}>
+    <StaggeredList stagger={0.1}>
       <Card p="sm">
         <MutedText>First item</MutedText>
       </Card>

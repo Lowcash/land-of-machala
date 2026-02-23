@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { InfoLog, type LogEntry } from './info-log'
 
 const meta: Meta<typeof InfoLog> = {
-  title: 'Prefabs/Game/InfoLog',
+  title: 'UI/Prefabs/Game/InfoLog',
   component: InfoLog,
 }
 
