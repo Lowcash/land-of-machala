@@ -1,4 +1,5 @@
-import { LucideIcon } from 'lucide-react'
+import * as React from 'react'
+import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
@@ -40,10 +41,10 @@ export function CardTitle({
     >
       {Icon && (
         <span className="flex shrink-0">
-          {typeof Icon === 'function' ? (
-            <IconPrefab icon={Icon} size="md" color="gold" />
-          ) : (
+          {React.isValidElement(Icon) ? (
             Icon
+          ) : (
+            <IconPrefab icon={Icon as LucideIcon} size="md" color="gold" />
           )}
         </span>
       )}

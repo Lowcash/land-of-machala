@@ -21,7 +21,7 @@ const meta: Meta<typeof Progress> = {
   decorators: [
     (Story) => (
       <VStack align="center" justify="center" p="xl" fullWidth minHeight="character">
-        <VStack maxWidth="md" fullWidth>
+        <VStack maxWidth="md" fullWidth gap="md">
           <Story />
         </VStack>
       </VStack>

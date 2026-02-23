@@ -1,6 +1,7 @@
 import Image from 'next/image'
-
 import { type VariantProps, cva } from 'class-variance-authority'
+
+import { cn } from '@/lib/utils'
 import { Stack } from '@/components/ui/core/stack'
 import { UserIcon } from '@/components/ui/icons'
 
@@ -57,7 +58,10 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
       border={currentSize === 'avatar-xs' ? 'base' : '2'}
       borderColor="secondary"
       bgColor="black"
-      shadow="inner"
+      shadow={currentVariant === 'hero' ? 'inner' : 'inner'}
+      className={cn(
+        currentVariant === 'hero' && 'border-(--color-primary) ring-2 ring-(--color-primary)/20 shadow-[0_0_15px_-5px_var(--color-primary)]'
+      )}
       align="center"
       justify="center"
     >
