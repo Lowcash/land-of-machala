@@ -1,8 +1,8 @@
 'use client'
 
-import type { ReactNode } from 'react'
+import { type ReactNode } from 'react'
 
-import { MotionStack } from './motion-stack'
+import { MotionStack } from '../../core/animations/motion-stack'
 
 interface AnimateNotifyProps {
   children: ReactNode

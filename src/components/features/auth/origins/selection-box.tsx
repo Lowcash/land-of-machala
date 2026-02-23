@@ -1,13 +1,11 @@
 'use client'
 
-import { AnimatePresence } from 'framer-motion'
-
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
-import { MotionVStack } from '@/components/ui/core/animations/motion-stack'
 import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
+import { FadeIn, Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
 
 import { SelectionDetails } from './selection-details'
 import { SelectionItem } from './selection-item'
@@ -63,28 +61,21 @@ export function SelectionBox({
         })}
       </Stack>
 
-      <AnimatePresence mode="wait">
+      <Presence mode="wait">
         {selectedItem && (
-          <MotionVStack
-            key={selectedItem.id}
-            layout="position"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-            flex="1"
-            minHeight="zero"
-          >
-            <SelectionDetails
-              item={selectedItem}
-              type={type}
-              flex="1"
-              statLabels={statLabels}
-              uiLabels={uiLabels}
-            />
-          </MotionVStack>
+          <FadeIn key={selectedItem.id}>
+            <VStack flex="1" minHeight="zero">
+              <SelectionDetails
+                item={selectedItem}
+                type={type}
+                flex="1"
+                statLabels={statLabels}
+                uiLabels={uiLabels}
+              />
+            </VStack>
+          </FadeIn>
         )}
-      </AnimatePresence>
+      </Presence>
     </Card.Content>
   )
 
@@ -97,7 +88,7 @@ export function SelectionBox({
         </Card>
 
         {/* Desktop: Primary card view */}
-        <MotionVStack layout flex="1" height="full">
+        <VStack flex="1" height="full">
           <Card
             variant="primary"
             p="md"
@@ -112,7 +103,7 @@ export function SelectionBox({
             </Card.Header>
             {content}
           </Card>
-        </MotionVStack>
+        </VStack>
       </VStack>
     )
   }
@@ -120,7 +111,7 @@ export function SelectionBox({
   const isFlat = variant === 'flat'
 
   return (
-    <MotionVStack layout fullHeight minHeight="zero">
+    <VStack fullHeight minHeight="zero">
       <Card
         variant={isFlat ? 'ghost' : 'secondary'}
         p="md"
@@ -137,6 +128,6 @@ export function SelectionBox({
 
         {content}
       </Card>
-    </MotionVStack>
+    </VStack>
   )
 }

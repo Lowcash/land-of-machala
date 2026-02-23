@@ -1,8 +1,8 @@
 'use client'
 
-import * as React from 'react'
+import { Children, type ReactNode } from 'react'
 
-import { type Variants, AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, type Variants, motion } from 'framer-motion'
 
 // ---------------------------------------------------------------------------
 // Shared defaults
@@ -12,24 +12,72 @@ const SPRING = { type: 'spring', stiffness: 300, damping: 28 } as const
 const EASE_OUT = { duration: 0.2, ease: 'easeOut' } as const
 
 // ---------------------------------------------------------------------------
+// Presence – semantic wrapper for AnimatePresence.
+// Use this to wrap conditional components that need exit animations.
+// ---------------------------------------------------------------------------
+
+interface PresenceProps {
+  children: ReactNode
+  /** Defaults to 'wait' for cleaner swaps */
+  mode?: 'wait' | 'popLayout' | 'sync'
+  initial?: boolean
+}
+
+export function Presence({ children, mode = 'wait', initial = false }: PresenceProps) {
+  return (
+    <AnimatePresence mode={mode} initial={initial}>
+      {children}
+    </AnimatePresence>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Expand – height entrance animation; used for alerts, accordion contents, etc.
+// ---------------------------------------------------------------------------
+
+interface ExpandProps {
+  children: ReactNode
+  id?: string
+  initialHeight?: string | number
+}
+
+export function Expand({ children, id, initialHeight = 0 }: ExpandProps) {
+  return (
+    <motion.div
+      key={id}
+      initial={{ height: initialHeight, opacity: 0, y: 10 }}
+      animate={{ height: 'auto', opacity: 1, y: 0 }}
+      exit={{ height: initialHeight, opacity: 0, y: 10 }}
+      transition={{
+        type: 'spring',
+        damping: 30,
+        stiffness: 250,
+        opacity: { duration: 0.2 },
+      }}
+      style={{ originY: 0 }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // FadeIn – simple opacity entrance for containers, cards, etc.
 // ---------------------------------------------------------------------------
 
 interface FadeInProps {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
   duration?: number
-  className?: string
 }
 
-export function FadeIn({ children, delay = 0, duration = 0.25, className }: FadeInProps) {
+export function FadeIn({ children, delay = 0, duration = 0.25 }: FadeInProps) {
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration, delay, ease: 'easeOut' }}
-      className={className}
     >
       {children}
     </motion.div>
@@ -41,20 +89,18 @@ export function FadeIn({ children, delay = 0, duration = 0.25, className }: Fade
 // ---------------------------------------------------------------------------
 
 interface SlideUpProps {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
   distance?: number
-  className?: string
 }
 
-export function SlideUp({ children, delay = 0, distance = 12, className }: SlideUpProps) {
+export function SlideUp({ children, delay = 0, distance = 12 }: SlideUpProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: distance }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: distance }}
       transition={{ ...SPRING, delay }}
-      className={className}
     >
       {children}
     </motion.div>
@@ -66,19 +112,17 @@ export function SlideUp({ children, delay = 0, distance = 12, className }: Slide
 // ---------------------------------------------------------------------------
 
 interface ScaleInProps {
-  children: React.ReactNode
+  children: ReactNode
   delay?: number
-  className?: string
 }
 
-export function ScaleIn({ children, delay = 0, className }: ScaleInProps) {
+export function ScaleIn({ children, delay = 0 }: ScaleInProps) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.92 }}
       transition={{ ...EASE_OUT, delay }}
-      className={className}
     >
       {children}
     </motion.div>
@@ -107,27 +151,22 @@ const staggerItem: Variants = {
 }
 
 interface StaggeredListProps {
-  children: React.ReactNode
+  children: ReactNode
   stagger?: number
   delay?: number
-  /** Optional className applied to the outer wrapper */
-  className?: string
 }
 
-export function StaggeredList({ children, stagger = 0.07, delay = 0, className }: StaggeredListProps) {
+export function StaggeredList({ children, stagger = 0.07, delay = 0 }: StaggeredListProps) {
   return (
     <motion.div
-      className={className}
       variants={staggerContainer}
       initial="hidden"
       animate="visible"
       custom={stagger}
       style={{ transitionDelay: `${delay}s` }}
     >
-      {React.Children.map(children, (child) =>
-        child == null ? null : (
-          <motion.div variants={staggerItem}>{child}</motion.div>
-        )
+      {Children.map(children, (child) =>
+        child == null ? null : <motion.div variants={staggerItem}>{child}</motion.div>
       )}
     </motion.div>
   )
@@ -139,26 +178,24 @@ export function StaggeredList({ children, stagger = 0.07, delay = 0, className }
 // ---------------------------------------------------------------------------
 
 interface PresenceSwapProps {
-  children: React.ReactNode
+  children: ReactNode
   /** Key must change whenever content changes, triggering the exit/enter cycle */
   swapKey: string | number | null | undefined
   mode?: 'wait' | 'popLayout' | 'sync'
-  className?: string
 }
 
-export function PresenceSwap({ children, swapKey, mode = 'wait', className }: PresenceSwapProps) {
+export function PresenceSwap({ children, swapKey, mode = 'wait' }: PresenceSwapProps) {
   return (
-    <AnimatePresence mode={mode}>
+    <Presence mode={mode}>
       <motion.div
         key={swapKey ?? '__empty__'}
         initial={{ opacity: 0, x: -8 }}
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: 8 }}
         transition={EASE_OUT}
-        className={className}
       >
         {children}
       </motion.div>
-    </AnimatePresence>
+    </Presence>
   )
 }

@@ -2,10 +2,10 @@ import { BookOpen, SkipForward } from 'lucide-react'
 
 import type { TranslatedStoryStep } from '@/lib/game/data/shared'
 
-import { FadeIn } from '@/components/ui/core/animations/fade-in'
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { ActionLink } from '@/components/ui/interactive/action-link'
 import { Choice, ChoiceItem } from '@/components/ui/interactive/choice'
+import { FadeIn } from '@/components/ui/prefabs/animations/motion-prefabs'
 import { FeatureIcon } from '@/components/ui/prefabs/feature-icon'
 import { NarrativeText } from '@/components/ui/prefabs/typography/shared'
 

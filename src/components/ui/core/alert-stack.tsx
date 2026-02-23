@@ -1,8 +1,7 @@
-import { AnimatePresence } from 'framer-motion'
-
 import { Alert } from '@/components/ui/core/alert'
-import { AnimateNotify } from '@/components/ui/core/animations/animate-notify'
 import { Stack } from '@/components/ui/core/stack'
+import { AnimateNotify } from '@/components/ui/prefabs/animations/animate-notify'
+import { Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
 
 interface AlertStackItem {
   id: string
@@ -44,7 +43,7 @@ export function AlertStack({ items, onDismiss }: AlertStackProps) {
         scrollbar="none"
         pointerEvents="none"
       >
-        <AnimatePresence mode="popLayout" initial={false}>
+        <Presence mode="popLayout" initial={false}>
           {items.map((item) => (
             <AnimateNotify key={item.id} id={item.id}>
               <Alert variant={item.variant} title={item.title} onClick={() => onDismiss(item.id)}>
@@ -52,7 +51,7 @@ export function AlertStack({ items, onDismiss }: AlertStackProps) {
               </Alert>
             </AnimateNotify>
           ))}
-        </AnimatePresence>
+        </Presence>
       </Stack>
     </Stack>
   )
