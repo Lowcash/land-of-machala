@@ -32,12 +32,24 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
       height={
         currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
-          : 'auto'
+          : currentSize === 'lg'
+            ? 'avatar'
+            : currentSize === 'md'
+              ? 'avatar-sm'
+              : currentSize === 'sm'
+                ? 'avatar-xs'
+                : 'auto'
       }
       width={
         currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
-          : 'auto'
+          : currentSize === 'lg'
+            ? 'avatar'
+            : currentSize === 'md'
+              ? 'avatar-sm'
+              : currentSize === 'sm'
+                ? 'avatar-xs'
+                : 'auto'
       }
       position="relative"
       overflow="hidden"

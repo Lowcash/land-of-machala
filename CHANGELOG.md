@@ -13,8 +13,10 @@ All notable changes to this project will be documented in this file.
 - **VitalsBar**: Refactored to render values inside the `Progress` bar, preventing layout collisions with long labels.
 - **Storybook**: Refactored `ScrollArea`, `Field`, `Hero`, and `Shared` stories to use core layout components (`VStack`, `Card`) and adhere to the "Rule of Zero".
 - **Storybook**: Standardized default Icon size to `md` and removed redundant overrides.
-- **Accordion**: Increased spacing between trigger title and label for better readability.
-- **Progress**: Fixed visibility in stories by removing conflicting `h-full` constraint.
+- **Accordion**: Added `pr-6` to triggger wrapper to prevent text overlap with the chevron.
+- **Progress**: Refactored stories to use `VStack` decorators and fixed height visibility.
+- **Avatar**: Fixed collapsing in Hero story by mapping standard sizes to avatar tokens.
+- **CardTitle**: Standardized icon usage and fixed clashing imports in stories.
 - **Storybook**: Replaced raw `<Input type="checkbox" />` with the official `<Checkbox />` component in forms.
 
 ### Fixed

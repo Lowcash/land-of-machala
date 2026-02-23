@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { Progress } from './progress'
 import { Value } from '../prefabs/typography/shared'
+import { VStack } from './stack'
 
 const meta: Meta<typeof Progress> = {
   title: 'UI/Core/Progress',
@@ -19,11 +20,11 @@ const meta: Meta<typeof Progress> = {
   },
   decorators: [
     (Story) => (
-      <div className="p-12">
-        <div className="mx-auto max-w-md">
+      <VStack align="center" justify="center" p="xl" fullWidth minHeight="character">
+        <VStack maxWidth="md" fullWidth>
           <Story />
-        </div>
-      </div>
+        </VStack>
+      </VStack>
     ),
   ],
 }

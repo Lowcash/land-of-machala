@@ -150,12 +150,12 @@ export function GameAccordion({
             )}
           >
             <AccordionTrigger className={cn('border-none p-4', passthroughOnDesktop && 'md:hidden')}>
-              <div className="flex w-full items-center justify-between gap-6">
+              <div className="flex w-full items-center justify-between gap-6 pr-6">
                 <Text variant="primary" font="fantasy" truncate className="text-left text-base sm:text-lg">
                   {item.title}
                 </Text>
                 {item.selectedLabel && (
-                  <Text variant="small" color="secondary" truncate className="mr-6 shrink-0 font-fantasy opacity-80 group-data-[state=open]:opacity-100">
+                  <Text variant="small" color="secondary" truncate className="shrink-0 font-fantasy opacity-80 group-data-[state=open]:opacity-100">
                     {item.selectedLabel}
                   </Text>
                 )}

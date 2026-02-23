@@ -3,6 +3,7 @@ import { LucideIcon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Heading, TextProps } from '@/components/ui/core/typography'
+import { Icon as IconPrefab } from '@/components/ui/icons'
 
 interface CardTitleProps extends Omit<
   React.HTMLAttributes<HTMLHeadingElement>,
@@ -38,8 +39,12 @@ export function CardTitle({
       {...props}
     >
       {Icon && (
-        <span className="flex h-5 w-5 shrink-0 items-center justify-center">
-          {typeof Icon === 'function' ? <Icon size={20} /> : Icon}
+        <span className="flex shrink-0">
+          {typeof Icon === 'function' ? (
+            <IconPrefab icon={Icon} size="md" color="gold" />
+          ) : (
+            Icon
+          )}
         </span>
       )}
       {children}
