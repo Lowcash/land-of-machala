@@ -17,6 +17,15 @@ const meta: Meta<typeof Progress> = {
       options: ['sm', 'md', 'lg'],
     },
   },
+  decorators: [
+    (Story) => (
+      <div className="p-12">
+        <div className="mx-auto max-w-md">
+          <Story />
+        </div>
+      </div>
+    ),
+  ],
 }
 
 export default meta

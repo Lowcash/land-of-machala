@@ -7,16 +7,21 @@ All notable changes to this project will be documented in this file.
 ### Added
 - **Progress**: Added internal children support to `Progress` component for centered labels/values.
 - **Storybook**: Added `WithText` story for `Progress`.
+- **Storybook**: Improved Tooltip "Directions" with a cross-shaped 3x3 layout.
 
 ### Changed
 - **VitalsBar**: Refactored to render values inside the `Progress` bar, preventing layout collisions with long labels.
 - **Storybook**: Refactored `ScrollArea`, `Field`, `Hero`, and `Shared` stories to use core layout components (`VStack`, `Card`) and adhere to the "Rule of Zero".
+- **Storybook**: Standardized default Icon size to `md` and removed redundant overrides.
+- **Accordion**: Increased spacing between trigger title and label for better readability.
+- **Progress**: Fixed visibility in stories by removing conflicting `h-full` constraint.
 - **Storybook**: Replaced raw `<Input type="checkbox" />` with the official `<Checkbox />` component in forms.
 
 ### Fixed
 - **Visuals**: Resolved text overflow and cramped layout issues in `Progress` and `VitalsBar`.
 - **Linting**: Fixed TypeScript errors in `VitalsBar` and `Typography` stories.
 - **Storybook**: Restored broken "With Icon" story in `Typography` using standard `HStack` layout.
+- **Cleanup**: Removed unused `FormationStatus` component and its stories.
 - **Standards**: Replaced styled `span` in `Progress` stories with the semantic `Value` prefab to adhere to the "Rule of Zero".
 
 ### Phase 4 - Storybook Final Polish & Icon Consistency

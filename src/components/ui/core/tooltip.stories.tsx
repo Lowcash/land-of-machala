@@ -48,9 +48,7 @@ export const Directions: Story = {
       <Tooltip content={<Value variant="tiny">Tooltip on Left</Value>} side="left">
         <Button variant="secondary">Left</Button>
       </Tooltip>
-      <Stack align="center" justify="center" p="md" rounded="full" border="base" borderColor="secondary">
-        <Label variant="tiny">Compass</Label>
-      </Stack>
+      <div />
       <Tooltip content={<Value variant="tiny">Tooltip on Right</Value>} side="right">
         <Button variant="secondary">Right</Button>
       </Tooltip>
