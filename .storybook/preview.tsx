@@ -6,12 +6,18 @@ import '../src/app/globals.css'
 
 const preview: Preview = {
   parameters: {
+    layout: 'centered',
     options: {
       storySort: {
-        order: ['Features', ['Auth', ['Login', 'Register', 'Origins']], 'UI', ['Core', 'Forms', 'Navigation', 'Prefabs', 'Shared'], 'System'],
+        order: [
+          'Features',
+          ['Auth', ['Login', 'Register', 'Origins']],
+          'UI',
+          ['Core', 'Forms', 'Navigation', 'Prefabs', 'Shared'],
+          'System',
+        ],
       },
     },
-    layout: 'centered',
 
     a11y: {
       test: 'todo',

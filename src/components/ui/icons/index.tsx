@@ -68,7 +68,7 @@ export function Icon({
   return <SimpleIcon className={cn(ICON_SIZES[size], colorClass, className)} />
 }
 
-export function UserIcon({ size = 'xl', color }: IconProps) {
+export function UserIcon({ size, color }: IconProps) {
   return <Icon icon={User} size={size} color={color} />
 }
 
@@ -80,11 +80,11 @@ export function ScrollIcon({ size, color }: IconProps) {
   return <Icon icon={Scroll} size={size} color={color} />
 }
 
-export function SparklesIcon({ size = 'xl', color }: IconProps) {
+export function SparklesIcon({ size, color }: IconProps) {
   return <Icon icon={Sparkles} size={size} color={color} />
 }
 
-export function SwordsIcon({ size = 'xl', color }: IconProps) {
+export function SwordsIcon({ size, color }: IconProps) {
   return <Icon icon={Swords} size={size} color={color} />
 }
 

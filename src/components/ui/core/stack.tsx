@@ -27,7 +27,7 @@ export const stackVariants = cva('', {
     mx: { none: '', auto: 'mx-auto' },
     minHeight: { zero: 'min-h-0', none: '', screen: 'min-h-screen', dvh: 'min-h-dvh', full: 'min-h-full', character: 'min-h-[160px]' },
     minWidth: { zero: 'min-w-0', none: '', full: 'min-w-full' },
-    height: { zero: 'h-0', auto: 'h-auto', full: 'h-full', px: 'h-px', creation: 'h-[480px]', selection: 'h-[360px]', 'avatar-lg': 'h-40', avatar: 'h-24', 'avatar-sm': 'h-18', 'avatar-xs': 'h-14', 'vitals-label': 'h-4', 'vitals-progress': 'h-2', 'vitals-progress-md': 'h-3', 'vitals-footer': 'h-6' },
+    height: { zero: 'h-0', auto: 'h-auto', full: 'h-full', px: 'h-px', creation: 'h-[480px]', selection: 'h-[360px]', 'avatar-lg': 'h-32', avatar: 'h-20', 'avatar-sm': 'h-14', 'avatar-xs': 'h-10', 'vitals-label': 'h-4', 'vitals-progress': 'h-2', 'vitals-progress-md': 'h-3', 'vitals-footer': 'h-6' },
     width: { auto: 'w-auto', full: 'w-full', 'avatar-lg': 'w-32', avatar: 'w-20', 'avatar-sm': 'w-14', 'avatar-xs': 'w-10' },
     position: { relative: 'relative', absolute: 'absolute', fixed: 'fixed', sticky: 'sticky', static: 'static' },
     top: { '0': 'top-0', '2': 'top-2', '4': 'top-4', '16': 'top-16', '20': 'top-20', '24': 'top-24', auto: 'top-auto' },
@@ -37,7 +37,7 @@ export const stackVariants = cva('', {
     inset: { none: '', zero: 'inset-0', xs: '-right-1 -bottom-1', base: '-right-2 -bottom-2' },
     rounded: { none: '', md: 'rounded-md', lg: 'rounded-lg', full: 'rounded-full' },
     border: { none: '', base: 'border', '2': 'border-2' },
-    borderColor: { none: '', secondary: 'border-(--color-secondary)/40' },
+    borderColor: { none: '', primary: 'border-(--color-primary)', secondary: 'border-(--color-secondary)' },
     bgColor: { none: '', black: 'bg-black/40', secondary: 'bg-(--color-secondary)' },
     opacity: { none: '', '10': 'opacity-10', '20': 'opacity-20', '50': 'opacity-50', '80': 'opacity-80', '100': 'opacity-100' },
     overflow: { none: '', auto: 'overflow-auto', hidden: 'overflow-hidden' },
@@ -159,13 +159,13 @@ export interface StackProps
 }
 
 export const Stack = React.forwardRef<HTMLElement, StackProps>(
-  ({ as: Component = 'div', sm, md, lg, xl, ...props }, ref) => {
+  ({ as: Component = 'div', sm, md, lg, xl, className, ...props }, ref) => {
     // Separate variant props from HTML props
     const variantProps: Record<string, unknown> = {}
     const elementProps: Record<string, unknown> = { ...props }
     
     // Simple extraction of variants
-    const keys = ['display', 'direction', 'cols', 'align', 'justify', 'gap', 'fullWidth', 'fullHeight', 'wrap', 'p', 'pt', 'pb', 'px', 'py', 'flex', 'maxWidth', 'maxHeight', 'm', 'mx', 'minHeight', 'minWidth', 'height', 'width', 'position', 'top', 'bottom', 'left', 'right', 'inset', 'rounded', 'border', 'borderColor', 'bgColor', 'opacity', 'overflow', 'scrollbar', 'shadow', 'zIndex', 'pointerEvents']
+    const keys = ['display', 'direction', 'cols', 'align', 'justify', 'gap', 'fullWidth', 'fullHeight', 'wrap', 'p', 'pt', 'pb', 'px', 'py', 'flex', 'maxWidth', 'maxHeight', 'm', 'mx', 'minHeight', 'minWidth', 'height', 'width', 'position', 'top', 'bottom', 'left', 'right', 'inset', 'rounded', 'border', 'borderColor', 'bgColor', 'opacity', 'overflow', 'scrollbar', 'shadow', 'zIndex', 'pointerEvents', 'aspect']
     keys.forEach(key => {
       if (key in elementProps) {
         variantProps[key] = elementProps[key]
@@ -181,7 +181,8 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>(
           getResponsiveClasses('sm', sm),
           getResponsiveClasses('md', md),
           getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
+          getResponsiveClasses('xl', xl),
+          className
         )}
         {...elementProps}
       />

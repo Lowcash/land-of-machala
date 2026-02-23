@@ -64,6 +64,9 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - **Performance**: Reduced client bundle size by stripping unnecessary `Auth` and `Game` translation namespaces from the root provider.
 
+- Phase 8: Avatar layout 3:4, Progress visibility, Icon prefab cleanup, Sparkles icon refinement.
+- Phase 9: Storybook 'padded' layout standardization, responsive Progress decorators, Avatar 'rectangle' polish, and CharacterBox compatibility.
+
 ## [2026-02-18] - Enterprise i18n & Security Strategy
  
 ### Added
@@ -126,6 +129,12 @@ All notable changes to this project will be documented in this file.
 ### Added
 - **Auth**: Created `/login` route in `app/login/page.tsx` that uses the new `LoginView`.
 - **Auth**: Extracted `LoginView` server component in `src/components/features/auth/login.view.tsx` for shared use between the live route and Storybook.
+
+### Phase 9: Storybook Layout & Avatar Refinement
+- **Storybook**: Reverted global layout to `centered`; implemented `StoryContainer` decorator for layout stability.
+- **Avatar**: Restored "framed portrait" look with rectangular tokens and solid borders.
+- **Stack**: Fixed critical bug where `className` was overwriting variant classes.
+- **Verification**: UI audit confirmed stable integration in `CharacterBox` and individual stories.
 
 ### Changed
 - **Storybook**: Updated `Login.stories.tsx` to use the centralized `LoginView` component for the "FullPage" example, ensuring consistency with the live application.

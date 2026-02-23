@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { Progress } from './progress'
 import { Value } from '../prefabs/typography/shared'
-import { VStack } from './stack'
+import { StoryContainer } from '../storybook-utils'
+import { Progress } from './progress'
 
 const meta: Meta<typeof Progress> = {
   title: 'UI/Core/Progress',
@@ -18,13 +18,14 @@ const meta: Meta<typeof Progress> = {
       options: ['sm', 'md', 'lg'],
     },
   },
+  parameters: {
+    layout: 'padded',
+  },
   decorators: [
     (Story) => (
-      <VStack align="center" justify="center" p="xl" fullWidth minHeight="character" bgColor="black">
-        <VStack maxWidth="md" fullWidth gap="md" align="stretch" style={{ width: '100%', minWidth: '320px' }}>
-          <Story />
-        </VStack>
-      </VStack>
+      <StoryContainer width="md">
+        <Story />
+      </StoryContainer>
     ),
   ],
 }

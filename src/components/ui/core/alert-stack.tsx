@@ -26,8 +26,6 @@ export function AlertStack({ items, onDismiss }: AlertStackProps) {
       zIndex="600"
       fullWidth
       maxWidth="sm"
-      // Desktop: Right side, below header (top-24)
-      // Mobile: Centered top (top-2)
       top="2"
       right="0"
       bottom="auto"

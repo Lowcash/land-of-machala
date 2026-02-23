@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
+import { StoryContainer } from '../storybook-utils'
 import { Divider } from './divider'
 
 const meta: Meta<typeof Divider> = {
   title: 'UI/Shared/Divider',
   component: Divider,
   tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+  },
   decorators: [
     (Story) => (
-      /*
-        Full-width container prevents the divider from collapsing in
-        Storybook's centered layout. max-w-xs keeps it visually bounded.
-      */
-      <div className="flex w-64 flex-col items-center justify-center py-10">
+      <StoryContainer width="sm">
         <Story />
-      </div>
+      </StoryContainer>
     ),
   ],
 }

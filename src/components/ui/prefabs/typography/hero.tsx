@@ -37,11 +37,11 @@ interface HeroSubtitleProps extends Omit<HTMLAttributes<HTMLDivElement>, 'classN
 export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
   return (
     <HStack align="center" gap="xs" {...props}>
-      <SparklesIcon />
+      <SparklesIcon size="sm" color="gold" />
       <Text align="center" color={'secondary' as any} className="text-sm sm:text-base">
         {children}
       </Text>
-      <SparklesIcon />
+      <SparklesIcon size="sm" color="gold" />
     </HStack>
   )
 }

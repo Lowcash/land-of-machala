@@ -1,7 +1,9 @@
 import Image from 'next/image'
-import { type VariantProps, cva } from 'class-variance-authority'
+
+import { cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
+
 import { Stack } from '@/components/ui/core/stack'
 import { UserIcon } from '@/components/ui/icons'
 
@@ -17,53 +19,59 @@ const avatarImageVariants = cva('object-cover transition-all hover:grayscale-0',
   },
 })
 
-interface AvatarProps extends VariantProps<typeof avatarImageVariants> {
+interface AvatarProps {
   image?: string
   name: string
+  variant?: 'default' | 'hero'
   size?: 'sm' | 'md' | 'lg' | 'avatar' | 'avatar-sm' | 'avatar-xs' | 'avatar-lg'
-  sm?: Partial<Omit<AvatarProps, 'sm' | 'md' | 'lg' | 'xl' | 'name'>>
+  sm?: Partial<Omit<AvatarProps, 'sm' | 'name'>>
 }
 
 export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProps) {
   const currentSize = sm?.size || size
   const currentVariant = sm?.variant || variant
-  
+  const isHero = currentVariant === 'hero'
+
+  // Standardize size mapping to ensure both width and height tokens are applied
+  const sizeValue =
+    currentSize === 'avatar-lg' || currentSize === 'lg'
+      ? 'avatar-lg'
+      : currentSize === 'avatar' || currentSize === 'md'
+        ? 'avatar'
+        : currentSize === 'avatar-sm' || currentSize === 'sm'
+          ? 'avatar-sm'
+          : 'avatar-xs'
+
   return (
     <Stack
       flex="none"
-      width={
-        currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
-          ? currentSize
-          : currentSize === 'lg'
-            ? 'avatar-lg'
-            : currentSize === 'md'
-              ? 'avatar'
-              : 'avatar-sm'
-      }
+      width={sizeValue}
+      height={sizeValue}
       position="relative"
-      overflow="hidden"
       rounded={currentSize === 'avatar-xs' ? 'md' : 'lg'}
       border={currentSize === 'avatar-xs' ? 'base' : '2'}
-      borderColor="secondary"
+      borderColor={isHero ? 'primary' : 'secondary'}
       bgColor="black"
       shadow="inner"
-      style={{ aspectRatio: '3/4' }}
       className={cn(
-        'group',
-        currentVariant === 'hero' && 'border-(--color-primary) ring-2 ring-(--color-primary)/20 shadow-[0_0_15px_-5px_var(--color-primary)]'
+        'group relative overflow-hidden',
+        isHero && 'shadow-[0_0_15px_-5px_var(--color-primary)] ring-2 ring-(--color-primary)/20'
       )}
       align="center"
       justify="center"
     >
+      {/* Inner Frame for the "framed portrait" look */}
+      <div className="pointer-events-none absolute inset-0 z-10 border border-white/5" />
+      <div className="pointer-events-none absolute inset-px z-10 border border-black/40" />
+
       {image ? (
-        <Image
-          src={image}
-          alt={name}
-          fill
-          className={avatarImageVariants({ variant: currentVariant })}
-        />
+        <Image src={image} alt={name} fill className="z-0 object-cover" />
       ) : (
-        <UserIcon color="secondary" size={currentSize === 'avatar-xs' ? 'sm' : 'xl'} />
+        <UserIcon
+          color="secondary"
+          size={currentSize === 'avatar-xs' ? 'sm' : 'xl'}
+          className="z-0"
+        />
       )}
     </Stack>
   )

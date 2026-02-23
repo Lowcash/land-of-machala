@@ -6,8 +6,8 @@ import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Tooltip } from '@/components/ui/core/tooltip'
 import { Icon, type IconColor } from '@/components/ui/icons'
 import { Avatar } from '@/components/ui/prefabs/game/avatar'
-import { VitalsBar } from '@/components/ui/prefabs/game/vitals-bar'
 import { CurrencyIndicator, LocationIndicator } from '@/components/ui/prefabs/game/indicator'
+import { VitalsBar } from '@/components/ui/prefabs/game/vitals-bar'
 import { Label, Value } from '@/components/ui/prefabs/typography/shared'
 
 interface StatDefinition {
@@ -81,12 +81,7 @@ export function CharacterBox({
           {/* Main Body */}
           <HStack p={compact ? 'xxs' : 'md'} gap={compact ? 'sm' : 'md'} align="start" fullWidth>
             {/* Avatar Section */}
-            <Stack
-              flex="none"
-              height={compact ? 'avatar-xs' : 'avatar'}
-              width={compact ? 'avatar-xs' : 'avatar'}
-              position="relative"
-            >
+            <Stack flex="none" position="relative">
               <Avatar image={image} name={name} size={compact ? 'avatar-xs' : 'avatar'} />
               <Stack position="absolute" inset={compact ? 'xs' : 'base'} rounded="full">
                 <Badge size={compact ? 'sm' : 'md'} variant={isEnemy ? 'danger' : 'primary'}>
@@ -146,13 +141,7 @@ export function CharacterBox({
             <VStack gap="none" fullWidth>
               {/* Divider using a Stack */}
               <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
-              <HStack
-                display="grid"
-                cols="4"
-                gap="none"
-                fullWidth
-                py={compact ? 'xxs' : 'xs'}
-              >
+              <HStack display="grid" cols="4" gap="none" fullWidth py={compact ? 'xxs' : 'xs'}>
                 {statItems.map((stat) => (
                   <Tooltip key={stat.label} content={stat.label} side="bottom">
                     <VStack align="center" justify="center" p="none">
@@ -163,7 +152,9 @@ export function CharacterBox({
                       )}
                       <HStack gap="xxs" align="center">
                         <Icon icon={stat.icon} size={compact ? 'xs' : 'stat'} color={stat.color} />
-                        <Value variant="tiny" bold={compact} tabularNums>{stat.value}</Value>
+                        <Value variant="tiny" bold={compact} tabularNums>
+                          {stat.value}
+                        </Value>
                       </HStack>
                     </VStack>
                   </Tooltip>
@@ -178,8 +169,15 @@ export function CharacterBox({
           <VStack gap="none" fullWidth>
             {!isEnemy && (location || gold !== undefined) ? (
               <>
-              <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
-                <HStack p="xs" px="md" justify="between" fullWidth height="vitals-footer" align="center">
+                <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
+                <HStack
+                  p="xs"
+                  px="md"
+                  justify="between"
+                  fullWidth
+                  height="vitals-footer"
+                  align="center"
+                >
                   {location ? <LocationIndicator label={location} size="xs" /> : <Stack />}
                   {gold !== undefined && <CurrencyIndicator amount={gold} />}
                 </HStack>
