@@ -30,6 +30,7 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
   
   return (
     <Stack
+      flex="none"
       width={
         currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
@@ -48,6 +49,7 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
       bgColor="black"
       shadow="inner"
       className={cn(
+        'group',
         currentVariant === 'hero' && 'border-(--color-primary) ring-2 ring-(--color-primary)/20 shadow-[0_0_15px_-5px_var(--color-primary)]'
       )}
       align="center"
