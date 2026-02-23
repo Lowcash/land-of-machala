@@ -20,7 +20,7 @@ const avatarImageVariants = cva('object-cover transition-all hover:grayscale-0',
 interface AvatarProps extends VariantProps<typeof avatarImageVariants> {
   image?: string
   name: string
-  size?: 'sm' | 'md' | 'lg' | 'avatar' | 'avatar-sm' | 'avatar-xs'
+  size?: 'sm' | 'md' | 'lg' | 'avatar' | 'avatar-sm' | 'avatar-xs' | 'avatar-lg'
   sm?: Partial<Omit<AvatarProps, 'sm' | 'md' | 'lg' | 'xl' | 'name'>>
 }
 
@@ -31,25 +31,25 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
   return (
     <Stack
       height={
-        currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
+        currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
           : currentSize === 'lg'
-            ? 'avatar'
+            ? 'avatar-lg'
             : currentSize === 'md'
-              ? 'avatar-sm'
+              ? 'avatar'
               : currentSize === 'sm'
-                ? 'avatar-xs'
+                ? 'avatar-sm'
                 : 'auto'
       }
       width={
-        currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
+        currentSize === 'avatar-lg' || currentSize === 'avatar' || currentSize === 'avatar-sm' || currentSize === 'avatar-xs'
           ? currentSize
           : currentSize === 'lg'
-            ? 'avatar'
+            ? 'avatar-lg'
             : currentSize === 'md'
-              ? 'avatar-sm'
+              ? 'avatar'
               : currentSize === 'sm'
-                ? 'avatar-xs'
+                ? 'avatar-sm'
                 : 'auto'
       }
       position="relative"
