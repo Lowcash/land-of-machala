@@ -25,24 +25,11 @@ export function VitalsBar({
   return (
     <VStack gap="xs" fullWidth>
       {!compact && (
-        <HStack align="center" justify="between" fullWidth px="xs">
-          <Label variant="tiny" color="secondary">
+        <VStack px="xs" fullWidth>
+          <Label variant="tiny" color="secondary" align="left">
             {label}
           </Label>
-          {showText && (
-            <HStack align="baseline" gap="xs" flex="none">
-              <Value variant="tiny" color={textColor} tabularNums>
-                {Math.round(value)}
-              </Value>
-              <Value variant="tiny" color="secondary">
-                /
-              </Value>
-              <Value variant="tiny" color="secondary" tabularNums>
-                {max}
-              </Value>
-            </HStack>
-          )}
-        </HStack>
+        </VStack>
       )}
       <Tooltip
         content={
@@ -65,8 +52,22 @@ export function VitalsBar({
           value={value}
           max={max}
           variant={variant as ProgressProps['variant']}
-          size={compact ? 'sm' : 'md'}
-        />
+          size={compact ? 'sm' : 'lg'}
+        >
+          {showText && !compact && (
+            <HStack align="baseline" gap="xxs">
+              <Value variant="tiny" color="primary" tabularNums>
+                {Math.round(value)}
+              </Value>
+              <Value variant="tiny" color="primary">
+                /
+              </Value>
+              <Value variant="tiny" color="primary" tabularNums>
+                {max}
+              </Value>
+            </HStack>
+          )}
+        </Progress>
       </Tooltip>
     </VStack>
   )

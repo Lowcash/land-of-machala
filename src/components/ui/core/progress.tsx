@@ -51,7 +51,7 @@ export interface ProgressProps
 }
 
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
-  ({ className: _, value = 0, max = 100, variant, size, ...props }, ref) => {
+  ({ children, value = 0, max = 100, variant, size, ...props }, ref) => {
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
 
     return (
@@ -70,6 +70,13 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         />
         {/* Shimmer/Highlights */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-white/10 to-transparent" />
+
+        {/* Internal Content (Text/Values) */}
+        {children && (
+          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
+            {children}
+          </div>
+        )}
       </div>
     )
   }
