@@ -11,4 +11,9 @@ const meta: Meta<typeof LoreQuote> = {
 export default meta
 type Story = StoryObj<typeof LoreQuote>
 
-export const Default: Story = {}
+export const Default: Story = {
+  args: {
+    quote:
+      'The stars whisper of things that were, and things that are yet to be. Listen closely, traveler.',
+  },
+}

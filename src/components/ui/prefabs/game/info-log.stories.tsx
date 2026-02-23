@@ -69,13 +69,6 @@ export const Empty: Story = {
   },
 }
 
-export const Ticker: Story = {
-  args: {
-    logs: mockLogs,
-    variant: 'ticker',
-  },
-}
-
 export const LongHistory: Story = {
   args: {
     logs: [...mockLogs, ...mockLogs.map((l) => ({ ...l, id: l.id + '_2' }))],

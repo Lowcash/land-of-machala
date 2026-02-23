@@ -6,7 +6,7 @@ import { MutedText } from '@/components/ui/prefabs/typography/shared'
 import { FadeIn, PresenceSwap, ScaleIn, SlideUp, StaggeredList } from './motion-prefabs'
 
 const meta: Meta = {
-  title: 'Prefabs/Animations',
+  title: 'Prefabs/Animations/MotionPrefabs',
 }
 
 export default meta

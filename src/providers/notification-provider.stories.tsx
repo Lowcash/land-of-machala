@@ -1,12 +1,13 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import { type Meta, type StoryObj } from '@storybook/react'
 
 import { Button } from '@/components/ui/core/button'
 import { HStack, VStack } from '@/components/ui/core/stack'
+import { HeroTitle } from '@/components/ui/prefabs/typography/hero'
 
 import { NotificationProvider, useNotification } from './notification-provider'
 
 const meta: Meta<typeof NotificationProvider> = {
-  title: 'Providers/NotificationProvider',
+  title: 'Providers/Notification',
   component: NotificationProvider,
 }
 
@@ -17,7 +18,7 @@ const NotificationDemo = () => {
 
   return (
     <VStack gap="md" p="xl" minWidth="full" maxWidth="md">
-      <h3 className="font-fantasy text-xl font-bold">Heraldic Proclamations</h3>
+      <HeroTitle>Heraldic Proclamations</HeroTitle>
       <HStack gap="sm" wrap>
         <Button
           variant="choice"
