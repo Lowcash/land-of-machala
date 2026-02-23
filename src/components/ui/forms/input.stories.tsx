@@ -5,7 +5,7 @@ import { SwordsIcon, UserIcon } from '@/components/ui/icons'
 import { Input } from './input'
 
 const meta: Meta<typeof Input> = {
-  title: 'Forms/Input',
+  title: 'UI/Forms/Input',
   component: Input,
   tags: ['autodocs'],
 }

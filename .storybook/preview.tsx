@@ -8,7 +8,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['Features', ['Auth', ['Login', 'Register', 'Origins']], 'Core'],
+        order: ['Features', ['Auth', ['Login', 'Register', 'Origins']], 'UI', ['Core', 'Forms', 'Navigation', 'Prefabs', 'Shared'], 'System'],
       },
     },
     layout: 'centered',

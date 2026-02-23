@@ -8,7 +8,7 @@ import { Card } from './card'
 import { Text } from './typography'
 
 const meta: Meta<typeof Card> = {
-  title: 'Core/Card',
+  title: 'UI/Core/Card',
   component: Card,
   tags: ['autodocs'],
 }

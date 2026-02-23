@@ -6,7 +6,7 @@ import { List, ListItem } from './list'
 import { Text } from './typography'
 
 const meta: Meta<typeof List> = {
-  title: 'Core/List',
+  title: 'UI/Core/List',
   component: List,
   tags: ['autodocs'],
 }

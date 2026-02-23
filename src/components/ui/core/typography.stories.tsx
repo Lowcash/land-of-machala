@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import * as HeroPrefabs from '../prefabs/typography/hero'
-import * as Prefabs from '../prefabs/typography/shared'
-import { Stack } from './stack'
 import { Heading, Text } from './typography'
 
 const meta: Meta<typeof Heading> = {
-  title: 'Core/Typography',
+  title: 'UI/Core/Typography',
   tags: ['autodocs'],
 }
 

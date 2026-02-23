@@ -4,7 +4,7 @@ import { Badge } from './badge'
 import { HStack, VStack } from './stack'
 
 const meta: Meta<typeof Badge> = {
-  title: 'Core/Badge',
+  title: 'UI/Core/Badge',
   component: Badge,
   tags: ['autodocs'],
 }

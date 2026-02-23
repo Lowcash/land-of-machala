@@ -4,7 +4,7 @@ import { Alert } from './alert'
 import { AlertStack } from '@/components/ui/core/alert-stack'
 
 const meta: Meta<typeof Alert> = {
-  title: 'Core/Alert',
+  title: 'UI/Core/Alert',
   component: Alert,
   tags: ['autodocs'],
   argTypes: {

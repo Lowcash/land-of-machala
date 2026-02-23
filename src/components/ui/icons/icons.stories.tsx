@@ -7,7 +7,6 @@ import { MutedText } from '@/components/ui/prefabs/typography/shared'
 import {
   DicesIcon,
   FlameIcon,
-  Icon,
   LockIcon,
   LogoIcon,
   MailIcon,
@@ -22,10 +21,7 @@ import {
 } from './index'
 
 const meta: Meta = {
-  title: 'Core/Icons',
-  parameters: {
-    layout: 'centered',
-  },
+  title: 'UI/Core/Icons',
 }
 
 export default meta

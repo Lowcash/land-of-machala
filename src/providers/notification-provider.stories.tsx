@@ -7,7 +7,7 @@ import { HeroTitle } from '@/components/ui/prefabs/typography/hero'
 import { NotificationProvider, useNotification } from './notification-provider'
 
 const meta: Meta<typeof NotificationProvider> = {
-  title: 'Providers/Notification',
+  title: 'System/Notification',
   component: NotificationProvider,
 }
 

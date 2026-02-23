@@ -2,11 +2,11 @@ import type { Meta, StoryObj } from '@storybook/react'
 
 import { Description, Label, Value } from '../prefabs/typography/shared'
 import { Button } from './button'
-import { HStack, Stack } from './stack'
+import { Stack } from './stack'
 import { Tooltip } from './tooltip'
 
 const meta: Meta<typeof Tooltip> = {
-  title: 'Core/Tooltip',
+  title: 'UI/Core/Tooltip',
   component: Tooltip,
   tags: ['autodocs'],
 }
@@ -36,29 +36,27 @@ export const Ornamental: Story = {
 
 export const Directions: Story = {
   render: () => (
-    <Stack gap="xl" p="xl" align="center">
-      <Stack display="grid" cols="2" sm={{ cols: '4' }} gap="lg" align="center" justify="center">
-        <Tooltip content={<Value variant="tiny">Tooltip on Top</Value>} side="top">
-          <Button variant="secondary" fullWidth={false}>
-            Top
-          </Button>
-        </Tooltip>
-        <Tooltip content={<Value variant="tiny">Tooltip on Bottom</Value>} side="bottom">
-          <Button variant="secondary" fullWidth={false}>
-            Bottom
-          </Button>
-        </Tooltip>
-        <Tooltip content={<Value variant="tiny">Tooltip on Left</Value>} side="left">
-          <Button variant="secondary" fullWidth={false}>
-            Left
-          </Button>
-        </Tooltip>
-        <Tooltip content={<Value variant="tiny">Tooltip on Right</Value>} side="right">
-          <Button variant="secondary" fullWidth={false}>
-            Right
-          </Button>
-        </Tooltip>
-      </Stack>
+    <Stack display="grid" cols="2" sm={{ cols: '4' }} gap="md" align="center" justify="center">
+      <Tooltip content={<Value variant="tiny">Tooltip on Top</Value>} side="top">
+        <Button variant="secondary" fullWidth={false}>
+          Top
+        </Button>
+      </Tooltip>
+      <Tooltip content={<Value variant="tiny">Tooltip on Bottom</Value>} side="bottom">
+        <Button variant="secondary" fullWidth={false}>
+          Bottom
+        </Button>
+      </Tooltip>
+      <Tooltip content={<Value variant="tiny">Tooltip on Left</Value>} side="left">
+        <Button variant="secondary" fullWidth={false}>
+          Left
+        </Button>
+      </Tooltip>
+      <Tooltip content={<Value variant="tiny">Tooltip on Right</Value>} side="right">
+        <Button variant="secondary" fullWidth={false}>
+          Right
+        </Button>
+      </Tooltip>
     </Stack>
   ),
 }

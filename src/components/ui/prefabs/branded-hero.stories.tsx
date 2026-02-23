@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { BrandedHero } from './branded-hero'
 
 const meta: Meta<typeof BrandedHero> = {
-  title: 'Prefabs/Display/BrandedHero',
+  title: 'UI/Prefabs/Display/BrandedHero',
   component: BrandedHero,
   tags: ['autodocs'],
   argTypes: {

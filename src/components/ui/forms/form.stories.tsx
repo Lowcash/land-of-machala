@@ -8,7 +8,7 @@ import { Card } from '../core/card'
 import { FormCheckbox, FormInput, FormRoot } from './form'
 
 const meta: Meta = {
-  title: 'Forms/Form',
+  title: 'UI/Forms/Form',
   tags: ['autodocs'],
 }
 

@@ -8,7 +8,7 @@ import { Footer } from './footer'
 const CURRENT_YEAR = new Date().getFullYear()
 
 const meta: Meta<typeof Footer> = {
-  title: 'Shared/Footer',
+  title: 'UI/Shared/Footer',
   component: Footer,
   tags: ['autodocs'],
   args: {

@@ -6,7 +6,7 @@ import { MutedText } from '@/components/ui/prefabs/typography/shared'
 import { GameAccordion } from './accordion'
 
 const meta: Meta<typeof GameAccordion> = {
-  title: 'Navigation/Accordion',
+  title: 'UI/Navigation/Accordion',
   component: GameAccordion,
   argTypes: {
     defaultValue: {
