@@ -36,8 +36,8 @@ export const Ornamental: Story = {
 
 export const Directions: Story = {
   render: () => (
-    <Stack gap="xl" p="xl">
-      <HStack gap="lg">
+    <Stack gap="xl" p="xl" align="center">
+      <Stack display="grid" cols="2" sm={{ cols: '4' }} gap="lg" align="center" justify="center">
         <Tooltip content={<Value variant="tiny">Tooltip on Top</Value>} side="top">
           <Button variant="secondary" fullWidth={false}>
             Top
@@ -58,7 +58,7 @@ export const Directions: Story = {
             Right
           </Button>
         </Tooltip>
-      </HStack>
+      </Stack>
     </Stack>
   ),
 }
