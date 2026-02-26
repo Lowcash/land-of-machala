@@ -6,8 +6,8 @@ import { getSelectionIcon } from '@/lib/game/origins/utils'
 import { Stack, VStack } from '@/components/ui/core/stack'
 import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
-import { SelectionDetails } from './selection-details'
 import { SelectionButton } from './selection-button'
+import { SelectionDetails } from './selection-details'
 
 interface SelectionBoxProps {
   title: string

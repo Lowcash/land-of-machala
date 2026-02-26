@@ -97,6 +97,30 @@ export const InsideCard: Story = {
             Inquire about the disappearances in Oakhaven.
           </Text>
         </Card>
+        <Card variant="subtle" p="sm" gap="xs">
+          <Text variant="large">The Goblin Threat</Text>
+          <Text variant="small" color="secondary">
+            Defend the eastern watchtower from the goblin raiding party.
+          </Text>
+        </Card>
+        <Card variant="subtle" p="sm" gap="xs">
+          <Text variant="large">Lost Heirloom</Text>
+          <Text variant="small" color="secondary">
+            Retrieve the stolen necklace from the bandit camp.
+          </Text>
+        </Card>
+        <Card variant="subtle" p="sm" gap="xs">
+          <Text variant="large">Gathering Herbs</Text>
+          <Text variant="small" color="secondary">
+            Find 5 medicinal roots growing near the riverbank.
+          </Text>
+        </Card>
+        <Card variant="subtle" p="sm" gap="xs">
+          <Text variant="large">The Cave of Echoes</Text>
+          <Text variant="small" color="secondary">
+            Investigate the strange noises coming from the old mine.
+          </Text>
+        </Card>
       </ScrollArea>
 
       <Card.Footer px="md" pb="md">
