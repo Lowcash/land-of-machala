@@ -29,13 +29,9 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
 
   const { scrollRef, showTopArrow, showBottomArrow } = useScrollArea()
 
-  // Layout props go to the inner scroll container to manage content layout
+  // Extract ONLY flex and alignment properties for the inner scroll container.
+  // We leave padding on the outer component so it handles its own styling correctly.
   const {
-    p,
-    pt,
-    pb,
-    px,
-    py,
     gap,
     direction = 'col',
     align = 'stretch',
@@ -47,8 +43,20 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
     md,
     lg,
     xl,
-    ...outerLayoutProps
   } = layoutProps as any
+
+  const extractFlex = (bp: any) =>
+    bp
+      ? {
+          gap: bp.gap,
+          direction: bp.direction,
+          align: bp.align,
+          justify: bp.justify,
+          display: bp.display,
+          cols: bp.cols,
+          wrap: bp.wrap,
+        }
+      : undefined
 
   return (
     <Stack
@@ -58,9 +66,8 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
       style={{
         flex: isFlexible ? '1 1 0%' : undefined,
       }}
-      p="none" // Outer wrapper loses padding so scrollbar hugs edge
-      direction="col" // Outer wrapper is always column so arrow stack correctly
-      {...outerLayoutProps}
+      {...layoutProps} // Outer wrapper receives ALL layout props including padding
+      direction="col" // Force standard column to align absolute arrows
       {...otherProps}
     >
       {showTopArrow && (
@@ -81,11 +88,7 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
       <Stack
         ref={scrollRef as any}
         className="scrollbar-custom inline-flex min-h-0 flex-1 overflow-y-auto" // Enforce flex
-        p={p}
-        pt={pt}
-        pb={pb}
-        px={px}
-        py={py}
+        p="none" // No padding here. Card/outer handles it.
         gap={gap}
         direction={direction}
         align={align}
@@ -93,10 +96,10 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
         display={display}
         cols={cols}
         wrap={wrap}
-        sm={sm}
-        md={md}
-        lg={lg}
-        xl={xl}
+        sm={extractFlex(sm)}
+        md={extractFlex(md)}
+        lg={extractFlex(lg)}
+        xl={extractFlex(xl)}
       >
         {children}
       </Stack>

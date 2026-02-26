@@ -10,7 +10,7 @@ import { Divider } from '@/components/ui/shared/divider'
 import { StatRow } from './stat-row'
 
 interface SelectionDetailsProps {
-  item: TranslatedRaceInfo | TranslatedClassInfo
+  item: TranslatedRaceInfo | TranslatedClassInfo | null
   type: 'race' | 'class'
   flex?: string | boolean | number
   statLabels: Record<string, string>
@@ -25,95 +25,92 @@ export function SelectionDetails({
   uiLabels,
 }: SelectionDetailsProps) {
   return (
-    <ScrollArea
-      as={Card}
-      isFlexible
-      flex={flex as any}
-      p="md"
-      gap="sm"
-      minHeight="zero"
-      height="full"
-      {...({ variant: 'subtle', rounded: 'base' } as any)}
-    >
-        <Description variant="detail">{item.description}</Description>
+    <ScrollArea as={Card} flex={flex as any} gap="md" p="md">
+      {item && (
+        <>
+          <Description variant="detail" key={`${item.id}-desc`}>
+            {item.description}
+          </Description>
 
-        {/* <Divider variant="solid" />
+          <Divider variant="solid" key={`${item.id}-div`} />
 
-      <VStack gap="xs" fullWidth>
-        <Label align="left" variant="tiny">
-          {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
-        </Label>
+          <VStack gap="xs" fullWidth key={`${item.id}-stats`}>
+            <Label align="left" variant="tiny">
+              {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
+            </Label>
 
-        <Stack display="grid" cols="2" gap="sm">
-          {type === 'race' ? (
-            <>
-              <StatRow
-                compact
-                icon={getStatIcon('hp')}
-                label={statLabels.hp}
-                value={(item as TranslatedRaceInfo).stats.hp}
-                color="hp"
-              />
-              <StatRow
-                compact
-                icon={getStatIcon('mana')}
-                label={statLabels.mana}
-                value={(item as TranslatedRaceInfo).stats.mana}
-                color="mana"
-              />
-              <StatRow
-                compact
-                icon={getStatIcon('strength')}
-                label={statLabels.strength}
-                value={(item as TranslatedRaceInfo).stats.strength}
-                color="strength"
-              />
-              <StatRow
-                compact
-                icon={getStatIcon('intelligence')}
-                label={statLabels.intelligence}
-                value={(item as TranslatedRaceInfo).stats.intelligence}
-                color="intelligence"
-              />
-              <StatRow
-                compact
-                icon={getStatIcon('agility')}
-                label={statLabels.agility}
-                value={(item as TranslatedRaceInfo).stats.agility}
-                color="agility"
-              />
-              <StatRow
-                compact
-                icon={getStatIcon('stamina')}
-                label={statLabels.stamina}
-                value={(item as TranslatedRaceInfo).stats.stamina}
-                color="stamina"
-              />
-            </>
-          ) : (
-            Object.entries((item as TranslatedClassInfo).statMod).map(
-              ([stat, val]: [string, number]) => {
-                if (val === 0) return null
-                const isPositive = val > 0
-                const Icon = getStatIcon(stat)
-
-                return (
+            <Stack display="grid" cols="2" gap="sm">
+              {type === 'race' ? (
+                <>
                   <StatRow
-                    key={stat}
                     compact
-                    icon={Icon}
-                    label={statLabels[stat]}
-                    value={`${isPositive ? '+' : ''}${val}`}
-                    color="gold"
+                    icon={getStatIcon('hp')}
+                    label={statLabels.hp}
+                    value={(item as TranslatedRaceInfo).stats.hp}
+                    color="hp"
                   />
-                )
-              }
-            )
-          )}
-        </Stack>
+                  <StatRow
+                    compact
+                    icon={getStatIcon('mana')}
+                    label={statLabels.mana}
+                    value={(item as TranslatedRaceInfo).stats.mana}
+                    color="mana"
+                  />
+                  <StatRow
+                    compact
+                    icon={getStatIcon('strength')}
+                    label={statLabels.strength}
+                    value={(item as TranslatedRaceInfo).stats.strength}
+                    color="strength"
+                  />
+                  <StatRow
+                    compact
+                    icon={getStatIcon('intelligence')}
+                    label={statLabels.intelligence}
+                    value={(item as TranslatedRaceInfo).stats.intelligence}
+                    color="intelligence"
+                  />
+                  <StatRow
+                    compact
+                    icon={getStatIcon('agility')}
+                    label={statLabels.agility}
+                    value={(item as TranslatedRaceInfo).stats.agility}
+                    color="agility"
+                  />
+                  <StatRow
+                    compact
+                    icon={getStatIcon('stamina')}
+                    label={statLabels.stamina}
+                    value={(item as TranslatedRaceInfo).stats.stamina}
+                    color="stamina"
+                  />
+                </>
+              ) : (
+                Object.entries((item as TranslatedClassInfo).statMod).map(
+                  ([stat, val]: [string, number]) => {
+                    if (val === 0) return null
+                    const isPositive = val > 0
+                    const Icon = getStatIcon(stat)
 
-        <Description variant="bonus">{item.bonuses}</Description>
-      </VStack> */}
+                    return (
+                      <StatRow
+                        key={stat}
+                        compact
+                        icon={Icon}
+                        label={statLabels[stat]}
+                        value={`${isPositive ? '+' : ''}${val}`}
+                        color="gold"
+                      />
+                    )
+                  }
+                )
+              )}
+            </Stack>
+
+            <Description variant="bonus">{item.bonuses}</Description>
+          </VStack>
+        </>
+      )}
     </ScrollArea>
   )
 }

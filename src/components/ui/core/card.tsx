@@ -8,7 +8,7 @@ import { CardTitle } from '@/components/ui/prefabs/typography/card'
 
 import { Stack, type StackProps, splitLayoutProps } from './stack'
 
-const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-black/40', {
+const cardVariants = cva('transition-all backdrop-blur-md shadow-lg shadow-black/40', {
   variants: {
     variant: {
       primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
@@ -32,8 +32,9 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
   },
 })
 
-interface CardRootProps
+export interface CardRootProps
   extends
+    Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>,
     Omit<StackProps, 'rounded' | 'border' | 'borderColor' | 'opacity' | 'shadow' | 'color'>,
     VariantProps<typeof cardVariants> {
   /** Map padding to Stack's p prop for backward compatibility */

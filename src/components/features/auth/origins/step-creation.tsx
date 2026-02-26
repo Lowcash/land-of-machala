@@ -84,7 +84,7 @@ export function StepCreation({
                     selectedId={selectedRaceId}
                     onSelect={onRaceSelect}
                     type="race"
-                    variant="responsive"
+                    variant="flat"
                     statLabels={statLabels}
                     uiLabels={uiLabels}
                   />
@@ -101,7 +101,7 @@ export function StepCreation({
                     selectedId={selectedClassId}
                     onSelect={onClassSelect}
                     type="class"
-                    variant="responsive"
+                    variant="flat"
                     statLabels={statLabels}
                     uiLabels={uiLabels}
                   />

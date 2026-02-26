@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/core/card'
+import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { CharacterNameInput } from './character-name-input'
 
@@ -11,16 +11,16 @@ interface CharacterNameCardProps {
 
 export function CharacterNameCard({ name, label, placeholder, onChange }: CharacterNameCardProps) {
   return (
-    <Card p="md" md={{ p: 'lg' }} variant="subtle">
-      <Card.Header align="center" justify="center">
-        <Card.Title align="center" variant="large">
+    <NarrativeCard variant="subtle">
+      <NarrativeCard.Header align="center" justify="center">
+        <NarrativeCard.Title align="center" variant="large">
           {label}
-        </Card.Title>
-      </Card.Header>
+        </NarrativeCard.Title>
+      </NarrativeCard.Header>
 
-      <Card.Content>
+      <NarrativeCard.Content>
         <CharacterNameInput name={name} placeholder={placeholder} onChange={onChange} />
-      </Card.Content>
-    </Card>
+      </NarrativeCard.Content>
+    </NarrativeCard>
   )
 }

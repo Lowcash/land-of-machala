@@ -45,13 +45,7 @@ interface InfoLogProps {
 
 export function InfoLog({ logs, maxHeight = 300 }: InfoLogProps) {
   return (
-    <ScrollArea
-      as={Card}
-      p="xs"
-      gap="xs"
-      style={{ maxHeight }}
-      {...{ variant: 'secondary' }}
-    >
+    <ScrollArea as={Card} p="xs" gap="xs" style={{ maxHeight }} {...{ variant: 'secondary' }}>
       {logs.length === 0 ? (
         <Description align="center">No entries in the log yet...</Description>
       ) : (

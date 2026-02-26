@@ -4,10 +4,10 @@ import { STORY_STEPS } from '@/lib/game/data/origins'
 
 import { StepCreation } from '@/components/features/auth/origins/step-creation'
 import { TutorialStep } from '@/components/features/auth/origins/step-tutorial'
-import { useOrigins } from '@/components/features/auth/origins/use-origins'
 import { AuthShell } from '@/components/ui/prefabs/layout/auth-shell'
 import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
+import { useOrigins } from './use-origins'
 import { OriginsView } from './view'
 
 const meta: Meta<typeof OriginsView> = {
@@ -52,16 +52,20 @@ export const FullPage: Story = {
     races: STORY_STEPS.map((s) => ({
       id: String(s.id),
       name: `Race ${s.id}`,
-      description: 'The ancient lineages of Machala descend from the first stars that fell upon the peaks. Their wisdom is etched in stone and their songs echo through the deep valleys of time. This is a very long description intended to test the internal scrolling of the selection details panel within the fixed character creation height.',
-      bonuses: '• +2 Ancient Wisdom\n• +5 Shadow Resistance\n• Enhanced Night Vision\n• Natural affinity for alchemy',
+      description:
+        'The ancient lineages of Machala descend from the first stars that fell upon the peaks. Their wisdom is etched in stone and their songs echo through the deep valleys of time. This is a very long description intended to test the internal scrolling of the selection details panel within the fixed character creation height.',
+      bonuses:
+        '• +2 Ancient Wisdom\n• +5 Shadow Resistance\n• Enhanced Night Vision\n• Natural affinity for alchemy',
       stats: { hp: 10, mana: 10, strength: 10, intelligence: 10, agility: 10, stamina: 10 },
       icon: s.id % 2 === 0 ? 'User' : 'Shield',
     })),
     classes: STORY_STEPS.map((s) => ({
       id: String(s.id),
       name: `Class ${s.id}`,
-      description: 'Mastery of the blade is not merely about strength, but about the harmony between spirit and steel. Those who follow this path find themselves guarding the borders of reality itself. We need this description to be quite substantial so we can verify that columns remain aligned and scroll bars appear correctly.',
-      bonuses: '• +10 Physical Mastery\n• +3 Critical Strike\n• Unique ability: Star-fall Slash\n• Can equip heavy armor without penalty',
+      description:
+        'Mastery of the blade is not merely about strength, but about the harmony between spirit and steel. Those who follow this path find themselves guarding the borders of reality itself. We need this description to be quite substantial so we can verify that columns remain aligned and scroll bars appear correctly.',
+      bonuses:
+        '• +10 Physical Mastery\n• +3 Critical Strike\n• Unique ability: Star-fall Slash\n• Can equip heavy armor without penalty',
       statMod: { hp: 1, mana: 1, strength: 1, intelligence: 1, agility: 1, stamina: 1 },
       icon: s.id % 2 === 0 ? 'Sword' : 'Flame',
     })),
@@ -131,26 +135,28 @@ const CreationWrapper = () => {
   const {
     characterName,
     setName,
-    handleRandomize,
     selectedRaceId,
     setSelectedRaceId,
     selectedClassId,
     setSelectedClassId,
     totalStats,
-  } = useOrigins({ races, classes, steps: MOCK_STEPS } as any)
+    handleRandomize,
+    handleFinish,
+    canFinish,
+  } = useOrigins({ races, classes, steps: MOCK_STEPS })
 
   return (
     <StepCreation
       name={characterName}
       onNameChange={setName}
       onRandomize={handleRandomize}
-      onFinish={() => {}}
+      onFinish={handleFinish}
       selectedRaceId={selectedRaceId}
       onRaceSelect={setSelectedRaceId}
       selectedClassId={selectedClassId}
       onClassSelect={setSelectedClassId}
       stats={totalStats}
-      canFinish={characterName.trim().length > 0}
+      canFinish={canFinish}
       races={races}
       classes={classes}
       statLabels={statLabels}

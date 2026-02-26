@@ -1,5 +1,3 @@
-import React from 'react'
-
 /**
  * Next.js Template for global page transitions.
  * Templates re-run their logic on every navigation, ensuring the animation

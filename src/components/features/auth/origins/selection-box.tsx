@@ -3,9 +3,8 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
-import { Card } from '@/components/ui/core/card'
 import { Stack, VStack } from '@/components/ui/core/stack'
-import { FadeIn, Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
+import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { SelectionDetails } from './selection-details'
 import { SelectionItem } from './selection-item'
@@ -16,7 +15,7 @@ interface SelectionBoxProps {
   selectedId: string | null
   onSelect: (id: string) => void
   type: 'race' | 'class'
-  variant?: 'primary' | 'flat' | 'responsive'
+  variant?: 'primary' | 'flat'
   statLabels: Record<string, string>
   uiLabels: any
 }
@@ -33,18 +32,18 @@ export function SelectionBox({
 }: SelectionBoxProps) {
   const selectedItem = items.find((i) => i.id === selectedId)
 
-  const isPrimaryOrResponsive = variant === 'primary' || variant === 'responsive'
+  const isPrimary = variant === 'primary'
 
   const content = (
-    <Card.Content
+    <NarrativeCard.Content
       gap="md"
-      flex={isPrimaryOrResponsive ? '1' : 'none'}
+      flex={isPrimary ? '1' : 'none'}
       /** Use full height for flex stretching */
-      height={isPrimaryOrResponsive ? 'full' : undefined}
+      height={isPrimary ? 'full' : undefined}
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
-      <Stack display="grid" cols="2" gap="xs" md={{ gap: 'sm' }} flex="none">
+      <Stack display="grid" cols="2" gap="sm" md={{ gap: 'md' }} flex="none">
         {items.map((item) => {
           const Icon = getSelectionIcon(item.icon)
           const isSelected = selectedId === item.id
@@ -61,73 +60,34 @@ export function SelectionBox({
         })}
       </Stack>
 
-      <Presence mode="wait">
-        {selectedItem && (
-          <FadeIn key={selectedItem.id}>
-            <VStack flex="1" minHeight="zero">
-              <SelectionDetails
-                item={selectedItem}
-                type={type}
-                flex="1"
-                statLabels={statLabels}
-                uiLabels={uiLabels}
-              />
-            </VStack>
-          </FadeIn>
-        )}
-      </Presence>
-    </Card.Content>
+      <SelectionDetails
+        item={selectedItem || null}
+        type={type}
+        flex="1"
+        statLabels={statLabels}
+        uiLabels={uiLabels}
+      />
+    </NarrativeCard.Content>
   )
-
-  if (variant === 'responsive') {
-    return (
-      <VStack fullWidth height="selection" md={{ height: 'full' }}>
-        {/* Mobile/Accordion: Flat view */}
-        <Card variant="ghost" padding="md" height="full" flex="1" md={{ p: 'lg', display: 'none' }}>
-          {content}
-        </Card>
-
-        {/* Desktop: Primary card view */}
-        <VStack flex="1" height="full">
-          <Card
-            variant="primary"
-            p="md"
-            md={{ p: 'lg', display: 'flex' }}
-            display="none"
-            direction="col"
-            height="full"
-            minHeight="zero"
-          >
-            <Card.Header align="center" justify="center">
-              <Card.Title align="center">{title}</Card.Title>
-            </Card.Header>
-            {content}
-          </Card>
-        </VStack>
-      </VStack>
-    )
-  }
 
   const isFlat = variant === 'flat'
 
   return (
     <VStack fullHeight minHeight="zero">
-      <Card
+      <NarrativeCard
         variant={isFlat ? 'ghost' : 'secondary'}
-        p="md"
-        md={{ p: 'lg' }}
         direction="col"
         height={isFlat ? 'auto' : 'full'}
         minHeight={'zero'}
       >
         {!isFlat && (
-          <Card.Header align="center" justify="center">
-            <Card.Title align="center">{title}</Card.Title>
-          </Card.Header>
+          <NarrativeCard.Header align="center" justify="center">
+            <NarrativeCard.Title align="center">{title}</NarrativeCard.Title>
+          </NarrativeCard.Header>
         )}
 
         {content}
-      </Card>
+      </NarrativeCard>
     </VStack>
   )
 }

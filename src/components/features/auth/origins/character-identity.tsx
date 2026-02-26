@@ -52,6 +52,7 @@ export function CharacterIdentity({
         isReady={canFinish}
         statLabels={statLabels}
         uiLabels={uiLabels}
+        title={uiLabels.statsTitle}
       />
 
       <VStack display="none" md={{ display: 'flex' }} fullWidth>

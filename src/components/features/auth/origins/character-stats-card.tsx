@@ -1,8 +1,8 @@
 import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucide-react'
 
-import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/stack'
 import { StatusIcon } from '@/components/ui/icons'
+import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { StatRow } from './stat-row'
 
@@ -18,6 +18,7 @@ interface CharacterStatsCardProps {
   isReady?: boolean
   statLabels: Record<string, string>
   uiLabels: any
+  title: string
 }
 
 export function CharacterStatsCard({
@@ -25,15 +26,18 @@ export function CharacterStatsCard({
   isReady,
   statLabels,
   uiLabels,
+  title,
 }: CharacterStatsCardProps) {
   return (
-    <Card p="md" md={{ p: 'lg' }} flex="1" variant="subtle">
-      <Card.Header align="center" justify="center" gap="sm">
-        <Card.Title align="center">{uiLabels.statsTitle}</Card.Title>
+    <NarrativeCard variant="subtle" direction="col">
+      <NarrativeCard.Header align="center" justify="center" p="none">
+        <NarrativeCard.Title align="center" variant="large">
+          {title}
+        </NarrativeCard.Title>
         {isReady && <StatusIcon icon={ShieldCheck} />}
-      </Card.Header>
+      </NarrativeCard.Header>
 
-      <Card.Content gap="sm" height="full" justify="between">
+      <NarrativeCard.Content gap="sm" height="full" justify="between">
         <Stack
           display="grid"
           cols="1"
@@ -65,7 +69,7 @@ export function CharacterStatsCard({
             color="stamina"
           />
         </Stack>
-      </Card.Content>
-    </Card>
+      </NarrativeCard.Content>
+    </NarrativeCard>
   )
 }

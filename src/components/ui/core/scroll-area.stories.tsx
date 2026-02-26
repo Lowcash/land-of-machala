@@ -12,7 +12,7 @@ const meta: Meta<typeof ScrollArea> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <StoryContainer width="md" height="selection">
+      <StoryContainer>
         <Story />
       </StoryContainer>
     ),
@@ -24,7 +24,7 @@ type Story = StoryObj<typeof ScrollArea>
 
 export const Default: Story = {
   render: () => (
-    <ScrollArea fullHeight gap="md" p="md" {...{ variant: 'subtle', overrideP: true }}>
+    <ScrollArea height="full" isFlexible gap="md">
       <Heading level="h3">The Ancient Chronicles</Heading>
       <VStack gap="sm">
         <Text variant="primary">
@@ -56,8 +56,8 @@ export const Default: Story = {
 
 export const InsideCard: Story = {
   render: () => (
-    <Card fullHeight p="none">
-      <Card.Header px="md" pt="md">
+    <Card>
+      <Card.Header px="md">
         <Heading level="h4">Quest Log</Heading>
       </Card.Header>
 

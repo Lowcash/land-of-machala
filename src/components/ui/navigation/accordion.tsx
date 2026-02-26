@@ -137,30 +137,40 @@ export function GameAccordion({
       className={cn('flex w-full flex-col gap-3', passthroughOnDesktop && 'md:gap-4', className)}
     >
       {items.map((item) => (
-          <AccordionItem
-            key={item.value}
-            value={item.value}
-            className={cn(
-              // Match Button 'secondary' variant
-              'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/60',
-              'transition-all duration-300',
-              // Open state: clearer distinction but seamless flow
-              'data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
-              passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
-            )}
-          >
-            <AccordionTrigger className={cn('border-none p-4', passthroughOnDesktop && 'md:hidden')}>
-              <div className="flex w-full items-center justify-between gap-6 pr-6">
-                <Text variant="primary" font="fantasy" truncate className="text-left text-base sm:text-lg">
-                  {item.title}
+        <AccordionItem
+          key={item.value}
+          value={item.value}
+          className={cn(
+            // Match Button 'secondary' variant
+            'flex w-full flex-col overflow-hidden rounded-lg border border-(--color-secondary)/40 bg-black/60',
+            'transition-all duration-300',
+            // Open state: clearer distinction but seamless flow
+            'data-[state=open]:border-(--color-primary) data-[state=open]:bg-black/80',
+            passthroughOnDesktop && 'md:border-none md:bg-transparent md:shadow-none'
+          )}
+        >
+          <AccordionTrigger className={cn('border-none p-4', passthroughOnDesktop && 'md:hidden')}>
+            <div className="flex w-full items-center justify-between gap-6 pr-2">
+              <Text
+                variant="primary"
+                font="fantasy"
+                truncate
+                className="text-left text-base sm:text-lg"
+              >
+                {item.title}
+              </Text>
+              {item.selectedLabel && (
+                <Text
+                  variant="small"
+                  color="secondary"
+                  truncate
+                  className="font-fantasy shrink-0 opacity-80 group-data-[state=open]:opacity-100"
+                >
+                  {item.selectedLabel}
                 </Text>
-                {item.selectedLabel && (
-                  <Text variant="small" color="secondary" truncate className="shrink-0 font-fantasy opacity-80 group-data-[state=open]:opacity-100">
-                    {item.selectedLabel}
-                  </Text>
-                )}
-              </div>
-            </AccordionTrigger>
+              )}
+            </div>
+          </AccordionTrigger>
           <AccordionContent
             forceMount={passthroughOnDesktop ? true : undefined}
             className={cn(

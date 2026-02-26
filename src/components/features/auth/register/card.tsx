@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/core/card'
+import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { RegisterForm, RegisterFormValues } from './form'
 
@@ -10,8 +10,8 @@ interface RegisterCardProps {
 
 export function RegisterCard({ onRegister, isLoading, uiLabels }: RegisterCardProps) {
   return (
-    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
+    <NarrativeCard variant="primary">
       <RegisterForm onRegister={onRegister} isLoading={isLoading} uiLabels={uiLabels} />
-    </Card>
+    </NarrativeCard>
   )
 }

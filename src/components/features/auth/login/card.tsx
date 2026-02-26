@@ -1,4 +1,4 @@
-import { Card } from '@/components/ui/core/card'
+import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 import { Divider } from '@/components/ui/shared/divider'
 
 import { LoginActions } from './actions'
@@ -26,7 +26,7 @@ export function LoginCard({
   uiLabels,
 }: LoginCardProps) {
   return (
-    <Card variant="primary" p="md" md={{ p: 'lg' }} gap="md">
+    <NarrativeCard variant="primary">
       <LoginForm onLogin={onLogin} isLoading={isLoading} uiLabels={uiLabels} />
 
       <Divider label={orLabel} />
@@ -38,6 +38,6 @@ export function LoginCard({
         guestLabel={guestLabel}
         registerLabel={registerLabel}
       />
-    </Card>
+    </NarrativeCard>
   )
 }
