@@ -26,14 +26,11 @@ export function SelectionDetails({
 }: SelectionDetailsProps) {
   return (
     <ScrollArea
-      as={Card}
       isFlexible
       flex={flex as any}
-      p="sm"
-      md={{ p: 'md' }}
+      p="md"
       gap="sm"
-      // @ts-expect-error - base is valid for Card variants, though strict StackProps is evaluated here
-      rounded="base"
+      className="bg-black/40 border border-(--color-secondary)/20 rounded"
       minHeight="zero"
       height="full"
     >

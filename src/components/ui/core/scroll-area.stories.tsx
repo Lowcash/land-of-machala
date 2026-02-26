@@ -12,7 +12,7 @@ const meta: Meta<typeof ScrollArea> = {
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <StoryContainer width="md" height="selection">
+      <StoryContainer width="md">
         <Story />
       </StoryContainer>
     ),
