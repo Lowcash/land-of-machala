@@ -25,18 +25,15 @@ export function SelectionDetails({
   uiLabels,
 }: SelectionDetailsProps) {
   return (
-    <ScrollArea
-      isFlexible
-      flex={flex as any}
-      p="md"
-      gap="sm"
-      className="bg-black/40 border border-(--color-secondary)/20 rounded"
-      minHeight="zero"
-      height="full"
-    >
+    <Card variant="subtle" flex={flex as any} p="none" minHeight="zero">
+      <ScrollArea
+        p="md"
+        gap="sm"
+        height="full"
+      >
       <Description variant="detail">{item.description}</Description>
 
-      <Divider variant="solid" />
+      {/* <Divider variant="solid" />
 
       <VStack gap="xs" fullWidth>
         <Label align="left" variant="tiny">
@@ -112,7 +109,8 @@ export function SelectionDetails({
         </Stack>
 
         <Description variant="bonus">{item.bonuses}</Description>
-      </VStack>
-    </ScrollArea>
+      </VStack> */}
+      </ScrollArea>
+    </Card>
   )
 }

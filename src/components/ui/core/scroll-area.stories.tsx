@@ -24,8 +24,9 @@ type Story = StoryObj<typeof ScrollArea>
 
 export const Default: Story = {
   render: () => (
-    <ScrollArea fullHeight gap="md" p="md" {...{ variant: 'subtle' }}>
-      <Heading level="h3">The Ancient Chronicles</Heading>
+    <Card variant="subtle" height="selection" p="none">
+      <ScrollArea gap="md" p="md">
+        <Heading level="h3">The Ancient Chronicles</Heading>
       <VStack gap="sm">
         <Text variant="primary">
           In the age of dragons and kings, there was a land known as Machala. It was a place of
@@ -50,7 +51,8 @@ export const Default: Story = {
           End of fragment. More lore can be found in the Royal Archives.
         </Text>
       </VStack>
-    </ScrollArea>
+      </ScrollArea>
+    </Card>
   ),
 }
 
