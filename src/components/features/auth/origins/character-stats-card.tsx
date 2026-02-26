@@ -30,7 +30,7 @@ export function CharacterStatsCard({
 }: CharacterStatsCardProps) {
   return (
     <NarrativeCard variant="subtle" direction="col">
-      <NarrativeCard.Header align="center" justify="center" p="none">
+      <NarrativeCard.Header align="center" justify="center">
         <NarrativeCard.Title align="center" variant="large">
           {title}
         </NarrativeCard.Title>
