@@ -8,6 +8,7 @@ const meta: Meta<typeof Progress> = {
   title: 'UI/Core/Progress',
   component: Progress,
   tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
   argTypes: {
     variant: {
       control: 'select',

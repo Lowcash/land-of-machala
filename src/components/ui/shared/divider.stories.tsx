@@ -7,6 +7,7 @@ const meta: Meta<typeof Divider> = {
   title: 'UI/Shared/Divider',
   component: Divider,
   tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <StoryContainer>

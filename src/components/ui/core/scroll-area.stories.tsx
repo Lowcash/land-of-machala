@@ -10,6 +10,7 @@ const meta: Meta<typeof ScrollArea> = {
   title: 'UI/Core/ScrollArea',
   component: ScrollArea,
   tags: ['autodocs'],
+  parameters: { layout: 'fullscreen' },
   decorators: [
     (Story) => (
       <StoryContainer>
@@ -24,7 +25,7 @@ type Story = StoryObj<typeof ScrollArea>
 
 export const Default: Story = {
   render: () => (
-    <ScrollArea height="full" isFlexible gap="md">
+    <ScrollArea height="selection" gap="md">
       <Heading level="h3">The Ancient Chronicles</Heading>
       <VStack gap="sm">
         <Text variant="primary">
@@ -46,6 +47,16 @@ export const Default: Story = {
           The chronicles tell of a final stand at the gates of the capital, where the last of the
           kings fell and the world was plunged into an age of darkness.
         </Text>
+        <Text variant="primary">
+          For generations, the people of Machala lived in the shadow of the Void, their magic
+          fading, their history forgotten. But legend speaks of a day when the ley lines will
+          awaken once more, and a new hero will rise to reclaim the land.
+        </Text>
+        <Text variant="primary">
+          That day is now. The stars have aligned, the ancient stones have begun to glow, and the
+          fate of Machala hangs in the balance. Will you be the one to restore the light, or will
+          the darkness consume all?
+        </Text>
         <Text color="secondary" variant="small">
           End of fragment. More lore can be found in the Royal Archives.
         </Text>
@@ -61,7 +72,7 @@ export const InsideCard: Story = {
         <Heading level="h4">Quest Log</Heading>
       </Card.Header>
 
-      <ScrollArea as={Card.Content} isFlexible px="sm" gap="md">
+      <ScrollArea as={Card.Content} height="selection" px="sm" gap="md">
         <Card variant="subtle" p="sm" gap="xs">
           <Text variant="large">Clean the Forest</Text>
           <Text variant="small" color="secondary">
