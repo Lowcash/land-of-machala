@@ -82,7 +82,9 @@ export function SelectionBox({
       >
         {!isFlat && (
           <NarrativeCard.Header align="center" justify="center">
-            <NarrativeCard.Title align="center">{title}</NarrativeCard.Title>
+            <NarrativeCard.Title align="center" variant="large">
+              {title}
+            </NarrativeCard.Title>
           </NarrativeCard.Header>
         )}
 

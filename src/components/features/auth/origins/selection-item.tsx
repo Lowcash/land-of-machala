@@ -17,7 +17,7 @@ interface SelectionItemProps {
 export function SelectionItem({ name, icon: SimpleIcon, isSelected, onClick }: SelectionItemProps) {
   return (
     <Button variant={isSelected ? 'primary' : 'choice'} onClick={onClick} fullWidth size="feature">
-      <VStack align="center" gap="xs" fullWidth minWidth="zero">
+      <VStack align="center" gap="xxs" fullWidth minWidth="zero">
         <Icon icon={SimpleIcon} size="md" color={isSelected ? 'primary' : 'secondary'} />
         <Value variant="small" color={isSelected ? 'primary' : 'ivory'} align="center" truncate>
           {name}
