@@ -44,7 +44,6 @@ export function Avatar({ image, name, size = 'avatar', variant, sm }: AvatarProp
 
   return (
     <Stack
-      flex="none"
       width={sizeValue}
       height={sizeValue}
       position="relative"

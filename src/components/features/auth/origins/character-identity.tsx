@@ -31,7 +31,7 @@ export function CharacterIdentity({
 }: CharacterIdentityProps) {
   return (
     <VStack gap="md" md={{ height: 'full' }} height="full" justify="between" fullWidth>
-      <VStack gap="md" flex="none" fullWidth>
+      <VStack gap="md" fullWidth>
         <CharacterNameCard
           name={name}
           label={uiLabels.nameLabel}

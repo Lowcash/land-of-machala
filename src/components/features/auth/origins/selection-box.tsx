@@ -39,7 +39,7 @@ export function SelectionBox({
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
-      <Stack display="grid" cols="2" gap="sm" md={{ gap: 'md' }} flex="none">
+      <Stack display="grid" cols="2" gap="sm" md={{ gap: 'md' }}>
         {items.map((item) => {
           const Icon = getSelectionIcon(item.icon)
           const isSelected = selectedId === item.id

@@ -45,7 +45,6 @@ export function CharacterStatsCard({
           sm={{ cols: '2', gap: 'md' }}
           md={{ cols: '2', gap: 'md' }}
           lg={{ cols: '2', gap: 'md' }}
-          flex="none"
         >
           <StatRow icon={Heart} label={statLabels.hp} value={stats.hp} color="hp" />
           <StatRow icon={Droplet} label={statLabels.mana} value={stats.mana} color="mana" />

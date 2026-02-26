@@ -81,7 +81,7 @@ export function CharacterBox({
           {/* Main Body */}
           <HStack p={compact ? 'xxs' : 'md'} gap={compact ? 'sm' : 'md'} align="start" fullWidth>
             {/* Avatar Section */}
-            <Stack flex="none" position="relative">
+            <Stack position="relative">
               <Avatar image={image} name={name} size={compact ? 'avatar-xs' : 'avatar'} />
               <Stack position="absolute" inset={compact ? 'xs' : 'base'} rounded="full">
                 <Badge size={compact ? 'sm' : 'md'} variant={isEnemy ? 'danger' : 'primary'}>
