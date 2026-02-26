@@ -18,12 +18,9 @@ const meta: Meta<typeof Progress> = {
       options: ['sm', 'md', 'lg'],
     },
   },
-  parameters: {
-    layout: 'padded',
-  },
   decorators: [
     (Story) => (
-      <StoryContainer width="md">
+      <StoryContainer>
         <Story />
       </StoryContainer>
     ),

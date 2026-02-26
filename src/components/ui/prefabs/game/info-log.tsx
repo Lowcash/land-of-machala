@@ -2,8 +2,6 @@ import { cn } from '@/lib/utils'
 
 import { Card } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
-import { VStack } from '@/components/ui/core/stack'
-import { Text } from '@/components/ui/core/typography'
 import { Description } from '@/components/ui/prefabs/typography/shared'
 
 export type LogEntryType =
@@ -47,41 +45,43 @@ interface InfoLogProps {
 
 export function InfoLog({ logs, maxHeight = 300 }: InfoLogProps) {
   return (
-    <Card variant="secondary" p="none" border="base">
-      <ScrollArea maxHeight={maxHeight}>
-        <VStack gap="xs" p="xs">
-          {logs.length === 0 ? (
-            <Description align="center">No entries in the log yet...</Description>
-          ) : (
-            logs.map((log) => {
-              const config = typeConfig[log.type] || typeConfig.info
-              const color = config.color.match(/\((.*?)\)/)?.[1] || config.color
+    <ScrollArea
+      as={Card}
+      p="xs"
+      gap="xs"
+      style={{ maxHeight }}
+      {...{ variant: 'secondary' }}
+    >
+      {logs.length === 0 ? (
+        <Description align="center">No entries in the log yet...</Description>
+      ) : (
+        logs.map((log) => {
+          const config = typeConfig[log.type] || typeConfig.info
+          const color = config.color.match(/\((.*?)\)/)?.[1] || config.color
 
-              return (
-                <div
-                  key={log.id}
-                  className={cn(
-                    'flex transform-gpu flex-row items-center gap-4 transition-colors',
-                    'rounded-sm border-l-2 bg-black/20 p-2 pl-4 hover:bg-black/40',
-                    config.border
-                  )}
-                >
-                  <span className="font-fantasy mt-0.5 shrink-0 text-[10px] opacity-30">
-                    {log.timestamp.toLocaleTimeString([], {
-                      hour: '2-digit',
-                      minute: '2-digit',
-                      second: '2-digit',
-                    })}
-                  </span>
-                  <Description variant="tiny" font="fantasy" style={{ color: `var(${color})` }}>
-                    {log.message}
-                  </Description>
-                </div>
-              )
-            })
-          )}
-        </VStack>
-      </ScrollArea>
-    </Card>
+          return (
+            <div
+              key={log.id}
+              className={cn(
+                'flex transform-gpu flex-row items-center gap-4 transition-colors',
+                'rounded-sm border-l-2 bg-black/20 p-2 pl-4 hover:bg-black/40',
+                config.border
+              )}
+            >
+              <span className="font-fantasy mt-0.5 shrink-0 text-[10px] opacity-30">
+                {log.timestamp.toLocaleTimeString([], {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit',
+                })}
+              </span>
+              <Description variant="tiny" font="fantasy" style={{ color: `var(${color})` }}>
+                {log.message}
+              </Description>
+            </div>
+          )
+        })
+      )}
+    </ScrollArea>
   )
 }

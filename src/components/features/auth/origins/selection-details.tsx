@@ -25,96 +25,97 @@ export function SelectionDetails({
   uiLabels,
 }: SelectionDetailsProps) {
   return (
-    <Card
-      p="none"
+    <ScrollArea
+      as={Card}
+      isFlexible
       flex={flex as any}
+      p="sm"
+      md={{ p: 'md' }}
+      gap="sm"
+      // @ts-expect-error - base is valid for Card variants, though strict StackProps is evaluated here
       rounded="base"
-      /** Prevent flex-shrink overflow in parent scroll area */
       minHeight="zero"
+      height="full"
     >
-      <ScrollArea flex="1">
-        <VStack gap="sm" p="sm" md={{ p: 'md' }}>
-          <Description variant="detail">{item.description}</Description>
+      <Description variant="detail">{item.description}</Description>
 
-          <Divider variant="solid" />
+      <Divider variant="solid" />
 
-          <VStack gap="xs">
-            <Label align="left" variant="tiny">
-              {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
-            </Label>
+      <VStack gap="xs" fullWidth>
+        <Label align="left" variant="tiny">
+          {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
+        </Label>
 
-            <Stack display="grid" cols="2" gap="sm">
-              {type === 'race' ? (
-                <>
-                  <StatRow
-                    compact
-                    icon={getStatIcon('hp')}
-                    label={statLabels.hp}
-                    value={(item as TranslatedRaceInfo).stats.hp}
-                    color="hp"
-                  />
-                  <StatRow
-                    compact
-                    icon={getStatIcon('mana')}
-                    label={statLabels.mana}
-                    value={(item as TranslatedRaceInfo).stats.mana}
-                    color="mana"
-                  />
-                  <StatRow
-                    compact
-                    icon={getStatIcon('strength')}
-                    label={statLabels.strength}
-                    value={(item as TranslatedRaceInfo).stats.strength}
-                    color="strength"
-                  />
-                  <StatRow
-                    compact
-                    icon={getStatIcon('intelligence')}
-                    label={statLabels.intelligence}
-                    value={(item as TranslatedRaceInfo).stats.intelligence}
-                    color="intelligence"
-                  />
-                  <StatRow
-                    compact
-                    icon={getStatIcon('agility')}
-                    label={statLabels.agility}
-                    value={(item as TranslatedRaceInfo).stats.agility}
-                    color="agility"
-                  />
-                  <StatRow
-                    compact
-                    icon={getStatIcon('stamina')}
-                    label={statLabels.stamina}
-                    value={(item as TranslatedRaceInfo).stats.stamina}
-                    color="stamina"
-                  />
-                </>
-              ) : (
-                Object.entries((item as TranslatedClassInfo).statMod).map(
-                  ([stat, val]: [string, number]) => {
-                    if (val === 0) return null
-                    const isPositive = val > 0
-                    const Icon = getStatIcon(stat)
+        <Stack display="grid" cols="2" gap="sm">
+          {type === 'race' ? (
+            <>
+              <StatRow
+                compact
+                icon={getStatIcon('hp')}
+                label={statLabels.hp}
+                value={(item as TranslatedRaceInfo).stats.hp}
+                color="hp"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('mana')}
+                label={statLabels.mana}
+                value={(item as TranslatedRaceInfo).stats.mana}
+                color="mana"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('strength')}
+                label={statLabels.strength}
+                value={(item as TranslatedRaceInfo).stats.strength}
+                color="strength"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('intelligence')}
+                label={statLabels.intelligence}
+                value={(item as TranslatedRaceInfo).stats.intelligence}
+                color="intelligence"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('agility')}
+                label={statLabels.agility}
+                value={(item as TranslatedRaceInfo).stats.agility}
+                color="agility"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('stamina')}
+                label={statLabels.stamina}
+                value={(item as TranslatedRaceInfo).stats.stamina}
+                color="stamina"
+              />
+            </>
+          ) : (
+            Object.entries((item as TranslatedClassInfo).statMod).map(
+              ([stat, val]: [string, number]) => {
+                if (val === 0) return null
+                const isPositive = val > 0
+                const Icon = getStatIcon(stat)
 
-                    return (
-                      <StatRow
-                        key={stat}
-                        compact
-                        icon={Icon}
-                        label={statLabels[stat]}
-                        value={`${isPositive ? '+' : ''}${val}`}
-                        color="gold"
-                      />
-                    )
-                  }
+                return (
+                  <StatRow
+                    key={stat}
+                    compact
+                    icon={Icon}
+                    label={statLabels[stat]}
+                    value={`${isPositive ? '+' : ''}${val}`}
+                    color="gold"
+                  />
                 )
-              )}
-            </Stack>
+              }
+            )
+          )}
+        </Stack>
 
-            <Description variant="bonus">{item.bonuses}</Description>
-          </VStack>
-        </VStack>
-      </ScrollArea>
-    </Card>
+        <Description variant="bonus">{item.bonuses}</Description>
+      </VStack>
+    </ScrollArea>
   )
 }

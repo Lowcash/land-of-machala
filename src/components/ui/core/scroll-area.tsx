@@ -1,90 +1,122 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React from 'react'
 
+import { useScrollArea } from '@/hooks/use-scroll-area'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 
-interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
+import { Stack, type StackProps, splitLayoutProps } from './stack'
+
+interface ScrollAreaProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
   showGradient?: boolean
-  maxHeight?: string | number
-  flex?: string | boolean | number
+  isFlexible?: boolean
 }
 
-export function ScrollArea({
-  children,
-  showGradient = true,
-  maxHeight,
-  className,
-  flex,
-  ...props
-}: ScrollAreaProps) {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [showTopArrow, setShowTopArrow] = useState(false)
-  const [showBottomArrow, setShowBottomArrow] = useState(false)
+export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props, ref) => {
+  const { layoutProps, restProps } = splitLayoutProps(props)
+  const {
+    children,
+    showGradient = true,
+    isFlexible,
+    className,
+    as: Component = 'div',
+    ...otherProps
+  } = restProps as any
 
-  const handleScroll = useCallback(() => {
-    if (!scrollRef.current) return
-    const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
-    setShowTopArrow(scrollTop > 10)
-    setShowBottomArrow(scrollHeight - scrollTop - clientHeight > 10)
-  }, [])
+  const { scrollRef, showTopArrow, showBottomArrow } = useScrollArea()
 
-  useEffect(() => {
-    const scrollArea = scrollRef.current
-    if (scrollArea) {
-      handleScroll()
-      scrollArea.addEventListener('scroll', handleScroll)
-
-      // Also check on resize or content change
-      const observer = new ResizeObserver(handleScroll)
-      observer.observe(scrollArea)
-
-      return () => {
-        scrollArea.removeEventListener('scroll', handleScroll)
-        observer.disconnect()
-      }
-    }
-  }, [handleScroll, children])
+  // Layout props go to the inner scroll container to manage content layout
+  const {
+    p,
+    pt,
+    pb,
+    px,
+    py,
+    gap,
+    direction = 'col',
+    align = 'stretch',
+    justify,
+    display,
+    cols,
+    wrap,
+    sm,
+    md,
+    lg,
+    xl,
+    ...outerLayoutProps
+  } = layoutProps as any
 
   return (
-    <div
-      className={cn(
-        'relative flex min-h-0 flex-col overflow-hidden',
-        flex ? 'flex-1' : '',
-        className
-      )}
-      style={{ maxHeight, flex: flex ? '1 1 0%' : undefined }}
-      {...props}
+    <Stack
+      as={Component as any}
+      ref={ref}
+      className={cn('relative overflow-hidden', isFlexible ? 'flex-1' : 'flex-none', className)}
+      style={{
+        flex: isFlexible ? '1 1 0%' : undefined,
+      }}
+      p="none" // Outer wrapper loses padding so scrollbar hugs edge
+      direction="col" // Outer wrapper is always column so arrow stack correctly
+      {...outerLayoutProps}
+      {...otherProps}
     >
       {showTopArrow && (
-        <>
-          <div className="pointer-events-none absolute top-3 left-1/2 z-50 -translate-x-1/2 animate-bounce text-(--color-gold) drop-shadow-md">
-            <ChevronUp size={16} strokeWidth={3} />
-          </div>
-          {showGradient && (
-            <div className="pointer-events-none absolute top-0 left-1/2 z-40 h-12 w-full -translate-x-1/2 bg-linear-to-b from-black/90 to-transparent" />
+        <div
+          className={cn(
+            'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
+            showGradient && 'bg-linear-to-b from-black/80 to-transparent'
           )}
-        </>
+        >
+          <ChevronUp
+            className="animate-bounce text-(--color-gold) drop-shadow-md"
+            size={16}
+            strokeWidth={3}
+          />
+        </div>
       )}
 
-      <div ref={scrollRef} className="scrollbar-custom h-full overflow-y-auto">
+      <Stack
+        ref={scrollRef as any}
+        className="scrollbar-custom inline-flex min-h-0 flex-1 overflow-y-auto" // Enforce flex
+        p={p}
+        pt={pt}
+        pb={pb}
+        px={px}
+        py={py}
+        gap={gap}
+        direction={direction}
+        align={align}
+        justify={justify}
+        display={display}
+        cols={cols}
+        wrap={wrap}
+        sm={sm}
+        md={md}
+        lg={lg}
+        xl={xl}
+      >
         {children}
-      </div>
+      </Stack>
 
-      {/* Bottom Arrow & Gradient */}
       {showBottomArrow && (
-        <>
-          <div className="pointer-events-none absolute bottom-2 left-1/2 z-50 -translate-x-1/2 animate-bounce text-(--color-gold) drop-shadow-md">
-            <ChevronDown size={16} strokeWidth={3} />
-          </div>
-          {showGradient && (
-            <div className="pointer-events-none absolute bottom-0 left-1/2 z-40 h-12 w-full -translate-x-1/2 bg-linear-to-t from-black/90 to-transparent" />
+        <div
+          className={cn(
+            'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
+            showGradient && 'bg-linear-to-t from-black/80 to-transparent'
           )}
-        </>
+        >
+          <ChevronDown
+            className="animate-bounce text-(--color-gold) drop-shadow-md"
+            size={16}
+            strokeWidth={3}
+          />
+        </div>
       )}
-    </div>
+    </Stack>
   )
-}
+})
+
+ScrollArea.displayName = 'ScrollArea'

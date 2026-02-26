@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 
 import { CardTitle } from '@/components/ui/prefabs/typography/card'
 
-import { StackProps, getResponsiveClasses, stackVariants } from './stack'
+import { Stack, type StackProps, splitLayoutProps } from './stack'
 
 const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-black/40', {
   variants: {
@@ -15,7 +15,8 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
       secondary: 'border border-(--color-secondary)/40 bg-black/60',
       subtle: 'border border-(--color-secondary)/20 bg-black/40 shadow-none',
       ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
-      ornamental: 'border-2 border-(--color-secondary)/40 bg-black/80 shadow-xl ring-1 ring-white/5',
+      ornamental:
+        'border-2 border-(--color-secondary)/40 bg-black/80 shadow-xl ring-1 ring-white/5',
     },
     rounded: {
       lg: 'rounded-lg',
@@ -31,275 +32,155 @@ const cardVariants = cva('flex transition-all backdrop-blur-md shadow-lg shadow-
   },
 })
 
-interface CardRootProps extends Omit<StackProps, 'rounded'>, VariantProps<typeof cardVariants> {
+interface CardRootProps
+  extends
+    Omit<StackProps, 'rounded' | 'border' | 'borderColor' | 'opacity' | 'shadow' | 'color'>,
+    VariantProps<typeof cardVariants> {
   /** Map padding to Stack's p prop for backward compatibility */
   padding?: StackProps['p']
 }
 
-const CardRoot = React.forwardRef<HTMLElement, CardRootProps>(
-  (
-    {
-      variant,
-      rounded,
-      padding,
-      gap,
-      direction,
-      as: Component = 'div',
-      fullHeight,
-      children,
-      display,
-      cols,
-      align,
-      justify,
-      wrap,
-      p,
-      flex,
-      sm,
-      md,
-      lg,
-      xl,
-      height,
-      minHeight,
-      fullWidth,
-      opacity,
-      ...props
-    },
-    ref
-  ) => {
-    // Map padding to p if not explicitly provided
-    const finalPadding = p || padding || 'lg'
+const CardRoot = React.forwardRef<HTMLElement, CardRootProps>((props, ref) => {
+  const { layoutProps, restProps } = splitLayoutProps(props)
+  const {
+    variant,
+    rounded: cardRounded,
+    padding,
+    direction: cardDirection,
+    gap: cardGap,
+    p: cardP,
+    as: Component = 'div',
+    children,
+    className,
+    ...otherProps
+  } = restProps as any
 
-    return (
-      <Component
-        data-slot="card"
-        ref={ref}
-        className={cn(
-          cardVariants({ variant, rounded }),
-          stackVariants({
-            display,
-            direction: direction || 'col',
-            gap: gap || 'md',
-            fullHeight,
-            cols,
-            align,
-            justify,
-            wrap,
-            p: finalPadding,
-            flex,
-            height,
-            minHeight,
-            opacity,
-          }),
-          getResponsiveClasses('sm', sm),
-          getResponsiveClasses('md', md),
-          getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
+  const finalPadding = layoutProps.p ?? padding ?? 'lg'
+
+  return (
+    <Stack
+      as={Component as any}
+      data-slot="card"
+      ref={ref}
+      className={cn(cardVariants({ variant, rounded: cardRounded }), className)}
+      direction="col"
+      gap="md"
+      {...layoutProps}
+      p={finalPadding}
+      {...otherProps}
+    >
+      {children}
+    </Stack>
+  )
+})
 
 CardRoot.displayName = 'Card'
 
-type CardHeaderProps = Omit<StackProps, 'className'>
+interface CardHeaderProps extends StackProps {}
 
-const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>(
-  (
-    {
-      display,
-      direction,
-      cols,
-      align,
-      justify,
-      gap,
-      fullWidth,
-      fullHeight,
-      wrap,
-      p,
-      flex,
-      sm,
-      md,
-      lg,
-      xl,
-      height,
-      minHeight,
-      as: Component = 'div',
-      children,
-      opacity,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <Component
-        data-slot="card-header"
-        ref={ref}
-        className={cn(
-          'border-b-2 border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
-          stackVariants({
-            display: display || 'flex',
-            direction: direction || 'row',
-            align: align || 'center',
-            justify: justify || 'between',
-            gap: gap || 'none',
-            cols,
-            fullWidth,
-            fullHeight,
-            opacity,
-            wrap,
-            p,
-            flex,
-            height,
-            minHeight,
-          }),
-          getResponsiveClasses('sm', sm),
-          getResponsiveClasses('md', md),
-          getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
+const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
+  const { layoutProps, restProps } = splitLayoutProps(props)
+  const {
+    as: Component = 'div',
+    children,
+    direction,
+    align,
+    justify,
+    gap,
+    className,
+    ...otherProps
+  } = restProps as any
+
+  return (
+    <Stack
+      as={Component as any}
+      data-slot="card-header"
+      ref={ref}
+      className={cn(
+        'border-b-2 border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
+        className
+      )}
+      direction="row"
+      align="center"
+      justify="between"
+      gap="none"
+      {...layoutProps}
+      {...otherProps}
+    >
+      {children}
+    </Stack>
+  )
+})
 
 CardHeader.displayName = 'CardHeader'
 
-type CardContentProps = Omit<StackProps, 'className'>
+type CardContentProps = StackProps
 
-const CardContent = React.forwardRef<HTMLElement, CardContentProps>(
-  (
-    {
-      display,
-      direction,
-      cols,
-      align,
-      justify,
-      gap,
-      fullWidth,
-      fullHeight,
-      wrap,
-      p,
-      flex,
-      sm,
-      md,
-      lg,
-      xl,
-      height,
-      minHeight,
-      as: Component = 'div',
-      children,
-      opacity,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <Component
-        data-slot="card-content"
-        ref={ref}
-        className={cn(
-          'text-(--color-ivory)/90',
-          stackVariants({
-            display,
-            direction: direction || 'col',
-            cols,
-            align: align || 'stretch',
-            justify: justify || 'start',
-            gap: gap || 'none',
-            fullWidth,
-            fullHeight,
-            opacity,
-            wrap,
-            p,
-            flex,
-            height,
-            minHeight,
-          }),
-          getResponsiveClasses('sm', sm),
-          getResponsiveClasses('md', md),
-          getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
+const CardContent = React.forwardRef<HTMLElement, CardContentProps>((props, ref) => {
+  const { layoutProps, restProps } = splitLayoutProps(props)
+  const {
+    as: Component = 'div',
+    children,
+    direction,
+    align,
+    justify,
+    gap,
+    className,
+    ...otherProps
+  } = restProps as any
+
+  return (
+    <Stack
+      as={Component as any}
+      data-slot="card-content"
+      ref={ref}
+      className={cn('text-(--color-ivory)/90', className)}
+      direction="col"
+      align="stretch"
+      justify="start"
+      gap="none"
+      {...layoutProps}
+      {...otherProps}
+    >
+      {children}
+    </Stack>
+  )
+})
 
 CardContent.displayName = 'CardContent'
 
-type CardFooterProps = Omit<StackProps, 'className'>
+interface CardFooterProps extends StackProps {}
 
-const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>(
-  (
-    {
-      display,
-      direction,
-      cols,
-      align,
-      justify,
-      gap,
-      fullWidth,
-      fullHeight,
-      wrap,
-      p,
-      flex,
-      sm,
-      md,
-      lg,
-      xl,
-      height,
-      minHeight,
-      as: Component = 'div',
-      children,
-      opacity,
-      ...props
-    },
-    ref
-  ) => {
-    return (
-      <Component
-        data-slot="card-footer"
-        ref={ref}
-        className={cn(
-          'border-t border-(--color-secondary)/20 pt-4',
-          stackVariants({
-            display: display || 'flex',
-            direction: direction || 'row',
-            align: align || 'center',
-            justify: justify || 'end',
-            gap: gap || 'none',
-            cols,
-            fullWidth,
-            fullHeight,
-            opacity,
-            wrap,
-            p,
-            flex,
-            height,
-            minHeight,
-          }),
-          getResponsiveClasses('sm', sm),
-          getResponsiveClasses('md', md),
-          getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
-        )}
-        {...props}
-      >
-        {children}
-      </Component>
-    )
-  }
-)
+const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
+  const { layoutProps, restProps } = splitLayoutProps(props)
+  const {
+    as: Component = 'div',
+    children,
+    direction,
+    align,
+    justify,
+    gap,
+    className,
+    ...otherProps
+  } = restProps as any
+
+  return (
+    <Stack
+      as={Component as any}
+      data-slot="card-footer"
+      ref={ref}
+      className={cn('border-t border-(--color-secondary)/20 pt-4', className)}
+      direction="row"
+      align="center"
+      justify="end"
+      gap="none"
+      {...layoutProps}
+      {...otherProps}
+    >
+      {children}
+    </Stack>
+  )
+})
 
 CardFooter.displayName = 'CardFooter'
 

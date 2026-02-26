@@ -24,7 +24,7 @@ import { UseFormReturn } from 'react-hook-form'
 
 import { cn } from '@/lib/utils'
 
-import { StackProps, stackVariants } from '../core/stack'
+import { StackProps, getStackClasses } from '../core/stack'
 import { Checkbox } from './checkbox'
 import { Input } from './input'
 import { Label } from './label'
@@ -54,25 +54,29 @@ const FormRoot = <TFieldValues extends FieldValues>({
   wrap,
   p,
   flex,
+  className,
   ...props
 }: FormRootProps<TFieldValues>) => {
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className={stackVariants({
-          display,
-          direction,
-          cols,
-          align,
-          justify,
-          gap,
-          fullWidth,
-          fullHeight,
-          wrap,
-          p,
-          flex,
-        })}
+        className={cn(
+          getStackClasses({
+            display,
+            direction,
+            cols,
+            align,
+            justify,
+            gap,
+            fullWidth,
+            fullHeight,
+            wrap,
+            p,
+            flex,
+          }),
+          className
+        )}
         {...props}
       >
         {children}
