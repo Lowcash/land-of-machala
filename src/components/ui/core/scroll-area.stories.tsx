@@ -49,8 +49,8 @@ export const Default: Story = {
         </Text>
         <Text variant="primary">
           For generations, the people of Machala lived in the shadow of the Void, their magic
-          fading, their history forgotten. But legend speaks of a day when the ley lines will
-          awaken once more, and a new hero will rise to reclaim the land.
+          fading, their history forgotten. But legend speaks of a day when the ley lines will awaken
+          once more, and a new hero will rise to reclaim the land.
         </Text>
         <Text variant="primary">
           That day is now. The stars have aligned, the ancient stones have begun to glow, and the

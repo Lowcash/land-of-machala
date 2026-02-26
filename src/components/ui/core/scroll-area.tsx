@@ -13,7 +13,6 @@ interface ScrollAreaProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
   showGradient?: boolean
-  isFlexible?: boolean
 }
 
 export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props, ref) => {
@@ -21,7 +20,6 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
   const {
     children,
     showGradient = true,
-    isFlexible,
     className,
     as: Component = 'div',
     ...otherProps
@@ -62,10 +60,7 @@ export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props,
     <Stack
       as={Component as any}
       ref={ref}
-      className={cn('relative overflow-hidden', isFlexible ? 'flex-1' : 'flex-none', className)}
-      style={{
-        flex: isFlexible ? '1 1 0%' : undefined,
-      }}
+      className={cn('relative overflow-hidden', className)}
       {...layoutProps} // Outer wrapper receives ALL layout props including padding
       direction="col" // Force standard column to align absolute arrows
       {...otherProps}
