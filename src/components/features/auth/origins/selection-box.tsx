@@ -35,7 +35,6 @@ export function SelectionBox({
   const content = (
     <NarrativeCard.Content
       gap="md"
-      flex="1"
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >

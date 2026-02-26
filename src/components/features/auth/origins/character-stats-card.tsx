@@ -37,7 +37,7 @@ export function CharacterStatsCard({
         {isReady && <StatusIcon icon={ShieldCheck} />}
       </NarrativeCard.Header>
 
-      <NarrativeCard.Content gap="sm" height="full" justify="between">
+      <NarrativeCard.Content height="full" justify="between">
         <Stack
           display="grid"
           cols="1"
