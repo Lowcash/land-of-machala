@@ -7,14 +7,14 @@ import { VStack } from '@/components/ui/core/stack'
 import { Icon } from '@/components/ui/icons'
 import { Value } from '@/components/ui/prefabs/typography/shared'
 
-interface SelectionItemProps {
+interface SelectionButtonProps {
   name: string
-  icon: LucideIcon
+  icon: React.ElementType
   isSelected: boolean
   onClick: () => void
 }
 
-export function SelectionItem({ name, icon: SimpleIcon, isSelected, onClick }: SelectionItemProps) {
+export function SelectionButton({ name, icon: Icon, isSelected, onClick }: SelectionButtonProps) {
   return (
     <Button variant={isSelected ? 'primary' : 'choice'} onClick={onClick} fullWidth size="feature">
       <VStack align="center" gap="xxs" fullWidth minWidth="zero">

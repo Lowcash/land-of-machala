@@ -7,7 +7,7 @@ import { Stack, VStack } from '@/components/ui/core/stack'
 import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { SelectionDetails } from './selection-details'
-import { SelectionItem } from './selection-item'
+import { SelectionButton } from './selection-button'
 
 interface SelectionBoxProps {
   title: string
@@ -32,14 +32,10 @@ export function SelectionBox({
 }: SelectionBoxProps) {
   const selectedItem = items.find((i) => i.id === selectedId)
 
-  const isPrimary = variant === 'primary'
-
   const content = (
     <NarrativeCard.Content
       gap="md"
-      flex={isPrimary ? '1' : 'none'}
-      /** Use full height for flex stretching */
-      height={isPrimary ? 'full' : undefined}
+      flex="1"
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
@@ -49,7 +45,7 @@ export function SelectionBox({
           const isSelected = selectedId === item.id
 
           return (
-            <SelectionItem
+            <SelectionButton
               key={item.id}
               name={item.name}
               icon={Icon}
@@ -77,7 +73,7 @@ export function SelectionBox({
       <NarrativeCard
         variant={isFlat ? 'ghost' : 'secondary'}
         direction="col"
-        height={isFlat ? 'auto' : 'full'}
+        height={isFlat ? 'selection' : 'full'} // Explicit height on mobile allows scrolling
         minHeight={'zero'}
       >
         {!isFlat && (
