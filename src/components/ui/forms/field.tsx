@@ -1,12 +1,6 @@
 'use client'
 
-import {
-  Children,
-  type HTMLAttributes,
-  type ReactElement,
-  cloneElement,
-  useId,
-} from 'react'
+import { Children, type HTMLAttributes, cloneElement, useId } from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -21,7 +15,7 @@ interface FieldProps extends HTMLAttributes<HTMLDivElement> {
 
 export function Field({ label, error, horizontal, children, className, ...props }: FieldProps) {
   const id = useId()
-  const child = Children.only(children) as ReactElement & {
+  const child = Children.only(children) as React.ReactElement & {
     props: { id?: string }
   }
 
