@@ -18,7 +18,6 @@ interface CharacterStatsCardProps {
   isReady?: boolean
   statLabels: Record<string, string>
   uiLabels: any
-  title: string
 }
 
 export function CharacterStatsCard({
@@ -26,13 +25,12 @@ export function CharacterStatsCard({
   isReady,
   statLabels,
   uiLabels,
-  title,
 }: CharacterStatsCardProps) {
   return (
     <NarrativeCard variant="subtle" direction="col">
       <NarrativeCard.Header align="center" justify="center">
         <NarrativeCard.Title align="center" variant="large">
-          {title}
+          {uiLabels.statsTitle}
         </NarrativeCard.Title>
         {isReady && <StatusIcon icon={ShieldCheck} />}
       </NarrativeCard.Header>

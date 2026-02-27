@@ -36,15 +36,8 @@ vi.mock('@/i18n/routing', () => ({
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
 }))
 
-/** Mock framer-motion to avoid animation issues in tests */
-vi.mock('framer-motion', () => ({
-  AnimatePresence: ({ children }: any) => <>{children}</>,
-  motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-  },
-}))
-
 /** Mock ResizeObserver for ScrollArea */
+// (Already in setup.ts, but keeping local as override if needed, though better to remove)
 global.ResizeObserver = class ResizeObserver {
   observe = vi.fn()
   unobserve = vi.fn()
