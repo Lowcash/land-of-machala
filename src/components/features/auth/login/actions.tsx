@@ -31,7 +31,7 @@ export function LoginActions({
   }
 
   return (
-    <ActionGroup direction="col">
+    <ActionGroup direction="col" md={{ direction: 'col' }}>
       <Button variant="secondary" fullWidth onClick={onGuestAccess} disabled={isLoading}>
         {guestLabel}
       </Button>

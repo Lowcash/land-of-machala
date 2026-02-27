@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27] - UI Refinements & Component Cleanup
+
+### Changed
+- **Login Actions**: Forced vertical stacking of "Try as guest" and "Establish your legacy" buttons on all breakpoints via `ActionGroup`.
+- **Divider**: Increased visibility of the `solid` variant by bumping gradient opacity to 80%.
+- **FadeInPanel**: Optimized DOM structure by moving `AnimatePresence` and animation keys to `MotionScrollArea`, removing a redundant inner `motion.div`.
+
+### Removed
+- **FeatureLayout**: Deleted the unused structural prefab and removed its references across the authentication flow.
+
 ## [2026-02-27] - Origins Mobile Layout & React Import Standardization
 
 ### Changed

@@ -3,9 +3,9 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
 import { Button } from '@/components/ui/core/button'
-import { Stack } from '@/components/ui/core/stack'
+import { Stack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
-import { FeatureLayout, FeatureSection } from '@/components/ui/prefabs/structure'
+import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
 import { CharacterIdentity } from './character-identity'
@@ -45,7 +45,7 @@ export function StepCreation({
   uiLabels,
 }: StepCreationProps) {
   return (
-    <>
+    <VStack gap="lg" align="center" fullWidth>
       <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}
@@ -144,6 +144,6 @@ export function StepCreation({
           {uiLabels.finish}
         </Button>
       </FeatureSection>
-    </>
+    </VStack>
   )
 }

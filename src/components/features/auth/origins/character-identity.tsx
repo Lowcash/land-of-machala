@@ -1,7 +1,6 @@
 'use client'
 
 import { Button } from '@/components/ui/core/button'
-import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { DicesIcon } from '@/components/ui/icons'
 import { ActionGroup, FeatureSection } from '@/components/ui/prefabs/structure'

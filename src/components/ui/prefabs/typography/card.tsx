@@ -12,7 +12,7 @@ interface CardTitleProps extends Omit<
   'className' | 'style' | 'color'
 > {
   children: React.ReactNode
-  icon?: ReactNode | LucideIcon
+  icon?: React.ReactNode | LucideIcon
   level?: 'h1' | 'h2' | 'h3' | 'h4'
   align?: TextProps['align']
   variant?: 'primary' | 'large' | 'fantasy-value'

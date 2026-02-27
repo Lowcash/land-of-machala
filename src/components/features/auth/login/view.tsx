@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/prefabs/narrative/changelog'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
 import { Stats, type TranslatedServerStat } from '@/components/ui/prefabs/narrative/stats'
-import { FeatureLayout, FeatureSection } from '@/components/ui/prefabs/structure'
+import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
