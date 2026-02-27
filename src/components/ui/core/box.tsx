@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type ElementType, type HTMLAttributes, forwardRef } from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -233,9 +233,9 @@ export function getBoxResponsiveClasses(breakpoint: Breakpoint, val?: Breakpoint
 
 export interface BoxProps
   extends
-    Omit<React.HTMLAttributes<HTMLElement>, 'color' | 'width' | 'height'>,
+    Omit<HTMLAttributes<HTMLElement>, 'color' | 'width' | 'height'>,
     VariantProps<typeof boxVariants> {
-  as?: React.ElementType
+  as?: ElementType
   sm?: BreakpointValue
   md?: BreakpointValue
   lg?: BreakpointValue
@@ -307,7 +307,7 @@ export function getBoxClasses(props: BoxProps) {
   )
 }
 
-export const Box = React.forwardRef<HTMLElement, BoxProps>((props, ref) => {
+export const Box = forwardRef<HTMLElement, BoxProps>((props, ref) => {
   const { boxProps, restProps } = splitBoxProps(props)
   const { className, ...otherRest } = restProps as any
   const { as: Component = 'div' } = boxProps

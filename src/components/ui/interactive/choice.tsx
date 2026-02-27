@@ -1,16 +1,16 @@
-import * as React from 'react'
+import { type ButtonHTMLAttributes, forwardRef } from 'react'
 
 import { Badge } from '@/components/ui/core/badge'
 import { Button } from '@/components/ui/core/button'
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 
-interface ChoiceItemProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
+interface ChoiceItemProps extends Omit<ButtonHTMLAttributes<HTMLButtonElement>, 'className'> {
   index: number | string
   title: string
 }
 
-const ChoiceItem = React.forwardRef<HTMLButtonElement, ChoiceItemProps>(
+const ChoiceItem = forwardRef<HTMLButtonElement, ChoiceItemProps>(
   ({ index, title, ...props }, ref) => {
     const letter = typeof index === 'number' ? String.fromCharCode(65 + index) : index
 

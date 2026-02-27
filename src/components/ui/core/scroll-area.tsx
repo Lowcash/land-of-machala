@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { type HTMLAttributes, forwardRef } from 'react'
 
 import { useScrollArea } from '@/hooks/use-scroll-area'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -10,12 +10,12 @@ import { cn } from '@/lib/utils'
 import { Stack, type StackProps, splitLayoutProps } from './stack'
 
 export interface ScrollAreaProps
-  extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
+  extends Omit<HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
   showGradient?: boolean
 }
 
-export const ScrollArea = React.forwardRef<HTMLElement, ScrollAreaProps>((props, ref) => {
+export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
   const {
     children,

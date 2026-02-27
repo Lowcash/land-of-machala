@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type HTMLAttributes, forwardRef } from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -34,14 +34,14 @@ const cardVariants = cva('transition-all backdrop-blur-md shadow-lg shadow-black
 
 export interface CardRootProps
   extends
-    Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>,
+    Omit<HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>,
     Omit<StackProps, 'rounded' | 'border' | 'borderColor' | 'opacity' | 'shadow' | 'color'>,
     VariantProps<typeof cardVariants> {
   /** Map padding to Stack's p prop for backward compatibility */
   padding?: StackProps['p']
 }
 
-const CardRoot = React.forwardRef<HTMLElement, CardRootProps>((props, ref) => {
+const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
   const {
     variant,
@@ -79,7 +79,7 @@ CardRoot.displayName = 'Card'
 
 interface CardHeaderProps extends StackProps {}
 
-const CardHeader = React.forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
+const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
   const {
     as: Component = 'div',
@@ -117,7 +117,7 @@ CardHeader.displayName = 'CardHeader'
 
 type CardContentProps = StackProps
 
-const CardContent = React.forwardRef<HTMLElement, CardContentProps>((props, ref) => {
+const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
   const {
     as: Component = 'div',
@@ -152,7 +152,7 @@ CardContent.displayName = 'CardContent'
 
 interface CardFooterProps extends StackProps {}
 
-const CardFooter = React.forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
+const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
   const {
     as: Component = 'div',

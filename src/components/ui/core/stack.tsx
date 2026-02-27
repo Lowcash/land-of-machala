@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type ElementType, forwardRef } from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -212,7 +212,7 @@ export function getResponsiveClasses(breakpoint: Breakpoint, val?: BreakpointVal
 }
 
 export interface StackProps extends BoxProps, VariantProps<typeof stackVariants> {
-  as?: React.ElementType
+  as?: ElementType
   sm?: BoxProps['sm'] & BreakpointValue
   md?: BoxProps['md'] & BreakpointValue
   lg?: BoxProps['lg'] & BreakpointValue
@@ -270,7 +270,7 @@ export function getStackClasses(props: StackProps) {
   )
 }
 
-export const Stack = React.forwardRef<HTMLElement, StackProps>((props, ref) => {
+export const Stack = forwardRef<HTMLElement, StackProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
 
   // Extract stack-specific props to generate flex classes
@@ -308,12 +308,12 @@ export const Stack = React.forwardRef<HTMLElement, StackProps>((props, ref) => {
 
 Stack.displayName = 'Stack'
 
-export const HStack = React.forwardRef<HTMLElement, Omit<StackProps, 'direction'>>((props, ref) => (
+export const HStack = forwardRef<HTMLElement, Omit<StackProps, 'direction'>>((props, ref) => (
   <Stack ref={ref} direction="row" {...props} />
 ))
 HStack.displayName = 'HStack'
 
-export const VStack = React.forwardRef<HTMLElement, Omit<StackProps, 'direction'>>((props, ref) => (
+export const VStack = forwardRef<HTMLElement, Omit<StackProps, 'direction'>>((props, ref) => (
   <Stack ref={ref} direction="col" {...props} />
 ))
 VStack.displayName = 'VStack'

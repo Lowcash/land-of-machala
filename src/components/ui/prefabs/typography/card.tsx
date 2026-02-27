@@ -1,4 +1,5 @@
-import * as React from 'react'
+import { type HTMLAttributes, isValidElement } from 'react'
+
 import type { LucideIcon } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
@@ -7,11 +8,11 @@ import { Heading, TextProps } from '@/components/ui/core/typography'
 import { Icon as IconPrefab } from '@/components/ui/icons'
 
 interface CardTitleProps extends Omit<
-  React.HTMLAttributes<HTMLHeadingElement>,
+  HTMLAttributes<HTMLHeadingElement>,
   'className' | 'style' | 'color'
 > {
   children: React.ReactNode
-  icon?: React.ReactNode | LucideIcon
+  icon?: ReactNode | LucideIcon
   level?: 'h1' | 'h2' | 'h3' | 'h4'
   align?: TextProps['align']
   variant?: 'primary' | 'large' | 'fantasy-value'
@@ -41,7 +42,7 @@ export function CardTitle({
     >
       {Icon && (
         <span className="flex shrink-0">
-          {React.isValidElement(Icon) ? (
+          {isValidElement(Icon) ? (
             Icon
           ) : (
             <IconPrefab icon={Icon as LucideIcon} size="md" color="gold" />

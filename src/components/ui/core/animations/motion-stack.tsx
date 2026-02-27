@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { type HTMLAttributes, forwardRef } from 'react'
 
 import { type HTMLMotionProps, motion } from 'framer-motion'
 
@@ -12,13 +12,13 @@ import { type StackProps, getResponsiveClasses, stackVariants } from '../stack'
 export interface MotionStackProps
   extends
     Omit<HTMLMotionProps<'div'>, 'style' | 'className'>,
-    Omit<StackProps, 'as' | keyof React.HTMLAttributes<HTMLElement>> {}
+    Omit<StackProps, 'as' | keyof HTMLAttributes<HTMLElement>> {}
 
 /**
  * A layout component that combines the power of Stack with Framer Motion.
  * Use this to avoid inline styles or classNames for layout animations.
  */
-export const MotionStack = React.forwardRef<HTMLDivElement, MotionStackProps>(
+export const MotionStack = forwardRef<HTMLDivElement, MotionStackProps>(
   ({ sm, md, lg, xl, ...props }, ref) => {
     // Separate variant props from Motion props
     const variantProps: any = {}
@@ -88,12 +88,12 @@ export const MotionStack = React.forwardRef<HTMLDivElement, MotionStackProps>(
 
 MotionStack.displayName = 'MotionStack'
 
-export const MotionHStack = React.forwardRef<HTMLDivElement, Omit<MotionStackProps, 'direction'>>(
+export const MotionHStack = forwardRef<HTMLDivElement, Omit<MotionStackProps, 'direction'>>(
   (props, ref) => <MotionStack ref={ref} direction="row" {...props} />
 )
 MotionHStack.displayName = 'MotionHStack'
 
-export const MotionVStack = React.forwardRef<HTMLDivElement, Omit<MotionStackProps, 'direction'>>(
+export const MotionVStack = forwardRef<HTMLDivElement, Omit<MotionStackProps, 'direction'>>(
   (props, ref) => <MotionStack ref={ref} direction="col" {...props} />
 )
 MotionVStack.displayName = 'MotionVStack'

@@ -1,4 +1,4 @@
-import * as React from 'react'
+import { type HTMLAttributes, forwardRef } from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -44,13 +44,12 @@ const indicatorVariants = cva('h-full block transition-all duration-300 ease-in-
 })
 
 export interface ProgressProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof progressVariants> {
+  extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof progressVariants> {
   value?: number
   max?: number
 }
 
-const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
+const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   ({ children, value = 0, max = 100, variant, size, ...props }, ref) => {
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
 

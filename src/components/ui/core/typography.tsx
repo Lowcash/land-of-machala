@@ -146,6 +146,8 @@ export interface TextProps
     VariantProps<typeof textVariants> {
   as?: 'p' | 'span' | 'div'
   className?: string
+  px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
 }
 
 export function Text({
@@ -159,9 +161,34 @@ export function Text({
   bold,
   tabularNums,
   className,
+  px,
+  maxWidth,
   as: Component = 'p',
   ...props
 }: TextProps) {
+  const pxClass = px ? {
+    none: 'px-0',
+    xxs: 'px-0.5',
+    xs: 'px-1',
+    sm: 'px-2',
+    md: 'px-4',
+    lg: 'px-6',
+    xl: 'px-8',
+  }[px] : ''
+
+  const maxWidthClass = maxWidth ? {
+    none: 'max-w-none',
+    xs: 'max-w-xs',
+    sm: 'max-w-sm',
+    md: 'max-w-md',
+    lg: 'max-w-lg',
+    xl: 'max-w-xl',
+    '2xl': 'max-w-2xl',
+    '3xl': 'max-w-3xl',
+    '4xl': 'max-w-4xl',
+    '5xl': 'max-w-5xl',
+  }[maxWidth] : ''
+
   return (
     <Component
       className={cn(
@@ -176,6 +203,8 @@ export function Text({
           bold,
           tabularNums,
         }),
+        pxClass,
+        maxWidthClass,
         className
       )}
       {...props}

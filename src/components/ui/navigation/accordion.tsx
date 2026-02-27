@@ -1,6 +1,6 @@
 'use client'
 
-import * as React from 'react'
+import { forwardRef } from 'react'
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
@@ -23,11 +23,9 @@ interface AccordionRootProps {
   onValueChange?: (value: string) => void
 }
 
-const Accordion = React.forwardRef<HTMLDivElement, AccordionRootProps>(
-  ({ className, ...props }, ref) => (
-    <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...(props as any)} />
-  )
-)
+const Accordion = forwardRef<HTMLDivElement, AccordionRootProps>(({ className, ...props }, ref) => (
+  <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...(props as any)} />
+))
 Accordion.displayName = 'Accordion'
 
 interface AccordionItemProps {
@@ -37,7 +35,7 @@ interface AccordionItemProps {
   className?: string
 }
 
-const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
+const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
   ({ className, ...props }, ref) => (
     <AccordionPrimitive.Item
       ref={ref}
@@ -53,7 +51,7 @@ interface AccordionTriggerProps {
   className?: string
 }
 
-const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerProps>(
+const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
   ({ children, className, ...props }, ref) => (
     <AccordionPrimitive.Header className="flex">
       <AccordionPrimitive.Trigger
@@ -82,7 +80,7 @@ interface AccordionContentProps {
   forceMount?: true
 }
 
-const AccordionContent = React.forwardRef<HTMLDivElement, AccordionContentProps>(
+const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
   ({ children, className, ...props }, ref) => (
     <AccordionPrimitive.Content
       ref={ref}
