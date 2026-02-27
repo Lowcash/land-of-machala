@@ -1,9 +1,10 @@
 'use client'
 
 import { Button } from '@/components/ui/core/button'
+import { VStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { DicesIcon } from '@/components/ui/icons'
-import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { ActionGroup, FeatureSection } from '@/components/ui/prefabs/structure'
 
 import { CharacterNameCard } from './character-name-card'
 import { CharacterStatsCard } from './character-stats-card'
@@ -30,22 +31,22 @@ export function CharacterIdentity({
   uiLabels,
 }: CharacterIdentityProps) {
   return (
-    <FeatureSection md={{ height: 'full' }} height="full" justify="between">
-      <FeatureSection>
-        <CharacterNameCard
-          name={name}
-          label={uiLabels.nameLabel}
-          placeholder={uiLabels.namePlaceholder}
-          onChange={onNameChange}
-        />
+    <FeatureSection height="full" justify="between" gap="md">
+      <CharacterNameCard
+        name={name}
+        label={uiLabels.nameLabel}
+        placeholder={uiLabels.namePlaceholder}
+        onChange={onNameChange}
+      />
 
+      <ActionGroup align="center">
         <Button variant="secondary" size="action" onClick={onRandomize}>
           <DicesIcon size="md" />
           <Text variant="small" font="fantasy">
             {uiLabels.randomize}
           </Text>
         </Button>
-      </FeatureSection>
+      </ActionGroup>
 
       <CharacterStatsCard
         stats={stats}
@@ -54,11 +55,11 @@ export function CharacterIdentity({
         uiLabels={uiLabels}
       />
 
-      <FeatureSection display="none" md={{ display: 'flex' }}>
+      <ActionGroup display="none" md={{ display: 'flex' }}>
         <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
           {uiLabels.finish}
         </Button>
-      </FeatureSection>
+      </ActionGroup>
     </FeatureSection>
   )
 }

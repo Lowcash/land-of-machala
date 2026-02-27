@@ -1,8 +1,8 @@
 import { Activity, Brain, Droplet, Heart, ShieldCheck, Sword, Wind } from 'lucide-react'
 
-import { Stack } from '@/components/ui/core/stack'
 import { StatusIcon } from '@/components/ui/icons'
 import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
+import { FeatureGrid } from '@/components/ui/prefabs/structure'
 
 import { StatRow } from './stat-row'
 
@@ -36,14 +36,7 @@ export function CharacterStatsCard({
       </NarrativeCard.Header>
 
       <NarrativeCard.Content height="full" justify="between">
-        <Stack
-          display="grid"
-          cols="1"
-          gap="sm"
-          sm={{ cols: '2', gap: 'md' }}
-          md={{ cols: '2', gap: 'md' }}
-          lg={{ cols: '2', gap: 'md' }}
-        >
+        <FeatureGrid>
           <StatRow icon={Heart} label={statLabels.hp} value={stats.hp} color="hp" />
           <StatRow icon={Droplet} label={statLabels.mana} value={stats.mana} color="mana" />
           <StatRow
@@ -65,7 +58,7 @@ export function CharacterStatsCard({
             value={stats.stamina}
             color="stamina"
           />
-        </Stack>
+        </FeatureGrid>
       </NarrativeCard.Content>
     </NarrativeCard>
   )

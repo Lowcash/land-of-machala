@@ -3,10 +3,10 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getSelectionIcon } from '@/lib/game/origins/utils'
 
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { FeatureChoice } from '@/components/ui/prefabs/game/feature-choice'
 import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
+import { FeatureGrid } from '@/components/ui/prefabs/structure/feature-grid'
 
-import { SelectionButton } from './selection-button'
 import { SelectionDetails } from './selection-details'
 
 interface SelectionBoxProps {
@@ -38,22 +38,22 @@ export function SelectionBox({
       /** Prevent flex-shrink overflow in scrollable content */
       minHeight="zero"
     >
-      <Stack display="grid" cols="2" gap="sm" md={{ gap: 'md' }}>
+      <FeatureGrid variant="selection">
         {items.map((item) => {
           const Icon = getSelectionIcon(item.icon)
           const isSelected = selectedId === item.id
 
           return (
-            <SelectionButton
+            <FeatureChoice
               key={item.id}
-              name={item.name}
+              label={item.name}
               icon={Icon}
               isSelected={isSelected}
               onClick={() => onSelect(item.id)}
             />
           )
         })}
-      </Stack>
+      </FeatureGrid>
 
       <SelectionDetails
         item={selectedItem || null}
@@ -68,23 +68,21 @@ export function SelectionBox({
   const isFlat = variant === 'flat'
 
   return (
-    <VStack fullHeight minHeight="zero">
-      <NarrativeCard
-        variant={isFlat ? 'ghost' : 'secondary'}
-        direction="col"
-        height={isFlat ? 'creation' : 'full'} // Explicit height on mobile allows scrolling
-        minHeight={'zero'}
-      >
-        {!isFlat && (
-          <NarrativeCard.Header align="center" justify="center">
-            <NarrativeCard.Title align="center" variant="large">
-              {title}
-            </NarrativeCard.Title>
-          </NarrativeCard.Header>
-        )}
+    <NarrativeCard
+      variant={isFlat ? 'ghost' : 'secondary'}
+      direction="col"
+      height={isFlat ? 'creation' : 'full'} // Explicit height on mobile allows scrolling
+      minHeight={'zero'}
+    >
+      {!isFlat && (
+        <NarrativeCard.Header align="center" justify="center">
+          <NarrativeCard.Title align="center" variant="large">
+            {title}
+          </NarrativeCard.Title>
+        </NarrativeCard.Header>
+      )}
 
-        {content}
-      </NarrativeCard>
-    </VStack>
+      {content}
+    </NarrativeCard>
   )
 }

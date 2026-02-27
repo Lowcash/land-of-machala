@@ -1,10 +1,9 @@
 import { type TranslatedClassInfo, type TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getStatIcon } from '@/lib/game/origins/utils'
 
-import { Card } from '@/components/ui/core/card'
-import { Stack } from '@/components/ui/core/stack'
 import { FadeInPanel } from '@/components/ui/prefabs/animations/fade-in-panel'
 import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { FeatureGrid } from '@/components/ui/prefabs/structure/feature-grid'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
 import { Divider } from '@/components/ui/shared/divider'
 
@@ -28,86 +27,84 @@ export function SelectionDetails({
   if (!item) return null
 
   return (
-    <FadeInPanel animationKey={item.id} flex={flex as string}>
+    <FadeInPanel animationKey={item.id} flex={flex as any} variant="secondary" p="md" gap="md">
+      <Description variant="detail">{item.description}</Description>
+
+      <Divider variant="solid" />
+
       <FeatureSection>
-        <Description variant="detail">{item.description}</Description>
+        <Label align="left" variant="tiny">
+          {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
+        </Label>
 
-        <Divider variant="solid" />
+        <FeatureGrid variant="dense">
+          {type === 'race' ? (
+            <>
+              <StatRow
+                compact
+                icon={getStatIcon('hp')}
+                label={statLabels.hp}
+                value={(item as TranslatedRaceInfo).stats.hp}
+                color="hp"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('mana')}
+                label={statLabels.mana}
+                value={(item as TranslatedRaceInfo).stats.mana}
+                color="mana"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('strength')}
+                label={statLabels.strength}
+                value={(item as TranslatedRaceInfo).stats.strength}
+                color="strength"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('intelligence')}
+                label={statLabels.intelligence}
+                value={(item as TranslatedRaceInfo).stats.intelligence}
+                color="intelligence"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('agility')}
+                label={statLabels.agility}
+                value={(item as TranslatedRaceInfo).stats.agility}
+                color="agility"
+              />
+              <StatRow
+                compact
+                icon={getStatIcon('stamina')}
+                label={statLabels.stamina}
+                value={(item as TranslatedRaceInfo).stats.stamina}
+                color="stamina"
+              />
+            </>
+          ) : (
+            Object.entries((item as TranslatedClassInfo).statMod).map(([stat, val]) => {
+              const numericVal = val as number
+              if (numericVal === 0) return null
+              const isPositive = numericVal > 0
+              const Icon = getStatIcon(stat)
 
-        <FeatureSection>
-          <Label align="left" variant="tiny">
-            {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
-          </Label>
+              return (
+                <StatRow
+                  key={stat}
+                  compact
+                  icon={Icon}
+                  label={statLabels[stat]}
+                  value={`${isPositive ? '+' : ''}${numericVal}`}
+                  color="gold"
+                />
+              )
+            })
+          )}
+        </FeatureGrid>
 
-          <Stack display="grid" cols="2" gap="sm" fullWidth>
-            {type === 'race' ? (
-              <>
-                <StatRow
-                  compact
-                  icon={getStatIcon('hp')}
-                  label={statLabels.hp}
-                  value={(item as TranslatedRaceInfo).stats.hp}
-                  color="hp"
-                />
-                <StatRow
-                  compact
-                  icon={getStatIcon('mana')}
-                  label={statLabels.mana}
-                  value={(item as TranslatedRaceInfo).stats.mana}
-                  color="mana"
-                />
-                <StatRow
-                  compact
-                  icon={getStatIcon('strength')}
-                  label={statLabels.strength}
-                  value={(item as TranslatedRaceInfo).stats.strength}
-                  color="strength"
-                />
-                <StatRow
-                  compact
-                  icon={getStatIcon('intelligence')}
-                  label={statLabels.intelligence}
-                  value={(item as TranslatedRaceInfo).stats.intelligence}
-                  color="intelligence"
-                />
-                <StatRow
-                  compact
-                  icon={getStatIcon('agility')}
-                  label={statLabels.agility}
-                  value={(item as TranslatedRaceInfo).stats.agility}
-                  color="agility"
-                />
-                <StatRow
-                  compact
-                  icon={getStatIcon('stamina')}
-                  label={statLabels.stamina}
-                  value={(item as TranslatedRaceInfo).stats.stamina}
-                  color="stamina"
-                />
-              </>
-            ) : (
-              Object.entries((item as TranslatedClassInfo).statMod).map(([stat, val]) => {
-                const numericVal = val as number
-                if (numericVal === 0) return null
-                const isPositive = numericVal > 0
-                const Icon = getStatIcon(stat)
-
-                return (
-                  <StatRow
-                    key={stat}
-                    compact
-                    icon={Icon}
-                    label={statLabels[stat]}
-                    value={`${isPositive ? '+' : ''}${numericVal}`}
-                    color="gold"
-                  />
-                )
-              })
-            )}
-          </Stack>
-
-          <Description variant="bonus">{item.bonuses}</Description>
-        </FeatureSection>
+        <Description variant="bonus">{item.bonuses}</Description>
       </FeatureSection>
     </FadeInPanel>
   )

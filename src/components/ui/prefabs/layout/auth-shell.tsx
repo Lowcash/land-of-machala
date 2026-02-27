@@ -1,4 +1,3 @@
-
 import { Stack } from '@/components/ui/core/stack'
 
 interface AuthShellProps {
@@ -20,7 +19,7 @@ export function AuthShell({ children }: AuthShellProps) {
       md={{ p: 'lg' }}
       overflow="auto"
     >
-      <Stack fullWidth maxWidth="5xl">
+      <Stack fullWidth maxWidth="5xl" gap="lg">
         {children}
       </Stack>
     </Stack>
