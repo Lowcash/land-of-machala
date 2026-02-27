@@ -1,10 +1,10 @@
-import React from 'react'
+import { forwardRef } from 'react'
 
 import { type StackProps, VStack } from '@/components/ui/core/stack'
 
 export interface FeatureSectionProps extends Pick<
   StackProps,
-  'display' | 'md' | 'height' | 'minHeight' | 'justify' | 'align'
+  'display' | 'md' | 'sm' | 'height' | 'minHeight' | 'justify' | 'align' | 'gap' | 'p'
 > {
   children?: React.ReactNode
 }
@@ -13,7 +13,7 @@ export interface FeatureSectionProps extends Pick<
  * A standard vertical section within a page or feature.
  * Bakes in `VStack` behavior, `fullWidth`, and a standard section gap (`gap="md"`).
  */
-export const FeatureSection = React.forwardRef<HTMLElement, FeatureSectionProps>(
+export const FeatureSection = forwardRef<HTMLElement, FeatureSectionProps>(
   ({ children, ...props }, ref) => {
     return (
       <VStack ref={ref} fullWidth gap="md" {...props}>
