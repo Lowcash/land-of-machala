@@ -1,8 +1,6 @@
 import { type TranslatedClassInfo, type TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getStatIcon } from '@/lib/game/origins/utils'
 
-import type { SelectionUiLabels } from './types'
-
 import { FadeInPanel } from '@/components/ui/prefabs/animations/fade-in-panel'
 import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { FeatureGrid } from '@/components/ui/prefabs/structure/feature-grid'
@@ -10,6 +8,7 @@ import { Description, Label } from '@/components/ui/prefabs/typography/shared'
 import { Divider } from '@/components/ui/shared/divider'
 
 import { StatRow } from './stat-row'
+import type { SelectionUiLabels } from './types'
 
 interface SelectionDetailsProps {
   item: TranslatedRaceInfo | TranslatedClassInfo | null

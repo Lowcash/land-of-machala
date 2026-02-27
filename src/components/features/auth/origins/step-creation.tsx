@@ -2,8 +2,6 @@
 
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
-import type { CreationUiLabels } from './types'
-
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
@@ -12,6 +10,7 @@ import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
 import { CharacterIdentity } from './character-identity'
 import { SelectionBox } from './selection-box'
+import type { CreationUiLabels } from './types'
 
 interface StepCreationProps {
   name: string

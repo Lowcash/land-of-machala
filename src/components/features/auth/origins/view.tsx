@@ -6,14 +6,13 @@ import type {
   TranslatedStoryStep,
 } from '@/lib/game/data/shared'
 
-import type { OriginsUiLabels } from './types'
-
 import { FadeIn } from '@/components/ui/prefabs/animations/fade-in'
 import { Presence } from '@/components/ui/prefabs/animations/presence'
 import { Background } from '@/components/ui/shared/background'
 
 import { StepCreation } from './step-creation'
 import { TutorialStep } from './step-tutorial'
+import type { OriginsUiLabels } from './types'
 import { useOrigins } from './use-origins'
 
 interface OriginsViewProps {

@@ -5,8 +5,8 @@ import { forwardRef, useEffect, useRef, useState } from 'react'
 import { type VariantProps } from 'class-variance-authority'
 import { animate } from 'framer-motion'
 
-import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { cardVariants } from '@/components/ui/core/card'
+import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { type StackProps } from '@/components/ui/core/stack'
 
 export interface FadeInPanelProps extends Pick<StackProps, 'p' | 'gap'> {
