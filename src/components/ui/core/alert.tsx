@@ -6,7 +6,7 @@ import { AlertCircle, AlertTriangle, CheckCircle2, Info } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 import { Heading } from '@/components/ui/core/typography'
-import { Expand } from '@/components/ui/prefabs/animations/motion-prefabs'
+import { Expand } from '@/components/ui/prefabs/animations/expand'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
 
 import { VStack, stackVariants } from './stack'

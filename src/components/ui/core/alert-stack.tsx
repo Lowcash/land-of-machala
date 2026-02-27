@@ -1,7 +1,7 @@
 import { Alert } from '@/components/ui/core/alert'
 import { Stack } from '@/components/ui/core/stack'
 import { AnimateNotify } from '@/components/ui/prefabs/animations/animate-notify'
-import { Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
+import { Presence } from '@/components/ui/prefabs/animations/presence'
 
 interface AlertStackItem {
   id: string

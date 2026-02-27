@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils'
 
 import { Stack, type StackProps, splitLayoutProps } from './stack'
 
-interface ScrollAreaProps
+export interface ScrollAreaProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
   showGradient?: boolean

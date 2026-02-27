@@ -6,7 +6,8 @@ import type {
   TranslatedStoryStep,
 } from '@/lib/game/data/shared'
 
-import { FadeIn, Presence } from '@/components/ui/prefabs/animations/motion-prefabs'
+import { FadeIn } from '@/components/ui/prefabs/animations/fade-in'
+import { Presence } from '@/components/ui/prefabs/animations/presence'
 import { Background } from '@/components/ui/shared/background'
 
 import { StepCreation } from './step-creation'

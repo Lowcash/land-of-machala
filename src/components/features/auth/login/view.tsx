@@ -9,12 +9,12 @@ import {
 
 import { Stack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
-import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
-import { LoreQuote } from '@/components/ui/prefabs/lore-quote'
+import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import {
   Changelog,
   type TranslatedChangelogEntry,
 } from '@/components/ui/prefabs/narrative/changelog'
+import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
 import { Stats, type TranslatedServerStat } from '@/components/ui/prefabs/narrative/stats'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'

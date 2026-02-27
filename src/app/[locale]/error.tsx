@@ -9,8 +9,8 @@ import { Button } from '@/components/ui/core/button'
 import { Card } from '@/components/ui/core/card'
 import { VStack } from '@/components/ui/core/stack'
 import { RefreshIcon } from '@/components/ui/icons'
-import { BrandedHero } from '@/components/ui/prefabs/branded-hero'
-import { StatusIcon } from '@/components/ui/prefabs/status-icon'
+import { StatusIcon } from '@/components/ui/prefabs/game/status-icon'
+import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import { MutedText } from '@/components/ui/prefabs/typography/shared'
 
 /**
