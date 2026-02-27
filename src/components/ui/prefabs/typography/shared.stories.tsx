@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { VStack } from '../../core/stack'
+import { Stack, VStack } from '../../core/stack'
 import { Description, Label, MutedText, NarrativeText, Value } from './shared'
 
 const meta: Meta = {
@@ -12,7 +12,7 @@ export default meta
 
 export const Collection: StoryObj = {
   render: () => (
-    <VStack gap="xl" fullWidth>
+    <Stack display="grid" cols="1" md={{ cols: '2' }} gap="xl" fullWidth>
       <VStack gap="xs" fullWidth>
         <Label align="left">Narrative Text (Lead)</Label>
         <NarrativeText align="left">
@@ -48,6 +48,6 @@ export const Collection: StoryObj = {
         <Label align="left">Muted Text</Label>
         <MutedText align="left">Revision 1.2.4 - Kingdom Update</MutedText>
       </VStack>
-    </VStack>
+    </Stack>
   ),
 }

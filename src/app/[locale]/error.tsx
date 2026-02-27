@@ -7,7 +7,6 @@ import { useTranslations } from 'next-intl'
 
 import { Button } from '@/components/ui/core/button'
 import { Card } from '@/components/ui/core/card'
-import { VStack } from '@/components/ui/core/stack'
 import { RefreshIcon } from '@/components/ui/icons'
 import { StatusIcon } from '@/components/ui/prefabs/game/status-icon'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
@@ -32,26 +31,22 @@ export default function Error({
   }, [error])
 
   return (
-    <VStack minHeight="dvh" fullWidth justify="center" align="center" p="md">
-      <Card.Root variant="primary" p="xl" gap="lg" align="center">
-        <BrandedHero
-          title={t('error')}
-          description={t('error_description')}
-          logo={<StatusIcon icon={AlertCircle} variant="danger" />}
-        />
+    <Card.Root variant="primary" p="xl" gap="lg" align="center">
+      <BrandedHero
+        title={t('error')}
+        description={t('error_description')}
+        logo={<StatusIcon icon={AlertCircle} variant="danger" />}
+      />
 
-        {error.digest && (
-          <VStack fullWidth align="center" p="xs">
-            <MutedText align="center">{t('error_digest', { digest: error.digest })}</MutedText>
-          </VStack>
-        )}
+      {error.digest && (
+        <MutedText align="center">{t('error_digest', { digest: error.digest })}</MutedText>
+      )}
 
-        <Card.Footer fullWidth justify="center">
-          <Button variant="primary" onClick={() => reset()} icon={<RefreshIcon />}>
-            {t('try_again')}
-          </Button>
-        </Card.Footer>
-      </Card.Root>
-    </VStack>
+      <Card.Footer fullWidth justify="center">
+        <Button variant="primary" onClick={() => reset()} icon={<RefreshIcon />}>
+          {t('try_again')}
+        </Button>
+      </Card.Footer>
+    </Card.Root>
   )
 }

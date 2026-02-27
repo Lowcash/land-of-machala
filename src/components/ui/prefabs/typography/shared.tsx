@@ -43,6 +43,8 @@ interface TypographyPrefabProps extends Omit<
   truncate?: boolean
   shrink?: boolean
   grow?: boolean
+  px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
   bold?: boolean
   tabularNums?: boolean
   font?: 'body' | 'fantasy' | 'medieval'

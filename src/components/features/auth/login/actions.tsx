@@ -3,7 +3,7 @@
 import { useRouter } from '@/i18n/routing'
 
 import { Button } from '@/components/ui/core/button'
-import { VStack } from '@/components/ui/core/stack'
+import { ActionGroup } from '@/components/ui/prefabs/structure'
 
 interface LoginActionsProps {
   onRegister?: () => void
@@ -31,7 +31,7 @@ export function LoginActions({
   }
 
   return (
-    <VStack gap="md">
+    <ActionGroup direction="col">
       <Button variant="secondary" fullWidth onClick={onGuestAccess} disabled={isLoading}>
         {guestLabel}
       </Button>
@@ -39,6 +39,6 @@ export function LoginActions({
       <Button variant="primary" fullWidth onClick={handleRegister} disabled={isLoading}>
         {registerLabel}
       </Button>
-    </VStack>
+    </ActionGroup>
   )
 }

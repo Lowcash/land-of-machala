@@ -2,7 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27] - Origins Mobile Layout & React Import Standardization
+
+### Changed
+- **FeatureGrid**: Added `'selection'` variant — always 2 columns regardless of breakpoint. Used in `SelectionBox` to keep race/class grids 2-column on mobile.
+- **AuthShell**: Added `gap="lg"` to the inner content container, providing consistent spacing between `PageHeader`, main grid, and the mobile "Begin Adventure" button.
+- **React Imports**: Standardized `import * as React` → named imports across remaining core/interactive files: `button.tsx`, `box.tsx`, `progress.tsx`, `list.tsx`, `tooltip.tsx`, `accordion.tsx`, `choice.tsx`, `typography/card.tsx`.
+
+## [2026-02-27] - Layout Cleanup & DOM Optimization
+
+
+### Changed
+- **FadeInPanel**: Refactored from 4 DOM elements (`Card.Root → ScrollArea → Stack → motion.div`) to 2 (`MotionScrollArea` with `cardVariants()` className). Visual output identical, half the DOM depth.
+- **SelectionBox**: Replaced `SelectionButton` wrapper (pure passthrough) with direct `FeatureChoice` usage. Also replaced ad-hoc `Stack display="grid"` with `FeatureGrid` prefab.
+- **SelectionDetails**: Replaced ad-hoc `Stack display="grid"` with `FeatureGrid variant="dense"`.
+- **React Imports**: Standardized named imports (`forwardRef`, `HTMLAttributes`, `ReactNode`, `ElementType`) across `stack.tsx`, `card.tsx`, `scroll-area.tsx`, `motion-stack.tsx`, `feature-choice.tsx`, `feature-section.tsx` — removing all `import * as React` and default `import React` patterns.
+
+### Removed
+- **SelectionButton**: Deleted `selection-button.tsx` and `selection-button.test.tsx` (empty wrapper replaced by `FeatureChoice`).
+
 ## [2026-02-27] - UI Refactoring & Structural Prefabs
+
 
 ### Added
 - **Structural Prefabs**: Introduced `FeatureLayout`, `FeatureSection`, `InfoPanel`, and `ActionGroup` to enforce layout rigidity and reduce boilerplate.

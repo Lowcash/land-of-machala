@@ -17,16 +17,18 @@ export function BrandedHero({
   logo,
 }: BrandedHeroProps) {
   return (
-    <FeatureSection align="center">
+    <FeatureSection align="center" gap="md">
       <VStack align="center" gap="xs">
         {logo || <LogoIcon size="xl" />}
         <HeroTitle>{title}</HeroTitle>
       </VStack>
 
-      <VStack align="center" gap="xs" maxWidth="md">
-        {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
-        {description && <HeroDescription align="center">{description}</HeroDescription>}
-      </VStack>
+      {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
+      {description && (
+        <HeroDescription align="center" maxWidth="md">
+          {description}
+        </HeroDescription>
+      )}
     </FeatureSection>
   )
 }

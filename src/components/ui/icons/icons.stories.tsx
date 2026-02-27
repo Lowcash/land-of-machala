@@ -50,20 +50,16 @@ export const Gallery: Story = {
 
 export const Colors: Story = {
   render: () => (
-    <VStack gap="lg">
-      <HStack gap="md">
-        <UserIcon color="primary" />
-        <UserIcon color="gold" />
-        <UserIcon color="secondary" />
-        <UserIcon color="ivory" />
-      </HStack>
-      <HStack gap="md">
-        <ShieldIcon color="hp" />
-        <FlameIcon color="mana" />
-        <ZapIcon color="strength" />
-        <DicesIcon color="agility" />
-      </HStack>
-    </VStack>
+    <Stack display="grid" cols="4" gap="md">
+      <UserIcon color="primary" />
+      <UserIcon color="gold" />
+      <UserIcon color="secondary" />
+      <UserIcon color="ivory" />
+      <ShieldIcon color="hp" />
+      <FlameIcon color="mana" />
+      <ZapIcon color="strength" />
+      <DicesIcon color="agility" />
+    </Stack>
   ),
 }
 
