@@ -1,6 +1,6 @@
 'use client'
 
-import { type ReactNode, createContext, useCallback, useContext, useState } from 'react'
+import { createContext, useCallback, useContext, useState } from 'react'
 
 import { AlertProps } from '@/components/ui/core/alert'
 import { AlertStack } from '@/components/ui/core/alert-stack'
@@ -10,7 +10,7 @@ type NotificationVariant = AlertProps['variant']
 export interface Notification {
   id: string
   title?: string
-  message: ReactNode
+  message: React.ReactNode
   variant?: NotificationVariant
   duration?: number
   action?: {
@@ -34,7 +34,7 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
  * Global Notification Provider.
  * Renders floating alerts in a queue.
  */
-export function NotificationProvider({ children }: { children: ReactNode }) {
+export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<Notification[]>([])
 
   const dismiss = useCallback((id: string) => {
@@ -58,22 +58,22 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
   )
 
   const success = useCallback(
-    (message: ReactNode, title?: string) => notify({ message, title, variant: 'success' }),
+    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'success' }),
     [notify]
   )
 
   const error = useCallback(
-    (message: ReactNode, title?: string) => notify({ message, title, variant: 'danger' }),
+    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'danger' }),
     [notify]
   )
 
   const warn = useCallback(
-    (message: ReactNode, title?: string) => notify({ message, title, variant: 'warning' }),
+    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'warning' }),
     [notify]
   )
 
   const info = useCallback(
-    (message: ReactNode, title?: string) => notify({ message, title, variant: 'info' }),
+    (message: React.ReactNode, title?: string) => notify({ message, title, variant: 'info' }),
     [notify]
   )
 

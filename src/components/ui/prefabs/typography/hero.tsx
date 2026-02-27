@@ -1,4 +1,4 @@
-import { type ComponentProps, type HTMLAttributes, type ReactNode } from 'react'
+import { type ComponentProps, type HTMLAttributes } from 'react'
 
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { Heading, Text } from '@/components/ui/core/typography'
@@ -7,7 +7,7 @@ import { SparklesIcon } from '@/components/ui/icons'
 import { Description, Label } from './shared'
 
 interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'className'>) {
@@ -31,7 +31,7 @@ export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'classNam
 }
 
 interface HeroSubtitleProps extends Omit<HTMLAttributes<HTMLDivElement>, 'className'> {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {

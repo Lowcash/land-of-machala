@@ -4,7 +4,6 @@ import {
   Children,
   type HTMLAttributes,
   type ReactElement,
-  type ReactNode,
   cloneElement,
   useId,
 } from 'react'
@@ -17,7 +16,7 @@ interface FieldProps extends HTMLAttributes<HTMLDivElement> {
   label?: string
   error?: string
   horizontal?: boolean
-  children: ReactNode
+  children: React.ReactNode
 }
 
 export function Field({ label, error, horizontal, children, className, ...props }: FieldProps) {

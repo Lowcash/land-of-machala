@@ -53,11 +53,15 @@ We use a two‑tier typography system (`core/typography.tsx` and `ui/prefabs/typ
 ## 8. React Import Standards
 
 - Do not import React just to use JSX in React 18+/Next.js.
-- Prefer named hook and type imports:
+- Prefer named hook imports (`useState`, `useMemo`).
+- For typing children and standard React nodes, prefer the global `React.ReactNode` namespace over named imports to reduce import clutter and clarify the type's origin.
 
 ```ts
   import { useState, useMemo } from 'react'
-  import type { ReactNode } from 'react'
+
+  interface Props {
+    children: React.ReactNode
+  }
 ```
 
 - Avoid import * as React from 'react' unless you really need the namespace (for example React.forwardRef and you do not import it individually).

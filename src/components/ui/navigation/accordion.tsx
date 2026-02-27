@@ -1,7 +1,6 @@
 'use client'
 
 import * as React from 'react'
-import type { ReactNode } from 'react'
 
 import * as AccordionPrimitive from '@radix-ui/react-accordion'
 import { ChevronDown } from 'lucide-react'
@@ -15,7 +14,7 @@ import { Text } from '@/components/ui/core/typography'
  * We explicitly define ONLY what we want to expose.
  */
 interface AccordionRootProps {
-  children: ReactNode
+  children: React.ReactNode
   type: 'single' | 'multiple'
   defaultValue?: string
   value?: string
@@ -32,7 +31,7 @@ const Accordion = React.forwardRef<HTMLDivElement, AccordionRootProps>(
 Accordion.displayName = 'Accordion'
 
 interface AccordionItemProps {
-  children: ReactNode
+  children: React.ReactNode
   value: string
   disabled?: boolean
   className?: string
@@ -50,7 +49,7 @@ const AccordionItem = React.forwardRef<HTMLDivElement, AccordionItemProps>(
 AccordionItem.displayName = 'AccordionItem'
 
 interface AccordionTriggerProps {
-  children: ReactNode
+  children: React.ReactNode
   className?: string
 }
 
@@ -78,7 +77,7 @@ const AccordionTrigger = React.forwardRef<HTMLButtonElement, AccordionTriggerPro
 AccordionTrigger.displayName = 'AccordionTrigger'
 
 interface AccordionContentProps {
-  children: ReactNode
+  children: React.ReactNode
   className?: string
   forceMount?: true
 }
@@ -108,7 +107,7 @@ AccordionContent.displayName = 'AccordionContent'
 interface GameAccordionItem {
   value: string
   title: string
-  content: ReactNode
+  content: React.ReactNode
   selectedLabel?: string
 }
 

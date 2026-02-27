@@ -5,7 +5,6 @@ import {
   type ComponentPropsWithoutRef,
   type FormHTMLAttributes,
   type HTMLAttributes,
-  type ReactNode,
   createContext,
   useContext,
   useId,
@@ -92,7 +91,7 @@ interface FormFieldContainerProps {
   name: string
   label?: string
   horizontal?: boolean
-  children: (field: any) => ReactNode
+  children: (field: any) => React.ReactNode
 }
 
 const FormFieldContainer = ({

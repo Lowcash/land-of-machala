@@ -1,9 +1,8 @@
-import type { ReactNode } from 'react'
 
 import { Stack } from '@/components/ui/core/stack'
 
 interface AuthShellProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
 /**

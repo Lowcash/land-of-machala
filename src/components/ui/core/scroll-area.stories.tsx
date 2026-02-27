@@ -25,7 +25,7 @@ type Story = StoryObj<typeof ScrollArea>
 
 export const Default: Story = {
   render: () => (
-    <ScrollArea height="selection" gap="md">
+    <ScrollArea height="creation" gap="md">
       <Heading level="h3">The Ancient Chronicles</Heading>
       <VStack gap="sm">
         <Text variant="primary">
@@ -72,7 +72,7 @@ export const InsideCard: Story = {
         <Heading level="h4">Quest Log</Heading>
       </Card.Header>
 
-      <ScrollArea as={Card.Content} height="selection" px="sm" gap="md">
+      <ScrollArea as={Card.Content} height="creation" px="sm" gap="md">
         <Card variant="subtle" p="sm" gap="xs">
           <Text variant="large">Clean the Forest</Text>
           <Text variant="small" color="secondary">

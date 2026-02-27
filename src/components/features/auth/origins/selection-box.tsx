@@ -72,7 +72,7 @@ export function SelectionBox({
       <NarrativeCard
         variant={isFlat ? 'ghost' : 'secondary'}
         direction="col"
-        height={isFlat ? 'selection' : 'full'} // Explicit height on mobile allows scrolling
+        height={isFlat ? 'creation' : 'full'} // Explicit height on mobile allows scrolling
         minHeight={'zero'}
       >
         {!isFlat && (

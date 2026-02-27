@@ -50,7 +50,6 @@ export const boxVariants = cva('', {
       full: 'h-full',
       px: 'h-px',
       creation: 'h-[480px]',
-      selection: 'h-[480px]',
       'avatar-lg': 'h-32',
       avatar: 'h-20',
       'avatar-sm': 'h-14',

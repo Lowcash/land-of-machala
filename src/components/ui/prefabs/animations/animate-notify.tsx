@@ -1,11 +1,10 @@
 'use client'
 
-import { type ReactNode } from 'react'
 
 import { MotionStack } from '../../core/animations/motion-stack'
 
 interface AnimateNotifyProps {
-  children: ReactNode
+  children: React.ReactNode
   id?: string
 }
 
