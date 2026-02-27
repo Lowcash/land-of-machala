@@ -1,11 +1,12 @@
 import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 
 import { RegisterForm, RegisterFormValues } from './form'
+import type { RegisterUiLabels } from './types'
 
 interface RegisterCardProps {
   onRegister?: (values: RegisterFormValues) => void
   isLoading?: boolean
-  uiLabels: any
+  uiLabels: RegisterUiLabels
 }
 
 export function RegisterCard({ onRegister, isLoading, uiLabels }: RegisterCardProps) {

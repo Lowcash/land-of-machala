@@ -2,12 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-02-27] - FadeInPanel Refinement & Typing Strategy
+## [2026-02-27] - FadeInPanel Refinement & Auth Typing Strategy
 
 ### Changed
 - **ScrollArea**: Added `viewportRef` prop to expose the inner scrolling element. This allows external components to target the content viewport directly for animations.
 - **FadeInPanel**: Reduced DOM depth to strictly 2 divs by removing the `Box` wrapper and using `ScrollArea` as the base. Content fade is now achieved by targeting the `viewportRef` imperatively, ensuring card decoration and scroll arrows remain stable.
-- **Typing**: Standardized `uiLabels` typing across the Origins feature using shared interfaces in `types.ts` to ensure consistency between Server and Client components.
+- **Typing**: Standardized `uiLabels` typing across **Origins**, **Login**, and **Register** features using shared interfaces in `types.ts` to ensure consistency between Server and Client components. Removed all `any` types for UI labels.
 
 ## [2026-02-27] - UI Refinements & Component Cleanup
 

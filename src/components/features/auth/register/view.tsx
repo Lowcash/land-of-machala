@@ -18,6 +18,7 @@ import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { RegisterCard } from './card'
+import type { RegisterUiLabels } from './types'
 
 interface RegisterViewUIProps {
   hero: {
@@ -39,7 +40,7 @@ interface RegisterViewUIProps {
   }
   quote: string
   footer: FooterProps
-  uiLabels: any
+  uiLabels: RegisterUiLabels
   backgroundSrc: string
 }
 

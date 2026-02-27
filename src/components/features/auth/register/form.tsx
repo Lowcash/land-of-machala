@@ -7,11 +7,12 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
 import { LockIcon, MailIcon } from '@/components/ui/icons'
+import type { RegisterUiLabels } from './types'
 
 /**
  * Returns the validation schema for the registration form.
  */
-const getRegisterSchema = (ui: any) =>
+const getRegisterSchema = (ui: RegisterUiLabels) =>
   z
     .object({
       email: z.email(ui.validation.emailInvalid),
@@ -28,7 +29,7 @@ export type RegisterFormValues = z.infer<ReturnType<typeof getRegisterSchema>>
 interface RegisterFormProps {
   onRegister?: (values: RegisterFormValues) => void
   isLoading?: boolean
-  uiLabels: any
+  uiLabels: RegisterUiLabels
 }
 
 /**

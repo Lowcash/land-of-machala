@@ -7,11 +7,12 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
 import { LockIcon, MailIcon } from '@/components/ui/icons'
+import type { LoginUiLabels } from './types'
 
 /**
  * Returns the validation schema for the login form.
  */
-const getLoginSchema = (ui: any) =>
+const getLoginSchema = (ui: LoginUiLabels) =>
   z.object({
     email: z.email(ui.validation.emailInvalid),
     password: z.string().min(1, ui.validation.passwordRequired),
@@ -23,7 +24,7 @@ export type LoginFormValues = z.infer<ReturnType<typeof getLoginSchema>>
 interface LoginFormProps {
   onLogin?: (values: LoginFormValues) => void
   isLoading?: boolean
-  uiLabels: any
+  uiLabels: LoginUiLabels
 }
 
 /**

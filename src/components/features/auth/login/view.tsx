@@ -21,6 +21,7 @@ import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { LoginCard } from './card'
+import type { LoginUiLabels } from './types'
 
 interface LoginViewUIProps {
   hero: {
@@ -41,7 +42,7 @@ interface LoginViewUIProps {
   stats: TranslatedServerStat[]
   changes: TranslatedChangelogEntry[]
   footer: FooterProps
-  uiLabels: any
+  uiLabels: LoginUiLabels
   backgroundSrc: string
 }
 

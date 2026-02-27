@@ -3,6 +3,7 @@ import { Divider } from '@/components/ui/shared/divider'
 
 import { LoginActions } from './actions'
 import { LoginForm } from './form'
+import type { LoginUiLabels } from './types'
 
 interface LoginCardProps {
   onLogin?: (values: any) => void
@@ -12,7 +13,7 @@ interface LoginCardProps {
   guestLabel: string
   registerLabel: string
   orLabel: string
-  uiLabels: any
+  uiLabels: LoginUiLabels
 }
 
 export function LoginCard({
