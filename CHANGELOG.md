@@ -2,13 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-02-27] - FadeInPanel Card Flicker Fix & uiLabels Typing
+## [2026-02-27] - FadeInPanel Refinement & Typing Strategy
 
 ### Changed
-- **FadeInPanel**: Restructured component to separate the stable `Box` (card styling) from the failing inner `ScrollArea` (content). This ensures the card border and background stay stable while only the content fades, preventing "ghost cards" and flicker.
-- **Origins Component Typing**: Introduced `types.ts` for Origins UI label contracts. Removed `any` typing from `uiLabels` props in `view.tsx`, `step-creation.tsx`, `selection-details.tsx`, `selection-box.tsx`, `character-identity.tsx`, `character-stats-card.tsx`, and `step-tutorial.tsx`.
-- **EntranceStack**: Standardized React imports (named `forwardRef`).
-- **NarrativeCard**: Standardized React imports (named `forwardRef`).
+- **ScrollArea**: Added `viewportRef` prop to expose the inner scrolling element. This allows external components to target the content viewport directly for animations.
+- **FadeInPanel**: Reduced DOM depth to strictly 2 divs by removing the `Box` wrapper and using `ScrollArea` as the base. Content fade is now achieved by targeting the `viewportRef` imperatively, ensuring card decoration and scroll arrows remain stable.
+- **Typing**: Standardized `uiLabels` typing across the Origins feature using shared interfaces in `types.ts` to ensure consistency between Server and Client components.
 
 ## [2026-02-27] - UI Refinements & Component Cleanup
 

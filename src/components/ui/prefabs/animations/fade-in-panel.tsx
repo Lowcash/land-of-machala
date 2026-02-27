@@ -6,15 +6,14 @@ import { type VariantProps } from 'class-variance-authority'
 import { animate } from 'framer-motion'
 
 import { ScrollArea } from '@/components/ui/core/scroll-area'
-import { Box } from '@/components/ui/core/box'
 import { cardVariants } from '@/components/ui/core/card'
 import { type StackProps } from '@/components/ui/core/stack'
 
 export interface FadeInPanelProps extends Pick<StackProps, 'p' | 'gap'> {
   /**
    * The unique key that triggers a fade transition when it changes.
-   * The card container (border, background) is always stable.
-   * Only the scrollable content area fades in/out.
+   * The card container (border, background) and scroll indicators stay stable.
+   * Only the inner scrollable viewport content fades in/out.
    */
   animationKey: string | number
   variant?: VariantProps<typeof cardVariants>['variant']
@@ -26,25 +25,26 @@ const FADE_OUT_DURATION = 0.1
 const FADE_IN_DURATION = 0.2
 
 /**
- * An animated panel that combines Card styling, ScrollArea, and a Framer Motion fade.
+ * An animated panel that combines Card styling, ScrollArea, and a targeted fade.
  *
  * Architecture:
- * - Outer `Box` — permanently stable, holds the card border/background. Never animated.
- * - Inner `ScrollArea` — the fade target. Content swaps invisibly between fade steps.
+ * - Direct usage of `ScrollArea` (Card styling applied via className)
+ * - Imperative `animate()` targets the `viewportRef` (the inner scrollable element)
  *
- * No extra motion.div needed: the imperative `animate()` runs directly on the
- * inner `ScrollArea` ref, so the DOM count stays minimal.
+ * This results in exactly 2 divs:
+ * 1. Wrapper (Card border, background, and absolute scroll arrows)
+ * 2. Viewport (The actual scrollable element that fades)
  */
 export const FadeInPanel = forwardRef<HTMLElement, FadeInPanelProps>(
   ({ animationKey, flex, children, variant = 'subtle', p, gap }, ref) => {
-    const contentRef = useRef<HTMLElement>(null)
+    const viewportRef = useRef<HTMLDivElement>(null)
     const isFirst = useRef(true)
 
     // Staged children — swapped after fade-out so the transition is invisible
     const [displayed, setDisplayed] = useState(children)
 
     useEffect(() => {
-      const el = contentRef.current
+      const el = viewportRef.current
       if (!el) return
 
       if (isFirst.current) {
@@ -62,17 +62,19 @@ export const FadeInPanel = forwardRef<HTMLElement, FadeInPanelProps>(
     }, [animationKey])
 
     return (
-      <Box
+      <ScrollArea
         ref={ref}
+        viewportRef={viewportRef}
         className={cardVariants({ variant })}
         flex={flex as any}
         minHeight="zero"
+        fullHeight
         overflow="hidden"
+        p={p ?? 'md'}
+        gap={gap}
       >
-        <ScrollArea ref={contentRef} p={p ?? 'md'} gap={gap} minHeight="zero">
-          {displayed}
-        </ScrollArea>
-      </Box>
+        {displayed}
+      </ScrollArea>
     )
   }
 )

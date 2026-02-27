@@ -13,6 +13,8 @@ export interface ScrollAreaProps
   extends Omit<HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
   showGradient?: boolean
+  /** Optional ref to the inner scrolling viewport element */
+  viewportRef?: React.Ref<HTMLDivElement>
 }
 
 export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) => {
@@ -20,6 +22,7 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
   const {
     children,
     showGradient = true,
+    viewportRef,
     className,
     as: Component = 'div',
     ...otherProps
@@ -81,7 +84,11 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
       )}
 
       <Stack
-        ref={scrollRef as any}
+        ref={(node: HTMLDivElement) => {
+          scrollRef.current = node
+          if (typeof viewportRef === 'function') viewportRef(node)
+          else if (viewportRef) (viewportRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+        }}
         className="scrollbar-custom flex min-h-0 w-full flex-1 overflow-y-auto"
         p="none" // No padding here. Card/outer handles it.
         gap={gap}
