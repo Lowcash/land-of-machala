@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27] - FadeInPanel Architecture & DOM Optimization
+
+### Changed
+- **FadeInPanel**: Replaced `AnimatePresence` + inner `motion.div` pattern with Framer Motion's imperative `animate()` API. The `ScrollArea` container is now stable (never remounts); the content fades via staged state update (`displayed`) — zero extra DOM nodes.
+- **Divider**: Added `shrink-0` to the `solid` variant to fix the bug where a `h-px` element collapses to invisible inside a flex-column container.
+- **React Imports**: Standardized `import React from 'react'` → named `forwardRef` import in `narrative-card.tsx` and `entrance-stack.tsx`.
+
 ## [2026-02-27] - UI Refinements & Component Cleanup
 
 ### Changed

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import { forwardRef } from 'react'
 
 import { HTMLMotionProps, motion } from 'framer-motion'
 
@@ -46,7 +46,7 @@ const variants = {
   }),
 }
 
-export const EntranceStack = React.forwardRef<HTMLElement, EntranceStackProps>(
+export const EntranceStack = forwardRef<HTMLElement, EntranceStackProps>(
   ({ children, delay = 0, duration = 0.5, yOffset = 10, ...props }, ref) => {
     // We use motion.div as the base but apply Stack classes to it
     // to avoid extra DOM nesting while keeping the Stack API

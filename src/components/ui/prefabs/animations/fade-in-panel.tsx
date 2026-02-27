@@ -1,19 +1,19 @@
 'use client'
 
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 
 import { type VariantProps } from 'class-variance-authority'
-import { AnimatePresence, motion } from 'framer-motion'
+import { animate } from 'framer-motion'
 
+import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { cardVariants } from '@/components/ui/core/card'
 import { type StackProps } from '@/components/ui/core/stack'
 
-import { MotionScrollArea } from './motion-scroll-area'
-
 export interface FadeInPanelProps extends Pick<StackProps, 'p' | 'gap'> {
   /**
-   * The unique key used by framer-motion to trigger the fade-in animation when content changes.
-   * The container stays mounted; only the inner content fades.
+   * The unique key that triggers a fade transition when it changes.
+   * The scroll container remains stable — only the content cross-fades.
+   * This prevents layout jumps and scroll-position resets.
    */
   animationKey: string | number
   variant?: VariantProps<typeof cardVariants>['variant']
@@ -21,38 +21,62 @@ export interface FadeInPanelProps extends Pick<StackProps, 'p' | 'gap'> {
   children?: React.ReactNode
 }
 
-const fadeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.2 } },
-  exit: { opacity: 0, transition: { duration: 0.1 } },
-}
+const FADE_OUT_DURATION = 0.1
+const FADE_IN_DURATION = 0.2
 
 /**
  * An animated panel that combines Card styling, ScrollArea, and Framer Motion fade.
- * The outer container stays stable (no key-driven unmount) while the inner content
- * fades in/out via AnimatePresence. This prevents layout flicker on selection changes.
+ *
+ * Uses the imperative `animate()` API from Framer Motion to fade the container
+ * without adding any extra DOM nodes. When `animationKey` changes:
+ * 1. The container fades to opacity 0.
+ * 2. The new `children` are swapped into state.
+ * 3. The container fades back to opacity 1.
  */
 export const FadeInPanel = forwardRef<HTMLElement, FadeInPanelProps>(
-  ({ animationKey, flex, children, variant = 'subtle', p, gap }, ref) => (
-    <AnimatePresence mode="wait" initial={false}>
-      <MotionScrollArea
-        key={animationKey}
-        ref={ref}
+  ({ animationKey, flex, children, variant = 'subtle', p, gap }, ref) => {
+    const containerRef = useRef<HTMLElement>(null)
+    const isFirst = useRef(true)
+
+    // Staged children — updated after fade-out so the swap is invisible
+    const [displayed, setDisplayed] = useState(children)
+
+    useEffect(() => {
+      const el = containerRef.current
+      if (!el) return
+
+      if (isFirst.current) {
+        isFirst.current = false
+        return
+      }
+
+      animate(el, { opacity: 0 }, { duration: FADE_OUT_DURATION }).then(() => {
+        setDisplayed(children)
+        animate(el, { opacity: 1 }, { duration: FADE_IN_DURATION })
+      })
+      // Intentionally omitting `children` — we want this to run only
+      // when the selection key changes, capturing the latest children at that moment.
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [animationKey])
+
+    return (
+      <ScrollArea
+        ref={(el) => {
+          containerRef.current = el
+          if (typeof ref === 'function') ref(el)
+          else if (ref) (ref as React.MutableRefObject<HTMLElement | null>).current = el
+        }}
         className={cardVariants({ variant })}
         flex={flex as any}
         minHeight="zero"
         overflow="hidden"
         p={p ?? 'md'}
         gap={gap}
-        initial="hidden"
-        animate="visible"
-        exit="exit"
-        variants={fadeVariants}
       >
-        {children}
-      </MotionScrollArea>
-    </AnimatePresence>
-  )
+        {displayed}
+      </ScrollArea>
+    )
+  }
 )
 
 FadeInPanel.displayName = 'FadeInPanel'

@@ -9,7 +9,7 @@ interface DividerProps {
 export function Divider({ label, variant = 'default' }: DividerProps) {
   if (variant === 'solid') {
     return (
-      <div className="h-px w-full bg-linear-to-r from-transparent via-(--color-secondary)/80 to-transparent" />
+      <div className="h-px w-full shrink-0 bg-linear-to-r from-transparent via-(--color-secondary)/80 to-transparent" />
     )
   }
 
