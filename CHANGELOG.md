@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27] - Core Standards & Origins Testing
+
+### Added
+- **E2E Testing**: Established Playwright configuration with automated dev server lifecycle.
+- **Origins Flow**: Expanded Playwright coverage to validate mandatory fields before continuation and added E2E tests for the "Randomize" character function.
+
+### Changed
+- **Code Standards**: Migrated entire codebase to use the native global `React.ReactNode` type declaration to reduce import clutter, dropping legacy named imports.
+- **Design System**: Unified height constraints by collapsing the redundant `selection` token into the `creation` token (`h-[480px]`) inside `box.tsx`.
+- **E2E Testing**: Moved `origins-flow.spec.ts` from local component directory to the root `e2e/` folder to prevent Vitest suite pollution.
+
+### Fixed
+- **Mobile Styling**: Fixed mobile `SelectionDetails` rendering issues where accordion height was too cramped to display content by increasing allocation space.
+
 ## [2026-02-23] - Storybook Standardization & Documentation Audit
 
 ### Added
