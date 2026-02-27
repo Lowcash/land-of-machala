@@ -1,4 +1,5 @@
 import { forwardRef } from 'react'
+
 import { Card, type CardRootProps } from '@/components/ui/core/card'
 
 export interface NarrativeCardProps extends Omit<CardRootProps, 'p'> {

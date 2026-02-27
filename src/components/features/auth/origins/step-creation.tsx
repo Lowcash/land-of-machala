@@ -2,6 +2,8 @@
 
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
+import type { CreationUiLabels } from './types'
+
 import { Button } from '@/components/ui/core/button'
 import { Stack, VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
@@ -25,7 +27,7 @@ interface StepCreationProps {
   races: TranslatedRaceInfo[]
   classes: TranslatedClassInfo[]
   statLabels: Record<string, string>
-  uiLabels: any
+  uiLabels: CreationUiLabels
 }
 
 export function StepCreation({

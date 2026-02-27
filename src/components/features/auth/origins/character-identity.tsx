@@ -7,6 +7,7 @@ import { ActionGroup, FeatureSection } from '@/components/ui/prefabs/structure'
 
 import { CharacterNameCard } from './character-name-card'
 import { CharacterStatsCard } from './character-stats-card'
+import type { CreationUiLabels } from './types'
 
 interface CharacterIdentityProps {
   name: string
@@ -16,7 +17,7 @@ interface CharacterIdentityProps {
   onFinish: () => void
   canFinish: boolean
   statLabels: Record<string, string>
-  uiLabels: any
+  uiLabels: CreationUiLabels
 }
 
 export function CharacterIdentity({

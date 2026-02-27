@@ -5,6 +5,7 @@ import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 import { FeatureGrid } from '@/components/ui/prefabs/structure'
 
 import { StatRow } from './stat-row'
+import type { CreationUiLabels } from './types'
 
 interface CharacterStatsCardProps {
   stats: {
@@ -17,7 +18,7 @@ interface CharacterStatsCardProps {
   }
   isReady?: boolean
   statLabels: Record<string, string>
-  uiLabels: any
+  uiLabels: CreationUiLabels
 }
 
 export function CharacterStatsCard({

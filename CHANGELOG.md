@@ -2,12 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-02-27] - FadeInPanel Architecture & DOM Optimization
+## [2026-02-27] - FadeInPanel Card Flicker Fix & uiLabels Typing
 
 ### Changed
-- **FadeInPanel**: Replaced `AnimatePresence` + inner `motion.div` pattern with Framer Motion's imperative `animate()` API. The `ScrollArea` container is now stable (never remounts); the content fades via staged state update (`displayed`) — zero extra DOM nodes.
-- **Divider**: Added `shrink-0` to the `solid` variant to fix the bug where a `h-px` element collapses to invisible inside a flex-column container.
-- **React Imports**: Standardized `import React from 'react'` → named `forwardRef` import in `narrative-card.tsx` and `entrance-stack.tsx`.
+- **FadeInPanel**: Restructured component to separate the stable `Box` (card styling) from the failing inner `ScrollArea` (content). This ensures the card border and background stay stable while only the content fades, preventing "ghost cards" and flicker.
+- **Origins Component Typing**: Introduced `types.ts` for Origins UI label contracts. Removed `any` typing from `uiLabels` props in `view.tsx`, `step-creation.tsx`, `selection-details.tsx`, `selection-box.tsx`, `character-identity.tsx`, `character-stats-card.tsx`, and `step-tutorial.tsx`.
+- **EntranceStack**: Standardized React imports (named `forwardRef`).
+- **NarrativeCard**: Standardized React imports (named `forwardRef`).
 
 ## [2026-02-27] - UI Refinements & Component Cleanup
 

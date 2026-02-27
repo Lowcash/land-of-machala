@@ -8,6 +8,7 @@ import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 import { FeatureGrid } from '@/components/ui/prefabs/structure/feature-grid'
 
 import { SelectionDetails } from './selection-details'
+import type { CreationUiLabels } from './types'
 
 interface SelectionBoxProps {
   title: string
@@ -17,7 +18,7 @@ interface SelectionBoxProps {
   type: 'race' | 'class'
   variant?: 'primary' | 'flat'
   statLabels: Record<string, string>
-  uiLabels: any
+  uiLabels: CreationUiLabels
 }
 
 export function SelectionBox({

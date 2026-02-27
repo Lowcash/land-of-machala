@@ -1,6 +1,8 @@
 import { type TranslatedClassInfo, type TranslatedRaceInfo } from '@/lib/game/data/shared'
 import { getStatIcon } from '@/lib/game/origins/utils'
 
+import type { SelectionUiLabels } from './types'
+
 import { FadeInPanel } from '@/components/ui/prefabs/animations/fade-in-panel'
 import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { FeatureGrid } from '@/components/ui/prefabs/structure/feature-grid'
@@ -14,7 +16,7 @@ interface SelectionDetailsProps {
   type: 'race' | 'class'
   flex?: string | boolean | number
   statLabels: Record<string, string>
-  uiLabels: any
+  uiLabels: SelectionUiLabels
 }
 
 export function SelectionDetails({
