@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/core/button'
 import { Form } from '@/components/ui/forms/form'
 import { LockIcon, MailIcon } from '@/components/ui/icons'
+
 import type { RegisterUiLabels } from './types'
 
 /**
