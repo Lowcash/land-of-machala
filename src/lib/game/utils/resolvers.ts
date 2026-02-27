@@ -6,6 +6,11 @@ import { SERVER_STATS } from '@/lib/game/data/stats'
 import { version } from '../../../../package.json'
 
 /**
+ * Common type for next-intl translation function.
+ */
+type TranslationFn = (key: string) => string
+
+/**
  * Strips the 'Game.' prefix from a translation key.
  */
 function stripPrefix(key: string) {
@@ -36,7 +41,7 @@ export function resolveFooterData() {
 /**
  * Resolves pre-translated footer props.
  */
-export function resolveFooterProps(t: (key: any) => string) {
+export function resolveFooterProps(t: TranslationFn) {
   const { year, version } = resolveFooterData()
   return {
     versionLabel: t('footer.version'),
@@ -49,35 +54,35 @@ export function resolveFooterProps(t: (key: any) => string) {
 /**
  * Resolves pre-translated server stats.
  */
-export function resolveTranslatedStats(tg: (key: any) => string) {
+export function resolveTranslatedStats(tg: TranslationFn) {
   return SERVER_STATS.map((s) => ({
     ...s,
-    label: tg(stripPrefix(s.labelKey) as any),
+    label: tg(stripPrefix(s.labelKey)),
   }))
 }
 
 /**
  * Resolves pre-translated changelog entries.
  */
-export function resolveTranslatedChangelog(tg: (key: any) => string) {
+export function resolveTranslatedChangelog(tg: TranslationFn) {
   return LATEST_CHANGES.map((c) => ({
     ...c,
-    category: c.categoryKey ? tg(stripPrefix(c.categoryKey) as any) : undefined,
-    description: tg(stripPrefix(c.descriptionKey) as any),
+    category: c.categoryKey ? tg(stripPrefix(c.categoryKey)) : undefined,
+    description: tg(stripPrefix(c.descriptionKey)),
   }))
 }
 
 /**
  * Resolves pre-translated registration benefits.
  */
-export function resolveTranslatedBenefits(tg: (key: any) => string) {
-  return REGISTRATION_BENEFITS.map((b) => tg(stripPrefix(b) as any))
+export function resolveTranslatedBenefits(tg: TranslationFn) {
+  return REGISTRATION_BENEFITS.map((b) => tg(stripPrefix(b)))
 }
 
 /**
  * Resolves a translated lore quote.
  */
-export function resolveTranslatedLoreQuote(tg: (key: any) => string) {
+export function resolveTranslatedLoreQuote(tg: TranslationFn) {
   const key = resolveLoreQuoteKey()
-  return tg(stripPrefix(key) as any)
+  return tg(stripPrefix(key))
 }

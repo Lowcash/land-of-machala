@@ -7,13 +7,13 @@ import { ActionGroup, FeatureSection } from '@/components/ui/prefabs/structure'
 
 import { CharacterNameCard } from './character-name-card'
 import { CharacterStatsCard } from './character-stats-card'
-import type { CreationUiLabels } from './types'
+import type { CharacterStats, CreationUiLabels } from './types'
 
 interface CharacterIdentityProps {
   name: string
   onNameChange: (name: string) => void
   onRandomize: () => void
-  stats: any
+  stats: CharacterStats
   onFinish: () => void
   canFinish: boolean
   statLabels: Record<string, string>

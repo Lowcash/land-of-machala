@@ -29,3 +29,12 @@ export interface OriginsUiLabels {
   tutorial: TutorialUiLabels
   creation: CreationUiLabels
 }
+
+export interface CharacterStats {
+  hp: number
+  mana: number
+  strength: number
+  intelligence: number
+  agility: number
+  stamina: number
+}

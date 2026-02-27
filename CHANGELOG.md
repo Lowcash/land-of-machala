@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - **ScrollArea**: Added `viewportRef` prop to expose the inner scrolling element. This allows external components to target the content viewport directly for animations.
 - **FadeInPanel**: Reduced DOM depth to strictly 2 divs by removing the `Box` wrapper and using `ScrollArea` as the base. Content fade is now achieved by targeting the `viewportRef` imperatively, ensuring card decoration and scroll arrows remain stable.
-- **Typing**: Standardized `uiLabels` typing across **Origins**, **Login**, and **Register** features using shared interfaces in `types.ts` to ensure consistency between Server and Client components. Removed all `any` types for UI labels.
+- **Typing**: Standardized `uiLabels` and `CharacterStats` typing across **Origins**, **Login**, and **Register** features using shared interfaces. Removed `any` from `resolvers.ts` by introducing `TranslationFn` type.
 
 ## [2026-02-27] - UI Refinements & Component Cleanup
 

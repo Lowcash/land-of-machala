@@ -10,7 +10,7 @@ import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
 import { CharacterIdentity } from './character-identity'
 import { SelectionBox } from './selection-box'
-import type { CreationUiLabels } from './types'
+import type { CharacterStats, CreationUiLabels } from './types'
 
 interface StepCreationProps {
   name: string
@@ -21,7 +21,7 @@ interface StepCreationProps {
   onRaceSelect: (id: string) => void
   selectedClassId: string
   onClassSelect: (id: string) => void
-  stats: any
+  stats: CharacterStats
   canFinish: boolean
   races: TranslatedRaceInfo[]
   classes: TranslatedClassInfo[]
