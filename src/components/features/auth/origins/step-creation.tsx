@@ -3,8 +3,9 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
 import { Button } from '@/components/ui/core/button'
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { Stack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
+import { FeatureLayout, FeatureSection } from '@/components/ui/prefabs/structure'
 import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
 import { CharacterIdentity } from './character-identity'
@@ -44,7 +45,7 @@ export function StepCreation({
   uiLabels,
 }: StepCreationProps) {
   return (
-    <VStack gap="lg" align="center" fullWidth>
+    <>
       <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}
@@ -70,7 +71,7 @@ export function StepCreation({
         />
 
         {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
-        <VStack md={{ display: 'none' }} fullWidth>
+        <FeatureSection md={{ display: 'none' }}>
           <GameAccordion
             items={[
               {
@@ -109,10 +110,10 @@ export function StepCreation({
               },
             ]}
           />
-        </VStack>
+        </FeatureSection>
 
         {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
-        <VStack display="none" md={{ display: 'flex' }} fullWidth height="full" minHeight="zero">
+        <FeatureSection display="none" md={{ display: 'flex' }} height="full" minHeight="zero">
           <SelectionBox
             title={uiLabels.raceLabel}
             items={races}
@@ -122,10 +123,10 @@ export function StepCreation({
             statLabels={statLabels}
             uiLabels={uiLabels}
           />
-        </VStack>
+        </FeatureSection>
 
         {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
-        <VStack display="none" md={{ display: 'flex' }} fullWidth height="full" minHeight="zero">
+        <FeatureSection display="none" md={{ display: 'flex' }} height="full" minHeight="zero">
           <SelectionBox
             title={uiLabels.classLabel}
             items={classes}
@@ -135,14 +136,14 @@ export function StepCreation({
             statLabels={statLabels}
             uiLabels={uiLabels}
           />
-        </VStack>
+        </FeatureSection>
       </Stack>
 
-      <VStack md={{ display: 'none' }} fullWidth>
+      <FeatureSection md={{ display: 'none' }}>
         <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
           {uiLabels.finish}
         </Button>
-      </VStack>
-    </VStack>
+      </FeatureSection>
+    </>
   )
 }

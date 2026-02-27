@@ -1,5 +1,6 @@
 import { VStack } from '@/components/ui/core/stack'
 import { LogoIcon } from '@/components/ui/icons'
+import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { HeroDescription, HeroSubtitle, HeroTitle } from '@/components/ui/prefabs/typography/hero'
 
 export interface BrandedHeroProps {
@@ -16,7 +17,7 @@ export function BrandedHero({
   logo,
 }: BrandedHeroProps) {
   return (
-    <VStack align="center" gap="md">
+    <FeatureSection align="center">
       <VStack align="center" gap="xs">
         {logo || <LogoIcon size="xl" />}
         <HeroTitle>{title}</HeroTitle>
@@ -26,6 +27,6 @@ export function BrandedHero({
         {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
         {description && <HeroDescription align="center">{description}</HeroDescription>}
       </VStack>
-    </VStack>
+    </FeatureSection>
   )
 }

@@ -6,12 +6,13 @@ import {
   resolveTranslatedLoreQuote,
 } from '@/lib/game/utils/resolvers'
 
-import { HStack, Stack, VStack } from '@/components/ui/core/stack'
+import { HStack, Stack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import { Benefits } from '@/components/ui/prefabs/narrative/benefits'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
+import { FeatureLayout, FeatureSection } from '@/components/ui/prefabs/structure'
 import { TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
@@ -56,7 +57,7 @@ export function RegisterViewUI({
     <>
       <Background src={backgroundSrc} />
       <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
-        <VStack gap="xl" fullWidth>
+        <FeatureSection>
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <RegisterCard uiLabels={uiLabels} />
 
@@ -66,9 +67,9 @@ export function RegisterViewUI({
             </Text>
             <TextLink href="/login">{footerLinks.login}</TextLink>
           </HStack>
-        </VStack>
+        </FeatureSection>
 
-        <VStack gap="xl" fullWidth>
+        <FeatureSection>
           <GameAccordion
             passthroughOnDesktop
             items={[
@@ -88,7 +89,7 @@ export function RegisterViewUI({
           />
           <LoreQuote quote={quote} />
           <Footer {...footer} />
-        </VStack>
+        </FeatureSection>
       </Stack>
     </>
   )

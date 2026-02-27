@@ -1,6 +1,5 @@
 'use client'
 
-
 import { MotionStack } from '../../core/animations/motion-stack'
 
 interface AnimateNotifyProps {

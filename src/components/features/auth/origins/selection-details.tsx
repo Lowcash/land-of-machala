@@ -2,8 +2,9 @@ import { type TranslatedClassInfo, type TranslatedRaceInfo } from '@/lib/game/da
 import { getStatIcon } from '@/lib/game/origins/utils'
 
 import { Card } from '@/components/ui/core/card'
-import { Stack, VStack } from '@/components/ui/core/stack'
-import { MotionScrollArea } from '@/components/ui/prefabs/animations/motion-scroll-area'
+import { Stack } from '@/components/ui/core/stack'
+import { FadeInPanel } from '@/components/ui/prefabs/animations/fade-in-panel'
+import { FeatureSection } from '@/components/ui/prefabs/structure'
 import { Description, Label } from '@/components/ui/prefabs/typography/shared'
 import { Divider } from '@/components/ui/shared/divider'
 
@@ -27,23 +28,13 @@ export function SelectionDetails({
   if (!item) return null
 
   return (
-    <MotionScrollArea
-      as={Card}
-      flex={flex as any}
-      gap="md"
-      p="md"
-      minHeight="zero"
-      key={item.id}
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.2 }}
-    >
-      <VStack gap="md" fullWidth>
+    <FadeInPanel animationKey={item.id} flex={flex as string}>
+      <FeatureSection>
         <Description variant="detail">{item.description}</Description>
 
         <Divider variant="solid" />
 
-        <VStack gap="xs" fullWidth>
+        <FeatureSection>
           <Label align="left" variant="tiny">
             {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
           </Label>
@@ -116,8 +107,8 @@ export function SelectionDetails({
           </Stack>
 
           <Description variant="bonus">{item.bonuses}</Description>
-        </VStack>
-      </VStack>
-    </MotionScrollArea>
+        </FeatureSection>
+      </FeatureSection>
+    </FadeInPanel>
   )
 }

@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-02-27] - UI Refactoring & Structural Prefabs
+
+### Added
+- **Structural Prefabs**: Introduced `FeatureLayout`, `FeatureSection`, `InfoPanel`, and `ActionGroup` to enforce layout rigidity and reduce boilerplate.
+- **FadeInPanel**: New animation prefab to encapsulate `MotionScrollArea` transition logic.
+- **CharacterBox Tests**: Added comprehensive test suite for the `CharacterBox` feature.
+
+### Changed
+- **Renaming**: Renamed `PageLayout` to `FeatureLayout` for improved semantic clarity.
+- **Refactor**: Replaced raw `VStack`/`HStack` with structural prefabs in `Login`, `Register`, `Origins` flow, and `CharacterBox`.
+- **Flexibility**: Updated `InfoPanel` and `FeatureSection` to extend `StackProps`, allowing controlled layout overrides.
+
+### Fixed
+- **Type Safety**: Resolved various TypeScript and JSX errors induced by prefab migration.
+- **Test Stability**: Fixed false-positive timeouts in JSDOM by refining interaction events.
+
 ## [2026-02-27] - Core Standards & Origins Testing
 
 ### Added

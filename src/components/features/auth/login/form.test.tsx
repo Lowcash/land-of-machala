@@ -56,12 +56,10 @@ describe('LoginForm', () => {
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
     
-    // Some custom checkboxes require explicit change event with checked: true
-    fireEvent.change(rememberMeCheckbox, { target: { checked: true } })
-    const formElement = submitButton.closest('form')
-    if (formElement) {
-      fireEvent.submit(formElement)
-    }
+    // Custom checkboxes often respond better to click than change in tests
+    fireEvent.click(rememberMeCheckbox)
+
+    fireEvent.click(submitButton)
 
     await waitFor(
       () => {
@@ -72,7 +70,7 @@ describe('LoginForm', () => {
           rememberMe: true,
         })
       },
-      { timeout: 2000 }
+      { timeout: 3000 }
     )
   })
 

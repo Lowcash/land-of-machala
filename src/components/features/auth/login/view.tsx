@@ -7,7 +7,7 @@ import {
   resolveTranslatedStats,
 } from '@/lib/game/utils/resolvers'
 
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { Stack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import {
@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/prefabs/narrative/changelog'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
 import { Stats, type TranslatedServerStat } from '@/components/ui/prefabs/narrative/stats'
+import { FeatureLayout, FeatureSection } from '@/components/ui/prefabs/structure'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
@@ -58,8 +59,9 @@ export function LoginViewUI({
   return (
     <>
       <Background src={backgroundSrc} />
+
       <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
-        <VStack gap="xl" fullWidth>
+        <FeatureSection>
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <LoginCard
             guestLabel={card.guestLabel}
@@ -67,9 +69,9 @@ export function LoginViewUI({
             orLabel={card.orLabel}
             uiLabels={uiLabels}
           />
-        </VStack>
+        </FeatureSection>
 
-        <VStack gap="xl" fullWidth>
+        <FeatureSection>
           <GameAccordion
             passthroughOnDesktop
             items={[
@@ -93,7 +95,7 @@ export function LoginViewUI({
           />
           <LoreQuote quote={quote} />
           <Footer {...footer} />
-        </VStack>
+        </FeatureSection>
       </Stack>
     </>
   )

@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/core/card'
 import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Tooltip } from '@/components/ui/core/tooltip'
 import { Icon, type IconColor } from '@/components/ui/icons'
+import { FeatureSection, InfoPanel } from '@/components/ui/prefabs/structure'
 import { Avatar } from '@/components/ui/prefabs/game/avatar'
 import { CurrencyIndicator, LocationIndicator } from '@/components/ui/prefabs/game/indicator'
 import { VitalsBar } from '@/components/ui/prefabs/game/vitals-bar'
@@ -77,7 +78,7 @@ export function CharacterBox({
       fullWidth
     >
       <VStack gap="none" fullWidth fullHeight justify="between">
-        <VStack gap="none" fullWidth>
+        <FeatureSection>
           {/* Main Body */}
           <HStack p={compact ? 'xxs' : 'md'} gap={compact ? 'sm' : 'md'} align="start" fullWidth>
             {/* Avatar Section */}
@@ -138,9 +139,7 @@ export function CharacterBox({
 
           {/* Stats Strip */}
           {statItems.length > 0 && (
-            <VStack gap="none" fullWidth>
-              {/* Divider using a Stack */}
-              <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
+            <InfoPanel p="none" gap="none">
               <HStack display="grid" cols="4" gap="none" fullWidth py={compact ? 'xxs' : 'xs'}>
                 {statItems.map((stat) => (
                   <Tooltip key={stat.label} content={stat.label} side="bottom">
@@ -160,13 +159,13 @@ export function CharacterBox({
                   </Tooltip>
                 ))}
               </HStack>
-            </VStack>
+            </InfoPanel>
           )}
-        </VStack>
+        </FeatureSection>
 
         {/* Footer info (Location/Gold) or Spacer for symmetry */}
         {!compact && (
-          <VStack gap="none" fullWidth>
+          <FeatureSection>
             {!isEnemy && (location || gold !== undefined) ? (
               <>
                 <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
@@ -185,7 +184,7 @@ export function CharacterBox({
             ) : (
               <Stack height="vitals-footer" fullWidth />
             )}
-          </VStack>
+          </FeatureSection>
         )}
       </VStack>
     </Card>
