@@ -21,11 +21,11 @@ describe('CharacterBox', () => {
   }
 
   it('renders character name and level correctly', () => {
-    render(<CharacterBox {...defaultProps} />)
+    render(<CharacterBox {...defaultProps} level={99} />)
     
     expect(screen.getByText('Grommash')).toBeDefined()
-    // Level is inside a Badge, usually
-    expect(screen.getByText('10')).toBeDefined()
+    // Level is inside a Badge
+    expect(screen.getByText('99')).toBeDefined()
   })
 
   it('renders vitals bars', () => {

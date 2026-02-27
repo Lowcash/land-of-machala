@@ -25,11 +25,9 @@ export function VitalsBar({
   return (
     <VStack gap="xs" fullWidth>
       {!compact && (
-        <VStack px="xs" fullWidth>
-          <Label variant="tiny" color="secondary" align="left">
-            {label}
-          </Label>
-        </VStack>
+        <Label variant="tiny" color="secondary" align="left" px="xs">
+          {label}
+        </Label>
       )}
       <Tooltip
         content={

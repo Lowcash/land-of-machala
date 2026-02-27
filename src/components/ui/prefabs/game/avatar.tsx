@@ -19,11 +19,13 @@ const avatarImageVariants = cva('object-cover transition-all hover:grayscale-0',
   },
 })
 
+export type AvatarSize = 'sm' | 'md' | 'lg' | 'avatar' | 'avatar-sm' | 'avatar-xs' | 'avatar-lg'
+
 interface AvatarProps {
   image?: string
   name: string
   variant?: 'default' | 'hero'
-  size?: 'sm' | 'md' | 'lg' | 'avatar' | 'avatar-sm' | 'avatar-xs' | 'avatar-lg'
+  size?: AvatarSize
   sm?: Partial<Omit<AvatarProps, 'sm' | 'name'>>
 }
 

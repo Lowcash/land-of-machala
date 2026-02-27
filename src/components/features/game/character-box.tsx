@@ -1,15 +1,14 @@
 import { Brain, Shield, Sword, Wind } from 'lucide-react'
 
-import { Badge } from '@/components/ui/core/badge'
 import { Card } from '@/components/ui/core/card'
 import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Tooltip } from '@/components/ui/core/tooltip'
-import { Icon, type IconColor } from '@/components/ui/icons'
-import { FeatureSection, InfoPanel } from '@/components/ui/prefabs/structure'
-import { Avatar } from '@/components/ui/prefabs/game/avatar'
+import { type IconColor } from '@/components/ui/icons'
+import { Portrait, StatGrid } from '@/components/ui/prefabs/game'
 import { CurrencyIndicator, LocationIndicator } from '@/components/ui/prefabs/game/indicator'
 import { VitalsBar } from '@/components/ui/prefabs/game/vitals-bar'
-import { Label, Value } from '@/components/ui/prefabs/typography/shared'
+import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { Value } from '@/components/ui/prefabs/typography/shared'
 
 interface StatDefinition {
   icon: import('lucide-react').LucideIcon
@@ -82,14 +81,13 @@ export function CharacterBox({
           {/* Main Body */}
           <HStack p={compact ? 'xxs' : 'md'} gap={compact ? 'sm' : 'md'} align="start" fullWidth>
             {/* Avatar Section */}
-            <Stack position="relative">
-              <Avatar image={image} name={name} size={compact ? 'avatar-xs' : 'avatar'} />
-              <Stack position="absolute" inset={compact ? 'xs' : 'base'} rounded="full">
-                <Badge size={compact ? 'sm' : 'md'} variant={isEnemy ? 'danger' : 'primary'}>
-                  {level}
-                </Badge>
-              </Stack>
-            </Stack>
+            <Portrait
+              name={name}
+              image={image}
+              level={level}
+              size={compact ? 'avatar-xs' : 'avatar'}
+              isEnemy={isEnemy}
+            />
 
             {/* Bio & Vitals Section */}
             <VStack flex="1" gap={compact ? 'none' : 'sm'} minWidth="zero">
@@ -129,8 +127,8 @@ export function CharacterBox({
                 ) : (
                   /* Spacer to maintain height symmetry when XP is missing */
                   <VStack gap={compact ? 'none' : 'xs'} fullWidth>
-                    {!compact && <Stack height="vitals-label" fullWidth />}
-                    <Stack height={compact ? 'vitals-progress' : 'vitals-progress-md'} fullWidth />
+                    {!compact && <VStack height="vitals-label" fullWidth />}
+                    <VStack height={compact ? 'vitals-progress' : 'vitals-progress-md'} fullWidth />
                   </VStack>
                 )}
               </VStack>
@@ -138,29 +136,7 @@ export function CharacterBox({
           </HStack>
 
           {/* Stats Strip */}
-          {statItems.length > 0 && (
-            <InfoPanel p="none" gap="none">
-              <HStack display="grid" cols="4" gap="none" fullWidth py={compact ? 'xxs' : 'xs'}>
-                {statItems.map((stat) => (
-                  <Tooltip key={stat.label} content={stat.label} side="bottom">
-                    <VStack align="center" justify="center" p="none">
-                      {!compact && (
-                        <Label variant="tiny" color="secondary">
-                          {stat.label}
-                        </Label>
-                      )}
-                      <HStack gap="xxs" align="center">
-                        <Icon icon={stat.icon} size={compact ? 'xs' : 'stat'} color={stat.color} />
-                        <Value variant="tiny" bold={compact} tabularNums>
-                          {stat.value}
-                        </Value>
-                      </HStack>
-                    </VStack>
-                  </Tooltip>
-                ))}
-              </HStack>
-            </InfoPanel>
-          )}
+          <StatGrid items={statItems} compact={compact} />
         </FeatureSection>
 
         {/* Footer info (Location/Gold) or Spacer for symmetry */}
