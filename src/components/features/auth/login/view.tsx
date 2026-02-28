@@ -7,7 +7,6 @@ import {
   resolveTranslatedStats,
 } from '@/lib/game/utils/resolvers'
 
-import { Stack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import {
