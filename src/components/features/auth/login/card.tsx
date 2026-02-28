@@ -2,11 +2,11 @@ import { NarrativeCard } from '@/components/ui/prefabs/narrative/narrative-card'
 import { Divider } from '@/components/ui/shared/divider'
 
 import { LoginActions } from './actions'
-import { LoginForm } from './form'
+import { LoginForm, LoginFormValues } from './form'
 import type { LoginUiLabels } from './types'
 
 interface LoginCardProps {
-  onLogin?: (values: any) => void
+  onLogin?: (values: LoginFormValues) => void
   onRegister?: () => void
   onGuestAccess?: () => void
   isLoading?: boolean

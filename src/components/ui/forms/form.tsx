@@ -12,6 +12,7 @@ import {
 
 import { Slot } from '@radix-ui/react-slot'
 import {
+  Control,
   Controller,
   ControllerProps,
   FieldPath,
@@ -86,21 +87,27 @@ const FormRoot = <TFieldValues extends FieldValues>({
 
 // --- Helpers ---
 
-interface FormFieldContainerProps {
-  control: any
-  name: string
+interface FormFieldContainerProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> {
+  control: Control<TFieldValues>
+  name: TName
   label?: string
   horizontal?: boolean
   children: (field: any) => React.ReactNode
 }
 
-const FormFieldContainer = ({
+const FormFieldContainer = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
   control,
   name,
   label,
   horizontal,
   children,
-}: FormFieldContainerProps) => (
+}: FormFieldContainerProps<TFieldValues, TName>) => (
   <FormField
     control={control}
     name={name}
@@ -114,13 +121,24 @@ const FormFieldContainer = ({
   />
 )
 
-interface FormInputProps extends Omit<ComponentPropsWithoutRef<typeof Input>, 'name'> {
-  name: string
+interface FormInputProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<ComponentPropsWithoutRef<typeof Input>, 'name'> {
+  name: TName
   label?: string
-  control: any
+  control: Control<TFieldValues>
 }
 
-const FormInput = ({ name, label, control, ...props }: FormInputProps) => {
+const FormInput = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  name,
+  label,
+  control,
+  ...props
+}: FormInputProps<TFieldValues, TName>) => {
   return (
     <FormFieldContainer control={control} name={name} label={label}>
       {(field) => <Input {...props} {...field} />}
@@ -128,16 +146,24 @@ const FormInput = ({ name, label, control, ...props }: FormInputProps) => {
   )
 }
 
-interface FormCheckboxProps extends Omit<
-  ComponentPropsWithoutRef<typeof Checkbox>,
-  'name' | 'checked' | 'onChange'
-> {
-  name: string
+interface FormCheckboxProps<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+> extends Omit<ComponentPropsWithoutRef<typeof Checkbox>, 'name' | 'checked' | 'onChange'> {
+  name: TName
   label?: string
-  control: any
+  control: Control<TFieldValues>
 }
 
-const FormCheckbox = ({ name, label, control, ...props }: FormCheckboxProps) => {
+const FormCheckbox = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
+>({
+  name,
+  label,
+  control,
+  ...props
+}: FormCheckboxProps<TFieldValues, TName>) => {
   return (
     <FormFieldContainer control={control} name={name} horizontal>
       {(field) => (

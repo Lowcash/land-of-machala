@@ -43,18 +43,11 @@ export interface CardRootProps
 
 const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const {
-    variant,
-    rounded: cardRounded,
-    padding,
-    direction: cardDirection,
-    gap: cardGap,
-    p: cardP,
-    as: Component = 'div',
-    children,
-    className,
-    ...otherProps
-  } = restProps as any
+  const { padding, as: Component = 'div', children, className, ...otherProps } = restProps as any
+
+  const typedRest = restProps as any
+  const variant = typedRest.variant
+  const cardRounded = typedRest.rounded
 
   const finalPadding = layoutProps.p ?? padding ?? 'lg'
 

@@ -16,7 +16,7 @@ import {
 } from '@/components/ui/prefabs/narrative/changelog'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
 import { Stats, type TranslatedServerStat } from '@/components/ui/prefabs/narrative/stats'
-import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { AuthGrid, FeatureSection } from '@/components/ui/prefabs/structure'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
@@ -61,7 +61,7 @@ export function LoginViewUI({
     <>
       <Background src={backgroundSrc} />
 
-      <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
+      <AuthGrid>
         <FeatureSection>
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <LoginCard
@@ -97,7 +97,7 @@ export function LoginViewUI({
           <LoreQuote quote={quote} />
           <Footer {...footer} />
         </FeatureSection>
-      </Stack>
+      </AuthGrid>
     </>
   )
 }

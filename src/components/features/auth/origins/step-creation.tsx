@@ -3,9 +3,9 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
 import { Button } from '@/components/ui/core/button'
-import { Stack, VStack } from '@/components/ui/core/stack'
+import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
-import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { CreationGrid, FeatureSection } from '@/components/ui/prefabs/structure'
 import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
 import { CharacterIdentity } from './character-identity'
@@ -50,15 +50,7 @@ export function StepCreation({
       <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}
-      <Stack
-        display="grid"
-        cols="1"
-        gap="md"
-        fullWidth
-        md={{ cols: '3', maxWidth: '5xl', height: 'creation' }}
-        minHeight="zero"
-        height="auto"
-      >
+      <CreationGrid>
         {/* Column 1: Identity & Stats */}
         <CharacterIdentity
           name={name}
@@ -138,7 +130,7 @@ export function StepCreation({
             uiLabels={uiLabels}
           />
         </FeatureSection>
-      </Stack>
+      </CreationGrid>
 
       <FeatureSection md={{ display: 'none' }}>
         <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>

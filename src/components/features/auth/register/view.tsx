@@ -6,13 +6,13 @@ import {
   resolveTranslatedLoreQuote,
 } from '@/lib/game/utils/resolvers'
 
-import { HStack, Stack } from '@/components/ui/core/stack'
+import { HStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import { Benefits } from '@/components/ui/prefabs/narrative/benefits'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
-import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { AuthGrid, FeatureSection } from '@/components/ui/prefabs/structure'
 import { TextLink } from '@/components/ui/prefabs/typography/shared'
 import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
@@ -57,7 +57,7 @@ export function RegisterViewUI({
   return (
     <>
       <Background src={backgroundSrc} />
-      <Stack gap="xl" fullWidth align="end" justify="center" md={{ direction: 'row' }}>
+      <AuthGrid>
         <FeatureSection>
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <RegisterCard uiLabels={uiLabels} />
@@ -91,7 +91,7 @@ export function RegisterViewUI({
           <LoreQuote quote={quote} />
           <Footer {...footer} />
         </FeatureSection>
-      </Stack>
+      </AuthGrid>
     </>
   )
 }

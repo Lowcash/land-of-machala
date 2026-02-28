@@ -235,9 +235,9 @@ export const BREAKPOINT_KEYS = ['sm', 'md', 'lg', 'xl'] as const
  * Splits props into all Layout specific (Box + Stack) and rest.
  * Use this for components that want to consume the entire layout API.
  */
-export function splitLayoutProps<T extends Record<string, any>>(props: T) {
-  const layoutProps: Record<string, any> = {}
-  const restProps: Record<string, any> = {}
+export function splitLayoutProps<T extends object>(props: T) {
+  const layoutProps: Record<string, unknown> = {}
+  const restProps: Record<string, unknown> = {}
 
   Object.entries(props).forEach(([key, value]) => {
     if (
@@ -253,16 +253,16 @@ export function splitLayoutProps<T extends Record<string, any>>(props: T) {
   })
 
   return {
-    layoutProps: layoutProps as StackProps,
-    restProps: restProps as Omit<T, keyof StackProps>,
+    layoutProps: layoutProps as unknown as StackProps,
+    restProps: restProps as unknown as Omit<T, keyof StackProps>,
   }
 }
 
 export function getStackClasses(props: StackProps) {
-  const { as, sm, md, lg, xl, ...variants } = props
+  const { as: _as, sm, md, lg, xl, ...variants } = props
 
   return cn(
-    stackVariants(variants as any),
+    stackVariants(variants as VariantProps<typeof stackVariants>),
     getResponsiveClasses('sm', sm),
     getResponsiveClasses('md', md),
     getResponsiveClasses('lg', lg),
@@ -274,10 +274,10 @@ export const Stack = forwardRef<HTMLElement, StackProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
 
   // Extract stack-specific props to generate flex classes
-  const stackOnlyProps: Record<string, any> = {}
-  const boxProps: Record<string, any> = {}
+  const stackOnlyProps: Record<string, unknown> = {}
+  const boxProps: Record<string, unknown> = {}
 
-  const typedLayoutProps = layoutProps as Record<string, any>
+  const typedLayoutProps = layoutProps as Record<string, unknown>
   Object.keys(typedLayoutProps).forEach((key) => {
     if (STACK_KEYS.includes(key as any)) {
       stackOnlyProps[key] = typedLayoutProps[key]
@@ -292,14 +292,14 @@ export const Stack = forwardRef<HTMLElement, StackProps>((props, ref) => {
     }
   })
 
-  const { className, ...otherRest } = restProps as any
+  const { className, ...otherRest } = restProps as Record<string, unknown>
   const { as: Component = 'div' } = layoutProps
 
   return (
     <Box
       ref={ref}
-      as={Component}
-      className={cn(getStackClasses(stackOnlyProps as StackProps), className)}
+      as={Component as ElementType}
+      className={cn(getStackClasses(stackOnlyProps as StackProps), className as string)}
       {...boxProps}
       {...otherRest}
     />

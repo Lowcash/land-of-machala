@@ -63,24 +63,23 @@ export function OriginsViewUI({
             uiLabels={uiLabels.tutorial}
           />
         ) : (
-          <FadeIn key="creation">
-            <StepCreation
-              name={characterName}
-              onNameChange={setName}
-              onRandomize={handleRandomize}
-              onFinish={handleFinish}
-              selectedRaceId={selectedRaceId}
-              onRaceSelect={setSelectedRaceId}
-              selectedClassId={selectedClassId}
-              onClassSelect={setSelectedClassId}
-              stats={totalStats}
-              canFinish={canFinish}
-              races={races}
-              classes={classes}
-              statLabels={statLabels}
-              uiLabels={uiLabels.creation}
-            />
-          </FadeIn>
+          <StepCreation
+            key="creation"
+            name={characterName}
+            onNameChange={setName}
+            onRandomize={handleRandomize}
+            onFinish={handleFinish}
+            selectedRaceId={selectedRaceId}
+            onRaceSelect={setSelectedRaceId}
+            selectedClassId={selectedClassId}
+            onClassSelect={setSelectedClassId}
+            stats={totalStats}
+            canFinish={canFinish}
+            races={races}
+            classes={classes}
+            statLabels={statLabels}
+            uiLabels={uiLabels.creation}
+          />
         )}
       </Presence>
     </>
