@@ -20,6 +20,7 @@ interface CharacterStatsCardProps {
   uiLabels: CreationUiLabels
   raceBonuses?: string
   classBonuses?: string
+  flex?: '1' | 'auto' | 'none'
 }
 
 export function CharacterStatsCard({
@@ -29,81 +30,83 @@ export function CharacterStatsCard({
   uiLabels,
   raceBonuses,
   classBonuses,
+  flex,
 }: CharacterStatsCardProps) {
   return (
-    <NarrativeCard variant="subtle" direction="col">
-      <NarrativeCard.Header align="center" justify="center">
-        <NarrativeCard.Title align="center" variant="large">
-          {uiLabels.statsTitle}
-        </NarrativeCard.Title>
-        {isReady && <StatusIcon icon={ShieldCheck} />}
-      </NarrativeCard.Header>
+    <NarrativeCard variant="subtle" direction="col" flex={flex} minHeight="zero" p="none">
+      <VStack align="center" gap="sm" fullWidth p="md" pb="none">
+        <VStack align="center" gap="xs">
+          <NarrativeCard.Title align="center" variant="large">
+            {uiLabels.statsTitle}
+          </NarrativeCard.Title>
+          {isReady && <StatusIcon icon={ShieldCheck} />}
+        </VStack>
+        <Divider variant="solid" />
+      </VStack>
 
-      <NarrativeCard.Content height="full" p="none">
-        <ScrollArea height="full" minHeight="zero" p="md" gap="md" showGradient>
-          <FeatureGrid variant="dense" fullWidth>
-            <StatRow
-              variant="large"
-              icon={getStatIcon('hp')}
-              label={statLabels.hp}
-              value={stats.hp}
-              color="hp"
-            />
-            <StatRow
-              variant="large"
-              icon={getStatIcon('mana')}
-              label={statLabels.mana}
-              value={stats.mana}
-              color="mana"
-            />
-            <StatRow
-              variant="large"
-              icon={getStatIcon('strength')}
-              label={statLabels.strength}
-              value={stats.strength}
-              color="strength"
-            />
-            <StatRow
-              variant="large"
-              icon={getStatIcon('intelligence')}
-              label={statLabels.intelligence}
-              value={stats.intelligence}
-              color="intelligence"
-            />
-            <StatRow
-              variant="large"
-              icon={getStatIcon('agility')}
-              label={statLabels.agility}
-              value={stats.agility}
-              color="agility"
-            />
-            <StatRow
-              variant="large"
-              icon={getStatIcon('stamina')}
-              label={statLabels.stamina}
-              value={stats.stamina}
-              color="stamina"
-            />
-          </FeatureGrid>
+      <ScrollArea flex="1" minHeight="zero" p="md" pt="xs" gap="md" showGradient>
+        <FeatureGrid variant="dense" fullWidth>
+          <StatRow
+            variant="large"
+            icon={getStatIcon('hp')}
+            label={statLabels.hp}
+            value={stats.hp}
+            color="hp"
+          />
+          <StatRow
+            variant="large"
+            icon={getStatIcon('mana')}
+            label={statLabels.mana}
+            value={stats.mana}
+            color="mana"
+          />
+          <StatRow
+            variant="large"
+            icon={getStatIcon('strength')}
+            label={statLabels.strength}
+            value={stats.strength}
+            color="strength"
+          />
+          <StatRow
+            variant="large"
+            icon={getStatIcon('intelligence')}
+            label={statLabels.intelligence}
+            value={stats.intelligence}
+            color="intelligence"
+          />
+          <StatRow
+            variant="large"
+            icon={getStatIcon('agility')}
+            label={statLabels.agility}
+            value={stats.agility}
+            color="agility"
+          />
+          <StatRow
+            variant="large"
+            icon={getStatIcon('stamina')}
+            label={statLabels.stamina}
+            value={stats.stamina}
+            color="stamina"
+          />
+        </FeatureGrid>
 
-          {/* If we have bonuses that don't fit into a specific stat, show them as a special row or text */}
-          {(raceBonuses || classBonuses) && (
-            <VStack gap="md" fullWidth>
-              <Divider variant="solid" />
-              {raceBonuses && (
-                <Description align="left" variant="bonus">
-                  {raceBonuses}
-                </Description>
-              )}
-              {classBonuses && (
-                <Description align="left" variant="bonus">
-                  {classBonuses}
-                </Description>
-              )}
-            </VStack>
-          )}
-        </ScrollArea>
-      </NarrativeCard.Content>
+        {/* If we have bonuses that don't fit into a specific stat, show them as a special row or text */}
+        {(raceBonuses || classBonuses) && (
+          <VStack gap="md" fullWidth>
+            <Divider variant="solid" />
+            {raceBonuses && (
+              <Description align="left" variant="bonus">
+                {raceBonuses}
+              </Description>
+            )}
+            {classBonuses && (
+              <Description align="left" variant="bonus">
+                {classBonuses}
+              </Description>
+            )}
+          </VStack>
+        )}
+      </ScrollArea>
     </NarrativeCard>
   )
 }

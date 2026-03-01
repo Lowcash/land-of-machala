@@ -4,6 +4,7 @@ import { Card, type CardRootProps } from '@/components/ui/core/card'
 
 export interface NarrativeCardProps extends Omit<CardRootProps, 'p'> {
   variant?: 'primary' | 'secondary' | 'subtle' | 'ghost'
+  p?: CardRootProps['p']
 }
 
 /**
@@ -13,7 +14,7 @@ export interface NarrativeCardProps extends Omit<CardRootProps, 'p'> {
  */
 export const NarrativeCard = Object.assign(
   forwardRef<HTMLElement, NarrativeCardProps>(
-    ({ variant = 'subtle', gap = 'md', className, children, ...props }, ref) => {
+    ({ variant = 'subtle', gap = 'md', className, children, p, ...props }, ref) => {
       // We preserve the md override if users explicitly pass it, otherwise fallback to md={{ p: 'lg' }}
       const mdConfig = props.md ? { p: 'lg', ...props.md } : { p: 'lg' }
 
@@ -21,7 +22,7 @@ export const NarrativeCard = Object.assign(
         <Card
           ref={ref}
           variant={variant}
-          p="md"
+          p={p ?? 'md'}
           md={mdConfig}
           gap={gap}
           className={className}

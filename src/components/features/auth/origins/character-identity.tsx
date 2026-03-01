@@ -35,7 +35,13 @@ export function CharacterIdentity({
   classBonuses,
 }: CharacterIdentityProps) {
   return (
-    <FeatureSection height="full" justify="between" gap="md">
+    <FeatureSection
+      height="creation"
+      md={{ height: 'full' }}
+      minHeight="zero"
+      justify="between"
+      gap="md"
+    >
       <CharacterNameCard
         name={name}
         label={uiLabels.nameLabel}
@@ -59,6 +65,7 @@ export function CharacterIdentity({
         uiLabels={uiLabels}
         raceBonuses={raceBonuses}
         classBonuses={classBonuses}
+        flex="1"
       />
 
       <ActionGroup display="none" md={{ display: 'flex' }}>
