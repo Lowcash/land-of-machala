@@ -26,7 +26,7 @@ export function ActionLink({ href, icon: Icon, children, onClick, ...props }: Ac
 
   if (href) {
     return (
-      <Link href={href} className={commonClasses} {...(props as any)}>
+      <Link href={href} className={commonClasses} {...(props as React.AnchorHTMLAttributes<HTMLAnchorElement>)}>
         {content}
       </Link>
     )

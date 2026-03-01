@@ -6,17 +6,17 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Localization**: Added support for Italian (`it`), German (`de`), Polish (`pl`), and Slovak (`sk`) locales.
-- **E2E Testing**: Added `auth-flow.spec.ts` to verify full registration and login flows.
+- **E2E Testing**: Established robust Playwright/Vitest coverage for the character creation flow.
 - **Visual Testing**: Added `visual-check.spec.ts` for regression testing of core UI components.
 
 ### Changed
-- **Origins Layout**: Updated `FeatureGrid` to support 2-column layouts on mobile for `dense` and `selection` variants.
-- **CharacterStatsCard**: Refactored bonus display into a clean, left-aligned single-column format within the `ScrollArea`.
-- **UX Refinement**: Added dynamic, "human-like" placeholders to email and name inputs across all supported languages.
-- **UI Unification**: Synchronized `PageHeader` spacing in Origins with `BrandedHero` spacing in Auth (standardized to `gap="md"`).
-- **Form Integrity**: Re-implemented strict validation-based `disabled` states for Auth submit buttons.
-- **Build & Typing**: Fixed Storybook mock data dependencies and resolved additional `any` type usages in core layout components.
-- **Layout System**: Adjusted the `creation` height variant in `box.tsx` to 480px (stable default) after testing compact overrides.
+- **Origins Layout**: Updated `FeatureGrid` to support 2-column layouts on mobile for intense selection screens.
+- **CharacterStatsCard**: Refactored bonus display into a high-density, left-aligned single-column format with fixed padding stacking.
+- **UX Refinement**: Standardized `EntranceStack` animations to a relaxing 0.6s duration across all wizard steps.
+- **Type Safety**: Eliminated `any` usage in core layout components (`Stack`, `Card`, `ScrollArea`) and animation prefabs.
+- **Form Integrity**: Fixed Zod email validation syntax and synchronized form interaction timing in tests using `user-event`.
+- **UI Unification**: Synchronized `PageHeader` spacing across Auth and Origins flows.
+- **Test Infrastructure**: Fixed global `framer-motion` mocks to support `animate` and `forwardRef` in testing environments.
 
 
 ### Changed

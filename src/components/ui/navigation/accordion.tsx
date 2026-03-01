@@ -24,7 +24,11 @@ interface AccordionRootProps {
 }
 
 const Accordion = forwardRef<HTMLDivElement, AccordionRootProps>(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Root ref={ref} className={cn('w-full', className)} {...(props as any)} />
+  <AccordionPrimitive.Root
+    ref={ref}
+    className={cn('w-full', className)}
+    {...(props as AccordionPrimitive.AccordionSingleProps | AccordionPrimitive.AccordionMultipleProps)}
+  />
 ))
 Accordion.displayName = 'Accordion'
 

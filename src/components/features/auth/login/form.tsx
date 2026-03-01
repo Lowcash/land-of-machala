@@ -45,7 +45,12 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
   const { isValid } = form.formState
 
   return (
-    <Form.Root<LoginFormValues> form={form} onSubmit={onLogin || (() => {})} gap="md">
+    <Form.Root<LoginFormValues>
+      form={form}
+      onSubmit={onLogin || (() => {})}
+      gap="md"
+      aria-label="login-form"
+    >
       <Form.Input
         control={form.control}
         name="email"

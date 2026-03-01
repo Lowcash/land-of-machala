@@ -34,7 +34,11 @@ export const FeatureChoice = forwardRef<HTMLButtonElement, FeatureChoiceProps>(
         size="feature"
       >
         <VStack align="center" gap="xxs" fullWidth minWidth="zero">
-          <Icon icon={PassedIcon as any} size="md" color={isSelected ? 'primary' : 'secondary'} />
+          <Icon
+            icon={PassedIcon as import('lucide-react').LucideIcon}
+            size="md"
+            color={isSelected ? 'primary' : 'secondary'}
+          />
           <Value variant="small" color={isSelected ? 'primary' : 'ivory'} align="center" truncate>
             {label}
           </Value>

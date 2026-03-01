@@ -40,8 +40,8 @@ export function CharacterStatsCard({
       </NarrativeCard.Header>
 
       <NarrativeCard.Content height="full" p="none">
-        <ScrollArea height="full" minHeight="zero" p="md" showGradient>
-          <FeatureGrid variant="dense">
+        <ScrollArea height="full" minHeight="zero" p="md" gap="md" showGradient>
+          <FeatureGrid variant="dense" fullWidth>
             <StatRow
               variant="large"
               icon={getStatIcon('hp')}
@@ -88,7 +88,7 @@ export function CharacterStatsCard({
 
           {/* If we have bonuses that don't fit into a specific stat, show them as a special row or text */}
           {(raceBonuses || classBonuses) && (
-            <VStack gap="md" p="md" fullWidth>
+            <VStack gap="md" fullWidth>
               <Divider variant="solid" />
               {raceBonuses && (
                 <Description align="left" variant="bonus">

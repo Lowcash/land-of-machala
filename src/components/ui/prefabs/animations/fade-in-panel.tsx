@@ -66,7 +66,7 @@ export const FadeInPanel = forwardRef<HTMLElement, FadeInPanelProps>(
         ref={ref}
         viewportRef={viewportRef}
         className={cardVariants({ variant })}
-        flex={flex as any}
+        flex={flex as StackProps['flex']}
         minHeight="zero"
         fullHeight
         overflow="hidden"

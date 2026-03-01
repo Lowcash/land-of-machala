@@ -21,8 +21,8 @@ export interface MotionStackProps
 export const MotionStack = forwardRef<HTMLDivElement, MotionStackProps>(
   ({ sm, md, lg, xl, ...props }, ref) => {
     // Separate variant props from Motion props
-    const variantProps: any = {}
-    const motionProps: any = { ...props }
+    const variantProps: Record<string, unknown> = {}
+    const motionProps = { ...props } as Record<string, unknown>
 
     const keys = [
       'display',
@@ -72,15 +72,15 @@ export const MotionStack = forwardRef<HTMLDivElement, MotionStackProps>(
 
     return (
       <motion.div
-        ref={ref}
+        ref={ref as React.Ref<HTMLDivElement>}
         className={cn(
-          stackVariants(variantProps),
-          getResponsiveClasses('sm', sm),
-          getResponsiveClasses('md', md),
-          getResponsiveClasses('lg', lg),
-          getResponsiveClasses('xl', xl)
+          stackVariants(variantProps as any),
+          getResponsiveClasses('sm', sm as any),
+          getResponsiveClasses('md', md as any),
+          getResponsiveClasses('lg', lg as any),
+          getResponsiveClasses('xl', xl as any)
         )}
-        {...motionProps}
+        {...(motionProps as any)}
       />
     )
   }

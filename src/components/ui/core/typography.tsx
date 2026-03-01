@@ -46,11 +46,32 @@ const headingVariants = cva('font-fantasy font-bold tracking-tight', {
   },
 })
 
+export type TypographyColor =
+  | 'primary'
+  | 'secondary'
+  | 'ivory'
+  | 'success'
+  | 'danger'
+  | 'magic'
+  | 'gold'
+  | 'info'
+  | 'copper'
+  | 'hp'
+  | 'mana'
+  | 'strength'
+  | 'intelligence'
+  | 'agility'
+  | 'stamina'
+  | 'inherit'
+
 interface HeadingProps
-  extends
-    Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color'>,
-    VariantProps<typeof headingVariants> {
+  extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color' | 'className'> {
+  level?: 'h1' | 'h2' | 'h3' | 'h4'
+  font?: 'fantasy' | 'medieval'
+  color?: TypographyColor
+  align?: 'left' | 'center' | 'right' | 'justify'
   as?: 'h1' | 'h2' | 'h3' | 'h4'
+  className?: string
 }
 
 export function Heading({ level, font, color, align, className, as, ...props }: HeadingProps) {
@@ -141,9 +162,26 @@ const textVariants = cva('leading-tight transition-colors', {
 })
 
 export interface TextProps
-  extends
-    Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color' | 'className'>,
-    VariantProps<typeof textVariants> {
+  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color' | 'className'> {
+  variant?:
+    | 'primary'
+    | 'lead'
+    | 'large'
+    | 'small'
+    | 'muted'
+    | 'detail'
+    | 'bonus'
+    | 'fantasy-value'
+    | 'decoration'
+    | 'tiny'
+  font?: 'body' | 'fantasy' | 'medieval'
+  color?: TypographyColor
+  align?: 'left' | 'center' | 'right' | 'justify'
+  truncate?: boolean
+  shrink?: boolean
+  grow?: boolean
+  bold?: boolean
+  tabularNums?: boolean
   as?: 'p' | 'span' | 'div'
   className?: string
   px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'

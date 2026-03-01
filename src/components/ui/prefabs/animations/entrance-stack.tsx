@@ -34,8 +34,8 @@ const variants = {
     y: 0,
     transition: {
       duration: custom.duration,
-      ease: 'easeOut' as any,
-    },
+      ease: 'easeOut',
+    } as any,
   }),
   exit: (custom: { yOffset: number }) => ({
     opacity: 0,
@@ -52,13 +52,13 @@ export const EntranceStack = forwardRef<HTMLElement, EntranceStackProps>(
     // to avoid extra DOM nesting while keeping the Stack API
     return (
       <motion.div
-        ref={ref as any}
+        ref={ref as React.Ref<HTMLDivElement>}
         custom={{ yOffset, duration }}
         initial="hidden"
         animate="visible"
         exit="exit"
         variants={variants}
-        className={cn(getBoxClasses(props), getStackClasses(props as any))}
+        className={cn(getBoxClasses(props), getStackClasses(props as StackProps))}
         {...(props as HTMLMotionProps<'div'>)}
       >
         {children}

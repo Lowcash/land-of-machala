@@ -43,25 +43,30 @@ export interface CardRootProps
 
 const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const { padding, children, className, ...otherProps } = restProps as any
-  const { as: Component = 'div' } = layoutProps as any
+  const {
+    padding: legacyPadding,
+    children,
+    className,
+    ...otherProps
+  } = restProps as Record<string, unknown>
+  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
   const { variant, rounded: cardRounded } = props
 
-  const finalPadding = layoutProps.p ?? padding ?? 'lg'
+  const finalPadding = layoutProps.p ?? (legacyPadding as StackProps['p']) ?? 'lg'
 
   return (
     <Stack
       as={Component as ElementType}
       data-slot="card"
       ref={ref}
-      className={cn(cardVariants({ variant, rounded: cardRounded }), className)}
+      className={cn(cardVariants({ variant, rounded: cardRounded }), className as string)}
       direction="col"
       gap="md"
       {...layoutProps}
       p={finalPadding}
       {...otherProps}
     >
-      {children}
+      {children as React.ReactNode}
     </Stack>
   )
 })
@@ -72,8 +77,8 @@ interface CardHeaderProps extends StackProps {}
 
 const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as any
-  const { as: Component = 'div' } = layoutProps as any
+  const { children, className, ...otherProps } = restProps as Record<string, unknown>
+  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
 
   return (
     <Stack
@@ -82,7 +87,7 @@ const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
       ref={ref}
       className={cn(
         'border-b-2 border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
-        className
+        className as string
       )}
       direction="row"
       align="center"
@@ -91,7 +96,7 @@ const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
       {...layoutProps}
       {...otherProps}
     >
-      {children}
+      {children as React.ReactNode}
     </Stack>
   )
 })
@@ -102,15 +107,15 @@ type CardContentProps = StackProps
 
 const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as any
-  const { as: Component = 'div' } = layoutProps as any
+  const { children, className, ...otherProps } = restProps as Record<string, unknown>
+  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
 
   return (
     <Stack
       as={Component as ElementType}
       data-slot="card-content"
       ref={ref}
-      className={cn('text-(--color-ivory)/90', className)}
+      className={cn('text-(--color-ivory)/90', className as string)}
       direction="col"
       align="stretch"
       justify="start"
@@ -118,7 +123,7 @@ const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
       {...layoutProps}
       {...otherProps}
     >
-      {children}
+      {children as React.ReactNode}
     </Stack>
   )
 })
@@ -129,15 +134,15 @@ interface CardFooterProps extends StackProps {}
 
 const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as any
-  const { as: Component = 'div' } = layoutProps as any
+  const { children, className, ...otherProps } = restProps as Record<string, unknown>
+  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
 
   return (
     <Stack
       as={Component as ElementType}
       data-slot="card-footer"
       ref={ref}
-      className={cn('border-t border-(--color-secondary)/20 pt-4', className)}
+      className={cn('border-t border-(--color-secondary)/20 pt-4', className as string)}
       direction="row"
       align="center"
       justify="end"
@@ -145,7 +150,7 @@ const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
       {...layoutProps}
       {...otherProps}
     >
-      {children}
+      {children as React.ReactNode}
     </Stack>
   )
 })

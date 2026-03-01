@@ -16,6 +16,7 @@ const mockRace = {
     agility: 12,
     stamina: 10,
   },
+  icon: 'User',
 } as any
 
 const mockClass = {
@@ -31,6 +32,7 @@ const mockClass = {
     agility: 6,
     stamina: 9,
   },
+  icon: 'Sword',
 } as any
 
 const mockStatLabels = {
@@ -44,6 +46,7 @@ const mockStatLabels = {
 
 const mockUiLabels = {
   raceBonuses: 'Race Bonuses',
+  classBonuses: 'Class Bonuses',
 }
 
 describe('SelectionDetails', () => {
@@ -94,7 +97,7 @@ describe('SelectionDetails', () => {
   it('should return null if no item provided', () => {
     const { container } = render(
       <SelectionDetails
-        item={null}
+        item={null as any}
         type="race"
         statLabels={mockStatLabels}
         uiLabels={mockUiLabels}

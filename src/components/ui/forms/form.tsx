@@ -15,6 +15,7 @@ import {
   Control,
   Controller,
   ControllerProps,
+  ControllerRenderProps,
   FieldPath,
   FieldValues,
   FormProvider,
@@ -95,7 +96,7 @@ interface FormFieldContainerProps<
   name: TName
   label?: string
   horizontal?: boolean
-  children: (field: any) => React.ReactNode
+  children: (field: ControllerRenderProps<TFieldValues, TName>) => React.ReactNode
 }
 
 const FormFieldContainer = <

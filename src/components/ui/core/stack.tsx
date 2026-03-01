@@ -246,9 +246,9 @@ export function splitLayoutProps<T extends object>(props: T) {
       BREAKPOINT_KEYS.includes(key as (typeof BREAKPOINT_KEYS)[number]) ||
       key === 'as'
     ) {
-      layoutProps[key] = value
+      layoutProps[key as keyof StackProps] = value
     } else {
-      restProps[key] = value
+      ;(restProps as Record<string, unknown>)[key] = value
     }
   })
 

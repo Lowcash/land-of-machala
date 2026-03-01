@@ -33,12 +33,34 @@ global.ResizeObserver = class ResizeObserver {
 /** Mock framer-motion */
 vi.mock('framer-motion', () => {
   const React = require('react')
+  
+  const mockMotion = (Component: any) => Component
+  
+  // Helper to create mocked motion components that handle refs
+  const createMotionComponent = (tag: string) => {
+    return React.forwardRef((props: any, ref: any) => 
+      React.createElement(tag, { ...props, ref })
+    )
+  }
+
   return {
-    motion: Object.assign((Component: any) => Component, {
-      div: (props: any) => React.createElement('div', props),
-      span: (props: any) => React.createElement('span', props),
-      button: (props: any) => React.createElement('button', props),
+    motion: Object.assign(mockMotion, {
+      div: createMotionComponent('div'),
+      span: createMotionComponent('span'),
+      button: createMotionComponent('button'),
+      p: createMotionComponent('p'),
+      section: createMotionComponent('section'),
+      nav: createMotionComponent('nav'),
+      ul: createMotionComponent('ul'),
+      li: createMotionComponent('li'),
     }),
     AnimatePresence: ({ children }: any) => children,
+    animate: vi.fn().mockImplementation(() => Promise.resolve()),
+    useAnimation: () => ({
+      start: vi.fn(),
+      stop: vi.fn(),
+    }),
+    useInView: () => true,
+    useScroll: () => ({ scrollYProgress: { get: () => 0, onChange: () => () => {} } }),
   }
 })

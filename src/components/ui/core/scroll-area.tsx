@@ -1,6 +1,6 @@
 'use client'
 
-import { type HTMLAttributes, forwardRef } from 'react'
+import { type ElementType, type HTMLAttributes, forwardRef } from 'react'
 
 import { useScrollArea } from '@/hooks/use-scroll-area'
 import { ChevronDown, ChevronUp } from 'lucide-react'
@@ -26,7 +26,7 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     className,
     as: Component = 'div',
     ...otherProps
-  } = restProps as any
+  } = restProps as { as?: ElementType; [key: string]: unknown }
 
   const { scrollRef, showTopArrow, showBottomArrow } = useScrollArea()
 
@@ -44,26 +44,27 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     md,
     lg,
     xl,
-  } = layoutProps as any
+  } = layoutProps as Record<string, unknown>
 
-  const extractFlex = (bp: any) =>
-    bp
-      ? {
-          gap: bp.gap,
-          direction: bp.direction,
-          align: bp.align,
-          justify: bp.justify,
-          display: bp.display,
-          cols: bp.cols,
-          wrap: bp.wrap,
-        }
-      : undefined
+  const extractFlex = (bp: unknown) => {
+    const config = bp as StackProps | undefined
+    if (!config) return undefined
+    return {
+      gap: config.gap,
+      direction: config.direction,
+      align: config.align,
+      justify: config.justify,
+      display: (config.display as StackProps['display']) ?? undefined,
+      cols: config.cols,
+      wrap: config.wrap,
+    }
+  }
 
   return (
     <Stack
-      as={Component as any}
+      as={Component as ElementType}
       ref={ref}
-      className={cn('relative overflow-hidden', className)}
+      className={cn('relative overflow-hidden', className as string)}
       {...layoutProps}
       p="none" // Remove padding from outer wrapper
       direction="col"
@@ -73,8 +74,8 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
         <div
           className={cn(
             'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
-            showGradient && 'bg-linear-to-b from-black/80 to-transparent'
-          )}
+            showGradient ? 'bg-linear-to-b from-black/80 to-transparent' : undefined
+          ) as any}
         >
           <ChevronUp
             className="animate-bounce text-(--color-gold) drop-shadow-md"
@@ -93,27 +94,27 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
         }}
         className="scrollbar-custom flex min-h-0 w-full flex-1 overflow-y-auto"
         p={layoutProps.p ?? 'md'} // Apply padding here instead
-        gap={gap}
-        direction={direction}
-        align={align}
-        justify={justify}
-        display={display}
-        cols={cols}
-        wrap={wrap}
-        sm={extractFlex(sm)}
-        md={extractFlex(md)}
-        lg={extractFlex(lg)}
-        xl={extractFlex(xl)}
+        gap={gap as StackProps['gap']}
+        direction={direction as StackProps['direction']}
+        align={align as StackProps['align']}
+        justify={justify as StackProps['justify']}
+        display={display as StackProps['display']}
+        cols={cols as StackProps['cols']}
+        wrap={wrap as StackProps['wrap']}
+        sm={extractFlex(sm) as any}
+        md={extractFlex(md) as any}
+        lg={extractFlex(lg) as any}
+        xl={extractFlex(xl) as any}
       >
-        {children}
+        {children as React.ReactNode}
       </Stack>
 
       {showBottomArrow && (
         <div
           className={cn(
             'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
-            showGradient && 'bg-linear-to-t from-black/80 to-transparent'
-          )}
+            showGradient ? 'bg-linear-to-t from-black/80 to-transparent' : undefined
+          ) as any}
         >
           <ChevronDown
             className="animate-bounce text-(--color-gold) drop-shadow-md"

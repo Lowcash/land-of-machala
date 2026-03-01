@@ -27,7 +27,7 @@ export function StatGrid({ items, compact = false }: StatGridProps) {
     <InfoPanel p="none" gap="none" fullWidth>
       <HStack
         display="grid"
-        cols={items.length as any}
+        cols={String(items.length) as any}
         gap="none"
         fullWidth
         py={compact ? 'xxs' : 'xs'}

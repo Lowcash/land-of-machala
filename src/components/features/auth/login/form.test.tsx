@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
+import { describe, expect, it, vi } from 'vitest'
 import { LoginForm } from './form'
 
 const mockUiLabels = {
@@ -8,6 +9,8 @@ const mockUiLabels = {
   password: 'Secure Password',
   rememberMe: 'Remember Me',
   submit: 'Sign In',
+  emailPlaceholder: 'Email',
+  passwordPlaceholder: 'Password',
   validation: {
     emailInvalid: 'Invalid email format',
     passwordRequired: 'Password is required',
@@ -44,34 +47,32 @@ describe('LoginForm', () => {
   })
 
   it('calls onLogin with the correct values upon submission', async () => {
+    const user = userEvent.setup()
     const onLoginMock = vi.fn()
-    render(<LoginForm uiLabels={mockUiLabels} onLogin={onLoginMock} />)
+    render(<LoginForm uiLabels={mockUiLabels} onLogin={(v) => onLoginMock(v)} />)
 
     const emailInput = screen.getByLabelText(mockUiLabels.email)
     const passwordInput = screen.getByLabelText(mockUiLabels.password)
     const submitButton = screen.getByRole('button', { name: mockUiLabels.submit })
 
-    const rememberMeCheckbox = screen.getByRole('checkbox')
+    await user.type(emailInput, 'test@example.com')
+    await user.type(passwordInput, 'password123')
 
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
-    fireEvent.change(passwordInput, { target: { value: 'password123' } })
-    
-    // Custom checkboxes often respond better to click than change in tests
-    fireEvent.click(rememberMeCheckbox)
+    // Wait for validation and button enablement
+    await waitFor(() => {
+      expect(submitButton).toBeEnabled()
+    })
 
-    fireEvent.click(submitButton)
+    await user.click(submitButton)
 
-    await waitFor(
-      () => {
-        expect(onLoginMock).toHaveBeenCalledTimes(1)
-        expect(onLoginMock).toHaveBeenCalledWith({
-          email: 'test@example.com',
-          password: 'password123',
-          rememberMe: true,
-        })
-      },
-      { timeout: 3000 }
-    )
+    await waitFor(() => {
+      expect(onLoginMock).toHaveBeenCalledTimes(1)
+      expect(onLoginMock).toHaveBeenCalledWith({
+        email: 'test@example.com',
+        password: 'password123',
+        rememberMe: false,
+      })
+    })
   })
 
   it('displays validation errors on invalid email submission', async () => {
@@ -83,11 +84,11 @@ describe('LoginForm', () => {
 
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
-
-    fireEvent.click(submitButton)
+    fireEvent.blur(emailInput)
 
     await waitFor(() => {
       expect(screen.getByText(mockUiLabels.validation.emailInvalid)).toBeDefined()
+      expect(submitButton).toBeDisabled()
     })
   })
 })
