@@ -1,0 +1,219 @@
+{
+  "Auth": {
+    "Login": {
+      "meta_title": "Logowanie | Land of Machala",
+      "meta_description": "Wejdź do świata legend. Twoja podróż zaczyna się tutaj.",
+      "title": "Logowanie",
+      "subtitle": "Witaj z powrotem, podróżniku",
+      "description": "Twoja przygoda trwa tam, gdzie ją przerwałeś.",
+      "form": {
+        "email": "Adres E-mail",
+        "username": "Nazwa użytkownika",
+        "password": "Hasło",
+        "rememberMe": "Zapamiętaj mnie",
+        "submit": "Wejdź do świata",
+        "noAccount": "Nie masz jeszcze konta?",
+        "register": "Zarejestruj się tutaj",
+        "validation": {
+          "emailInvalid": "Wpisz poprawny e-mail",
+          "passwordRequired": "Hasło jest wymagane"
+        }
+      },
+      "actions": {
+        "guest": "Przetestuj jako gość",
+        "register": "Dołącz do królestwa"
+      },
+      "stats_title": "Statystyki serwera",
+      "changelog_title": "Ostatnie zmiany"
+    },
+    "Registration": {
+      "meta_title": "Rejestracja | Land of Machala",
+      "meta_description": "Rozpocznij przygodę w Land of Machala. Stwórz konto.",
+      "title": "Rejestracja",
+      "subtitle": "Zacznij swoją legendę",
+      "description": "Twoja podróż zaczyna się właśnie tutaj...",
+      "form": {
+        "username": "Nazwa użytkownika",
+        "email": "Adres E-mail",
+        "password": "Hasło",
+        "confirmPassword": "Potwierdź hasło",
+        "submit": "Stwórz konto",
+        "hasAccount": "Masz już konto?",
+        "login": "Zaloguj się tutaj",
+        "validation": {
+          "emailInvalid": "Wpisz poprawny e-mail",
+          "passwordRequired": "Hasło jest wymagane",
+          "passwordLength": "Minimum 6 znaków",
+          "passwordMismatch": "Hasła nie pasują do siebie"
+        }
+      },
+      "actions": {
+        "login": "Masz już konto?"
+      },
+      "benefits_title": "Dlaczego warto grać w Machalę?",
+      "benefits_title_description": "Rejestrując się, zyskujesz dostęp:"
+    },
+    "Origins": {
+      "meta_title": "Witaj w Machali | Origins",
+      "meta_description": "Twoja legenda zaczyna się teraz.",
+      "title": "Początek Twojej ścieżki",
+      "subtitle": "Zostań legendą",
+      "description": "Każdy bohater ma swoją historię. Jaka będzie Twoja?",
+      "benefits_title": "Dlaczego warto grać w Machalę?",
+      "changelog_title": "Ostatnie zmiany",
+      "tutorial": {
+        "skip": "Pomiń intro"
+      },
+      "narrative": {
+        "step_0_text": "Budzisz się w gęstej mgle. Przed Tobą widzisz trzy postacie. Która najbardziej Cię przyciąga?",
+        "step_0_choice_0": "Postać w ciężkiej zbroi",
+        "step_0_choice_1": "Postać w kapturze z magią",
+        "step_0_choice_2": "Postać w cieniu",
+        "step_1_text": "Postać podchodzi do Ciebie. Głośny ryk dochodzi z lasu. Jak reagujesz?",
+        "step_1_choice_0": "Dobywasz broni",
+        "step_1_choice_1": "Szybko się chowasz",
+        "step_1_choice_2": "Tworzysz magiczną barierę"
+      },
+      "creation": {
+        "title": "Stwórz swojego bohatera",
+        "subtitle": "Twoja legenda zaczyna się w krainie Machala",
+        "nameLabel": "Imię bohatera",
+        "namePlaceholder": "Wpisz imię...",
+        "randomize": "Losowa postać",
+        "randomize_button": "Losuj",
+        "statsTitle": "Twoje statystyki",
+        "raceLabel": "Wybierz rasę",
+        "classLabel": "Wybierz klasę",
+        "raceBonuses": "Bonusy rasy:",
+        "classBonuses": "Bonusy klasy:",
+        "heroName": "Imię bohatera",
+        "ready_to_start": "Gotowy do podróży",
+        "finish": "Wejdź do świata"
+      }
+    }
+  },
+  "Common": {
+    "loading": "Ładowanie...",
+    "error": "Coś poszło nie tak",
+    "error_description": "Twoja przygoda została przerwana.",
+    "error_digest": "Kod błędu: {digest}",
+    "try_again": "Spróbuj ponownie",
+    "or": "Albo",
+    "footer": {
+      "version": "Wersja",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "W czasach ciemności rodzą się legendy.",
+      "Twoja podróż zaczyna się teraz.",
+      "Machala wzywa swoich bohaterów.",
+      "Niebezpieczeństwo czyha za każdym rogiem.",
+      "Starożytne legendy mówią o bohaterach."
+    ],
+    "Races": {
+      "human": {
+        "name": "Człowiek",
+        "description": "Wszechstronni i elastyczni.",
+        "bonuses": "Zrównoważone statystyki"
+      },
+      "dwarf": {
+        "name": "Krasnolud",
+        "description": "Wytrzymali i silni.",
+        "bonuses": "+20 HP, +5 Stamina"
+      },
+      "elf": {
+        "name": "Elf",
+        "description": "Szybcy i uzdolnieni magicznie.",
+        "bonuses": "+40 Mana, +7 Intel."
+      },
+      "orc": {
+        "name": "Ork",
+        "description": "Brutalna siła dziczy.",
+        "bonuses": "+40 HP, +8 Siła"
+      },
+      "halfling": {
+        "name": "Niziołek",
+        "description": "Mali, ale zwinni i sprytni.",
+        "bonuses": "+6 Agility"
+      },
+      "drak": {
+        "name": "Smok",
+        "description": "Spadkobiercy starożytnej mocy.",
+        "bonuses": "+10 HP, +20 Mana"
+      }
+    },
+    "Classes": {
+      "warrior": {
+        "name": "Wojownik",
+        "type": "Tank",
+        "description": "Mistrz walki w zwarciu.",
+        "bonuses": "+5 Siła, +5 Stamina"
+      },
+      "paladin": {
+        "name": "Paladyn",
+        "type": "Tank",
+        "description": "Święty obrońca.",
+        "bonuses": "+8 Stamina, +3 Intel."
+      },
+      "rogue": {
+        "name": "Łotrzyk",
+        "type": "Hybrid",
+        "description": "Szybki zabójca z cienia.",
+        "bonuses": "+8 Agility, +4 Siła"
+      },
+      "mage": {
+        "name": "Mag",
+        "type": "Caster",
+        "description": "Mistrz mistycznych sił.",
+        "bonuses": "+12 Intel., +2 Agility"
+      },
+      "ranger": {
+        "name": "Łowca",
+        "type": "Hybrid",
+        "description": "Łucznik i traper.",
+        "bonuses": "+6 Siła, +6 Agility"
+      },
+      "monk": {
+        "name": "Mnich",
+        "type": "Hybrid",
+        "description": "Mistrz sztuk walki.",
+        "bonuses": "+5 Siła, +5 Stamina"
+      }
+    },
+    "Stats": {
+      "hp": "HP",
+      "mana": "Mana",
+      "strength": "Siła",
+      "intelligence": "Intel.",
+      "agility": "Zwinność",
+      "stamina": "Wytrzym.",
+      "active_players": "Aktywni gracze",
+      "boss_kills": "Zabici bossowie",
+      "top_level": "Najwyższy poziom",
+      "quests": "Zadania"
+    },
+    "Registration": {
+      "benefits": [
+        "Stwórz swojego bohatera",
+        "Walcz z potworami",
+        "Wykonuj zadania",
+        "Rozwijaj talenty"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Rozszerzenie umiejętności",
+        "talent": "System talentów",
+        "movement": "System poruszania się"
+      },
+      "descriptions": {
+        "skills": "19 umiejętności w 3 gałęziach",
+        "talent": "Progresja 3-poziomowa",
+        "movement": "Ruch kierunkowy",
+        "redesign": "Redesign CharacterBox"
+      }
+    }
+  }
+}

@@ -7,7 +7,8 @@
       "subtitle": "Welcome back, traveler",
       "description": "Your adventure continues where you left off.",
       "form": {
-        "email": "Email Address",
+        "email": "Email",
+        "emailPlaceholder": "traveler@machala.cz",
         "username": "Username",
         "password": "Password",
         "rememberMe": "Remember me",
@@ -34,7 +35,8 @@
       "description": "Your journey starts right here...",
       "form": {
         "username": "Username",
-        "email": "Email Address",
+        "email": "Email",
+        "emailPlaceholder": "traveler@machala.cz",
         "password": "Password",
         "confirmPassword": "Confirm Password",
         "submit": "Create Account",
@@ -78,7 +80,7 @@
         "title": "Create Your Hero",
         "subtitle": "Your legend begins in the Land of Machala",
         "nameLabel": "Hero Name",
-        "namePlaceholder": "Enter name...",
+        "namePlaceholder": "Hero name...",
         "randomize": "Random Character",
         "randomize_button": "Randomize",
         "statsTitle": "Your Stats",

@@ -241,9 +241,9 @@ export function splitLayoutProps<T extends object>(props: T) {
 
   Object.entries(props).forEach(([key, value]) => {
     if (
-      STACK_KEYS.includes(key as any) ||
-      BOX_KEYS.includes(key as any) ||
-      BREAKPOINT_KEYS.includes(key as any) ||
+      STACK_KEYS.includes(key as (typeof STACK_KEYS)[number]) ||
+      BOX_KEYS.includes(key as (typeof BOX_KEYS)[number]) ||
+      BREAKPOINT_KEYS.includes(key as (typeof BREAKPOINT_KEYS)[number]) ||
       key === 'as'
     ) {
       layoutProps[key] = value
@@ -279,14 +279,14 @@ export const Stack = forwardRef<HTMLElement, StackProps>((props, ref) => {
 
   const typedLayoutProps = layoutProps as Record<string, unknown>
   Object.keys(typedLayoutProps).forEach((key) => {
-    if (STACK_KEYS.includes(key as any)) {
+    if (STACK_KEYS.includes(key as (typeof STACK_KEYS)[number])) {
       stackOnlyProps[key] = typedLayoutProps[key]
-    } else if (BOX_KEYS.includes(key as any) || key === 'as') {
+    } else if (BOX_KEYS.includes(key as (typeof BOX_KEYS)[number]) || key === 'as') {
       boxProps[key] = typedLayoutProps[key]
     }
 
     // Breakpoints need to go to both since they can contain both Box and Stack variants
-    if (BREAKPOINT_KEYS.includes(key as any)) {
+    if (BREAKPOINT_KEYS.includes(key as (typeof BREAKPOINT_KEYS)[number])) {
       stackOnlyProps[key] = typedLayoutProps[key]
       boxProps[key] = typedLayoutProps[key]
     }

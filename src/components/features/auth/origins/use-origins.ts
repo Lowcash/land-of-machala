@@ -5,11 +5,11 @@ import { useCallback, useMemo, useState } from 'react'
 import { useRouter } from '@/i18n/routing'
 
 import { generateRandomName } from '@/lib/game/data/names'
-import type { OriginsChoice } from '@/lib/game/data/origins'
 import type {
   TranslatedClassInfo,
   TranslatedRaceInfo,
   TranslatedStoryStep,
+  TranslatedStoryStepChoice,
 } from '@/lib/game/data/shared'
 
 interface UseCharacterCreationProps {
@@ -81,7 +81,7 @@ function useOriginsNarrative({ steps, onEnd }: UseOriginsNarrativeProps) {
   const currentStep = useMemo(() => steps[stepIndex], [stepIndex, steps])
 
   const handleChoice = useCallback(
-    (choice: OriginsChoice) => {
+    (choice: TranslatedStoryStepChoice) => {
       if (choice.nextStep === 'end') {
         return onEnd()
       }

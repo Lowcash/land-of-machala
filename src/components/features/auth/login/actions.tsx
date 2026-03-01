@@ -22,6 +22,14 @@ export function LoginActions({
 }: LoginActionsProps) {
   const router = useRouter()
 
+  const handleGuestAccess = () => {
+    if (onGuestAccess) {
+      onGuestAccess()
+      return
+    }
+    router.push('/origins')
+  }
+
   const handleRegister = () => {
     if (onRegister) {
       onRegister()
@@ -32,7 +40,7 @@ export function LoginActions({
 
   return (
     <ActionGroup direction="col" md={{ direction: 'col' }}>
-      <Button variant="secondary" fullWidth onClick={onGuestAccess} disabled={isLoading}>
+      <Button variant="secondary" fullWidth onClick={handleGuestAccess} disabled={isLoading}>
         {guestLabel}
       </Button>
 

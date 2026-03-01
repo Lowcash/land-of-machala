@@ -64,8 +64,9 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
       as={Component as any}
       ref={ref}
       className={cn('relative overflow-hidden', className)}
-      {...layoutProps} // Outer wrapper receives ALL layout props including padding
-      direction="col" // Force standard column to align absolute arrows
+      {...layoutProps}
+      p="none" // Remove padding from outer wrapper
+      direction="col"
       {...otherProps}
     >
       {showTopArrow && (
@@ -91,7 +92,7 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
             (viewportRef as React.MutableRefObject<HTMLDivElement | null>).current = node
         }}
         className="scrollbar-custom flex min-h-0 w-full flex-1 overflow-y-auto"
-        p="none" // No padding here. Card/outer handles it.
+        p={layoutProps.p ?? 'md'} // Apply padding here instead
         gap={gap}
         direction={direction}
         align={align}

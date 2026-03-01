@@ -58,7 +58,7 @@ export function Heading({ level, font, color, align, className, as, ...props }: 
   const Component = as || level || 'h1'
   return (
     <Component
-      className={cn(headingVariants({ level, font, color: color as any, align }), className)}
+      className={cn(headingVariants({ level, font, color, align }), className)}
       {...props}
     />
   )
@@ -195,7 +195,7 @@ export function Text({
         textVariants({
           variant,
           font,
-          color: color as any,
+          color,
           align,
           truncate,
           shrink,

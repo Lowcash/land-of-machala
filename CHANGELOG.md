@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2026-02-27] - FadeInPanel Refinement & Auth Typing Strategy
+## [2026-03-01] - Origins & Auth UI Refinement
+
+### Added
+- **Localization**: Added support for Italian (`it`), German (`de`), Polish (`pl`), and Slovak (`sk`) locales.
+- **E2E Testing**: Added `auth-flow.spec.ts` to verify full registration and login flows.
+- **Visual Testing**: Added `visual-check.spec.ts` for regression testing of core UI components.
+
+### Changed
+- **Origins Layout**: Updated `FeatureGrid` to support 2-column layouts on mobile for `dense` and `selection` variants.
+- **CharacterStatsCard**: Refactored bonus display into a clean, left-aligned single-column format within the `ScrollArea`.
+- **UX Refinement**: Added dynamic, "human-like" placeholders to email and name inputs across all supported languages.
+- **UI Unification**: Synchronized `PageHeader` spacing in Origins with `BrandedHero` spacing in Auth (standardized to `gap="md"`).
+- **Form Integrity**: Re-implemented strict validation-based `disabled` states for Auth submit buttons.
+- **Build & Typing**: Fixed Storybook mock data dependencies and resolved additional `any` type usages in core layout components.
+- **Layout System**: Adjusted the `creation` height variant in `box.tsx` to 480px (stable default) after testing compact overrides.
+
 
 ### Changed
 - **ScrollArea**: Added `viewportRef` prop to expose the inner scrolling element. This allows external components to target the content viewport directly for animations.

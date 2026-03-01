@@ -8,6 +8,7 @@ import {
 } from '@/lib/game/utils/resolvers'
 
 import { GameAccordion } from '@/components/ui/navigation/accordion'
+import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import {
   Changelog,
@@ -57,7 +58,7 @@ export function LoginViewUI({
   backgroundSrc,
 }: LoginViewUIProps) {
   return (
-    <>
+    <EntranceStack fullHeight fullWidth>
       <Background src={backgroundSrc} />
 
       <AuthGrid>
@@ -97,7 +98,7 @@ export function LoginViewUI({
           <Footer {...footer} />
         </FeatureSection>
       </AuthGrid>
-    </>
+    </EntranceStack>
   )
 }
 
@@ -108,6 +109,7 @@ export async function LoginView({ backgroundSrc }: { backgroundSrc: string }) {
 
   const uiLabels = {
     email: t('form.email'),
+    emailPlaceholder: t('form.emailPlaceholder'),
     password: t('form.password'),
     submit: t('form.submit'),
     rememberMe: t('form.rememberMe'),

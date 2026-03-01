@@ -1,0 +1,219 @@
+{
+  "Auth": {
+    "Login": {
+      "meta_title": "Prihlásenie | Land of Machala",
+      "meta_description": "Vstúpte do sveta legiend. Vaša cesta začína tu.",
+      "title": "Prihlásenie",
+      "subtitle": "Vitaj späť, cestovateľ",
+      "description": "Tvoje dobrodružstvo pokračuje tam, kde si prestal.",
+      "form": {
+        "email": "E-mailová adresa",
+        "username": "Užívateľské meno",
+        "password": "Heslo",
+        "rememberMe": "Zapamätať si ma",
+        "submit": "Vstúpiť do sveta",
+        "noAccount": "Ešte nemáte účet?",
+        "register": "Registrujte sa tu",
+        "validation": {
+          "emailInvalid": "Zadajte platný e-mail",
+          "passwordRequired": "Heslo je povinné"
+        }
+      },
+      "actions": {
+        "guest": "Vyskúšať ako hosť",
+        "register": "Pridať sa k ríši"
+      },
+      "stats_title": "Štatistiky servera",
+      "changelog_title": "Najnovšie zmeny"
+    },
+    "Registration": {
+      "meta_title": "Registrácia | Land of Machala",
+      "meta_description": "Začni svoje dobrodružstvo v Land of Machala. Vytvor si účet.",
+      "title": "Registrácia",
+      "subtitle": "Začni svoju legendu",
+      "description": "Tvoja cesta začína práve tu...",
+      "form": {
+        "username": "Užívateľské meno",
+        "email": "E-mailová adresa",
+        "password": "Heslo",
+        "confirmPassword": "Potvrdiť heslo",
+        "submit": "Vytvoriť účet",
+        "hasAccount": "Už máš účet?",
+        "login": "Prihlásiť sa tu",
+        "validation": {
+          "emailInvalid": "Zadajte platný e-mail",
+          "passwordRequired": "Heslo je povinné",
+          "passwordLength": "Minimálne 6 znakov",
+          "passwordMismatch": "Heslá sa nezhodujú"
+        }
+      },
+      "actions": {
+        "login": "Už máš účet?"
+      },
+      "benefits_title": "Prečo hrať Machalu?",
+      "benefits_title_description": "Registráciou získaš prístup:"
+    },
+    "Origins": {
+      "meta_title": "Vitaj v Machale | Origins",
+      "meta_description": "Tvoja legenda začína teraz.",
+      "title": "Začiatok Tvojej cesty",
+      "subtitle": "Staň sa legendou",
+      "description": "Každý hrdina má svoj príbeh. Aký bude ten tvoj?",
+      "benefits_title": "Prečo hrať Machalu?",
+      "changelog_title": "Najnovšie zmeny",
+      "tutorial": {
+        "skip": "Preskočiť intro"
+      },
+      "narrative": {
+        "step_0_text": "Prebúdzaš sa v hustej hmle. Pred sebou vidíš tri postavy. Ktorá ťa najviac priťahuje?",
+        "step_0_choice_0": "Postava v ťažkej zbroji",
+        "step_0_choice_1": "Postava v kapucni s mágiou",
+        "step_0_choice_2": "Postava v tieňoch",
+        "step_1_text": "Postava prichádza k tebe. Hlasný rev sa ozýva z lesa. Ako reaguješ?",
+        "step_1_choice_0": "Tasíš zbraň",
+        "step_1_choice_1": "Rýchlo sa schováš",
+        "step_1_choice_2": "Vytvoríš magickú bariéru"
+      },
+      "creation": {
+        "title": "Vytvor si hrdinu",
+        "subtitle": "Tvoja legenda začína v krajine Machala",
+        "nameLabel": "Meno hrdinu",
+        "namePlaceholder": "Zadaj meno...",
+        "randomize": "Náhodná postava",
+        "randomize_button": "Náhodne",
+        "statsTitle": "Tvoje štatistiky",
+        "raceLabel": "Vyber si rasu",
+        "classLabel": "Vyber si povolanie",
+        "raceBonuses": "Bonusy rasy:",
+        "classBonuses": "Bonusy povolania:",
+        "heroName": "Meno hrdinu",
+        "ready_to_start": "Pripravený na cestu",
+        "finish": "Vstúpiť do sveta"
+      }
+    }
+  },
+  "Common": {
+    "loading": "Načítavanie...",
+    "error": "Niečo sa pokazilo",
+    "error_description": "Tvoje dobrodružstvo bolo prerušené.",
+    "error_digest": "Kód chyby: {digest}",
+    "try_again": "Skúsiť znova",
+    "or": "Alebo",
+    "footer": {
+      "version": "Verzia",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "V časoch temnoty sa rodia legendy.",
+      "Tvoja cesta začína teraz.",
+      "Machala volá svojich hrdinov.",
+      "Nebezpečenstvo číha za každým rohom.",
+      "Starodávne legendy hovoria o hrdinoch."
+    ],
+    "Races": {
+      "human": {
+        "name": "Človek",
+        "description": "Všestranní a prispôsobiví.",
+        "bonuses": "Vyvážené štatistiky"
+      },
+      "dwarf": {
+        "name": "Trpaslík",
+        "description": "Odolní a silní.",
+        "bonuses": "+20 HP, +5 Stamina"
+      },
+      "elf": {
+        "name": "Elf",
+        "description": "Rýchli a nadaní mágiou.",
+        "bonuses": "+40 Mana, +7 Intel."
+      },
+      "orc": {
+        "name": "Ork",
+        "description": "Brutálna sila divočiny.",
+        "bonuses": "+40 HP, +8 Sila"
+      },
+      "halfling": {
+        "name": "Polovičatý",
+        "description": "Malí, ale obratní a bystrí.",
+        "bonuses": "+6 Agility"
+      },
+      "drak": {
+        "name": "Drak",
+        "description": "Dedičia prastarej moci.",
+        "bonuses": "+10 HP, +20 Mana"
+      }
+    },
+    "Classes": {
+      "warrior": {
+        "name": "Bojovník",
+        "type": "Tank",
+        "description": "Majster boja zblízka.",
+        "bonuses": "+5 Sila, +5 Stamina"
+      },
+      "paladin": {
+        "name": "Paladin",
+        "type": "Tank",
+        "description": "Svätý ochranca.",
+        "bonuses": "+8 Stamina, +3 Intel."
+      },
+      "rogue": {
+        "name": "Lotro",
+        "type": "Hybrid",
+        "description": "Rýchly zabijak z tieňov.",
+        "bonuses": "+8 Agility, +4 Sila"
+      },
+      "mage": {
+        "name": "Mág",
+        "type": "Caster",
+        "description": "Majster mystických síl.",
+        "bonuses": "+12 Intel., +2 Agility"
+      },
+      "ranger": {
+        "name": "Hraničiar",
+        "type": "Hybrid",
+        "description": "Lukostrelec a stopár.",
+        "bonuses": "+6 Sila, +6 Agility"
+      },
+      "monk": {
+        "name": "Mních",
+        "type": "Hybrid",
+        "description": "Majster bojových umení.",
+        "bonuses": "+5 Sila, +5 Stamina"
+      }
+    },
+    "Stats": {
+      "hp": "HP",
+      "mana": "Mana",
+      "strength": "Sila",
+      "intelligence": "Intel.",
+      "agility": "Obratnosť",
+      "stamina": "Výdrž",
+      "active_players": "Aktívni hráči",
+      "boss_kills": "Zabití bossovia",
+      "top_level": "Najvyššia úroveň",
+      "quests": "Úlohy"
+    },
+    "Registration": {
+      "benefits": [
+        "Vytvor si hrdinu",
+        "Bojuj s monštrami",
+        "Plň úlohy",
+        "Rozvíjaj talenty"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Rozšírenie zručností",
+        "talent": "Talentový systém",
+        "movement": "Systém pohybu"
+      },
+      "descriptions": {
+        "skills": "19 zručností v 3 vetvách",
+        "talent": "3-stupňová progresia",
+        "movement": "Smerový pohyb",
+        "redesign": "Redizajn CharacterBox"
+      }
+    }
+  }
+}

@@ -280,12 +280,16 @@ export const BOX_KEYS = [
 
 export const BREAKPOINT_KEYS = ['sm', 'md', 'lg', 'xl'] as const
 
-export function splitBoxProps<T extends Record<string, any>>(props: T) {
-  const boxProps: Record<string, any> = {}
-  const restProps: Record<string, any> = {}
+export function splitBoxProps<T extends object>(props: T) {
+  const boxProps: Record<string, unknown> = {}
+  const restProps: Record<string, unknown> = {}
 
   Object.entries(props).forEach(([key, value]) => {
-    if (BOX_KEYS.includes(key as any) || BREAKPOINT_KEYS.includes(key as any) || key === 'as') {
+    if (
+      BOX_KEYS.includes(key as (typeof BOX_KEYS)[number]) ||
+      BREAKPOINT_KEYS.includes(key as (typeof BREAKPOINT_KEYS)[number]) ||
+      key === 'as'
+    ) {
       boxProps[key] = value
     } else {
       restProps[key] = value
@@ -296,10 +300,10 @@ export function splitBoxProps<T extends Record<string, any>>(props: T) {
 }
 
 export function getBoxClasses(props: BoxProps) {
-  const { as, sm, md, lg, xl, ...variants } = props
+  const { as: _, sm, md, lg, xl, ...variants } = props
 
   return cn(
-    boxVariants(variants as any),
+    boxVariants(variants as VariantProps<typeof boxVariants>),
     getBoxResponsiveClasses('sm', sm),
     getBoxResponsiveClasses('md', md),
     getBoxResponsiveClasses('lg', lg),
@@ -309,7 +313,7 @@ export function getBoxClasses(props: BoxProps) {
 
 export const Box = forwardRef<HTMLElement, BoxProps>((props, ref) => {
   const { boxProps, restProps } = splitBoxProps(props)
-  const { className, ...otherRest } = restProps as any
+  const { className, ...otherRest } = restProps as HTMLAttributes<HTMLElement>
   const { as: Component = 'div' } = boxProps
 
   return <Component ref={ref} className={cn(getBoxClasses(boxProps), className)} {...otherRest} />

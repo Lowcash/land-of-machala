@@ -18,6 +18,8 @@ interface CharacterIdentityProps {
   canFinish: boolean
   statLabels: Record<string, string>
   uiLabels: CreationUiLabels
+  raceBonuses?: string
+  classBonuses?: string
 }
 
 export function CharacterIdentity({
@@ -29,6 +31,8 @@ export function CharacterIdentity({
   canFinish,
   statLabels,
   uiLabels,
+  raceBonuses,
+  classBonuses,
 }: CharacterIdentityProps) {
   return (
     <FeatureSection height="full" justify="between" gap="md">
@@ -53,6 +57,8 @@ export function CharacterIdentity({
         isReady={canFinish}
         statLabels={statLabels}
         uiLabels={uiLabels}
+        raceBonuses={raceBonuses}
+        classBonuses={classBonuses}
       />
 
       <ActionGroup display="none" md={{ display: 'flex' }}>

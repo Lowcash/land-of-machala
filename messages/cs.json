@@ -7,7 +7,8 @@
       "subtitle": "Vítej zpět, poutníku",
       "description": "Tvé dobrodružství pokračuje tam, kde jsi přestal.",
       "form": {
-        "email": "Emailová adresa",
+        "email": "E-mail",
+        "emailPlaceholder": "poutnik@machala.cz",
         "username": "Uživatelské jméno",
         "password": "Heslo",
         "rememberMe": "Zapamatovat si mě",
@@ -34,7 +35,8 @@
       "description": "Tvá cesta začíná právě zde...",
       "form": {
         "username": "Uživatelské jméno",
-        "email": "Emailová adresa",
+        "email": "E-mail",
+        "emailPlaceholder": "poutnik@machala.cz",
         "password": "Heslo",
         "confirmPassword": "Potvrzení hesla",
         "submit": "Vytvořit účet",
@@ -78,7 +80,7 @@
         "title": "Vytvoř svého hrdinu",
         "subtitle": "Tvá legenda začíná v zemi Machala",
         "nameLabel": "Jméno hrdiny",
-        "namePlaceholder": "Zadej jméno...",
+        "namePlaceholder": "Jméno hrdiny...",
         "randomize": "Náhodná postava",
         "randomize_button": "Náhodně",
         "statsTitle": "Tvé statistiky",

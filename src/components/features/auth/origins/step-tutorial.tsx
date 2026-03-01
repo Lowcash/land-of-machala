@@ -1,6 +1,6 @@
 import { BookOpen, SkipForward } from 'lucide-react'
 
-import type { TranslatedStoryStep } from '@/lib/game/data/shared'
+import type { TranslatedStoryStep, TranslatedStoryStepChoice } from '@/lib/game/data/shared'
 
 import { HStack } from '@/components/ui/core/stack'
 import { ActionLink } from '@/components/ui/interactive/action-link'
@@ -13,7 +13,7 @@ import type { TutorialUiLabels } from './types'
 
 interface TutorialStepProps {
   step: TranslatedStoryStep
-  onChoice: (choice: any) => void
+  onChoice: (choice: TranslatedStoryStepChoice) => void
   onSkip: () => void
   uiLabels: TutorialUiLabels
 }
@@ -26,7 +26,7 @@ export function TutorialStep({ step, onChoice, onSkip, uiLabels }: TutorialStepP
       <NarrativeText>{step.text}</NarrativeText>
 
       <Choice>
-        {step.choices.map((choice, idx: number) => (
+        {step.choices.map((choice, idx) => (
           <ChoiceItem key={idx} index={idx} title={choice.text} onClick={() => onChoice(choice)} />
         ))}
       </Choice>

@@ -1,0 +1,219 @@
+{
+  "Auth": {
+    "Login": {
+      "meta_title": "Login | Land of Machala",
+      "meta_description": "Betreten Sie die Welt der Legenden. Ihre Reise beginnt hier.",
+      "title": "Login",
+      "subtitle": "Willkommen zurück, Reisender",
+      "description": "Dein Abenteuer geht dort weiter, wo du aufgehört hast.",
+      "form": {
+        "email": "E-Mail-Adresse",
+        "username": "Benutzername",
+        "password": "Passwort",
+        "rememberMe": "Angemeldet bleiben",
+        "submit": "Welt betreten",
+        "noAccount": "Noch kein Konto?",
+        "register": "Hier registrieren",
+        "validation": {
+          "emailInvalid": "Gültige E-Mail eingeben",
+          "passwordRequired": "Passwort ist erforderlich"
+        }
+      },
+      "actions": {
+        "guest": "Als Gast testen",
+        "register": "Dem Reich beitreten"
+      },
+      "stats_title": "Server-Statistiken",
+      "changelog_title": "Neueste Änderungen"
+    },
+    "Registration": {
+      "meta_title": "Registrierung | Land of Machala",
+      "meta_description": "Beginnen Sie Ihr Abenteuer. Erstellen Sie ein Konto.",
+      "title": "Registrierung",
+      "subtitle": "Beginne deine Legende",
+      "description": "Deine Reise beginnt genau hier...",
+      "form": {
+        "username": "Benutzername",
+        "email": "E-Mail-Adresse",
+        "password": "Passwort",
+        "confirmPassword": "Passwort bestätigen",
+        "submit": "Konto erstellen",
+        "hasAccount": "Bereits ein Konto?",
+        "login": "Hier anmelden",
+        "validation": {
+          "emailInvalid": "Gültige E-Mail eingeben",
+          "passwordRequired": "Passwort ist erforderlich",
+          "passwordLength": "Mindestens 6 Zeichen",
+          "passwordMismatch": "Passwörter stimmen nicht überein"
+        }
+      },
+      "actions": {
+        "login": "Bereits ein Konto?"
+      },
+      "benefits_title": "Warum Machala spielen?",
+      "benefits_title_description": "Mit der Registrierung erhalten Sie Zugang:"
+    },
+    "Origins": {
+      "meta_title": "Willkommen bei Machala | Origins",
+      "meta_description": "Deine Legende beginnt jetzt.",
+      "title": "Der Beginn deines Pfades",
+      "subtitle": "Werde eine Legende",
+      "description": "Jeder Held hat eine Geschichte. Was wird deine sein?",
+      "benefits_title": "Warum Machala spielen?",
+      "changelog_title": "Neueste Änderungen",
+      "tutorial": {
+        "skip": "Intro überspringen"
+      },
+      "narrative": {
+        "step_0_text": "Du wachst in einem dichten Nebel auf. Vor dir siehst du drei Gestalten. Welche zieht dich am meisten an?",
+        "step_0_choice_0": "Eine Gestalt in schwerer Rüstung",
+        "step_0_choice_1": "Eine verhüllte Gestalt mit Magie",
+        "step_0_choice_2": "Eine Gestalt in den Schatten",
+        "step_1_text": "Die Figur nähert sich. Ein lautes Brüllen echoet aus dem Wald. Wie reagierst du?",
+        "step_1_choice_0": "Waffe ziehen und bereit machen",
+        "step_1_choice_1": "Schnell verstecken",
+        "step_1_choice_2": "Magische Barriere erschaffen"
+      },
+      "creation": {
+        "title": "Erstelle deinen Helden",
+        "subtitle": "Deine Legende beginnt im Land von Machala",
+        "nameLabel": "Heldenname",
+        "namePlaceholder": "Name eingeben...",
+        "randomize": "Zufälliger Charakter",
+        "randomize_button": "Zufall",
+        "statsTitle": "Deine Werte",
+        "raceLabel": "Wähle dein Volk",
+        "classLabel": "Wähle deine Klasse",
+        "raceBonuses": "Volksboni:",
+        "classBonuses": "Klassenboni:",
+        "heroName": "Heldenname",
+        "ready_to_start": "Bereit für die Reise",
+        "finish": "Welt betreten"
+      }
+    }
+  },
+  "Common": {
+    "loading": "Lädt...",
+    "error": "Etwas ist schiefgelaufen",
+    "error_description": "Dein Abenteuer wurde unterbrochen.",
+    "error_digest": "Fehlercode: {digest}",
+    "try_again": "Erneut versuchen",
+    "or": "Oder",
+    "footer": {
+      "version": "Version",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "In Zeiten der Dunkelheit werden Legenden geboren.",
+      "Deine Reise beginnt jetzt.",
+      "Machala ruft seine Helden.",
+      "Gefahr lauert an jeder Ecke.",
+      "Alte Legenden erzählen von Helden."
+    ],
+    "Races": {
+      "human": {
+        "name": "Mensch",
+        "description": "Vielseitig und anpassungsfähig.",
+        "bonuses": "Ausgewogene Werte"
+      },
+      "dwarf": {
+        "name": "Zwerg",
+        "description": "Widerstandsfähig und stark.",
+        "bonuses": "+20 HP, +5 Stamina"
+      },
+      "elf": {
+        "name": "Elf",
+        "description": "Schnell und magisch begabt.",
+        "bonuses": "+40 Mana, +7 Intel."
+      },
+      "orc": {
+        "name": "Ork",
+        "description": "Brutale Stärke der Wildnis.",
+        "bonuses": "+40 HP, +8 Stärke"
+      },
+      "halfling": {
+        "name": "Halbling",
+        "description": "Klein, aber flink und schlau.",
+        "bonuses": "+6 Agilität"
+      },
+      "drak": {
+        "name": "Drache",
+        "description": "Erben alter Macht.",
+        "bonuses": "+10 HP, +20 Mana"
+      }
+    },
+    "Classes": {
+      "warrior": {
+        "name": "Krieger",
+        "type": "Tank",
+        "description": "Meister des Nahkampfs.",
+        "bonuses": "+5 Stärke, +5 Stamina"
+      },
+      "paladin": {
+        "name": "Paladin",
+        "type": "Tank",
+        "description": "Heiliger Beschützer.",
+        "bonuses": "+8 Stamina, +3 Intel."
+      },
+      "rogue": {
+        "name": "Schurke",
+        "type": "Hybrid",
+        "description": "Schneller Töter aus dem Schatten.",
+        "bonuses": "+8 Agilität, +4 Stärke"
+      },
+      "mage": {
+        "name": "Magier",
+        "type": "Caster",
+        "description": "Meister mystischer Kräfte.",
+        "bonuses": "+12 Intel., +2 Agilität"
+      },
+      "ranger": {
+        "name": "Waldläufer",
+        "type": "Hybrid",
+        "description": "Bogenschütze und Fährtensucher.",
+        "bonuses": "+6 Stärke, +6 Agilität"
+      },
+      "monk": {
+        "name": "Mönch",
+        "type": "Hybrid",
+        "description": "Meister der Kampfkunst.",
+        "bonuses": "+5 Stärke, +5 Stamina"
+      }
+    },
+    "Stats": {
+      "hp": "HP",
+      "mana": "Mana",
+      "strength": "Stärke",
+      "intelligence": "Intel.",
+      "agility": "Agilität",
+      "stamina": "Stamina",
+      "active_players": "Aktive Spieler",
+      "boss_kills": "Boss-Kills",
+      "top_level": "Top Level",
+      "quests": "Quests"
+    },
+    "Registration": {
+      "benefits": [
+        "Erstelle deinen Helden",
+        "Bekämpfe Monster",
+        "Schließe Quests ab",
+        "Entwickle Talente"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Skill-Erweiterung",
+        "talent": "Talentsystem",
+        "movement": "Bewegungssystem"
+      },
+      "descriptions": {
+        "skills": "19 Skills in 3 Zweigen",
+        "talent": "3-Stufen-Progression",
+        "movement": "Direktionales Bewegen",
+        "redesign": "CharacterBox Redesign"
+      }
+    }
+  }
+}

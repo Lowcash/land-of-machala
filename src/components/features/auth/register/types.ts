@@ -4,6 +4,7 @@
 
 export interface RegisterUiLabels {
   email: string
+  emailPlaceholder: string
   password: string
   confirmPassword: string
   submit: string

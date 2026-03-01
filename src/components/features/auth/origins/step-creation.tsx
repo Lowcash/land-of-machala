@@ -3,8 +3,8 @@
 import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
 
 import { Button } from '@/components/ui/core/button'
-import { VStack } from '@/components/ui/core/stack'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
+import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
 import { CreationGrid, FeatureSection } from '@/components/ui/prefabs/structure'
 import { PageHeader } from '@/components/ui/prefabs/typography/hero'
 
@@ -45,8 +45,11 @@ export function StepCreation({
   statLabels,
   uiLabels,
 }: StepCreationProps) {
+  const selectedRace = races.find((r) => r.id === selectedRaceId)
+  const selectedClass = classes.find((c) => c.id === selectedClassId)
+
   return (
-    <VStack gap="lg" align="center" fullWidth>
+    <EntranceStack gap="lg" align="center" fullWidth duration={0.6}>
       <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}
@@ -61,6 +64,8 @@ export function StepCreation({
           canFinish={canFinish}
           statLabels={statLabels}
           uiLabels={uiLabels}
+          raceBonuses={selectedRace?.bonuses}
+          classBonuses={selectedClass?.bonuses}
         />
 
         {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
@@ -137,6 +142,6 @@ export function StepCreation({
           {uiLabels.finish}
         </Button>
       </FeatureSection>
-    </VStack>
+    </EntranceStack>
   )
 }

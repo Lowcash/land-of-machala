@@ -1,4 +1,4 @@
-import { type HTMLAttributes, forwardRef } from 'react'
+import { type ElementType, type HTMLAttributes, forwardRef } from 'react'
 
 import { type VariantProps, cva } from 'class-variance-authority'
 
@@ -43,17 +43,15 @@ export interface CardRootProps
 
 const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const { padding, as: Component = 'div', children, className, ...otherProps } = restProps as any
-
-  const typedRest = restProps as any
-  const variant = typedRest.variant
-  const cardRounded = typedRest.rounded
+  const { padding, children, className, ...otherProps } = restProps as any
+  const { as: Component = 'div' } = layoutProps as any
+  const { variant, rounded: cardRounded } = props
 
   const finalPadding = layoutProps.p ?? padding ?? 'lg'
 
   return (
     <Stack
-      as={Component as any}
+      as={Component as ElementType}
       data-slot="card"
       ref={ref}
       className={cn(cardVariants({ variant, rounded: cardRounded }), className)}
@@ -74,20 +72,12 @@ interface CardHeaderProps extends StackProps {}
 
 const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const {
-    as: Component = 'div',
-    children,
-    direction,
-    align,
-    justify,
-    gap,
-    className,
-    ...otherProps
-  } = restProps as any
+  const { children, className, ...otherProps } = restProps as any
+  const { as: Component = 'div' } = layoutProps as any
 
   return (
     <Stack
-      as={Component as any}
+      as={Component as ElementType}
       data-slot="card-header"
       ref={ref}
       className={cn(
@@ -112,20 +102,12 @@ type CardContentProps = StackProps
 
 const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const {
-    as: Component = 'div',
-    children,
-    direction,
-    align,
-    justify,
-    gap,
-    className,
-    ...otherProps
-  } = restProps as any
+  const { children, className, ...otherProps } = restProps as any
+  const { as: Component = 'div' } = layoutProps as any
 
   return (
     <Stack
-      as={Component as any}
+      as={Component as ElementType}
       data-slot="card-content"
       ref={ref}
       className={cn('text-(--color-ivory)/90', className)}
@@ -147,20 +129,12 @@ interface CardFooterProps extends StackProps {}
 
 const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
-  const {
-    as: Component = 'div',
-    children,
-    direction,
-    align,
-    justify,
-    gap,
-    className,
-    ...otherProps
-  } = restProps as any
+  const { children, className, ...otherProps } = restProps as any
+  const { as: Component = 'div' } = layoutProps as any
 
   return (
     <Stack
-      as={Component as any}
+      as={Component as ElementType}
       data-slot="card-footer"
       ref={ref}
       className={cn('border-t border-(--color-secondary)/20 pt-4', className)}

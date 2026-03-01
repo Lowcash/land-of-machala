@@ -4,6 +4,7 @@
 
 export interface LoginUiLabels {
   email: string
+  emailPlaceholder: string
   password: string
   submit: string
   rememberMe: string

@@ -24,15 +24,17 @@ export interface TranslatedClassInfo extends Omit<
   description: string
   bonuses: string
 }
+export interface TranslatedStoryStepChoice {
+  text: string
+  effect: { class?: string; race?: string }
+  nextStep: number | 'end'
+}
+
 /**
  * Version of StoryStep with pre-translated strings.
  */
 export interface TranslatedStoryStep {
   id: number
   text: string
-  choices: Array<{
-    text: string
-    effect: { class?: string; race?: string }
-    nextStep: number | 'end'
-  }>
+  choices: TranslatedStoryStepChoice[]
 }

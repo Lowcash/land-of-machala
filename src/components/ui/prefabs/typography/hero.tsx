@@ -61,7 +61,7 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, subtitle }: PageHeaderProps) {
   return (
-    <VStack align="center" gap="xs" fullWidth>
+    <VStack align="center" gap="md" fullWidth>
       <HeroTitle>{title}</HeroTitle>
       {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
     </VStack>

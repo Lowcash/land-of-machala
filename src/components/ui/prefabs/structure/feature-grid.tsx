@@ -26,7 +26,7 @@ export function FeatureGrid({ children, variant = 'standard', ...props }: Featur
   return (
     <Stack
       display="grid"
-      cols="1"
+      cols={isDense || isSelection ? '2' : '1'}
       gap={isDense ? 'xs' : 'sm'}
       sm={{ cols: '2', gap: isDense ? 'sm' : 'md' }}
       md={{ cols: '2', gap: isDense ? 'sm' : 'md' }}

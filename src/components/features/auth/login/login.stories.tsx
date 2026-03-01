@@ -24,7 +24,8 @@ export default meta
 type Story = StoryObj<typeof LoginViewUI>
 
 const MOCK_UI_LABELS = {
-  email: 'Email Address',
+  email: 'Email',
+  emailPlaceholder: 'traveler@machala.cz',
   password: 'Password',
   submit: 'Login Now',
   rememberMe: 'Remember Me',

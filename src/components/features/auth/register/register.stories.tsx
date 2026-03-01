@@ -19,7 +19,8 @@ export default meta
 type Story = StoryObj<typeof RegisterViewUI>
 
 const MOCK_UI_LABELS = {
-  email: 'Email Address',
+  email: 'Email',
+  emailPlaceholder: 'traveler@machala.cz',
   password: 'Password',
   confirmPassword: 'Confirm Password',
   submit: 'Register Now',

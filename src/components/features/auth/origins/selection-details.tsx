@@ -28,56 +28,59 @@ export function SelectionDetails({
   if (!item) return null
 
   return (
-    <FadeInPanel animationKey={item.id} flex={flex as any} variant="secondary" p="md" gap="md">
-      <Description variant="detail">{item.description}</Description>
+    <FadeInPanel animationKey={item.id} flex={flex} variant="secondary" p="md" gap="md">
+      <Description align="left" variant="detail">
+        {item.description}
+      </Description>
 
       <Divider variant="solid" />
 
       <FeatureSection>
-        <Label align="left" variant="tiny">
+        <Label align="center" variant="tiny">
           {type === 'race' ? uiLabels.raceBonuses : uiLabels.classBonuses}
         </Label>
 
         <FeatureGrid variant="dense">
+          {/* ... stats ... */}
           {type === 'race' ? (
             <>
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('hp')}
                 label={statLabels.hp}
                 value={(item as TranslatedRaceInfo).stats.hp}
                 color="hp"
               />
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('mana')}
                 label={statLabels.mana}
                 value={(item as TranslatedRaceInfo).stats.mana}
                 color="mana"
               />
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('strength')}
                 label={statLabels.strength}
                 value={(item as TranslatedRaceInfo).stats.strength}
                 color="strength"
               />
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('intelligence')}
                 label={statLabels.intelligence}
                 value={(item as TranslatedRaceInfo).stats.intelligence}
                 color="intelligence"
               />
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('agility')}
                 label={statLabels.agility}
                 value={(item as TranslatedRaceInfo).stats.agility}
                 color="agility"
               />
               <StatRow
-                compact
+                variant="compact"
                 icon={getStatIcon('stamina')}
                 label={statLabels.stamina}
                 value={(item as TranslatedRaceInfo).stats.stamina}
@@ -94,7 +97,7 @@ export function SelectionDetails({
               return (
                 <StatRow
                   key={stat}
-                  compact
+                  variant="compact"
                   icon={Icon}
                   label={statLabels[stat]}
                   value={`${isPositive ? '+' : ''}${numericVal}`}
@@ -105,7 +108,9 @@ export function SelectionDetails({
           )}
         </FeatureGrid>
 
-        <Description variant="bonus">{item.bonuses}</Description>
+        <Description align="left" variant="bonus">
+          {item.bonuses}
+        </Description>
       </FeatureSection>
     </FadeInPanel>
   )

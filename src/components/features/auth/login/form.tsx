@@ -39,7 +39,10 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
       password: '',
       rememberMe: false,
     },
+    mode: 'onChange',
   })
+
+  const { isValid } = form.formState
 
   return (
     <Form.Root<LoginFormValues> form={form} onSubmit={onLogin || (() => {})} gap="md">
@@ -47,7 +50,7 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
         control={form.control}
         name="email"
         label={uiLabels.email}
-        placeholder={uiLabels.email + '...'}
+        placeholder={uiLabels.emailPlaceholder}
         disabled={isLoading}
         leftIcon={<MailIcon />}
         autoComplete="email"
@@ -58,7 +61,7 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
         name="password"
         label={uiLabels.password}
         type="password"
-        placeholder={uiLabels.password + '...'}
+        placeholder="••••••••"
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="current-password"
@@ -71,12 +74,7 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
         disabled={isLoading}
       />
 
-      <Button
-        type="submit"
-        fullWidth
-        loading={isLoading}
-        disabled={!form.watch('email') || !form.watch('password')}
-      >
+      <Button type="submit" fullWidth loading={isLoading} disabled={!isValid || isLoading}>
         {uiLabels.submit}
       </Button>
     </Form.Root>

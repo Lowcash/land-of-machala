@@ -1,0 +1,219 @@
+{
+  "Auth": {
+    "Login": {
+      "meta_title": "Login | Land of Machala",
+      "meta_description": "Entra nel mondo delle leggende. Il tuo viaggio inizia qui.",
+      "title": "Login",
+      "subtitle": "Bentornato, viaggiatore",
+      "description": "La tua avventura continua da dove l'avevi lasciata.",
+      "form": {
+        "email": "Indirizzo Email",
+        "username": "Nome Utente",
+        "password": "Password",
+        "rememberMe": "Ricordami",
+        "submit": "Entra nel Mondo",
+        "noAccount": "Non hai ancora un account?",
+        "register": "Registrati qui",
+        "validation": {
+          "emailInvalid": "Inserisci un'email valida",
+          "passwordRequired": "La password è obbligatoria"
+        }
+      },
+      "actions": {
+        "guest": "Prova come ospite (senza registrazione)",
+        "register": "Unisciti al Regno"
+      },
+      "stats_title": "Statistiche Server",
+      "changelog_title": "Ultime Modifiche"
+    },
+    "Registration": {
+      "meta_title": "Registrazione | Land of Machala",
+      "meta_description": "Inizia la tua avventura nella Terra di Machala. Crea un account e diventa una leggenda.",
+      "title": "Registrazione",
+      "subtitle": "Inizia la tua leggenda",
+      "description": "Il tuo viaggio inizia proprio qui...",
+      "form": {
+        "username": "Nome Utente",
+        "email": "Indirizzo Email",
+        "password": "Password",
+        "confirmPassword": "Conferma Password",
+        "submit": "Crea Account",
+        "hasAccount": "Hai già un account?",
+        "login": "Login qui",
+        "validation": {
+          "emailInvalid": "Inserisci un'email valida",
+          "passwordRequired": "La password è obbligatoria",
+          "passwordLength": "La password deve contenere almeno 6 caratteri",
+          "passwordMismatch": "Le password non corrispondono"
+        }
+      },
+      "actions": {
+        "login": "Hai già un account?"
+      },
+      "benefits_title": "Perché giocare a Machala?",
+      "benefits_title_description": "Registrandoti, otterrai l'accesso al mondo di Machala, dove potrai:"
+    },
+    "Origins": {
+      "meta_title": "Benvenuto a Machala | Origini",
+      "meta_description": "La tua leggenda inizia ora.",
+      "title": "L'Inizio del Tuo Cammino",
+      "subtitle": "Diventa una Leggenda",
+      "description": "Ogni eroe ha una storia. Quale sarà la tua?",
+      "benefits_title": "Perché giocare a Machala?",
+      "changelog_title": "Ultime Modifiche",
+      "tutorial": {
+        "skip": "Salta Intro (Sono un giocatore esperto)"
+      },
+      "narrative": {
+        "step_0_text": "Ti svegli in una fitta nebbia. Non sai chi sei né come sei arrivato qui. Davanti a te, vedi le sagome di tre figure. Quale ti attrae di più?",
+        "step_0_choice_0": "Una figura in armatura pesante con uno spadone",
+        "step_0_choice_1": "Una figura incappucciata con magia scintillante intorno a sé",
+        "step_0_choice_2": "Una figura nelle ombre con pugnali in mano",
+        "step_1_text": "La figura si avvicina. Senti una strana energia provenire da lei. Improvvisamente, un forte ruggito echeggia dalla foresta. Come reagisci?",
+        "step_1_choice_0": "Estrai immediatamente la tua arma e ti prepari alla battaglia",
+        "step_1_choice_1": "Ti nascondi rapidamente e valuti la situazione",
+        "step_1_choice_2": "Usi la magia per creare una barriera protettiva"
+      },
+      "creation": {
+        "title": "Crea il Tuo Eroe",
+        "subtitle": "La tua leggenda inizia nella Terra di Machala",
+        "nameLabel": "Nome Eroe",
+        "namePlaceholder": "Inserisci nome...",
+        "randomize": "Personaggio Casuale",
+        "randomize_button": "Casuale",
+        "statsTitle": "Le Tue Statistiche",
+        "raceLabel": "Scegli la Tua Razza",
+        "classLabel": "Scegli la Tua Classe",
+        "raceBonuses": "Bonus Razza:",
+        "classBonuses": "Bonus Classe:",
+        "heroName": "Nome Eroe",
+        "ready_to_start": "Pronto per il Viaggio",
+        "finish": "Entra nel Mondo"
+      }
+    }
+  },
+  "Common": {
+    "loading": "Caricamento...",
+    "error": "Qualcosa è andato storto",
+    "error_description": "La tua avventura è stata interrotta inaspettatamente dalla magia oscura. Per favore, prova a tornare nel mondo.",
+    "error_digest": "Codice errore: {digest}",
+    "try_again": "Riprova",
+    "or": "Oppure",
+    "footer": {
+      "version": "Versione",
+      "copyright": "Land of Machala"
+    }
+  },
+  "Game": {
+    "Lore": [
+      "In tempi di oscurità, nascono le leggende. Sarai una di loro, o cadrai nell'oblio come quelli prima di te?",
+      "Il tuo viaggio inizia ora. Ogni decisione modella il tuo destino.",
+      "Machala chiama i suoi eroi. Rispondi alla chiamata?",
+      "Il pericolo si nasconde dietro ogni angolo, ma con il coraggio arriva la gloria.",
+      "Antiche leggende parlano di eroi che hanno cambiato il destino del mondo. La tua storia inizia qui."
+    ],
+    "Races": {
+      "human": {
+        "name": "Umano",
+        "description": "Guerrieri versatili e adattabili. Gli umani sono noti per il loro equilibrio in tutti gli aspetti del combattimento. Hanno una buona salute e decenti abilità magiche.",
+        "bonuses": "Statistiche bilanciate, +10% apprendimento rapido"
+      },
+      "dwarf": {
+        "name": "Nano",
+        "description": "Guerrieri resilienti e forti delle sale sotterranee. I nani sono maestri della forgiatura e della difesa. I loro corpi robusti possono sopportare molte più punizioni.",
+        "bonuses": "+20 PV, +5 Stamina, +2 Forza, -3 Agilità"
+      },
+      "elf": {
+        "name": "Elfo",
+        "description": "Abitanti della foresta veloci e dotati di magia. Gli elfi hanno un'affinità innata per la magia e la natura. Sono maestri del tiro con l'arco e della magia elementale.",
+        "bonuses": "+40 Mana, +7 Intelligenza, +4 Agilità, -20 PV"
+      },
+      "orc": {
+        "name": "Orco",
+        "description": "Forza brutale delle terre selvagge. Gli orchi sono la razza più forte nel combattimento ravvicinato. I loro muscoli e la loro furia non hanno rivali in guerra.",
+        "bonuses": "+40 PV, +8 Forza, +2 Stamina, -5 Intelligenza"
+      },
+      "halfling": {
+        "name": "Mezzuomo",
+        "description": "Piccolo ma agile e astuto. I mezzuomini sono maestri dell'evasione e degli attacchi a sorpresa dalle ombre. La loro piccola taglia li rende eccellenti ladri.",
+        "bonuses": "+6 Agilità, maggiore probabilità di schivata e critico"
+      },
+      "drak": {
+        "name": "Drago",
+        "description": "Eredi di un antico potere. Combinano la magia con la prodezza fisica.",
+        "bonuses": "+10 PV, +20 Mana, +3 Forza, +4 Intelligenza"
+      }
+    },
+    "Classes": {
+      "warrior": {
+        "name": "Guerriero",
+        "type": "Tank",
+        "description": "Maestro del combattimento ravvicinato e delle armature pesanti. I guerrieri sono combattenti di prima linea addestrati nell'uso di tutte le armi.",
+        "bonuses": "Totale +5 Forza, +5 Stamina, competenza nelle armature pesanti"
+      },
+      "paladin": {
+        "name": "Paladino",
+        "type": "Tank",
+        "description": "Santo protettore con magia e difesa. I paladini combinano abilità di combattimento con magia curativa e protettiva.",
+        "bonuses": "+8 Stamina, +3 Intelligenza, +3 Forza, magia curativa"
+      },
+      "rogue": {
+        "name": "Ladro",
+        "type": "Ibrido",
+        "description": "Assassino veloce dalle ombre. I ladri sono maestri della furtività e dei colpi critici. Si affidano a velocità e precisione.",
+        "bonuses": "+8 Agilità, +4 Forza, colpi critici"
+      },
+      "mage": {
+        "name": "Mago",
+        "type": "Incantatore",
+        "description": "Maestro delle forze mistiche e della magia distruttiva. I maghi controllano la magia elementale - fuoco, ghiaccio, fulmini. Sono fisicamente deboli.",
+        "bonuses": "+12 Intelligenza, +2 Agilità, -2 Stamina"
+      },
+      "ranger": {
+        "name": "Ranger",
+        "type": "Ibrido",
+        "description": "Arciere e cercatore di tracce delle terre selvagge. I ranger sono connessi alla natura e maestri del combattimento a distanza.",
+        "bonuses": "+6 Forza, +6 Agilità, +2 Stamina, tiro con l'arco"
+      },
+      "monk": {
+        "name": "Monaco",
+        "type": "Ibrido",
+        "description": "Maestro delle arti marziali e della pace interiore. I monaci si affidano ad agilità e spirito.",
+        "bonuses": "+5 Forza, +5 Stamina, +5 Intelligenza, +8 Agilità"
+      }
+    },
+    "Stats": {
+      "hp": "PV",
+      "mana": "Mana",
+      "strength": "Forza",
+      "intelligence": "Intel.",
+      "agility": "Agilità",
+      "stamina": "Stamina",
+      "active_players": "Giocatori Attivi",
+      "boss_kills": "Boss Uccisi",
+      "top_level": "Livello Massimo",
+      "quests": "Missioni"
+    },
+    "Registration": {
+      "benefits": [
+        "Crea il tuo eroe tra 6 razze e classi",
+        "Combatti mostri e ottieni oggetti leggendari",
+        "Completa missioni e scopri la storia di Machala",
+        "Sviluppa abilità in 3 rami di talenti"
+      ]
+    },
+    "Changelog": {
+      "categories": {
+        "skills": "Estensione Abilità",
+        "talent": "Sistema talenti stile WoW",
+        "movement": "Sistema di movimento"
+      },
+      "descriptions": {
+        "skills": "19 abilità in 3 rami (Combattimento, Difesa, Magia)",
+        "talent": "Progressione a 3 livelli con requisiti di sblocco",
+        "movement": "Movimento direzionale (N/S/E/O) + incontri casuali",
+        "redesign": "Riprogettazione compatta di CharacterBox con stile medieval fantasy"
+      }
+    }
+  }
+}

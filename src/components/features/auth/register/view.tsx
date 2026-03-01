@@ -9,6 +9,7 @@ import {
 import { HStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
 import { GameAccordion } from '@/components/ui/navigation/accordion'
+import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
 import { BrandedHero } from '@/components/ui/prefabs/layout/branded-hero'
 import { Benefits } from '@/components/ui/prefabs/narrative/benefits'
 import { LoreQuote } from '@/components/ui/prefabs/narrative/lore-quote'
@@ -55,7 +56,7 @@ export function RegisterViewUI({
   backgroundSrc,
 }: RegisterViewUIProps) {
   return (
-    <>
+    <EntranceStack fullHeight fullWidth>
       <Background src={backgroundSrc} />
       <AuthGrid>
         <FeatureSection>
@@ -92,7 +93,7 @@ export function RegisterViewUI({
           <Footer {...footer} />
         </FeatureSection>
       </AuthGrid>
-    </>
+    </EntranceStack>
   )
 }
 
@@ -103,6 +104,7 @@ export async function RegisterView({ backgroundSrc }: { backgroundSrc: string })
 
   const uiLabels = {
     email: t('form.email'),
+    emailPlaceholder: t('form.emailPlaceholder'),
     password: t('form.password'),
     confirmPassword: t('form.confirmPassword'),
     submit: t('form.submit'),

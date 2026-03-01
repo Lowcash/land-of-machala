@@ -44,7 +44,10 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
       password: '',
       confirmPassword: '',
     },
+    mode: 'onChange',
   })
+
+  const { isValid } = form.formState
 
   return (
     <Form.Root<RegisterFormValues> form={form} onSubmit={onRegister || (() => {})} gap="md">
@@ -52,7 +55,7 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
         control={form.control}
         name="email"
         label={uiLabels.email}
-        placeholder={uiLabels.email + '...'}
+        placeholder={uiLabels.emailPlaceholder}
         disabled={isLoading}
         leftIcon={<MailIcon />}
         autoComplete="email"
@@ -63,7 +66,7 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
         name="password"
         label={uiLabels.password}
         type="password"
-        placeholder={uiLabels.password + '...'}
+        placeholder="••••••••"
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="new-password"
@@ -74,18 +77,13 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
         name="confirmPassword"
         label={uiLabels.confirmPassword}
         type="password"
-        placeholder={uiLabels.confirmPassword + '...'}
+        placeholder="••••••••"
         disabled={isLoading}
         leftIcon={<LockIcon />}
         autoComplete="new-password"
       />
 
-      <Button
-        type="submit"
-        fullWidth
-        loading={isLoading}
-        disabled={!form.watch('email') || !form.watch('password') || !form.watch('confirmPassword')}
-      >
+      <Button type="submit" fullWidth loading={isLoading} disabled={!isValid || isLoading}>
         {uiLabels.submit}
       </Button>
     </Form.Root>
