@@ -62,7 +62,7 @@ export function LoginViewUI({
       <Background src={backgroundSrc} />
 
       <AuthGrid>
-        <FeatureSection>
+        <FeatureSection gap="xl">
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <LoginCard
             guestLabel={card.guestLabel}

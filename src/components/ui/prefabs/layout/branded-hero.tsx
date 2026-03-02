@@ -23,12 +23,14 @@ export function BrandedHero({
         <HeroTitle>{title}</HeroTitle>
       </VStack>
 
-      {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
-      {description && (
-        <HeroDescription align="center" maxWidth="md">
-          {description}
-        </HeroDescription>
-      )}
+      <VStack align="center" gap="sm">
+        {subtitle && <HeroSubtitle>{subtitle}</HeroSubtitle>}
+        {description && (
+          <HeroDescription align="center" maxWidth="md">
+            {description}
+          </HeroDescription>
+        )}
+      </VStack>
     </FeatureSection>
   )
 }

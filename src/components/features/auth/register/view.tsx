@@ -59,7 +59,7 @@ export function RegisterViewUI({
     <EntranceStack fullHeight fullWidth>
       <Background src={backgroundSrc} />
       <AuthGrid>
-        <FeatureSection>
+        <FeatureSection gap="xl">
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <RegisterCard uiLabels={uiLabels} />
 

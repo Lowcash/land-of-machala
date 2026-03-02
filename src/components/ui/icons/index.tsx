@@ -143,7 +143,7 @@ export function LogoIcon({ size = 'xl' }: { size?: 'lg' | 'xl' | 'xxl' }) {
   }
 
   return (
-    <div className="relative mb-4 inline-block">
+    <div className="relative inline-block">
       <div className="absolute inset-0 rounded-full bg-linear-to-br from-(--color-gold)/20 to-(--color-secondary)/20 blur-2xl" />
       <div
         className={cn(
