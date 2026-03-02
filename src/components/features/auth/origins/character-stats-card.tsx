@@ -42,7 +42,7 @@ export function CharacterStatsCard({
       md={{ p: 'none' }}
       gap="none"
     >
-      <VStack align="center" gap="sm" fullWidth p="md" pb="sm">
+      <VStack align="center" gap="sm" fullWidth p="md" pb="sm" md={{ p: 'lg', pb: 'sm' }}>
         <VStack align="center" gap="xs">
           <NarrativeCard.Title align="center" variant="large">
             {uiLabels.statsTitle}
@@ -52,7 +52,15 @@ export function CharacterStatsCard({
         <Divider variant="solid" />
       </VStack>
 
-      <ScrollArea flex="1" minHeight="zero" p="md" pt="none" gap="md" showGradient>
+      <ScrollArea
+        flex="1"
+        minHeight="zero"
+        p="md"
+        pt="none"
+        md={{ p: 'lg', pt: 'none' }}
+        gap="md"
+        showGradient
+      >
         <FeatureGrid variant="dense" fullWidth>
           <StatRow
             variant="large"
