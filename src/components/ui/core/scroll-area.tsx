@@ -40,23 +40,32 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     display,
     cols,
     wrap,
+    p,
+    pt,
+    pb,
+    px,
+    py,
     sm,
     md,
     lg,
     xl,
-  } = layoutProps as Record<string, unknown>
+  } = layoutProps
 
-  const extractFlex = (bp: unknown) => {
-    const config = bp as StackProps | undefined
-    if (!config) return undefined
+  const extractPaddingAndFlex = (bp: StackProps['sm']) => {
+    if (!bp) return undefined
     return {
-      gap: config.gap,
-      direction: config.direction,
-      align: config.align,
-      justify: config.justify,
-      display: (config.display as StackProps['display']) ?? undefined,
-      cols: config.cols,
-      wrap: config.wrap,
+      p: bp.p,
+      pt: bp.pt,
+      pb: bp.pb,
+      px: bp.px,
+      py: bp.py,
+      gap: bp.gap,
+      direction: bp.direction,
+      align: bp.align,
+      justify: bp.justify,
+      display: bp.display,
+      cols: bp.cols,
+      wrap: bp.wrap,
     }
   }
 
@@ -72,10 +81,12 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     >
       {showTopArrow && (
         <div
-          className={cn(
-            'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
-            showGradient ? 'bg-linear-to-b from-black/80 to-transparent' : undefined
-          ) as any}
+          className={
+            cn(
+              'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
+              showGradient ? 'bg-linear-to-b from-black/80 to-transparent' : undefined
+            ) as any
+          }
         >
           <ChevronUp
             className="animate-bounce text-(--color-gold) drop-shadow-md"
@@ -93,7 +104,11 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
             (viewportRef as React.MutableRefObject<HTMLDivElement | null>).current = node
         }}
         className="scrollbar-custom flex min-h-0 w-full flex-1 overflow-y-auto"
-        p={layoutProps.p ?? 'md'} // Apply padding here instead
+        p={p ?? 'md'} // Default to 'md' but allow overrides
+        pt={pt as StackProps['pt']}
+        pb={pb as StackProps['pb']}
+        px={px as StackProps['px']}
+        py={py as StackProps['py']}
         gap={gap as StackProps['gap']}
         direction={direction as StackProps['direction']}
         align={align as StackProps['align']}
@@ -101,20 +116,22 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
         display={display as StackProps['display']}
         cols={cols as StackProps['cols']}
         wrap={wrap as StackProps['wrap']}
-        sm={extractFlex(sm) as any}
-        md={extractFlex(md) as any}
-        lg={extractFlex(lg) as any}
-        xl={extractFlex(xl) as any}
+        sm={extractPaddingAndFlex(sm)}
+        md={extractPaddingAndFlex(md)}
+        lg={extractPaddingAndFlex(lg)}
+        xl={extractPaddingAndFlex(xl)}
       >
         {children as React.ReactNode}
       </Stack>
 
       {showBottomArrow && (
         <div
-          className={cn(
-            'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
-            showGradient ? 'bg-linear-to-t from-black/80 to-transparent' : undefined
-          ) as any}
+          className={
+            cn(
+              'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
+              showGradient ? 'bg-linear-to-t from-black/80 to-transparent' : undefined
+            ) as any
+          }
         >
           <ChevronDown
             className="animate-bounce text-(--color-gold) drop-shadow-md"

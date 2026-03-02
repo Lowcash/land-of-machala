@@ -6,12 +6,12 @@ import { cn } from '@/lib/utils'
 
 export const boxVariants = cva('', {
   variants: {
-    p: { none: '', xxs: 'p-0.5', xs: 'p-1', sm: 'p-2', md: 'p-4', lg: 'p-6', xl: 'p-8' },
-    pt: { none: '', xxs: 'pt-0.5', xs: 'pt-1', sm: 'pt-2', md: 'pt-4', lg: 'pt-6', xl: 'pt-8' },
-    pb: { none: '', xxs: 'pb-0.5', xs: 'pb-1', sm: 'pb-2', md: 'pb-4', lg: 'pb-6', xl: 'pb-8' },
-    px: { none: '', xxs: 'px-0.5', xs: 'px-1', sm: 'px-2', md: 'px-4', lg: 'px-6', xl: 'px-8' },
-    py: { none: '', xxs: 'py-0.5', xs: 'py-1', sm: 'py-2', md: 'py-4', lg: 'py-6', xl: 'py-8' },
-    m: { none: '', xxs: 'm-0.5', xs: 'm-1', sm: 'm-2', md: 'm-4', lg: 'm-6', xl: 'm-8' },
+    p: { none: 'p-0', xxs: 'p-0.5', xs: 'p-1', sm: 'p-2', md: 'p-4', lg: 'p-6', xl: 'p-8' },
+    pt: { none: 'pt-0', xxs: 'pt-0.5', xs: 'pt-1', sm: 'pt-2', md: 'pt-4', lg: 'pt-6', xl: 'pt-8' },
+    pb: { none: 'pb-0', xxs: 'pb-0.5', xs: 'pb-1', sm: 'pb-2', md: 'pb-4', lg: 'pb-6', xl: 'pb-8' },
+    px: { none: 'px-0', xxs: 'px-0.5', xs: 'px-1', sm: 'px-2', md: 'px-4', lg: 'px-6', xl: 'px-8' },
+    py: { none: 'py-0', xxs: 'py-0.5', xs: 'py-1', sm: 'py-2', md: 'py-4', lg: 'py-6', xl: 'py-8' },
+    m: { none: 'm-0', xxs: 'm-0.5', xs: 'm-1', sm: 'm-2', md: 'm-4', lg: 'm-6', xl: 'm-8' },
     mx: { none: '', auto: 'mx-auto' },
     fullWidth: { true: 'w-full', false: '' },
     fullHeight: { true: 'h-full', false: '' },
@@ -153,6 +153,9 @@ type BreakpointValue = {
 const BOX_RESPONSIVE_LOOKUP = {
   sm: {
     p: { none: 'sm:p-0', xs: 'sm:p-1', sm: 'sm:p-2', md: 'sm:p-4', lg: 'sm:p-6', xl: 'sm:p-8' },
+    pt: { none: 'sm:pt-0', xs: 'sm:pt-1', sm: 'sm:pt-2', md: 'sm:pt-4', lg: 'sm:pt-6', xl: 'sm:pt-8' },
+    pb: { none: 'sm:pb-0', xs: 'sm:pb-1', sm: 'sm:pb-2', md: 'sm:pb-4', lg: 'sm:pb-6', xl: 'sm:pb-8' },
+/* ... types/defaults preserved elsewhere ... */
     flex: { '1': 'sm:flex-1', auto: 'sm:flex-auto', none: 'sm:flex-none' },
     maxWidth: {
       sm: 'sm:max-w-sm',
@@ -170,6 +173,8 @@ const BOX_RESPONSIVE_LOOKUP = {
   },
   md: {
     p: { none: 'md:p-0', xs: 'md:p-1', sm: 'md:p-2', md: 'md:p-4', lg: 'md:p-6', xl: 'md:p-8' },
+    pt: { none: 'md:pt-0', xs: 'md:pt-1', sm: 'md:pt-2', md: 'md:pt-4', lg: 'md:pt-6', xl: 'md:pt-8' },
+    pb: { none: 'md:pb-0', xs: 'md:pb-1', sm: 'md:pb-2', md: 'md:pb-4', lg: 'md:pb-6', xl: 'md:pb-8' },
     flex: { '1': 'md:flex-1', auto: 'md:flex-auto', none: 'md:flex-none' },
     maxWidth: {
       sm: 'md:max-w-sm',
@@ -184,6 +189,8 @@ const BOX_RESPONSIVE_LOOKUP = {
   },
   lg: {
     p: { none: 'lg:p-0', xs: 'lg:p-1', sm: 'lg:p-2', md: 'lg:p-4', lg: 'lg:p-6', xl: 'lg:p-8' },
+    pt: { none: 'lg:pt-0', xs: 'lg:pt-1', sm: 'lg:pt-2', md: 'lg:pt-4', lg: 'lg:pt-6', xl: 'lg:pt-8' },
+    pb: { none: 'lg:pb-0', xs: 'lg:pb-1', sm: 'lg:pb-2', md: 'lg:pb-4', lg: 'lg:pb-6', xl: 'lg:pb-8' },
     flex: { '1': 'lg:flex-1', auto: 'lg:flex-auto', none: 'lg:flex-none' },
     maxWidth: {
       sm: 'lg:max-w-sm',
@@ -198,6 +205,8 @@ const BOX_RESPONSIVE_LOOKUP = {
   },
   xl: {
     p: { none: 'xl:p-0', xs: 'xl:p-1', sm: 'xl:p-2', md: 'xl:p-4', lg: 'xl:p-6', xl: 'xl:p-8' },
+    pt: { none: 'xl:pt-0', xs: 'xl:pt-1', sm: 'xl:pt-2', md: 'xl:pt-4', lg: 'xl:pt-6', xl: 'xl:pt-8' },
+    pb: { none: 'xl:pb-0', xs: 'xl:pb-1', sm: 'xl:pb-2', md: 'xl:pb-4', lg: 'xl:pb-6', xl: 'xl:pb-8' },
     maxWidth: {
       sm: 'xl:max-w-sm',
       md: 'xl:max-w-md',
