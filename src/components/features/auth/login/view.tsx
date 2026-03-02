@@ -58,7 +58,7 @@ export function LoginViewUI({
   backgroundSrc,
 }: LoginViewUIProps) {
   return (
-    <EntranceStack fullHeight fullWidth>
+    <EntranceStack fullHeight fullWidth py="xl">
       <Background src={backgroundSrc} />
 
       <AuthGrid>

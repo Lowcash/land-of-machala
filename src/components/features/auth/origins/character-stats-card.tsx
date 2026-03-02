@@ -39,6 +39,7 @@ export function CharacterStatsCard({
       flex={flex}
       minHeight="zero"
       p="none"
+      md={{ p: 'none' }}
       gap="none"
     >
       <VStack align="center" gap="sm" fullWidth p="md" pb="sm">

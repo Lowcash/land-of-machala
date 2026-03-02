@@ -49,7 +49,7 @@ export function StepCreation({
   const selectedClass = classes.find((c) => c.id === selectedClassId)
 
   return (
-    <EntranceStack gap="lg" align="center" fullWidth duration={0.6}>
+    <EntranceStack fullHeight fullWidth gap="lg" align="center" py="xl">
       <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
 
       {/* Main content grid */}

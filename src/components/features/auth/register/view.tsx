@@ -56,7 +56,7 @@ export function RegisterViewUI({
   backgroundSrc,
 }: RegisterViewUIProps) {
   return (
-    <EntranceStack fullHeight fullWidth>
+    <EntranceStack fullHeight fullWidth py="xl">
       <Background src={backgroundSrc} />
       <AuthGrid>
         <FeatureSection gap="xl">
