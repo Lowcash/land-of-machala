@@ -1,5 +1,8 @@
 import { Brain, Shield, Sword, Wind } from 'lucide-react'
 
+import { cn } from '@/lib/utils'
+
+import { Box } from '@/components/ui/core/box'
 import { Card } from '@/components/ui/core/card'
 import { HStack, Stack, VStack } from '@/components/ui/core/stack'
 import { Tooltip } from '@/components/ui/core/tooltip'
@@ -7,17 +10,18 @@ import { type IconColor } from '@/components/ui/icons'
 import { Portrait, StatGrid } from '@/components/ui/prefabs/game'
 import { CurrencyIndicator, LocationIndicator } from '@/components/ui/prefabs/game/indicator'
 import { VitalsBar } from '@/components/ui/prefabs/game/vitals-bar'
-import { FeatureSection } from '@/components/ui/prefabs/structure'
+import { OrnamentalCorners } from '@/components/ui/prefabs/structure'
 import { Value } from '@/components/ui/prefabs/typography/shared'
+import { Divider } from '@/components/ui/shared/divider'
 
 interface StatDefinition {
   icon: import('lucide-react').LucideIcon
   label: string
-  value: number
+  value: string | number
   color: IconColor
 }
 
-interface CharacterBoxProps {
+export interface CharacterBoxProps {
   name: string
   level: number
   hp: number
@@ -40,6 +44,10 @@ interface CharacterBoxProps {
   compact?: boolean
 }
 
+/**
+ * CharacterBox component displaying essential character vitals, portrait and stats.
+ * Adheres to "Rule of Zero" by using design tokens and layout primitives.
+ */
 export function CharacterBox({
   name,
   level,
@@ -55,7 +63,7 @@ export function CharacterBox({
   location,
   isEnemy = false,
   stats,
-  compact = false,
+  compact,
 }: CharacterBoxProps) {
   const statItems: StatDefinition[] = stats
     ? [
@@ -66,102 +74,120 @@ export function CharacterBox({
       ]
     : []
 
+  // If compact is explicitly passed, we follow it.
+  // If not, we use responsive CSS-based logic (autoCompact).
+  const isAuto = compact === undefined
+  const forceCompact = compact === true
+
   return (
     <Card
       variant={isEnemy ? 'secondary' : 'ornamental'}
       p="none"
       minWidth="zero"
-      minHeight={compact ? 'none' : 'character'}
-      maxWidth="full"
-      sm={{ maxWidth: 'md' }}
       fullWidth
+      position="relative"
+      overflow="hidden"
     >
-      <VStack gap="none" fullWidth fullHeight justify="between">
-        <FeatureSection>
-          {/* Main Body */}
-          <HStack p={compact ? 'xxs' : 'md'} gap={compact ? 'sm' : 'md'} align="start" fullWidth>
+      <OrnamentalCorners isEnemy={isEnemy} />
+
+      <VStack gap="none" fullWidth fullHeight justify="between" position="relative" zIndex="10">
+        {/* Main Body Area */}
+        <VStack gap="none" fullWidth>
+          <HStack
+            p={forceCompact ? 'xxs' : 'xs'}
+            gap={forceCompact ? 'xxs' : 'xs'}
+            md={forceCompact ? undefined : { p: 'xs', gap: 'xs' }}
+            align="start"
+            fullWidth
+            minWidth="zero"
+          >
             {/* Avatar Section */}
-            <Portrait
-              name={name}
-              image={image}
-              level={level}
-              size={compact ? 'avatar-xs' : 'avatar'}
-              isEnemy={isEnemy}
-            />
+            <Box display={isAuto ? 'block' : forceCompact ? 'block' : 'none'} md={isAuto ? { display: 'none' } : undefined}>
+              <Portrait
+                name={name}
+                image={image}
+                level={level}
+                size="avatar-sm"
+                isEnemy={isEnemy}
+              />
+            </Box>
+            <Box display={isAuto ? 'none' : forceCompact ? 'none' : 'block'} md={isAuto ? { display: 'block' } : undefined}>
+              <Portrait
+                name={name}
+                image={image}
+                level={level}
+                size="avatar"
+                isEnemy={isEnemy}
+              />
+            </Box>
 
             {/* Bio & Vitals Section */}
-            <VStack flex="1" gap={compact ? 'none' : 'sm'} minWidth="zero">
-              <HStack
-                align="baseline"
-                justify="between"
-                fullWidth
-                pt={compact ? 'xs' : 'none'}
-                minWidth="zero"
-              >
-                <VStack flex="1" minWidth="zero">
+            <VStack flex="1" gap="none" md={{ gap: 'xs' }} minWidth="zero">
+              <HStack align="center" justify="between" fullWidth minWidth="zero">
+                <Box fullWidth minWidth="zero" flex="1">
                   <Tooltip content={name} side="top" align="start">
-                    <Value truncate bold font="medieval" variant={compact ? 'small' : 'large'}>
+                    <Value truncate bold font="medieval" variant={forceCompact ? 'primary' : 'large'}>
                       {name}
                     </Value>
                   </Tooltip>
-                </VStack>
+                </Box>
               </HStack>
 
               <VStack gap="xs" fullWidth>
-                <VitalsBar label="Health" value={hp} max={hpMax} variant="hp" compact={compact} />
+                <VitalsBar
+                  label="Health"
+                  value={hp}
+                  max={hpMax}
+                  variant="hp"
+                  compact={forceCompact}
+                  autoCompact={isAuto}
+                />
                 <VitalsBar
                   label={resourceType === 'energy' ? 'Energy' : 'Mana'}
                   value={resource}
                   max={resourceMax}
                   variant={resourceType}
-                  compact={compact}
+                  compact={forceCompact}
+                  autoCompact={isAuto}
                 />
-                {!isEnemy && xp !== undefined && xpMax !== undefined ? (
+                {!isEnemy && xp !== undefined && xpMax !== undefined && !forceCompact ? (
                   <VitalsBar
                     label="Progress"
                     value={xp}
                     max={xpMax}
                     variant="xp"
-                    compact={compact}
+                    compact={forceCompact}
+                    autoCompact={isAuto}
                   />
-                ) : (
-                  /* Spacer to maintain height symmetry when XP is missing */
-                  <VStack gap={compact ? 'none' : 'xs'} fullWidth>
-                    {!compact && <VStack height="vitals-label" fullWidth />}
-                    <VStack height={compact ? 'vitals-progress' : 'vitals-progress-md'} fullWidth />
-                  </VStack>
-                )}
+              ) : (
+                // Vertical Symmetry Spacer (Perfectly matches VitalsBar height)
+                !forceCompact && (
+                  <VitalsBar
+                    label="Progress"
+                    value={0}
+                    max={100}
+                    variant="xp"
+                    invisible
+                    compact={forceCompact}
+                    autoCompact={isAuto}
+                  />
+                )
+              )}
               </VStack>
             </VStack>
           </HStack>
 
-          {/* Stats Strip */}
-          <StatGrid items={statItems} compact={compact} />
-        </FeatureSection>
+          {/* Stats Strip - Prominent bottom strip with separator */}
+          <Divider variant="solid" />
+          <StatGrid
+            items={statItems}
+            compact={forceCompact}
+            autoCompact={isAuto}
+            unstyled
+          />
+        </VStack>
 
-        {/* Footer info (Location/Gold) or Spacer for symmetry */}
-        {!compact && (
-          <FeatureSection>
-            {!isEnemy && (location || gold !== undefined) ? (
-              <>
-                <Stack height="px" fullWidth bgColor="secondary" opacity="10" />
-                <HStack
-                  p="xs"
-                  px="md"
-                  justify="between"
-                  fullWidth
-                  height="vitals-footer"
-                  align="center"
-                >
-                  {location ? <LocationIndicator label={location} size="xs" /> : <Stack />}
-                  {gold !== undefined && <CurrencyIndicator amount={gold} />}
-                </HStack>
-              </>
-            ) : (
-              <Stack height="vitals-footer" fullWidth />
-            )}
-          </FeatureSection>
-        )}
+        {/* Footer Area hidden for now */}
       </VStack>
     </Card>
   )
