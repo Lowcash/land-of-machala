@@ -20,7 +20,6 @@ interface CharacterStatsCardProps {
   uiLabels: CreationUiLabels
   raceBonuses?: string
   classBonuses?: string
-  flex?: '1' | 'auto' | 'none'
 }
 
 export function CharacterStatsCard({
@@ -30,10 +29,9 @@ export function CharacterStatsCard({
   uiLabels,
   raceBonuses,
   classBonuses,
-  flex,
 }: CharacterStatsCardProps) {
   return (
-    <NarrativeCard variant="subtle" direction="col" flex={flex} minHeight="zero">
+    <NarrativeCard variant="subtle" direction="col" flex="1" minHeight="zero">
       <NarrativeCard.Header align="center" justify="center">
         <VStack align="center" gap="xs">
           <NarrativeCard.Title align="center" variant="large">

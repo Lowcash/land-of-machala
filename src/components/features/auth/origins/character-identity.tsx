@@ -65,7 +65,6 @@ export function CharacterIdentity({
         uiLabels={uiLabels}
         raceBonuses={raceBonuses}
         classBonuses={classBonuses}
-        flex="1"
       />
 
       <ActionGroup display="none" md={{ display: 'flex' }}>
