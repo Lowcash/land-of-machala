@@ -62,8 +62,8 @@ export function VitalsBar({
           value={value}
           max={max}
           variant={variant as ProgressProps['variant']}
-          size={compact ? 'sm' : 'sm'}
-          md={autoCompact ? { size: 'lg' } : { size: 'lg' }}
+          size={compact ? 'sm' : 'md'}
+          md={autoCompact || !compact ? { size: 'lg' } : undefined}
         >
           {showText && (autoCompact || !compact) && (
             <Box

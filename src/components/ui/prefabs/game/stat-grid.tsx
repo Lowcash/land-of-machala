@@ -39,7 +39,7 @@ export function StatGrid({
       fullWidth
       justify="center"
       p={compact ? 'xxs' : 'xs'}
-      md={autoCompact ? { p: 'xs', gap: 'sm' } : { gap: 'sm' }}
+      md={autoCompact || !compact ? { p: 'xs', gap: 'sm' } : undefined}
     >
       {items.map((stat) => (
         <Tooltip key={stat.label} content={stat.label} side="bottom">
