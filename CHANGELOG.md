@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
  
+## [2026-03-06] - CharacterBox Layout & Symmetry
+
+### Added
+- **Core UI**: Added `invisible` prop to `Box` and `Stack` components to allow elements to take up space without being visible or interactive, adhering to the "Rule of Zero".
+- **Icons**: Added `shrink` prop to `Icon` component for better layout control in tight spaces.
+- **Prefabs**: Created `OrnamentalCorners` prefab to encapsulate medieval decorative logic.
+
+### Changed
+- **CharacterBox**: Tightened desktop layout by reducing padding and gaps (`sm` -> `xs`) for a more premium feel.
+- **CharacterBox**: Improved mobile responsiveness on 320px viewports by optimizing `StatGrid` shrinking and name truncation.
+- **CharacterBox**: Achieved pixel-perfect vertical symmetry in combat by standardizing all `Card` borders to `border-2` and ensuring matching internal spacing.
+- **StatGrid**: Optimized 4-column layout for extreme compact views by reducing gaps and enabling icon/value shrinking.
+- **VitalsBar**: Refactored to use the new `invisible` primitive prop instead of magic CSS classes for symmetry spacers.
+
+### Fixed
+- **CharacterBox**: Resolved 2.5px height discrepancy between Player and Enemy boxes in combat.
+- **CharacterBox**: Fixed `LongName` story overflow on mobile viewports.
+
 ## [2026-03-06] - UI Fixes & Form UX Refinement
 
 ### Added
