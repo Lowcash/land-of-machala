@@ -44,10 +44,8 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
       password: '',
       confirmPassword: '',
     },
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
-
-  const { isValid } = form.formState
 
   return (
     <Form.Root<RegisterFormValues> form={form} onSubmit={onRegister || (() => {})} gap="md">
@@ -83,7 +81,7 @@ export function RegisterForm({ onRegister, isLoading, uiLabels }: RegisterFormPr
         autoComplete="new-password"
       />
 
-      <Button type="submit" fullWidth loading={isLoading} disabled={!isValid || isLoading}>
+      <Button type="submit" fullWidth loading={isLoading} disabled={isLoading}>
         {uiLabels.submit}
       </Button>
     </Form.Root>

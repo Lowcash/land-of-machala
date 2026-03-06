@@ -39,10 +39,8 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
       password: '',
       rememberMe: false,
     },
-    mode: 'onChange',
+    mode: 'onSubmit',
   })
-
-  const { isValid } = form.formState
 
   return (
     <Form.Root<LoginFormValues>
@@ -79,7 +77,7 @@ export function LoginForm({ onLogin, isLoading, uiLabels }: LoginFormProps) {
         disabled={isLoading}
       />
 
-      <Button type="submit" fullWidth loading={isLoading} disabled={!isValid || isLoading}>
+      <Button type="submit" fullWidth loading={isLoading} disabled={isLoading}>
         {uiLabels.submit}
       </Button>
     </Form.Root>
