@@ -1,3 +1,4 @@
+import { Box } from '@/components/ui/core/box'
 import { Progress, type ProgressProps } from '@/components/ui/core/progress'
 import { HStack, VStack } from '@/components/ui/core/stack'
 import { Tooltip } from '@/components/ui/core/tooltip'
@@ -10,6 +11,8 @@ interface VitalsBarProps {
   variant: 'hp' | 'mana' | 'energy' | 'xp' | 'gold'
   showText?: boolean
   compact?: boolean
+  autoCompact?: boolean
+  invisible?: boolean
 }
 
 export function VitalsBar({
@@ -19,13 +22,22 @@ export function VitalsBar({
   variant,
   showText = true,
   compact = false,
+  autoCompact = false,
+  invisible = false,
 }: VitalsBarProps) {
   const textColor = variant === 'hp' ? 'hp' : variant === 'mana' ? 'mana' : 'ivory'
 
   return (
-    <VStack gap="xs" fullWidth>
-      {!compact && (
-        <Label variant="tiny" color="secondary" align="left" px="xs">
+    <VStack gap="xxs" fullWidth invisible={invisible} pointerEvents={invisible ? 'none' : 'auto'}>
+      {(autoCompact || !compact) && (
+        <Label
+          variant="tiny"
+          color="secondary"
+          align="left"
+          px="xxs"
+          display={autoCompact ? 'none' : 'block'}
+          md={autoCompact ? { display: 'block' } : undefined}
+        >
           {label}
         </Label>
       )}
@@ -50,20 +62,27 @@ export function VitalsBar({
           value={value}
           max={max}
           variant={variant as ProgressProps['variant']}
-          size={compact ? 'sm' : 'lg'}
+          size={compact ? 'sm' : 'sm'}
+          md={autoCompact ? { size: 'lg' } : { size: 'lg' }}
         >
-          {showText && !compact && (
-            <HStack align="baseline" gap="xxs">
-              <Value variant="tiny" color="primary" tabularNums>
-                {Math.round(value)}
-              </Value>
-              <Value variant="tiny" color="primary">
-                /
-              </Value>
-              <Value variant="tiny" color="primary" tabularNums>
-                {max}
-              </Value>
-            </HStack>
+          {showText && (autoCompact || !compact) && (
+            <Box
+              display={autoCompact ? 'none' : 'block'}
+              md={autoCompact ? { display: 'block' } : undefined}
+              fullWidth
+            >
+              <HStack align="center" justify="center" gap="xxs" fullWidth>
+                <Value variant="tiny" color="ivory" bold tabularNums>
+                  {Math.round(value)}
+                </Value>
+                <Value variant="tiny" color="secondary" italic>
+                  /
+                </Value>
+                <Value variant="tiny" color="secondary" tabularNums>
+                  {max}
+                </Value>
+              </HStack>
+            </Box>
           )}
         </Progress>
       </Tooltip>

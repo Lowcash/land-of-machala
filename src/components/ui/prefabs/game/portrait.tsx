@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils'
+import { Box } from '@/components/ui/core/box'
 import { Badge } from '@/components/ui/core/badge'
 import { Stack } from '@/components/ui/core/stack'
 
@@ -16,16 +18,22 @@ export interface PortraitProps {
  * Combines the Avatar with a Level Badge in a standardized absolute position.
  */
 export function Portrait({ name, image, level, size = 'avatar', isEnemy = false }: PortraitProps) {
-  const isCompact = size === 'avatar-xs'
+  const isCompact = size === 'avatar-sm' || size === 'avatar-xs'
 
   return (
     <Stack position="relative">
       <Avatar image={image} name={name} size={size} />
-      <Stack position="absolute" inset={isCompact ? 'xs' : 'base'} rounded="full">
+      <Box
+        position="absolute"
+        rounded="full"
+        inset={isCompact ? 'xs' : 'base'}
+        sm={size === 'avatar' ? { inset: 'base' } : { inset: 'xs' }}
+        md={size === 'avatar' ? { inset: 'base' } : { inset: 'xs' }}
+      >
         <Badge size={isCompact ? 'sm' : 'md'} variant={isEnemy ? 'danger' : 'primary'}>
           {level}
         </Badge>
-      </Stack>
+      </Box>
     </Stack>
   )
 }
