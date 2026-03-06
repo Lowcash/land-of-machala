@@ -7,7 +7,7 @@ import { HTMLMotionProps, motion } from 'framer-motion'
 import { cn } from '@/lib/utils'
 
 import { getBoxClasses } from '@/components/ui/core/box'
-import { type StackProps, getStackClasses } from '@/components/ui/core/stack'
+import { type StackProps, getStackClasses, splitLayoutProps } from '@/components/ui/core/stack'
 
 interface EntranceStackProps extends StackProps {
   /**
@@ -48,6 +48,8 @@ const variants = {
 
 export const EntranceStack = forwardRef<HTMLElement, EntranceStackProps>(
   ({ children, delay = 0, duration = 0.6, yOffset = 0, ...props }, ref) => {
+    const { layoutProps, restProps } = splitLayoutProps(props)
+
     // We use motion.div as the base but apply Stack classes to it
     // to avoid extra DOM nesting while keeping the Stack API
     return (
@@ -58,8 +60,8 @@ export const EntranceStack = forwardRef<HTMLElement, EntranceStackProps>(
         animate="visible"
         exit="exit"
         variants={variants}
-        className={cn(getBoxClasses(props), getStackClasses(props as StackProps))}
-        {...(props as HTMLMotionProps<'div'>)}
+        className={cn(getBoxClasses(layoutProps as any), getStackClasses(layoutProps as StackProps))}
+        {...(restProps as HTMLMotionProps<'div'>)}
       >
         {children}
       </motion.div>
