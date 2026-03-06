@@ -21,7 +21,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - **Box**: Resolved bug where `none` variants for padding and margin returned empty strings instead of `*-0` classes. Added responsive `none` variants for `pt` and `pb`.
 - **ScrollArea**: Fixed padding prop pass-through to ensure `pt`, `pb`, `px`, and `py` (and their responsive versions) are correctly applied to the inner scrolling container.
-- **CharacterStatsCard**: Resolved double-padding summation in "Initial Stats" card by refactoring to standard `NarrativeCard` prefabs and aligning padding logic with the "Hero Name" card.
+- **CharactxerStatsCard**: Resolved double-padding summation in "Initial Stats" card by refactoring to standard `NarrativeCard` prefabs and aligning padding logic with the "Hero Name" card.
 
 ## [2026-03-01] - Origins & Auth UI Refinement
 
