@@ -150,7 +150,7 @@ export function CharacterBox({
                   compact={forceCompact}
                   autoCompact={isAuto}
                 />
-                {!isEnemy && xp !== undefined && xpMax !== undefined && !forceCompact ? (
+                {!isEnemy && xp !== undefined && xpMax !== undefined ? (
                   <VitalsBar
                     label="Progress"
                     value={xp}
@@ -161,7 +161,7 @@ export function CharacterBox({
                   />
               ) : (
                 // Vertical Symmetry Spacer (Perfectly matches VitalsBar height)
-                !forceCompact && (
+                (
                   <VitalsBar
                     label="Progress"
                     value={0}
