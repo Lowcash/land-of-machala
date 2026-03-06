@@ -1,6 +1,20 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+ 
+## [2026-03-06] - UI Fixes & Form UX Refinement
+
+### Added
+- **Typography**: Updated `TypographyPrefabProps` to support `maxWidth`, `mx`, and `className` for flexible layout control in prefabs like `NarrativeText`.
+
+### Changed
+- **Form UX**: Switched `LoginForm` and `RegisterForm` validation mode to `onSubmit` and enabled the submit button by default. This allows users to see validation errors only when they intentionally try to submit, preventing premature "invalid email" warnings.
+- **Tutorial UI**: Increased `maxWidth` of the tutorial narrative text and choice list for better readability on larger viewports.
+- **Tutorial UI**: Aligned choice letters (A, B, C...) vertically in `ChoiceItem` using a fixed-width container.
+- **Layout**: Standardized scroll padding in `FadeInPanel` (Origins selection) to match the "Your Stats" card, ensuring the content scrolls within the card's padding rather than to the very edge.
+
+### Fixed
+- **React**: Resolved React DOM property warnings for `fullHeight` and `fullWidth` by filtering layout props in `EntranceStack` and `MotionStack` using `splitLayoutProps`.
 
 ## [2026-03-03] - Layout & Component Refinement
 

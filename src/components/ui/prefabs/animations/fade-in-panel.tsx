@@ -5,7 +5,7 @@ import { forwardRef, useEffect, useRef, useState } from 'react'
 import { type VariantProps } from 'class-variance-authority'
 import { animate } from 'framer-motion'
 
-import { cardVariants } from '@/components/ui/core/card'
+import { Card, cardVariants } from '@/components/ui/core/card'
 import { ScrollArea } from '@/components/ui/core/scroll-area'
 import { type StackProps } from '@/components/ui/core/stack'
 
@@ -62,19 +62,27 @@ export const FadeInPanel = forwardRef<HTMLElement, FadeInPanelProps>(
     }, [animationKey])
 
     return (
-      <ScrollArea
-        ref={ref}
-        viewportRef={viewportRef}
-        className={cardVariants({ variant })}
+      <Card
+        variant={variant}
         flex={flex as StackProps['flex']}
         minHeight="zero"
         fullHeight
-        overflow="hidden"
         p={p ?? 'md'}
-        gap={gap}
+        gap="none"
       >
-        {displayed}
-      </ScrollArea>
+        <ScrollArea
+          ref={ref}
+          viewportRef={viewportRef}
+          flex="1"
+          minHeight="zero"
+          fullHeight
+          overflow="hidden"
+          p="none"
+          gap={gap}
+        >
+          {displayed}
+        </ScrollArea>
+      </Card>
     )
   }
 )

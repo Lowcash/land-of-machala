@@ -10,10 +10,6 @@ import { Text } from '@/components/ui/core/typography'
  * Use these instead of raw Text components with repetitive props.
  */
 
-export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
-  return <Text variant="lead" color="primary" align={align || 'center'} {...props} />
-}
-
 type TypographyColor =
   | 'primary'
   | 'secondary'
@@ -32,10 +28,7 @@ type TypographyColor =
   | 'stamina'
   | 'inherit'
 
-interface TypographyPrefabProps extends Omit<
-  React.HTMLAttributes<HTMLParagraphElement>,
-  'color' | 'className'
-> {
+interface TypographyPrefabProps extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color'> {
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
@@ -44,6 +37,7 @@ interface TypographyPrefabProps extends Omit<
   shrink?: boolean
   grow?: boolean
   px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  mx?: 'none' | 'auto'
   maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
   bold?: boolean
   tabularNums?: boolean
@@ -58,6 +52,10 @@ interface TypographyPrefabProps extends Omit<
     | 'detail'
     | 'bonus'
     | 'tiny'
+}
+
+export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
+  return <Text variant="lead" color="primary" align={align || 'center'} {...props} />
 }
 
 export function Value({ align, variant, ...props }: TypographyPrefabProps) {

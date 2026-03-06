@@ -16,10 +16,12 @@ const ChoiceItem = forwardRef<HTMLButtonElement, ChoiceItemProps>(
 
     return (
       <Button ref={ref} variant="choice" {...props}>
-        <HStack align="center" justify="center" gap="md" fullWidth>
-          <Badge size="md" variant="primary">
-            {letter}
-          </Badge>
+        <HStack align="center" justify="start" gap="md" fullWidth>
+          <VStack width="avatar-xs" align="center" justify="center" flex="none">
+            <Badge size="md" variant="primary">
+              {letter}
+            </Badge>
+          </VStack>
           <Text font="fantasy" className="leading-tight">
             {title}
           </Text>

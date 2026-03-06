@@ -23,9 +23,11 @@ export function TutorialStep({ step, onChoice, onSkip, uiLabels }: TutorialStepP
     <EntranceStack key={step.id} fullWidth align="center" justify="center" gap="md">
       <FeatureIcon icon={BookOpen} color="gold" />
 
-      <NarrativeText>{step.text}</NarrativeText>
+      <NarrativeText maxWidth="2xl" mx="auto">
+        {step.text}
+      </NarrativeText>
 
-      <VStack gap="md" fullWidth maxWidth="sm" mx="auto">
+      <VStack gap="md" fullWidth maxWidth="md" mx="auto">
         <Choice>
           {step.choices.map((choice, idx) => (
             <ChoiceItem
