@@ -1,6 +1,6 @@
 import { type VariantProps, cva } from 'class-variance-authority'
-
 import { cn } from '@/lib/utils'
+import { type Breakpoint } from './box'
 
 const headingVariants = cva('font-fantasy font-bold tracking-tight', {
   variants: {
@@ -140,6 +140,10 @@ const textVariants = cva('leading-tight transition-colors', {
       true: 'grow',
       false: 'grow-0',
     },
+    italic: {
+      true: 'italic',
+      false: '',
+    },
     bold: {
       true: 'font-bold',
       false: '',
@@ -147,6 +151,12 @@ const textVariants = cva('leading-tight transition-colors', {
     tabularNums: {
       true: 'tabular-nums',
       false: '',
+    },
+    display: {
+      none: 'hidden',
+      block: 'block',
+      inline: 'inline-block',
+      flex: 'flex',
     },
   },
   defaultVariants: {
@@ -158,8 +168,46 @@ const textVariants = cva('leading-tight transition-colors', {
     grow: false,
     bold: false,
     tabularNums: false,
+    display: 'block',
   },
 })
+
+type TextVariantKeys = keyof VariantProps<typeof textVariants>
+type TextVariantValue = {
+  [K in TextVariantKeys]?: string | boolean
+}
+
+const TEXT_RESPONSIVE_LOOKUP = {
+  sm: {
+    display: { none: 'sm:hidden', block: 'sm:block', inline: 'sm:inline-block', flex: 'sm:flex' },
+  },
+  md: {
+    display: { none: 'md:hidden', block: 'md:block', inline: 'md:inline-block', flex: 'md:flex' },
+  },
+  lg: {
+    display: { none: 'lg:hidden', block: 'lg:block', inline: 'lg:inline-block', flex: 'lg:flex' },
+  },
+  xl: {
+    display: { none: 'xl:hidden', block: 'xl:block', inline: 'xl:inline-block', flex: 'xl:flex' },
+  },
+}
+
+function getTextResponsiveClasses(breakpoint: Breakpoint, val?: TextVariantValue) {
+  if (!val) return ''
+  const classes: string[] = []
+  const bp = TEXT_RESPONSIVE_LOOKUP[breakpoint] as any
+  if (!bp) return ''
+
+  Object.keys(val).forEach((key) => {
+    const v = (val as any)[key]
+    const group = bp[key]
+    if (group && typeof v === 'string' && group[v]) {
+      classes.push(group[v])
+    }
+  })
+
+  return classes.join(' ')
+}
 
 export interface TextProps
   extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color' | 'className'> {
@@ -181,11 +229,17 @@ export interface TextProps
   shrink?: boolean
   grow?: boolean
   bold?: boolean
+  italic?: boolean
   tabularNums?: boolean
   as?: 'p' | 'span' | 'div'
   className?: string
+  display?: 'none' | 'block' | 'inline-block' | 'flex'
   px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
+  sm?: TextVariantValue
+  md?: TextVariantValue
+  lg?: TextVariantValue
+  xl?: TextVariantValue
 }
 
 export function Text({
@@ -197,10 +251,16 @@ export function Text({
   shrink,
   grow,
   bold,
+  italic,
   tabularNums,
+  display,
   className,
   px,
   maxWidth,
+  sm,
+  md,
+  lg,
+  xl,
   as: Component = 'p',
   ...props
 }: TextProps) {
@@ -239,10 +299,16 @@ export function Text({
           shrink,
           grow,
           bold,
+          italic,
           tabularNums,
+          display: display as any,
         }),
         pxClass,
         maxWidthClass,
+        getTextResponsiveClasses('sm', sm),
+        getTextResponsiveClasses('md', md),
+        getTextResponsiveClasses('lg', lg),
+        getTextResponsiveClasses('xl', xl),
         className
       )}
       {...props}

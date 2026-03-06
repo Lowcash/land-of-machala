@@ -6,8 +6,8 @@ interface ListProps
   extends Omit<HTMLAttributes<HTMLUListElement>, 'className' | keyof StackProps>, StackProps {}
 
 const List = forwardRef<HTMLUListElement, ListProps>(
-  ({ display = 'flex', direction = 'col', gap = 'sm', ...props }, ref) => (
-    <ul ref={ref} className={stackVariants({ display, direction, gap })} {...props} />
+  ({ mode = 'flex', direction = 'col', gap = 'sm', ...props }, ref) => (
+    <ul ref={ref} className={stackVariants({ mode, direction, gap })} {...props} />
   )
 )
 List.displayName = 'List'

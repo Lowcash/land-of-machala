@@ -2,8 +2,7 @@ import { Link } from '@/i18n/routing'
 import { type VariantProps, cva } from 'class-variance-authority'
 
 import { cn } from '@/lib/utils'
-
-import { Text } from '@/components/ui/core/typography'
+import { Text, type TextProps } from '@/components/ui/core/typography'
 
 /**
  * Semantic typography prefabs to ensure consistency across the application.
@@ -32,6 +31,7 @@ interface TypographyPrefabProps extends Omit<React.HTMLAttributes<HTMLParagraphE
   children: React.ReactNode
   as?: 'p' | 'span' | 'div'
   color?: TypographyColor
+  display?: 'none' | 'block' | 'inline-block' | 'flex'
   align?: 'left' | 'center' | 'right' | 'justify'
   truncate?: boolean
   shrink?: boolean
@@ -40,6 +40,7 @@ interface TypographyPrefabProps extends Omit<React.HTMLAttributes<HTMLParagraphE
   mx?: 'none' | 'auto'
   maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
   bold?: boolean
+  italic?: boolean
   tabularNums?: boolean
   font?: 'body' | 'fantasy' | 'medieval'
   variant?:
@@ -52,6 +53,10 @@ interface TypographyPrefabProps extends Omit<React.HTMLAttributes<HTMLParagraphE
     | 'detail'
     | 'bonus'
     | 'tiny'
+  sm?: TextProps['sm']
+  md?: TextProps['md']
+  lg?: TextProps['lg']
+  xl?: TextProps['xl']
 }
 
 export function NarrativeText({ align, ...props }: TypographyPrefabProps) {
@@ -64,10 +69,6 @@ export function Value({ align, variant, ...props }: TypographyPrefabProps) {
       variant={variant === 'tiny' ? 'tiny' : 'fantasy-value'}
       color={props.color || 'ivory'}
       align={align}
-      truncate={props.truncate}
-      shrink={props.shrink}
-      grow={props.grow}
-      tabularNums={props.tabularNums}
       {...props}
     />
   )

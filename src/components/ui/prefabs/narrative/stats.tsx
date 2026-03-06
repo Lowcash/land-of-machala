@@ -18,7 +18,7 @@ interface StatsProps {
 
 export function Stats({ title, stats, variant = 'primary' }: StatsProps) {
   const content = (
-    <Stack display="grid" cols="2" gap="md">
+    <Stack mode="grid" cols="2" gap="md">
       {stats.map((stat) => (
         <StatBlock key={stat.id} stat={stat} />
       ))}
