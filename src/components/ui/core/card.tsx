@@ -11,9 +11,9 @@ import { Stack, type StackProps, splitLayoutProps } from './stack'
 const cardVariants = cva('transition-all backdrop-blur-md shadow-lg shadow-black/40', {
   variants: {
     variant: {
-      primary: 'border border-(--color-primary) bg-black/80 shadow-xl',
-      secondary: 'border border-(--color-secondary)/40 bg-black/60',
-      subtle: 'border border-(--color-secondary)/20 bg-black/40 shadow-none',
+      primary: 'border-2 border-(--color-primary) bg-black/80 shadow-xl',
+      secondary: 'border-2 border-(--color-secondary)/40 bg-black/60',
+      subtle: 'border-2 border-(--color-secondary)/20 bg-black/40 shadow-none',
       ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
       ornamental:
         'border-2 border-(--color-secondary)/40 bg-black/80 shadow-xl ring-1 ring-white/5',

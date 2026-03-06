@@ -1,8 +1,7 @@
 import { type HTMLAttributes, forwardRef } from 'react'
-
 import { type VariantProps, cva } from 'class-variance-authority'
-
 import { cn } from '@/lib/utils'
+import { type Breakpoint } from './box'
 
 const progressVariants = cva(
   'progress-bar relative w-full overflow-hidden rounded bg-black/60 ring-1 ring-white/10 shadow-inner border border-white/5 min-h-2',
@@ -28,6 +27,43 @@ const progressVariants = cva(
   }
 )
 
+type ProgressVariantKeys = keyof VariantProps<typeof progressVariants>
+type ProgressVariantValue = {
+  [K in ProgressVariantKeys]?: string | number | boolean
+}
+
+const PROGRESS_RESPONSIVE_LOOKUP = {
+  sm: {
+    size: { sm: 'sm:h-2', md: 'sm:h-3', lg: 'sm:h-4' },
+  },
+  md: {
+    size: { sm: 'md:h-2', md: 'md:h-3', lg: 'md:h-4' },
+  },
+  lg: {
+    size: { sm: 'lg:h-2', md: 'lg:h-3', lg: 'lg:h-4' },
+  },
+  xl: {
+    size: { sm: 'xl:h-2', md: 'xl:h-3', lg: 'xl:h-4' },
+  },
+}
+
+function getProgressResponsiveClasses(breakpoint: Breakpoint, val?: ProgressVariantValue) {
+  if (!val) return ''
+  const classes: string[] = []
+  const bp = PROGRESS_RESPONSIVE_LOOKUP[breakpoint] as any
+  if (!bp) return ''
+
+  Object.keys(val).forEach((key) => {
+    const v = (val as any)[key]
+    const group = bp[key]
+    if (group && typeof v === 'string' && group[v]) {
+      classes.push(group[v])
+    }
+  })
+
+  return classes.join(' ')
+}
+
 const indicatorVariants = cva('h-full block transition-all duration-300 ease-in-out', {
   variants: {
     variant: {
@@ -47,10 +83,14 @@ export interface ProgressProps
   extends HTMLAttributes<HTMLDivElement>, VariantProps<typeof progressVariants> {
   value?: number
   max?: number
+  sm?: ProgressVariantValue
+  md?: ProgressVariantValue
+  lg?: ProgressVariantValue
+  xl?: ProgressVariantValue
 }
 
 const Progress = forwardRef<HTMLDivElement, ProgressProps>(
-  ({ children, value = 0, max = 100, variant, size, ...props }, ref) => {
+  ({ children, value = 0, max = 100, variant, size, sm, md, lg, xl, className, ...props }, ref) => {
     const percentage = Math.min(100, Math.max(0, (value / max) * 100))
 
     return (
@@ -60,7 +100,14 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
         aria-valuemin={0}
         aria-valuemax={max}
         aria-valuenow={value}
-        className={cn(progressVariants({ variant, size }))}
+        className={cn(
+          progressVariants({ variant, size }),
+          getProgressResponsiveClasses('sm', sm),
+          getProgressResponsiveClasses('md', md),
+          getProgressResponsiveClasses('lg', lg),
+          getProgressResponsiveClasses('xl', xl),
+          className
+        )}
         {...props}
       >
         <div

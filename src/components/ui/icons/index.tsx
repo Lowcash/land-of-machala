@@ -16,6 +16,8 @@ import {
 
 import { cn } from '@/lib/utils'
 
+import { type Breakpoint } from '../core/box'
+
 const ICON_SIZES = {
   xs: 'h-3 w-3',
   stat: 'h-[14px] w-[14px]',
@@ -24,6 +26,67 @@ const ICON_SIZES = {
   lg: 'h-6 w-6',
   xl: 'h-10 w-10',
 } as const
+
+const RESPONSIVE_SIZES = {
+  sm: {
+    size: {
+      xs: 'sm:h-3 sm:w-3',
+      stat: 'sm:h-[14px] sm:w-[14px]',
+      sm: 'sm:h-4 sm:w-4',
+      md: 'sm:h-5 sm:w-5',
+      lg: 'sm:h-6 sm:w-6',
+      xl: 'sm:h-10 sm:w-10',
+    },
+  },
+  md: {
+    size: {
+      xs: 'md:h-3 md:w-3',
+      stat: 'md:h-[14px] md:w-[14px]',
+      sm: 'md:h-4 md:w-4',
+      md: 'md:h-5 md:w-5',
+      lg: 'md:h-6 md:w-6',
+      xl: 'md:h-10 md:w-10',
+    },
+  },
+  lg: {
+    size: {
+      xs: 'lg:h-3 lg:w-3',
+      stat: 'lg:h-[14px] lg:w-[14px]',
+      sm: 'lg:h-4 lg:w-4',
+      md: 'lg:h-5 lg:w-5',
+      lg: 'lg:h-6 lg:w-6',
+      xl: 'lg:h-10 lg:w-10',
+    },
+  },
+  xl: {
+    size: {
+      xs: 'xl:h-3 xl:w-3',
+      stat: 'xl:h-[14px] xl:w-[14px]',
+      sm: 'xl:h-4 xl:w-4',
+      md: 'xl:h-5 xl:w-5',
+      lg: 'xl:h-6 xl:w-6',
+      xl: 'xl:h-10 xl:w-10',
+    },
+  },
+}
+
+function getIconResponsiveClasses(breakpoint: Breakpoint, val?: IconVariantValue) {
+  if (!val) return ''
+  const classes: string[] = []
+  const bp = RESPONSIVE_SIZES[breakpoint as keyof typeof RESPONSIVE_SIZES]
+  if (!bp) return ''
+
+  Object.keys(val).forEach((k) => {
+    const key = k as keyof IconVariantValue
+    const v = val[key]
+    const group = (bp as any)[key]
+    if (group && typeof v === 'string' && group[v]) {
+      classes.push(group[v])
+    }
+  })
+
+  return classes.join(' ')
+}
 export type IconColor =
   | 'primary'
   | 'gold'
@@ -40,6 +103,15 @@ export interface IconProps {
   size?: keyof typeof ICON_SIZES
   color?: IconColor
   className?: string
+  sm?: IconVariantValue
+  md?: IconVariantValue
+  lg?: IconVariantValue
+  xl?: IconVariantValue
+  shrink?: boolean
+}
+
+type IconVariantValue = {
+  size?: keyof typeof ICON_SIZES
 }
 
 export function Icon({
@@ -47,7 +119,12 @@ export function Icon({
   size = 'md',
   color,
   className,
-}: { icon: LucideIcon } & IconProps) {
+  sm,
+  md,
+  lg,
+  xl,
+  shrink,
+}: { icon: import('lucide-react').LucideIcon } & IconProps) {
   const colorClass = color
     ? (
         {
@@ -65,7 +142,21 @@ export function Icon({
       )[color]
     : ''
 
-  return <SimpleIcon className={cn(ICON_SIZES[size], colorClass, className)} />
+  return (
+    <SimpleIcon
+      className={cn(
+        ICON_SIZES[size],
+        colorClass,
+        getIconResponsiveClasses('sm', sm),
+        getIconResponsiveClasses('md', md),
+        getIconResponsiveClasses('lg', lg),
+        getIconResponsiveClasses('xl', xl),
+        shrink === true && 'shrink',
+        shrink === false && 'shrink-0',
+        className
+      )}
+    />
+  )
 }
 
 export function UserIcon({ size, color }: IconProps) {

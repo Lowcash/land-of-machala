@@ -57,6 +57,7 @@ export const boxVariants = cva('', {
       'vitals-label': 'h-4',
       'vitals-progress': 'h-2',
       'vitals-progress-md': 'h-3',
+      'vitals-bar-spacer': 'h-[26px]',
       'vitals-footer': 'h-6',
     },
     width: {
@@ -105,9 +106,23 @@ export const boxVariants = cva('', {
       none: '',
       '10': 'opacity-10',
       '20': 'opacity-20',
+      '30': 'opacity-30',
       '50': 'opacity-50',
       '80': 'opacity-80',
       '100': 'opacity-100',
+    },
+    borderOpacity: {
+      '10': 'border-opacity-10',
+      '20': 'border-opacity-20',
+      '30': 'border-opacity-30',
+      '50': 'border-opacity-50',
+    },
+    borderSide: {
+      top: 'border-t',
+      bottom: 'border-b',
+      left: 'border-l',
+      right: 'border-r',
+      all: 'border',
     },
     overflow: { none: '', auto: 'overflow-auto', hidden: 'overflow-hidden' },
     scrollbar: { none: 'scrollbar-none' },
@@ -121,6 +136,17 @@ export const boxVariants = cva('', {
       auto: 'z-auto',
     },
     pointerEvents: { none: 'pointer-events-none', auto: 'pointer-events-auto' },
+    display: {
+      none: 'hidden',
+      block: 'block',
+      inline: 'inline',
+      flex: 'flex',
+      grid: 'grid',
+    },
+    invisible: {
+      true: 'invisible',
+      false: '',
+    },
     aspect: {
       none: '',
       square: 'aspect-square',
@@ -128,6 +154,8 @@ export const boxVariants = cva('', {
       landscape: 'aspect-[4/3]',
       video: 'aspect-video',
     },
+    shrink: { true: 'shrink', false: 'shrink-0' },
+    grow: { true: 'grow', false: 'grow-0' },
   },
   defaultVariants: {
     fullWidth: false,
@@ -152,10 +180,12 @@ type BreakpointValue = {
  */
 const BOX_RESPONSIVE_LOOKUP = {
   sm: {
+    display: { none: 'sm:hidden', block: 'sm:block', flex: 'sm:flex', grid: 'sm:grid' },
     p: { none: 'sm:p-0', xs: 'sm:p-1', sm: 'sm:p-2', md: 'sm:p-4', lg: 'sm:p-6', xl: 'sm:p-8' },
     pt: { none: 'sm:pt-0', xs: 'sm:pt-1', sm: 'sm:pt-2', md: 'sm:pt-4', lg: 'sm:pt-6', xl: 'sm:pt-8' },
     pb: { none: 'sm:pb-0', xs: 'sm:pb-1', sm: 'sm:pb-2', md: 'sm:pb-4', lg: 'sm:pb-6', xl: 'sm:pb-8' },
-/* ... types/defaults preserved elsewhere ... */
+    px: { none: 'sm:px-0', xs: 'sm:px-1', sm: 'sm:px-2', md: 'sm:px-4', lg: 'sm:px-6', xl: 'sm:px-8' },
+    py: { none: 'sm:py-0', xs: 'sm:py-1', sm: 'sm:py-2', md: 'sm:py-4', lg: 'sm:py-6', xl: 'sm:py-8' },
     flex: { '1': 'sm:flex-1', auto: 'sm:flex-auto', none: 'sm:flex-none' },
     maxWidth: {
       sm: 'sm:max-w-sm',
@@ -172,9 +202,12 @@ const BOX_RESPONSIVE_LOOKUP = {
     fullHeight: 'sm:h-full',
   },
   md: {
+    display: { none: 'md:hidden', block: 'md:block', flex: 'md:flex', grid: 'md:grid' },
     p: { none: 'md:p-0', xs: 'md:p-1', sm: 'md:p-2', md: 'md:p-4', lg: 'md:p-6', xl: 'md:p-8' },
     pt: { none: 'md:pt-0', xs: 'md:pt-1', sm: 'md:pt-2', md: 'md:pt-4', lg: 'md:pt-6', xl: 'md:pt-8' },
     pb: { none: 'md:pb-0', xs: 'md:pb-1', sm: 'md:pb-2', md: 'md:pb-4', lg: 'md:pb-6', xl: 'md:pb-8' },
+    px: { none: 'md:px-0', xs: 'md:px-1', sm: 'md:px-2', md: 'md:px-4', lg: 'md:px-6', xl: 'md:px-8' },
+    py: { none: 'md:py-0', xs: 'md:py-1', sm: 'md:py-2', md: 'md:py-4', lg: 'md:py-6', xl: 'md:py-8' },
     flex: { '1': 'md:flex-1', auto: 'md:flex-auto', none: 'md:flex-none' },
     maxWidth: {
       sm: 'md:max-w-sm',
@@ -183,14 +216,22 @@ const BOX_RESPONSIVE_LOOKUP = {
       xl: 'md:max-w-xl',
       '5xl': 'md:max-w-5xl',
     },
-    height: { auto: 'md:h-auto', full: 'md:h-full', creation: 'md:h-[525px]' },
+    height: {
+      auto: 'md:h-auto',
+      full: 'md:h-full',
+      creation: 'md:h-[525px]',
+      'vitals-bar-spacer': 'md:h-[34px]',
+    },
     fullWidth: 'md:w-full',
     fullHeight: 'md:h-full',
   },
   lg: {
+    display: { none: 'lg:hidden', block: 'lg:block', flex: 'lg:flex', grid: 'lg:grid' },
     p: { none: 'lg:p-0', xs: 'lg:p-1', sm: 'lg:p-2', md: 'lg:p-4', lg: 'lg:p-6', xl: 'lg:p-8' },
     pt: { none: 'lg:pt-0', xs: 'lg:pt-1', sm: 'lg:pt-2', md: 'lg:pt-4', lg: 'lg:pt-6', xl: 'lg:pt-8' },
     pb: { none: 'lg:pb-0', xs: 'lg:pb-1', sm: 'lg:pb-2', md: 'lg:pb-4', lg: 'lg:pb-6', xl: 'lg:pb-8' },
+    px: { none: 'lg:px-0', xs: 'lg:px-1', sm: 'lg:px-2', md: 'lg:px-4', lg: 'lg:px-6', xl: 'lg:px-8' },
+    py: { none: 'lg:py-0', xs: 'lg:py-1', sm: 'lg:py-2', md: 'lg:py-4', lg: 'lg:p-6', xl: 'lg:p-8' },
     flex: { '1': 'lg:flex-1', auto: 'lg:flex-auto', none: 'lg:flex-none' },
     maxWidth: {
       sm: 'lg:max-w-sm',
@@ -204,6 +245,7 @@ const BOX_RESPONSIVE_LOOKUP = {
     fullHeight: 'lg:h-full',
   },
   xl: {
+    display: { none: 'xl:hidden', block: 'xl:block', flex: 'xl:flex', grid: 'xl:grid' },
     p: { none: 'xl:p-0', xs: 'xl:p-1', sm: 'xl:p-2', md: 'xl:p-4', lg: 'xl:p-6', xl: 'xl:p-8' },
     pt: { none: 'xl:pt-0', xs: 'xl:pt-1', sm: 'xl:pt-2', md: 'xl:pt-4', lg: 'xl:pt-6', xl: 'xl:pt-8' },
     pb: { none: 'xl:pb-0', xs: 'xl:pb-1', sm: 'xl:pb-2', md: 'xl:pb-4', lg: 'xl:pb-6', xl: 'xl:pb-8' },
@@ -242,13 +284,17 @@ export function getBoxResponsiveClasses(breakpoint: Breakpoint, val?: Breakpoint
 
 export interface BoxProps
   extends
-    Omit<HTMLAttributes<HTMLElement>, 'color' | 'width' | 'height'>,
+    Omit<HTMLAttributes<HTMLElement>, 'color' | 'width' | 'height' | 'display'>,
     VariantProps<typeof boxVariants> {
   as?: ElementType
-  sm?: BreakpointValue
-  md?: BreakpointValue
-  lg?: BreakpointValue
-  xl?: BreakpointValue
+  sm?: BoxVariantValue
+  md?: BoxVariantValue
+  lg?: BoxVariantValue
+  xl?: BoxVariantValue
+}
+
+type BoxVariantValue = {
+  [K in BoxVariantKeys]?: string | boolean
 }
 
 export const BOX_KEYS = [
@@ -277,6 +323,8 @@ export const BOX_KEYS = [
   'rounded',
   'border',
   'borderColor',
+  'borderOpacity',
+  'borderSide',
   'bgColor',
   'opacity',
   'overflow',
@@ -285,6 +333,10 @@ export const BOX_KEYS = [
   'zIndex',
   'pointerEvents',
   'aspect',
+  'shrink',
+  'grow',
+  'display',
+  'invisible',
 ] as const
 
 export const BREAKPOINT_KEYS = ['sm', 'md', 'lg', 'xl'] as const

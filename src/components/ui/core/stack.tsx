@@ -8,7 +8,7 @@ import { BOX_KEYS, Box, type BoxProps } from './box'
 
 export const stackVariants = cva('', {
   variants: {
-    display: { flex: 'flex', grid: 'grid', none: 'hidden' },
+    mode: { flex: 'flex', grid: 'grid', none: 'hidden' },
     direction: { row: 'flex-row', col: 'flex-col' },
     cols: { '1': 'grid-cols-1', '2': 'grid-cols-2', '3': 'grid-cols-3', '4': 'grid-cols-4' },
     align: {
@@ -38,7 +38,7 @@ export const stackVariants = cva('', {
     wrap: { true: 'flex-wrap', false: 'flex-nowrap' },
   },
   defaultVariants: {
-    display: 'flex',
+    mode: 'flex',
     direction: 'col',
     align: 'stretch',
     justify: 'start',
@@ -56,7 +56,7 @@ type BreakpointValue = {
 
 const RESPONSIVE_LOOKUP = {
   sm: {
-    display: { flex: 'sm:flex', grid: 'sm:grid', none: 'sm:hidden' },
+    mode: { flex: 'sm:flex', grid: 'sm:grid', none: 'sm:hidden' },
     direction: { row: 'sm:flex-row', col: 'sm:flex-col' },
     cols: {
       '1': 'sm:grid-cols-1',
@@ -89,7 +89,7 @@ const RESPONSIVE_LOOKUP = {
     nowrap: 'sm:flex-nowrap',
   },
   md: {
-    display: { flex: 'md:flex', grid: 'md:grid', none: 'md:hidden' },
+    mode: { flex: 'md:flex', grid: 'md:grid', none: 'md:hidden' },
     direction: { row: 'md:flex-row', col: 'md:flex-col' },
     cols: {
       '1': 'md:grid-cols-1',
@@ -122,7 +122,7 @@ const RESPONSIVE_LOOKUP = {
     nowrap: 'md:flex-nowrap',
   },
   lg: {
-    display: { flex: 'lg:flex', grid: 'lg:grid', none: 'lg:hidden' },
+    mode: { flex: 'lg:flex', grid: 'lg:grid', none: 'lg:hidden' },
     direction: { row: 'lg:flex-row', col: 'lg:flex-col' },
     cols: {
       '1': 'lg:grid-cols-1',
@@ -155,7 +155,7 @@ const RESPONSIVE_LOOKUP = {
     nowrap: 'lg:flex-nowrap',
   },
   xl: {
-    display: { flex: 'xl:flex', grid: 'xl:grid', none: 'xl:hidden' },
+    mode: { flex: 'xl:flex', grid: 'xl:grid', none: 'xl:hidden' },
     direction: { row: 'xl:flex-row', col: 'xl:flex-col' },
     cols: {
       '1': 'xl:grid-cols-1',
@@ -220,7 +220,7 @@ export interface StackProps extends BoxProps, VariantProps<typeof stackVariants>
 }
 
 export const STACK_KEYS = [
-  'display',
+  'mode',
   'direction',
   'cols',
   'align',
