@@ -1,12 +1,12 @@
 import { type ComponentProps, type HTMLAttributes } from 'react'
 
 import { HStack, VStack } from '@/components/ui/core/stack'
-import { Heading, Text, type TypographyColor } from '@/components/ui/core/typography'
+import { Heading, Text } from '@/components/ui/core/typography'
 import { SparklesIcon } from '@/components/ui/icons'
 
 import { Description, Label } from './shared'
 
-interface HeroTitleProps extends HTMLAttributes<HTMLHeadingElement> {
+interface HeroTitleProps extends Omit<HTMLAttributes<HTMLHeadingElement>, 'color'> {
   children: React.ReactNode
 }
 
@@ -17,7 +17,7 @@ export function HeroTitle({ children, ...props }: Omit<HeroTitleProps, 'classNam
     <Heading
       level="h1"
       font="medieval"
-      color={"gold" as any}
+      color="primary"
       className="text-3xl sm:text-4xl lg:text-5xl"
       style={{
         textShadow: '3px 3px 8px rgba(0,0,0,0.9)',
@@ -38,7 +38,7 @@ export function HeroSubtitle({ children, ...props }: HeroSubtitleProps) {
   return (
     <HStack align="center" gap="xs" {...props}>
       <SparklesIcon size="sm" color="gold" />
-      <Text align="center" color={"secondary" as any} className="text-sm sm:text-base">
+      <Text align="center" color="copper" className="text-sm sm:text-base">
         {children}
       </Text>
       <SparklesIcon size="sm" color="gold" />

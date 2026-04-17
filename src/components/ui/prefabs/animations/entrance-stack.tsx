@@ -2,7 +2,7 @@
 
 import { forwardRef } from 'react'
 
-import { HTMLMotionProps, motion } from 'framer-motion'
+import { type HTMLMotionProps, type Variants, motion } from 'framer-motion'
 
 import { cn } from '@/lib/utils'
 
@@ -24,7 +24,7 @@ interface EntranceStackProps extends StackProps {
   yOffset?: number
 }
 
-const variants = {
+const variants: Variants = {
   hidden: (custom: { yOffset: number }) => ({
     opacity: 0,
     y: custom.yOffset,
@@ -35,7 +35,7 @@ const variants = {
     transition: {
       duration: custom.duration,
       ease: 'easeOut',
-    } as any,
+    },
   }),
   exit: (custom: { yOffset: number }) => ({
     opacity: 0,
@@ -60,7 +60,7 @@ export const EntranceStack = forwardRef<HTMLElement, EntranceStackProps>(
         animate="visible"
         exit="exit"
         variants={variants}
-        className={cn(getBoxClasses(layoutProps as any), getStackClasses(layoutProps as StackProps))}
+        className={cn(getBoxClasses(layoutProps), getStackClasses(layoutProps as StackProps))}
         {...(restProps as HTMLMotionProps<'div'>)}
       >
         {children}

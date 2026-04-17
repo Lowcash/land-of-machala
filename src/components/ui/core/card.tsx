@@ -73,7 +73,7 @@ const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
 
 CardRoot.displayName = 'Card'
 
-interface CardHeaderProps extends StackProps {}
+type CardHeaderProps = StackProps
 
 const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
@@ -130,7 +130,7 @@ const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
 
 CardContent.displayName = 'CardContent'
 
-interface CardFooterProps extends StackProps {}
+type CardFooterProps = StackProps
 
 const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)

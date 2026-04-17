@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { MutedText } from '../prefabs/typography/shared'
 import { Badge } from './badge'

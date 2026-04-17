@@ -71,21 +71,11 @@ const RESPONSIVE_SIZES = {
 }
 
 function getIconResponsiveClasses(breakpoint: Breakpoint, val?: IconVariantValue) {
-  if (!val) return ''
-  const classes: string[] = []
+  if (!val?.size) return ''
   const bp = RESPONSIVE_SIZES[breakpoint as keyof typeof RESPONSIVE_SIZES]
   if (!bp) return ''
 
-  Object.keys(val).forEach((k) => {
-    const key = k as keyof IconVariantValue
-    const v = val[key]
-    const group = (bp as any)[key]
-    if (group && typeof v === 'string' && group[v]) {
-      classes.push(group[v])
-    }
-  })
-
-  return classes.join(' ')
+  return bp.size[val.size] ?? ''
 }
 export type IconColor =
   | 'primary'

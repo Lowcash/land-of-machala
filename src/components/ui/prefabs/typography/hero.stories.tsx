@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { VStack } from '../../core/stack'
 import { HeroDescription, HeroSubtitle, HeroTitle, PageHeader } from './hero'

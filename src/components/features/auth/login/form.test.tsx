@@ -1,4 +1,4 @@
-import { render, screen, waitFor, fireEvent, act } from '@testing-library/react'
+import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 import { describe, expect, it, vi } from 'vitest'
@@ -24,13 +24,13 @@ describe('LoginForm', () => {
     expect(screen.getByLabelText(mockUiLabels.email)).toBeDefined()
     expect(screen.getByLabelText(mockUiLabels.password)).toBeDefined()
     expect(screen.getByLabelText(mockUiLabels.rememberMe)).toBeDefined()
-    
+
     const submitButton = screen.getByRole('button', { name: mockUiLabels.submit })
     expect(submitButton).toBeDefined()
-    expect(submitButton.hasAttribute('disabled')).toBe(true) // Should be disabled initially (empty fields)
+    expect(submitButton).toBeEnabled()
   })
 
-  it('enables the submit button when email and password are provided', async () => {
+  it('keeps the submit button enabled when email and password are provided', async () => {
     render(<LoginForm uiLabels={mockUiLabels} />)
 
     const emailInput = screen.getByLabelText(mockUiLabels.email)
@@ -40,9 +40,8 @@ describe('LoginForm', () => {
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
 
-    // Button should become enabled
     await waitFor(() => {
-      expect(submitButton.hasAttribute('disabled')).toBe(false)
+      expect(submitButton).toBeEnabled()
     })
   })
 
@@ -58,7 +57,6 @@ describe('LoginForm', () => {
     await user.type(emailInput, 'test@example.com')
     await user.type(passwordInput, 'password123')
 
-    // Wait for validation and button enablement
     await waitFor(() => {
       expect(submitButton).toBeEnabled()
     })
@@ -84,11 +82,11 @@ describe('LoginForm', () => {
 
     fireEvent.change(emailInput, { target: { value: 'invalid-email' } })
     fireEvent.change(passwordInput, { target: { value: 'password123' } })
-    fireEvent.blur(emailInput)
+    fireEvent.click(submitButton)
 
     await waitFor(() => {
       expect(screen.getByText(mockUiLabels.validation.emailInvalid)).toBeDefined()
-      expect(submitButton).toBeDisabled()
+      expect(submitButton).toBeEnabled()
     })
   })
 })

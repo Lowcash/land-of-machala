@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { Card } from '@/components/ui/core/card'
 import { HStack, Stack, VStack } from '@/components/ui/core/stack'

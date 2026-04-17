@@ -12,27 +12,31 @@ export interface NarrativeCardProps extends Omit<CardRootProps, 'p'> {
  * Bakes in the responsive padding `p="md" md={{ p: 'lg' }}` pattern
  * to prevent repetitive prop-drilling across the frontend.
  */
-export const NarrativeCard = Object.assign(
-  forwardRef<HTMLElement, NarrativeCardProps>(
-    ({ variant = 'subtle', gap = 'md', className, children, p, ...props }, ref) => {
-      // We preserve the md override if users explicitly pass it, otherwise fallback to md={{ p: 'lg' }}
-      const mdConfig = props.md ? { p: 'lg', ...props.md } : { p: 'lg' }
+const NarrativeCardRoot = forwardRef<HTMLElement, NarrativeCardProps>(
+  ({ variant = 'subtle', gap = 'md', className, children, p, ...props }, ref) => {
+    // We preserve the md override if users explicitly pass it, otherwise fallback to md={{ p: 'lg' }}
+    const mdConfig = props.md ? { p: 'lg', ...props.md } : { p: 'lg' }
 
-      return (
-        <Card
-          ref={ref}
-          variant={variant}
-          p={p ?? 'md'}
-          md={mdConfig}
-          gap={gap}
-          className={className}
-          {...props}
-        >
-          {children}
-        </Card>
-      )
-    }
-  ),
+    return (
+      <Card
+        ref={ref}
+        variant={variant}
+        p={p ?? 'md'}
+        md={mdConfig}
+        gap={gap}
+        className={className}
+        {...props}
+      >
+        {children}
+      </Card>
+    )
+  }
+)
+
+NarrativeCardRoot.displayName = 'NarrativeCard'
+
+export const NarrativeCard = Object.assign(
+  NarrativeCardRoot,
   {
     Header: Card.Header,
     Title: Card.Title,
@@ -40,5 +44,3 @@ export const NarrativeCard = Object.assign(
     Footer: Card.Footer,
   }
 )
-
-NarrativeCard.displayName = 'NarrativeCard'

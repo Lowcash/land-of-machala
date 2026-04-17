@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
 import { RegisterViewUI } from './view'
+import type { RegisterUiLabels } from './types'
 
 /** Mock next/navigation */
 vi.mock('next/navigation', () => ({
@@ -78,6 +79,7 @@ const MOCK_PROPS = {
   },
   uiLabels: {
     email: 'Email Address',
+    emailPlaceholder: 'hero@example.com',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     submit: 'Register Now',
@@ -87,7 +89,7 @@ const MOCK_PROPS = {
       passwordRequired: 'Required',
       passwordMismatch: 'Passwords do not match',
     },
-  },
+  } satisfies RegisterUiLabels,
   backgroundSrc: '/test.jpg',
 }
 

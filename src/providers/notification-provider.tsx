@@ -3,15 +3,12 @@
 import { createContext, useCallback, useContext, useState } from 'react'
 
 import { AlertProps } from '@/components/ui/core/alert'
-import { AlertStack } from '@/components/ui/core/alert-stack'
+import { AlertStack, type AlertStackItem } from '@/components/ui/core/alert-stack'
 
 type NotificationVariant = AlertProps['variant']
 
-export interface Notification {
+export interface Notification extends AlertStackItem {
   id: string
-  title?: string
-  message: React.ReactNode
-  variant?: NotificationVariant
   duration?: number
   action?: {
     label: string
@@ -80,7 +77,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   return (
     <NotificationContext.Provider value={{ notify, dismiss, success, error, warn, info }}>
       {children}
-      <AlertStack items={notifications as any} onDismiss={dismiss} />
+      <AlertStack items={notifications} onDismiss={dismiss} />
     </NotificationContext.Provider>
   )
 }

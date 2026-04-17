@@ -9,6 +9,17 @@ import { cn } from '@/lib/utils'
 
 import { Stack, type StackProps, splitLayoutProps } from './stack'
 
+function assignViewportRef(ref: React.Ref<HTMLDivElement> | undefined, node: HTMLDivElement | null) {
+  if (typeof ref === 'function') {
+    ref(node)
+    return
+  }
+
+  if (ref) {
+    ;(ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+  }
+}
+
 export interface ScrollAreaProps
   extends Omit<HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>, StackProps {
   children: React.ReactNode
@@ -26,9 +37,14 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     className,
     as: Component = 'div',
     ...otherProps
-  } = restProps as { as?: ElementType; [key: string]: unknown }
+  } = restProps as {
+    as?: ElementType
+    className?: string
+    viewportRef?: React.Ref<HTMLDivElement>
+    [key: string]: unknown
+  }
 
-  const { scrollRef, showTopArrow, showBottomArrow } = useScrollArea()
+  const { scrollRef, setScrollNode, showTopArrow, showBottomArrow } = useScrollArea()
 
   // Extract ONLY flex and alignment properties for the inner scroll container.
   // We leave padding on the outer component so it handles its own styling correctly.
@@ -81,12 +97,10 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
     >
       {showTopArrow && (
         <div
-          className={
-            cn(
-              'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
-              showGradient ? 'bg-linear-to-b from-black/80 to-transparent' : undefined
-            ) as any
-          }
+          className={cn(
+            'pointer-events-none absolute top-0 right-0 left-0 z-40 flex h-12 items-start justify-center pt-3',
+            showGradient ? 'bg-linear-to-b from-black/80 to-transparent' : undefined
+          )}
         >
           <ChevronUp
             className="animate-bounce text-(--color-gold) drop-shadow-md"
@@ -98,10 +112,8 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
 
       <Stack
         ref={(node: HTMLDivElement) => {
-          scrollRef.current = node
-          if (typeof viewportRef === 'function') viewportRef(node)
-          else if (viewportRef)
-            (viewportRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+          setScrollNode(node)
+          assignViewportRef(viewportRef, node)
         }}
         className="scrollbar-custom flex min-h-0 w-full flex-1 overflow-y-auto"
         p={p ?? 'md'} // Default to 'md' but allow overrides
@@ -126,12 +138,10 @@ export const ScrollArea = forwardRef<HTMLElement, ScrollAreaProps>((props, ref) 
 
       {showBottomArrow && (
         <div
-          className={
-            cn(
-              'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
-              showGradient ? 'bg-linear-to-t from-black/80 to-transparent' : undefined
-            ) as any
-          }
+          className={cn(
+            'pointer-events-none absolute right-0 bottom-0 left-0 z-40 flex h-12 items-end justify-center pb-2',
+            showGradient ? 'bg-linear-to-t from-black/80 to-transparent' : undefined
+          )}
         >
           <ChevronDown
             className="animate-bounce text-(--color-gold) drop-shadow-md"

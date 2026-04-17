@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { Box } from '@/components/ui/core/box'
 import { HStack, VStack } from '@/components/ui/core/stack'

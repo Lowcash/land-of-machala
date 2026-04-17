@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { Stack, VStack } from '../../core/stack'
 import { Description, Label, MutedText, NarrativeText, Value } from './shared'

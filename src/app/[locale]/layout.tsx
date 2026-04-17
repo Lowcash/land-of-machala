@@ -31,6 +31,8 @@ const philosopher = Philosopher({
   display: 'swap',
 })
 
+type AppLocale = (typeof routing.locales)[number]
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }))
 }
@@ -55,7 +57,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params
 
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as AppLocale)) {
     notFound()
   }
 

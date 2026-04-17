@@ -31,10 +31,14 @@ export function StatGrid({
 }: StatGridProps) {
   if (items.length === 0) return null
 
+  const columnCount = Math.min(items.length, 4).toString() as NonNullable<
+    React.ComponentProps<typeof HStack>['cols']
+  >
+
   const content = (
     <HStack
       mode="grid"
-      cols={String(items.length) as any}
+      cols={columnCount}
       gap={compact ? 'none' : 'xs'}
       fullWidth
       justify="center"

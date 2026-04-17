@@ -156,6 +156,7 @@ const textVariants = cva('leading-tight transition-colors', {
       none: 'hidden',
       block: 'block',
       inline: 'inline-block',
+      'inline-block': 'inline-block',
       flex: 'flex',
     },
   },
@@ -174,39 +175,53 @@ const textVariants = cva('leading-tight transition-colors', {
 
 type TextVariantKeys = keyof VariantProps<typeof textVariants>
 type TextVariantValue = {
-  [K in TextVariantKeys]?: string | boolean
+  [K in TextVariantKeys]?: VariantProps<typeof textVariants>[K]
 }
 
 const TEXT_RESPONSIVE_LOOKUP = {
   sm: {
-    display: { none: 'sm:hidden', block: 'sm:block', inline: 'sm:inline-block', flex: 'sm:flex' },
+    display: {
+      none: 'sm:hidden',
+      block: 'sm:block',
+      inline: 'sm:inline-block',
+      'inline-block': 'sm:inline-block',
+      flex: 'sm:flex',
+    },
   },
   md: {
-    display: { none: 'md:hidden', block: 'md:block', inline: 'md:inline-block', flex: 'md:flex' },
+    display: {
+      none: 'md:hidden',
+      block: 'md:block',
+      inline: 'md:inline-block',
+      'inline-block': 'md:inline-block',
+      flex: 'md:flex',
+    },
   },
   lg: {
-    display: { none: 'lg:hidden', block: 'lg:block', inline: 'lg:inline-block', flex: 'lg:flex' },
+    display: {
+      none: 'lg:hidden',
+      block: 'lg:block',
+      inline: 'lg:inline-block',
+      'inline-block': 'lg:inline-block',
+      flex: 'lg:flex',
+    },
   },
   xl: {
-    display: { none: 'xl:hidden', block: 'xl:block', inline: 'xl:inline-block', flex: 'xl:flex' },
+    display: {
+      none: 'xl:hidden',
+      block: 'xl:block',
+      inline: 'xl:inline-block',
+      'inline-block': 'xl:inline-block',
+      flex: 'xl:flex',
+    },
   },
 }
 
 function getTextResponsiveClasses(breakpoint: Breakpoint, val?: TextVariantValue) {
-  if (!val) return ''
-  const classes: string[] = []
-  const bp = TEXT_RESPONSIVE_LOOKUP[breakpoint] as any
+  const bp = TEXT_RESPONSIVE_LOOKUP[breakpoint]
   if (!bp) return ''
 
-  Object.keys(val).forEach((key) => {
-    const v = (val as any)[key]
-    const group = bp[key]
-    if (group && typeof v === 'string' && group[v]) {
-      classes.push(group[v])
-    }
-  })
-
-  return classes.join(' ')
+  return val?.display ? bp.display[val.display] ?? '' : ''
 }
 
 export interface TextProps
@@ -301,7 +316,7 @@ export function Text({
           bold,
           italic,
           tabularNums,
-          display: display as any,
+          display,
         }),
         pxClass,
         maxWidthClass,

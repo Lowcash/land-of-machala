@@ -110,16 +110,25 @@ describe('LoginView Integration', () => {
     render(<LoginViewUI {...MOCK_PROPS} />)
 
     const submitBtn = screen.getByRole('button', { name: /Login Now/i })
-    expect(submitBtn).toBeDisabled()
+    expect(submitBtn).toBeEnabled()
+
+    await act(async () => {
+      fireEvent.click(submitBtn)
+    })
+
+    await waitFor(() => {
+      expect(screen.getByText('Invalid email')).toBeInTheDocument()
+      expect(screen.getByText('Password is required')).toBeInTheDocument()
+    })
 
     fireEvent.change(screen.getByLabelText(/Email Address/i), {
       target: { value: 'test@example.com' },
     })
     fireEvent.change(screen.getByLabelText(/Password/i), { target: { value: 'password123' } })
 
-    // Verify button is enabled with valid data
     await waitFor(() => {
-      expect(submitBtn).toBeEnabled()
+      expect(screen.queryByText('Invalid email')).not.toBeInTheDocument()
+      expect(screen.queryByText('Password is required')).not.toBeInTheDocument()
     })
 
     await act(async () => {

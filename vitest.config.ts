@@ -4,14 +4,38 @@ import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import { playwright } from '@vitest/browser-playwright'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
 import tsconfigPaths from 'vite-tsconfig-paths'
+import type { UserConfig as ViteUserConfig } from 'vite'
 
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))
 
+type VitestConfig = ViteUserConfig & {
+  test: {
+    projects: Array<{
+      extends?: true | string
+      plugins?: Array<ReturnType<typeof storybookTest>>
+      test: {
+        name: string
+        globals?: boolean
+        environment?: string
+        include?: string[]
+        setupFiles?: string[]
+        browser?: {
+          enabled: boolean
+          headless?: boolean
+          provider: ReturnType<typeof playwright>
+          instances: Array<{
+            browser: 'chromium' | 'firefox' | 'webkit'
+          }>
+        }
+      }
+    }>
+  }
+}
+
 // More info at: https://storybook.js.org/docs/next/writing-tests/integrations/vitest-addon
-export default (defineConfig as any)({
+const config: VitestConfig = {
   plugins: [tsconfigPaths()],
   resolve: {
     alias: {
@@ -47,4 +71,6 @@ export default (defineConfig as any)({
       },
     ],
   },
-})
+}
+
+export default config

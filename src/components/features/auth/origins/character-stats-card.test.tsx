@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
 import { CharacterStatsCard } from './character-stats-card'
+import type { CreationUiLabels } from './types'
 
 const mockStats = {
   hp: 101,
@@ -21,8 +22,18 @@ const mockStatLabels = {
   stamina: 'STA',
 }
 
-const mockUiLabels = {
+const mockUiLabels: CreationUiLabels = {
+  title: 'Create Hero',
+  subtitle: 'Shape your path',
+  nameLabel: 'Name',
+  namePlaceholder: 'Enter a name',
   statsTitle: 'Base Attributes',
+  raceLabel: 'Race',
+  classLabel: 'Class',
+  finish: 'Finish',
+  randomize: 'Randomize',
+  raceBonuses: 'Race bonuses',
+  classBonuses: 'Class bonuses',
 }
 
 describe('CharacterStatsCard', () => {

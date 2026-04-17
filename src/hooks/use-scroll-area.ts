@@ -5,6 +5,10 @@ export function useScrollArea() {
   const [showTopArrow, setShowTopArrow] = useState(false)
   const [showBottomArrow, setShowBottomArrow] = useState(false)
 
+  const setScrollNode = useCallback((node: HTMLDivElement | null) => {
+    scrollRef.current = node
+  }, [])
+
   const handleScroll = useCallback(() => {
     if (!scrollRef.current) return
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current
@@ -31,6 +35,7 @@ export function useScrollArea() {
 
   return {
     scrollRef,
+    setScrollNode,
     showTopArrow,
     showBottomArrow,
     handleScroll,

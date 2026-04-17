@@ -29,7 +29,7 @@ const progressVariants = cva(
 
 type ProgressVariantKeys = keyof VariantProps<typeof progressVariants>
 type ProgressVariantValue = {
-  [K in ProgressVariantKeys]?: string | number | boolean
+  [K in ProgressVariantKeys]?: VariantProps<typeof progressVariants>[K]
 }
 
 const PROGRESS_RESPONSIVE_LOOKUP = {
@@ -48,20 +48,10 @@ const PROGRESS_RESPONSIVE_LOOKUP = {
 }
 
 function getProgressResponsiveClasses(breakpoint: Breakpoint, val?: ProgressVariantValue) {
-  if (!val) return ''
-  const classes: string[] = []
-  const bp = PROGRESS_RESPONSIVE_LOOKUP[breakpoint] as any
+  const bp = PROGRESS_RESPONSIVE_LOOKUP[breakpoint]
   if (!bp) return ''
 
-  Object.keys(val).forEach((key) => {
-    const v = (val as any)[key]
-    const group = bp[key]
-    if (group && typeof v === 'string' && group[v]) {
-      classes.push(group[v])
-    }
-  })
-
-  return classes.join(' ')
+  return val?.size ? bp.size[val.size] ?? '' : ''
 }
 
 const indicatorVariants = cva('h-full block transition-all duration-300 ease-in-out', {

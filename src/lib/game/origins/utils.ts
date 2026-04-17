@@ -12,10 +12,11 @@ import {
   Wand2,
   Wind,
   Zap,
+  type LucideIcon,
 } from 'lucide-react'
 
 // Icon mapping for selection items (Races/Classes)
-export const SELECTION_ICONS: Record<string, any> = {
+export const SELECTION_ICONS: Record<string, LucideIcon> = {
   User,
   Shield,
   Zap,
@@ -32,7 +33,7 @@ export const SELECTION_ICONS: Record<string, any> = {
 } as const
 
 // Icon mapping for stats
-export const STAT_ICONS: Record<string, any> = {
+export const STAT_ICONS: Record<string, LucideIcon> = {
   strength: Sword,
   intelligence: Brain,
   agility: Wind,

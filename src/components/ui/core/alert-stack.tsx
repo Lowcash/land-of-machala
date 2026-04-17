@@ -1,13 +1,13 @@
-import { Alert } from '@/components/ui/core/alert'
+import { Alert, type AlertProps } from '@/components/ui/core/alert'
 import { Stack } from '@/components/ui/core/stack'
 import { AnimateNotify } from '@/components/ui/prefabs/animations/animate-notify'
 import { Presence } from '@/components/ui/prefabs/animations/presence'
 
-interface AlertStackItem {
+export interface AlertStackItem {
   id: string
   title?: string
   message: React.ReactNode
-  variant?: 'default' | 'success' | 'danger' | 'warning' | 'info'
+  variant?: AlertProps['variant']
 }
 
 interface AlertStackProps {

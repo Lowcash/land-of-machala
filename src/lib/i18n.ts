@@ -6,7 +6,7 @@ import { getTranslations } from 'next-intl/server'
  */
 export async function getScopedTranslations(featureScope: string) {
   const g = await getTranslations('Game')
-  const t = await getTranslations(featureScope as any)
+  const t = await getTranslations(featureScope as never)
 
   return { t, g }
 }

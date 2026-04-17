@@ -21,17 +21,18 @@ export interface MotionStackProps
  */
 export const MotionStack = forwardRef<HTMLDivElement, MotionStackProps>((props, ref) => {
   const { layoutProps, restProps } = splitLayoutProps(props)
+  const motionProps = restProps as HTMLMotionProps<'div'> & { className?: string }
 
   // LayoutProps does not include the generic 'className' or 'style', so we pass it explicitly if needed
   return (
     <motion.div
       ref={ref as React.Ref<HTMLDivElement>}
       className={cn(
-        getBoxClasses(layoutProps as any),
+        getBoxClasses(layoutProps),
         getStackClasses(layoutProps as StackProps),
-        (restProps as any).className
+        motionProps.className
       )}
-      {...(restProps as any)}
+      {...motionProps}
     />
   )
 })

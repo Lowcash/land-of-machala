@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react'
+import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { VStack } from '@/components/ui/core/stack'
 import { Description, MutedText } from '@/components/ui/prefabs/typography/shared'
