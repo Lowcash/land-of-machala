@@ -1,6 +1,55 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+
+## [2026-04-16] - Planning, Analytics, And Design Direction Alignment
+
+### Changed
+- **Route Strategy**: Aligned planning docs around a root-first SSR direction with a single canonical surface for anonymous entry and authenticated gameplay states.
+- **Design Brief**: Updated the Stitch brief to focus on staged screen states, a stable reference pack, and stronger reuse of the older onboarding structure and painterly world atmosphere.
+- **Backlog**: Reframed active tasks around staged Stitch passes, root-first SSR validation, and the decision surface for monitoring and Vercel-only launch measurement.
+
+### Planned
+- **Analytics Posture**: Land of Machala now treats Vercel Web Analytics as the default lightweight measurement direction, with Google Search Console as the primary source for search-query visibility.
+
+## [2026-04-12] - Github Guidance Migration & Quality Surface
+
+### Added
+- **Repository Guidance**: Introduced a `.github/` instruction stack with focused guidance for architecture, Next.js App Router, clean code, imports, testing, design system boundaries, and i18n or action patterns.
+- **Quality Scripts**: Added explicit `typecheck`, formatting, lint-fix, and Playwright scripts to make the repository easier to validate as a reusable Next.js seed.
+
+### Changed
+- **Documentation**: Rewrote `docs/ARCHITECTURE.md` to describe the current runtime structure, layered UI model, and realistic future fullstack boundaries.
+- **README**: Updated the command surface and clarified that the repository is being prepared as a strong seed for future Next.js fullstack work.
+- **Storybook Alignment**: Switched Storybook type imports to the installed Next.js renderer package and tightened ESLint ignores so linting focuses on source code instead of generated artifacts.
+
+### Fixed
+- **Type Safety**: Restored a clean `npm run typecheck` baseline by updating outdated auth test fixtures to match current typed UI label contracts.
+- **Lint Baseline**: Reduced ESLint noise by excluding generated Storybook output and other build artifacts from the lint surface.
+
+## [2026-04-13] - Fullstack Guidance Expansion
+
+### Added
+- **Architecture Guidance**: Restored `architecture.instructions.md` with explicit separation between App Router route layouts and reusable UI layout prefabs.
+- **Fullstack Guidance**: Added `data-and-state.instructions.md` to define server actions, route handlers, cache strategy, client state selection, and when not to default to TanStack Query, Zustand, or similar tools.
+- **I18n Guidance**: Restored `i18n-and-actions.instructions.md` with server-first translation rules for story-heavy content.
+
+### Changed
+- **Instruction Stack**: Refined `.github/copilot-instructions.md`, `next-app-router.instructions.md`, `design-system.instructions.md`, and `testing.instructions.md` to reduce overlap and better reflect a large Next.js fullstack project.
+- **Motion Guidance**: Shifted repository guidance to CSS-first motion for simple transitions and Framer Motion only for complex layout or presence choreography.
+- **Styling Guidance**: Clarified that `src/app/globals.css` is acceptable as the current entrypoint, but larger styling systems should split into `src/styles/` modules while preserving a single root import.
+- **Backlog Handling**: Simplified local task tracking by keeping `local/TODOS.md` as a lightweight backlog and removing `local/INSIGHTS.md`.
+
+## [2026-04-13] - Backend Architecture Proposal
+
+### Added
+- **Backend Proposal**: Added `docs/BACKEND_ARCHITECTURE.md` with a recommended route surface, session model, persistence strategy, auth defaults, storage rules, server action vs route handler guidance, and launch hardening direction.
+- **Guidance Strategy**: Added `docs/GITHUB_GUIDANCE_STRATEGY.md` to define what should stay reusable across future fullstack projects and what should remain repository-specific.
+- **Launch Checklist**: Added `docs/LAUNCH_CHECKLIST.md` covering domain strategy, Vercel setup, SEO, analytics, security, persistence, and launch hardening.
+
+### Changed
+- **Repository Guidance**: Linked the new backend architecture proposal from `.github/copilot-instructions.md`.
+- **Backlog**: Added preparation tasks for redesign, route surface confirmation, backend stack choice, and production observability.
  
 ## [2026-03-06] - CharacterBox Layout & Symmetry
 
