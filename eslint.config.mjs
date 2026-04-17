@@ -14,8 +14,26 @@ const eslintConfig = defineConfig([
     'out/**',
     'build/**',
     'next-env.d.ts',
+    'coverage/**',
+    'playwright-report/**',
+    'storybook-static/**',
+    'test-results/**',
+    'local/**',
   ]),
   ...storybook.configs['flat/recommended'],
+  {
+    files: ['src/**/*.test.{ts,tsx}', 'src/**/*.stories.tsx', 'src/test/setup.ts', '.storybook/**/*.{ts,tsx}'],
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-require-imports': 'off',
+    },
+  },
+  {
+    files: ['src/test/setup.ts'],
+    rules: {
+      'react/display-name': 'off',
+    },
+  },
 ])
 
 export default eslintConfig
