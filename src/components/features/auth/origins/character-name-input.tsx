@@ -13,6 +13,7 @@ export function CharacterNameInput({ name, placeholder, onChange }: CharacterNam
       placeholder={placeholder}
       onChange={(e) => onChange(e.target.value)}
       align="center"
+      font="fantasy"
     />
   )
 }

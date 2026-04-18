@@ -1,18 +1,20 @@
 # Land of Machala - Backlog
 
 ## Active Tasks
-- [ ] Prepare a staged Stitch redesign for landing/auth entry, registration, onboarding, and character creation using a stable reference pack.
-- [ ] Confirm the root-first SSR route model and minimal locale URL strategy before runtime implementation.
-- [ ] Choose the first backend stack: Postgres, Prisma, server-managed sessions, and no Redis on day one.
+
+- [ ] Produce a low-fidelity Stitch wireframe pass for the root landing, registration state, and onboarding state using modification-first prompts against the current approved shot.
+- [ ] Remove the remaining docs and runtime drift around the single canonical root surface.
+- [x] Keep active locale scope limited to Czech and English until real product demand justifies expansion.
+- [x] Introduce the first Postgres and Prisma skeleton instead of letting the cookie session prototype become permanent architecture.
 - [ ] Implement server-side character validation in the Origins wizard.
+- [ ] Replace the prototype cookie-backed root session snapshot with a real database-backed auth session and progression model.
 - [ ] Decide whether launch measurement should stay Vercel Analytics-only and whether monitoring justifies a public shallow `/health` endpoint.
-- [ ] Add loading skeletons or route-level loading states for auth transitions.
-- [ ] Decide whether route-level `loading.tsx` or feature-level suspense boundaries fit the current auth flow better.
 
 ## Product Ideas
+
 - [ ] Add server-backed save or resume flow so SSR can restore the player to the correct game state.
 - [ ] Add codex or journal surfaces for revealed lore, quests, and discovered places.
-- [ ] Add release-readiness checklist for domain, Vercel deployment, Search Console, analytics, and launch hardening.
+- [ ] Add release-readiness checklist for domain, Vercel deployment, Search Console, analytics, migrations, and launch hardening.
 - [ ] Evaluate production error tracking and decide whether Sentry is the default choice.
 - [ ] Add accessibility and reduced-motion review pass for gameplay UI.
-- [ ] Add localization rollout plan with Czech and English first, then additional locales based on real demand.
+- [ ] Revisit additional locales only after Czech and English flows are stable in production terms.

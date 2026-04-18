@@ -7,14 +7,7 @@ interface InputProps extends Omit<React.ComponentProps<'input'>, 'className'> {
   font?: 'fantasy' | 'body'
 }
 
-function Input({
-  type,
-  leftIcon,
-  rightIcon,
-  align = 'left',
-  font = 'fantasy',
-  ...props
-}: InputProps) {
+function Input({ type, leftIcon, rightIcon, align = 'left', font = 'body', ...props }: InputProps) {
   const input = (
     <input
       type={type}

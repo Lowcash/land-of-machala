@@ -17,6 +17,7 @@ interface StepCreationProps {
   onNameChange: (name: string) => void
   onRandomize: () => void
   onFinish: () => void
+  isLoading?: boolean
   selectedRaceId: string
   onRaceSelect: (id: string) => void
   selectedClassId: string
@@ -34,6 +35,7 @@ export function StepCreation({
   onNameChange,
   onRandomize,
   onFinish,
+  isLoading,
   selectedRaceId,
   onRaceSelect,
   selectedClassId,
@@ -62,6 +64,7 @@ export function StepCreation({
           stats={stats}
           onFinish={onFinish}
           canFinish={canFinish}
+          isLoading={isLoading}
           statLabels={statLabels}
           uiLabels={uiLabels}
           raceBonuses={selectedRace?.bonuses}
@@ -138,7 +141,14 @@ export function StepCreation({
       </CreationGrid>
 
       <FeatureSection md={{ display: 'none' }}>
-        <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          onClick={onFinish}
+          disabled={!canFinish || isLoading}
+          loading={isLoading}
+        >
           {uiLabels.finish}
         </Button>
       </FeatureSection>

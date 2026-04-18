@@ -2,8 +2,6 @@
 
 import { useCallback, useMemo, useState } from 'react'
 
-import { useRouter } from '@/i18n/routing'
-
 import { generateRandomName } from '@/lib/game/data/names'
 import type {
   TranslatedClassInfo,
@@ -11,6 +9,8 @@ import type {
   TranslatedStoryStep,
   TranslatedStoryStepChoice,
 } from '@/lib/game/data/shared'
+
+import type { OriginsCompletionValues } from './types'
 
 interface UseCharacterCreationProps {
   races: TranslatedRaceInfo[]
@@ -107,16 +107,26 @@ export function useOrigins({
   races,
   classes,
   steps,
-}: UseCharacterCreationProps & { steps: TranslatedStoryStep[] }) {
-  const router = useRouter()
+  onFinish,
+}: UseCharacterCreationProps & {
+  steps: TranslatedStoryStep[]
+  onFinish?: (payload: OriginsCompletionValues) => void | Promise<void>
+}) {
   const [phase, setPhase] = useState<'tutorial' | 'creation'>('tutorial')
 
   const character = useCharacterCreation({ races, classes })
   const narrative = useOriginsNarrative({ steps, onEnd: () => setPhase('creation') })
 
   const handleFinish = useCallback(() => {
-    router.push('/')
-  }, [router])
+    if (onFinish) {
+      onFinish({
+        name: character.characterName.trim(),
+        raceId: character.selectedRaceId,
+        classId: character.selectedClassId,
+      })
+      return
+    }
+  }, [character.characterName, character.selectedClassId, character.selectedRaceId, onFinish])
 
   return {
     phase,

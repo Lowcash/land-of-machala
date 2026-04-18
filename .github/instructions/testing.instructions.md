@@ -11,7 +11,7 @@ This repository uses multiple validation layers. Keep each layer focused and int
 - Use Vitest for unit and component-level behavior.
 - Use Storybook and Storybook-driven tests for reusable UI and design-system coverage.
 - Use Playwright for critical end-to-end user journeys under `e2e/`.
-- Use Chromatic or equivalent visual checks when reusable UI changes need regression confidence, but treat it as optional until the UI library and review process justify the cost.
+- Use targeted visual checks only when reusable UI changes need regression confidence. Default to Storybook plus focused Playwright coverage before adding another hosted review layer.
 
 ## Placement & Scope
 

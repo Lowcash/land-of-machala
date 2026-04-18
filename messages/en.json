@@ -92,6 +92,19 @@
         "ready_to_start": "Ready for the Journey",
         "finish": "Enter the World"
       }
+    },
+    "Root": {
+      "meta_title": "Land of Machala",
+      "meta_description": "One canonical root surface for public entry and server-resolved continuation.",
+      "continuation_title": "The journey continues",
+      "continuation_description": "The root now decides server-side whether to show public entry, onboarding, or a resumed traveler state.",
+      "continuation_note": "This is still a pre-alpha continuation shell backed by a cookie session snapshot. It will later be replaced by the real gameplay runtime and a database-backed session layer.",
+      "session_label": "Session state",
+      "status_guest": "Guest traveler",
+      "status_registered": "Registered traveler",
+      "status_returning": "Returning traveler",
+      "reset_label": "Return to public entry",
+      "prototype_location": "Machalan Foothold"
     }
   },
   "Common": {

@@ -12,7 +12,7 @@ import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import { LoginCard } from './card'
 import { LoginForm } from './form'
-import { LoginViewUI } from './view'
+import { LoginViewUI } from './ui'
 
 const meta: Meta<typeof LoginViewUI> = {
   title: 'Features/Auth/Login',

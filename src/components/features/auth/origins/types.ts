@@ -25,6 +25,12 @@ export interface CreationUiLabels extends SelectionUiLabels {
   randomize: string
 }
 
+export interface OriginsCompletionValues {
+  name: string
+  raceId: string
+  classId: string
+}
+
 export interface OriginsUiLabels {
   tutorial: TutorialUiLabels
   creation: CreationUiLabels

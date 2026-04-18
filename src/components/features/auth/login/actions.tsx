@@ -1,7 +1,5 @@
 'use client'
 
-import { useRouter } from '@/i18n/routing'
-
 import { Button } from '@/components/ui/core/button'
 import { ActionGroup } from '@/components/ui/prefabs/structure'
 
@@ -20,22 +18,12 @@ export function LoginActions({
   guestLabel,
   registerLabel,
 }: LoginActionsProps) {
-  const router = useRouter()
-
   const handleGuestAccess = () => {
-    if (onGuestAccess) {
-      onGuestAccess()
-      return
-    }
-    router.push('/origins')
+    onGuestAccess?.()
   }
 
   const handleRegister = () => {
-    if (onRegister) {
-      onRegister()
-      return
-    }
-    router.push('/register')
+    onRegister?.()
   }
 
   return (

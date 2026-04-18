@@ -2,34 +2,39 @@
 
 A premium medieval fantasy RPG experience built with Next.js and modernized Tailwind CSS.
 
-This repository is also being shaped into a strong seed for future Next.js fullstack projects. The current focus is on keeping runtime boundaries, reusable UI layers, and validation tooling disciplined before extracting anything shared.
+The current focus is a pre-alpha reset: one canonical root surface, hidden locale handling, Czech and English only, and a pragmatic MVP architecture before deeper backend or final visual polish.
 
-## ⚔️ Key Features
-- **Premium Aesthetics**: Hand-crafted UI with medieval textures, parchment effects, and glassmorphism.
-- **Narrative Onboarding**: Interactive story-driven tutorial to immerse players in the world.
-- **Dynamic Character Creation**: Flexible system for choosing races, classes, and starting attributes.
-- **Modern Tech Stack**: Next.js 15+, Tailwind CSS 4+ (modern variables), and Framer Motion for animations.
-- **Internationalization**: Full support for multiple languages using `next-intl`.
-- **Component-Driven Development**: Robust design system documented and tested via Storybook.
+## Architecture
 
-## 🛠️ Commands
-| Command | Purpose |
-| :--- | :--- |
-| **`npm run dev`** | Start the development server. |
-| **`npm run typecheck`** | Run TypeScript without emitting output. |
-| **`npm run lint`** | Run ESLint across the repository. |
-| **`npm run lint:fix`** | Apply automatic ESLint fixes where possible. |
-| **`npm run format:check`** | Verify Prettier formatting. |
-| **`npm run format`** | Format the repository with Prettier. |
-| **`npm run test`** | Run the Vitest suite. |
-| **`npm run test:e2e`** | Run Playwright end-to-end tests. |
-| **`npm run test:e2e:ui`** | Open Playwright UI mode. |
-| **`npm run storybook`** | Launch the component documentation environment. |
-| **`npm run build-storybook`** | Build the Storybook site. |
-| **`npm run build`** | Create a production-ready bundle. |
-| **`npm run chromatic`** | Publish Storybook snapshots to Chromatic. |
+The top-level architecture overview and doc map live in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## 📚 Documentation
-For detailed technical architecture and design system principles, see [ARCHITECTURE.md](docs/ARCHITECTURE.md).
+Frontend runtime, UI layering, styling, and testing boundaries live in [docs/FRONTEND_ARCHITECTURE.md](docs/FRONTEND_ARCHITECTURE.md).
+
+The current backend direction, persistence posture, and session model live in [docs/BACKEND_ARCHITECTURE.md](docs/BACKEND_ARCHITECTURE.md).
+
+## Development Setup
+
+```bash
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+## Key Commands
+
+- `npm run dev` starts the local development server.
+- `npm run lint` runs ESLint.
+- `npm run typecheck` runs TypeScript without emitting output.
+- `npm run test` runs the Vitest suite.
+- `npm run test:e2e` runs the Playwright end-to-end suite.
+- `npm run storybook` starts Storybook.
+- `npm run build` creates a production build.
+- `npm run preview` runs the production build locally on `127.0.0.1:3000`.
+- `npm run db:validate` validates the Prisma schema and datasource setup.
+- `npm run db:generate` generates the Prisma client.
+- `npm run db:migrate:dev` creates and applies a local Prisma migration.
+- `npm run format` formats the repository with Prettier.
+
+For the full script surface, see `package.json`.
 
 Repository-specific coding guidance lives under `.github/`, with focused instruction files for architecture, App Router, testing, design system boundaries, and i18n or mutation patterns.

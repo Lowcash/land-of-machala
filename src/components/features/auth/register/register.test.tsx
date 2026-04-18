@@ -1,8 +1,8 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { RegisterViewUI } from './view'
 import type { RegisterUiLabels } from './types'
+import { RegisterViewUI } from './ui'
 
 /** Mock next/navigation */
 vi.mock('next/navigation', () => ({

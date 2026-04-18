@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/src/generated/prisma
 /.pnp
 .pnp.*
 .yarn/*
@@ -28,6 +29,7 @@ playwright-report
 # misc
 .DS_Store
 *.pem
+debug-storybook.log
 
 # debug
 npm-debug.log*
@@ -37,6 +39,7 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+!.env.example
 
 # vercel
 .vercel

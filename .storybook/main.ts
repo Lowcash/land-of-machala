@@ -6,7 +6,6 @@ const config: StorybookConfig = {
     '@storybook/addon-onboarding',
     '@storybook/addon-docs',
     '@storybook/addon-a11y',
-    '@chromatic-com/storybook',
     '@storybook/addon-vitest',
   ],
   framework: {

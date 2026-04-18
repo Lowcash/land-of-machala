@@ -92,6 +92,19 @@
         "ready_to_start": "Připraven na cestu",
         "finish": "Vstoupit do světa"
       }
+    },
+    "Root": {
+      "meta_title": "Land of Machala",
+      "meta_description": "Jedna kořenová vstupní plocha pro veřejný vstup i serverem rozhodované pokračování.",
+      "continuation_title": "Cesta pokračuje",
+      "continuation_description": "Root nyní serverově rozhoduje, zda uvidíš veřejný vstup, onboarding, nebo návrat do světa.",
+      "continuation_note": "Tohle je zatím pouze pre-alpha pokračovací shell nad cookie session snapshotem. Později ho nahradí skutečný herní runtime a databázová session vrstva.",
+      "session_label": "Stav session",
+      "status_guest": "Hostující poutník",
+      "status_registered": "Registrovaný poutník",
+      "status_returning": "Navrátivší se poutník",
+      "reset_label": "Vrátit se na veřejný vstup",
+      "prototype_location": "Machalské předhradí"
     }
   },
   "Common": {

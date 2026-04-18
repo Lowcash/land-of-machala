@@ -1,11 +1,4 @@
-import { getTranslations } from 'next-intl/server'
-
-import {
-  resolveFooterProps,
-  resolveTranslatedChangelog,
-  resolveTranslatedLoreQuote,
-  resolveTranslatedStats,
-} from '@/lib/game/utils/resolvers'
+'use client'
 
 import { GameAccordion } from '@/components/ui/navigation/accordion'
 import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
@@ -21,9 +14,10 @@ import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { LoginCard } from './card'
+import type { LoginFormValues } from './form'
 import type { LoginUiLabels } from './types'
 
-interface LoginViewUIProps {
+export interface LoginViewUIProps {
   hero: {
     title: string
     subtitle: string
@@ -44,6 +38,10 @@ interface LoginViewUIProps {
   footer: FooterProps
   uiLabels: LoginUiLabels
   backgroundSrc: string
+  onLogin?: (values: LoginFormValues) => void | Promise<void>
+  onRegister?: () => void
+  onGuestAccess?: () => void
+  isLoading?: boolean
 }
 
 export function LoginViewUI({
@@ -56,6 +54,10 @@ export function LoginViewUI({
   footer,
   uiLabels,
   backgroundSrc,
+  onLogin,
+  onRegister,
+  onGuestAccess,
+  isLoading,
 }: LoginViewUIProps) {
   return (
     <EntranceStack fullHeight fullWidth py="xl">
@@ -65,10 +67,14 @@ export function LoginViewUI({
         <FeatureSection gap="xl">
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
           <LoginCard
+            onLogin={onLogin}
             guestLabel={card.guestLabel}
             registerLabel={card.registerLabel}
             orLabel={card.orLabel}
             uiLabels={uiLabels}
+            onRegister={onRegister}
+            onGuestAccess={onGuestAccess}
+            isLoading={isLoading}
           />
         </FeatureSection>
 
@@ -99,48 +105,5 @@ export function LoginViewUI({
         </FeatureSection>
       </AuthGrid>
     </EntranceStack>
-  )
-}
-
-export async function LoginView({ backgroundSrc }: { backgroundSrc: string }) {
-  const t = await getTranslations('Auth.Login')
-  const tc = await getTranslations('Common')
-  const tg = await getTranslations('Game')
-
-  const uiLabels = {
-    email: t('form.email'),
-    emailPlaceholder: t('form.emailPlaceholder'),
-    password: t('form.password'),
-    submit: t('form.submit'),
-    rememberMe: t('form.rememberMe'),
-    validation: {
-      emailInvalid: t('form.validation.emailInvalid'),
-      passwordRequired: t('form.validation.passwordRequired'),
-    },
-  }
-
-  return (
-    <LoginViewUI
-      hero={{
-        title: 'Land of Machala',
-        subtitle: t('subtitle'),
-        description: t('description'),
-      }}
-      card={{
-        guestLabel: t('actions.guest'),
-        registerLabel: t('actions.register'),
-        orLabel: tc('or'),
-      }}
-      accordion={{
-        statsTitle: t('stats_title'),
-        changelogTitle: t('changelog_title'),
-      }}
-      quote={resolveTranslatedLoreQuote(tg)}
-      stats={resolveTranslatedStats(tg)}
-      changes={resolveTranslatedChangelog(tg)}
-      footer={resolveFooterProps(tc)}
-      uiLabels={uiLabels}
-      backgroundSrc={backgroundSrc}
-    />
   )
 }

@@ -3,6 +3,8 @@
 This document proposes the first serious backend and persistence shape for Land of Machala.
 It is intentionally pragmatic: strong enough for production growth, but still simple enough to build inside the Next.js application before splitting anything into separate services.
 
+Use `docs/ARCHITECTURE.md` for the top-level overview and `docs/FRONTEND_ARCHITECTURE.md` for the frontend runtime and UI surface.
+
 ## 1. Goals
 
 - keep the game server-first and story-safe
@@ -18,23 +20,25 @@ For this project, a small route surface is a strength.
 
 ### Recommended Canonical Surface
 
-- `/{locale}`: canonical public and authenticated surface
+- `/`: canonical public and authenticated surface on the primary domain
 
 ### Root-First SSR Model
 
 For the current preferred direction:
 
-- anonymous users see the landing page, product framing, and auth entry at `/{locale}`
+- anonymous users see the landing page, product framing, and auth entry at `/`
 - authenticated users see the gameplay shell at the same canonical route
 - onboarding and character creation remain authenticated shell states rather than separate permanent public routes
 - internal screens such as character, inventory, journal, and map remain shell states rather than top-level routes
+
+Locale should be resolved through cookie, session, or request-level preference rather than through a visible locale prefix in the public URL.
 
 This keeps the product surface extremely small while still allowing SSR to render the correct experience from session state.
 
 ### Deferred or Optional Routes
 
-- `/{locale}/account`: profile, settings, password or session management if these become meaningfully distinct
-- `/{locale}/codex`: public or semi-public lore, changelog, and discoverable game universe content if this becomes part of acquisition or retention
+- `/account`: profile, settings, password or session management if these become meaningfully distinct
+- `/codex`: public or semi-public lore, changelog, and discoverable game universe content if this becomes part of acquisition or retention
 - separate `login`, `register`, or `origins` routes only if future UX or technical constraints clearly justify splitting them back out
 
 ### Why One Canonical Surface Can Work Here
@@ -53,7 +57,7 @@ For this project, that means:
 - minimal accidental duplicates for the same experience
 - shell state carries most in-game variation instead of route sprawl
 
-Example: if the app renders landing for anonymous users and the game shell for authenticated users at `/{locale}`, then alternate routes like `/{locale}/world`, `/{locale}/chapter-1`, `/{locale}/resume`, or permanent `/{locale}/inventory` should not be introduced unless there is a real product reason that outweighs the added complexity.
+Example: if the app renders landing for anonymous users and the game shell for authenticated users at `/`, then alternate routes like `/world`, `/chapter-1`, `/resume`, or permanent `/inventory` should not be introduced unless there is a real product reason that outweighs the added complexity.
 
 ## 4. Backend Topology
 
@@ -430,20 +434,19 @@ The first implementation slice should stay small and explicit.
 
 ### First Server Actions
 
-- `src/app/[locale]/(auth)/login/actions.ts`
-  - `loginAction(input)`
-  - validates credentials
-  - creates session
-  - returns typed success or field/action errors
+- `src/app/[locale]/actions/root-session.ts`
+  - current prototype action boundary for root entry, onboarding completion, and session reset
+  - acceptable as a pre-alpha bridge while runtime ownership is moved server-side
+  - should later be replaced or split into database-backed auth, session, and onboarding actions
 
-- `src/app/[locale]/(auth)/register/actions.ts`
-  - `registerAction(input)`
-  - validates payload
-  - creates user and session
-  - returns typed success or field/action errors
+- `src/app/[locale]/actions/auth.ts`
+  - future production boundary for login and registration mutations
+  - validates credentials or payload
+  - creates user and database-backed session
+  - returns typed success or field or action errors
 
-- `src/app/[locale]/(auth)/origins/actions.ts`
-  - `completeOriginsAction(input)`
+- `src/app/[locale]/actions/origins.ts`
+  - future production boundary for onboarding completion
   - validates race, class, name, and any server-owned onboarding constraints
   - persists character and initial run state
   - redirects or returns typed next-step info

@@ -16,6 +16,7 @@ interface CharacterIdentityProps {
   stats: CharacterStats
   onFinish: () => void
   canFinish: boolean
+  isLoading?: boolean
   statLabels: Record<string, string>
   uiLabels: CreationUiLabels
   raceBonuses?: string
@@ -29,6 +30,7 @@ export function CharacterIdentity({
   stats,
   onFinish,
   canFinish,
+  isLoading,
   statLabels,
   uiLabels,
   raceBonuses,
@@ -50,7 +52,7 @@ export function CharacterIdentity({
       />
 
       <ActionGroup align="center">
-        <Button variant="secondary" size="action" onClick={onRandomize}>
+        <Button variant="secondary" size="action" onClick={onRandomize} disabled={isLoading}>
           <DicesIcon size="md" />
           <Text variant="small" font="fantasy">
             {uiLabels.randomize}
@@ -68,7 +70,14 @@ export function CharacterIdentity({
       />
 
       <ActionGroup display="none" md={{ display: 'flex' }}>
-        <Button variant="primary" size="lg" fullWidth onClick={onFinish} disabled={!canFinish}>
+        <Button
+          variant="primary"
+          size="lg"
+          fullWidth
+          onClick={onFinish}
+          disabled={!canFinish || isLoading}
+          loading={isLoading}
+        >
           {uiLabels.finish}
         </Button>
       </ActionGroup>

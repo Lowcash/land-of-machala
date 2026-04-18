@@ -1,12 +1,12 @@
 'use client'
 
+import type { CompleteRootOnboardingInput } from '@/lib/auth/root-session'
 import type {
   TranslatedClassInfo,
   TranslatedRaceInfo,
   TranslatedStoryStep,
 } from '@/lib/game/data/shared'
 
-import { FadeIn } from '@/components/ui/prefabs/animations/fade-in'
 import { Presence } from '@/components/ui/prefabs/animations/presence'
 import { Background } from '@/components/ui/shared/background'
 
@@ -22,6 +22,8 @@ interface OriginsViewProps {
   statLabels: Record<string, string>
   uiLabels: OriginsUiLabels
   backgroundSrc: string
+  onFinish?: (payload: CompleteRootOnboardingInput) => void | Promise<void>
+  isLoading?: boolean
 }
 
 export function OriginsViewUI({
@@ -31,6 +33,8 @@ export function OriginsViewUI({
   statLabels,
   uiLabels,
   backgroundSrc,
+  onFinish,
+  isLoading,
 }: OriginsViewProps) {
   const {
     phase,
@@ -48,7 +52,7 @@ export function OriginsViewUI({
     handleRandomize,
     handleFinish,
     canFinish,
-  } = useOrigins({ races, classes, steps })
+  } = useOrigins({ races, classes, steps, onFinish })
 
   return (
     <>
@@ -75,6 +79,7 @@ export function OriginsViewUI({
             onClassSelect={setSelectedClassId}
             stats={totalStats}
             canFinish={canFinish}
+            isLoading={isLoading}
             races={races}
             classes={classes}
             statLabels={statLabels}

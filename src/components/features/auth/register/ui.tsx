@@ -1,10 +1,6 @@
-import { getTranslations } from 'next-intl/server'
+'use client'
 
-import {
-  resolveFooterProps,
-  resolveTranslatedBenefits,
-  resolveTranslatedLoreQuote,
-} from '@/lib/game/utils/resolvers'
+import type { MouseEvent } from 'react'
 
 import { HStack } from '@/components/ui/core/stack'
 import { Text } from '@/components/ui/core/typography'
@@ -19,9 +15,10 @@ import { Background } from '@/components/ui/shared/background'
 import { Footer, type FooterProps } from '@/components/ui/shared/footer'
 
 import { RegisterCard } from './card'
+import type { RegisterFormValues } from './form'
 import type { RegisterUiLabels } from './types'
 
-interface RegisterViewUIProps {
+export interface RegisterViewUIProps {
   hero: {
     title: string
     subtitle: string
@@ -43,6 +40,10 @@ interface RegisterViewUIProps {
   footer: FooterProps
   uiLabels: RegisterUiLabels
   backgroundSrc: string
+  onRegister?: (values: RegisterFormValues) => void | Promise<void>
+  loginHref?: string
+  onLoginNavigate?: () => void
+  isLoading?: boolean
 }
 
 export function RegisterViewUI({
@@ -54,20 +55,33 @@ export function RegisterViewUI({
   footer,
   uiLabels,
   backgroundSrc,
+  onRegister,
+  loginHref,
+  onLoginNavigate,
+  isLoading,
 }: RegisterViewUIProps) {
+  const handleLoginClick = onLoginNavigate
+    ? (event: MouseEvent<HTMLAnchorElement>) => {
+        event.preventDefault()
+        onLoginNavigate()
+      }
+    : undefined
+
   return (
     <EntranceStack fullHeight fullWidth py="xl">
       <Background src={backgroundSrc} />
       <AuthGrid>
         <FeatureSection gap="xl">
           <BrandedHero title={hero.title} subtitle={hero.subtitle} description={hero.description} />
-          <RegisterCard uiLabels={uiLabels} />
+          <RegisterCard uiLabels={uiLabels} onRegister={onRegister} isLoading={isLoading} />
 
           <HStack gap="xs" justify="center" fullWidth>
             <Text variant="primary" color="secondary">
               {footerLinks.hasAccount}
             </Text>
-            <TextLink href="/login">{footerLinks.login}</TextLink>
+            <TextLink href={loginHref ?? '/'} onClick={handleLoginClick}>
+              {footerLinks.login}
+            </TextLink>
           </HStack>
         </FeatureSection>
 
@@ -94,51 +108,5 @@ export function RegisterViewUI({
         </FeatureSection>
       </AuthGrid>
     </EntranceStack>
-  )
-}
-
-export async function RegisterView({ backgroundSrc }: { backgroundSrc: string }) {
-  const t = await getTranslations('Auth.Registration')
-  const tc = await getTranslations('Common')
-  const tg = await getTranslations('Game')
-
-  const uiLabels = {
-    email: t('form.email'),
-    emailPlaceholder: t('form.emailPlaceholder'),
-    password: t('form.password'),
-    confirmPassword: t('form.confirmPassword'),
-    submit: t('form.submit'),
-    validation: {
-      emailInvalid: t('form.validation.emailInvalid'),
-      passwordLength: t('form.validation.passwordLength'),
-      passwordRequired: t('form.validation.passwordRequired'),
-      passwordMismatch: t('form.validation.passwordMismatch'),
-    },
-  }
-
-  return (
-    <RegisterViewUI
-      hero={{
-        title: 'Land of Machala',
-        subtitle: t('subtitle'),
-        description: t('description'),
-      }}
-      footerLinks={{
-        hasAccount: t('form.hasAccount'),
-        login: t('form.login'),
-      }}
-      accordion={{
-        benefitsTitle: t('benefits_title'),
-      }}
-      benefits={{
-        title: t('benefits_title'),
-        description: t('benefits_title_description'),
-        items: resolveTranslatedBenefits(tg),
-      }}
-      quote={resolveTranslatedLoreQuote(tg)}
-      footer={resolveFooterProps(tc)}
-      uiLabels={uiLabels}
-      backgroundSrc={backgroundSrc}
-    />
   )
 }

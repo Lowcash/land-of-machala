@@ -1,11 +1,10 @@
 /// <reference types="vitest" />
-
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
 import { playwright } from '@vitest/browser-playwright'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import tsconfigPaths from 'vite-tsconfig-paths'
 import type { UserConfig as ViteUserConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
 
 const dirname =
   typeof __dirname !== 'undefined' ? __dirname : path.dirname(fileURLToPath(import.meta.url))

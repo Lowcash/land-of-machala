@@ -7,7 +7,7 @@ import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import { RegisterCard } from './card'
 import { RegisterForm } from './form'
-import { RegisterViewUI } from './view'
+import { RegisterViewUI } from './ui'
 
 const meta: Meta<typeof RegisterViewUI> = {
   title: 'Features/Auth/Register',

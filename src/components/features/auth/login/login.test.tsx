@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import { LoginViewUI } from './view'
+import { LoginViewUI } from './ui'
 
 /** Mock next/navigation */
 vi.mock('next/navigation', () => ({
@@ -35,7 +35,6 @@ vi.mock('@/i18n/routing', () => ({
   usePathname: () => '/',
   useRouter: () => ({ push: vi.fn(), replace: vi.fn(), back: vi.fn() }),
 }))
-
 
 /** Mock ResizeObserver */
 global.ResizeObserver = class ResizeObserver {
