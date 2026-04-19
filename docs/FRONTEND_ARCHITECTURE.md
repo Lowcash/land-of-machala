@@ -3,7 +3,16 @@
 This document covers the frontend runtime, UI structure, styling ownership, localization surface, and validation posture.
 It pairs with `docs/ARCHITECTURE.md` for the overview and `docs/BACKEND_ARCHITECTURE.md` for persistence and server-side growth.
 
-## 1. Runtime Structure
+## 1. Goals & Current Frontend Posture
+
+- keep the public route surface intentionally small
+- keep route files server-first and push interactivity into focused client leaves
+- keep the UI system layered so shared patterns stay reusable without forcing premature abstraction
+- let visual exploration converge before expanding component-level styling primitives
+
+Current posture: the repository is in a reset phase. The root route is the canonical public surface and the first server-owned experience split already happens there.
+
+## 2. Runtime & Route Surface
 
 The repository is a Next.js 16 App Router application under `src/app/`.
 
@@ -22,7 +31,7 @@ Default posture: keep route files server-first and push interactivity into focus
 - Login, registration, and onboarding should behave as entry states of the root surface, not as separate canonical path routes.
 - The root route now performs the first server-owned experience split: anonymous entry, onboarding, and authenticated continuation are resolved from a server-readable session snapshot instead of from public route paths.
 
-## 2. Layered UI Model
+## 3. UI Ownership Model
 
 The repository uses a layered component system under `src/components/`.
 
@@ -39,7 +48,7 @@ The intended direction is simple:
 - prefabs stabilize repeated layout and visual patterns
 - core primitives stay product-agnostic and small
 
-## 3. Styling & Design Direction
+## 4. Styling & Design Direction
 
 Styling is driven by Tailwind CSS 4 with a CSS-first setup in `src/app/globals.css`.
 
@@ -56,7 +65,7 @@ Styling is driven by Tailwind CSS 4 with a CSS-first setup in `src/app/globals.c
 - Once one branch becomes the accepted direction, new prompts and implementations should reduce variance rather than increase it.
 - Typography, inner-container structure, footer behavior, and major visual primitives should converge early once the product direction feels right.
 
-## 4. Internationalization & Navigation
+## 5. Internationalization & Navigation
 
 Internationalization is handled through `next-intl`.
 
@@ -68,7 +77,7 @@ Current active locale scope is intentionally narrow: Czech and English only.
 
 Keep translation ownership server-first when possible and avoid shipping large message payloads into client-only code unless it is clearly needed.
 
-## 5. Testing Surface
+## 6. Testing & Validation Surface
 
 The repository already has the shape of a strong multi-layer validation setup:
 
@@ -78,19 +87,19 @@ The repository already has the shape of a strong multi-layer validation setup:
 
 The next step is operational consistency: align scripts, docs, and expected pre-merge checks so the validation surface is easy to run and reason about.
 
-## 6. Current Strengths
+## 7. Current Strengths
 
 - App Router plus hidden-locale-ready `next-intl` structure is already in place.
 - The UI layer has real separation between core primitives, prefabs, and features.
 - The repository already uses modern tooling: React 19, Next.js 16, Storybook, Vitest, Playwright, Tailwind v4, and `next-intl`.
 
-## 7. Current Frontend Gaps
+## 8. Current Frontend Gaps
 
 - The current root session snapshot is a pre-alpha cookie-backed prototype, not the final database-backed auth session model.
 - Locale still shapes the internal app structure more than the desired public experience.
 - The design system is richer than the immediate MVP needs, so the project should stop expanding public UI surface area until the root experience settles.
 
-## 8. Practical Development Workflow
+## 9. Practical Development Workflow
 
 1. Keep the public route surface minimal and treat new routes as exceptions, not defaults.
 2. Build only the reusable UI needed to support the current root flow cleanly.

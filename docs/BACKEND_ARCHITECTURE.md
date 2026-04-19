@@ -5,13 +5,15 @@ It is intentionally pragmatic: strong enough for production growth, but still si
 
 Use `docs/ARCHITECTURE.md` for the top-level overview and `docs/FRONTEND_ARCHITECTURE.md` for the frontend runtime and UI surface.
 
-## 1. Goals
+## 1. Goals & Current Backend Posture
 
 - keep the game server-first and story-safe
 - keep the client interactive but not authoritative
 - keep the first backend topology simple
 - choose persistence that supports iterative game design
 - make future extraction possible without overengineering now
+
+Current posture: keep the route surface small, move auth and progression ownership server-side, and treat the current cookie-backed root session as a temporary bridge rather than the final auth system.
 
 ## 2. Recommended Route Surface
 
@@ -407,7 +409,19 @@ Vercel gives you CDN and baseline edge protection, but application-level abuse c
 - accessibility pass on landing and core game shell
 - Lighthouse run for landing route and critical public pages
 
-## 15. Recommended Implementation Order
+## 15. Current Backend Strengths
+
+- the repository already has an explicit root-first route posture instead of a vague future fullstack plan
+- Postgres plus Prisma is already chosen as the first persistence baseline, which removes a major architectural unknown
+- server-owned boundaries for auth, progression, and narrative-sensitive state are described clearly enough to implement incrementally
+
+## 16. Current Backend Gaps
+
+- the current root session is still a cookie-backed prototype, not a database-backed auth session model
+- password hashing, user persistence, and real session rotation are not yet wired end to end
+- character creation, active runs, and saved progression still need real persistence and resume flow integration
+
+## 17. Recommended Implementation Order
 
 1. Finalize a stronger landing and gameplay redesign in Stitch or a similar design tool.
 2. Implement backend foundation: env schema, Postgres, Prisma, server session model, password hashing, and auth boundaries.
@@ -417,7 +431,7 @@ Vercel gives you CDN and baseline edge protection, but application-level abuse c
 6. Add save or resume behavior and game state snapshot persistence.
 7. Add production hardening: rate limiting, error tracking, analytics, and launch checklist items.
 
-## 16. First Server Modules And Actions
+## 18. First Server Modules And Actions
 
 The first implementation slice should stay small and explicit.
 
@@ -467,7 +481,7 @@ Use one predictable result model for actions.
 
 This keeps the UI predictable and allows future reuse across forms and auth flows.
 
-## 17. Reuse Across Other Fullstack Projects
+## 19. Reuse Across Other Fullstack Projects
 
 Most of this approach is reusable.
 

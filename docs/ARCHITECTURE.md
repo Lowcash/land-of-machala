@@ -21,7 +21,6 @@ Current cross-cutting decisions:
 - `docs/FRONTEND_ARCHITECTURE.md` explains App Router structure, UI layering, styling, i18n, testing, and frontend workflow boundaries.
 - `docs/BACKEND_ARCHITECTURE.md` explains persistence, auth and session direction, server module ownership, and the current Postgres plus Prisma plan.
 - `.github/` instruction files define day-to-day coding rules for architecture, routing, testing, design system boundaries, and i18n or mutation behavior.
-- `local/STITCH_PROMPTS.md` is the active design-iteration workflow note for Stitch. It is a working design aid, not public architecture documentation.
 
 ## 3. Shared Constraints
 
