@@ -7,6 +7,16 @@ import { NotificationProvider } from '@/providers/notification-provider'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, setRequestLocale } from 'next-intl/server'
 
+import {
+  SITE_APP_NAME,
+  SITE_CATEGORY,
+  SITE_DEFAULT_DESCRIPTION,
+  SITE_DEFAULT_TITLE,
+  SITE_MANIFEST_PATH,
+  SITE_SHORT_NAME,
+  SITE_THEME_COLOR,
+} from '@/lib/site-config'
+
 import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 import '../globals.css'
@@ -38,11 +48,25 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-  title: 'Land of Machala',
-  description: 'An epic RPG adventure',
+  title: SITE_DEFAULT_TITLE,
+  description: SITE_DEFAULT_DESCRIPTION,
+  applicationName: SITE_APP_NAME,
+  category: SITE_CATEGORY,
+  manifest: SITE_MANIFEST_PATH,
+  appleWebApp: {
+    title: SITE_SHORT_NAME,
+    capable: true,
+    statusBarStyle: 'black-translucent',
+  },
+  formatDetection: {
+    telephone: false,
+    email: false,
+    address: false,
+  },
 }
 
 export const viewport: Viewport = {
+  themeColor: SITE_THEME_COLOR,
   viewportFit: 'cover',
   width: 'device-width',
   initialScale: 1,
