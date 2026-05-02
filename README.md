@@ -4,6 +4,19 @@ A premium medieval fantasy RPG experience built with Next.js and modernized Tail
 
 The current focus is a pre-alpha reset: one canonical root surface, hidden locale handling, Czech and English only, and a pragmatic MVP architecture before deeper backend or final visual polish.
 
+## Current Status
+
+This repository is canonical source of truth for architecture, design packets, Storybook baselines, and runtime implementation.
+
+Current repository contents include:
+
+- top-level architecture docs under `docs/`
+- scalable design packet docs under `docs/design/`
+- Storybook and Next.js runtime under `src/`, `.storybook/`, and project config
+- shared public assets under `public/`
+
+Archived design experiments may still live under `local/`, but active approval now happens in Storybook.
+
 ## Architecture
 
 The top-level architecture overview and doc map live in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
@@ -11,6 +24,8 @@ The top-level architecture overview and doc map live in [docs/ARCHITECTURE.md](d
 Frontend runtime, UI layering, styling, and testing boundaries live in [docs/FRONTEND_ARCHITECTURE.md](docs/FRONTEND_ARCHITECTURE.md).
 
 The current backend direction, persistence posture, and session model live in [docs/BACKEND_ARCHITECTURE.md](docs/BACKEND_ARCHITECTURE.md).
+
+Design system, root-flow packets, and canonical screen packets live under [docs/design/README.md](docs/design/README.md).
 
 ## Development Setup
 

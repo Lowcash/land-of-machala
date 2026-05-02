@@ -1,168 +1,72 @@
-import { type ElementType, type HTMLAttributes, forwardRef } from 'react'
+type CardPadding = 'cozy' | 'roomy' | 'none'
+type CardWidth = '2xl' | '4xl' | 'auto'
+type CardMinHeight = 'entry' | 'none'
+type CardLayout = 'none' | 'stack'
+type CardGap = '3' | '4' | '5' | '6' | '8'
 
-import { type VariantProps, cva } from 'class-variance-authority'
-
-import { cn } from '@/lib/utils'
-
-import { CardTitle } from '@/components/ui/prefabs/typography/card'
-
-import { Stack, type StackProps, splitLayoutProps } from './stack'
-
-const cardVariants = cva('transition-all backdrop-blur-md shadow-lg shadow-black/40', {
-  variants: {
-    variant: {
-      primary: 'border-2 border-(--color-primary) bg-black/80 shadow-xl',
-      secondary: 'border-2 border-(--color-secondary)/40 bg-black/60',
-      subtle: 'border-2 border-(--color-secondary)/20 bg-black/40 shadow-none',
-      ghost: 'border-none bg-transparent shadow-none backdrop-blur-none',
-      ornamental:
-        'border-2 border-(--color-secondary)/40 bg-black/80 shadow-xl ring-1 ring-white/5',
-    },
-    rounded: {
-      lg: 'rounded-lg',
-      md: 'rounded-md',
-      base: 'rounded',
-      full: 'rounded-full',
-      none: 'rounded-none',
-    },
-  },
-  defaultVariants: {
-    variant: 'subtle',
-    rounded: 'lg',
-  },
-})
-
-export interface CardRootProps
-  extends
-    Omit<HTMLAttributes<HTMLDivElement>, keyof StackProps | 'color'>,
-    Omit<StackProps, 'rounded' | 'border' | 'borderColor' | 'opacity' | 'shadow' | 'color'>,
-    VariantProps<typeof cardVariants> {
-  /** Map padding to Stack's p prop for backward compatibility */
-  padding?: StackProps['p']
+const CARD_PADDING_CLASS: Record<CardPadding, string> = {
+  cozy: 'p-5 md:p-6',
+  roomy: 'p-8 md:p-10',
+  none: '',
 }
 
-const CardRoot = forwardRef<HTMLElement, CardRootProps>((props, ref) => {
-  const { layoutProps, restProps } = splitLayoutProps(props)
-  const {
-    padding: legacyPadding,
-    children,
-    className,
-    ...otherProps
-  } = restProps as Record<string, unknown>
-  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
-  const { variant, rounded: cardRounded } = props
+const CARD_WIDTH_CLASS: Record<CardWidth, string> = {
+  '2xl': 'w-full max-w-2xl',
+  '4xl': 'w-full max-w-4xl',
+  auto: '',
+}
 
-  const finalPadding = layoutProps.p ?? (legacyPadding as StackProps['p']) ?? 'lg'
+const CARD_MIN_HEIGHT_CLASS: Record<CardMinHeight, string> = {
+  entry: 'lg:min-h-150',
+  none: '',
+}
 
+const CARD_LAYOUT_CLASS: Record<CardLayout, string> = {
+  none: '',
+  stack: 'flex flex-col',
+}
+
+const CARD_GAP_CLASS: Record<CardGap, string> = {
+  '3': 'gap-3',
+  '4': 'gap-4',
+  '5': 'gap-5',
+  '6': 'gap-6',
+  '8': 'gap-8',
+}
+
+type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & {
+  centered?: boolean
+  fillHeight?: boolean
+  gap?: CardGap
+  layout?: CardLayout
+  minHeight?: CardMinHeight
+  padding?: CardPadding
+  width?: CardWidth
+}
+
+export function Card({
+  centered = false,
+  fillHeight = false,
+  gap = '4',
+  layout = 'none',
+  minHeight = 'none',
+  padding = 'none',
+  width = 'auto',
+  ...props
+}: CardProps) {
   return (
-    <Stack
-      as={Component as ElementType}
-      data-slot="card"
-      ref={ref}
-      className={cn(cardVariants({ variant, rounded: cardRounded }), className as string)}
-      direction="col"
-      gap="md"
-      {...layoutProps}
-      p={finalPadding}
-      {...otherProps}
-    >
-      {children as React.ReactNode}
-    </Stack>
+    <div
+      className={[
+        'bg-surface-container/80 rounded-(--radius-card) border border-white/8 shadow-(--shadow-gilded) backdrop-blur-xl',
+        centered ? 'mx-auto' : '',
+        fillHeight ? 'h-full' : '',
+        CARD_PADDING_CLASS[padding],
+        CARD_WIDTH_CLASS[width],
+        CARD_MIN_HEIGHT_CLASS[minHeight],
+        CARD_LAYOUT_CLASS[layout],
+        layout === 'stack' ? CARD_GAP_CLASS[gap] : '',
+      ].join(' ')}
+      {...props}
+    />
   )
-})
-
-CardRoot.displayName = 'Card'
-
-type CardHeaderProps = StackProps
-
-const CardHeader = forwardRef<HTMLElement, CardHeaderProps>((props, ref) => {
-  const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as Record<string, unknown>
-  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
-
-  return (
-    <Stack
-      as={Component as ElementType}
-      data-slot="card-header"
-      ref={ref}
-      className={cn(
-        'border-b-2 border-(--color-secondary)/20 pb-2 last:mb-0 last:border-0 last:pb-0',
-        className as string
-      )}
-      direction="row"
-      align="center"
-      justify="between"
-      gap="none"
-      {...layoutProps}
-      {...otherProps}
-    >
-      {children as React.ReactNode}
-    </Stack>
-  )
-})
-
-CardHeader.displayName = 'CardHeader'
-
-type CardContentProps = StackProps
-
-const CardContent = forwardRef<HTMLElement, CardContentProps>((props, ref) => {
-  const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as Record<string, unknown>
-  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
-
-  return (
-    <Stack
-      as={Component as ElementType}
-      data-slot="card-content"
-      ref={ref}
-      className={cn('text-(--color-ivory)/90', className as string)}
-      direction="col"
-      align="stretch"
-      justify="start"
-      gap="none"
-      {...layoutProps}
-      {...otherProps}
-    >
-      {children as React.ReactNode}
-    </Stack>
-  )
-})
-
-CardContent.displayName = 'CardContent'
-
-type CardFooterProps = StackProps
-
-const CardFooter = forwardRef<HTMLElement, CardFooterProps>((props, ref) => {
-  const { layoutProps, restProps } = splitLayoutProps(props)
-  const { children, className, ...otherProps } = restProps as Record<string, unknown>
-  const { as: Component = 'div' } = layoutProps as { as?: ElementType }
-
-  return (
-    <Stack
-      as={Component as ElementType}
-      data-slot="card-footer"
-      ref={ref}
-      className={cn('border-t border-(--color-secondary)/20 pt-4', className as string)}
-      direction="row"
-      align="center"
-      justify="end"
-      gap="none"
-      {...layoutProps}
-      {...otherProps}
-    >
-      {children as React.ReactNode}
-    </Stack>
-  )
-})
-
-CardFooter.displayName = 'CardFooter'
-
-const Card = Object.assign(CardRoot, {
-  Root: CardRoot,
-  Header: CardHeader,
-  Title: CardTitle,
-  Content: CardContent,
-  Footer: CardFooter,
-})
-
-export { Card, cardVariants }
+}

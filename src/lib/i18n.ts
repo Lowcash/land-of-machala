@@ -1,12 +1,15 @@
-import { getTranslations } from 'next-intl/server'
+import { routing } from '@/i18n/routing'
 
-/**
- * Server-side helper to handle multiple translation namespaces.
- * Mimics the 't' (feature-scoped) and 'g' (Game/Global) pattern.
- */
-export async function getScopedTranslations(featureScope: string) {
-  const g = await getTranslations('Game')
-  const t = await getTranslations(featureScope as never)
+import csMessages from '../../messages/cs.json'
+import enMessages from '../../messages/en.json'
 
-  return { t, g }
+const messagesByLocale = {
+  cs: csMessages,
+  en: enMessages,
+} as const
+
+export { routing }
+
+export function getMessages(locale: keyof typeof messagesByLocale = routing.defaultLocale) {
+  return messagesByLocale[locale]
 }

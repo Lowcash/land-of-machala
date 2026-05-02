@@ -1,55 +1,24 @@
 import type { Preview } from '@storybook/nextjs-vite'
 import { NextIntlClientProvider } from 'next-intl'
 
-import messages from '../messages/en.json'
 import '../src/app/globals.css'
+import { getMessages, routing } from '../src/lib/i18n'
 
 const preview: Preview = {
   parameters: {
-    layout: 'centered',
-    options: {
-      storySort: {
-        order: [
-          'Features',
-          ['Auth', ['Login', 'Register', 'Origins']],
-          'UI',
-          ['Core', 'Forms', 'Navigation', 'Prefabs', 'Shared'],
-          'System',
-        ],
-      },
-    },
-
-    a11y: {
-      test: 'todo',
-    },
+    layout: 'fullscreen',
     nextjs: {
       appDirectory: true,
     },
-    router: {
-      push: {
-        action: 'router.push',
-      },
-      replace: {
-        action: 'router.replace',
-      },
+    controls: {
+      expanded: true,
     },
   },
-
   decorators: [
     (Story) => (
-      <div
-        onClick={(e) => {
-          const target = e.target as HTMLElement
-          const link = target.closest('a')
-          if (link && link.getAttribute('href') && !link.getAttribute('href')?.startsWith('#')) {
-            e.preventDefault()
-          }
-        }}
-      >
-        <NextIntlClientProvider locale="en" messages={messages}>
-          <Story />
-        </NextIntlClientProvider>
-      </div>
+      <NextIntlClientProvider locale={routing.defaultLocale} messages={getMessages()}>
+        <Story />
+      </NextIntlClientProvider>
     ),
   ],
 }

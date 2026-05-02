@@ -1,157 +1,90 @@
-'use client'
-
-import type { TranslatedClassInfo, TranslatedRaceInfo } from '@/lib/game/data/shared'
+import type { CharacterStats, ClassOption, RaceOption } from '@/lib/auth/demo-data'
 
 import { Button } from '@/components/ui/core/button'
-import { GameAccordion } from '@/components/ui/navigation/accordion'
-import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
-import { CreationGrid, FeatureSection } from '@/components/ui/prefabs/structure'
-import { PageHeader } from '@/components/ui/prefabs/typography/hero'
+import { Card } from '@/components/ui/core/card'
+import { Box } from '@/components/ui/core/layout'
+import { SectionTitle } from '@/components/ui/core/typography'
+import { Field } from '@/components/ui/forms/field'
+import { HeroStatsGrid } from '@/components/ui/prefabs/origins/hero-stats-grid'
+import { SelectionColumn } from '@/components/ui/prefabs/origins/selection-column'
 
-import { CharacterIdentity } from './character-identity'
-import { SelectionBox } from './selection-box'
-import type { CharacterStats, CreationUiLabels } from './types'
-
-interface StepCreationProps {
-  name: string
-  onNameChange: (name: string) => void
-  onRandomize: () => void
-  onFinish: () => void
-  isLoading?: boolean
-  selectedRaceId: string
-  onRaceSelect: (id: string) => void
-  selectedClassId: string
-  onClassSelect: (id: string) => void
-  stats: CharacterStats
+type StepCreationProps = {
   canFinish: boolean
-  races: TranslatedRaceInfo[]
-  classes: TranslatedClassInfo[]
-  statLabels: Record<string, string>
-  uiLabels: CreationUiLabels
+  classes: ClassOption[]
+  heroName: string
+  onBack: () => void
+  onClassSelect: (classId: ClassOption['id']) => void
+  onFinish: () => void
+  onNameChange: (name: string) => void
+  onRaceSelect: (raceId: RaceOption['id']) => void
+  onRandomize: () => void
+  races: RaceOption[]
+  selectedClassId: ClassOption['id']
+  selectedRaceId: RaceOption['id']
+  stats: CharacterStats
 }
 
 export function StepCreation({
-  name,
-  onNameChange,
-  onRandomize,
-  onFinish,
-  isLoading,
-  selectedRaceId,
-  onRaceSelect,
-  selectedClassId,
-  onClassSelect,
-  stats,
   canFinish,
-  races,
   classes,
-  statLabels,
-  uiLabels,
+  heroName,
+  onBack,
+  onClassSelect,
+  onFinish,
+  onNameChange,
+  onRaceSelect,
+  onRandomize,
+  races,
+  selectedClassId,
+  selectedRaceId,
+  stats,
 }: StepCreationProps) {
-  const selectedRace = races.find((r) => r.id === selectedRaceId)
-  const selectedClass = classes.find((c) => c.id === selectedClassId)
-
   return (
-    <EntranceStack fullHeight fullWidth gap="lg" align="center" py="xl">
-      <PageHeader title={uiLabels.title} subtitle={uiLabels.subtitle} />
-
-      {/* Main content grid */}
-      <CreationGrid>
-        {/* Column 1: Identity & Stats */}
-        <CharacterIdentity
-          name={name}
-          onNameChange={onNameChange}
-          onRandomize={onRandomize}
-          stats={stats}
-          onFinish={onFinish}
-          canFinish={canFinish}
-          isLoading={isLoading}
-          statLabels={statLabels}
-          uiLabels={uiLabels}
-          raceBonuses={selectedRace?.bonuses}
-          classBonuses={selectedClass?.bonuses}
+    <Card centered gap="5" layout="stack" padding="cozy" width="4xl">
+      <SectionTitle
+        description="Review race, class, and hero name before entering realm."
+        descriptionSize="base"
+        overline="Setup"
+        showDivider
+        titleSize="lg"
+        title="Shape your hero"
+      />
+      <section className="grid gap-3 lg:grid-cols-[1fr_1fr_0.9fr]">
+        <SelectionColumn
+          items={races}
+          onSelect={onRaceSelect}
+          selectedId={selectedRaceId}
+          title="Race"
         />
-
-        {/* Column 2 & 3: Mobile Accordion (Hidden on Desktop) */}
-        <FeatureSection md={{ display: 'none' }}>
-          <GameAccordion
-            items={[
-              {
-                value: 'race',
-                title: uiLabels.raceLabel,
-                selectedLabel: races.find((r) => r.id === selectedRaceId)?.name,
-                content: (
-                  <SelectionBox
-                    title={uiLabels.raceLabel}
-                    items={races}
-                    selectedId={selectedRaceId}
-                    onSelect={onRaceSelect}
-                    type="race"
-                    variant="flat"
-                    statLabels={statLabels}
-                    uiLabels={uiLabels}
-                  />
-                ),
-              },
-              {
-                value: 'class',
-                title: uiLabels.classLabel,
-                selectedLabel: classes.find((c) => c.id === selectedClassId)?.name,
-                content: (
-                  <SelectionBox
-                    title={uiLabels.classLabel}
-                    items={classes}
-                    selectedId={selectedClassId}
-                    onSelect={onClassSelect}
-                    type="class"
-                    variant="flat"
-                    statLabels={statLabels}
-                    uiLabels={uiLabels}
-                  />
-                ),
-              },
-            ]}
+        <SelectionColumn
+          items={classes}
+          onSelect={onClassSelect}
+          selectedId={selectedClassId}
+          title="Class"
+        />
+        <Box border className="space-y-3" padding="md" radius="xl" tone="panel">
+          <Field
+            label="Hero name"
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+              onNameChange(event.target.value)
+            }
+            placeholder="Ardyn Vale"
+            value={heroName}
           />
-        </FeatureSection>
-
-        {/* Column 2: Desktop Race Selection (Hidden on Mobile) */}
-        <FeatureSection display="none" md={{ display: 'flex' }} height="full" minHeight="zero">
-          <SelectionBox
-            title={uiLabels.raceLabel}
-            items={races}
-            selectedId={selectedRaceId}
-            onSelect={onRaceSelect}
-            type="race"
-            statLabels={statLabels}
-            uiLabels={uiLabels}
-          />
-        </FeatureSection>
-
-        {/* Column 3: Desktop Class Selection (Hidden on Mobile) */}
-        <FeatureSection display="none" md={{ display: 'flex' }} height="full" minHeight="zero">
-          <SelectionBox
-            title={uiLabels.classLabel}
-            items={classes}
-            selectedId={selectedClassId}
-            onSelect={onClassSelect}
-            type="class"
-            statLabels={statLabels}
-            uiLabels={uiLabels}
-          />
-        </FeatureSection>
-      </CreationGrid>
-
-      <FeatureSection md={{ display: 'none' }}>
-        <Button
-          variant="primary"
-          size="lg"
-          fullWidth
-          onClick={onFinish}
-          disabled={!canFinish || isLoading}
-          loading={isLoading}
-        >
-          {uiLabels.finish}
+          <Button onClick={onRandomize} size="md" variant="secondary">
+            Roll a random hero
+          </Button>
+          <HeroStatsGrid stats={stats} />
+        </Box>
+      </section>
+      <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <Button onClick={onBack} variant="ghost">
+          Back to prologue
         </Button>
-      </FeatureSection>
-    </EntranceStack>
+        <Button disabled={!canFinish} onClick={onFinish}>
+          Confirm hero
+        </Button>
+      </section>
+    </Card>
   )
 }

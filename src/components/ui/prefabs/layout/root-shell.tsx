@@ -1,26 +1,39 @@
-import { cn } from '@/lib/utils'
+import Image from 'next/image'
 
-interface RootShellProps {
+import { SITE_BACKGROUND_PATH } from '@/lib/site-config'
+
+import { Box } from '@/components/ui/core/layout'
+import { RootShellFooter } from '@/components/ui/prefabs/layout/root-shell-footer'
+import { RootShellHeader } from '@/components/ui/prefabs/layout/root-shell-header'
+
+type RootShellProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode
-  className?: string
-  as?: React.ElementType
 }
 
-/**
- * RootShell provides the base structural context for the application.
- * It enforces the full viewport height and consistent typography/antialiasing.
- * Used in the App Root (layout.tsx) and Storybook decorators.
- */
-export function RootShell({ children, className, as: Component = 'div' }: RootShellProps) {
+export function RootShell({ children, className = '', ...props }: RootShellProps) {
   return (
-    <Component
-      className={cn(
-        'font-body antialiased selection:bg-(--color-secondary)/30 selection:text-(--color-ivory)',
-        'flex min-h-dvh flex-col',
-        className
+    <div
+      className={['bg-background relative isolate min-h-screen overflow-hidden', className].join(
+        ' '
       )}
+      {...props}
     >
-      {children}
-    </Component>
+      <div className="absolute inset-0 -z-20">
+        <Image
+          alt="Painterly medieval city backdrop"
+          className="object-cover opacity-60"
+          fill
+          priority
+          sizes="100vw"
+          src={SITE_BACKGROUND_PATH}
+        />
+      </div>
+      <div className="from-background/92 via-background/65 to-background/92 absolute inset-0 -z-10 bg-linear-to-br" />
+      <Box className="relative flex min-h-screen flex-col">
+        <RootShellHeader />
+        <main className="flex flex-1">{children}</main>
+        <RootShellFooter />
+      </Box>
+    </div>
   )
 }

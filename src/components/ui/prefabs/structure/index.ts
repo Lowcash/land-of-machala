@@ -1,7 +1,0 @@
-export { FeatureSection, type FeatureSectionProps } from './feature-section'
-export { InfoPanel, type InfoPanelProps } from './info-panel'
-export { ActionGroup, type ActionGroupProps } from './action-group'
-export * from './feature-grid'
-export { CreationGrid } from './creation-grid'
-export { AuthGrid } from './auth-grid'
-export { OrnamentalCorners } from './ornamental-corners'

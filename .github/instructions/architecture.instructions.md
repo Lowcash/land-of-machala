@@ -15,15 +15,15 @@ Keep routing, data boundaries, UI layering, and client state ownership explicit 
 
 ## Runtime Ownership
 
-| Layer | Location | Responsibility |
-| :--- | :--- | :--- |
-| **App Runtime** | `src/app/` | routes, route layouts, templates, loading or error boundaries, metadata, and server-first assembly |
-| **Feature Layer** | `src/components/features/` | concrete game or product flows, orchestration of reusable UI, feature-local interactivity |
-| **Core UI** | `src/components/ui/core/` | atomic primitives, layout utilities, tightly scoped variants |
-| **Forms UI** | `src/components/ui/forms/` | reusable field composition and validation-facing controls |
-| **Prefabs** | `src/components/ui/prefabs/` | semantic, styled, reusable blocks composed from core and forms |
-| **Providers** | `src/providers/` | narrow cross-subtree client state, global notifications, theme-like wrappers, or other truly shared client concerns |
-| **Library** | `src/lib/` | typed helpers, domain logic, data shaping, server-only integrations, and future backend boundaries |
+| Layer             | Location                     | Responsibility                                                                                                      |
+| :---------------- | :--------------------------- | :------------------------------------------------------------------------------------------------------------------ |
+| **App Runtime**   | `src/app/`                   | routes, route layouts, templates, loading or error boundaries, metadata, and server-first assembly                  |
+| **Feature Layer** | `src/components/features/`   | concrete game or product flows, orchestration of reusable UI, feature-local interactivity                           |
+| **Core UI**       | `src/components/ui/core/`    | atomic primitives, layout utilities, tightly scoped variants                                                        |
+| **Forms UI**      | `src/components/ui/forms/`   | reusable field composition and validation-facing controls                                                           |
+| **Prefabs**       | `src/components/ui/prefabs/` | semantic, styled, reusable blocks composed from core and forms                                                      |
+| **Providers**     | `src/providers/`             | narrow cross-subtree client state, global notifications, theme-like wrappers, or other truly shared client concerns |
+| **Library**       | `src/lib/`                   | typed helpers, domain logic, data shaping, server-only integrations, and future backend boundaries                  |
 
 ## Styling Ownership
 

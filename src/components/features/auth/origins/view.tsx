@@ -1,96 +1,95 @@
 'use client'
 
-import type { CompleteRootOnboardingInput } from '@/lib/auth/root-session'
-import type {
-  TranslatedClassInfo,
-  TranslatedRaceInfo,
-  TranslatedStoryStep,
-} from '@/lib/game/data/shared'
+import { useState } from 'react'
 
-import { Presence } from '@/components/ui/prefabs/animations/presence'
-import { Background } from '@/components/ui/shared/background'
+import {
+  CLASS_OPTIONS,
+  type ClassOption,
+  type HeroSummary,
+  ORIGINS_STEP,
+  RACE_OPTIONS,
+  RANDOM_NAMES,
+  type RaceOption,
+  buildHeroSummary,
+  resolveHeroStats,
+} from '@/lib/auth/demo-data'
+
+import { CenteredStageShell } from '@/components/ui/prefabs/layout/centered-stage-shell'
 
 import { StepCreation } from './step-creation'
 import { TutorialStep } from './step-tutorial'
-import type { OriginsUiLabels } from './types'
-import { useOrigins } from './use-origins'
 
-interface OriginsViewProps {
-  races: TranslatedRaceInfo[]
-  classes: TranslatedClassInfo[]
-  steps: TranslatedStoryStep[]
-  statLabels: Record<string, string>
-  uiLabels: OriginsUiLabels
-  backgroundSrc: string
-  onFinish?: (payload: CompleteRootOnboardingInput) => void | Promise<void>
-  isLoading?: boolean
+type OriginsViewProps = {
+  initialPhase?: 'creation' | 'prologue'
+  onComplete?: (hero: HeroSummary) => void
 }
 
-export function OriginsViewUI({
-  races,
-  classes,
-  steps,
-  statLabels,
-  uiLabels,
-  backgroundSrc,
-  onFinish,
-  isLoading,
-}: OriginsViewProps) {
-  const {
-    phase,
-    currentStep,
-    stepIndex,
-    characterName,
-    selectedRaceId,
-    selectedClassId,
-    totalStats,
-    setName,
-    setSelectedRaceId,
-    setSelectedClassId,
-    handleChoice,
-    handleSkip,
-    handleRandomize,
-    handleFinish,
-    canFinish,
-  } = useOrigins({ races, classes, steps, onFinish })
+export function OriginsView({ initialPhase = 'prologue', onComplete }: OriginsViewProps) {
+  const [phase, setPhase] = useState<'creation' | 'prologue'>(initialPhase)
+  const [selectedChoiceId, setSelectedChoiceId] = useState<string | null>(
+    initialPhase === 'creation' ? ORIGINS_STEP.choices[0].id : null
+  )
+  const [selectedRaceId, setSelectedRaceId] = useState<RaceOption['id']>('human')
+  const [selectedClassId, setSelectedClassId] = useState<ClassOption['id']>('ranger')
+  const [heroName, setHeroName] = useState('Ardyn Vale')
+
+  function moveToCreation(choiceId?: string | null) {
+    const resolvedChoiceId = choiceId ?? selectedChoiceId
+    const choice = ORIGINS_STEP.choices.find((item) => item.id === resolvedChoiceId)
+
+    if (choice) {
+      setSelectedRaceId(choice.suggestedRaceId)
+      setSelectedClassId(choice.suggestedClassId)
+    }
+
+    setPhase('creation')
+  }
+
+  function randomizeHero() {
+    const randomRace = RACE_OPTIONS[Math.floor(Math.random() * RACE_OPTIONS.length)]
+    const randomClass = CLASS_OPTIONS[Math.floor(Math.random() * CLASS_OPTIONS.length)]
+    const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)]
+
+    setSelectedRaceId(randomRace.id)
+    setSelectedClassId(randomClass.id)
+    setHeroName(randomName)
+  }
+
+  function finishOrigins() {
+    if (!heroName.trim()) {
+      return
+    }
+
+    onComplete?.(buildHeroSummary(heroName.trim(), selectedRaceId, selectedClassId))
+  }
 
   return (
-    <>
-      <Background src={backgroundSrc} />
-      <Presence mode="wait">
-        {phase === 'tutorial' ? (
-          <TutorialStep
-            key={stepIndex}
-            step={currentStep as TranslatedStoryStep}
-            onChoice={handleChoice}
-            onSkip={handleSkip}
-            uiLabels={uiLabels.tutorial}
-          />
-        ) : (
-          <StepCreation
-            key="creation"
-            name={characterName}
-            onNameChange={setName}
-            onRandomize={handleRandomize}
-            onFinish={handleFinish}
-            selectedRaceId={selectedRaceId}
-            onRaceSelect={setSelectedRaceId}
-            selectedClassId={selectedClassId}
-            onClassSelect={setSelectedClassId}
-            stats={totalStats}
-            canFinish={canFinish}
-            isLoading={isLoading}
-            races={races}
-            classes={classes}
-            statLabels={statLabels}
-            uiLabels={uiLabels.creation}
-          />
-        )}
-      </Presence>
-    </>
+    <CenteredStageShell width={phase === 'prologue' ? 'narrow' : 'wide'}>
+      {phase === 'prologue' ? (
+        <TutorialStep
+          onContinue={() => moveToCreation(selectedChoiceId)}
+          onSelectChoice={(choiceId) => setSelectedChoiceId(choiceId)}
+          onSkip={() => moveToCreation(null)}
+          selectedChoiceId={selectedChoiceId}
+          step={ORIGINS_STEP}
+        />
+      ) : (
+        <StepCreation
+          canFinish={heroName.trim().length > 0}
+          classes={CLASS_OPTIONS}
+          heroName={heroName}
+          onBack={() => setPhase('prologue')}
+          onClassSelect={setSelectedClassId}
+          onFinish={finishOrigins}
+          onNameChange={setHeroName}
+          onRaceSelect={setSelectedRaceId}
+          onRandomize={randomizeHero}
+          races={RACE_OPTIONS}
+          selectedClassId={selectedClassId}
+          selectedRaceId={selectedRaceId}
+          stats={resolveHeroStats(selectedRaceId, selectedClassId)}
+        />
+      )}
+    </CenteredStageShell>
   )
-}
-
-export function OriginsView(props: OriginsViewProps) {
-  return <OriginsViewUI {...props} />
 }

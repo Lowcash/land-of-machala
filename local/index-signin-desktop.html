@@ -1,0 +1,332 @@
+<!doctype html>
+
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&amp;family=Newsreader:ital,wght@0,400;0,600;1,400&amp;family=Work+Sans:wght@400;500;600&amp;family=Uncial+Antiqua&amp;family=Pirata+One&amp;family=Eagle+Lake&amp;family=MedievalSharp&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            colors: {
+              surface: '#131313',
+              'primary-fixed-dim': '#f5be4f',
+              'tertiary-fixed-dim': '#ffb4a7',
+              tertiary: '#ffc7bd',
+              'on-primary-container': '#604400',
+              'on-background': '#e5e2e1',
+              'inverse-surface': '#e5e2e1',
+              'secondary-fixed-dim': '#d5c3b5',
+              'on-secondary': '#392e25',
+              'surface-container-highest': '#353534',
+              'surface-container-low': '#1c1b1b',
+              'primary-container': '#e5b042',
+              'inverse-primary': '#7b5800',
+              'on-secondary-container': '#c3b2a5',
+              'on-primary-fixed': '#271900',
+              'tertiary-fixed': '#ffdad4',
+              'inverse-on-surface': '#313030',
+              'on-tertiary': '#640c04',
+              'surface-dim': '#131313',
+              'on-primary-fixed-variant': '#5d4200',
+              'surface-tint': '#f5be4f',
+              'on-tertiary-container': '#872619',
+              'on-surface': '#e5e2e1',
+              'on-error-container': '#ffdad6',
+              'primary-fixed': '#ffdea5',
+              'on-primary': '#412d00',
+              error: '#ffb4ab',
+              'secondary-container': '#51443a',
+              'secondary-fixed': '#f2dfd1',
+              primary: '#ffcd6b',
+              'on-tertiary-fixed': '#400200',
+              'surface-container': '#201f1f',
+              outline: '#9b8f7c',
+              'on-error': '#690005',
+              'on-surface-variant': '#d3c5b0',
+              'on-tertiary-fixed-variant': '#842417',
+              'surface-variant': '#353534',
+              'outline-variant': '#4f4536',
+              'on-secondary-fixed': '#231a11',
+              background: '#131313',
+              'error-container': '#93000a',
+              secondary: '#d5c3b5',
+              'tertiary-container': '#ff9f8e',
+              'surface-container-lowest': '#0e0e0e',
+              'surface-container-high': '#2a2a2a',
+              'surface-bright': '#393939',
+              'on-secondary-fixed-variant': '#51443a',
+            },
+            borderRadius: {
+              DEFAULT: '0.125rem',
+              lg: '0.25rem',
+              xl: '0.5rem',
+              full: '0.75rem',
+            },
+            fontFamily: {
+              headline: ['Noto Serif'],
+              body: ['Newsreader'],
+              label: ['Work Sans'],
+              'headline-md': ['Noto Serif'],
+              'label-md': ['Work Sans'],
+              'body-md': ['Newsreader'],
+              'headline-lg': ['Noto Serif'],
+              display: ['Noto Serif'],
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+      }
+      .gilded-edge {
+        position: relative;
+      }
+      .gilded-edge::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border: 1px solid transparent;
+        background: linear-gradient(
+            to bottom,
+            #fdc656 0%,
+            transparent 15%,
+            transparent 85%,
+            #fdc656 100%
+          )
+          border-box;
+        -webkit-mask:
+          linear-gradient(#fff 0 0) padding-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none;
+        opacity: 0.3;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-surface text-on-surface font-body selection:bg-primary selection:text-on-primary relative flex min-h-screen flex-col overflow-x-hidden"
+  >
+    <!-- Background Layer -->
+    <div class="fixed inset-0 z-0">
+      <img
+        alt="Vibrant digital cartoon illustration of a medieval fantasy town square at sunset, warm golden light, timber-framed houses, smoke from chimneys"
+        class="h-full w-full object-cover opacity-60"
+        src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgX2E3n1MhSsugOYW6eTLdjqGe5Jj2PsAr0173dcASJcECuxPujDIPCpt0cic_9rWnD9rPcu4-9JJRBae6PmZLwsYr-pFPB7n6PcI5avEBQhKfc48SV-YE2iSLcrw90iBd5bnLrAamm5I_37Ugch4XT-YCZyG_CF8E0QwavQt4oNidET8R7t2XjZ9aFP01FcFU8GJnYxsYd9UiEL7slyf6cgvKY76kzyE4D_jicxGfBDTMtvLXZlifyIRmzgagvee0ImcycsiDiQ"
+      />
+      <div
+        class="from-surface/90 via-surface/40 to-surface/90 absolute inset-0 bg-gradient-to-br"
+      ></div>
+    </div>
+    <!-- Main Container -->
+    <main class="relative z-10 flex flex-grow items-center justify-center px-6 py-12">
+      <div class="flex w-full max-w-[1100px] flex-col">
+        <!-- Top-left Logo -->
+        <div class="mb-12">
+          <h2
+            class="font-['Cinzel'] text-xl tracking-[0.15em] text-[#E5B042] uppercase opacity-90 md:text-2xl"
+          >
+            Land of Machala
+          </h2>
+        </div>
+        <div class="grid grid-cols-1 items-center gap-12 md:grid-cols-2 lg:gap-20">
+          <!-- Left Column (Floating Content) -->
+          <section class="flex flex-col space-y-10">
+            <div class="space-y-6">
+              <h1 class="font-headline text-3xl leading-tight text-white italic lg:text-4xl">
+                Enter a world where every step writes your legend.
+              </h1>
+            </div>
+            <!-- Recent Chronicles -->
+            <div class="space-y-4">
+              <h3
+                class="font-label text-primary/70 flex items-center gap-2 text-xs tracking-[0.2em] uppercase"
+              >
+                <span class="bg-primary/40 h-px w-8"></span>
+                Recent Chronicles
+              </h3>
+              <ul class="space-y-3">
+                <li class="group flex items-start gap-4">
+                  <span class="bg-primary mt-2 h-1.5 w-1.5 rounded-full"></span>
+                  <span
+                    class="text-on-surface-variant group-hover:text-primary cursor-pointer italic transition-colors"
+                    >The Siege of Bronze-Gate has concluded</span
+                  >
+                </li>
+                <li class="group flex items-start gap-4">
+                  <span class="bg-primary mt-2 h-1.5 w-1.5 rounded-full"></span>
+                  <span
+                    class="text-on-surface-variant group-hover:text-primary cursor-pointer italic transition-colors"
+                    >New Merchant Guild mandates issued</span
+                  >
+                </li>
+                <li class="group flex items-start gap-4">
+                  <span class="bg-primary mt-2 h-1.5 w-1.5 rounded-full"></span>
+                  <span
+                    class="text-on-surface-variant group-hover:text-primary cursor-pointer italic transition-colors"
+                    >Whispers of the Ancient Wyrm return</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <!-- Stats Grid -->
+            <div class="grid max-w-sm grid-cols-2 gap-4">
+              <div
+                class="bg-surface-container-low/40 border-outline-variant/10 rounded-xl border p-4 backdrop-blur-md"
+              >
+                <span
+                  class="font-label text-primary mb-1 block text-[10px] tracking-wider uppercase"
+                  >Heroes</span
+                >
+                <span class="font-headline text-on-surface text-2xl font-bold">14,282</span>
+              </div>
+              <div
+                class="bg-surface-container-low/40 border-outline-variant/10 rounded-xl border p-4 backdrop-blur-md"
+              >
+                <span
+                  class="font-label text-primary mb-1 block text-[10px] tracking-wider uppercase"
+                  >Battles</span
+                >
+                <span class="font-headline text-on-surface text-2xl font-bold">8,412</span>
+              </div>
+              <div
+                class="bg-surface-container-low/40 border-outline-variant/10 rounded-xl border p-4 backdrop-blur-md"
+              >
+                <span
+                  class="font-label text-primary mb-1 block text-[10px] tracking-wider uppercase"
+                  >Quests</span
+                >
+                <span class="font-headline text-on-surface text-2xl font-bold">1.2M</span>
+              </div>
+              <div
+                class="bg-surface-container-low/40 border-outline-variant/10 rounded-xl border p-4 backdrop-blur-md"
+              >
+                <span
+                  class="font-label text-primary mb-1 block text-[10px] tracking-wider uppercase"
+                  >Seasons</span
+                >
+                <span class="font-headline text-on-surface text-2xl font-bold">09</span>
+              </div>
+            </div>
+          </section>
+          <!-- Right Column (Auth Card - Login) -->
+          <section class="flex justify-center md:justify-end">
+            <div
+              class="bg-surface-container/60 gilded-edge flex w-full max-w-[400px] flex-col space-y-8 rounded-2xl border border-white/5 p-8 shadow-2xl backdrop-blur-xl md:p-10"
+            >
+              <div class="text-center">
+                <h2 class="font-headline text-on-surface text-3xl">Enter the realm</h2>
+                <p class="font-body text-on-surface-variant mt-1 italic">
+                  Reconnect with your legacy
+                </p>
+              </div>
+              <form class="space-y-5">
+                <div class="space-y-1.5">
+                  <label
+                    class="font-label text-on-surface-variant/80 ml-1 text-[11px] tracking-widest uppercase"
+                    for="email"
+                    >Email</label
+                  >
+                  <input
+                    class="bg-surface-container-lowest/50 border-outline-variant/20 text-on-surface placeholder:text-outline/50 focus:ring-primary/20 focus:border-primary/30 w-full rounded-xl border p-4 transition-all outline-none focus:ring-2"
+                    id="email"
+                    placeholder="traveller@realm.com"
+                    type="email"
+                  />
+                </div>
+                <div class="space-y-1.5">
+                  <div class="flex items-center justify-between px-1">
+                    <label
+                      class="font-label text-on-surface-variant/80 text-[11px] tracking-widest uppercase"
+                      for="password"
+                      >Secret phrase</label
+                    >
+                    <a
+                      class="font-label text-primary/70 hover:text-primary text-[10px] tracking-widest uppercase transition-colors"
+                      href="#"
+                      >Forgotten scrolls?</a
+                    >
+                  </div>
+                  <input
+                    class="bg-surface-container-lowest/50 border-outline-variant/20 text-on-surface placeholder:text-outline/50 focus:ring-primary/20 focus:border-primary/30 w-full rounded-xl border p-4 transition-all outline-none focus:ring-2"
+                    id="password"
+                    placeholder="••••••••"
+                    type="password"
+                  />
+                </div>
+                <div class="pt-1">
+                  <label
+                    class="text-on-surface-variant hover:text-on-surface group flex cursor-pointer items-center gap-3 transition-colors"
+                  >
+                    <input
+                      class="bg-surface-container-lowest border-outline-variant/30 text-primary h-4 w-4 rounded-md focus:ring-0 focus:ring-offset-0"
+                      type="checkbox"
+                    />
+                    <span class="font-label text-xs">Remember my spirit</span>
+                  </label>
+                </div>
+                <button
+                  class="from-primary to-primary-container text-on-primary font-headline w-full rounded-xl bg-gradient-to-br py-4 text-base font-bold tracking-[0.2em] uppercase shadow-lg transition-all hover:brightness-110 active:scale-[0.98]"
+                >
+                  ENTER THE REALM
+                </button>
+              </form>
+              <div class="flex flex-col items-center gap-3">
+                <div class="flex w-full items-center gap-4">
+                  <div class="bg-outline-variant/20 h-px flex-grow"></div>
+                  <span
+                    class="font-label text-on-surface-variant/50 text-[10px] tracking-widest uppercase"
+                    >or explore as</span
+                  >
+                  <div class="bg-outline-variant/20 h-px flex-grow"></div>
+                </div>
+                <div class="flex flex-col items-center gap-4 pt-2">
+                  <a
+                    class="font-label text-primary/80 hover:text-primary text-[11px] font-bold tracking-widest uppercase transition-colors"
+                    href="#"
+                    >Create account</a
+                  >
+                  <a
+                    class="font-label text-on-surface-variant hover:text-on-surface text-[11px] tracking-widest uppercase transition-colors"
+                    href="#"
+                    >Continue as guest</a
+                  >
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <!-- Footer -->
+        <footer class="mt-20 w-full space-y-3 border-t border-white/5 pt-8 text-center opacity-60">
+          <div class="font-body text-on-surface-variant text-sm italic">
+            Verze 0.1.0 • © 2026 Land of Machala
+          </div>
+          <div
+            class="font-label text-on-surface-variant/70 text-[10px] tracking-[0.25em] uppercase"
+          >
+            <a class="hover:text-primary transition-colors" href="#">FAQ</a> •
+            <a class="hover:text-primary transition-colors" href="#">MERCHANT LAWS</a> •
+            <a class="hover:text-primary transition-colors" href="#">PRIVACY CODEX</a>
+          </div>
+        </footer>
+      </div>
+    </main>
+  </body>
+</html>

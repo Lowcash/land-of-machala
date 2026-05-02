@@ -1,332 +1,230 @@
-import { type VariantProps, cva } from 'class-variance-authority'
-import { cn } from '@/lib/utils'
-import { type Breakpoint } from './box'
+type TextAlign = 'center' | 'left'
 
-const headingVariants = cva('font-fantasy font-bold tracking-tight', {
-  variants: {
-    level: {
-      h1: 'text-4xl',
-      h2: 'text-3xl',
-      h3: 'text-2xl',
-      h4: 'text-xl',
-    },
-    font: {
-      fantasy: 'font-fantasy',
-      medieval: 'font-medieval',
-    },
-    color: {
-      primary: 'text-(--color-primary)',
-      secondary: 'text-(--color-secondary)',
-      ivory: 'text-(--color-ivory)',
-      success: 'text-(--color-success)',
-      danger: 'text-(--color-danger)',
-      magic: 'text-purple-500',
-      gold: 'text-(--color-gold)',
-      info: 'text-(--color-info)',
-      copper: 'text-(--color-secondary)',
-      hp: 'text-(--color-stat-hp)',
-      mana: 'text-(--color-stat-mana)',
-      strength: 'text-(--color-stat-strength)',
-      intelligence: 'text-(--color-stat-intelligence)',
-      agility: 'text-(--color-stat-agility)',
-      stamina: 'text-(--color-stat-stamina)',
-      inherit: 'text-inherit',
-    },
-    align: {
-      left: 'text-left',
-      center: 'text-center',
-      right: 'text-right',
-      justify: 'text-justify',
-    },
-  },
-  defaultVariants: {
-    level: 'h1',
-    font: 'fantasy',
-    color: 'primary',
-  },
-})
-
-export type TypographyColor =
-  | 'primary'
-  | 'secondary'
-  | 'ivory'
-  | 'success'
-  | 'danger'
-  | 'magic'
-  | 'gold'
-  | 'info'
-  | 'copper'
-  | 'hp'
-  | 'mana'
-  | 'strength'
-  | 'intelligence'
-  | 'agility'
-  | 'stamina'
-  | 'inherit'
-
-interface HeadingProps
-  extends Omit<React.HTMLAttributes<HTMLHeadingElement>, 'color' | 'className'> {
-  level?: 'h1' | 'h2' | 'h3' | 'h4'
-  font?: 'fantasy' | 'medieval'
-  color?: TypographyColor
-  align?: 'left' | 'center' | 'right' | 'justify'
-  as?: 'h1' | 'h2' | 'h3' | 'h4'
-  className?: string
+type BodyTextProps = {
+  align?: TextAlign
+  children: React.ReactNode
+  italic?: boolean
+  size?: 'sm' | 'base'
+  tone?: 'default' | 'muted'
 }
 
-export function Heading({ level, font, color, align, className, as, ...props }: HeadingProps) {
-  if (!props.children) return null
-  const Component = as || level || 'h1'
+export function BodyText({
+  align = 'left',
+  children,
+  italic = false,
+  size = 'base',
+  tone = 'default',
+}: BodyTextProps) {
   return (
-    <Component
-      className={cn(headingVariants({ level, font, color, align }), className)}
-      {...props}
-    />
+    <p
+      className={[
+        align === 'center' ? 'text-center' : 'text-left',
+        size === 'base' ? 'text-base leading-7 md:leading-8' : 'text-sm leading-6',
+        tone === 'default' ? 'text-on-surface' : 'text-on-surface-variant',
+        italic ? 'italic' : '',
+      ].join(' ')}
+    >
+      {children}
+    </p>
   )
 }
 
-const textVariants = cva('leading-tight transition-colors', {
-  variants: {
-    variant: {
-      primary: 'text-base',
-      lead: 'text-xl sm:text-2xl font-fantasy italic leading-relaxed',
-      large: 'text-lg font-semibold',
-      small: 'text-sm font-medium leading-none',
-      muted: 'text-sm opacity-80',
-      detail: 'text-xs sm:text-sm leading-relaxed italic font-body',
-      bonus: 'text-[10px] sm:text-[11px] italic font-body',
-      'fantasy-value': 'text-base sm:text-lg font-fantasy tracking-wider',
-      decoration: 'text-xs sm:text-sm font-fantasy tracking-widest uppercase',
-      tiny: 'text-[10px] sm:text-xs font-fantasy tracking-wider',
-    },
-    font: {
-      body: 'font-body',
-      fantasy: 'font-fantasy',
-      medieval: 'font-medieval',
-    },
-    color: {
-      primary: 'text-(--color-primary)',
-      secondary: 'text-(--color-secondary)',
-      ivory: 'text-(--color-ivory)',
-      success: 'text-(--color-success)',
-      danger: 'text-(--color-danger)',
-      magic: 'text-purple-500',
-      gold: 'text-(--color-gold)',
-      info: 'text-(--color-info)',
-      copper: 'text-(--color-secondary)',
-      hp: 'text-(--color-stat-hp)',
-      mana: 'text-(--color-stat-mana)',
-      strength: 'text-(--color-stat-strength)',
-      intelligence: 'text-(--color-stat-intelligence)',
-      agility: 'text-(--color-stat-agility)',
-      stamina: 'text-(--color-stat-stamina)',
-      inherit: 'text-inherit',
-    },
-    align: {
-      left: 'text-left',
-      center: 'text-center',
-      right: 'text-right',
-      justify: 'text-justify',
-    },
-    truncate: {
-      true: 'truncate',
-      false: '',
-    },
-    shrink: {
-      true: 'shrink-0',
-      false: 'shrink',
-    },
-    grow: {
-      true: 'grow',
-      false: 'grow-0',
-    },
-    italic: {
-      true: 'italic',
-      false: '',
-    },
-    bold: {
-      true: 'font-bold',
-      false: '',
-    },
-    tabularNums: {
-      true: 'tabular-nums',
-      false: '',
-    },
-    display: {
-      none: 'hidden',
-      block: 'block',
-      inline: 'inline-block',
-      'inline-block': 'inline-block',
-      flex: 'flex',
-    },
-  },
-  defaultVariants: {
-    variant: 'primary',
-    font: 'body',
-    color: 'ivory',
-    truncate: false,
-    shrink: false,
-    grow: false,
-    bold: false,
-    tabularNums: false,
-    display: 'block',
-  },
-})
-
-type TextVariantKeys = keyof VariantProps<typeof textVariants>
-type TextVariantValue = {
-  [K in TextVariantKeys]?: VariantProps<typeof textVariants>[K]
+type MetaLabelProps = {
+  children: React.ReactNode
+  tone?: 'default' | 'muted'
 }
 
-const TEXT_RESPONSIVE_LOOKUP = {
-  sm: {
-    display: {
-      none: 'sm:hidden',
-      block: 'sm:block',
-      inline: 'sm:inline-block',
-      'inline-block': 'sm:inline-block',
-      flex: 'sm:flex',
-    },
-  },
-  md: {
-    display: {
-      none: 'md:hidden',
-      block: 'md:block',
-      inline: 'md:inline-block',
-      'inline-block': 'md:inline-block',
-      flex: 'md:flex',
-    },
-  },
-  lg: {
-    display: {
-      none: 'lg:hidden',
-      block: 'lg:block',
-      inline: 'lg:inline-block',
-      'inline-block': 'lg:inline-block',
-      flex: 'lg:flex',
-    },
-  },
-  xl: {
-    display: {
-      none: 'xl:hidden',
-      block: 'xl:block',
-      inline: 'xl:inline-block',
-      'inline-block': 'xl:inline-block',
-      flex: 'xl:flex',
-    },
-  },
+export function MetaLabel({ children, tone = 'default' }: MetaLabelProps) {
+  return (
+    <p
+      className={[
+        'font-label text-[10px] tracking-[0.18em] uppercase',
+        tone === 'default' ? 'text-outline' : 'text-on-surface-variant/70',
+      ].join(' ')}
+    >
+      {children}
+    </p>
+  )
 }
 
-function getTextResponsiveClasses(breakpoint: Breakpoint, val?: TextVariantValue) {
-  const bp = TEXT_RESPONSIVE_LOOKUP[breakpoint]
-  if (!bp) return ''
-
-  return val?.display ? bp.display[val.display] ?? '' : ''
+type DisplayValueProps = {
+  align?: TextAlign
+  children: React.ReactNode
+  size?: 'lg' | 'xl'
+  tone?: 'default' | 'primary'
 }
 
-export interface TextProps
-  extends Omit<React.HTMLAttributes<HTMLParagraphElement>, 'color' | 'className'> {
-  variant?:
-    | 'primary'
-    | 'lead'
-    | 'large'
-    | 'small'
-    | 'muted'
-    | 'detail'
-    | 'bonus'
-    | 'fantasy-value'
-    | 'decoration'
-    | 'tiny'
-  font?: 'body' | 'fantasy' | 'medieval'
-  color?: TypographyColor
-  align?: 'left' | 'center' | 'right' | 'justify'
-  truncate?: boolean
-  shrink?: boolean
-  grow?: boolean
-  bold?: boolean
-  italic?: boolean
-  tabularNums?: boolean
-  as?: 'p' | 'span' | 'div'
-  className?: string
-  display?: 'none' | 'block' | 'inline-block' | 'flex'
-  px?: 'none' | 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  maxWidth?: 'none' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl'
-  sm?: TextVariantValue
-  md?: TextVariantValue
-  lg?: TextVariantValue
-  xl?: TextVariantValue
+export function DisplayValue({
+  align = 'left',
+  children,
+  size = 'lg',
+  tone = 'default',
+}: DisplayValueProps) {
+  return (
+    <p
+      className={[
+        'font-headline tabular-nums',
+        align === 'center' ? 'text-center' : 'text-left',
+        size === 'xl' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl',
+        tone === 'primary' ? 'text-primary' : 'text-on-surface',
+      ].join(' ')}
+    >
+      {children}
+    </p>
+  )
 }
 
-export function Text({
-  variant,
-  font,
-  color,
-  align,
-  truncate,
-  shrink,
-  grow,
-  bold,
-  italic,
-  tabularNums,
-  display,
-  className,
-  px,
-  maxWidth,
-  sm,
-  md,
-  lg,
-  xl,
-  as: Component = 'p',
-  ...props
-}: TextProps) {
-  const pxClass = px ? {
-    none: 'px-0',
-    xxs: 'px-0.5',
-    xs: 'px-1',
-    sm: 'px-2',
-    md: 'px-4',
-    lg: 'px-6',
-    xl: 'px-8',
-  }[px] : ''
+type BrandWordmarkProps = {
+  align?: TextAlign
+  children: React.ReactNode
+}
 
-  const maxWidthClass = maxWidth ? {
-    none: 'max-w-none',
-    xs: 'max-w-xs',
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
-    '3xl': 'max-w-3xl',
-    '4xl': 'max-w-4xl',
-    '5xl': 'max-w-5xl',
-  }[maxWidth] : ''
+export function BrandWordmark({ align = 'left', children }: BrandWordmarkProps) {
+  return (
+    <p
+      className={[
+        'font-brand text-primary text-xl tracking-[0.24em] uppercase md:text-2xl',
+        align === 'center' ? 'text-center' : 'text-left',
+      ].join(' ')}
+    >
+      {children}
+    </p>
+  )
+}
+
+type PageHeadlineProps = {
+  children: React.ReactNode
+  size?: 'desktop' | 'mobile'
+}
+
+export function PageHeadline({ children, size = 'desktop' }: PageHeadlineProps) {
+  return (
+    <h1
+      className={[
+        'font-headline leading-tight text-white',
+        size === 'desktop' ? 'text-4xl xl:text-5xl' : 'text-3xl sm:text-4xl',
+      ].join(' ')}
+    >
+      {children}
+    </h1>
+  )
+}
+
+type EyebrowProps = {
+  align?: TextAlign
+  children: React.ReactNode
+  tone?: 'muted' | 'primary'
+}
+
+export function Eyebrow({ align = 'left', children, tone = 'primary' }: EyebrowProps) {
+  return (
+    <p
+      className={[
+        'font-label text-[11px] tracking-[0.28em] uppercase',
+        align === 'center' ? 'text-center' : 'text-left',
+        tone === 'primary' ? 'text-primary' : 'text-primary/80',
+      ].join(' ')}
+    >
+      {children}
+    </p>
+  )
+}
+
+type SectionTitleProps = {
+  align?: TextAlign
+  description?: React.ReactNode
+  descriptionItalic?: boolean
+  descriptionSize?: 'base' | 'lg'
+  overline?: React.ReactNode
+  showDivider?: boolean
+  title: React.ReactNode
+  titleSize?: 'lg' | 'xl'
+}
+
+export function SectionTitle({
+  align = 'center',
+  description,
+  descriptionItalic = false,
+  descriptionSize = 'base',
+  overline,
+  showDivider = false,
+  title,
+  titleSize = 'xl',
+}: SectionTitleProps) {
+  const isCentered = align === 'center'
 
   return (
-    <Component
-      className={cn(
-        textVariants({
-          variant,
-          font,
-          color,
-          align,
-          truncate,
-          shrink,
-          grow,
-          bold,
-          italic,
-          tabularNums,
-          display,
-        }),
-        pxClass,
-        maxWidthClass,
-        getTextResponsiveClasses('sm', sm),
-        getTextResponsiveClasses('md', md),
-        getTextResponsiveClasses('lg', lg),
-        getTextResponsiveClasses('xl', xl),
-        className
-      )}
-      {...props}
-    />
+    <div className={['space-y-2', isCentered ? 'text-center' : 'text-left'].join(' ')}>
+      {overline ? <Eyebrow align={align}>{overline}</Eyebrow> : null}
+      <h2
+        className={[
+          'font-headline text-white',
+          titleSize === 'xl' ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl',
+        ].join(' ')}
+      >
+        {title}
+      </h2>
+      {description ? (
+        <div className={isCentered ? 'mx-auto max-w-2xl' : ''}>
+          <BodyText
+            align={align}
+            italic={descriptionItalic}
+            size={descriptionSize === 'lg' ? 'base' : 'sm'}
+            tone="muted"
+          >
+            {description}
+          </BodyText>
+        </div>
+      ) : null}
+      {showDivider ? (
+        <div className={['bg-primary/30 h-px w-24', isCentered ? 'mx-auto' : ''].join(' ')} />
+      ) : null}
+    </div>
+  )
+}
+
+type HelperTextProps = {
+  children?: React.ReactNode
+  reserveSpace?: boolean
+  tone?: 'default' | 'error' | 'invisible'
+}
+
+export function HelperText({ children, reserveSpace = true, tone = 'default' }: HelperTextProps) {
+  const text = children ?? (reserveSpace ? '\u00A0' : null)
+
+  return (
+    <p
+      className={[
+        reserveSpace ? 'min-h-4' : '',
+        'text-xs',
+        tone === 'error' ? 'font-label text-error' : '',
+        tone === 'invisible' ? 'text-transparent' : '',
+        tone === 'default' ? 'text-on-surface-variant' : '',
+      ].join(' ')}
+    >
+      {text}
+    </p>
+  )
+}
+
+type IconLabelProps = {
+  align?: 'center' | 'start'
+  children: React.ReactNode
+  icon: React.ReactNode
+  width?: 'auto' | 'full'
+}
+
+export function IconLabel({ align = 'center', children, icon, width = 'auto' }: IconLabelProps) {
+  return (
+    <span
+      className={[
+        'inline-flex gap-2',
+        align === 'start' ? 'items-start' : 'items-center',
+        width === 'full' ? 'w-full' : '',
+      ].join(' ')}
+    >
+      <span className="shrink-0">{icon}</span>
+      <span className="block flex-1">{children}</span>
+    </span>
   )
 }

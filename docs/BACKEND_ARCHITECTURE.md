@@ -1,9 +1,9 @@
 # Land of Machala Backend Architecture
 
-This document captures the current backend default for the project.
-It is intentionally short: enough to guide implementation, without pretending the final server shape is already complete.
+This document captures target backend default for project.
+It stays intentionally short: enough to guide implementation, without pretending final server shape is already complete or immediate priority.
 
-Use `docs/ARCHITECTURE.md` for the overview and `docs/FRONTEND_ARCHITECTURE.md` for the UI and route surface.
+Use `docs/ARCHITECTURE.md` for repo-level ownership and `docs/FRONTEND_ARCHITECTURE.md` for UI, route surface, and current frontend-first delivery order.
 
 ## Goals
 
@@ -13,7 +13,7 @@ Use `docs/ARCHITECTURE.md` for the overview and `docs/FRONTEND_ARCHITECTURE.md` 
 - choose persistence that supports iterative game design
 - make future extraction possible without building separate services too early
 
-Current posture: the route surface stays small, auth and progression ownership move server-side, and the current cookie-backed root session remains a temporary bridge rather than the final auth model.
+Current delivery posture: route surface should stay small, auth and progression should move server-side over time, and current early backend work should prepare clean seams without delaying frontend and Storybook stabilization.
 
 ## Route Surface
 
@@ -26,7 +26,7 @@ The project does not need a route for every in-game screen.
 
 ## Backend Topology
 
-Phase 1 default: keep the backend inside the Next.js application.
+Phase 1 default: keep backend inside Next.js application.
 
 - App Router handles SSR and route boundaries
 - server actions handle UI-coupled mutations
@@ -143,7 +143,7 @@ Use route handlers for:
 
 ## Observability And Hardening
 
-Production baseline:
+Production baseline when backend hardening becomes active scope:
 
 - validate env at startup
 - configure secure session cookies correctly
@@ -156,16 +156,18 @@ Sentry is a reasonable default for production error tracking.
 
 ## Recommended Implementation Order
 
-1. Finalize the accepted root experience.
-2. Add backend foundation: env schema, Postgres, Prisma, server session model, and password hashing.
-3. Convert login and registration to real server-backed flows.
-4. Persist onboarding, character creation, and initial run state.
-5. Add save or resume behavior backed by `game_runs` and `game_state_snapshots`.
-6. Add production hardening: rate limiting, error tracking, analytics, and launch checks.
+1. Finalize accepted design packets, Storybook baselines, and root experience shape.
+2. Bootstrap runnable app foundation in this repo.
+3. Add backend foundation: env schema, Postgres, Prisma, server session model, and password hashing.
+4. Convert login and registration to real server-backed flows.
+5. Persist origins onboarding, character creation, and initial run state.
+6. Add save or resume behavior backed by `game_runs` and `game_state_snapshots`.
+7. Add production hardening: rate limiting, error tracking, analytics, and launch checks.
 
 ## Current Gaps
 
-- the root session is still a prototype, not the final database-backed session layer
+- runnable backend foundation has not been bootstrapped into this repo yet
+- root session is still prototype direction, not final database-backed session layer
 - user persistence and session rotation are not wired end to end yet
 - gameplay persistence and resume flow still need real database ownership
 

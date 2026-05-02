@@ -1,53 +1,14 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/src/generated/prisma
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-*.tsbuildinfo
-!.yarn/releases
-!.yarn/versions
-
-# playwright
-playwright-report
-
-# testing
-/coverage
-/test-results
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
+node_modules/
+.next/
+storybook-static/
+coverage/
 .DS_Store
-*.pem
-debug-storybook.log
-
-# debug
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-
-# env files (can opt-in for committing if needed)
-.env*
+pnpm-debug.log*
+tsconfig.tsbuildinfo
+.env
+.env.*
 !.env.example
-
-# vercel
-.vercel
-
-# typescript
-*.tsbuildinfo
-next-env.d.ts
-
-*storybook.log
-storybook-static
-/local

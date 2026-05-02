@@ -1,50 +1,65 @@
-import { BookOpen, SkipForward } from 'lucide-react'
+import type { OriginStep } from '@/lib/auth/demo-data'
 
-import type { TranslatedStoryStep, TranslatedStoryStepChoice } from '@/lib/game/data/shared'
+import { Button } from '@/components/ui/core/button'
+import { Card } from '@/components/ui/core/card'
+import { Stack } from '@/components/ui/core/layout'
+import { BodyText, SectionTitle } from '@/components/ui/core/typography'
+import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
 
-import { HStack, VStack } from '@/components/ui/core/stack'
-import { ActionLink } from '@/components/ui/interactive/action-link'
-import { Choice, ChoiceItem } from '@/components/ui/interactive/choice'
-import { EntranceStack } from '@/components/ui/prefabs/animations/entrance-stack'
-import { FeatureIcon } from '@/components/ui/prefabs/game/feature-icon'
-import { NarrativeText } from '@/components/ui/prefabs/typography/shared'
-
-import type { TutorialUiLabels } from './types'
-
-interface TutorialStepProps {
-  step: TranslatedStoryStep
-  onChoice: (choice: TranslatedStoryStepChoice) => void
+type TutorialStepProps = {
+  onContinue: () => void
+  onSelectChoice: (choiceId: string) => void
   onSkip: () => void
-  uiLabels: TutorialUiLabels
+  selectedChoiceId: string | null
+  step: OriginStep
 }
 
-export function TutorialStep({ step, onChoice, onSkip, uiLabels }: TutorialStepProps) {
+export function TutorialStep({
+  onContinue,
+  onSelectChoice,
+  onSkip,
+  selectedChoiceId,
+  step,
+}: TutorialStepProps) {
   return (
-    <EntranceStack key={step.id} fullWidth align="center" justify="center" gap="md">
-      <FeatureIcon icon={BookOpen} color="gold" />
+    <Card centered gap="5" layout="stack" padding="cozy" width="2xl">
+      <SectionTitle
+        description={step.description}
+        descriptionSize="base"
+        overline={step.eyebrow}
+        showDivider
+        titleSize="lg"
+        title={step.title}
+      />
+      <section className="mx-auto w-full max-w-xl space-y-3 text-left">
+        <BodyText align="center">{step.prompt}</BodyText>
+        <ul className="space-y-2">
+          {step.choices.map((choice, index) => {
+            const isActive = selectedChoiceId === choice.id
+            const optionLabel = String.fromCharCode(65 + index)
 
-      <NarrativeText maxWidth="2xl" mx="auto">
-        {step.text}
-      </NarrativeText>
-
-      <VStack gap="md" fullWidth maxWidth="md" mx="auto">
-        <Choice>
-          {step.choices.map((choice, idx) => (
-            <ChoiceItem
-              key={idx}
-              index={idx}
-              title={choice.text}
-              onClick={() => onChoice(choice)}
-            />
-          ))}
-        </Choice>
-      </VStack>
-
-      <HStack justify="center" fullWidth>
-        <ActionLink icon={SkipForward} onClick={onSkip}>
-          {uiLabels.skip}
-        </ActionLink>
-      </HStack>
-    </EntranceStack>
+            return (
+              <li key={choice.id}>
+                <PrologueChoiceCard
+                  description={choice.description}
+                  isActive={isActive}
+                  onSelect={() => onSelectChoice(choice.id)}
+                  optionLabel={optionLabel}
+                  title={choice.title}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      </section>
+      <Stack align="center" space="2">
+        <Button disabled={!selectedChoiceId} onClick={onContinue}>
+          Continue
+        </Button>
+        <Button onClick={onSkip} variant="ghost">
+          Skip the prologue
+        </Button>
+      </Stack>
+    </Card>
   )
 }
