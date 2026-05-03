@@ -35,7 +35,7 @@ type StackProps = {
   fullWidth?: boolean
   gap?: StackSpace
   justify?: StackJustify
-  onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void
+  onSubmit?: (event: React.SyntheticEvent<HTMLFormElement>) => void
   resetList?: boolean
 }
 

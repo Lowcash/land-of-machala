@@ -14,7 +14,13 @@ type AuthSplitLayoutProps = {
   tagline?: string
 }
 
-export function AuthSplitLayout({ children, chronicles, headline, stats, tagline }: AuthSplitLayoutProps) {
+export function AuthSplitLayout({
+  children,
+  chronicles,
+  headline,
+  stats,
+  tagline,
+}: AuthSplitLayoutProps) {
   return (
     <RootShell>
       <RootShellFrame

@@ -50,18 +50,6 @@ export function StepCreation({
         title={ORIGINS_CREATION_COPY.title}
       />
       <OriginsCard.Columns>
-        <SelectionColumn
-          items={races}
-          onSelect={onRaceSelect}
-          selectedId={selectedRaceId}
-          title={ORIGINS_CREATION_COPY.raceTitle}
-        />
-        <SelectionColumn
-          items={classes}
-          onSelect={onClassSelect}
-          selectedId={selectedClassId}
-          title={ORIGINS_CREATION_COPY.classTitle}
-        />
         <OriginsCard.Panel>
           <Field
             label={ORIGINS_CREATION_COPY.heroNameLabel}
@@ -76,6 +64,18 @@ export function StepCreation({
           </Button>
           <HeroStatsGrid stats={stats} />
         </OriginsCard.Panel>
+        <SelectionColumn
+          items={races}
+          onSelect={onRaceSelect}
+          selectedId={selectedRaceId}
+          title={ORIGINS_CREATION_COPY.raceTitle}
+        />
+        <SelectionColumn
+          items={classes}
+          onSelect={onClassSelect}
+          selectedId={selectedClassId}
+          title={ORIGINS_CREATION_COPY.classTitle}
+        />
       </OriginsCard.Columns>
       <OriginsCard.Footer>
         <Button onClick={onBack} variant="ghost">

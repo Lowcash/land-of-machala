@@ -53,7 +53,7 @@ export function RootEntryShellClient({
     password: '',
   })
 
-  function submitLogin(event: React.FormEvent<HTMLFormElement>) {
+  function submitLogin(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const nextErrors = validateLoginInput({
@@ -68,7 +68,7 @@ export function RootEntryShellClient({
     }
   }
 
-  function submitRegister(event: React.FormEvent<HTMLFormElement>) {
+  function submitRegister(event: React.SyntheticEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const nextErrors = validateRegisterInput({
@@ -90,7 +90,9 @@ export function RootEntryShellClient({
       chronicles={AUTH_CHRONICLES}
       headline={AUTH_HERO.headline}
       stats={AUTH_STATS}
-      tagline={screen === 'signIn' ? ENTRY_SIGN_IN_COPY.description : ENTRY_SIGN_UP_COPY.description}
+      tagline={
+        screen === 'signIn' ? ENTRY_SIGN_IN_COPY.description : ENTRY_SIGN_UP_COPY.description
+      }
     >
       {screen === 'signIn' ? (
         <EntrySignInPanel

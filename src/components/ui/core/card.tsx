@@ -11,7 +11,7 @@ type CardLayout = 'none' | 'stack'
 
 const CARD_PADDING_CLASS: Record<CardPadding, string> = {
   cozy: 'p-(--space-pad-lg) md:p-(--space-pad-xl)',
-  roomy: 'p-(--space-pad-2xl) md:p-(--space-pad-3xl)',
+  roomy: 'p-(--space-pad-lg) md:p-(--space-pad-2xl)',
   none: '',
 }
 
