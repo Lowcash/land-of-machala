@@ -1,12 +1,17 @@
+import clsx from 'clsx'
+
+import type { SpaceToken } from '@/components/ui/core/layout'
+
+type CardGap = Exclude<SpaceToken, 'sm'>
+
 type CardPadding = 'cozy' | 'roomy' | 'none'
 type CardWidth = '2xl' | '4xl' | 'auto'
 type CardMinHeight = 'entry' | 'none'
 type CardLayout = 'none' | 'stack'
-type CardGap = '3' | '4' | '5' | '6' | '8'
 
 const CARD_PADDING_CLASS: Record<CardPadding, string> = {
-  cozy: 'p-5 md:p-6',
-  roomy: 'p-8 md:p-10',
+  cozy: 'p-(--space-pad-lg) md:p-(--space-pad-xl)',
+  roomy: 'p-(--space-pad-2xl) md:p-(--space-pad-3xl)',
   none: '',
 }
 
@@ -27,11 +32,10 @@ const CARD_LAYOUT_CLASS: Record<CardLayout, string> = {
 }
 
 const CARD_GAP_CLASS: Record<CardGap, string> = {
-  '3': 'gap-3',
-  '4': 'gap-4',
-  '5': 'gap-5',
-  '6': 'gap-6',
-  '8': 'gap-8',
+  md: 'gap-(--space-stack-md)',
+  lg: 'gap-(--space-stack-lg)',
+  xl: 'gap-(--space-stack-xl)',
+  xxl: 'gap-(--space-stack-xxl)',
 }
 
 type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & {
@@ -47,7 +51,7 @@ type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & {
 export function Card({
   centered = false,
   fillHeight = false,
-  gap = '4',
+  gap = 'lg',
   layout = 'none',
   minHeight = 'none',
   padding = 'none',
@@ -56,16 +60,16 @@ export function Card({
 }: CardProps) {
   return (
     <div
-      className={[
+      className={clsx(
         'bg-surface-container/80 rounded-(--radius-card) border border-white/8 shadow-(--shadow-gilded) backdrop-blur-xl',
-        centered ? 'mx-auto' : '',
-        fillHeight ? 'h-full' : '',
+        centered && 'mx-auto',
+        fillHeight && 'h-full',
         CARD_PADDING_CLASS[padding],
         CARD_WIDTH_CLASS[width],
         CARD_MIN_HEIGHT_CLASS[minHeight],
         CARD_LAYOUT_CLASS[layout],
-        layout === 'stack' ? CARD_GAP_CLASS[gap] : '',
-      ].join(' ')}
+        layout === 'stack' && CARD_GAP_CLASS[gap]
+      )}
       {...props}
     />
   )

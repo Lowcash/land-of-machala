@@ -1,11 +1,11 @@
 import type { CharacterStats, ClassOption, RaceOption } from '@/lib/auth/demo-data'
+import { ORIGINS_CREATION_COPY } from '@/lib/auth/origins-copy'
 
 import { Button } from '@/components/ui/core/button'
-import { Card } from '@/components/ui/core/card'
-import { Box } from '@/components/ui/core/layout'
 import { SectionTitle } from '@/components/ui/core/typography'
 import { Field } from '@/components/ui/forms/field'
 import { HeroStatsGrid } from '@/components/ui/prefabs/origins/hero-stats-grid'
+import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { SelectionColumn } from '@/components/ui/prefabs/origins/selection-column'
 
 type StepCreationProps = {
@@ -40,51 +40,51 @@ export function StepCreation({
   stats,
 }: StepCreationProps) {
   return (
-    <Card centered gap="5" layout="stack" padding="cozy" width="4xl">
+    <OriginsCard.Root width="wide">
       <SectionTitle
-        description="Review race, class, and hero name before entering realm."
+        description={ORIGINS_CREATION_COPY.description}
         descriptionSize="base"
-        overline="Setup"
+        overline={ORIGINS_CREATION_COPY.overline}
         showDivider
         titleSize="lg"
-        title="Shape your hero"
+        title={ORIGINS_CREATION_COPY.title}
       />
-      <section className="grid gap-3 lg:grid-cols-[1fr_1fr_0.9fr]">
+      <OriginsCard.Columns>
         <SelectionColumn
           items={races}
           onSelect={onRaceSelect}
           selectedId={selectedRaceId}
-          title="Race"
+          title={ORIGINS_CREATION_COPY.raceTitle}
         />
         <SelectionColumn
           items={classes}
           onSelect={onClassSelect}
           selectedId={selectedClassId}
-          title="Class"
+          title={ORIGINS_CREATION_COPY.classTitle}
         />
-        <Box border className="space-y-3" padding="md" radius="xl" tone="panel">
+        <OriginsCard.Panel>
           <Field
-            label="Hero name"
+            label={ORIGINS_CREATION_COPY.heroNameLabel}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               onNameChange(event.target.value)
             }
-            placeholder="Ardyn Vale"
+            placeholder={ORIGINS_CREATION_COPY.heroNamePlaceholder}
             value={heroName}
           />
           <Button onClick={onRandomize} size="md" variant="secondary">
-            Roll a random hero
+            {ORIGINS_CREATION_COPY.randomizeLabel}
           </Button>
           <HeroStatsGrid stats={stats} />
-        </Box>
-      </section>
-      <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        </OriginsCard.Panel>
+      </OriginsCard.Columns>
+      <OriginsCard.Footer>
         <Button onClick={onBack} variant="ghost">
-          Back to prologue
+          {ORIGINS_CREATION_COPY.backLabel}
         </Button>
         <Button disabled={!canFinish} onClick={onFinish}>
-          Confirm hero
+          {ORIGINS_CREATION_COPY.confirmLabel}
         </Button>
-      </section>
-    </Card>
+      </OriginsCard.Footer>
+    </OriginsCard.Root>
   )
 }

@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { OriginsView } from '@/components/features/auth/origins/view'
+import { OriginsViewClient } from '@/components/features/auth/origins/view-client'
 
-const meta: Meta<typeof OriginsView> = {
+const meta: Meta<typeof OriginsViewClient> = {
   title: 'Features/Auth/Origins',
-  component: OriginsView,
+  component: OriginsViewClient,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -13,7 +13,7 @@ const meta: Meta<typeof OriginsView> = {
 
 export default meta
 
-type Story = StoryObj<typeof OriginsView>
+type Story = StoryObj<typeof OriginsViewClient>
 
 export const Prologue: Story = {
   args: {

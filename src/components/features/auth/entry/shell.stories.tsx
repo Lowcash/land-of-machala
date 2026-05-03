@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { RootEntryShell } from '@/components/features/auth/root-entry-shell'
+import { RootEntryShell } from '@/components/features/auth/entry/shell'
 
 const meta: Meta<typeof RootEntryShell> = {
   title: 'Features/Auth/EntryShell',

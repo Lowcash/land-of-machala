@@ -1,6 +1,11 @@
+import clsx from 'clsx'
+
 type StackAlign = 'center' | 'start' | 'stretch'
+type StackAs = 'div' | 'form' | 'li' | 'section' | 'ul'
 type StackJustify = 'between' | 'center' | 'start'
-type StackSpace = '2' | '3' | '4' | '6' | '8'
+
+export type SpaceToken = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+type StackSpace = SpaceToken
 
 const STACK_ALIGN_CLASS: Record<StackAlign, string> = {
   center: 'items-center',
@@ -15,60 +20,66 @@ const STACK_JUSTIFY_CLASS: Record<StackJustify, string> = {
 }
 
 const STACK_SPACE_CLASS: Record<StackSpace, string> = {
-  '2': 'gap-2',
-  '3': 'gap-3',
-  '4': 'gap-4',
-  '6': 'gap-6',
-  '8': 'gap-8',
+  sm: 'gap-(--space-stack-sm)',
+  md: 'gap-(--space-stack-md)',
+  lg: 'gap-(--space-stack-lg)',
+  xl: 'gap-(--space-stack-xl)',
+  xxl: 'gap-(--space-stack-xxl)',
 }
 
 type StackProps = {
   align?: StackAlign
+  as?: StackAs
   children: React.ReactNode
   className?: string
   fullWidth?: boolean
   gap?: StackSpace
   justify?: StackJustify
-  space?: StackSpace
+  onSubmit?: React.FormEventHandler<HTMLFormElement>
+  resetList?: boolean
 }
 
 export function Stack({
   align = 'stretch',
+  as = 'div',
   children,
   className = '',
   fullWidth = false,
-  gap,
+  gap = 'lg',
   justify = 'start',
-  space = '4',
+  onSubmit,
+  resetList = false,
 }: StackProps) {
-  const resolvedGap = gap ?? space
+  const Component = as as React.ElementType
 
   return (
-    <div
-      className={[
+    <Component
+      className={clsx(
         'flex flex-col',
+        as === 'ul' && resetList && 'm-0 list-none p-0',
         className,
-        fullWidth ? 'w-full' : '',
+        fullWidth && 'w-full',
         STACK_ALIGN_CLASS[align],
         STACK_JUSTIFY_CLASS[justify],
-        STACK_SPACE_CLASS[resolvedGap],
-      ].join(' ')}
+        STACK_SPACE_CLASS[gap]
+      )}
+      onSubmit={onSubmit}
     >
       {children}
-    </div>
+    </Component>
   )
 }
 
-type BoxPadding = 'lg' | 'md' | 'none' | 'sm'
+type BoxPadding = 'md' | 'none' | 'sm'
 type BoxRadius = 'lg' | 'none' | 'xl'
+type BoxAs = 'div' | 'li' | 'section'
 type BoxTone = 'muted' | 'none' | 'panel' | 'surface'
 type BoxBorderTone = 'default' | 'none' | 'strong'
 
 const BOX_PADDING_CLASS: Record<BoxPadding, string> = {
-  lg: 'p-5',
-  md: 'p-4',
+  md: 'p-(--space-pad-md)',
   none: '',
-  sm: 'p-3',
+  sm: 'p-(--space-pad-sm)',
 }
 
 const BOX_RADIUS_CLASS: Record<BoxRadius, string> = {
@@ -91,6 +102,7 @@ const BOX_BORDER_TONE_CLASS: Record<BoxBorderTone, string> = {
 }
 
 type BoxProps = {
+  as?: BoxAs
   border?: boolean
   borderTone?: BoxBorderTone
   children: React.ReactNode
@@ -101,6 +113,7 @@ type BoxProps = {
 }
 
 export function Box({
+  as = 'div',
   border = false,
   borderTone = 'default',
   children,
@@ -109,17 +122,20 @@ export function Box({
   radius = 'none',
   tone = 'none',
 }: BoxProps) {
+  const Component = as
+
   return (
-    <div
-      className={[
+    <Component
+      className={clsx(
         className,
         BOX_PADDING_CLASS[padding],
         BOX_RADIUS_CLASS[radius],
         BOX_TONE_CLASS[tone],
-        border ? ['border', BOX_BORDER_TONE_CLASS[borderTone]].join(' ') : '',
-      ].join(' ')}
+        border && 'border',
+        border && BOX_BORDER_TONE_CLASS[borderTone]
+      )}
     >
       {children}
-    </div>
+    </Component>
   )
 }

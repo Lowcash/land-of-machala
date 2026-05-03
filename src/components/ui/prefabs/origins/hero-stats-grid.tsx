@@ -1,5 +1,6 @@
 import type { CharacterStats } from '@/lib/auth/demo-data'
 
+import { Box } from '@/components/ui/core/layout'
 import { DisplayValue, MetaLabel } from '@/components/ui/core/typography'
 
 type HeroStatsGridProps = {
@@ -13,18 +14,18 @@ type StatCellProps = {
 
 function StatCell({ label, value }: StatCellProps) {
   return (
-    <div className="border-outline-variant/40 bg-surface-container/60 rounded-xl border p-3 text-center">
+    <Box border className="bg-surface-container/60 text-center" padding="sm" radius="xl">
       <MetaLabel>{label}</MetaLabel>
       <DisplayValue align="center" size="xl">
         {value}
       </DisplayValue>
-    </div>
+    </Box>
   )
 }
 
 export function HeroStatsGrid({ stats }: HeroStatsGridProps) {
   return (
-    <div className="grid grid-cols-2 gap-2.5">
+    <div className="grid grid-cols-2 gap-(--space-stack-md)">
       <StatCell label="HP" value={stats.hp} />
       <StatCell label="Mana" value={stats.mana} />
       <StatCell label="Strength" value={stats.strength} />

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
-import { RootEntryShell } from '@/components/features/auth/root-entry-shell'
+import { RootEntryShell } from '@/components/features/auth/entry/shell'
 
 describe('RootEntryShell', () => {
   it('switches to register state and validates required fields', async () => {

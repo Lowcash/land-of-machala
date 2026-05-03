@@ -1,5 +1,6 @@
 import { Card } from '@/components/ui/core/card'
 import { Box, Stack } from '@/components/ui/core/layout'
+import type { SpaceToken } from '@/components/ui/core/layout'
 import { BodyText, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
 
 type EntryCardRootProps = {
@@ -7,6 +8,7 @@ type EntryCardRootProps = {
 }
 
 type EntryCardHeaderProps = {
+  className?: string
   description: string
   title: string
 }
@@ -23,17 +25,32 @@ type EntryCardFooterProps = {
   children: React.ReactNode
 }
 
+type EntryCardContentProps = {
+  children: React.ReactNode
+}
+
+type EntryCardSupportProps = {
+  children: React.ReactNode
+  gap?: SpaceToken
+}
+
 function Root({ children }: EntryCardRootProps) {
   return (
-    <Card fillHeight gap="6" layout="stack" minHeight="entry" padding="roomy">
+    <Card fillHeight gap="xl" layout="stack" minHeight="entry" padding="roomy">
       {children}
     </Card>
   )
 }
 
-function Header({ description, title }: EntryCardHeaderProps) {
+function Header({ className, description, title }: EntryCardHeaderProps) {
   return (
-    <SectionTitle description={description} descriptionItalic descriptionSize="lg" title={title} />
+    <SectionTitle
+      className={className}
+      description={description}
+      descriptionItalic
+      descriptionSize="lg"
+      title={title}
+    />
   )
 }
 
@@ -53,7 +70,7 @@ function Status({ message }: EntryCardStatusProps) {
 
 function Divider({ label }: EntryCardDividerProps) {
   return (
-    <div className="flex w-full items-center gap-4">
+    <div className="flex w-full items-center gap-(--space-stack-lg)">
       <span className="bg-outline-variant/40 h-px flex-1" />
       <MetaLabel tone="muted">{label}</MetaLabel>
       <span className="bg-outline-variant/40 h-px flex-1" />
@@ -61,9 +78,17 @@ function Divider({ label }: EntryCardDividerProps) {
   )
 }
 
+function Content({ children }: EntryCardContentProps) {
+  return <Stack gap="lg">{children}</Stack>
+}
+
+function Support({ children, gap = 'lg' }: EntryCardSupportProps) {
+  return <Stack gap={gap}>{children}</Stack>
+}
+
 function Footer({ children }: EntryCardFooterProps) {
   return (
-    <Stack fullWidth justify="between" space="6">
+    <Stack fullWidth justify="between" gap="xl">
       {children}
     </Stack>
   )
@@ -71,7 +96,7 @@ function Footer({ children }: EntryCardFooterProps) {
 
 function Actions({ children }: EntryCardFooterProps) {
   return (
-    <Stack align="center" space="3">
+    <Stack align="center" gap="md">
       {children}
     </Stack>
   )
@@ -79,9 +104,11 @@ function Actions({ children }: EntryCardFooterProps) {
 
 export const EntryCard = {
   Actions,
+  Content,
   Divider,
   Footer,
   Header,
   Root,
   Status,
+  Support,
 }

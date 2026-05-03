@@ -1,3 +1,7 @@
+import clsx from 'clsx'
+
+import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
+
 const VARIANT_CLASSES = {
   ghost: 'text-primary hover:text-white focus-visible:ring-primary bg-transparent hover:bg-white/5',
   primary:
@@ -7,11 +11,13 @@ const VARIANT_CLASSES = {
 } as const
 
 const SIZE_CLASSES = {
-  md: 'px-4 py-3 text-sm tracking-[0.2em]',
-  lg: 'px-5 py-4 text-base tracking-[0.22em]',
+  md: 'px-(--space-button-md-x) py-(--space-button-md-y) text-sm tracking-[0.2em]',
+  lg: 'px-(--space-button-lg-x) py-(--space-button-lg-y) text-base tracking-[0.22em]',
 } as const
 
-type ButtonProps = Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'className' | 'style'> & {
+type ButtonProps = NativePropsWithoutClassNameStyle<
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+> & {
   fullWidth?: boolean
   variant?: keyof typeof VARIANT_CLASSES
   size?: keyof typeof SIZE_CLASSES
@@ -26,12 +32,12 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={[
+      className={clsx(
         'font-label inline-flex transform-gpu cursor-pointer items-center justify-center rounded-xl font-semibold uppercase transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50',
-        fullWidth ? 'w-full' : '',
+        fullWidth && 'w-full',
         VARIANT_CLASSES[variant],
-        SIZE_CLASSES[size],
-      ].join(' ')}
+        SIZE_CLASSES[size]
+      )}
       type={type}
       {...props}
     />

@@ -1,4 +1,4 @@
-import { RootEntryShellClient } from '@/components/features/auth/root-entry-shell-client'
+import { RootEntryShellClient } from '@/components/features/auth/entry/shell-client'
 
 export type EntryScreen = 'signIn' | 'signUp'
 

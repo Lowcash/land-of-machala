@@ -54,7 +54,6 @@ This packet owns origins flow after auth. Feature name stays `Origins`; player-f
 ║                   │         Skip the prologue            │                ║
 ║                   └──────────────────────────────────────┘                ║
 ║                                                                           ║
-║                           ─────────────────────                           ║
 ║                    Verze 0.1.0 • © 2026 Land of Machala                   ║
 ║                     FAQ • MERCHANT LAWS • PRIVACY CODEX                   ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
@@ -95,7 +94,6 @@ Desktop-leaning reference. Responsive notes below capture same layout on narrow 
 ║               │ Back to prologue     CONFIRM HERO          │              ║
 ║               └────────────────────────────────────────────┘              ║
 ║                                                                           ║
-║                           ─────────────────────                           ║
 ║                    Verze 0.1.0 • © 2026 Land of Machala                   ║
 ║                     FAQ • MERCHANT LAWS • PRIVACY CODEX                   ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
@@ -115,7 +113,7 @@ Desktop-leaning reference. Responsive notes below capture same layout on narrow 
 - Narrower viewports should preserve same order of content, not invent different state structure.
 - `Prologue` keeps overline label, centered divider, centered primary action, and skip link below.
 - Prologue choices stay in one vertical list; they do not switch to side-by-side tiles.
-- Footer remains centered with medium-length divider above copy.
+- Footer remains centered without decorative divider line.
 - Keep prose short in prologue intro so card stays compact and does not feel over-wide.
 - Keep top and bottom spacing balanced: no oversized dead zones above prompt or below actions.
 

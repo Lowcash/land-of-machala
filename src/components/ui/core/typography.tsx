@@ -1,3 +1,7 @@
+import clsx from 'clsx'
+
+import { Stack } from '@/components/ui/core/layout'
+
 type TextAlign = 'center' | 'left'
 
 type BodyTextProps = {
@@ -17,12 +21,12 @@ export function BodyText({
 }: BodyTextProps) {
   return (
     <p
-      className={[
+      className={clsx(
         align === 'center' ? 'text-center' : 'text-left',
         size === 'base' ? 'text-base leading-7 md:leading-8' : 'text-sm leading-6',
         tone === 'default' ? 'text-on-surface' : 'text-on-surface-variant',
-        italic ? 'italic' : '',
-      ].join(' ')}
+        italic && 'italic'
+      )}
     >
       {children}
     </p>
@@ -37,10 +41,10 @@ type MetaLabelProps = {
 export function MetaLabel({ children, tone = 'default' }: MetaLabelProps) {
   return (
     <p
-      className={[
+      className={clsx(
         'font-label text-[10px] tracking-[0.18em] uppercase',
-        tone === 'default' ? 'text-outline' : 'text-on-surface-variant/70',
-      ].join(' ')}
+        tone === 'default' ? 'text-outline' : 'text-on-surface-variant/70'
+      )}
     >
       {children}
     </p>
@@ -62,12 +66,12 @@ export function DisplayValue({
 }: DisplayValueProps) {
   return (
     <p
-      className={[
+      className={clsx(
         'font-headline tabular-nums',
         align === 'center' ? 'text-center' : 'text-left',
         size === 'xl' ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl',
-        tone === 'primary' ? 'text-primary' : 'text-on-surface',
-      ].join(' ')}
+        tone === 'primary' ? 'text-primary' : 'text-on-surface'
+      )}
     >
       {children}
     </p>
@@ -82,10 +86,10 @@ type BrandWordmarkProps = {
 export function BrandWordmark({ align = 'left', children }: BrandWordmarkProps) {
   return (
     <p
-      className={[
+      className={clsx(
         'font-brand text-primary text-xl tracking-[0.24em] uppercase md:text-2xl',
-        align === 'center' ? 'text-center' : 'text-left',
-      ].join(' ')}
+        align === 'center' ? 'text-center' : 'text-left'
+      )}
     >
       {children}
     </p>
@@ -94,16 +98,18 @@ export function BrandWordmark({ align = 'left', children }: BrandWordmarkProps) 
 
 type PageHeadlineProps = {
   children: React.ReactNode
+  className?: string
   size?: 'desktop' | 'mobile'
 }
 
-export function PageHeadline({ children, size = 'desktop' }: PageHeadlineProps) {
+export function PageHeadline({ children, className, size = 'desktop' }: PageHeadlineProps) {
   return (
     <h1
-      className={[
+      className={clsx(
         'font-headline leading-tight text-white',
         size === 'desktop' ? 'text-4xl xl:text-5xl' : 'text-3xl sm:text-4xl',
-      ].join(' ')}
+        className
+      )}
     >
       {children}
     </h1>
@@ -119,11 +125,11 @@ type EyebrowProps = {
 export function Eyebrow({ align = 'left', children, tone = 'primary' }: EyebrowProps) {
   return (
     <p
-      className={[
+      className={clsx(
         'font-label text-[11px] tracking-[0.28em] uppercase',
         align === 'center' ? 'text-center' : 'text-left',
-        tone === 'primary' ? 'text-primary' : 'text-primary/80',
-      ].join(' ')}
+        tone === 'primary' ? 'text-primary' : 'text-primary/80'
+      )}
     >
       {children}
     </p>
@@ -132,6 +138,7 @@ export function Eyebrow({ align = 'left', children, tone = 'primary' }: EyebrowP
 
 type SectionTitleProps = {
   align?: TextAlign
+  className?: string
   description?: React.ReactNode
   descriptionItalic?: boolean
   descriptionSize?: 'base' | 'lg'
@@ -143,6 +150,7 @@ type SectionTitleProps = {
 
 export function SectionTitle({
   align = 'center',
+  className,
   description,
   descriptionItalic = false,
   descriptionSize = 'base',
@@ -154,13 +162,13 @@ export function SectionTitle({
   const isCentered = align === 'center'
 
   return (
-    <div className={['space-y-2', isCentered ? 'text-center' : 'text-left'].join(' ')}>
+    <Stack className={clsx(isCentered ? 'text-center' : 'text-left', className)} gap="sm">
       {overline ? <Eyebrow align={align}>{overline}</Eyebrow> : null}
       <h2
-        className={[
+        className={clsx(
           'font-headline text-white',
-          titleSize === 'xl' ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl',
-        ].join(' ')}
+          titleSize === 'xl' ? 'text-3xl md:text-4xl' : 'text-2xl md:text-3xl'
+        )}
       >
         {title}
       </h2>
@@ -177,9 +185,9 @@ export function SectionTitle({
         </div>
       ) : null}
       {showDivider ? (
-        <div className={['bg-primary/30 h-px w-24', isCentered ? 'mx-auto' : ''].join(' ')} />
+        <div className={clsx('bg-primary/30 h-px w-24', isCentered && 'mx-auto')} />
       ) : null}
-    </div>
+    </Stack>
   )
 }
 
@@ -194,13 +202,13 @@ export function HelperText({ children, reserveSpace = true, tone = 'default' }: 
 
   return (
     <p
-      className={[
-        reserveSpace ? 'min-h-4' : '',
+      className={clsx(
+        reserveSpace && 'min-h-4',
         'text-xs',
         tone === 'error' ? 'font-label text-error' : '',
         tone === 'invisible' ? 'text-transparent' : '',
-        tone === 'default' ? 'text-on-surface-variant' : '',
-      ].join(' ')}
+        tone === 'default' ? 'text-on-surface-variant' : ''
+      )}
     >
       {text}
     </p>
@@ -217,11 +225,11 @@ type IconLabelProps = {
 export function IconLabel({ align = 'center', children, icon, width = 'auto' }: IconLabelProps) {
   return (
     <span
-      className={[
-        'inline-flex gap-2',
+      className={clsx(
+        'inline-flex gap-(--space-stack-sm)',
         align === 'start' ? 'items-start' : 'items-center',
-        width === 'full' ? 'w-full' : '',
-      ].join(' ')}
+        width === 'full' && 'w-full'
+      )}
     >
       <span className="shrink-0">{icon}</span>
       <span className="block flex-1">{children}</span>

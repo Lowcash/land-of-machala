@@ -2,7 +2,6 @@ import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
 
 import { Button } from '@/components/ui/core/button'
-import { Stack } from '@/components/ui/core/layout'
 import { EntryCard } from '@/components/ui/prefabs/auth/entry-card'
 import { SignInForm, SignUpForm } from '@/components/ui/prefabs/auth/entry-forms'
 import { LegalTermsLabel } from '@/components/ui/prefabs/auth/legal-terms-label'
@@ -53,8 +52,9 @@ export function EntrySignInPanel({
   return (
     <EntryCard.Root>
       <EntryCard.Footer>
-        <Stack space="4">
+        <EntryCard.Content>
           <EntryCard.Header
+            className="hidden lg:block"
             description={ENTRY_SIGN_IN_COPY.description}
             title={ENTRY_SIGN_IN_COPY.title}
           />
@@ -69,8 +69,8 @@ export function EntrySignInPanel({
             password={password}
             rememberMe={rememberMe}
           />
-        </Stack>
-        <Stack space="3">
+        </EntryCard.Content>
+        <EntryCard.Support>
           <EntryCard.Divider label={ENTRY_SIGN_IN_COPY.orLabel} />
           <EntryCard.Actions>
             <Button onClick={onSwitchToSignUp} size="md" variant="ghost">
@@ -80,7 +80,7 @@ export function EntrySignInPanel({
               {ENTRY_SIGN_IN_COPY.guestLabel}
             </Button>
           </EntryCard.Actions>
-        </Stack>
+        </EntryCard.Support>
       </EntryCard.Footer>
     </EntryCard.Root>
   )
@@ -104,8 +104,9 @@ export function EntrySignUpPanel({
   return (
     <EntryCard.Root>
       <EntryCard.Footer>
-        <Stack space="4">
+        <EntryCard.Content>
           <EntryCard.Header
+            className="hidden lg:block"
             description={ENTRY_SIGN_UP_COPY.description}
             title={ENTRY_SIGN_UP_COPY.title}
           />
@@ -123,7 +124,7 @@ export function EntrySignUpPanel({
             onSubmit={onSubmit}
             password={password}
           />
-        </Stack>
+        </EntryCard.Content>
         <EntryCard.Actions>
           <Button onClick={onSwitchToSignIn} size="md" variant="ghost">
             {ENTRY_SIGN_UP_COPY.backLabel}

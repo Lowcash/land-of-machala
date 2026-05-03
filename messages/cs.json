@@ -1,5 +1,72 @@
 {
   "Common": {
     "appName": "Land of Machala"
+  },
+  "Auth": {
+    "shared": {
+      "emailPlaceholder": "cestovatel@rise.cz",
+      "passwordPlaceholder": "********"
+    },
+    "signIn": {
+      "title": "Vstup do říše",
+      "description": "Navrať se ke svému odkazu.",
+      "emailLabel": "E-mail",
+      "passwordLabel": "Tajná fráze",
+      "forgotLabel": "Zapomenuté svitky?",
+      "rememberLabel": "Pamatuj si mého ducha",
+      "submitLabel": "Vstoupit do říše",
+      "orLabel": "nebo pokračuj jako",
+      "createAccountLabel": "Vytvořit účet",
+      "guestLabel": "Pokračovat jako host"
+    },
+    "signUp": {
+      "title": "Vytvoř si účet",
+      "description": "Začni svou cestu kronikami Machaly",
+      "heroNameLabel": "Jméno hrdiny",
+      "heroNamePlaceholder": "Ardyn Vale",
+      "passwordLabel": "Tajná fráze",
+      "submitLabel": "Vytvořit účet",
+      "backLabel": "Zpět na přihlášení",
+      "guestLabel": "Vstup hosta"
+    },
+    "legal": {
+      "prefix": "Souhlasím s",
+      "merchantLawsLabel": "Zákony obchodníků",
+      "connector": "a",
+      "privacyCodexLabel": "Kodexem soukromí",
+      "suffix": "říše."
+    },
+    "validation": {
+      "emailInvalid": "Zadej platný e-mail.",
+      "passwordRequired": "Tajná fráze je povinná.",
+      "passwordLength": "Tajná fráze musí mít alespoň 6 znaků.",
+      "heroNameRequired": "Jméno hrdiny je povinné.",
+      "acceptTermsRequired": "Je nutné přijmout Zákony obchodníků a Kodex soukromí."
+    },
+    "status": {
+      "continuationPending": "Pokračování říše zatím není aktivní. Aktuální část zůstává u vstupu a původu.",
+      "heroPrepared": "Hrdina je připraven. Pokračování říše přijde v další části."
+    },
+    "side": {
+      "recentChroniclesTitle": "Nedávné kroniky"
+    },
+    "origins": {
+      "tutorial": {
+        "continueLabel": "Pokračovat",
+        "skipLabel": "Přeskočit prolog"
+      },
+      "creation": {
+        "title": "Vytvaruj svého hrdinu",
+        "description": "Před vstupem do říše zkontroluj rasu, povolání a jméno hrdiny.",
+        "overline": "Příprava",
+        "raceTitle": "Rasa",
+        "classTitle": "Povolání",
+        "heroNameLabel": "Jméno hrdiny",
+        "heroNamePlaceholder": "Ardyn Vale",
+        "randomizeLabel": "Vylosovat náhodného hrdinu",
+        "backLabel": "Zpět na prolog",
+        "confirmLabel": "Potvrdit hrdinu"
+      }
+    }
   }
 }

@@ -1,22 +1,25 @@
 import { useId } from 'react'
 
+import clsx from 'clsx'
+
+import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
+
 import { HelperText } from '@/components/ui/core/typography'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
+import { FormField } from '@/components/ui/forms/form-chrome'
 
 type CheckboxFieldProps = Omit<
-  React.InputHTMLAttributes<HTMLInputElement>,
-  'className' | 'style' | 'type'
+  NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>>,
+  'type'
 > & {
   error?: string
   label: React.ReactNode
-  toggleOnLabelClick?: boolean
 }
 
 export function CheckboxField({
   error,
   id,
   label,
-  toggleOnLabelClick = true,
   ...props
 }: CheckboxFieldProps) {
   const generatedId = useId()
@@ -28,17 +31,17 @@ export function CheckboxField({
   })
 
   return (
-    <div className="space-y-2">
-      <div className="group flex items-start gap-3">
-        <span className="relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
+    <FormField.Shell>
+      <div className="group flex items-center gap-(--space-stack-md)">
+        <span className="relative flex h-5 w-5 shrink-0 items-center justify-center">
           <input className="peer sr-only" id={resolvedId} type="checkbox" {...props} />
           <label
-            className={[
+            className={clsx(
               'bg-surface-container-lowest/80 group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer rounded-md border transition peer-focus-visible:ring-2',
               error
                 ? 'border-error/65 peer-focus-visible:ring-error/25'
-                : 'border-outline-variant peer-focus-visible:ring-primary/30',
-            ].join(' ')}
+                : 'border-outline-variant peer-focus-visible:ring-primary/30'
+            )}
             htmlFor={resolvedId}
           />
           <svg
@@ -56,28 +59,17 @@ export function CheckboxField({
             />
           </svg>
         </span>
-        {toggleOnLabelClick ? (
-          <label
-            className={[
-              error ? 'text-on-surface' : 'text-on-surface-variant',
-              'cursor-pointer text-sm leading-6',
-            ].join(' ')}
-            htmlFor={resolvedId}
-          >
-            {label}
-          </label>
-        ) : (
-          <span
-            className={[
-              error ? 'text-on-surface' : 'text-on-surface-variant',
-              'text-sm leading-6',
-            ].join(' ')}
-          >
-            {label}
-          </span>
-        )}
+        <label
+          className={clsx(
+            error ? 'text-on-surface' : 'text-on-surface-variant',
+            'cursor-pointer text-sm leading-6'
+          )}
+          htmlFor={resolvedId}
+        >
+          {label}
+        </label>
       </div>
       {error ? <HelperText tone="error">{error}</HelperText> : null}
-    </div>
+    </FormField.Shell>
   )
 }

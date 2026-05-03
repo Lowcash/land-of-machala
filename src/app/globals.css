@@ -28,6 +28,38 @@
 
   --radius-card: 1rem;
   --shadow-gilded: 0 24px 80px rgba(0, 0, 0, 0.45);
+
+  --space-stack-sm: 0.5rem;
+  --space-stack-md: 0.75rem;
+  --space-stack-lg: 1rem;
+  --space-stack-xl: 1.5rem;
+  --space-stack-xxl: 2rem;
+
+  --space-pad-sm: 0.75rem;
+  --space-pad-md: 1rem;
+  --space-pad-lg: 1.25rem;
+  --space-pad-xl: 1.5rem;
+  --space-pad-2xl: 2rem;
+  --space-pad-3xl: 2.5rem;
+
+  --space-button-md-x: 1rem;
+  --space-button-md-y: 0.75rem;
+  --space-button-lg-x: 1.25rem;
+  --space-button-lg-y: 1rem;
+
+  --space-field-x: 1rem;
+  --space-field-y: 0.75rem;
+
+  --space-shell-inset-x: 1.5rem;
+  --space-shell-inset-x-lg: 2.5rem;
+  --space-shell-band-y: 1.5rem;
+  --space-shell-band-y-lg: 2rem;
+  --space-shell-page-y: 2rem;
+  --space-shell-page-y-lg: 2.5rem;
+  --space-shell-stage-y: 2.5rem;
+  --space-shell-stage-y-lg: 3.5rem;
+  --space-shell-grid-gap: 2rem;
+  --space-shell-grid-gap-lg: 3.5rem;
 }
 
 @layer base {

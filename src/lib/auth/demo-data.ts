@@ -172,7 +172,22 @@ export const RANDOM_NAMES = [
   'Tomas Flint',
   'Serah Dawnmere',
   'Rurik Emberhand',
+  'Kael Thornmere',
+  'Mira Ashvale',
+  'Darian Hollowmere',
+  'Elira Stonewake',
+  'Corin Valecrest',
+  'Selene Brightbrook',
+  'Bram Ironroot',
 ] as const
+
+export const DEFAULT_HERO_NAME = RANDOM_NAMES[0]
+export const DEFAULT_ORIGIN_CLASS_ID = 'ranger' as const
+export const DEFAULT_ORIGIN_RACE_ID = 'human' as const
+
+export function getRandomHeroName() {
+  return RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)]
+}
 
 export function findRace(raceId: RaceOption['id']) {
   return RACE_OPTIONS.find((race) => race.id === raceId) ?? RACE_OPTIONS[0]

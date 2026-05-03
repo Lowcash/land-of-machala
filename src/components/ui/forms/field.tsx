@@ -1,9 +1,14 @@
 import { useId } from 'react'
 
+import clsx from 'clsx'
+
+import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
+
 import { HelperText } from '@/components/ui/core/typography'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
+import { FormField } from '@/components/ui/forms/form-chrome'
 
-type FieldProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, 'className' | 'style'> & {
+type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>> & {
   actionLabel?: string
   onActionClick?: () => void
   error?: string
@@ -31,42 +36,24 @@ export function Field({
   const hasActionLabel = Boolean(actionLabel)
 
   return (
-    <div className="space-y-2">
-      <div
-        className={
-          hasActionLabel
-            ? 'flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3'
-            : ''
-        }
-      >
-        <label
-          className="font-label text-outline block text-xs tracking-[0.22em] uppercase"
-          htmlFor={resolvedId}
-        >
-          {label}
-        </label>
+    <FormField.Shell>
+      <FormField.Header hasAction={hasActionLabel}>
+        <FormField.Label htmlFor={resolvedId}>{label}</FormField.Label>
         {hasActionLabel ? (
-          <button
-            className="font-label text-primary disabled:text-outline/70 text-[11px] tracking-[0.18em] whitespace-nowrap uppercase disabled:cursor-not-allowed"
-            onClick={onActionClick}
-            disabled={!onActionClick}
-            type="button"
-          >
-            {actionLabel}
-          </button>
+          <FormField.Action onClick={onActionClick}>{actionLabel}</FormField.Action>
         ) : null}
-      </div>
+      </FormField.Header>
       <input
-        className={[
-          'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full rounded-xl border px-4 py-3 transition outline-none focus:ring-2',
+        className={clsx(
+          'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full rounded-xl border px-(--space-field-x) py-(--space-field-y) transition outline-none focus:ring-2',
           error
             ? 'border-error/65 focus:border-error focus:ring-error/25'
-            : 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',
-        ].join(' ')}
+            : 'border-outline-variant/70 focus:border-primary focus:ring-primary/30'
+        )}
         id={resolvedId}
         {...props}
       />
       {helperText ? <HelperText tone={error ? 'error' : 'default'}>{helperText}</HelperText> : null}
-    </div>
+    </FormField.Shell>
   )
 }

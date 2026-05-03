@@ -1,3 +1,6 @@
+import clsx from 'clsx'
+
+import { Stack } from '@/components/ui/core/layout'
 import { BodyText, DisplayValue, IconLabel } from '@/components/ui/core/typography'
 
 type PrologueChoiceCardProps = {
@@ -17,12 +20,12 @@ export function PrologueChoiceCard({
 }: PrologueChoiceCardProps) {
   return (
     <button
-      className={[
-        'flex w-full cursor-pointer items-start gap-3 rounded-2xl border p-3 text-left transition md:gap-4 md:p-3.5',
+      className={clsx(
+        'flex w-full cursor-pointer items-start gap-(--space-stack-md) rounded-2xl border p-(--space-pad-sm) text-left transition md:gap-(--space-stack-lg) md:p-(--space-pad-md)',
         isActive
           ? 'border-primary bg-primary/10 shadow-[0_0_0_1px_rgba(255,205,107,0.22)]'
-          : 'border-outline-variant/40 bg-surface-container-low/60 hover:border-primary/40 hover:bg-surface-container/70',
-      ].join(' ')}
+          : 'border-outline-variant/40 bg-surface-container-low/60 hover:border-primary/40 hover:bg-surface-container/70'
+      )}
       onClick={onSelect}
       type="button"
     >
@@ -35,12 +38,12 @@ export function PrologueChoiceCard({
         }
         width="full"
       >
-        <span className="space-y-0.5">
+        <Stack gap="sm">
           <DisplayValue size="lg">{title}</DisplayValue>
           <BodyText size="sm" tone="muted">
             {description}
           </BodyText>
-        </span>
+        </Stack>
       </IconLabel>
     </button>
   )

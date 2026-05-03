@@ -2,6 +2,7 @@ import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
 
 import { Button } from '@/components/ui/core/button'
+import { Stack } from '@/components/ui/core/layout'
 import { CheckboxField } from '@/components/ui/forms/checkbox-field'
 import { Field } from '@/components/ui/forms/field'
 
@@ -43,7 +44,7 @@ export function SignInForm({
   rememberMe,
 }: SignInFormProps) {
   return (
-    <form className="space-y-4" onSubmit={onSubmit}>
+    <Stack as="form" gap="lg" onSubmit={onSubmit}>
       <Field
         autoComplete="email"
         error={errors.email}
@@ -73,7 +74,7 @@ export function SignInForm({
       <Button fullWidth type="submit">
         {ENTRY_SIGN_IN_COPY.submitLabel}
       </Button>
-    </form>
+    </Stack>
   )
 }
 
@@ -91,7 +92,7 @@ export function SignUpForm({
   password,
 }: SignUpFormProps) {
   return (
-    <form className="space-y-4" onSubmit={onSubmit}>
+    <Stack as="form" gap="lg" onSubmit={onSubmit}>
       <Field
         error={errors.heroName}
         label={ENTRY_SIGN_UP_COPY.heroNameLabel}
@@ -123,11 +124,10 @@ export function SignUpForm({
         id="merchant-terms"
         label={legalLabel}
         onChange={(event) => onAcceptTermsChange(event.target.checked)}
-        toggleOnLabelClick={false}
       />
       <Button fullWidth type="submit">
         {ENTRY_SIGN_UP_COPY.submitLabel}
       </Button>
-    </form>
+    </Stack>
   )
 }

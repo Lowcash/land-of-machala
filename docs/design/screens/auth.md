@@ -60,7 +60,6 @@ Desktop-leaning reference. Shared responsive shell rules below describe narrow v
 ║   │ Daily Quests       │ │ Merchants          │                           ║
 ║   └─────────────------─┘ └──────────────------┘                           ║
 ║                                                                           ║
-║                           ─────────────────────                           ║
 ║                    Verze 0.1.0 • © 2026 Land of Machala                   ║
 ║                     FAQ • MERCHANT LAWS • PRIVACY CODEX                   ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
@@ -92,7 +91,6 @@ Desktop-leaning reference. Shared responsive shell rules below describe narrow v
 ║   │ Daily Quests       │ │ Merchants          │                           ║
 ║   └─────────────------─┘ └──────────────------┘                           ║
 ║                                                                           ║
-║                           ─────────────────────                           ║
 ║                    Verze 0.1.0 • © 2026 Land of Machala                   ║
 ║                     FAQ • MERCHANT LAWS • PRIVACY CODEX                   ║
 ╚═══════════════════════════════════════════════════════════════════════════╝
@@ -120,7 +118,7 @@ Desktop-leaning reference. Shared responsive shell rules below describe narrow v
 - Header stays clean without horizontal rule.
 - Sign-in and sign-up cards keep same outer placement; form content changes inside stable shell.
 - Password label row stacks cleanly on narrow widths instead of forcing awkward wrap.
-- Footer stays centered with wide divider above copy instead of full-width line.
+- Footer stays centered without decorative divider line.
 - Avoid repeating hero intro sentence inside sign-in card body; sign-in card uses shorter supporting copy.
 
 ## Approval Notes

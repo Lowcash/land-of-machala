@@ -1,5 +1,6 @@
 import type { RealmStat } from '@/lib/auth/demo-data'
 
+import { Box, Stack } from '@/components/ui/core/layout'
 import { DisplayValue, MetaLabel } from '@/components/ui/core/typography'
 
 type RealmStatsGridProps = {
@@ -8,15 +9,17 @@ type RealmStatsGridProps = {
 
 export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
-    <ul className="grid w-full grid-cols-2 gap-4">
+    <ul className="grid w-full grid-cols-2 gap-(--space-stack-lg)">
       {stats.map((item) => (
         <li key={item.label}>
-          <div className="bg-surface-container/40 border-outline-variant/30 space-y-1 rounded-xl border p-4 text-center">
-            <DisplayValue align="center" size="xl" tone="primary">
-              {item.value}
-            </DisplayValue>
-            <MetaLabel>{item.label}</MetaLabel>
-          </div>
+          <Box border className="text-center" padding="md" radius="xl" tone="surface">
+            <Stack gap="sm">
+              <DisplayValue align="center" size="xl" tone="primary">
+                {item.value}
+              </DisplayValue>
+              <MetaLabel>{item.label}</MetaLabel>
+            </Stack>
+          </Box>
         </li>
       ))}
     </ul>

@@ -2,13 +2,13 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
 
-import { RootExperience } from '@/components/features/auth/root-experience'
+import { RootExperienceClient } from '@/components/features/auth/shared/experience-client'
 
 describe('RootExperience', () => {
   it('moves from entry to origins and returns to entry after hero confirmation', async () => {
     const user = userEvent.setup()
 
-    render(<RootExperience />)
+    render(<RootExperienceClient />)
 
     await user.click(screen.getByRole('button', { name: /continue as guest/i }))
 

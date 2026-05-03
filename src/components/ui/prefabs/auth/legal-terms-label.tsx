@@ -5,7 +5,7 @@ type LegalTermsLabelProps = {
 }
 
 const LEGAL_LINK_CLASS =
-  'text-primary hover:text-primary-fixed cursor-pointer underline decoration-transparent transition hover:decoration-current'
+  'text-primary hover:text-primary-fixed hover:decoration-current cursor-pointer underline decoration-transparent transition'
 
 export function LegalTermsLabel({ onLegalLinkClick }: LegalTermsLabelProps) {
   return (

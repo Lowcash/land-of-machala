@@ -1,5 +1,5 @@
-import { RootExperience } from '@/components/features/auth/root-experience'
+import { RootExperienceClient } from '@/components/features/auth/shared/experience-client'
 
 export default function RootPage() {
-  return <RootExperience />
+  return <RootExperienceClient />
 }

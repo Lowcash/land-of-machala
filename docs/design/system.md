@@ -175,6 +175,13 @@ The typographic system is built on a literary-first approach:
 
 ## Layouts
 
+### Spacing Discipline
+
+- Prefer shared spacing scale values: 2, 3, 4, 6, and 8.
+- Use component props when available (`Stack` gap, `Card` gap and padding) instead of ad-hoc utility values.
+- Treat `pt-*` as exception utility; prefer parent gap, padding, or layout primitive before adding top-only offsets.
+- Keep one-off spacing values for explicit layout breakpoints only (for example split-grid shell balancing).
+
 ### Auth Screen (Login / Register / Guest)
 
 - **Background**
@@ -193,7 +200,6 @@ The typographic system is built on a literary-first approach:
   - Actions: primary submit plus text links for password reset, guest entry, and auth-state switching.
 - **Footer**
   - Centered text: `Verze 0.1.0 • © 2026 Land of Machala`.
-  - Use a short centered divider above footer copy rather than a full-width rule.
   - Under it, subtle links: `FAQ • MERCHANT LAWS • PRIVACY CODEX`.
 
 ### Prologue Screen

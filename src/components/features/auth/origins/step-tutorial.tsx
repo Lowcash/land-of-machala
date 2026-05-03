@@ -1,10 +1,16 @@
 import type { OriginStep } from '@/lib/auth/demo-data'
+import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-copy'
 
 import { Button } from '@/components/ui/core/button'
-import { Card } from '@/components/ui/core/card'
-import { Stack } from '@/components/ui/core/layout'
 import { BodyText, SectionTitle } from '@/components/ui/core/typography'
+import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
+
+const OPTION_LABELS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+
+function getOptionLabel(index: number) {
+  return OPTION_LABELS[index] ?? `${index + 1}`
+}
 
 type TutorialStepProps = {
   onContinue: () => void
@@ -22,7 +28,7 @@ export function TutorialStep({
   step,
 }: TutorialStepProps) {
   return (
-    <Card centered gap="5" layout="stack" padding="cozy" width="2xl">
+    <OriginsCard.Root width="narrow">
       <SectionTitle
         description={step.description}
         descriptionSize="base"
@@ -31,12 +37,12 @@ export function TutorialStep({
         titleSize="lg"
         title={step.title}
       />
-      <section className="mx-auto w-full max-w-xl space-y-3 text-left">
+      <OriginsCard.Content>
         <BodyText align="center">{step.prompt}</BodyText>
-        <ul className="space-y-2">
+        <OriginsCard.List gap="sm">
           {step.choices.map((choice, index) => {
             const isActive = selectedChoiceId === choice.id
-            const optionLabel = String.fromCharCode(65 + index)
+            const optionLabel = getOptionLabel(index)
 
             return (
               <li key={choice.id}>
@@ -50,16 +56,16 @@ export function TutorialStep({
               </li>
             )
           })}
-        </ul>
-      </section>
-      <Stack align="center" space="2">
+        </OriginsCard.List>
+      </OriginsCard.Content>
+      <OriginsCard.Actions>
         <Button disabled={!selectedChoiceId} onClick={onContinue}>
-          Continue
+          {ORIGINS_TUTORIAL_COPY.continueLabel}
         </Button>
         <Button onClick={onSkip} variant="ghost">
-          Skip the prologue
+          {ORIGINS_TUTORIAL_COPY.skipLabel}
         </Button>
-      </Stack>
-    </Card>
+      </OriginsCard.Actions>
+    </OriginsCard.Root>
   )
 }

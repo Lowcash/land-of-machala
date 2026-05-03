@@ -56,6 +56,5 @@ export const InteractiveLegalLinks: Story = {
         of realm.
       </>
     ),
-    toggleOnLabelClick: false,
   },
 }

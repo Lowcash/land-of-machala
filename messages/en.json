@@ -1,5 +1,72 @@
 {
   "Common": {
     "appName": "Land of Machala"
+  },
+  "Auth": {
+    "shared": {
+      "emailPlaceholder": "traveller@realm.com",
+      "passwordPlaceholder": "********"
+    },
+    "signIn": {
+      "title": "Enter the realm",
+      "description": "Reconnect with your legacy.",
+      "emailLabel": "Email",
+      "passwordLabel": "Secret phrase",
+      "forgotLabel": "Forgotten scrolls?",
+      "rememberLabel": "Remember my spirit",
+      "submitLabel": "Enter the Realm",
+      "orLabel": "or explore as",
+      "createAccountLabel": "Create account",
+      "guestLabel": "Continue as guest"
+    },
+    "signUp": {
+      "title": "Create your account",
+      "description": "Begin your journey through chronicles of Machala",
+      "heroNameLabel": "Hero name",
+      "heroNamePlaceholder": "Ardyn Vale",
+      "passwordLabel": "Secret phrase",
+      "submitLabel": "Create Account",
+      "backLabel": "Back to sign in",
+      "guestLabel": "Guest entry"
+    },
+    "legal": {
+      "prefix": "I accept",
+      "merchantLawsLabel": "Merchant Laws",
+      "connector": "and",
+      "privacyCodexLabel": "Privacy Codex",
+      "suffix": "of realm."
+    },
+    "validation": {
+      "emailInvalid": "Enter a valid email.",
+      "passwordRequired": "Secret phrase is required.",
+      "passwordLength": "Secret phrase must have at least 6 characters.",
+      "heroNameRequired": "Hero name is required.",
+      "acceptTermsRequired": "Merchant Laws and Privacy Codex must be accepted."
+    },
+    "status": {
+      "continuationPending": "Realm continuation is not active yet. Current slice stays on entry and origins.",
+      "heroPrepared": "Hero is prepared. Realm continuation comes in next slice."
+    },
+    "side": {
+      "recentChroniclesTitle": "Recent Chronicles"
+    },
+    "origins": {
+      "tutorial": {
+        "continueLabel": "Continue",
+        "skipLabel": "Skip the prologue"
+      },
+      "creation": {
+        "title": "Shape your hero",
+        "description": "Review race, class, and hero name before entering realm.",
+        "overline": "Setup",
+        "raceTitle": "Race",
+        "classTitle": "Class",
+        "heroNameLabel": "Hero name",
+        "heroNamePlaceholder": "Ardyn Vale",
+        "randomizeLabel": "Roll a random hero",
+        "backLabel": "Back to prologue",
+        "confirmLabel": "Confirm hero"
+      }
+    }
   }
 }
