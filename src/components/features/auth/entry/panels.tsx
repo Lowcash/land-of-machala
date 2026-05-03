@@ -73,11 +73,11 @@ export function EntrySignInPanel({
         <EntryCard.Support>
           <EntryCard.Divider label={ENTRY_SIGN_IN_COPY.orLabel} />
           <EntryCard.Actions>
-            <Button onClick={onSwitchToSignUp} size="md" variant="ghost">
-              {ENTRY_SIGN_IN_COPY.createAccountLabel}
-            </Button>
             <Button onClick={onGuestEntry} size="md" variant="ghost">
               {ENTRY_SIGN_IN_COPY.guestLabel}
+            </Button>
+            <Button onClick={onSwitchToSignUp} size="md" variant="secondary">
+              {ENTRY_SIGN_IN_COPY.createAccountLabel}
             </Button>
           </EntryCard.Actions>
         </EntryCard.Support>
@@ -126,11 +126,11 @@ export function EntrySignUpPanel({
           />
         </EntryCard.Content>
         <EntryCard.Actions>
-          <Button onClick={onSwitchToSignIn} size="md" variant="ghost">
-            {ENTRY_SIGN_UP_COPY.backLabel}
-          </Button>
           <Button onClick={onGuestEntry} size="md" variant="ghost">
             {ENTRY_SIGN_UP_COPY.guestLabel}
+          </Button>
+          <Button onClick={onSwitchToSignIn} size="md" variant="secondary">
+            {ENTRY_SIGN_UP_COPY.backLabel}
           </Button>
         </EntryCard.Actions>
       </EntryCard.Footer>

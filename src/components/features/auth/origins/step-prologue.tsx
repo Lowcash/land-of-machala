@@ -2,7 +2,6 @@ import type { OriginStep } from '@/lib/auth/demo-data'
 import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-copy'
 
 import { Button } from '@/components/ui/core/button'
-import { BodyText, SectionTitle } from '@/components/ui/core/typography'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
 
@@ -12,7 +11,7 @@ function getOptionLabel(index: number) {
   return OPTION_LABELS[index] ?? `${index + 1}`
 }
 
-type TutorialStepProps = {
+type PrologueStepProps = {
   onContinue: () => void
   onSelectChoice: (choiceId: string) => void
   onSkip: () => void
@@ -20,32 +19,29 @@ type TutorialStepProps = {
   step: OriginStep
 }
 
-export function TutorialStep({
+export function PrologueStep({
   onContinue,
   onSelectChoice,
   onSkip,
   selectedChoiceId,
   step,
-}: TutorialStepProps) {
+}: PrologueStepProps) {
   return (
-    <OriginsCard.Root width="narrow">
-      <SectionTitle
+    <OriginsCard.Root>
+      <OriginsCard.Header
         description={step.description}
-        descriptionSize="base"
         overline={step.eyebrow}
-        showDivider
-        titleSize="lg"
         title={step.title}
       />
       <OriginsCard.Content>
-        <BodyText align="center">{step.prompt}</BodyText>
-        <OriginsCard.List gap="sm">
+        <OriginsCard.Prompt>{step.prompt}</OriginsCard.Prompt>
+        <OriginsCard.List>
           {step.choices.map((choice, index) => {
             const isActive = selectedChoiceId === choice.id
             const optionLabel = getOptionLabel(index)
 
             return (
-              <li key={choice.id}>
+              <OriginsCard.ListItem key={choice.id}>
                 <PrologueChoiceCard
                   description={choice.description}
                   isActive={isActive}
@@ -53,7 +49,7 @@ export function TutorialStep({
                   optionLabel={optionLabel}
                   title={choice.title}
                 />
-              </li>
+              </OriginsCard.ListItem>
             )
           })}
         </OriginsCard.List>

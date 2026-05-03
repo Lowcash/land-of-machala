@@ -27,6 +27,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
           align="left"
           description={selected.description}
           overline={title}
+          overlineTone="muted"
           title={selected.name}
           titleSize="lg"
         />

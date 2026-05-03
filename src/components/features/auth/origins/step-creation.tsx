@@ -2,7 +2,6 @@ import type { CharacterStats, ClassOption, RaceOption } from '@/lib/auth/demo-da
 import { ORIGINS_CREATION_COPY } from '@/lib/auth/origins-copy'
 
 import { Button } from '@/components/ui/core/button'
-import { SectionTitle } from '@/components/ui/core/typography'
 import { Field } from '@/components/ui/forms/field'
 import { HeroStatsGrid } from '@/components/ui/prefabs/origins/hero-stats-grid'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
@@ -40,13 +39,10 @@ export function StepCreation({
   stats,
 }: StepCreationProps) {
   return (
-    <OriginsCard.Root width="wide">
-      <SectionTitle
+    <OriginsCard.Root>
+      <OriginsCard.Header
         description={ORIGINS_CREATION_COPY.description}
-        descriptionSize="base"
         overline={ORIGINS_CREATION_COPY.overline}
-        showDivider
-        titleSize="lg"
         title={ORIGINS_CREATION_COPY.title}
       />
       <OriginsCard.Columns>

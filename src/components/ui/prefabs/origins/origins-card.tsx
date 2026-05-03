@@ -4,16 +4,29 @@ import { Card } from '@/components/ui/core/card'
 import { Box } from '@/components/ui/core/layout'
 import type { SpaceToken } from '@/components/ui/core/layout'
 import { Stack } from '@/components/ui/core/layout'
+import { BodyText, SectionTitle } from '@/components/ui/core/typography'
 
 type RootProps = {
   children: React.ReactNode
-  width: 'narrow' | 'wide'
 }
 
 type ListProps = {
   children: React.ReactNode
   className?: string
-  gap?: SpaceToken
+}
+
+type HeaderProps = {
+  description?: React.ReactNode
+  overline?: React.ReactNode
+  title: React.ReactNode
+}
+
+type ListItemProps = {
+  children: React.ReactNode
+}
+
+type PromptProps = {
+  children: React.ReactNode
 }
 
 type ActionsProps = {
@@ -39,19 +52,42 @@ type PanelProps = {
   gap?: SpaceToken
 }
 
-function Root({ children, width }: RootProps) {
+function Root({ children }: RootProps) {
   return (
-    <Card centered gap="xl" layout="stack" padding="cozy" width={width === 'wide' ? '4xl' : '2xl'}>
+    <Card centered gap="xl" layout="stack" padding="cozy" width="auto">
       {children}
     </Card>
   )
 }
 
-function List({ children, className, gap = 'sm' }: ListProps) {
+function List({ children, className }: ListProps) {
   return (
-    <Stack as="ul" className={className} gap={gap} resetList>
+    <Stack as="ul" className={className} gap="sm" resetList>
       {children}
     </Stack>
+  )
+}
+
+function ListItem({ children }: ListItemProps) {
+  return <li>{children}</li>
+}
+
+function Prompt({ children }: PromptProps) {
+  return (
+    <BodyText align="center">{children}</BodyText>
+  )
+}
+
+function Header({ description, overline, title }: HeaderProps) {
+  return (
+    <SectionTitle
+      description={description}
+      descriptionSize="base"
+      overline={overline}
+      showDivider
+      title={title}
+      titleSize="lg"
+    />
   )
 }
 
@@ -102,7 +138,10 @@ export const OriginsCard = {
   Columns,
   Content,
   Footer,
+  Header,
   List,
+  ListItem,
   Panel,
+  Prompt,
   Root,
 } as const

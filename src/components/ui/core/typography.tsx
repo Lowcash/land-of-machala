@@ -128,7 +128,7 @@ export function Eyebrow({ align = 'left', children, tone = 'primary' }: EyebrowP
       className={clsx(
         'font-label text-[11px] tracking-[0.28em] uppercase',
         align === 'center' ? 'text-center' : 'text-left',
-        tone === 'primary' ? 'text-primary' : 'text-primary/80'
+        tone === 'primary' ? 'text-primary' : 'text-outline'
       )}
     >
       {children}
@@ -143,6 +143,7 @@ type SectionTitleProps = {
   descriptionItalic?: boolean
   descriptionSize?: 'base' | 'lg'
   overline?: React.ReactNode
+  overlineTone?: EyebrowProps['tone']
   showDivider?: boolean
   title: React.ReactNode
   titleSize?: 'lg' | 'xl'
@@ -155,6 +156,7 @@ export function SectionTitle({
   descriptionItalic = false,
   descriptionSize = 'base',
   overline,
+  overlineTone = 'primary',
   showDivider = false,
   title,
   titleSize = 'xl',
@@ -163,7 +165,11 @@ export function SectionTitle({
 
   return (
     <Stack className={clsx(isCentered ? 'text-center' : 'text-left', className)} gap="sm">
-      {overline ? <Eyebrow align={align}>{overline}</Eyebrow> : null}
+      {overline ? (
+        <Eyebrow align={align} tone={overlineTone}>
+          {overline}
+        </Eyebrow>
+      ) : null}
       <h2
         className={clsx(
           'font-headline text-white',

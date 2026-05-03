@@ -20,7 +20,7 @@ import {
 import { CenteredStageShell } from '@/components/ui/prefabs/layout/centered-stage-shell'
 
 import { StepCreation } from './step-creation'
-import { TutorialStep } from './step-tutorial'
+import { PrologueStep } from './step-prologue'
 
 export type OriginsViewProps = {
   initialPhase?: 'creation' | 'prologue'
@@ -108,7 +108,7 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
   return (
     <CenteredStageShell width={state.phase === 'prologue' ? 'narrow' : 'wide'}>
       {state.phase === 'prologue' ? (
-        <TutorialStep
+        <PrologueStep
           onContinue={() => moveToCreation(state.selectedChoiceId)}
           onSelectChoice={(choiceId) =>
             setState((previous) => ({ ...previous, selectedChoiceId: choiceId }))
