@@ -6,10 +6,6 @@ import type { SpaceToken } from '@/components/ui/core/layout'
 import { Stack } from '@/components/ui/core/layout'
 import { BodyText, SectionTitle } from '@/components/ui/core/typography'
 
-type RootProps = {
-  children: React.ReactNode
-}
-
 type ListProps = {
   children: React.ReactNode
   className?: string
@@ -19,18 +15,6 @@ type HeaderProps = {
   description?: React.ReactNode
   overline?: React.ReactNode
   title: React.ReactNode
-}
-
-type ListItemProps = {
-  children: React.ReactNode
-}
-
-type PromptProps = {
-  children: React.ReactNode
-}
-
-type ActionsProps = {
-  children: React.ReactNode
 }
 
 type ContentProps = {
@@ -43,16 +27,12 @@ type ColumnsProps = {
   className?: string
 }
 
-type FooterProps = {
-  children: React.ReactNode
-}
-
 type PanelProps = {
   children: React.ReactNode
   gap?: SpaceToken
 }
 
-function Root({ children }: RootProps) {
+function Root({ children }: { children: React.ReactNode }) {
   return (
     <Card centered gap="xl" layout="stack" padding="cozy" width="auto">
       {children}
@@ -68,14 +48,12 @@ function List({ children, className }: ListProps) {
   )
 }
 
-function ListItem({ children }: ListItemProps) {
+function ListItem({ children }: { children: React.ReactNode }) {
   return <li>{children}</li>
 }
 
-function Prompt({ children }: PromptProps) {
-  return (
-    <BodyText align="center">{children}</BodyText>
-  )
+function Prompt({ children }: { children: React.ReactNode }) {
+  return <BodyText align="center">{children}</BodyText>
 }
 
 function Header({ description, overline, title }: HeaderProps) {
@@ -91,7 +69,7 @@ function Header({ description, overline, title }: HeaderProps) {
   )
 }
 
-function Actions({ children }: ActionsProps) {
+function Actions({ children }: { children: React.ReactNode }) {
   return (
     <Stack align="center" gap="sm">
       {children}
@@ -117,7 +95,7 @@ function Columns({ children, className }: ColumnsProps) {
   )
 }
 
-function Footer({ children }: FooterProps) {
+function Footer({ children }: { children: React.ReactNode }) {
   return (
     <section className="flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between">
       {children}

@@ -1,5 +1,6 @@
 import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
+import type { FormSubmitHandler } from '@/lib/types/component-props'
 
 import { Button } from '@/components/ui/core/button'
 import { Stack } from '@/components/ui/core/layout'
@@ -12,7 +13,7 @@ type SignInFormProps = {
   onEmailChange: (value: string) => void
   onForgotSecret?: () => void
   onRememberChange: (checked: boolean) => void
-  onSubmit: (event: React.SyntheticEvent<HTMLFormElement>) => void
+  onSubmit: FormSubmitHandler
   onPasswordChange: (value: string) => void
   password: string
   rememberMe: boolean
@@ -28,7 +29,7 @@ type SignUpFormProps = {
   onEmailChange: (value: string) => void
   onHeroNameChange: (value: string) => void
   onPasswordChange: (value: string) => void
-  onSubmit: (event: React.SyntheticEvent<HTMLFormElement>) => void
+  onSubmit: FormSubmitHandler
   password: string
 }
 

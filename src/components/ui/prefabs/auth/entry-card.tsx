@@ -1,14 +1,13 @@
 import { Card } from '@/components/ui/core/card'
 import { Box, Stack } from '@/components/ui/core/layout'
 import type { SpaceToken } from '@/components/ui/core/layout'
-import { BodyText, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
+import { BodyText, Eyebrow, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
 
 type EntryCardRootProps = {
   children: React.ReactNode
 }
 
 type EntryCardHeaderProps = {
-  className?: string
   description: string
   title: string
 }
@@ -36,21 +35,26 @@ type EntryCardSupportProps = {
 
 function Root({ children }: EntryCardRootProps) {
   return (
-    <Card fillHeight gap="xl" layout="stack" minHeight="entry" padding="roomy">
+    <Card fillHeight gap="xl" layout="stack" padding="roomy">
       {children}
     </Card>
   )
 }
 
-function Header({ className, description, title }: EntryCardHeaderProps) {
+function Header({ description, title }: EntryCardHeaderProps) {
   return (
-    <SectionTitle
-      className={className}
-      description={description}
-      descriptionItalic
-      descriptionSize="lg"
-      title={title}
-    />
+    <>
+      <div className="block lg:hidden">
+        <Eyebrow>{title}</Eyebrow>
+      </div>
+      <SectionTitle
+        className="hidden lg:block"
+        description={description}
+        descriptionItalic
+        descriptionSize="lg"
+        title={title}
+      />
+    </>
   )
 }
 

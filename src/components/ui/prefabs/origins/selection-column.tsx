@@ -27,7 +27,6 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
           align="left"
           description={selected.description}
           overline={title}
-          overlineTone="muted"
           title={selected.name}
           titleSize="lg"
         />
@@ -39,7 +38,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
               <li key={item.id}>
                 <button
                   className={clsx(
-                    'font-label cursor-pointer rounded-xl border px-(--space-pad-sm) py-(--space-stack-sm) text-xs tracking-[0.16em] uppercase transition',
+                    'font-label cursor-pointer rounded-full border px-(--space-pad-sm) py-(--space-stack-sm) text-xs tracking-[0.16em] uppercase transition',
                     isActive
                       ? 'border-primary bg-primary text-on-primary'
                       : 'text-on-surface-variant border-outline-variant/40 bg-surface-container/60 hover:border-primary/40 hover:text-on-surface'

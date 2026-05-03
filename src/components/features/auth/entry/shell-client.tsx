@@ -10,25 +10,26 @@ import {
   validateLoginInput,
   validateRegisterInput,
 } from '@/lib/auth/entry-validation'
+import type { FormSubmitHandler } from '@/lib/types/component-props'
 
 import { EntrySignInPanel, EntrySignUpPanel } from '@/components/features/auth/entry/panels'
 import { AuthSplitLayout } from '@/components/ui/prefabs/layout/auth-split-layout'
 
 import type { EntryScreen, RootEntryShellProps } from './shell'
 
-type LoginFormState = {
+type BaseFormState<E> = {
   email: string
-  errors: LoginErrors
   password: string
+  errors: E
+}
+
+type LoginFormState = BaseFormState<LoginErrors> & {
   rememberMe: boolean
 }
 
-type RegisterFormState = {
+type RegisterFormState = BaseFormState<RegisterErrors> & {
   acceptTerms: boolean
-  email: string
-  errors: RegisterErrors
   heroName: string
-  password: string
 }
 
 export function RootEntryShellClient({

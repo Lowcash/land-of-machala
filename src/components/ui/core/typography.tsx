@@ -107,7 +107,7 @@ export function PageHeadline({ children, className, size = 'desktop' }: PageHead
     <h1
       className={clsx(
         'font-headline leading-tight text-white',
-        size === 'desktop' ? 'text-4xl xl:text-5xl' : 'text-3xl sm:text-4xl',
+        size === 'desktop' ? 'text-4xl xl:text-5xl' : 'text-2xl sm:text-3xl',
         className
       )}
     >

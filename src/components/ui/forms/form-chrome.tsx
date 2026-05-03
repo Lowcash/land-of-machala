@@ -41,7 +41,7 @@ function Header({ children, hasAction = false }: HeaderProps) {
 function Label({ children, htmlFor }: LabelProps) {
   return (
     <label
-      className="font-label text-outline block text-xs tracking-[0.22em] uppercase"
+      className="font-label text-primary block text-[11px] tracking-[0.28em] uppercase"
       htmlFor={htmlFor}
     >
       {children}

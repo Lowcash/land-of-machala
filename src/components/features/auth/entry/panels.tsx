@@ -1,4 +1,5 @@
 import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
+import type { FormSubmitHandler } from '@/lib/types/component-props'
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
 
 import { Button } from '@/components/ui/core/button'
@@ -6,34 +7,30 @@ import { EntryCard } from '@/components/ui/prefabs/auth/entry-card'
 import { SignInForm, SignUpForm } from '@/components/ui/prefabs/auth/entry-forms'
 import { LegalTermsLabel } from '@/components/ui/prefabs/auth/legal-terms-label'
 
-type EntrySignInPanelProps = {
+type EntryFormCommon = {
   email: string
-  errors: LoginErrors
-  onEmailChange: (value: string) => void
-  onGuestEntry?: () => void
-  onPasswordChange: (value: string) => void
-  onRememberChange: (checked: boolean) => void
-  onSubmit: (event: React.SyntheticEvent<HTMLFormElement>) => void
-  onSwitchToSignUp: () => void
   password: string
-  rememberMe: boolean
+  onEmailChange: (value: string) => void
+  onPasswordChange: (value: string) => void
+  onSubmit: FormSubmitHandler
+  onGuestEntry?: () => void
   statusMessage?: string
 }
 
-type EntrySignUpPanelProps = {
+type EntrySignInPanelProps = EntryFormCommon & {
+  errors: LoginErrors
+  onRememberChange: (checked: boolean) => void
+  onSwitchToSignUp: () => void
+  rememberMe: boolean
+}
+
+type EntrySignUpPanelProps = EntryFormCommon & {
   acceptTerms: boolean
-  email: string
   errors: RegisterErrors
   heroName: string
   onAcceptTermsChange: (checked: boolean) => void
-  onEmailChange: (value: string) => void
-  onGuestEntry?: () => void
   onHeroNameChange: (value: string) => void
-  onPasswordChange: (value: string) => void
-  onSubmit: (event: React.SyntheticEvent<HTMLFormElement>) => void
   onSwitchToSignIn: () => void
-  password: string
-  statusMessage?: string
 }
 
 export function EntrySignInPanel({
@@ -54,7 +51,6 @@ export function EntrySignInPanel({
       <EntryCard.Footer>
         <EntryCard.Content>
           <EntryCard.Header
-            className="hidden lg:block"
             description={ENTRY_SIGN_IN_COPY.description}
             title={ENTRY_SIGN_IN_COPY.title}
           />
@@ -73,10 +69,10 @@ export function EntrySignInPanel({
         <EntryCard.Support>
           <EntryCard.Divider label={ENTRY_SIGN_IN_COPY.orLabel} />
           <EntryCard.Actions>
-            <Button onClick={onGuestEntry} size="md" variant="ghost">
+            <Button fullWidth onClick={onGuestEntry} size="md" variant="ghost">
               {ENTRY_SIGN_IN_COPY.guestLabel}
             </Button>
-            <Button onClick={onSwitchToSignUp} size="md" variant="secondary">
+            <Button fullWidth onClick={onSwitchToSignUp} size="md" variant="secondary">
               {ENTRY_SIGN_IN_COPY.createAccountLabel}
             </Button>
           </EntryCard.Actions>
@@ -106,7 +102,6 @@ export function EntrySignUpPanel({
       <EntryCard.Footer>
         <EntryCard.Content>
           <EntryCard.Header
-            className="hidden lg:block"
             description={ENTRY_SIGN_UP_COPY.description}
             title={ENTRY_SIGN_UP_COPY.title}
           />
@@ -126,10 +121,10 @@ export function EntrySignUpPanel({
           />
         </EntryCard.Content>
         <EntryCard.Actions>
-          <Button onClick={onGuestEntry} size="md" variant="ghost">
+          <Button fullWidth onClick={onGuestEntry} size="md" variant="ghost">
             {ENTRY_SIGN_UP_COPY.guestLabel}
           </Button>
-          <Button onClick={onSwitchToSignIn} size="md" variant="secondary">
+          <Button fullWidth onClick={onSwitchToSignIn} size="md" variant="secondary">
             {ENTRY_SIGN_UP_COPY.backLabel}
           </Button>
         </EntryCard.Actions>
