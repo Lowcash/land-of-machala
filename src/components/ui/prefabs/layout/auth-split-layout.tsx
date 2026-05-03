@@ -4,7 +4,7 @@ import { Box, Stack } from '@/components/ui/core/layout'
 import { BodyText, PageHeadline } from '@/components/ui/core/typography'
 import { ChronicleFeed } from '@/components/ui/prefabs/auth/chronicle-feed'
 import { RealmStatsGrid } from '@/components/ui/prefabs/auth/realm-stats-grid'
-import { RootShell, RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 type AuthSplitLayoutProps = {
   children: React.ReactNode
@@ -23,10 +23,7 @@ export function AuthSplitLayout({
 }: AuthSplitLayoutProps) {
   return (
     <RootShell>
-      <RootShellFrame
-        className="grid flex-1 grid-cols-1 items-center gap-(--space-shell-grid-gap) lg:grid-cols-[1.08fr_0.92fr] lg:gap-(--space-shell-grid-gap-lg)"
-        inset="page"
-      >
+      <RootShell.Frame inset="page" preset="auth-grid">
         <Stack className="order-1 lg:hidden" gap="sm">
           <PageHeadline size="mobile">{headline}</PageHeadline>
           {tagline ? (
@@ -46,7 +43,7 @@ export function AuthSplitLayout({
         >
           {children}
         </Box>
-      </RootShellFrame>
+      </RootShell.Frame>
     </RootShell>
   )
 }

@@ -16,7 +16,6 @@ describe('RootEntryShell', () => {
 
     await user.click(screen.getByRole('button', { name: /^create account$/i }))
 
-    expect(screen.getByText('Hero name is required.')).toBeInTheDocument()
     expect(screen.getByText('Enter a valid email.')).toBeInTheDocument()
     expect(screen.getByText('Secret phrase must have at least 6 characters.')).toBeInTheDocument()
     expect(

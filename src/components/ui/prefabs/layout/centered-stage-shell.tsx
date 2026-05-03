@@ -1,19 +1,18 @@
 import { Box } from '@/components/ui/core/layout'
-import { RootShell, RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 type CenteredStageShellProps = {
   children: React.ReactNode
-  width?: 'narrow' | 'wide'
 }
 
-export function CenteredStageShell({ children, width = 'wide' }: CenteredStageShellProps) {
+export function CenteredStageShell({ children }: CenteredStageShellProps) {
   return (
     <RootShell>
-      <RootShellFrame className="flex flex-1 items-center justify-center" inset="stage">
-        <Box as="section" className={width === 'wide' ? 'w-full max-w-5xl' : 'w-full max-w-3xl'}>
+      <RootShell.Frame inset="stage" preset="stage-center">
+        <Box as="section" className="w-full max-w-5xl">
           {children}
         </Box>
-      </RootShellFrame>
+      </RootShell.Frame>
     </RootShell>
   )
 }

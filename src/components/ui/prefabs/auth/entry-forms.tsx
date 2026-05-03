@@ -7,6 +7,9 @@ import { Stack } from '@/components/ui/core/layout'
 import { CheckboxField } from '@/components/ui/forms/checkbox-field'
 import { Field } from '@/components/ui/forms/field'
 
+const REMEMBER_SPIRIT_ID = 'sign-in-remember'
+const MERCHANT_TERMS_ID = 'sign-up-accept-terms'
+
 type SignInFormProps = {
   email: string
   errors: LoginErrors
@@ -23,14 +26,25 @@ type SignUpFormProps = {
   acceptTerms: boolean
   email: string
   errors: RegisterErrors
-  heroName: string
   legalLabel: React.ReactNode
   onAcceptTermsChange: (checked: boolean) => void
   onEmailChange: (value: string) => void
-  onHeroNameChange: (value: string) => void
   onPasswordChange: (value: string) => void
   onSubmit: FormSubmitHandler
   password: string
+}
+
+type AuthFormShellProps = {
+  children: React.ReactNode
+  onSubmit: FormSubmitHandler
+}
+
+function AuthFormShell({ children, onSubmit }: AuthFormShellProps) {
+  return (
+    <Stack as="form" gap="lg" onSubmit={onSubmit}>
+      {children}
+    </Stack>
+  )
 }
 
 export function SignInForm({
@@ -45,7 +59,7 @@ export function SignInForm({
   rememberMe,
 }: SignInFormProps) {
   return (
-    <Stack as="form" gap="lg" onSubmit={onSubmit}>
+    <AuthFormShell onSubmit={onSubmit}>
       <Field
         autoComplete="email"
         error={errors.email}
@@ -68,14 +82,14 @@ export function SignInForm({
       />
       <CheckboxField
         checked={rememberMe}
-        id="remember-spirit"
+        id={REMEMBER_SPIRIT_ID}
         label={ENTRY_SIGN_IN_COPY.rememberLabel}
         onChange={(event) => onRememberChange(event.target.checked)}
       />
       <Button fullWidth type="submit">
         {ENTRY_SIGN_IN_COPY.submitLabel}
       </Button>
-    </Stack>
+    </AuthFormShell>
   )
 }
 
@@ -83,24 +97,15 @@ export function SignUpForm({
   acceptTerms,
   email,
   errors,
-  heroName,
   legalLabel,
   onAcceptTermsChange,
   onEmailChange,
-  onHeroNameChange,
   onPasswordChange,
   onSubmit,
   password,
 }: SignUpFormProps) {
   return (
-    <Stack as="form" gap="lg" onSubmit={onSubmit}>
-      <Field
-        error={errors.heroName}
-        label={ENTRY_SIGN_UP_COPY.heroNameLabel}
-        onChange={(event) => onHeroNameChange(event.target.value)}
-        placeholder={ENTRY_SIGN_UP_COPY.heroNamePlaceholder}
-        value={heroName}
-      />
+    <AuthFormShell onSubmit={onSubmit}>
       <Field
         autoComplete="email"
         error={errors.email}
@@ -122,13 +127,13 @@ export function SignUpForm({
       <CheckboxField
         checked={acceptTerms}
         error={errors.acceptTerms}
-        id="merchant-terms"
+        id={MERCHANT_TERMS_ID}
         label={legalLabel}
         onChange={(event) => onAcceptTermsChange(event.target.checked)}
       />
       <Button fullWidth type="submit">
         {ENTRY_SIGN_UP_COPY.submitLabel}
       </Button>
-    </Stack>
+    </AuthFormShell>
   )
 }

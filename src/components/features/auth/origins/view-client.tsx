@@ -106,7 +106,7 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
   }
 
   return (
-    <CenteredStageShell width={state.phase === 'prologue' ? 'narrow' : 'wide'}>
+    <CenteredStageShell>
       {state.phase === 'prologue' ? (
         <PrologueStep
           onContinue={() => moveToCreation(state.selectedChoiceId)}

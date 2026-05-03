@@ -74,10 +74,10 @@ export function StepCreation({
         />
       </OriginsCard.Columns>
       <OriginsCard.Footer>
-        <Button onClick={onBack} variant="ghost">
+        <Button onClick={onBack} size="md" variant="ghost">
           {ORIGINS_CREATION_COPY.backLabel}
         </Button>
-        <Button disabled={!canFinish} onClick={onFinish}>
+        <Button disabled={!canFinish} onClick={onFinish} size="md">
           {ORIGINS_CREATION_COPY.confirmLabel}
         </Button>
       </OriginsCard.Footer>

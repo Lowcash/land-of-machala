@@ -4,7 +4,7 @@ import type { ChronicleItem } from '@/lib/auth/demo-data'
 import { ENTRY_SIDE_COPY } from '@/lib/auth/entry-copy'
 
 import { Box, Stack } from '@/components/ui/core/layout'
-import { BodyText, Eyebrow, MetaLabel } from '@/components/ui/core/typography'
+import { BodyText, LabelText, MetaLabel } from '@/components/ui/core/typography'
 
 type ChronicleFeedProps = {
   chronicles: ChronicleItem[]
@@ -15,7 +15,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
     <Stack gap="lg">
       <header className="flex items-center justify-center gap-(--space-stack-md) lg:justify-start">
         <span className="bg-primary/45 hidden h-px w-10 lg:block" />
-        <Eyebrow tone="muted">{ENTRY_SIDE_COPY.recentChroniclesTitle}</Eyebrow>
+        <LabelText tone="muted">{ENTRY_SIDE_COPY.recentChroniclesTitle}</LabelText>
       </header>
       <Stack as="ul" gap="md" resetList>
         {chronicles.map((item) => (

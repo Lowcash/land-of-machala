@@ -1,15 +1,10 @@
 import type { OriginStep } from '@/lib/auth/demo-data'
 import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-copy'
+import { getOptionLabel } from '@/lib/format/option-label'
 
 import { Button } from '@/components/ui/core/button'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
-
-const OPTION_LABELS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-
-function getOptionLabel(index: number) {
-  return OPTION_LABELS[index] ?? `${index + 1}`
-}
 
 type PrologueStepProps = {
   onContinue: () => void
@@ -27,7 +22,8 @@ export function PrologueStep({
   step,
 }: PrologueStepProps) {
   return (
-    <OriginsCard.Root>
+    <div className="mx-auto w-full max-w-3xl">
+      <OriginsCard.Root>
       <OriginsCard.Header
         description={step.description}
         overline={step.eyebrow}
@@ -63,5 +59,6 @@ export function PrologueStep({
         </Button>
       </OriginsCard.Actions>
     </OriginsCard.Root>
+    </div>
   )
 }

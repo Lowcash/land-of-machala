@@ -10,7 +10,6 @@ import {
   validateLoginInput,
   validateRegisterInput,
 } from '@/lib/auth/entry-validation'
-import type { FormSubmitHandler } from '@/lib/types/component-props'
 
 import { EntrySignInPanel, EntrySignUpPanel } from '@/components/features/auth/entry/panels'
 import { AuthSplitLayout } from '@/components/ui/prefabs/layout/auth-split-layout'
@@ -29,7 +28,6 @@ type LoginFormState = BaseFormState<LoginErrors> & {
 
 type RegisterFormState = BaseFormState<RegisterErrors> & {
   acceptTerms: boolean
-  heroName: string
 }
 
 export function RootEntryShellClient({
@@ -50,7 +48,6 @@ export function RootEntryShellClient({
     acceptTerms: false,
     email: '',
     errors: {},
-    heroName: '',
     password: '',
   })
 
@@ -75,7 +72,6 @@ export function RootEntryShellClient({
     const nextErrors = validateRegisterInput({
       acceptTerms: registerForm.acceptTerms,
       email: registerForm.email,
-      heroName: registerForm.heroName,
       password: registerForm.password,
     })
 
@@ -120,7 +116,6 @@ export function RootEntryShellClient({
           acceptTerms={registerForm.acceptTerms}
           email={registerForm.email}
           errors={registerForm.errors}
-          heroName={registerForm.heroName}
           onAcceptTermsChange={(checked) =>
             setRegisterForm((previous) => ({ ...previous, acceptTerms: checked }))
           }
@@ -128,9 +123,6 @@ export function RootEntryShellClient({
             setRegisterForm((previous) => ({ ...previous, email: value, errors: {} }))
           }
           onGuestEntry={onGuestEntry}
-          onHeroNameChange={(value) =>
-            setRegisterForm((previous) => ({ ...previous, heroName: value, errors: {} }))
-          }
           onPasswordChange={(value) =>
             setRegisterForm((previous) => ({ ...previous, password: value, errors: {} }))
           }

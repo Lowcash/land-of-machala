@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/core/card'
 import { Box, Stack } from '@/components/ui/core/layout'
 import type { SpaceToken } from '@/components/ui/core/layout'
-import { BodyText, Eyebrow, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
+import { BodyText, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
 
 type EntryCardRootProps = {
   children: React.ReactNode
@@ -35,7 +35,7 @@ type EntryCardSupportProps = {
 
 function Root({ children }: EntryCardRootProps) {
   return (
-    <Card fillHeight gap="xl" layout="stack" padding="roomy">
+    <Card fillHeight gap="lg" layout="stack" padding="roomy">
       {children}
     </Card>
   )
@@ -43,18 +43,13 @@ function Root({ children }: EntryCardRootProps) {
 
 function Header({ description, title }: EntryCardHeaderProps) {
   return (
-    <>
-      <div className="block lg:hidden">
-        <Eyebrow>{title}</Eyebrow>
-      </div>
-      <SectionTitle
-        className="hidden lg:block"
-        description={description}
-        descriptionItalic
-        descriptionSize="lg"
-        title={title}
-      />
-    </>
+    <SectionTitle
+      description={<span className="hidden lg:inline">{description}</span>}
+      descriptionItalic
+      descriptionSize="lg"
+      title={title}
+      titleSize="lg"
+    />
   )
 }
 
@@ -86,13 +81,13 @@ function Content({ children }: EntryCardContentProps) {
   return <Stack gap="lg">{children}</Stack>
 }
 
-function Support({ children, gap = 'lg' }: EntryCardSupportProps) {
+function Support({ children, gap = 'md' }: EntryCardSupportProps) {
   return <Stack gap={gap}>{children}</Stack>
 }
 
 function Footer({ children }: EntryCardFooterProps) {
   return (
-    <Stack fullWidth justify="between" gap="xl">
+    <Stack fullWidth justify="between" gap="lg">
       {children}
     </Stack>
   )

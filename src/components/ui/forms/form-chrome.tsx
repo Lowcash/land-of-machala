@@ -1,6 +1,7 @@
 import clsx from 'clsx'
 
 import { Stack } from '@/components/ui/core/layout'
+import { LabelText } from '@/components/ui/core/typography'
 
 type ShellProps = {
   children: React.ReactNode
@@ -40,19 +41,16 @@ function Header({ children, hasAction = false }: HeaderProps) {
 
 function Label({ children, htmlFor }: LabelProps) {
   return (
-    <label
-      className="font-label text-primary block text-[11px] tracking-[0.28em] uppercase"
-      htmlFor={htmlFor}
-    >
+    <LabelText as="label" className="block" htmlFor={htmlFor}>
       {children}
-    </label>
+    </LabelText>
   )
 }
 
 function Action({ children, onClick }: ActionProps) {
   return (
     <button
-      className="font-label text-primary text-[11px] tracking-[0.18em] whitespace-nowrap uppercase"
+      className="font-label text-on-surface-variant hover:text-primary focus-visible:text-primary text-[10px] tracking-[0.18em] whitespace-nowrap uppercase underline-offset-4 transition focus-visible:underline"
       onClick={onClick}
       type="button"
     >

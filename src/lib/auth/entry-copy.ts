@@ -21,8 +21,6 @@ type EntryCopyShape = {
   signUp: {
     title: string
     description: string
-    heroNameLabel: string
-    heroNamePlaceholder: string
     passwordLabel: string
     submitLabel: string
     backLabel: string
@@ -39,7 +37,6 @@ type EntryCopyShape = {
     emailInvalid: string
     passwordRequired: string
     passwordLength: string
-    heroNameRequired: string
     acceptTermsRequired: string
   }
   status: {

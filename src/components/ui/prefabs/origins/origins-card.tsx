@@ -29,12 +29,21 @@ type ColumnsProps = {
 
 type PanelProps = {
   children: React.ReactNode
+  className?: string
   gap?: SpaceToken
+}
+
+const PANEL_GAP_CLASS: Record<SpaceToken, string> = {
+  sm: 'gap-(--space-stack-sm)',
+  md: 'gap-(--space-stack-md)',
+  lg: 'gap-(--space-stack-lg)',
+  xl: 'gap-(--space-stack-xl)',
+  xxl: 'gap-(--space-stack-xxl)',
 }
 
 function Root({ children }: { children: React.ReactNode }) {
   return (
-    <Card centered gap="xl" layout="stack" padding="cozy" width="auto">
+    <Card centered gap="lg" layout="stack" padding="cozy" width="auto">
       {children}
     </Card>
   )
@@ -71,7 +80,7 @@ function Header({ description, overline, title }: HeaderProps) {
 
 function Actions({ children }: { children: React.ReactNode }) {
   return (
-    <Stack align="center" gap="sm">
+    <Stack align="center" gap="md">
       {children}
     </Stack>
   )
@@ -97,16 +106,22 @@ function Columns({ children, className }: ColumnsProps) {
 
 function Footer({ children }: { children: React.ReactNode }) {
   return (
-    <section className="flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between">
+    <section className="sticky bottom-0 z-10 -mx-(--space-pad-lg) -mb-(--space-pad-lg) flex flex-col gap-(--space-stack-md) border-t border-white/8 bg-surface-container/90 px-(--space-pad-lg) pb-(--space-pad-lg) pt-(--space-stack-md) backdrop-blur-md sm:flex-row sm:items-center sm:justify-between md:-mx-(--space-pad-xl) md:-mb-(--space-pad-xl) md:px-(--space-pad-xl) md:pb-(--space-pad-xl)">
       {children}
     </section>
   )
 }
 
-function Panel({ children, gap = 'md' }: PanelProps) {
+function Panel({ children, className, gap = 'md' }: PanelProps) {
   return (
-    <Box border padding="md" radius="xl" tone="panel">
-      <Stack gap={gap}>{children}</Stack>
+    <Box
+      border
+      className={clsx('flex flex-col', PANEL_GAP_CLASS[gap], className)}
+      padding="md"
+      radius="xl"
+      tone="panel"
+    >
+      {children}
     </Box>
   )
 }

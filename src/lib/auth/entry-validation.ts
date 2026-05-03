@@ -9,7 +9,6 @@ export type LoginErrors = {
 export type RegisterErrors = {
   acceptTerms?: string
   email?: string
-  heroName?: string
   password?: string
 }
 
@@ -21,7 +20,6 @@ type LoginInput = {
 type RegisterInput = {
   acceptTerms: boolean
   email: string
-  heroName: string
   password: string
 }
 
@@ -42,14 +40,9 @@ export function validateLoginInput({ email, password }: LoginInput): LoginErrors
 export function validateRegisterInput({
   acceptTerms,
   email,
-  heroName,
   password,
 }: RegisterInput): RegisterErrors {
   const nextErrors: RegisterErrors = {}
-
-  if (!heroName.trim()) {
-    nextErrors.heroName = ENTRY_VALIDATION_MESSAGES.heroNameRequired
-  }
 
   if (!isValidEmail(email)) {
     nextErrors.email = ENTRY_VALIDATION_MESSAGES.emailInvalid

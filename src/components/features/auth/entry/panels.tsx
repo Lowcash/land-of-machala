@@ -1,6 +1,6 @@
 import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
-import type { FormSubmitHandler } from '@/lib/types/component-props'
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
+import type { FormSubmitHandler } from '@/lib/types/component-props'
 
 import { Button } from '@/components/ui/core/button'
 import { EntryCard } from '@/components/ui/prefabs/auth/entry-card'
@@ -27,9 +27,7 @@ type EntrySignInPanelProps = EntryFormCommon & {
 type EntrySignUpPanelProps = EntryFormCommon & {
   acceptTerms: boolean
   errors: RegisterErrors
-  heroName: string
   onAcceptTermsChange: (checked: boolean) => void
-  onHeroNameChange: (value: string) => void
   onSwitchToSignIn: () => void
 }
 
@@ -86,11 +84,9 @@ export function EntrySignUpPanel({
   acceptTerms,
   email,
   errors,
-  heroName,
   onAcceptTermsChange,
   onEmailChange,
   onGuestEntry,
-  onHeroNameChange,
   onPasswordChange,
   onSubmit,
   onSwitchToSignIn,
@@ -110,11 +106,9 @@ export function EntrySignUpPanel({
             acceptTerms={acceptTerms}
             email={email}
             errors={errors}
-            heroName={heroName}
             legalLabel={<LegalTermsLabel onLegalLinkClick={handleLegalLinkClick} />}
             onAcceptTermsChange={onAcceptTermsChange}
             onEmailChange={onEmailChange}
-            onHeroNameChange={onHeroNameChange}
             onPasswordChange={onPasswordChange}
             onSubmit={onSubmit}
             password={password}

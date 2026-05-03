@@ -5,12 +5,13 @@ import { useState } from 'react'
 import { ENTRY_STATUS_MESSAGES } from '@/lib/auth/entry-copy'
 
 import { RootEntryShell } from '@/components/features/auth/entry/shell'
+import type { EntryScreen } from '@/components/features/auth/entry/shell'
 import { OriginsViewClient } from '@/components/features/auth/origins/view-client'
 
 export type RootStage = 'entry' | 'origins'
 
 type RootExperienceState = {
-  entryScreen: 'signIn' | 'signUp'
+  entryScreen: EntryScreen
   stage: RootStage
   statusMessage: string
 }

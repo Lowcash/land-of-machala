@@ -119,20 +119,56 @@ export function PageHeadline({ children, className, size = 'desktop' }: PageHead
 type EyebrowProps = {
   align?: TextAlign
   children: React.ReactNode
-  tone?: 'muted' | 'primary'
+  tone?: LabelTextTone
+}
+
+type LabelTextTone = 'muted' | 'primary'
+type LabelTextAs = 'label' | 'p' | 'span'
+
+type LabelTextProps = {
+  align?: TextAlign
+  as?: LabelTextAs
+  children: React.ReactNode
+  className?: string
+  htmlFor?: string
+  tone?: LabelTextTone
+}
+
+export function LabelText({
+  align = 'left',
+  as = 'p',
+  children,
+  className,
+  htmlFor,
+  tone = 'primary',
+}: LabelTextProps) {
+  const labelClassName = clsx(
+    'font-label text-xs tracking-[0.24em] uppercase',
+    align === 'center' ? 'text-center' : 'text-left',
+    tone === 'primary' ? 'text-primary' : 'text-outline',
+    className
+  )
+
+  if (as === 'label') {
+    return (
+      <label className={labelClassName} htmlFor={htmlFor}>
+        {children}
+      </label>
+    )
+  }
+
+  if (as === 'span') {
+    return <span className={labelClassName}>{children}</span>
+  }
+
+  return <p className={labelClassName}>{children}</p>
 }
 
 export function Eyebrow({ align = 'left', children, tone = 'primary' }: EyebrowProps) {
   return (
-    <p
-      className={clsx(
-        'font-label text-[11px] tracking-[0.28em] uppercase',
-        align === 'center' ? 'text-center' : 'text-left',
-        tone === 'primary' ? 'text-primary' : 'text-outline'
-      )}
-    >
+    <LabelText align={align} tone={tone}>
       {children}
-    </p>
+    </LabelText>
   )
 }
 
@@ -143,6 +179,7 @@ type SectionTitleProps = {
   descriptionItalic?: boolean
   descriptionSize?: 'base' | 'lg'
   overline?: React.ReactNode
+  overlineAs?: Exclude<LabelTextAs, 'label'>
   overlineTone?: EyebrowProps['tone']
   showDivider?: boolean
   title: React.ReactNode
@@ -156,6 +193,7 @@ export function SectionTitle({
   descriptionItalic = false,
   descriptionSize = 'base',
   overline,
+  overlineAs = 'p',
   overlineTone = 'primary',
   showDivider = false,
   title,
@@ -166,9 +204,9 @@ export function SectionTitle({
   return (
     <Stack className={clsx(isCentered ? 'text-center' : 'text-left', className)} gap="sm">
       {overline ? (
-        <Eyebrow align={align} tone={overlineTone}>
+        <LabelText align={align} as={overlineAs} tone={overlineTone}>
           {overline}
-        </Eyebrow>
+        </LabelText>
       ) : null}
       <h2
         className={clsx(

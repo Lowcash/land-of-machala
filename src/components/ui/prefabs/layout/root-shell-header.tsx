@@ -5,8 +5,10 @@ import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
 
 export function RootShellHeader() {
   return (
-    <RootShellFrame as="header" inset="band">
-      <BrandWordmark>{SITE_APP_NAME}</BrandWordmark>
-    </RootShellFrame>
+    <div className="sticky top-0 z-20 backdrop-blur-sm">
+      <RootShellFrame as="header" inset="band">
+        <BrandWordmark>{SITE_APP_NAME}</BrandWordmark>
+      </RootShellFrame>
+    </div>
   )
 }
