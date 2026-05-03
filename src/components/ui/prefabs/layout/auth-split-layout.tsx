@@ -1,7 +1,7 @@
 import type { ChronicleItem, RealmStat } from '@/lib/auth/demo-data'
 
 import { Box, Stack } from '@/components/ui/core/layout'
-import { PageHeadline } from '@/components/ui/core/typography'
+import { BodyText, PageHeadline } from '@/components/ui/core/typography'
 import { ChronicleFeed } from '@/components/ui/prefabs/auth/chronicle-feed'
 import { RealmStatsGrid } from '@/components/ui/prefabs/auth/realm-stats-grid'
 import { RootShell, RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
@@ -11,18 +11,24 @@ type AuthSplitLayoutProps = {
   chronicles: ChronicleItem[]
   headline: string
   stats: RealmStat[]
+  tagline?: string
 }
 
-export function AuthSplitLayout({ children, chronicles, headline, stats }: AuthSplitLayoutProps) {
+export function AuthSplitLayout({ children, chronicles, headline, stats, tagline }: AuthSplitLayoutProps) {
   return (
     <RootShell>
       <RootShellFrame
         className="grid flex-1 grid-cols-1 items-center gap-(--space-shell-grid-gap) lg:grid-cols-[1.08fr_0.92fr] lg:gap-(--space-shell-grid-gap-lg)"
         inset="page"
       >
-        <PageHeadline className="order-1 lg:hidden" size="mobile">
-          {headline}
-        </PageHeadline>
+        <Stack className="order-1 lg:hidden" gap="sm">
+          <PageHeadline size="mobile">{headline}</PageHeadline>
+          {tagline ? (
+            <BodyText size="sm" tone="muted">
+              {tagline}
+            </BodyText>
+          ) : null}
+        </Stack>
         <Stack as="section" className="order-3 lg:order-1" gap="xxl">
           <PageHeadline className="hidden max-w-xl lg:block">{headline}</PageHeadline>
           <ChronicleFeed chronicles={chronicles} />

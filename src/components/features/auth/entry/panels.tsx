@@ -13,7 +13,7 @@ type EntrySignInPanelProps = {
   onGuestEntry?: () => void
   onPasswordChange: (value: string) => void
   onRememberChange: (checked: boolean) => void
-  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   onSwitchToSignUp: () => void
   password: string
   rememberMe: boolean
@@ -30,7 +30,7 @@ type EntrySignUpPanelProps = {
   onGuestEntry?: () => void
   onHeroNameChange: (value: string) => void
   onPasswordChange: (value: string) => void
-  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   onSwitchToSignIn: () => void
   password: string
   statusMessage?: string

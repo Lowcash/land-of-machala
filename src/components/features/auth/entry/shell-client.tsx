@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 import { AUTH_CHRONICLES, AUTH_HERO, AUTH_STATS } from '@/lib/auth/demo-data'
-import { ENTRY_SHARED_COPY } from '@/lib/auth/entry-copy'
+import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
 import {
   type LoginErrors,
   type RegisterErrors,
@@ -53,7 +53,7 @@ export function RootEntryShellClient({
     password: '',
   })
 
-  function submitLogin(event: React.SubmitEvent<HTMLFormElement>) {
+  function submitLogin(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const nextErrors = validateLoginInput({
@@ -68,7 +68,7 @@ export function RootEntryShellClient({
     }
   }
 
-  function submitRegister(event: React.SubmitEvent<HTMLFormElement>) {
+  function submitRegister(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const nextErrors = validateRegisterInput({
@@ -86,7 +86,12 @@ export function RootEntryShellClient({
   }
 
   return (
-    <AuthSplitLayout chronicles={AUTH_CHRONICLES} headline={AUTH_HERO.headline} stats={AUTH_STATS}>
+    <AuthSplitLayout
+      chronicles={AUTH_CHRONICLES}
+      headline={AUTH_HERO.headline}
+      stats={AUTH_STATS}
+      tagline={screen === 'signIn' ? ENTRY_SIGN_IN_COPY.description : ENTRY_SIGN_UP_COPY.description}
+    >
       {screen === 'signIn' ? (
         <EntrySignInPanel
           email={loginForm.email}

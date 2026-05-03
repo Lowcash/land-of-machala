@@ -16,12 +16,7 @@ type CheckboxFieldProps = Omit<
   label: React.ReactNode
 }
 
-export function CheckboxField({
-  error,
-  id,
-  label,
-  ...props
-}: CheckboxFieldProps) {
+export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps) {
   const generatedId = useId()
   const resolvedId = resolveFieldId({
     explicitId: id,

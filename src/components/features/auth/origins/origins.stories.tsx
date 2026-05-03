@@ -21,7 +21,7 @@ export const Prologue: Story = {
   },
 }
 
-export const CharacterSetup: Story = {
+export const Setup: Story = {
   args: {
     initialPhase: 'creation',
   },

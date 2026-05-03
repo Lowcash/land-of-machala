@@ -18,7 +18,7 @@ export function LegalTermsLabel({ onLegalLinkClick }: LegalTermsLabelProps) {
       <button className={LEGAL_LINK_CLASS} onClick={onLegalLinkClick} type="button">
         {ENTRY_LEGAL_COPY.privacyCodexLabel}
       </button>{' '}
-      {ENTRY_LEGAL_COPY.suffix}
+      <span className="whitespace-nowrap">{ENTRY_LEGAL_COPY.suffix}</span>
     </>
   )
 }

@@ -12,7 +12,7 @@ type SignInFormProps = {
   onEmailChange: (value: string) => void
   onForgotSecret?: () => void
   onRememberChange: (checked: boolean) => void
-  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   onPasswordChange: (value: string) => void
   password: string
   rememberMe: boolean
@@ -28,7 +28,7 @@ type SignUpFormProps = {
   onEmailChange: (value: string) => void
   onHeroNameChange: (value: string) => void
   onPasswordChange: (value: string) => void
-  onSubmit: (event: React.SubmitEvent<HTMLFormElement>) => void
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
   password: string
 }
 
