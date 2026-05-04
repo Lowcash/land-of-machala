@@ -106,7 +106,7 @@ function Columns({ children, className }: ColumnsProps) {
 
 function Footer({ children }: { children: React.ReactNode }) {
   return (
-    <section className="sticky bottom-0 z-10 -mx-(--space-pad-lg) -mb-(--space-pad-lg) flex flex-col gap-(--space-stack-md) border-t border-white/8 bg-surface-container/90 px-(--space-pad-lg) pb-(--space-pad-lg) pt-(--space-stack-md) backdrop-blur-md sm:flex-row sm:items-center sm:justify-between md:-mx-(--space-pad-xl) md:-mb-(--space-pad-xl) md:px-(--space-pad-xl) md:pb-(--space-pad-xl)">
+    <section className="flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between">
       {children}
     </section>
   )

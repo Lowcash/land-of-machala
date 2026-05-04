@@ -73,14 +73,16 @@ export function StepCreation({
           title={ORIGINS_CREATION_COPY.classTitle}
         />
       </OriginsCard.Columns>
-      <OriginsCard.Footer>
-        <Button onClick={onBack} size="md" variant="ghost">
-          {ORIGINS_CREATION_COPY.backLabel}
-        </Button>
-        <Button disabled={!canFinish} onClick={onFinish} size="md">
-          {ORIGINS_CREATION_COPY.confirmLabel}
-        </Button>
-      </OriginsCard.Footer>
+      <div className="bg-surface-container-lowest/80 sticky bottom-0 z-10 p-(--space-pad-sm) backdrop-blur-sm md:static md:bg-transparent md:p-0 md:backdrop-blur-none">
+        <OriginsCard.Footer>
+          <Button onClick={onBack} size="md" variant="ghost">
+            {ORIGINS_CREATION_COPY.backLabel}
+          </Button>
+          <Button disabled={!canFinish} onClick={onFinish} size="md">
+            {ORIGINS_CREATION_COPY.confirmLabel}
+          </Button>
+        </OriginsCard.Footer>
+      </div>
     </OriginsCard.Root>
   )
 }

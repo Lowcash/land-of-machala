@@ -7,8 +7,8 @@ import { Stack } from '@/components/ui/core/layout'
 import { CheckboxField } from '@/components/ui/forms/checkbox-field'
 import { Field } from '@/components/ui/forms/field'
 
-const REMEMBER_SPIRIT_ID = 'sign-in-remember'
-const MERCHANT_TERMS_ID = 'sign-up-accept-terms'
+const REMEMBER_SPIRIT_ID = 'remember-spirit'
+const MERCHANT_TERMS_ID = 'merchant-terms'
 
 type SignInFormProps = {
   email: string

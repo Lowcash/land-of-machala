@@ -1,14 +1,12 @@
 import { SITE_APP_NAME } from '@/lib/site-config'
 
 import { BrandWordmark } from '@/components/ui/core/typography'
-import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
+import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 export function RootShellHeader() {
   return (
-    <div className="sticky top-0 z-20 backdrop-blur-sm">
-      <RootShellFrame as="header" inset="band">
-        <BrandWordmark>{SITE_APP_NAME}</BrandWordmark>
-      </RootShellFrame>
-    </div>
+    <RootShell.Frame as="header" inset="band">
+      <BrandWordmark>{SITE_APP_NAME}</BrandWordmark>
+    </RootShell.Frame>
   )
 }
