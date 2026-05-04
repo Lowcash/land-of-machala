@@ -5,8 +5,12 @@ import clsx from 'clsx'
 import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
 
 import { HelperText } from '@/components/ui/core/typography'
+import {
+  CHECKBOX_SURFACE_BASE_CLASS,
+  CHECKBOX_SURFACE_STATE_CLASS,
+} from '@/components/ui/forms/field-chrome-classes'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
-import { FormField } from '@/components/ui/forms/form-chrome'
+import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 type CheckboxFieldProps = Omit<
   NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>>,
@@ -27,15 +31,13 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
 
   return (
     <FormField.Shell>
-      <div className="group flex items-center gap-(--space-stack-md)">
+      <FormField.Inline>
         <span className="relative flex h-5 w-5 shrink-0 items-center justify-center">
           <input className="peer sr-only" id={resolvedId} type="checkbox" {...props} />
           <label
             className={clsx(
-              'bg-surface-container-lowest/80 group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer rounded-md border transition peer-focus-visible:ring-2',
-              error
-                ? 'border-error/65 peer-focus-visible:ring-error/25'
-                : 'border-outline-variant peer-focus-visible:ring-primary/30'
+              CHECKBOX_SURFACE_BASE_CLASS,
+              error ? CHECKBOX_SURFACE_STATE_CLASS.error : CHECKBOX_SURFACE_STATE_CLASS.default
             )}
             htmlFor={resolvedId}
           />
@@ -54,16 +56,10 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
             />
           </svg>
         </span>
-        <label
-          className={clsx(
-            error ? 'text-on-surface' : 'text-on-surface-variant',
-            'cursor-pointer text-sm leading-6'
-          )}
-          htmlFor={resolvedId}
-        >
+        <FormField.ControlLabel error={Boolean(error)} htmlFor={resolvedId}>
           {label}
-        </label>
-      </div>
+        </FormField.ControlLabel>
+      </FormField.Inline>
       {error ? <HelperText tone="error">{error}</HelperText> : null}
     </FormField.Shell>
   )

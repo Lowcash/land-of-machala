@@ -1,11 +1,13 @@
 import clsx from 'clsx'
 
+import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
+
 import type { SpaceToken } from '@/components/ui/core/layout'
 
 type CardGap = Exclude<SpaceToken, 'sm'>
 
 type CardPadding = 'cozy' | 'roomy' | 'none'
-type CardWidth = '2xl' | '4xl' | 'auto'
+type CardWidth = '2xl' | '3xl' | '4xl' | 'auto'
 type CardMinHeight = 'entry' | 'none'
 type CardLayout = 'none' | 'stack'
 
@@ -17,6 +19,7 @@ const CARD_PADDING_CLASS: Record<CardPadding, string> = {
 
 const CARD_WIDTH_CLASS: Record<CardWidth, string> = {
   '2xl': 'w-full max-w-2xl',
+  '3xl': 'w-full max-w-3xl',
   '4xl': 'w-full max-w-4xl',
   auto: '',
 }
@@ -38,7 +41,7 @@ const CARD_GAP_CLASS: Record<CardGap, string> = {
   xxl: 'gap-(--space-stack-xxl)',
 }
 
-type CardProps = Omit<React.HTMLAttributes<HTMLDivElement>, 'className'> & {
+type CardProps = NativePropsWithoutClassNameStyle<React.HTMLAttributes<HTMLDivElement>> & {
   centered?: boolean
   fillHeight?: boolean
   gap?: CardGap

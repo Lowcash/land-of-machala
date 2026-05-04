@@ -19,15 +19,15 @@ import {
 
 import { CenteredStageShell } from '@/components/ui/prefabs/layout/centered-stage-shell'
 
-import { StepCreation } from './step-creation'
 import { PrologueStep } from './step-prologue'
+import { StepSetup } from './step-setup'
+
+type OriginsPhase = 'prologue' | 'setup'
 
 export type OriginsViewProps = {
-  initialPhase?: 'creation' | 'prologue'
+  initialPhase?: OriginsPhase
   onComplete?: (hero: HeroSummary) => void
 }
-
-type OriginsPhase = 'creation' | 'prologue'
 
 type HeroDraft = {
   classId: ClassOption['id']
@@ -41,22 +41,10 @@ type OriginsViewState = {
   hero: HeroDraft
 }
 
-function createInitialState(initialPhase: OriginsPhase): OriginsViewState {
-  return {
-    phase: initialPhase,
-    selectedChoiceId: initialPhase === 'creation' ? ORIGINS_STEP.choices[0].id : null,
-    hero: {
-      classId: DEFAULT_ORIGIN_CLASS_ID,
-      name: DEFAULT_HERO_NAME,
-      raceId: DEFAULT_ORIGIN_RACE_ID,
-    },
-  }
-}
-
 export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: OriginsViewProps) {
   const [state, setState] = useState<OriginsViewState>(() => createInitialState(initialPhase))
 
-  function moveToCreation(choiceId?: string | null) {
+  function moveToSetup(choiceId?: string | null) {
     setState((previous) => {
       const resolvedChoiceId = choiceId ?? previous.selectedChoiceId
       const choice = ORIGINS_STEP.choices.find((item) => item.id === resolvedChoiceId)
@@ -64,14 +52,14 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
       if (!choice) {
         return {
           ...previous,
-          phase: 'creation',
+          phase: 'setup',
           selectedChoiceId: resolvedChoiceId,
         }
       }
 
       return {
         ...previous,
-        phase: 'creation',
+        phase: 'setup',
         selectedChoiceId: resolvedChoiceId,
         hero: {
           ...previous.hero,
@@ -109,16 +97,16 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
     <CenteredStageShell>
       {state.phase === 'prologue' ? (
         <PrologueStep
-          onContinue={() => moveToCreation(state.selectedChoiceId)}
+          onContinue={() => moveToSetup(state.selectedChoiceId)}
           onSelectChoice={(choiceId) =>
             setState((previous) => ({ ...previous, selectedChoiceId: choiceId }))
           }
-          onSkip={() => moveToCreation(null)}
+          onSkip={() => moveToSetup(null)}
           selectedChoiceId={state.selectedChoiceId}
           step={ORIGINS_STEP}
         />
       ) : (
-        <StepCreation
+        <StepSetup
           canFinish={state.hero.name.trim().length > 0}
           classes={CLASS_OPTIONS}
           heroName={state.hero.name}
@@ -151,4 +139,16 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
       )}
     </CenteredStageShell>
   )
+}
+
+function createInitialState(initialPhase: OriginsPhase): OriginsViewState {
+  return {
+    phase: initialPhase,
+    selectedChoiceId: initialPhase === 'setup' ? ORIGINS_STEP.choices[0].id : null,
+    hero: {
+      classId: DEFAULT_ORIGIN_CLASS_ID,
+      name: DEFAULT_HERO_NAME,
+      raceId: DEFAULT_ORIGIN_RACE_ID,
+    },
+  }
 }

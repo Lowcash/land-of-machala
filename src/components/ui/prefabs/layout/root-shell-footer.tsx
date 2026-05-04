@@ -4,7 +4,7 @@ import { SITE_FOOTER_LABEL, SITE_FOOTER_LINKS } from '@/lib/site-config'
 
 import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
-import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell'
+import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
 
 const FOOTER_LINK_CLASS = 'hover:text-primary cursor-pointer transition-colors'
 

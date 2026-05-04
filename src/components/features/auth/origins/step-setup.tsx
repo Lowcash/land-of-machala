@@ -1,5 +1,5 @@
 import type { CharacterStats, ClassOption, RaceOption } from '@/lib/auth/demo-data'
-import { ORIGINS_CREATION_COPY } from '@/lib/auth/origins-copy'
+import { ORIGINS_SETUP_COPY } from '@/lib/auth/origins-copy'
 
 import { Button } from '@/components/ui/core/button'
 import { Field } from '@/components/ui/forms/field'
@@ -7,7 +7,7 @@ import { HeroStatsGrid } from '@/components/ui/prefabs/origins/hero-stats-grid'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { SelectionColumn } from '@/components/ui/prefabs/origins/selection-column'
 
-type StepCreationProps = {
+type StepSetupProps = {
   canFinish: boolean
   classes: ClassOption[]
   heroName: string
@@ -23,7 +23,7 @@ type StepCreationProps = {
   stats: CharacterStats
 }
 
-export function StepCreation({
+export function StepSetup({
   canFinish,
   classes,
   heroName,
@@ -37,26 +37,26 @@ export function StepCreation({
   selectedClassId,
   selectedRaceId,
   stats,
-}: StepCreationProps) {
+}: StepSetupProps) {
   return (
     <OriginsCard.Root>
       <OriginsCard.Header
-        description={ORIGINS_CREATION_COPY.description}
-        overline={ORIGINS_CREATION_COPY.overline}
-        title={ORIGINS_CREATION_COPY.title}
+        description={ORIGINS_SETUP_COPY.description}
+        overline={ORIGINS_SETUP_COPY.overline}
+        title={ORIGINS_SETUP_COPY.title}
       />
       <OriginsCard.Columns>
         <OriginsCard.Panel>
           <Field
-            label={ORIGINS_CREATION_COPY.heroNameLabel}
+            label={ORIGINS_SETUP_COPY.heroNameLabel}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
               onNameChange(event.target.value)
             }
-            placeholder={ORIGINS_CREATION_COPY.heroNamePlaceholder}
+            placeholder={ORIGINS_SETUP_COPY.heroNamePlaceholder}
             value={heroName}
           />
           <Button onClick={onRandomize} size="md" variant="secondary">
-            {ORIGINS_CREATION_COPY.randomizeLabel}
+            {ORIGINS_SETUP_COPY.randomizeLabel}
           </Button>
           <HeroStatsGrid stats={stats} />
         </OriginsCard.Panel>
@@ -64,25 +64,23 @@ export function StepCreation({
           items={races}
           onSelect={onRaceSelect}
           selectedId={selectedRaceId}
-          title={ORIGINS_CREATION_COPY.raceTitle}
+          title={ORIGINS_SETUP_COPY.raceTitle}
         />
         <SelectionColumn
           items={classes}
           onSelect={onClassSelect}
           selectedId={selectedClassId}
-          title={ORIGINS_CREATION_COPY.classTitle}
+          title={ORIGINS_SETUP_COPY.classTitle}
         />
       </OriginsCard.Columns>
-      <div className="bg-surface-container-lowest/80 sticky bottom-0 z-10 p-(--space-pad-sm) backdrop-blur-sm md:static md:bg-transparent md:p-0 md:backdrop-blur-none">
-        <OriginsCard.Footer>
-          <Button onClick={onBack} size="md" variant="ghost">
-            {ORIGINS_CREATION_COPY.backLabel}
-          </Button>
-          <Button disabled={!canFinish} onClick={onFinish} size="md">
-            {ORIGINS_CREATION_COPY.confirmLabel}
-          </Button>
-        </OriginsCard.Footer>
-      </div>
+      <OriginsCard.Footer>
+        <Button onClick={onBack} size="md" variant="ghost">
+          {ORIGINS_SETUP_COPY.backLabel}
+        </Button>
+        <Button disabled={!canFinish} onClick={onFinish} size="md">
+          {ORIGINS_SETUP_COPY.confirmLabel}
+        </Button>
+      </OriginsCard.Footer>
     </OriginsCard.Root>
   )
 }

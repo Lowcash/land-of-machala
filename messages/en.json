@@ -55,7 +55,7 @@
         "continueLabel": "Continue",
         "skipLabel": "Skip the prologue"
       },
-      "creation": {
+      "setup": {
         "title": "Shape your hero",
         "description": "Review race, class, and hero name before entering realm.",
         "overline": "Setup",

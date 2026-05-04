@@ -22,43 +22,41 @@ export function PrologueStep({
   step,
 }: PrologueStepProps) {
   return (
-    <div className="mx-auto w-full max-w-3xl">
-      <OriginsCard.Root>
-        <OriginsCard.Header
-          description={step.description}
-          overline={step.eyebrow}
-          title={step.title}
-        />
-        <OriginsCard.Content>
-          <OriginsCard.Prompt>{step.prompt}</OriginsCard.Prompt>
-          <OriginsCard.List>
-            {step.choices.map((choice, index) => {
-              const isActive = selectedChoiceId === choice.id
-              const optionLabel = getOptionLabel(index)
+    <OriginsCard.Root width="compact">
+      <OriginsCard.Header
+        description={step.description}
+        overline={step.eyebrow}
+        title={step.title}
+      />
+      <OriginsCard.Content>
+        <OriginsCard.Prompt>{step.prompt}</OriginsCard.Prompt>
+        <OriginsCard.List>
+          {step.choices.map((choice, index) => {
+            const isActive = selectedChoiceId === choice.id
+            const optionLabel = getOptionLabel(index)
 
-              return (
-                <OriginsCard.ListItem key={choice.id}>
-                  <PrologueChoiceCard
-                    description={choice.description}
-                    isActive={isActive}
-                    onSelect={() => onSelectChoice(choice.id)}
-                    optionLabel={optionLabel}
-                    title={choice.title}
-                  />
-                </OriginsCard.ListItem>
-              )
-            })}
-          </OriginsCard.List>
-        </OriginsCard.Content>
-        <OriginsCard.Actions>
-          <Button disabled={!selectedChoiceId} onClick={onContinue}>
-            {ORIGINS_TUTORIAL_COPY.continueLabel}
-          </Button>
-          <Button onClick={onSkip} variant="ghost">
-            {ORIGINS_TUTORIAL_COPY.skipLabel}
-          </Button>
-        </OriginsCard.Actions>
-      </OriginsCard.Root>
-    </div>
+            return (
+              <OriginsCard.ListItem key={choice.id}>
+                <PrologueChoiceCard
+                  description={choice.description}
+                  isActive={isActive}
+                  onSelect={() => onSelectChoice(choice.id)}
+                  optionLabel={optionLabel}
+                  title={choice.title}
+                />
+              </OriginsCard.ListItem>
+            )
+          })}
+        </OriginsCard.List>
+      </OriginsCard.Content>
+      <OriginsCard.Footer className="mx-auto w-full max-w-xl">
+        <Button onClick={onSkip} size="md" variant="ghost">
+          {ORIGINS_TUTORIAL_COPY.skipLabel}
+        </Button>
+        <Button disabled={!selectedChoiceId} onClick={onContinue} size="md">
+          {ORIGINS_TUTORIAL_COPY.continueLabel}
+        </Button>
+      </OriginsCard.Footer>
+    </OriginsCard.Root>
   )
 }

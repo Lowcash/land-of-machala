@@ -55,7 +55,7 @@
         "continueLabel": "Pokračovat",
         "skipLabel": "Přeskočit prolog"
       },
-      "creation": {
+      "setup": {
         "title": "Vytvaruj svého hrdinu",
         "description": "Před vstupem do říše zkontroluj rasu, povolání a jméno hrdiny.",
         "overline": "Příprava",

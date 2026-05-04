@@ -23,6 +23,6 @@ export const Prologue: Story = {
 
 export const Setup: Story = {
   args: {
-    initialPhase: 'creation',
+    initialPhase: 'setup',
   },
 }

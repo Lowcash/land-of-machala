@@ -22,6 +22,11 @@ type ContentProps = {
   className?: string
 }
 
+type FooterProps = {
+  children: React.ReactNode
+  className?: string
+}
+
 type ColumnsProps = {
   children: React.ReactNode
   className?: string
@@ -33,6 +38,11 @@ type PanelProps = {
   gap?: SpaceToken
 }
 
+type RootProps = {
+  children: React.ReactNode
+  width?: 'compact' | 'full'
+}
+
 const PANEL_GAP_CLASS: Record<SpaceToken, string> = {
   sm: 'gap-(--space-stack-sm)',
   md: 'gap-(--space-stack-md)',
@@ -41,9 +51,18 @@ const PANEL_GAP_CLASS: Record<SpaceToken, string> = {
   xxl: 'gap-(--space-stack-xxl)',
 }
 
-function Root({ children }: { children: React.ReactNode }) {
+const FOOTER_BASE_CLASS =
+  'flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between'
+
+function Root({ children, width = 'full' }: RootProps) {
   return (
-    <Card centered gap="lg" layout="stack" padding="cozy" width="auto">
+    <Card
+      centered
+      gap="lg"
+      layout="stack"
+      padding="cozy"
+      width={width === 'compact' ? '3xl' : 'auto'}
+    >
       {children}
     </Card>
   )
@@ -104,12 +123,8 @@ function Columns({ children, className }: ColumnsProps) {
   )
 }
 
-function Footer({ children }: { children: React.ReactNode }) {
-  return (
-    <section className="flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between">
-      {children}
-    </section>
-  )
+function Footer({ children, className }: FooterProps) {
+  return <section className={clsx(FOOTER_BASE_CLASS, className)}>{children}</section>
 }
 
 function Panel({ children, className, gap = 'md' }: PanelProps) {

@@ -8,7 +8,7 @@ type RealmStatsGridProps = {
 
 export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
-    <ul className="grid w-full grid-cols-2 gap-(--space-stack-lg)">
+    <ul className="m-0 grid w-full list-none grid-cols-2 gap-(--space-stack-lg) p-0">
       {stats.map((item) => (
         <li
           className="bg-surface-container/40 border-outline-variant/40 flex flex-col items-center gap-(--space-stack-sm) rounded-xl border p-(--space-pad-md) text-center"

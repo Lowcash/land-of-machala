@@ -5,8 +5,12 @@ import clsx from 'clsx'
 import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
 
 import { HelperText } from '@/components/ui/core/typography'
+import {
+  TEXT_INPUT_BASE_CLASS,
+  TEXT_INPUT_STATE_CLASS,
+} from '@/components/ui/forms/field-chrome-classes'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
-import { FormField } from '@/components/ui/forms/form-chrome'
+import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>> & {
   actionLabel?: string
@@ -38,17 +42,17 @@ export function Field({
   return (
     <FormField.Shell>
       <FormField.Header hasAction={hasActionLabel}>
-        <FormField.Label htmlFor={resolvedId}>{label}</FormField.Label>
+        <FormField.Label error={!!error} htmlFor={resolvedId}>
+          {label}
+        </FormField.Label>
         {hasActionLabel ? (
           <FormField.Action onClick={onActionClick}>{actionLabel}</FormField.Action>
         ) : null}
       </FormField.Header>
       <input
         className={clsx(
-          'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full rounded-xl border px-(--space-field-x) py-(--space-field-y) transition outline-none focus:ring-2',
-          error
-            ? 'border-error/65 focus:border-error focus:ring-error/25'
-            : 'border-outline-variant/70 focus:border-primary focus:ring-primary/30'
+          TEXT_INPUT_BASE_CLASS,
+          error ? TEXT_INPUT_STATE_CLASS.error : TEXT_INPUT_STATE_CLASS.default
         )}
         id={resolvedId}
         {...props}

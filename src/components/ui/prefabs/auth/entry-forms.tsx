@@ -10,28 +10,26 @@ import { Field } from '@/components/ui/forms/field'
 const REMEMBER_SPIRIT_ID = 'remember-spirit'
 const MERCHANT_TERMS_ID = 'merchant-terms'
 
-type SignInFormProps = {
+type AuthFormBaseProps = {
   email: string
-  errors: LoginErrors
   onEmailChange: (value: string) => void
+  onPasswordChange: (value: string) => void
+  onSubmit: FormSubmitHandler
+  password: string
+}
+
+type SignInFormProps = AuthFormBaseProps & {
+  errors: LoginErrors
   onForgotSecret?: () => void
   onRememberChange: (checked: boolean) => void
-  onSubmit: FormSubmitHandler
-  onPasswordChange: (value: string) => void
-  password: string
   rememberMe: boolean
 }
 
-type SignUpFormProps = {
+type SignUpFormProps = AuthFormBaseProps & {
   acceptTerms: boolean
-  email: string
   errors: RegisterErrors
   legalLabel: React.ReactNode
   onAcceptTermsChange: (checked: boolean) => void
-  onEmailChange: (value: string) => void
-  onPasswordChange: (value: string) => void
-  onSubmit: FormSubmitHandler
-  password: string
 }
 
 type AuthFormShellProps = {

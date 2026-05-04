@@ -6,7 +6,7 @@ type OriginsCopyShape = {
     continueLabel: string
     skipLabel: string
   }
-  creation: {
+  setup: {
     title: string
     description: string
     overline: string
@@ -40,4 +40,4 @@ export function getOriginsCopy(locale: OriginsLocale = 'en') {
 const DEFAULT_ORIGINS_COPY = getOriginsCopy('en')
 
 export const ORIGINS_TUTORIAL_COPY = DEFAULT_ORIGINS_COPY.tutorial
-export const ORIGINS_CREATION_COPY = DEFAULT_ORIGINS_COPY.creation
+export const ORIGINS_SETUP_COPY = DEFAULT_ORIGINS_COPY.setup
