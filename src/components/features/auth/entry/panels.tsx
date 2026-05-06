@@ -1,35 +1,13 @@
 import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
-import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
-import type { FormSubmitHandler } from '@/lib/types/component-props'
 
+import type {
+  EntrySignInPanelProps,
+  EntrySignUpPanelProps,
+} from '@/components/features/auth/entry/view-model'
 import { Button } from '@/components/ui/core/button'
 import { EntryCard } from '@/components/ui/prefabs/auth/entry-card'
 import { SignInForm, SignUpForm } from '@/components/ui/prefabs/auth/entry-forms'
 import { LegalTermsLabel } from '@/components/ui/prefabs/auth/legal-terms-label'
-
-type EntryFormCommon = {
-  email: string
-  password: string
-  onEmailChange: (value: string) => void
-  onPasswordChange: (value: string) => void
-  onSubmit: FormSubmitHandler
-  onGuestEntry?: () => void
-  statusMessage?: string
-}
-
-type EntrySignInPanelProps = EntryFormCommon & {
-  errors: LoginErrors
-  onRememberChange: (checked: boolean) => void
-  onSwitchToSignUp: () => void
-  rememberMe: boolean
-}
-
-type EntrySignUpPanelProps = EntryFormCommon & {
-  acceptTerms: boolean
-  errors: RegisterErrors
-  onAcceptTermsChange: (checked: boolean) => void
-  onSwitchToSignIn: () => void
-}
 
 export function EntrySignInPanel({
   email,
@@ -67,10 +45,10 @@ export function EntrySignInPanel({
         <EntryCard.Support>
           <EntryCard.Divider label={ENTRY_SIGN_IN_COPY.orLabel} />
           <EntryCard.Actions>
-            <Button fullWidth onClick={onGuestEntry} size="md" variant="ghost">
+            <Button fullWidth onClick={onGuestEntry} variant="ghost">
               {ENTRY_SIGN_IN_COPY.guestLabel}
             </Button>
-            <Button fullWidth onClick={onSwitchToSignUp} size="md" variant="secondary">
+            <Button fullWidth onClick={onSwitchToSignUp} variant="secondary">
               {ENTRY_SIGN_IN_COPY.createAccountLabel}
             </Button>
           </EntryCard.Actions>
@@ -115,10 +93,10 @@ export function EntrySignUpPanel({
           />
         </EntryCard.Content>
         <EntryCard.Actions>
-          <Button fullWidth onClick={onGuestEntry} size="md" variant="ghost">
+          <Button fullWidth onClick={onGuestEntry} variant="ghost">
             {ENTRY_SIGN_UP_COPY.guestLabel}
           </Button>
-          <Button fullWidth onClick={onSwitchToSignIn} size="md" variant="secondary">
+          <Button fullWidth onClick={onSwitchToSignIn} variant="secondary">
             {ENTRY_SIGN_UP_COPY.backLabel}
           </Button>
         </EntryCard.Actions>

@@ -14,18 +14,16 @@ type StatCellProps = {
 
 function StatCell({ label, value }: StatCellProps) {
   return (
-    <Box border className="bg-surface-container/60 text-center" padding="sm" radius="xl">
+    <Box border className="bg-surface-container/60">
       <MetaLabel>{label}</MetaLabel>
-      <DisplayValue align="center" size="xl">
-        {value}
-      </DisplayValue>
+      <DisplayValue align="center">{value}</DisplayValue>
     </Box>
   )
 }
 
 export function HeroStatsGrid({ stats }: HeroStatsGridProps) {
   return (
-    <div className="grid grid-cols-2 gap-(--space-stack-md)">
+    <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-2">
       <StatCell label="HP" value={stats.hp} />
       <StatCell label="Mana" value={stats.mana} />
       <StatCell label="Strength" value={stats.strength} />

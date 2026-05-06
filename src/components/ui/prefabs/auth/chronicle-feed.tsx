@@ -10,29 +10,34 @@ type ChronicleFeedProps = {
   chronicles: ChronicleItem[]
 }
 
+const CHRONICLE_HEADER_CLASS = 'flex items-center justify-center lg:justify-start'
+
+const CHRONICLE_ITEM_CLASS = 'rounded-lg border-l-2'
+
 export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
   return (
-    <Stack gap="lg">
-      <header className="flex items-center justify-center gap-(--space-stack-md) lg:justify-start">
+    <Stack>
+      <header className={clsx(CHRONICLE_HEADER_CLASS)}>
         <span className="bg-primary/45 hidden h-px w-10 lg:block" />
         <LabelText tone="muted">{ENTRY_SIDE_COPY.recentChroniclesTitle}</LabelText>
       </header>
-      <Stack as="ul" gap="md" resetList>
+      <Stack as="ul" resetList>
         {chronicles.map((item) => (
-          <li
+          <Stack
+            as="li"
             className={clsx(
-              'flex flex-col gap-(--space-stack-sm) rounded-lg border-l-2 p-(--space-pad-md)',
+              CHRONICLE_ITEM_CLASS,
               item.tone === 'highlight'
                 ? 'border-primary-container bg-surface-container-low/55'
                 : 'border-outline-variant bg-surface-container-low/40'
             )}
             key={item.id}
           >
-            <BodyText italic size="sm" tone={item.tone === 'highlight' ? 'default' : 'muted'}>
+            <BodyText italic tone={item.tone === 'highlight' ? 'default' : 'muted'}>
               &quot;{item.text}&quot;
             </BodyText>
             <MetaLabel>{item.timestamp}</MetaLabel>
-          </li>
+          </Stack>
         ))}
       </Stack>
     </Stack>

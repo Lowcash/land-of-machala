@@ -4,31 +4,13 @@ import { useState } from 'react'
 
 import { AUTH_CHRONICLES, AUTH_HERO, AUTH_STATS } from '@/lib/auth/demo-data'
 import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
-import {
-  type LoginErrors,
-  type RegisterErrors,
-  validateLoginInput,
-  validateRegisterInput,
-} from '@/lib/auth/entry-validation'
+import { validateLoginInput, validateRegisterInput } from '@/lib/auth/entry-validation'
 
 import { EntrySignInPanel, EntrySignUpPanel } from '@/components/features/auth/entry/panels'
+import type { LoginFormState, RegisterFormState } from '@/components/features/auth/entry/view-model'
 import { AuthSplitLayout } from '@/components/ui/prefabs/layout/auth-split-layout'
 
 import type { EntryScreen, RootEntryShellProps } from './shell'
-
-type BaseFormState<E> = {
-  email: string
-  password: string
-  errors: E
-}
-
-type LoginFormState = BaseFormState<LoginErrors> & {
-  rememberMe: boolean
-}
-
-type RegisterFormState = BaseFormState<RegisterErrors> & {
-  acceptTerms: boolean
-}
 
 export function RootEntryShellClient({
   initialScreen = 'signIn',

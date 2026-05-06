@@ -8,7 +8,7 @@ type CenteredStageShellProps = {
 export function CenteredStageShell({ children }: CenteredStageShellProps) {
   return (
     <RootShell>
-      <RootShell.Frame inset="stage" preset="stage-center">
+      <RootShell.Frame preset="center">
         <Box as="section" className="w-full max-w-5xl">
           {children}
         </Box>

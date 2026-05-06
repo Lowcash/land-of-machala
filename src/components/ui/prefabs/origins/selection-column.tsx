@@ -18,6 +18,9 @@ type SelectionColumnProps = {
   onSelect: (id: string) => void
 }
 
+const SELECTION_BUTTON_CLASS =
+  'font-label cursor-pointer rounded-lg border tracking-[0.18em] uppercase transition'
+
 export function SelectionColumn({ items, onSelect, selectedId, title }: SelectionColumnProps) {
   const selected = items.find((item) => item.id === selectedId) ?? items[0]
 
@@ -26,12 +29,10 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
       <SectionTitle
         align="left"
         description={selected.description}
-        descriptionSize="lg"
         overline={title}
         title={selected.name}
-        titleSize="xl"
       />
-      <ul className="flex flex-wrap gap-(--space-stack-sm)">
+      <ul className={'flex flex-wrap'}>
         {items.map((item) => {
           const isActive = item.id === selectedId
 
@@ -39,7 +40,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
             <li key={item.id}>
               <button
                 className={clsx(
-                  'font-label cursor-pointer rounded-lg border px-(--space-pad-sm) py-(--space-stack-sm) text-xs tracking-[0.16em] uppercase transition',
+                  SELECTION_BUTTON_CLASS,
                   isActive
                     ? 'border-primary bg-primary text-on-primary'
                     : 'text-on-surface-variant border-outline-variant/40 bg-surface-container/60 hover:border-primary/40 hover:text-on-surface'
@@ -53,7 +54,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
           )
         })}
       </ul>
-      <Stack as="ul" className="text-on-surface-variant text-sm" gap="sm" resetList>
+      <Stack as="ul" className="text-on-surface-variant" resetList>
         {selected.bonuses.map((bonus) => (
           <li key={bonus}>• {bonus}</li>
         ))}

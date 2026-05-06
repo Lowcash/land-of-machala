@@ -1,10 +1,9 @@
 import clsx from 'clsx'
 
-import { Card } from '@/components/ui/core/card'
 import { Box } from '@/components/ui/core/layout'
-import type { SpaceToken } from '@/components/ui/core/layout'
 import { Stack } from '@/components/ui/core/layout'
-import { BodyText, SectionTitle } from '@/components/ui/core/typography'
+import { BodyText } from '@/components/ui/core/typography'
+import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
 type ListProps = {
   children: React.ReactNode
@@ -35,7 +34,6 @@ type ColumnsProps = {
 type PanelProps = {
   children: React.ReactNode
   className?: string
-  gap?: SpaceToken
 }
 
 type RootProps = {
@@ -43,34 +41,19 @@ type RootProps = {
   width?: 'compact' | 'full'
 }
 
-const PANEL_GAP_CLASS: Record<SpaceToken, string> = {
-  sm: 'gap-(--space-stack-sm)',
-  md: 'gap-(--space-stack-md)',
-  lg: 'gap-(--space-stack-lg)',
-  xl: 'gap-(--space-stack-xl)',
-  xxl: 'gap-(--space-stack-xxl)',
-}
-
-const FOOTER_BASE_CLASS =
-  'flex flex-col gap-(--space-stack-md) sm:flex-row sm:items-center sm:justify-between'
+const FOOTER_BASE_CLASS = 'flex flex-col sm:flex-row sm:items-center sm:justify-between'
 
 function Root({ children, width = 'full' }: RootProps) {
   return (
-    <Card
-      centered
-      gap="lg"
-      layout="stack"
-      padding="cozy"
-      width={width === 'compact' ? '3xl' : 'auto'}
-    >
+    <FlowCard.Root centered width={width === 'compact' ? '3xl' : 'auto'}>
       {children}
-    </Card>
+    </FlowCard.Root>
   )
 }
 
 function List({ children, className }: ListProps) {
   return (
-    <Stack as="ul" className={className} gap="sm" resetList>
+    <Stack as="ul" className={className} resetList>
       {children}
     </Stack>
   )
@@ -85,38 +68,28 @@ function Prompt({ children }: { children: React.ReactNode }) {
 }
 
 function Header({ description, overline, title }: HeaderProps) {
-  return (
-    <SectionTitle
-      description={description}
-      descriptionSize="base"
-      overline={overline}
-      showDivider
-      title={title}
-      titleSize="lg"
-    />
-  )
+  return <FlowCard.Header description={description} overline={overline} showDivider title={title} />
 }
 
 function Actions({ children }: { children: React.ReactNode }) {
-  return (
-    <Stack align="center" gap="md">
-      {children}
-    </Stack>
-  )
+  return <FlowCard.Actions>{children}</FlowCard.Actions>
 }
 
 function Content({ children, className }: ContentProps) {
   return (
-    <Stack as="section" className={clsx('mx-auto w-full max-w-xl text-left', className)} gap="md">
+    <FlowCard.Content as="section" className={clsx('mx-auto w-full max-w-xl', className)}>
       {children}
-    </Stack>
+    </FlowCard.Content>
   )
 }
 
 function Columns({ children, className }: ColumnsProps) {
   return (
     <section
-      className={clsx('grid gap-(--space-stack-md) lg:grid-cols-[1fr_1fr_0.9fr]', className)}
+      className={clsx(
+        'grid md:grid-cols-2 xl:grid-cols-[1.1fr_1fr_1fr] md:[&>*:first-child]:col-span-2 xl:[&>*:first-child]:col-span-1',
+        className
+      )}
     >
       {children}
     </section>
@@ -124,18 +97,16 @@ function Columns({ children, className }: ColumnsProps) {
 }
 
 function Footer({ children, className }: FooterProps) {
-  return <section className={clsx(FOOTER_BASE_CLASS, className)}>{children}</section>
+  return (
+    <section className={clsx('mx-auto w-full max-w-xl', FOOTER_BASE_CLASS, className)}>
+      {children}
+    </section>
+  )
 }
 
-function Panel({ children, className, gap = 'md' }: PanelProps) {
+function Panel({ children, className }: PanelProps) {
   return (
-    <Box
-      border
-      className={clsx('flex flex-col', PANEL_GAP_CLASS[gap], className)}
-      padding="md"
-      radius="xl"
-      tone="panel"
-    >
+    <Box border className={clsx('flex flex-col', className)} tone="panel">
       {children}
     </Box>
   )

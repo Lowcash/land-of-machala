@@ -9,8 +9,6 @@ import { RootShellFooter } from '@/components/ui/prefabs/layout/root-shell-foote
 import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
 import { RootShellHeader } from '@/components/ui/prefabs/layout/root-shell-header'
 
-export { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
-
 type RootShellProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode
 }
@@ -29,7 +27,7 @@ export const RootShell: RootShellComponent = Object.assign(RootShellBase, {
 function RootShellBase({ children, className = '', ...props }: RootShellProps) {
   return (
     <div
-      className={clsx('bg-background relative isolate min-h-screen overflow-hidden', className)}
+      className={clsx('bg-background relative isolate min-h-dvh overflow-hidden', className)}
       {...props}
     >
       <div className="absolute inset-0 -z-20">
@@ -43,7 +41,7 @@ function RootShellBase({ children, className = '', ...props }: RootShellProps) {
         />
       </div>
       <div className={SHELL_OVERLAY_CLASS} />
-      <Box className="relative flex min-h-screen flex-col">
+      <Box className="relative flex min-h-dvh flex-col">
         <RootShellHeader />
         <main className="flex flex-1">{children}</main>
         <RootShellFooter />

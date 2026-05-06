@@ -5,12 +5,16 @@ import clsx from 'clsx'
 import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
 
 import { HelperText } from '@/components/ui/core/typography'
-import {
-  TEXT_INPUT_BASE_CLASS,
-  TEXT_INPUT_STATE_CLASS,
-} from '@/components/ui/forms/field-chrome-classes'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
 import { FormField } from '@/components/ui/forms/form-field-chrome'
+
+const TEXT_INPUT_BASE_CLASS =
+  'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full rounded-xl border transition outline-none focus:ring-2'
+
+const TEXT_INPUT_STATE_CLASS = {
+  default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',
+  error: 'border-error/65 focus:border-error focus:ring-error/25',
+} as const
 
 type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>> & {
   actionLabel?: string

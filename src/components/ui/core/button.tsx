@@ -11,22 +11,15 @@ const VARIANT_CLASSES = {
     'border-white/10 bg-surface-container-high text-primary hover:bg-secondary-container focus-visible:ring-primary',
 } as const
 
-const SIZE_CLASSES = {
-  md: 'px-(--space-button-md-x) py-(--space-button-md-y) text-sm tracking-[0.2em]',
-  lg: 'px-(--space-button-lg-x) py-(--space-button-lg-y) text-base tracking-[0.22em]',
-} as const
-
 type ButtonProps = NativePropsWithoutClassNameStyle<
   React.ButtonHTMLAttributes<HTMLButtonElement>
 > & {
   fullWidth?: boolean
   variant?: keyof typeof VARIANT_CLASSES
-  size?: keyof typeof SIZE_CLASSES
 }
 
 export function Button({
   fullWidth = false,
-  size = 'lg',
   type = 'button',
   variant = 'primary',
   ...props
@@ -36,8 +29,7 @@ export function Button({
       className={clsx(
         'font-label inline-flex transform-gpu cursor-pointer items-center justify-center rounded-xl border font-semibold uppercase transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50',
         fullWidth && 'w-full',
-        VARIANT_CLASSES[variant],
-        SIZE_CLASSES[size]
+        VARIANT_CLASSES[variant]
       )}
       type={type}
       {...props}

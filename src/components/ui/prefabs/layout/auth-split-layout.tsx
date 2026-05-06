@@ -23,23 +23,21 @@ export function AuthSplitLayout({
 }: AuthSplitLayoutProps) {
   return (
     <RootShell>
-      <RootShell.Frame inset="page" preset="auth-grid">
-        <Stack className="order-1 lg:hidden" gap="sm">
-          <PageHeadline size="mobile">{headline}</PageHeadline>
-          {tagline ? (
-            <BodyText size="sm" tone="muted">
-              {tagline}
-            </BodyText>
-          ) : null}
+      <RootShell.Frame preset="split">
+        <Stack className="order-1 lg:hidden">
+          <PageHeadline>{headline}</PageHeadline>
+          {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
         </Stack>
-        <Stack as="section" className="order-3 lg:order-1" gap="xxl">
-          <PageHeadline className="hidden max-w-xl lg:block">{headline}</PageHeadline>
+        <Stack as="section" className="order-3 lg:order-1">
+          <div className="hidden max-w-xl lg:block">
+            <PageHeadline>{headline}</PageHeadline>
+          </div>
           <ChronicleFeed chronicles={chronicles} />
           <RealmStatsGrid stats={stats} />
         </Stack>
         <Box
           as="section"
-          className="order-2 w-full max-w-2xl justify-self-center lg:order-2 lg:max-w-md lg:justify-self-end"
+          className="order-2 w-full max-w-xl justify-self-center lg:order-2 lg:max-w-md lg:justify-self-end"
         >
           {children}
         </Box>

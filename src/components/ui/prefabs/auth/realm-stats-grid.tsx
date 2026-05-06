@@ -1,5 +1,8 @@
+import clsx from 'clsx'
+
 import type { RealmStat } from '@/lib/auth/demo-data'
 
+import { Box, Stack } from '@/components/ui/core/layout'
 import { DisplayValue, MetaLabel } from '@/components/ui/core/typography'
 
 type RealmStatsGridProps = {
@@ -8,17 +11,16 @@ type RealmStatsGridProps = {
 
 export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
-    <ul className="m-0 grid w-full list-none grid-cols-2 gap-(--space-stack-lg) p-0">
+    <ul className={clsx('m-0 grid w-full list-none grid-cols-2 p-0')}>
       {stats.map((item) => (
-        <li
-          className="bg-surface-container/40 border-outline-variant/40 flex flex-col items-center gap-(--space-stack-sm) rounded-xl border p-(--space-pad-md) text-center"
-          key={item.label}
-        >
-          <MetaLabel>{item.label}</MetaLabel>
-          <DisplayValue align="center" size="xl" tone="primary">
-            {item.value}
-          </DisplayValue>
-        </li>
+        <Box as="li" border className="list-none" key={item.label} tone="surface">
+          <Stack align="center">
+            <MetaLabel>{item.label}</MetaLabel>
+            <DisplayValue align="center" tone="primary">
+              {item.value}
+            </DisplayValue>
+          </Stack>
+        </Box>
       ))}
     </ul>
   )

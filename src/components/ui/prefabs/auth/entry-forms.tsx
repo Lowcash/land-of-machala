@@ -39,7 +39,7 @@ type AuthFormShellProps = {
 
 function AuthFormShell({ children, onSubmit }: AuthFormShellProps) {
   return (
-    <Stack as="form" gap="lg" onSubmit={onSubmit}>
+    <Stack as="form" onSubmit={onSubmit}>
       {children}
     </Stack>
   )

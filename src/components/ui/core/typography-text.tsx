@@ -1,8 +1,11 @@
 import clsx from 'clsx'
 
 export type TextAlign = 'center' | 'left'
-export type LabelTextTone = 'error' | 'muted' | 'primary'
 export type LabelTextAs = 'label' | 'p' | 'span'
+export type LabelTextSize = 'default' | 'meta'
+export type LabelTextTone = 'default' | 'error' | 'muted' | 'primary' | 'soft'
+
+const LABEL_TEXT_BASE_CLASS = 'font-label uppercase'
 
 export const TEXT_ALIGN_CLASS: Record<TextAlign, string> = {
   center: 'text-center',
@@ -13,13 +16,7 @@ type BodyTextProps = {
   align?: TextAlign
   children: React.ReactNode
   italic?: boolean
-  size?: 'sm' | 'base'
   tone?: 'default' | 'muted'
-}
-
-const BODY_TEXT_SIZE_CLASS: Record<NonNullable<BodyTextProps['size']>, string> = {
-  base: 'text-base leading-7 md:leading-8',
-  sm: 'text-sm leading-6',
 }
 
 const BODY_TEXT_TONE_CLASS: Record<NonNullable<BodyTextProps['tone']>, string> = {
@@ -31,18 +28,10 @@ export function BodyText({
   align = 'left',
   children,
   italic = false,
-  size = 'base',
   tone = 'default',
 }: BodyTextProps) {
   return (
-    <p
-      className={clsx(
-        TEXT_ALIGN_CLASS[align],
-        BODY_TEXT_SIZE_CLASS[size],
-        BODY_TEXT_TONE_CLASS[tone],
-        italic && 'italic'
-      )}
-    >
+    <p className={clsx(TEXT_ALIGN_CLASS[align], BODY_TEXT_TONE_CLASS[tone], italic && 'italic')}>
       {children}
     </p>
   )
@@ -53,28 +42,16 @@ type MetaLabelProps = {
   tone?: 'default' | 'muted'
 }
 
-const META_LABEL_TONE_CLASS: Record<NonNullable<MetaLabelProps['tone']>, string> = {
-  default: 'text-outline',
-  muted: 'text-on-surface-variant/70',
-}
-
 export function MetaLabel({ children, tone = 'default' }: MetaLabelProps) {
-  return (
-    <p
-      className={clsx(
-        'font-label text-[10px] tracking-[0.18em] uppercase',
-        META_LABEL_TONE_CLASS[tone]
-      )}
-    >
-      {children}
-    </p>
-  )
+  return <LabelText tone={tone === 'default' ? 'default' : 'soft'}>{children}</LabelText>
 }
 
 const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
+  default: 'text-outline',
   error: 'text-error',
-  muted: 'text-outline',
+  muted: 'text-on-surface-variant/80',
   primary: 'text-primary',
+  soft: 'text-on-surface-variant/70',
 }
 
 type LabelTextProps = {
@@ -95,7 +72,7 @@ export function LabelText({
   tone = 'primary',
 }: LabelTextProps) {
   const labelClassName = clsx(
-    'font-label text-xs tracking-[0.24em] uppercase',
+    LABEL_TEXT_BASE_CLASS,
     TEXT_ALIGN_CLASS[align],
     LABEL_TEXT_TONE_CLASS[tone],
     className
@@ -129,7 +106,6 @@ export function HelperText({ children, reserveSpace = true, tone = 'default' }: 
     <p
       className={clsx(
         reserveSpace && 'min-h-4',
-        'text-xs',
         tone === 'error' ? 'font-label text-error' : '',
         tone === 'invisible' ? 'text-transparent' : '',
         tone === 'default' ? 'text-on-surface-variant' : ''
@@ -140,24 +116,27 @@ export function HelperText({ children, reserveSpace = true, tone = 'default' }: 
   )
 }
 
-type IconLabelProps = {
-  align?: 'center' | 'start'
+type DisplayValueProps = {
+  align?: TextAlign
   children: React.ReactNode
-  icon: React.ReactNode
-  width?: 'auto' | 'full'
+  tone?: 'default' | 'primary'
 }
 
-export function IconLabel({ align = 'center', children, icon, width = 'auto' }: IconLabelProps) {
+const DISPLAY_VALUE_TONE_CLASS: Record<NonNullable<DisplayValueProps['tone']>, string> = {
+  default: 'text-on-surface',
+  primary: 'text-primary',
+}
+
+export function DisplayValue({ align = 'left', children, tone = 'default' }: DisplayValueProps) {
   return (
-    <span
+    <p
       className={clsx(
-        'inline-flex gap-(--space-stack-sm)',
-        align === 'start' ? 'items-start' : 'items-center',
-        width === 'full' && 'w-full'
+        'font-headline tabular-nums',
+        TEXT_ALIGN_CLASS[align],
+        DISPLAY_VALUE_TONE_CLASS[tone]
       )}
     >
-      <span className="shrink-0">{icon}</span>
-      <span className="block flex-1">{children}</span>
-    </span>
+      {children}
+    </p>
   )
 }

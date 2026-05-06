@@ -55,7 +55,7 @@ export function StepSetup({
             placeholder={ORIGINS_SETUP_COPY.heroNamePlaceholder}
             value={heroName}
           />
-          <Button onClick={onRandomize} size="md" variant="secondary">
+          <Button onClick={onRandomize} variant="secondary">
             {ORIGINS_SETUP_COPY.randomizeLabel}
           </Button>
           <HeroStatsGrid stats={stats} />
@@ -74,10 +74,10 @@ export function StepSetup({
         />
       </OriginsCard.Columns>
       <OriginsCard.Footer>
-        <Button onClick={onBack} size="md" variant="ghost">
+        <Button onClick={onBack} variant="ghost">
           {ORIGINS_SETUP_COPY.backLabel}
         </Button>
-        <Button disabled={!canFinish} onClick={onFinish} size="md">
+        <Button disabled={!canFinish} onClick={onFinish}>
           {ORIGINS_SETUP_COPY.confirmLabel}
         </Button>
       </OriginsCard.Footer>

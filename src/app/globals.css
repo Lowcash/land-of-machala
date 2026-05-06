@@ -29,37 +29,35 @@
   --radius-card: 1rem;
   --shadow-gilded: 0 24px 80px rgba(0, 0, 0, 0.45);
 
-  --space-stack-sm: 0.5rem;
-  --space-stack-md: 0.75rem;
-  --space-stack-lg: 1rem;
-  --space-stack-xl: 1.5rem;
-  --space-stack-xxl: 2rem;
+  --space-stack-sm: clamp(0.5rem, 0.48rem + 0.08vw, 0.625rem);
+  --space-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
+  --space-stack-lg: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --space-stack-xxl: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
 
-  --space-pad-sm: 0.75rem;
-  --space-pad-md: 1rem;
-  --space-pad-lg: 1.25rem;
-  --space-pad-xl: 1.5rem;
-  --space-pad-2xl: 2rem;
-  --space-pad-3xl: 2.5rem;
+  --space-pad-sm: clamp(0.75rem, 0.71rem + 0.14vw, 0.875rem);
+  --space-pad-md: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --space-pad-lg: clamp(1.25rem, 1.18rem + 0.24vw, 1.5rem);
+  --space-pad-xl: clamp(1.5rem, 1.34rem + 0.56vw, 2rem);
+  --space-pad-2xl: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
 
-  --space-button-md-x: 1rem;
-  --space-button-md-y: 0.75rem;
-  --space-button-lg-x: 1.25rem;
-  --space-button-lg-y: 1rem;
+  --space-surface-pad-sm: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
+  --space-surface-pad-md: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --space-card-pad-cozy: clamp(1.25rem, 1.14rem + 0.36vw, 1.5rem);
+  --space-card-pad-roomy: clamp(1.25rem, 0.98rem + 0.92vw, 2rem);
 
-  --space-field-x: 1rem;
-  --space-field-y: 0.75rem;
+  --space-button-md-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --space-button-md-y: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
+  --space-button-lg-x: clamp(1.25rem, 1.18rem + 0.24vw, 1.5rem);
+  --space-button-lg-y: clamp(1rem, 0.96rem + 0.14vw, 1.125rem);
 
-  --space-shell-inset-x: 1.5rem;
-  --space-shell-inset-x-lg: 2.5rem;
-  --space-shell-band-y: 1.5rem;
-  --space-shell-band-y-lg: 2rem;
-  --space-shell-page-y: 2rem;
-  --space-shell-page-y-lg: 2.5rem;
-  --space-shell-stage-y: 2.5rem;
-  --space-shell-stage-y-lg: 3.5rem;
-  --space-shell-grid-gap: 2rem;
-  --space-shell-grid-gap-lg: 3.5rem;
+  --space-field-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --space-field-y: clamp(0.75rem, 0.71rem + 0.14vw, 0.875rem);
+
+  --space-shell-inset-x: clamp(1.5rem, 1.18rem + 1.1vw, 2.5rem);
+  --space-shell-band-y: clamp(1.5rem, 1.34rem + 0.56vw, 2rem);
+  --space-shell-page-y: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
+  --space-shell-stage-y: clamp(2.5rem, 2.18rem + 1.1vw, 3.5rem);
+  --space-shell-grid-gap: clamp(2rem, 1.52rem + 1.66vw, 3.5rem);
 }
 
 @layer base {
@@ -69,7 +67,7 @@
 
   html,
   body {
-    min-height: 100%;
+    min-height: 100dvh;
   }
 
   body {
@@ -95,6 +93,12 @@
   input[type='radio'],
   [role='button'] {
     cursor: pointer;
+  }
+
+  button,
+  [role='button'],
+  nav {
+    user-select: none;
   }
 
   button,

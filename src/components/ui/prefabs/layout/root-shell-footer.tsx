@@ -8,14 +8,17 @@ import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
 
 const FOOTER_LINK_CLASS = 'hover:text-primary cursor-pointer transition-colors'
 
+const FOOTER_NAV_CLASS =
+  'font-label text-on-surface-variant/80 flex flex-wrap items-center justify-center tracking-[0.24em] uppercase'
+
 export function RootShellFooter() {
   return (
-    <RootShellFrame as="footer" className="text-center" inset="band">
-      <Stack align="center" gap="md">
-        <BodyText align="center" italic size="sm" tone="muted">
+    <RootShellFrame as="footer">
+      <Stack align="center">
+        <BodyText align="center" italic tone="muted">
           {SITE_FOOTER_LABEL}
         </BodyText>
-        <nav className="font-label text-on-surface-variant/80 flex flex-wrap items-center justify-center gap-(--space-stack-md) text-[11px] tracking-[0.24em] uppercase">
+        <nav className={FOOTER_NAV_CLASS}>
           {SITE_FOOTER_LINKS.map((link, index) => (
             <Fragment key={link}>
               {index > 0 ? <span aria-hidden="true">|</span> : null}

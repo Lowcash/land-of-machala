@@ -22,7 +22,7 @@ export function PrologueStep({
   step,
 }: PrologueStepProps) {
   return (
-    <OriginsCard.Root width="compact">
+    <OriginsCard.Root>
       <OriginsCard.Header
         description={step.description}
         overline={step.eyebrow}
@@ -49,11 +49,11 @@ export function PrologueStep({
           })}
         </OriginsCard.List>
       </OriginsCard.Content>
-      <OriginsCard.Footer className="mx-auto w-full max-w-xl">
-        <Button onClick={onSkip} size="md" variant="ghost">
+      <OriginsCard.Footer>
+        <Button onClick={onSkip} variant="ghost">
           {ORIGINS_TUTORIAL_COPY.skipLabel}
         </Button>
-        <Button disabled={!selectedChoiceId} onClick={onContinue} size="md">
+        <Button disabled={!selectedChoiceId} onClick={onContinue}>
           {ORIGINS_TUTORIAL_COPY.continueLabel}
         </Button>
       </OriginsCard.Footer>

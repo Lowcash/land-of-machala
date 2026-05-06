@@ -1,7 +1,7 @@
 export {
   BodyText,
+  DisplayValue,
   HelperText,
-  IconLabel,
   LabelText,
   MetaLabel,
   TEXT_ALIGN_CLASS,
@@ -10,9 +10,4 @@ export {
   type TextAlign,
 } from '@/components/ui/core/typography-text'
 
-export {
-  BrandWordmark,
-  DisplayValue,
-  PageHeadline,
-  SectionTitle,
-} from '@/components/ui/core/typography-display'
+export { BrandWordmark, PageHeadline, SectionTitle } from '@/components/ui/core/typography-display'

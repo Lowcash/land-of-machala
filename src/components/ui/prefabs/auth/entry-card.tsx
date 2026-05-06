@@ -1,11 +1,8 @@
-import { Card } from '@/components/ui/core/card'
 import { Box, Stack } from '@/components/ui/core/layout'
-import type { SpaceToken } from '@/components/ui/core/layout'
-import { BodyText, MetaLabel, SectionTitle } from '@/components/ui/core/typography'
+import { BodyText, MetaLabel } from '@/components/ui/core/typography'
+import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
-type EntryCardRootProps = {
-  children: React.ReactNode
-}
+type EntryCardRootProps = React.PropsWithChildren
 
 type EntryCardHeaderProps = {
   description: string
@@ -20,35 +17,24 @@ type EntryCardDividerProps = {
   label: string
 }
 
-type EntryCardFooterProps = {
-  children: React.ReactNode
-}
+type EntryCardFooterProps = React.PropsWithChildren
 
-type EntryCardContentProps = {
-  children: React.ReactNode
-}
+type EntryCardContentProps = React.PropsWithChildren
 
 type EntryCardSupportProps = {
   children: React.ReactNode
-  gap?: SpaceToken
 }
 
 function Root({ children }: EntryCardRootProps) {
-  return (
-    <Card fillHeight gap="lg" layout="stack" padding="roomy">
-      {children}
-    </Card>
-  )
+  return <FlowCard.Root fillHeight>{children}</FlowCard.Root>
 }
 
 function Header({ description, title }: EntryCardHeaderProps) {
   return (
-    <SectionTitle
+    <FlowCard.Header
       description={<span className="hidden lg:inline">{description}</span>}
       descriptionItalic
-      descriptionSize="lg"
       title={title}
-      titleSize="lg"
     />
   )
 }
@@ -59,17 +45,15 @@ function Status({ message }: EntryCardStatusProps) {
   }
 
   return (
-    <Box border padding="md" radius="xl" tone="surface">
-      <BodyText align="center" size="sm">
-        {message}
-      </BodyText>
+    <Box border tone="surface">
+      <BodyText align="center">{message}</BodyText>
     </Box>
   )
 }
 
 function Divider({ label }: EntryCardDividerProps) {
   return (
-    <div className="flex w-full items-center gap-(--space-stack-lg)">
+    <div className="flex w-full items-center">
       <span className="bg-outline-variant/40 h-px flex-1" />
       <MetaLabel tone="muted">{label}</MetaLabel>
       <span className="bg-outline-variant/40 h-px flex-1" />
@@ -78,27 +62,23 @@ function Divider({ label }: EntryCardDividerProps) {
 }
 
 function Content({ children }: EntryCardContentProps) {
-  return <Stack gap="lg">{children}</Stack>
+  return <FlowCard.Content>{children}</FlowCard.Content>
 }
 
-function Support({ children, gap = 'md' }: EntryCardSupportProps) {
-  return <Stack gap={gap}>{children}</Stack>
+function Support({ children }: EntryCardSupportProps) {
+  return <Stack>{children}</Stack>
 }
 
 function Footer({ children }: EntryCardFooterProps) {
   return (
-    <Stack fullWidth justify="between" gap="lg">
+    <Stack fullWidth justify="between">
       {children}
     </Stack>
   )
 }
 
 function Actions({ children }: EntryCardFooterProps) {
-  return (
-    <Stack align="center" gap="md">
-      {children}
-    </Stack>
-  )
+  return <FlowCard.Actions>{children}</FlowCard.Actions>
 }
 
 export const EntryCard = {

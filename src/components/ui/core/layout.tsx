@@ -4,9 +4,6 @@ type StackAlign = 'center' | 'start' | 'stretch'
 type StackAs = 'div' | 'form' | 'li' | 'section' | 'ul'
 type StackJustify = 'between' | 'center' | 'start'
 
-export type SpaceToken = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
-type StackSpace = SpaceToken
-
 const STACK_ALIGN_CLASS: Record<StackAlign, string> = {
   center: 'items-center',
   start: 'items-start',
@@ -19,21 +16,12 @@ const STACK_JUSTIFY_CLASS: Record<StackJustify, string> = {
   start: 'justify-start',
 }
 
-const STACK_SPACE_CLASS: Record<StackSpace, string> = {
-  sm: 'gap-(--space-stack-sm)',
-  md: 'gap-(--space-stack-md)',
-  lg: 'gap-(--space-stack-lg)',
-  xl: 'gap-(--space-stack-xl)',
-  xxl: 'gap-(--space-stack-xxl)',
-}
-
 type StackProps = {
   align?: StackAlign
   as?: StackAs
   children: React.ReactNode
   className?: string
   fullWidth?: boolean
-  gap?: StackSpace
   justify?: StackJustify
   onSubmit?: (event: React.SyntheticEvent<HTMLFormElement>) => void
   resetList?: boolean
@@ -45,7 +33,6 @@ export function Stack({
   children,
   className = '',
   fullWidth = false,
-  gap = 'lg',
   justify = 'start',
   onSubmit,
   resetList = false,
@@ -60,8 +47,7 @@ export function Stack({
         className,
         fullWidth && 'w-full',
         STACK_ALIGN_CLASS[align],
-        STACK_JUSTIFY_CLASS[justify],
-        STACK_SPACE_CLASS[gap]
+        STACK_JUSTIFY_CLASS[justify]
       )}
       onSubmit={onSubmit}
     >
@@ -70,35 +56,21 @@ export function Stack({
   )
 }
 
-type BoxPadding = 'md' | 'none' | 'sm'
-type BoxRadius = 'lg' | 'none' | 'xl'
 type BoxAs = 'div' | 'li' | 'section'
 type BoxTone = 'muted' | 'none' | 'panel' | 'surface'
 type BoxBorderTone = 'default' | 'none' | 'strong'
 
-const BOX_PADDING_CLASS: Record<BoxPadding, string> = {
-  md: 'p-(--space-pad-md)',
-  none: '',
-  sm: 'p-(--space-pad-sm)',
-}
-
-const BOX_RADIUS_CLASS: Record<BoxRadius, string> = {
-  lg: 'rounded-lg',
-  none: '',
-  xl: 'rounded-xl',
-}
-
 const BOX_TONE_CLASS: Record<BoxTone, string> = {
   muted: 'bg-surface-container-low/40',
-  none: '',
   panel: 'bg-surface-container-lowest/40',
   surface: 'bg-surface-container/40',
+  none: '',
 }
 
 const BOX_BORDER_TONE_CLASS: Record<BoxBorderTone, string> = {
   default: 'border-outline-variant/40',
-  none: '',
   strong: 'border-outline-variant/60',
+  none: '',
 }
 
 type BoxProps = {
@@ -107,8 +79,6 @@ type BoxProps = {
   borderTone?: BoxBorderTone
   children: React.ReactNode
   className?: string
-  padding?: BoxPadding
-  radius?: BoxRadius
   tone?: BoxTone
 }
 
@@ -118,8 +88,6 @@ export function Box({
   borderTone = 'default',
   children,
   className = '',
-  padding = 'none',
-  radius = 'none',
   tone = 'none',
 }: BoxProps) {
   const Component = as
@@ -128,8 +96,6 @@ export function Box({
     <Component
       className={clsx(
         className,
-        BOX_PADDING_CLASS[padding],
-        BOX_RADIUS_CLASS[radius],
         BOX_TONE_CLASS[tone],
         border && 'border',
         border && BOX_BORDER_TONE_CLASS[borderTone]

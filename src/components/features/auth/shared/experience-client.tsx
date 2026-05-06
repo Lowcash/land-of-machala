@@ -16,47 +16,55 @@ type RootExperienceState = {
   statusMessage: string
 }
 
+const INITIAL_ROOT_EXPERIENCE_STATE: RootExperienceState = {
+  entryScreen: 'signIn',
+  stage: 'entry',
+  statusMessage: '',
+}
+
 export function RootExperienceClient() {
-  const [state, setState] = useState<RootExperienceState>({
-    entryScreen: 'signIn',
-    stage: 'entry',
-    statusMessage: '',
-  })
+  const [state, setState] = useState<RootExperienceState>(INITIAL_ROOT_EXPERIENCE_STATE)
+
+  function enterOrigins() {
+    setState((previous) => ({ ...previous, stage: 'origins' }))
+  }
+
+  function queueEntryContinuation() {
+    setState((previous) => ({
+      ...previous,
+      entryScreen: 'signIn',
+      statusMessage: ENTRY_STATUS_MESSAGES.continuationPending,
+    }))
+  }
+
+  function enterOriginsAfterRegister() {
+    setState((previous) => ({
+      ...previous,
+      stage: 'origins',
+      statusMessage: '',
+    }))
+  }
+
+  function returnToEntryWithPreparedHero() {
+    setState((previous) => ({
+      ...previous,
+      entryScreen: 'signIn',
+      stage: 'entry',
+      statusMessage: ENTRY_STATUS_MESSAGES.heroPrepared,
+    }))
+  }
 
   if (state.stage === 'entry') {
     return (
       <RootEntryShell
         initialScreen={state.entryScreen}
-        onGuestEntry={() => setState((previous) => ({ ...previous, stage: 'origins' }))}
-        onLoginSuccess={() => {
-          setState((previous) => ({
-            ...previous,
-            entryScreen: 'signIn',
-            statusMessage: ENTRY_STATUS_MESSAGES.continuationPending,
-          }))
-        }}
-        onRegisterSuccess={() => {
-          setState((previous) => ({
-            ...previous,
-            stage: 'origins',
-            statusMessage: '',
-          }))
-        }}
+        onGuestEntry={enterOrigins}
+        onLoginSuccess={queueEntryContinuation}
+        onRegisterSuccess={enterOriginsAfterRegister}
         statusMessage={state.statusMessage}
       />
     )
   }
 
-  return (
-    <OriginsViewClient
-      onComplete={() => {
-        setState((previous) => ({
-          ...previous,
-          entryScreen: 'signIn',
-          stage: 'entry',
-          statusMessage: ENTRY_STATUS_MESSAGES.heroPrepared,
-        }))
-      }}
-    />
-  )
+  return <OriginsViewClient onComplete={returnToEntryWithPreparedHero} />
 }

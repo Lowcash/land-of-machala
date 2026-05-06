@@ -43,6 +43,27 @@ type OriginsViewState = {
 
 export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: OriginsViewProps) {
   const [state, setState] = useState<OriginsViewState>(() => createInitialState(initialPhase))
+  const trimmedHeroName = state.hero.name.trim()
+  const canFinish = trimmedHeroName.length > 0
+  const heroStats = resolveHeroStats(state.hero.raceId, state.hero.classId)
+
+  function updateHero(patch: Partial<HeroDraft>) {
+    setState((previous) => ({
+      ...previous,
+      hero: {
+        ...previous.hero,
+        ...patch,
+      },
+    }))
+  }
+
+  function selectChoice(choiceId: string) {
+    setState((previous) => ({ ...previous, selectedChoiceId: choiceId }))
+  }
+
+  function returnToPrologue() {
+    setState((previous) => ({ ...previous, phase: 'prologue' }))
+  }
 
   function moveToSetup(choiceId?: string | null) {
     setState((previous) => {
@@ -75,22 +96,19 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
     const randomClass = CLASS_OPTIONS[Math.floor(Math.random() * CLASS_OPTIONS.length)]
     const randomName = getRandomHeroName()
 
-    setState((previous) => ({
-      ...previous,
-      hero: {
-        classId: randomClass.id,
-        name: randomName,
-        raceId: randomRace.id,
-      },
-    }))
+    updateHero({
+      classId: randomClass.id,
+      name: randomName,
+      raceId: randomRace.id,
+    })
   }
 
   function finishOrigins() {
-    if (!state.hero.name.trim()) {
+    if (!trimmedHeroName) {
       return
     }
 
-    onComplete?.(buildHeroSummary(state.hero.name.trim(), state.hero.raceId, state.hero.classId))
+    onComplete?.(buildHeroSummary(trimmedHeroName, state.hero.raceId, state.hero.classId))
   }
 
   return (
@@ -98,43 +116,26 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
       {state.phase === 'prologue' ? (
         <PrologueStep
           onContinue={() => moveToSetup(state.selectedChoiceId)}
-          onSelectChoice={(choiceId) =>
-            setState((previous) => ({ ...previous, selectedChoiceId: choiceId }))
-          }
+          onSelectChoice={selectChoice}
           onSkip={() => moveToSetup(null)}
           selectedChoiceId={state.selectedChoiceId}
           step={ORIGINS_STEP}
         />
       ) : (
         <StepSetup
-          canFinish={state.hero.name.trim().length > 0}
+          canFinish={canFinish}
           classes={CLASS_OPTIONS}
           heroName={state.hero.name}
-          onBack={() => setState((previous) => ({ ...previous, phase: 'prologue' }))}
-          onClassSelect={(classId) =>
-            setState((previous) => ({
-              ...previous,
-              hero: { ...previous.hero, classId },
-            }))
-          }
+          onBack={returnToPrologue}
+          onClassSelect={(classId) => updateHero({ classId })}
           onFinish={finishOrigins}
-          onNameChange={(name) =>
-            setState((previous) => ({
-              ...previous,
-              hero: { ...previous.hero, name },
-            }))
-          }
-          onRaceSelect={(raceId) =>
-            setState((previous) => ({
-              ...previous,
-              hero: { ...previous.hero, raceId },
-            }))
-          }
+          onNameChange={(name) => updateHero({ name })}
+          onRaceSelect={(raceId) => updateHero({ raceId })}
           onRandomize={randomizeHero}
           races={RACE_OPTIONS}
           selectedClassId={state.hero.classId}
           selectedRaceId={state.hero.raceId}
-          stats={resolveHeroStats(state.hero.raceId, state.hero.classId)}
+          stats={heroStats}
         />
       )}
     </CenteredStageShell>
