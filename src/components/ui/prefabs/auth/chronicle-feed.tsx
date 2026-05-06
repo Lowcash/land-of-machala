@@ -12,7 +12,7 @@ type ChronicleFeedProps = {
 
 const CHRONICLE_HEADER_CLASS = 'flex items-center justify-center lg:justify-start'
 
-const CHRONICLE_ITEM_CLASS = 'rounded-lg border-l-2'
+const CHRONICLE_ITEM_CLASS = 'border-l-2'
 
 export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
   return (

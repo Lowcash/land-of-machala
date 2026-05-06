@@ -35,10 +35,7 @@ export function AuthSplitLayout({
           <ChronicleFeed chronicles={chronicles} />
           <RealmStatsGrid stats={stats} />
         </Stack>
-        <Box
-          as="section"
-          className="order-2 w-full max-w-xl justify-self-center lg:order-2 lg:max-w-md lg:justify-self-end"
-        >
+        <Box as="section" className="order-2 justify-self-center lg:order-2 lg:justify-self-end">
           {children}
         </Box>
       </RootShell.Frame>

@@ -11,7 +11,7 @@ type PrologueChoiceCardProps = {
   onSelect: () => void
 }
 
-const PROLOGUE_CHOICE_CARD_CLASS = 'flex w-full cursor-pointer items-start rounded-2xl transition'
+const PROLOGUE_CHOICE_CARD_CLASS = 'flex w-full cursor-pointer items-start transition'
 
 export function PrologueChoiceCard({
   description,

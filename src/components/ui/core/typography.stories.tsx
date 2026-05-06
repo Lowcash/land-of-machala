@@ -29,7 +29,7 @@ type BodyStory = StoryObj<typeof BodyText>
 
 function HelperStoryFrame({ children }: { children: React.ReactNode }) {
   return (
-    <div className="border-outline-variant/60 w-72 rounded-xl border border-dashed">
+    <div className="border-outline-variant/60 w-72 border border-dashed">
       {children}
     </div>
   )

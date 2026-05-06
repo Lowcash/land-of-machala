@@ -9,7 +9,7 @@ import { resolveFieldId } from '@/components/ui/forms/field-id'
 import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 const TEXT_INPUT_BASE_CLASS =
-  'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full rounded-xl border transition outline-none focus:ring-2'
+  'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
 
 const TEXT_INPUT_STATE_CLASS = {
   default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',

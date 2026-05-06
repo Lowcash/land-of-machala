@@ -9,9 +9,7 @@ export function CenteredStageShell({ children }: CenteredStageShellProps) {
   return (
     <RootShell>
       <RootShell.Frame preset="center">
-        <Box as="section" className="w-full max-w-5xl">
-          {children}
-        </Box>
+        <Box as="section">{children}</Box>
       </RootShell.Frame>
     </RootShell>
   )

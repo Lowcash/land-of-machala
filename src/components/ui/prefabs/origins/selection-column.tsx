@@ -19,7 +19,7 @@ type SelectionColumnProps = {
 }
 
 const SELECTION_BUTTON_CLASS =
-  'font-label cursor-pointer rounded-lg border tracking-[0.18em] uppercase transition'
+  'font-label cursor-pointer border tracking-[0.18em] uppercase transition'
 
 export function SelectionColumn({ items, onSelect, selectedId, title }: SelectionColumnProps) {
   const selected = items.find((item) => item.id === selectedId) ?? items[0]

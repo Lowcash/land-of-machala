@@ -9,7 +9,7 @@ import { resolveFieldId } from '@/components/ui/forms/field-id'
 import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 const CHECKBOX_SURFACE_BASE_CLASS =
-  'bg-surface-container-lowest/80 group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer rounded-md border transition peer-focus-visible:ring-2 md:h-6 md:w-6'
+  'bg-surface-container-lowest/80 group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer border transition peer-focus-visible:ring-2 md:h-6 md:w-6'
 
 const CHECKBOX_SURFACE_STATE_CLASS = {
   default: 'border-outline-variant peer-focus-visible:ring-primary/30',
