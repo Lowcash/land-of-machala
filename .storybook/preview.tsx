@@ -7,18 +7,47 @@ import { getMessages, routing } from '../src/lib/i18n'
 const preview: Preview = {
   parameters: {
     layout: 'fullscreen',
+    a11y: {
+      test: 'todo',
+    },
     nextjs: {
       appDirectory: true,
     },
-    controls: {
-      expanded: true,
+    options: {
+      storySort: {
+        order: [
+          'Features',
+          ['Auth', ['EntryShell', 'Origins']],
+          'UI',
+          ['Foundation', 'Core', 'Forms', 'Typography'],
+        ],
+      },
+    },
+    router: {
+      push: {
+        action: 'router.push',
+      },
+      replace: {
+        action: 'router.replace',
+      },
     },
   },
   decorators: [
     (Story) => (
-      <NextIntlClientProvider locale={routing.defaultLocale} messages={getMessages()}>
-        <Story />
-      </NextIntlClientProvider>
+      <div
+        onClick={(event) => {
+          const target = event.target as HTMLElement
+          const link = target.closest('a')
+
+          if (link && link.getAttribute('href') && !link.getAttribute('href')?.startsWith('#')) {
+            event.preventDefault()
+          }
+        }}
+      >
+        <NextIntlClientProvider locale={routing.defaultLocale} messages={getMessages()}>
+          <Story />
+        </NextIntlClientProvider>
+      </div>
     ),
   ],
 }

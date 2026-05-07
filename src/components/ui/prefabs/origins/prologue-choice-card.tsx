@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { Stack } from '@/components/ui/core/layout'
+import { Inline, Stack } from '@/components/ui/core/layout'
 import { BodyText, DisplayValue } from '@/components/ui/core/typography'
 
 type PrologueChoiceCardProps = {
@@ -31,17 +31,17 @@ export function PrologueChoiceCard({
       onClick={onSelect}
       type="button"
     >
-      <span className={clsx('inline-flex w-full', 'items-start')}>
-        <span className="shrink-0">
+      <Inline align="start" fullWidth>
+        <div className="shrink-0">
           <DisplayValue tone="primary">{optionLabel}</DisplayValue>
-        </span>
-        <span className="block flex-1">
+        </div>
+        <div className="flex-1">
           <Stack>
             <DisplayValue>{title}</DisplayValue>
             <BodyText tone="muted">{description}</BodyText>
           </Stack>
-        </span>
-      </span>
+        </div>
+      </Inline>
     </button>
   )
 }

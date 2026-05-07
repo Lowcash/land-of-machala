@@ -4,12 +4,11 @@ import clsx from 'clsx'
 
 import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
 
-import { HelperText } from '@/components/ui/core/typography'
+import { FieldChrome } from '@/components/ui/forms/field-chrome'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
-import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 const CHECKBOX_SURFACE_BASE_CLASS =
-  'bg-surface-container-lowest/80 group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer border transition peer-focus-visible:ring-2 md:h-6 md:w-6'
+  'bg-surface-container-lowest/80 rounded-compact group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer border transition peer-focus-visible:ring-2 md:h-6 md:w-6'
 
 const CHECKBOX_SURFACE_STATE_CLASS = {
   default: 'border-outline-variant peer-focus-visible:ring-primary/30',
@@ -34,8 +33,8 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
   })
 
   return (
-    <FormField.Shell>
-      <FormField.Inline>
+    <FieldChrome.Root>
+      <FieldChrome.Inline>
         <span className="relative flex h-5 w-5 shrink-0 items-center justify-center md:h-6 md:w-6">
           <input className="peer sr-only" id={resolvedId} type="checkbox" {...props} />
           <label
@@ -60,11 +59,11 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
             />
           </svg>
         </span>
-        <FormField.ControlLabel error={Boolean(error)} htmlFor={resolvedId}>
+        <FieldChrome.ControlLabel error={Boolean(error)} htmlFor={resolvedId}>
           {label}
-        </FormField.ControlLabel>
-      </FormField.Inline>
-      {error ? <HelperText tone="error">{error}</HelperText> : null}
-    </FormField.Shell>
+        </FieldChrome.ControlLabel>
+      </FieldChrome.Inline>
+      {error ? <FieldChrome.HelperText tone="error">{error}</FieldChrome.HelperText> : null}
+    </FieldChrome.Root>
   )
 }

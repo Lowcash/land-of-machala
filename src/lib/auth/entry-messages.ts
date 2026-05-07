@@ -1,7 +1,7 @@
 import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
 
-type EntryCopyShape = {
+type EntryMessagesShape = {
   shared: {
     emailPlaceholder: string
     passwordPlaceholder: string
@@ -49,26 +49,26 @@ type EntryCopyShape = {
 }
 
 type MessagesShape = {
-  Auth: EntryCopyShape
+  Auth: EntryMessagesShape
 }
 
-const ENTRY_COPY_BY_LOCALE = {
+const ENTRY_MESSAGES_BY_LOCALE = {
   cs: (csMessages as MessagesShape).Auth,
   en: (enMessages as MessagesShape).Auth,
 } as const
 
-export type EntryLocale = keyof typeof ENTRY_COPY_BY_LOCALE
+export type EntryLocale = keyof typeof ENTRY_MESSAGES_BY_LOCALE
 
-export function getEntryCopy(locale: EntryLocale = 'en') {
-  return ENTRY_COPY_BY_LOCALE[locale]
+export function getEntryMessages(locale: EntryLocale = 'en') {
+  return ENTRY_MESSAGES_BY_LOCALE[locale]
 }
 
-const DEFAULT_ENTRY_COPY = getEntryCopy('en')
+const DEFAULT_ENTRY_MESSAGES = getEntryMessages('en')
 
-export const ENTRY_SHARED_COPY = DEFAULT_ENTRY_COPY.shared
-export const ENTRY_SIGN_IN_COPY = DEFAULT_ENTRY_COPY.signIn
-export const ENTRY_SIGN_UP_COPY = DEFAULT_ENTRY_COPY.signUp
-export const ENTRY_LEGAL_COPY = DEFAULT_ENTRY_COPY.legal
-export const ENTRY_VALIDATION_MESSAGES = DEFAULT_ENTRY_COPY.validation
-export const ENTRY_STATUS_MESSAGES = DEFAULT_ENTRY_COPY.status
-export const ENTRY_SIDE_COPY = DEFAULT_ENTRY_COPY.side
+export const ENTRY_SHARED_COPY = DEFAULT_ENTRY_MESSAGES.shared
+export const ENTRY_SIGN_IN_COPY = DEFAULT_ENTRY_MESSAGES.signIn
+export const ENTRY_SIGN_UP_COPY = DEFAULT_ENTRY_MESSAGES.signUp
+export const ENTRY_LEGAL_COPY = DEFAULT_ENTRY_MESSAGES.legal
+export const ENTRY_VALIDATION_MESSAGES = DEFAULT_ENTRY_MESSAGES.validation
+export const ENTRY_STATUS_MESSAGES = DEFAULT_ENTRY_MESSAGES.status
+export const ENTRY_SIDE_COPY = DEFAULT_ENTRY_MESSAGES.side

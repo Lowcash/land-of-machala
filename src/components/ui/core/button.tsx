@@ -27,7 +27,7 @@ export function Button({
   return (
     <button
       className={clsx(
-        'font-label inline-flex transform-gpu cursor-pointer items-center justify-center border font-semibold uppercase transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50',
+        'font-interface rounded-control inline-flex transform-gpu cursor-pointer items-center justify-center border px-(--inset-control-x) py-(--inset-control-y) font-semibold uppercase transition duration-200 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-black disabled:cursor-not-allowed disabled:opacity-50',
         fullWidth && 'w-full',
         VARIANT_CLASSES[variant]
       )}

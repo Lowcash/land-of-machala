@@ -1,4 +1,4 @@
-import { Box } from '@/components/ui/core/layout'
+import { Box } from '@/components/ui/core/box'
 import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
 
 type CenteredStageShellProps = {

@@ -1,4 +1,4 @@
-import { ENTRY_VALIDATION_MESSAGES } from '@/lib/auth/entry-copy'
+import { ENTRY_VALIDATION_MESSAGES } from '@/lib/auth/entry-messages'
 import { isValidEmail } from '@/lib/validation/email'
 
 export type LoginErrors = {

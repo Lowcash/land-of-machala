@@ -1,26 +1,29 @@
 import clsx from 'clsx'
 
 import type { ChronicleItem } from '@/lib/auth/demo-data'
-import { ENTRY_SIDE_COPY } from '@/lib/auth/entry-copy'
+import { ENTRY_SIDE_COPY } from '@/lib/auth/entry-messages'
 
-import { Stack } from '@/components/ui/core/layout'
-import { BodyText, LabelText, MetaLabel } from '@/components/ui/core/typography'
+import { Inline, Stack } from '@/components/ui/core/layout'
+import { BodyText, LabelText } from '@/components/ui/core/typography'
 
 type ChronicleFeedProps = {
   chronicles: ChronicleItem[]
 }
 
-const CHRONICLE_HEADER_CLASS = 'flex items-center justify-center lg:justify-start'
+const CHRONICLE_HEADER_CLASS = 'justify-center lg:justify-start'
+const CHRONICLE_HEADER_MARK_CLASS = 'bg-primary/45 hidden h-px w-10 lg:block'
 
 const CHRONICLE_ITEM_CLASS = 'border-l-2'
 
 export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
   return (
     <Stack>
-      <header className={clsx(CHRONICLE_HEADER_CLASS)}>
-        <span className="bg-primary/45 hidden h-px w-10 lg:block" />
-        <LabelText tone="muted">{ENTRY_SIDE_COPY.recentChroniclesTitle}</LabelText>
-      </header>
+      <Inline as="header" className={clsx(CHRONICLE_HEADER_CLASS)}>
+        <span aria-hidden="true" className={CHRONICLE_HEADER_MARK_CLASS} />
+        <LabelText tone="muted" uppercase>
+          {ENTRY_SIDE_COPY.recentChroniclesTitle}
+        </LabelText>
+      </Inline>
       <Stack as="ul" resetList>
         {chronicles.map((item) => (
           <Stack
@@ -36,7 +39,9 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
             <BodyText italic tone={item.tone === 'highlight' ? 'default' : 'muted'}>
               &quot;{item.text}&quot;
             </BodyText>
-            <MetaLabel>{item.timestamp}</MetaLabel>
+            <LabelText size="meta" tone="default" uppercase>
+              {item.timestamp}
+            </LabelText>
           </Stack>
         ))}
       </Stack>

@@ -4,17 +4,22 @@ import clsx from 'clsx'
 
 import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-props'
 
-import { HelperText } from '@/components/ui/core/typography'
+import { FieldChrome } from '@/components/ui/forms/field-chrome'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
-import { FormField } from '@/components/ui/forms/form-field-chrome'
 
 const TEXT_INPUT_BASE_CLASS =
-  'bg-surface-container-lowest/80 text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
+  'bg-surface-container-lowest/80 rounded-control px-(--inset-control-x) py-(--inset-control-y) text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
 
 const TEXT_INPUT_STATE_CLASS = {
   default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',
   error: 'border-error/65 focus:border-error focus:ring-error/25',
 } as const
+
+type TextInputControlProps = NativePropsWithoutClassNameStyle<
+  React.InputHTMLAttributes<HTMLInputElement>
+> & {
+  invalid?: boolean
+}
 
 type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>> & {
   actionLabel?: string
@@ -22,6 +27,18 @@ type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTM
   error?: string
   hint?: string
   label: string
+}
+
+export function TextInputControl({ invalid = false, ...props }: TextInputControlProps) {
+  return (
+    <input
+      className={clsx(
+        TEXT_INPUT_BASE_CLASS,
+        invalid ? TEXT_INPUT_STATE_CLASS.error : TEXT_INPUT_STATE_CLASS.default
+      )}
+      {...props}
+    />
+  )
 }
 
 export function Field({
@@ -44,24 +61,21 @@ export function Field({
   const hasActionLabel = Boolean(actionLabel)
 
   return (
-    <FormField.Shell>
-      <FormField.Header hasAction={hasActionLabel}>
-        <FormField.Label error={!!error} htmlFor={resolvedId}>
+    <FieldChrome.Root>
+      <FieldChrome.Header hasAction={hasActionLabel}>
+        <FieldChrome.Label error={!!error} htmlFor={resolvedId}>
           {label}
-        </FormField.Label>
+        </FieldChrome.Label>
         {hasActionLabel ? (
-          <FormField.Action onClick={onActionClick}>{actionLabel}</FormField.Action>
+          <FieldChrome.Action onClick={onActionClick}>{actionLabel}</FieldChrome.Action>
         ) : null}
-      </FormField.Header>
-      <input
-        className={clsx(
-          TEXT_INPUT_BASE_CLASS,
-          error ? TEXT_INPUT_STATE_CLASS.error : TEXT_INPUT_STATE_CLASS.default
-        )}
-        id={resolvedId}
-        {...props}
-      />
-      {helperText ? <HelperText tone={error ? 'error' : 'default'}>{helperText}</HelperText> : null}
-    </FormField.Shell>
+      </FieldChrome.Header>
+      <TextInputControl id={resolvedId} invalid={Boolean(error)} {...props} />
+      {helperText ? (
+        <FieldChrome.HelperText tone={error ? 'error' : 'default'}>
+          {helperText}
+        </FieldChrome.HelperText>
+      ) : null}
+    </FieldChrome.Root>
   )
 }

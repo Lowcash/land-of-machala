@@ -1,8 +1,7 @@
 import type { OriginStep } from '@/lib/auth/demo-data'
-import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-copy'
+import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-messages'
 import { getOptionLabel } from '@/lib/format/option-label'
 
-import { Button } from '@/components/ui/core/button'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
 
@@ -49,14 +48,13 @@ export function PrologueStep({
           })}
         </OriginsCard.List>
       </OriginsCard.Content>
-      <OriginsCard.Footer>
-        <Button onClick={onSkip} variant="ghost">
-          {ORIGINS_TUTORIAL_COPY.skipLabel}
-        </Button>
-        <Button disabled={!selectedChoiceId} onClick={onContinue}>
-          {ORIGINS_TUTORIAL_COPY.continueLabel}
-        </Button>
-      </OriginsCard.Footer>
+      <OriginsCard.ProgressActions
+        onPrimaryClick={onContinue}
+        onSecondaryClick={onSkip}
+        primaryDisabled={!selectedChoiceId}
+        primaryLabel={ORIGINS_TUTORIAL_COPY.continueLabel}
+        secondaryLabel={ORIGINS_TUTORIAL_COPY.skipLabel}
+      />
     </OriginsCard.Root>
   )
 }

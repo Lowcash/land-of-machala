@@ -1,7 +1,7 @@
 import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
 
-type OriginsCopyShape = {
+type OriginsMessagesShape = {
   tutorial: {
     continueLabel: string
     skipLabel: string
@@ -22,22 +22,22 @@ type OriginsCopyShape = {
 
 type MessagesShape = {
   Auth: {
-    origins: OriginsCopyShape
+    origins: OriginsMessagesShape
   }
 }
 
-const ORIGINS_COPY_BY_LOCALE = {
+const ORIGINS_MESSAGES_BY_LOCALE = {
   cs: (csMessages as MessagesShape).Auth.origins,
   en: (enMessages as MessagesShape).Auth.origins,
 } as const
 
-export type OriginsLocale = keyof typeof ORIGINS_COPY_BY_LOCALE
+export type OriginsLocale = keyof typeof ORIGINS_MESSAGES_BY_LOCALE
 
-export function getOriginsCopy(locale: OriginsLocale = 'en') {
-  return ORIGINS_COPY_BY_LOCALE[locale]
+export function getOriginsMessages(locale: OriginsLocale = 'en') {
+  return ORIGINS_MESSAGES_BY_LOCALE[locale]
 }
 
-const DEFAULT_ORIGINS_COPY = getOriginsCopy('en')
+const DEFAULT_ORIGINS_MESSAGES = getOriginsMessages('en')
 
-export const ORIGINS_TUTORIAL_COPY = DEFAULT_ORIGINS_COPY.tutorial
-export const ORIGINS_SETUP_COPY = DEFAULT_ORIGINS_COPY.setup
+export const ORIGINS_TUTORIAL_COPY = DEFAULT_ORIGINS_MESSAGES.tutorial
+export const ORIGINS_SETUP_COPY = DEFAULT_ORIGINS_MESSAGES.setup

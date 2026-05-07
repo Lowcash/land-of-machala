@@ -1,5 +1,5 @@
 import type { CharacterStats, ClassOption, RaceOption } from '@/lib/auth/demo-data'
-import { ORIGINS_SETUP_COPY } from '@/lib/auth/origins-copy'
+import { ORIGINS_SETUP_COPY } from '@/lib/auth/origins-messages'
 
 import { Button } from '@/components/ui/core/button'
 import { Field } from '@/components/ui/forms/field'
@@ -73,14 +73,13 @@ export function StepSetup({
           title={ORIGINS_SETUP_COPY.classTitle}
         />
       </OriginsCard.Columns>
-      <OriginsCard.Footer>
-        <Button onClick={onBack} variant="ghost">
-          {ORIGINS_SETUP_COPY.backLabel}
-        </Button>
-        <Button disabled={!canFinish} onClick={onFinish}>
-          {ORIGINS_SETUP_COPY.confirmLabel}
-        </Button>
-      </OriginsCard.Footer>
+      <OriginsCard.ProgressActions
+        onPrimaryClick={onFinish}
+        onSecondaryClick={onBack}
+        primaryDisabled={!canFinish}
+        primaryLabel={ORIGINS_SETUP_COPY.confirmLabel}
+        secondaryLabel={ORIGINS_SETUP_COPY.backLabel}
+      />
     </OriginsCard.Root>
   )
 }

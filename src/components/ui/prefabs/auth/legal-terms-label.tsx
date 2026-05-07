@@ -1,4 +1,4 @@
-import { ENTRY_LEGAL_COPY } from '@/lib/auth/entry-copy'
+import { ENTRY_LEGAL_COPY } from '@/lib/auth/entry-messages'
 
 type LegalTermsLabelProps = {
   onLegalLinkClick: (event: React.MouseEvent<HTMLButtonElement>) => void

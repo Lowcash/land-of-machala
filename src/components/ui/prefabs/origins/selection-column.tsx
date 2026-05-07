@@ -1,8 +1,9 @@
 import clsx from 'clsx'
 
-import { Stack } from '@/components/ui/core/layout'
-import { SectionTitle } from '@/components/ui/core/typography'
+import { Inline, Stack } from '@/components/ui/core/layout'
+import { TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
+import { SectionTitle } from '@/components/ui/prefabs/typography'
 
 type SelectionItem = {
   bonuses: string[]
@@ -18,8 +19,7 @@ type SelectionColumnProps = {
   onSelect: (id: string) => void
 }
 
-const SELECTION_BUTTON_CLASS =
-  'font-label cursor-pointer border tracking-[0.18em] uppercase transition'
+const SELECTION_BUTTON_CLASS = `font-interface cursor-pointer rounded-compact border ${TEXT_TRACKING_CLASS.action} uppercase transition`
 
 export function SelectionColumn({ items, onSelect, selectedId, title }: SelectionColumnProps) {
   const selected = items.find((item) => item.id === selectedId) ?? items[0]
@@ -32,7 +32,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
         overline={title}
         title={selected.name}
       />
-      <ul className={'flex flex-wrap'}>
+      <Inline as="ul" resetList wrap>
         {items.map((item) => {
           const isActive = item.id === selectedId
 
@@ -53,7 +53,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
             </li>
           )
         })}
-      </ul>
+      </Inline>
       <Stack as="ul" className="text-on-surface-variant" resetList>
         {selected.bonuses.map((bonus) => (
           <li key={bonus}>• {bonus}</li>

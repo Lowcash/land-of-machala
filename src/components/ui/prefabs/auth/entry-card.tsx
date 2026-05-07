@@ -1,8 +1,13 @@
-import { Box, Stack } from '@/components/ui/core/layout'
-import { BodyText, MetaLabel } from '@/components/ui/core/typography'
+import { Button } from '@/components/ui/core/button'
+import { Box } from '@/components/ui/core/box'
+import { Divider as CoreDivider } from '@/components/ui/core/divider'
+import { Stack } from '@/components/ui/core/layout'
+import { BodyText } from '@/components/ui/core/typography'
 import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
 type EntryCardRootProps = React.PropsWithChildren
+
+type EntryCardFooterProps = React.PropsWithChildren
 
 type EntryCardHeaderProps = {
   description: string
@@ -17,23 +22,35 @@ type EntryCardDividerProps = {
   label: string
 }
 
-type EntryCardFooterProps = React.PropsWithChildren
+type EntryCardSupportProps = React.PropsWithChildren
 
-type EntryCardContentProps = React.PropsWithChildren
-
-type EntryCardSupportProps = {
-  children: React.ReactNode
+type EntryCardGuestSwitchActionsProps = {
+  guestLabel: string
+  onGuestClick?: () => void
+  onSwitchClick: () => void
+  switchLabel: string
 }
 
 function Root({ children }: EntryCardRootProps) {
   return <FlowCard.Root fillHeight>{children}</FlowCard.Root>
 }
 
+function Footer({ children }: EntryCardFooterProps) {
+  return (
+    <Stack fullWidth justify="between">
+      {children}
+    </Stack>
+  )
+}
+
+const Content = FlowCard.Content
+
 function Header({ description, title }: EntryCardHeaderProps) {
   return (
     <FlowCard.Header
-      description={<span className="hidden lg:inline">{description}</span>}
+      description={description}
       descriptionItalic
+      descriptionVisibility="desktop"
       title={title}
     />
   )
@@ -45,49 +62,45 @@ function Status({ message }: EntryCardStatusProps) {
   }
 
   return (
-    <Box border tone="surface">
+    <Box border padding="panel" radius="panel" tone="surface">
       <BodyText align="center">{message}</BodyText>
     </Box>
   )
-}
-
-function Divider({ label }: EntryCardDividerProps) {
-  return (
-    <div className="flex w-full items-center">
-      <span className="bg-outline-variant/40 h-px flex-1" />
-      <MetaLabel tone="muted">{label}</MetaLabel>
-      <span className="bg-outline-variant/40 h-px flex-1" />
-    </div>
-  )
-}
-
-function Content({ children }: EntryCardContentProps) {
-  return <FlowCard.Content>{children}</FlowCard.Content>
 }
 
 function Support({ children }: EntryCardSupportProps) {
   return <Stack>{children}</Stack>
 }
 
-function Footer({ children }: EntryCardFooterProps) {
+function Divider({ label }: EntryCardDividerProps) {
+  return <CoreDivider label={label} />
+}
+
+function GuestSwitchActions({
+  guestLabel,
+  onGuestClick,
+  onSwitchClick,
+  switchLabel,
+}: EntryCardGuestSwitchActionsProps) {
   return (
-    <Stack fullWidth justify="between">
-      {children}
-    </Stack>
+    <FlowCard.Actions>
+      <Button fullWidth onClick={onGuestClick} variant="ghost">
+        {guestLabel}
+      </Button>
+      <Button fullWidth onClick={onSwitchClick} variant="secondary">
+        {switchLabel}
+      </Button>
+    </FlowCard.Actions>
   )
 }
 
-function Actions({ children }: EntryCardFooterProps) {
-  return <FlowCard.Actions>{children}</FlowCard.Actions>
-}
-
 export const EntryCard = {
-  Actions,
-  Content,
-  Divider,
-  Footer,
-  Header,
   Root,
+  Footer,
+  Content,
+  Header,
   Status,
   Support,
+  Divider,
+  GuestSwitchActions,
 }

@@ -1,4 +1,4 @@
-import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
+import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-messages'
 import type { LoginErrors, RegisterErrors } from '@/lib/auth/entry-validation'
 import type { FormSubmitHandler } from '@/lib/types/component-props'
 

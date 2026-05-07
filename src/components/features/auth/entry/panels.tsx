@@ -1,10 +1,9 @@
-import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-copy'
+import { ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-messages'
 
 import type {
   EntrySignInPanelProps,
   EntrySignUpPanelProps,
 } from '@/components/features/auth/entry/view-model'
-import { Button } from '@/components/ui/core/button'
 import { EntryCard } from '@/components/ui/prefabs/auth/entry-card'
 import { SignInForm, SignUpForm } from '@/components/ui/prefabs/auth/entry-forms'
 import { LegalTermsLabel } from '@/components/ui/prefabs/auth/legal-terms-label'
@@ -44,14 +43,12 @@ export function EntrySignInPanel({
         </EntryCard.Content>
         <EntryCard.Support>
           <EntryCard.Divider label={ENTRY_SIGN_IN_COPY.orLabel} />
-          <EntryCard.Actions>
-            <Button fullWidth onClick={onGuestEntry} variant="ghost">
-              {ENTRY_SIGN_IN_COPY.guestLabel}
-            </Button>
-            <Button fullWidth onClick={onSwitchToSignUp} variant="secondary">
-              {ENTRY_SIGN_IN_COPY.createAccountLabel}
-            </Button>
-          </EntryCard.Actions>
+          <EntryCard.GuestSwitchActions
+            guestLabel={ENTRY_SIGN_IN_COPY.guestLabel}
+            onGuestClick={onGuestEntry}
+            onSwitchClick={onSwitchToSignUp}
+            switchLabel={ENTRY_SIGN_IN_COPY.createAccountLabel}
+          />
         </EntryCard.Support>
       </EntryCard.Footer>
     </EntryCard.Root>
@@ -92,14 +89,12 @@ export function EntrySignUpPanel({
             password={password}
           />
         </EntryCard.Content>
-        <EntryCard.Actions>
-          <Button fullWidth onClick={onGuestEntry} variant="ghost">
-            {ENTRY_SIGN_UP_COPY.guestLabel}
-          </Button>
-          <Button fullWidth onClick={onSwitchToSignIn} variant="secondary">
-            {ENTRY_SIGN_UP_COPY.backLabel}
-          </Button>
-        </EntryCard.Actions>
+        <EntryCard.GuestSwitchActions
+          guestLabel={ENTRY_SIGN_UP_COPY.guestLabel}
+          onGuestClick={onGuestEntry}
+          onSwitchClick={onSwitchToSignIn}
+          switchLabel={ENTRY_SIGN_UP_COPY.backLabel}
+        />
       </EntryCard.Footer>
     </EntryCard.Root>
   )

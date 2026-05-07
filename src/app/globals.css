@@ -1,63 +1,47 @@
 @import 'tailwindcss';
 
 @theme {
-  --font-brand: 'Cinzel', 'Times New Roman', serif;
-  --font-headline: 'Noto Serif', 'Times New Roman', serif;
-  --font-body: 'Newsreader', Georgia, serif;
-  --font-label: 'Work Sans', 'Helvetica Neue', sans-serif;
+  --font-reading: var(--font-source-reading), Georgia, serif;
+  --font-interface: var(--font-source-interface), 'Helvetica Neue', sans-serif;
+  --font-display: var(--font-source-display), 'Times New Roman', serif;
+  --font-wordmark: var(--font-source-wordmark), 'Times New Roman', serif;
 
   --color-background: #131313;
-  --color-surface: #131313;
-  --color-surface-bright: #393939;
+
   --color-surface-container-lowest: #0e0e0e;
   --color-surface-container-low: #1c1b1b;
   --color-surface-container: #201f1f;
   --color-surface-container-high: #2a2a2a;
-  --color-surface-container-highest: #353534;
+
   --color-on-surface: #e5e2e1;
   --color-on-surface-variant: #d3c5b0;
+
   --color-outline: #9b8f7c;
   --color-outline-variant: #4f4536;
+
   --color-primary: #e8c07a;
   --color-primary-container: #d4a85c;
+
   --color-on-primary: #412d00;
-  --color-on-primary-container: #604400;
+
   --color-secondary-container: #51443a;
+
   --color-error: #ffb4ab;
-  --color-on-error: #690005;
 
-  --radius-card: 1rem;
-  --shadow-gilded: 0 24px 80px rgba(0, 0, 0, 0.45);
+  --radius-compact: 0.5rem;
+  --radius-panel: 1rem;
+  --radius-control: 0.875rem;
 
-  --space-stack-sm: clamp(0.5rem, 0.48rem + 0.08vw, 0.625rem);
-  --space-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
-  --space-stack-lg: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
-  --space-stack-xxl: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
+  --shadow-surface: 0 24px 80px rgba(0, 0, 0, 0.45);
 
-  --space-pad-sm: clamp(0.75rem, 0.71rem + 0.14vw, 0.875rem);
-  --space-pad-md: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
-  --space-pad-lg: clamp(1.25rem, 1.18rem + 0.24vw, 1.5rem);
-  --space-pad-xl: clamp(1.5rem, 1.34rem + 0.56vw, 2rem);
-  --space-pad-2xl: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
+  --gap-stack-sm: clamp(0.5rem, 0.48rem + 0.08vw, 0.625rem);
+  --gap-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
+  --gap-stack-lg: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
 
-  --space-surface-pad-sm: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
-  --space-surface-pad-md: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
-  --space-card-pad-cozy: clamp(1.25rem, 1.14rem + 0.36vw, 1.5rem);
-  --space-card-pad-roomy: clamp(1.25rem, 0.98rem + 0.92vw, 2rem);
+  --inset-panel: clamp(1.25rem, 0.98rem + 0.92vw, 2rem);
 
-  --space-button-md-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
-  --space-button-md-y: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
-  --space-button-lg-x: clamp(1.25rem, 1.18rem + 0.24vw, 1.5rem);
-  --space-button-lg-y: clamp(1rem, 0.96rem + 0.14vw, 1.125rem);
-
-  --space-field-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
-  --space-field-y: clamp(0.75rem, 0.71rem + 0.14vw, 0.875rem);
-
-  --space-shell-inset-x: clamp(1.5rem, 1.18rem + 1.1vw, 2.5rem);
-  --space-shell-band-y: clamp(1.5rem, 1.34rem + 0.56vw, 2rem);
-  --space-shell-page-y: clamp(2rem, 1.84rem + 0.56vw, 2.5rem);
-  --space-shell-stage-y: clamp(2.5rem, 2.18rem + 1.1vw, 3.5rem);
-  --space-shell-grid-gap: clamp(2rem, 1.52rem + 1.66vw, 3.5rem);
+  --inset-control-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --inset-control-y: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
 }
 
 @layer base {
@@ -73,7 +57,7 @@
   body {
     background: var(--color-background);
     color: var(--color-on-surface);
-    font-family: var(--font-body);
+    font-family: var(--font-reading);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

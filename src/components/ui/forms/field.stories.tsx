@@ -1,6 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { Field } from '@/components/ui/forms/field'
+import { Stack } from '@/components/ui/core/layout'
+import { LabelText } from '@/components/ui/core/typography'
+import { Field, TextInputControl } from '@/components/ui/forms/field'
+import { FieldChrome } from '@/components/ui/forms/field-chrome'
 
 const meta: Meta<typeof Field> = {
   title: 'UI/Forms/Field',
@@ -9,13 +12,6 @@ const meta: Meta<typeof Field> = {
   parameters: {
     layout: 'centered',
   },
-  decorators: [
-    (Story) => (
-      <div className="w-80">
-        <Story />
-      </div>
-    ),
-  ],
   args: {
     label: 'Hero Name',
     placeholder: 'Enter your hero name...',
@@ -53,4 +49,35 @@ export const Filled: Story = {
   args: {
     value: 'Aldric the Brave',
   },
+}
+
+export const HelperTextBehavior: Story = {
+  render: () => (
+    <Stack>
+      <Field
+        hint="Must be at least 3 characters."
+        label="Hero name"
+        onChange={() => undefined}
+        placeholder="Enter hero name"
+      />
+      <Field
+        error="This name is already taken in realm."
+        label="Hero name"
+        onChange={() => undefined}
+        placeholder="Enter hero name"
+      />
+      <FieldChrome.Root>
+        <FieldChrome.Label htmlFor="storybook-helper">Hero name</FieldChrome.Label>
+        <TextInputControl
+          id="storybook-helper"
+          onChange={() => undefined}
+          placeholder="Enter hero name"
+        />
+        <LabelText tone="muted">Reserved helper slot</LabelText>
+        <FieldChrome.HelperText tone="invisible">Reserved helper slot</FieldChrome.HelperText>
+        <LabelText tone="muted">No reserved helper slot</LabelText>
+        <FieldChrome.HelperText reserveSpace={false} />
+      </FieldChrome.Root>
+    </Stack>
+  ),
 }

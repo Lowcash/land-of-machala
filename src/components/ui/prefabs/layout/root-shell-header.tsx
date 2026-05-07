@@ -1,7 +1,7 @@
 import { SITE_APP_NAME } from '@/lib/site-config'
 
-import { BrandWordmark } from '@/components/ui/core/typography'
 import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
+import { BrandWordmark } from '@/components/ui/prefabs/typography'
 
 export function RootShellHeader() {
   return (

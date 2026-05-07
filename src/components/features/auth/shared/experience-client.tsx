@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ENTRY_STATUS_MESSAGES } from '@/lib/auth/entry-copy'
+import { ENTRY_STATUS_MESSAGES } from '@/lib/auth/entry-messages'
 
 import { RootEntryShell } from '@/components/features/auth/entry/shell'
 import type { EntryScreen } from '@/components/features/auth/entry/shell'

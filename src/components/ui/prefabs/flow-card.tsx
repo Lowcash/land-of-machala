@@ -1,16 +1,18 @@
 import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/layout'
-import { SectionTitle } from '@/components/ui/core/typography'
+
+import { SectionTitle } from './typography'
 
 type FlowCardRootProps = React.PropsWithChildren<{
   centered?: boolean
   fillHeight?: boolean
-  width?: '3xl' | 'auto'
+  width?: 'auto' | 'content'
 }>
 
 type FlowCardHeaderProps = {
   description?: React.ReactNode
   descriptionItalic?: boolean
+  descriptionVisibility?: 'always' | 'desktop'
   overline?: React.ReactNode
   showDivider?: boolean
   title: React.ReactNode
@@ -18,7 +20,6 @@ type FlowCardHeaderProps = {
 
 type FlowCardContentProps = React.PropsWithChildren<{
   as?: 'div' | 'section'
-  className?: string
 }>
 type FlowCardActionsProps = React.PropsWithChildren
 
@@ -38,6 +39,7 @@ function Root({
 function Header({
   description,
   descriptionItalic = false,
+  descriptionVisibility = 'always',
   overline,
   showDivider = false,
   title,
@@ -46,6 +48,7 @@ function Header({
     <SectionTitle
       description={description}
       descriptionItalic={descriptionItalic}
+      descriptionVisibility={descriptionVisibility}
       overline={overline}
       showDivider={showDivider}
       title={title}
@@ -53,12 +56,8 @@ function Header({
   )
 }
 
-function Content({ as = 'div', children, className }: FlowCardContentProps) {
-  return (
-    <Stack as={as} className={className}>
-      {children}
-    </Stack>
-  )
+function Content({ as = 'div', children }: FlowCardContentProps) {
+  return <Stack as={as}>{children}</Stack>
 }
 
 function Actions({ children }: FlowCardActionsProps) {
