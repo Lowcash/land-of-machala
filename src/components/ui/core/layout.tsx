@@ -146,7 +146,7 @@ type ListProps = React.PropsWithChildren<{
   wrap?: boolean
 }>
 
-export function List({
+function ListBase({
   align = 'stretch',
   as = 'ul',
   children,
@@ -176,6 +176,16 @@ export function List({
     </Component>
   )
 }
+
+type ListItemProps = React.PropsWithChildren<{
+  className?: string
+}>
+
+function ListItem({ children, className }: ListItemProps) {
+  return <li className={className}>{children}</li>
+}
+
+export const List = Object.assign(ListBase, { Item: ListItem })
 
 type GridProps = React.PropsWithChildren<{
   as?: GridAs
@@ -216,5 +226,3 @@ export function Grid({
     </Component>
   )
 }
-
-export { Box } from './box'

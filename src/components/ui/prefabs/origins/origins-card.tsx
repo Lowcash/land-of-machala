@@ -75,7 +75,7 @@ function Panel({ children }: PanelProps) {
 
 function Columns({ children }: ColumnsProps) {
   return (
-    <Grid as="section" className={COLUMNS_CLASS} columns={1} mdColumns={2}>
+    <Grid as="section" className={COLUMNS_CLASS} mdColumns={2}>
       {children}
     </Grid>
   )
@@ -83,10 +83,6 @@ function Columns({ children }: ColumnsProps) {
 
 function Items({ children }: ListProps) {
   return <List>{children}</List>
-}
-
-function ListItem({ children }: { children: React.ReactNode }) {
-  return <li>{children}</li>
 }
 
 function Prompt({ children }: { children: React.ReactNode }) {
@@ -120,7 +116,6 @@ export const OriginsCard = {
   Panel,
   Columns,
   List: Items,
-  ListItem,
   Prompt,
   ProgressActions,
 } as const

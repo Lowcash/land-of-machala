@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import { SITE_BACKGROUND_PATH } from '@/lib/site-config'
 
-import { Box } from '@/components/ui/core/layout'
+import { Box } from '@/components/ui/core/box'
 import { RootStageFooter } from '@/components/ui/prefabs/layout/root-stage-footer'
 import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 import { RootStageHeader } from '@/components/ui/prefabs/layout/root-stage-header'

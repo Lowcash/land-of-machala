@@ -37,7 +37,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
           const isActive = item.id === selectedId
 
           return (
-            <li key={item.id}>
+            <List.Item key={item.id}>
               <button
                 className={clsx(
                   SELECTION_BUTTON_CLASS,
@@ -50,13 +50,13 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
               >
                 {item.name}
               </button>
-            </li>
+            </List.Item>
           )
         })}
       </List>
       <List className="text-on-surface-variant">
         {selected.bonuses.map((bonus) => (
-          <li key={bonus}>• {bonus}</li>
+          <List.Item key={bonus}>• {bonus}</List.Item>
         ))}
       </List>
     </OriginsCard.Panel>

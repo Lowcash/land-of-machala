@@ -2,6 +2,7 @@ import type { OriginStep } from '@/lib/auth/demo-data'
 import { ORIGINS_TUTORIAL_COPY } from '@/lib/auth/origins-messages'
 import { getOptionLabel } from '@/lib/format/option-label'
 
+import { List } from '@/components/ui/core/layout'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { PrologueChoiceCard } from '@/components/ui/prefabs/origins/prologue-choice-card'
 
@@ -35,7 +36,7 @@ export function PrologueStep({
             const optionLabel = getOptionLabel(index)
 
             return (
-              <OriginsCard.ListItem key={choice.id}>
+              <List.Item key={choice.id}>
                 <PrologueChoiceCard
                   description={choice.description}
                   isActive={isActive}
@@ -43,7 +44,7 @@ export function PrologueStep({
                   optionLabel={optionLabel}
                   title={choice.title}
                 />
-              </OriginsCard.ListItem>
+              </List.Item>
             )
           })}
         </OriginsCard.List>

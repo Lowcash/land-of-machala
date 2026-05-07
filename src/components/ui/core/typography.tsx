@@ -118,8 +118,8 @@ const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
 }
 
 const LABEL_TEXT_SIZE_CLASS: Record<LabelTextSize, string> = {
-  meta: 'text-xs',
   default: '',
+  meta: 'text-xs',
 }
 
 type LabelTextProps = SizedTextProps<LabelTextAs, LabelTextTone, LabelTextSize> & {
