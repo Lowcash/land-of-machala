@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import type { ChronicleItem } from '@/lib/auth/demo-data'
 import { ENTRY_SIDE_COPY } from '@/lib/auth/entry-messages'
 
-import { Inline, Stack } from '@/components/ui/core/layout'
+import { Inline, List, Stack } from '@/components/ui/core/layout'
 import { BodyText, LabelText } from '@/components/ui/core/typography'
 
 type ChronicleFeedProps = {
@@ -24,7 +24,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
           {ENTRY_SIDE_COPY.recentChroniclesTitle}
         </LabelText>
       </Inline>
-      <Stack as="ul" resetList>
+      <List>
         {chronicles.map((item) => (
           <Stack
             as="li"
@@ -44,7 +44,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
             </LabelText>
           </Stack>
         ))}
-      </Stack>
+      </List>
     </Stack>
   )
 }

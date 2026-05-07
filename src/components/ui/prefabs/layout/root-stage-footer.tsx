@@ -4,15 +4,15 @@ import { SITE_FOOTER_LABEL, SITE_FOOTER_LINKS } from '@/lib/site-config'
 
 import { Stack } from '@/components/ui/core/layout'
 import { BodyText, TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
-import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
+import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 
 const FOOTER_LINK_CLASS = 'hover:text-primary cursor-pointer transition-colors'
 
 const FOOTER_NAV_CLASS = `font-interface text-on-surface-variant/80 flex flex-wrap items-center justify-center ${TEXT_TRACKING_CLASS.wordmark} uppercase`
 
-export function RootShellFooter() {
+export function RootStageFooter() {
   return (
-    <RootShellFrame as="footer">
+    <RootStageFrame as="footer">
       <Stack align="center">
         <BodyText align="center" italic tone="muted">
           {SITE_FOOTER_LABEL}
@@ -28,6 +28,6 @@ export function RootShellFooter() {
           ))}
         </nav>
       </Stack>
-    </RootShellFrame>
+    </RootStageFrame>
   )
 }

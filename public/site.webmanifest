@@ -1,0 +1,9 @@
+{
+  "name": "Land of Machala",
+  "short_name": "Machala",
+  "description": "Premium medieval fantasy RPG with one canonical root surface and Storybook-first frontend workflow.",
+  "display": "standalone",
+  "background_color": "#131313",
+  "theme_color": "#131313",
+  "lang": "en"
+}

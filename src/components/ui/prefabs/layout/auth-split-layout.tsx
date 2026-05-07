@@ -5,7 +5,7 @@ import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
 import { ChronicleFeed } from '@/components/ui/prefabs/auth/chronicle-feed'
 import { RealmStatsGrid } from '@/components/ui/prefabs/auth/realm-stats-grid'
-import { RootShell } from '@/components/ui/prefabs/layout/root-shell'
+import { RootStage } from '@/components/ui/prefabs/layout/root-stage'
 import { PageHeadline } from '@/components/ui/prefabs/typography'
 
 type AuthSplitLayoutProps = {
@@ -24,8 +24,8 @@ export function AuthSplitLayout({
   tagline,
 }: AuthSplitLayoutProps) {
   return (
-    <RootShell>
-      <RootShell.Frame preset="split">
+    <RootStage>
+      <RootStage.Frame preset="split">
         <Stack className="order-1 lg:hidden">
           <PageHeadline>{headline}</PageHeadline>
           {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
@@ -40,7 +40,7 @@ export function AuthSplitLayout({
         <Box as="section" className="order-2 justify-self-center lg:order-2 lg:justify-self-end">
           {children}
         </Box>
-      </RootShell.Frame>
-    </RootShell>
+      </RootStage.Frame>
+    </RootStage>
   )
 }

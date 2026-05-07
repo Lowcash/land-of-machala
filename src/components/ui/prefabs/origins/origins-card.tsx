@@ -1,8 +1,6 @@
-import clsx from 'clsx'
-
-import { Button } from '@/components/ui/core/button'
 import { Box } from '@/components/ui/core/box'
-import { Inline, Stack } from '@/components/ui/core/layout'
+import { Button } from '@/components/ui/core/button'
+import { Grid, Inline, List, Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
 import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
@@ -37,7 +35,7 @@ type ProgressActionsProps = {
 
 const FOOTER_CLASS = 'mx-auto w-full max-w-xl flex-col sm:flex-row'
 const COLUMNS_CLASS =
-  'grid md:grid-cols-2 xl:grid-cols-[1.1fr_1fr_1fr] md:[&>*:first-child]:col-span-2 xl:[&>*:first-child]:col-span-1'
+  'xl:grid-cols-[1.1fr_1fr_1fr] md:[&>*:first-child]:col-span-2 xl:[&>*:first-child]:col-span-1'
 
 function Root({ children, width = 'full' }: RootProps) {
   return (
@@ -76,11 +74,15 @@ function Panel({ children }: PanelProps) {
 }
 
 function Columns({ children }: ColumnsProps) {
-  return <section className={COLUMNS_CLASS}>{children}</section>
+  return (
+    <Grid as="section" className={COLUMNS_CLASS} columns={1} mdColumns={2}>
+      {children}
+    </Grid>
+  )
 }
 
-function List({ children }: ListProps) {
-  return <Stack as="ul" resetList>{children}</Stack>
+function Items({ children }: ListProps) {
+  return <List>{children}</List>
 }
 
 function ListItem({ children }: { children: React.ReactNode }) {
@@ -117,7 +119,7 @@ export const OriginsCard = {
   Footer,
   Panel,
   Columns,
-  List,
+  List: Items,
   ListItem,
   Prompt,
   ProgressActions,

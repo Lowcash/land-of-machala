@@ -3,7 +3,11 @@
 import { useState } from 'react'
 
 import { AUTH_CHRONICLES, AUTH_HERO, AUTH_STATS } from '@/lib/auth/demo-data'
-import { ENTRY_SHARED_COPY, ENTRY_SIGN_IN_COPY, ENTRY_SIGN_UP_COPY } from '@/lib/auth/entry-messages'
+import {
+  ENTRY_SHARED_COPY,
+  ENTRY_SIGN_IN_COPY,
+  ENTRY_SIGN_UP_COPY,
+} from '@/lib/auth/entry-messages'
 import { validateLoginInput, validateRegisterInput } from '@/lib/auth/entry-validation'
 
 import { EntrySignInPanel, EntrySignUpPanel } from '@/components/features/auth/entry/panels'

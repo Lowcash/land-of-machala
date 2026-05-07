@@ -17,7 +17,7 @@ import {
   resolveHeroStats,
 } from '@/lib/auth/demo-data'
 
-import { CenteredStageShell } from '@/components/ui/prefabs/layout/centered-stage-shell'
+import { CenteredStage } from '@/components/ui/prefabs/layout/centered-stage'
 
 import { PrologueStep } from './step-prologue'
 import { StepSetup } from './step-setup'
@@ -43,9 +43,7 @@ type OriginsViewState = {
 
 export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: OriginsViewProps) {
   const [state, setState] = useState<OriginsViewState>(() => createInitialState(initialPhase))
-  const trimmedHeroName = state.hero.name.trim()
-  const canFinish = trimmedHeroName.length > 0
-  const heroStats = resolveHeroStats(state.hero.raceId, state.hero.classId)
+  const { canFinish, heroStats, trimmedHeroName } = deriveOriginsState(state.hero)
 
   function updateHero(patch: Partial<HeroDraft>) {
     setState((previous) => ({
@@ -112,7 +110,7 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
   }
 
   return (
-    <CenteredStageShell>
+    <CenteredStage>
       {state.phase === 'prologue' ? (
         <PrologueStep
           onContinue={() => moveToSetup(state.selectedChoiceId)}
@@ -138,8 +136,18 @@ export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: Ori
           stats={heroStats}
         />
       )}
-    </CenteredStageShell>
+    </CenteredStage>
   )
+}
+
+function deriveOriginsState(hero: HeroDraft) {
+  const trimmedHeroName = hero.name.trim()
+
+  return {
+    trimmedHeroName,
+    canFinish: trimmedHeroName.length > 0,
+    heroStats: resolveHeroStats(hero.raceId, hero.classId),
+  }
 }
 
 function createInitialState(initialPhase: OriginsPhase): OriginsViewState {

@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import type { RealmStat } from '@/lib/auth/demo-data'
 
 import { Box } from '@/components/ui/core/box'
-import { Stack } from '@/components/ui/core/layout'
+import { Grid, Stack } from '@/components/ui/core/layout'
 import { DisplayValue, LabelText } from '@/components/ui/core/typography'
 
 type RealmStatsGridProps = {
@@ -12,7 +12,7 @@ type RealmStatsGridProps = {
 
 export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
-    <ul className={clsx('m-0 grid w-full list-none grid-cols-2 p-0')}>
+    <Grid as="ul" className={clsx('w-full')} columns={2}>
       {stats.map((item) => (
         <Box
           as="li"
@@ -33,6 +33,6 @@ export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
           </Stack>
         </Box>
       ))}
-    </ul>
+    </Grid>
   )
 }

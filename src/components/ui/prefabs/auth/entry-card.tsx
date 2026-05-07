@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/core/button'
 import { Box } from '@/components/ui/core/box'
+import { Button } from '@/components/ui/core/button'
 import { Divider as CoreDivider } from '@/components/ui/core/divider'
 import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'

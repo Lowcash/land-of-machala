@@ -1,12 +1,12 @@
 import { SITE_APP_NAME } from '@/lib/site-config'
 
-import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
+import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 import { BrandWordmark } from '@/components/ui/prefabs/typography'
 
-export function RootShellHeader() {
+export function RootStageHeader() {
   return (
-    <RootShellFrame as="header">
+    <RootStageFrame as="header">
       <BrandWordmark>{SITE_APP_NAME}</BrandWordmark>
-    </RootShellFrame>
+    </RootStageFrame>
   )
 }

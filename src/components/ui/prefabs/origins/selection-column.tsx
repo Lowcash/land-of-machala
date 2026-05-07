@@ -1,6 +1,6 @@
 import clsx from 'clsx'
 
-import { Inline, Stack } from '@/components/ui/core/layout'
+import { List } from '@/components/ui/core/layout'
 import { TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
 import { SectionTitle } from '@/components/ui/prefabs/typography'
@@ -32,7 +32,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
         overline={title}
         title={selected.name}
       />
-      <Inline as="ul" resetList wrap>
+      <List direction="row" wrap>
         {items.map((item) => {
           const isActive = item.id === selectedId
 
@@ -53,12 +53,12 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
             </li>
           )
         })}
-      </Inline>
-      <Stack as="ul" className="text-on-surface-variant" resetList>
+      </List>
+      <List className="text-on-surface-variant">
         {selected.bonuses.map((bonus) => (
           <li key={bonus}>• {bonus}</li>
         ))}
-      </Stack>
+      </List>
     </OriginsCard.Panel>
   )
 }

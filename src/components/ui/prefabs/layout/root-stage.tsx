@@ -5,26 +5,26 @@ import clsx from 'clsx'
 import { SITE_BACKGROUND_PATH } from '@/lib/site-config'
 
 import { Box } from '@/components/ui/core/layout'
-import { RootShellFooter } from '@/components/ui/prefabs/layout/root-shell-footer'
-import { RootShellFrame } from '@/components/ui/prefabs/layout/root-shell-frame'
-import { RootShellHeader } from '@/components/ui/prefabs/layout/root-shell-header'
+import { RootStageFooter } from '@/components/ui/prefabs/layout/root-stage-footer'
+import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
+import { RootStageHeader } from '@/components/ui/prefabs/layout/root-stage-header'
 
-type RootShellProps = React.HTMLAttributes<HTMLDivElement> & {
+type RootStageProps = React.HTMLAttributes<HTMLDivElement> & {
   children: React.ReactNode
 }
 
-const SHELL_OVERLAY_CLASS =
+const ROOT_STAGE_OVERLAY_CLASS =
   'from-background/92 via-background/65 to-background/92 absolute inset-0 -z-10 bg-linear-to-br'
 
-type RootShellComponent = typeof RootShellBase & {
-  Frame: typeof RootShellFrame
+type RootStageComponent = typeof RootStageBase & {
+  Frame: typeof RootStageFrame
 }
 
-export const RootShell: RootShellComponent = Object.assign(RootShellBase, {
-  Frame: RootShellFrame,
+export const RootStage: RootStageComponent = Object.assign(RootStageBase, {
+  Frame: RootStageFrame,
 })
 
-function RootShellBase({ children, className = '', ...props }: RootShellProps) {
+function RootStageBase({ children, className = '', ...props }: RootStageProps) {
   return (
     <div
       className={clsx('bg-background relative isolate min-h-dvh overflow-hidden', className)}
@@ -40,11 +40,11 @@ function RootShellBase({ children, className = '', ...props }: RootShellProps) {
           src={SITE_BACKGROUND_PATH}
         />
       </div>
-      <div className={SHELL_OVERLAY_CLASS} />
+      <div className={ROOT_STAGE_OVERLAY_CLASS} />
       <Box className="relative flex min-h-dvh flex-col">
-        <RootShellHeader />
+        <RootStageHeader />
         <main className="flex flex-1">{children}</main>
-        <RootShellFooter />
+        <RootStageFooter />
       </Box>
     </div>
   )
