@@ -3,7 +3,7 @@ import clsx from 'clsx'
 
 import { Box } from '@/components/ui/core/box'
 import { Divider } from '@/components/ui/core/divider'
-import { Stack } from '@/components/ui/core/layout'
+import { Grid, Stack } from '@/components/ui/core/layout'
 import { BodyText, DisplayValue, HeadingText, LabelText } from '@/components/ui/core/typography'
 
 const COLOR_SWATCHES = [
@@ -133,7 +133,7 @@ export const Overview: Story = {
         <Divider />
 
         <Section eyebrow="Palette" title="Surface and accent colors">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <Grid className="gap-4" mdColumns={2} xlColumns={3}>
             {COLOR_SWATCHES.map((swatch) => (
               <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
                 <div
@@ -144,11 +144,11 @@ export const Overview: Story = {
                 />
               </TokenCard>
             ))}
-          </div>
+          </Grid>
         </Section>
 
         <Section eyebrow="Ink" title="Text and outline colors">
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <Grid className="gap-4" mdColumns={2} xlColumns={3}>
             {INK_SWATCHES.map((swatch) => (
               <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
                 <Stack className="bg-surface-container-lowest rounded-control border-outline-variant/40 border p-4">
@@ -163,12 +163,12 @@ export const Overview: Story = {
                 </Stack>
               </TokenCard>
             ))}
-          </div>
+          </Grid>
         </Section>
 
-        <div className="grid gap-4 xl:grid-cols-2">
+        <Grid className="gap-4" xlColumns={2}>
           <Section eyebrow="Shape" title="Radius scale">
-            <div className="grid gap-4 md:grid-cols-3">
+            <Grid className="gap-4" mdColumns={3}>
               <TokenCard label="Compact radius" token="--radius-compact">
                 <div className="bg-primary/20 border-primary/35 rounded-compact border p-6">
                   <LabelText tone="primary" uppercase>
@@ -190,17 +190,16 @@ export const Overview: Story = {
                   </LabelText>
                 </div>
               </TokenCard>
-            </div>
+            </Grid>
           </Section>
-
           <Section eyebrow="Rhythm" title="Spacing scale">
-            <div className="grid gap-4">
+            <Grid className="gap-4">
               <TokenCard label="Panel inset" token="--inset-panel">
                 <Box border className="border-dashed" padding="panel" radius="panel" tone="panel">
                   <BodyText>Panel inset preview</BodyText>
                 </Box>
               </TokenCard>
-              <div className="grid gap-4 md:grid-cols-3">
+              <Grid className="gap-4" mdColumns={3}>
                 {GAP_PREVIEWS.map((gap) => (
                   <TokenCard key={gap.token} label={gap.label} token={gap.token}>
                     <div className={clsx('flex flex-col', gap.className)}>
@@ -210,10 +209,10 @@ export const Overview: Story = {
                     </div>
                   </TokenCard>
                 ))}
-              </div>
-            </div>
+              </Grid>
+            </Grid>
           </Section>
-        </div>
+        </Grid>
 
         <Section eyebrow="Display" title="Numeric accent sample">
           <Box border padding="panel" radius="panel" tone="panel">

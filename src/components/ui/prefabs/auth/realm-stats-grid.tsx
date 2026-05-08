@@ -1,5 +1,3 @@
-import clsx from 'clsx'
-
 import type { RealmStat } from '@/lib/auth/demo-data'
 
 import { Box } from '@/components/ui/core/box'
@@ -12,17 +10,9 @@ type RealmStatsGridProps = {
 
 export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
-    <Grid as="ul" className={clsx('w-full')} columns={2}>
+    <Grid as="ul" columns={2} fullWidth>
       {stats.map((item) => (
-        <Box
-          as="li"
-          border
-          className="list-none"
-          key={item.label}
-          padding="panel"
-          radius="panel"
-          tone="surface"
-        >
+        <Box as="li" border key={item.label} padding="panel" radius="panel" tone="surface">
           <Stack align="center">
             <LabelText size="meta" tone="default" uppercase>
               {item.label}
