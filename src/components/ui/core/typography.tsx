@@ -1,24 +1,20 @@
 import clsx from 'clsx'
 
+// --- Shared ---
+
 type TextAs = 'div' | 'p' | 'span'
 export type TextAlign = 'center' | 'left'
 export type TextTone = 'default' | 'error' | 'inherit' | 'muted' | 'primary' | 'soft'
-
-export type HeadingTextAs = 'div' | 'h1' | 'h2' | 'h3' | 'p' | 'span'
-export type HeadingTextSize = 'page' | 'section'
-export type HeadingTextTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
-export type LabelTextAs = 'div' | 'label' | 'p' | 'span'
-export type LabelTextSize = 'default' | 'meta'
-export type LabelTextTone = TextTone
-export type DisplayValueSize = 'default' | 'hero'
 
 export const TEXT_TRACKING_CLASS = {
   action: 'tracking-[0.18em]',
   wordmark: 'tracking-[0.15em]',
 } as const
 
-type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
-type DisplayValueTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
+const TEXT_ALIGN_CLASS: Record<TextAlign, string> = {
+  center: 'text-center',
+  left: 'text-left',
+}
 
 type BaseTextProps<As, Tone> = {
   align?: TextAlign
@@ -31,21 +27,19 @@ type SizedTextProps<As, Tone, Size> = BaseTextProps<As, Tone> & {
   size?: Size
 }
 
+// --- HeadingText ---
+
+export type HeadingTextAs = 'div' | 'h1' | 'h2' | 'h3' | 'p' | 'span'
+export type HeadingTextSize = 'page' | 'section'
+export type HeadingTextTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
+
+type HeadingTextProps = SizedTextProps<HeadingTextAs, HeadingTextTone, HeadingTextSize>
+
 const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight text-trim'
+
 const HEADING_TEXT_SIZE_CLASS: Record<HeadingTextSize, string> = {
   page: 'text-3xl lg:text-4xl',
   section: 'text-2xl sm:text-3xl',
-}
-const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
-const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums text-trim'
-const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
-  default: 'text-2xl leading-none',
-  hero: 'text-5xl leading-none',
-}
-
-const TEXT_ALIGN_CLASS: Record<TextAlign, string> = {
-  center: 'text-center',
-  left: 'text-left',
 }
 
 const HEADING_TEXT_TONE_CLASS: Record<HeadingTextTone, string> = {
@@ -53,8 +47,6 @@ const HEADING_TEXT_TONE_CLASS: Record<HeadingTextTone, string> = {
   inherit: '',
   primary: 'text-primary',
 }
-
-type HeadingTextProps = SizedTextProps<HeadingTextAs, HeadingTextTone, HeadingTextSize>
 
 export function HeadingText({
   align = 'left',
@@ -79,15 +71,18 @@ export function HeadingText({
   )
 }
 
+// --- BodyText ---
+
+type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
+
 type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
   italic?: boolean
-  mono?: boolean
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {
   default: 'text-on-surface',
-  error: 'text-error',
   inherit: '',
+  error: 'text-error',
   muted: 'text-on-surface-variant',
 }
 
@@ -96,7 +91,6 @@ export function BodyText({
   as = 'p',
   children,
   italic = false,
-  mono = false,
   tone = 'default',
 }: BodyTextProps) {
   const Component = as as React.ElementType
@@ -107,8 +101,7 @@ export function BodyText({
         'text-trim',
         TEXT_ALIGN_CLASS[align],
         BODY_TEXT_TONE_CLASS[tone],
-        italic && 'italic',
-        mono && 'font-mono text-xs'
+        italic && 'italic'
       )}
     >
       {children}
@@ -116,23 +109,31 @@ export function BodyText({
   )
 }
 
-const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
-  default: 'text-outline',
-  inherit: '',
-  primary: 'text-primary',
-  soft: 'text-on-surface-variant/70',
-  muted: 'text-on-surface-variant/80',
-  error: 'text-error',
+// --- LabelText ---
+
+export type LabelTextAs = 'div' | 'label' | 'p' | 'span'
+export type LabelTextSize = 'default' | 'meta'
+export type LabelTextTone = TextTone
+
+type LabelTextProps = SizedTextProps<LabelTextAs, LabelTextTone, LabelTextSize> & {
+  htmlFor?: string
+  uppercase?: boolean
 }
+
+const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
 
 const LABEL_TEXT_SIZE_CLASS: Record<LabelTextSize, string> = {
   default: '',
   meta: 'text-xs',
 }
 
-type LabelTextProps = SizedTextProps<LabelTextAs, LabelTextTone, LabelTextSize> & {
-  htmlFor?: string
-  uppercase?: boolean
+const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
+  default: 'text-outline',
+  inherit: '',
+  error: 'text-error',
+  muted: 'text-on-surface-variant/80',
+  primary: 'text-primary',
+  soft: 'text-on-surface-variant/70',
 }
 
 export function LabelText({
@@ -145,23 +146,38 @@ export function LabelText({
   uppercase = false,
 }: LabelTextProps) {
   const Component = as as React.ElementType
-  const labelClassName = clsx(
-    LABEL_TEXT_BASE_CLASS,
-    TEXT_ALIGN_CLASS[align],
-    LABEL_TEXT_SIZE_CLASS[size],
-    LABEL_TEXT_TONE_CLASS[tone],
-    uppercase && 'uppercase',
-    as === 'label' && 'block'
-  )
 
   return (
-    <Component className={labelClassName} htmlFor={as === 'label' ? htmlFor : undefined}>
+    <Component
+      className={clsx(
+        LABEL_TEXT_BASE_CLASS,
+        TEXT_ALIGN_CLASS[align],
+        LABEL_TEXT_SIZE_CLASS[size],
+        LABEL_TEXT_TONE_CLASS[tone],
+        uppercase && 'uppercase',
+        as === 'label' && 'block'
+      )}
+      htmlFor={as === 'label' ? htmlFor : undefined}
+    >
       {children}
     </Component>
   )
 }
 
+// --- DisplayValue ---
+
+export type DisplayValueSize = 'default' | 'hero'
+
+type DisplayValueTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
+
 type DisplayValueProps = SizedTextProps<TextAs, DisplayValueTone, DisplayValueSize>
+
+const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums text-trim'
+
+const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
+  default: 'text-2xl leading-none',
+  hero: 'text-5xl leading-none',
+}
 
 const DISPLAY_VALUE_TONE_CLASS: Record<DisplayValueTone, string> = {
   default: 'text-on-surface',
@@ -191,6 +207,8 @@ export function DisplayValue({
     </Component>
   )
 }
+
+// --- BrandWordmark ---
 
 const BRAND_WORDMARK_CLASS = clsx(
   'font-wordmark text-xl md:text-2xl text-primary uppercase',

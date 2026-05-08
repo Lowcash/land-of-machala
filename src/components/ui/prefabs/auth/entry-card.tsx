@@ -5,35 +5,15 @@ import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
 import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
+const Content = FlowCard.Content
+
 type EntryCardRootProps = React.PropsWithChildren
-
-type EntryCardFooterProps = React.PropsWithChildren
-
-type EntryCardHeaderProps = {
-  description: string
-  title: string
-}
-
-type EntryCardStatusProps = {
-  message?: string
-}
-
-type EntryCardDividerProps = {
-  label: string
-}
-
-type EntryCardSupportProps = React.PropsWithChildren
-
-type EntryCardGuestSwitchActionsProps = {
-  guestLabel: string
-  onGuestClick?: () => void
-  onSwitchClick: () => void
-  switchLabel: string
-}
 
 function Root({ children }: EntryCardRootProps) {
   return <FlowCard.Root fillHeight>{children}</FlowCard.Root>
 }
+
+type EntryCardFooterProps = React.PropsWithChildren
 
 function Footer({ children }: EntryCardFooterProps) {
   return (
@@ -43,7 +23,10 @@ function Footer({ children }: EntryCardFooterProps) {
   )
 }
 
-const Content = FlowCard.Content
+type EntryCardHeaderProps = {
+  description: string
+  title: string
+}
 
 function Header({ description, title }: EntryCardHeaderProps) {
   return (
@@ -54,6 +37,10 @@ function Header({ description, title }: EntryCardHeaderProps) {
       title={title}
     />
   )
+}
+
+type EntryCardStatusProps = {
+  message?: string
 }
 
 function Status({ message }: EntryCardStatusProps) {
@@ -68,12 +55,25 @@ function Status({ message }: EntryCardStatusProps) {
   )
 }
 
+type EntryCardSupportProps = React.PropsWithChildren
+
 function Support({ children }: EntryCardSupportProps) {
   return <Stack>{children}</Stack>
 }
 
+type EntryCardDividerProps = {
+  label: string
+}
+
 function Divider({ label }: EntryCardDividerProps) {
   return <CoreDivider label={label} />
+}
+
+type EntryCardGuestSwitchActionsProps = {
+  guestLabel: string
+  onGuestClick?: () => void
+  onSwitchClick: () => void
+  switchLabel: string
 }
 
 function GuestSwitchActions({

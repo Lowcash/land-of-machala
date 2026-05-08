@@ -4,10 +4,6 @@ import { Box } from '@/components/ui/core/box'
 import { Grid, Stack } from '@/components/ui/core/layout'
 import { DisplayValue, LabelText } from '@/components/ui/core/typography'
 
-type HeroStatsGridProps = {
-  stats: CharacterStats
-}
-
 type StatCellProps = {
   label: string
   value: number
@@ -24,6 +20,10 @@ function StatCell({ label, value }: StatCellProps) {
       </Stack>
     </Box>
   )
+}
+
+type HeroStatsGridProps = {
+  stats: CharacterStats
 }
 
 export function HeroStatsGrid({ stats }: HeroStatsGridProps) {

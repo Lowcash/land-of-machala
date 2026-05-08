@@ -5,8 +5,8 @@
   --font-interface: var(--font-source-interface), 'Helvetica Neue', sans-serif;
   --font-display: var(--font-source-display), 'Times New Roman', serif;
   --font-wordmark: var(--font-source-wordmark), 'Times New Roman', serif;
-  --font-size-body-sm: 0.875rem;
-  --font-size-label-meta: 0.625rem;
+  --text-micro: 0.625rem;
+  --text-fine: 0.6875rem;
 
   --color-background: #131313;
 

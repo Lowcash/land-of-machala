@@ -12,7 +12,7 @@ export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
   return (
     <Grid as="ul" columns={2} fullWidth>
       {stats.map((item) => (
-        <Box as="li" border key={item.label} padding="panel" radius="panel" tone="surface">
+        <Box as="li" border key={item.label} padding="item" radius="compact" tone="surface">
           <Stack align="center">
             <LabelText size="meta" tone="default" uppercase>
               {item.label}

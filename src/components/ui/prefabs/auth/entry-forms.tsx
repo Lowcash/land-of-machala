@@ -11,29 +11,12 @@ import { Stack } from '@/components/ui/core/layout'
 import { CheckboxField } from '@/components/ui/forms/checkbox-field'
 import { Field } from '@/components/ui/forms/field'
 
-const REMEMBER_SPIRIT_ID = 'remember-spirit'
-const MERCHANT_TERMS_ID = 'merchant-terms'
-
 type AuthFormBaseProps = {
   email: string
   onEmailChange: (value: string) => void
   onPasswordChange: (value: string) => void
   onSubmit: FormSubmitHandler
   password: string
-}
-
-type SignInFormProps = AuthFormBaseProps & {
-  errors: LoginErrors
-  onForgotSecret?: () => void
-  onRememberChange: (checked: boolean) => void
-  rememberMe: boolean
-}
-
-type SignUpFormProps = AuthFormBaseProps & {
-  acceptTerms: boolean
-  errors: RegisterErrors
-  legalLabel: React.ReactNode
-  onAcceptTermsChange: (checked: boolean) => void
 }
 
 type AuthFormShellProps = {
@@ -49,13 +32,22 @@ function AuthFormShell({ children, onSubmit }: AuthFormShellProps) {
   )
 }
 
+type SignInFormProps = AuthFormBaseProps & {
+  errors: LoginErrors
+  onForgotSecret?: () => void
+  onRememberChange: (checked: boolean) => void
+  rememberMe: boolean
+}
+
+const REMEMBER_SPIRIT_ID = 'remember-spirit'
+
 export function SignInForm({
   email,
   errors,
   onEmailChange,
   onForgotSecret,
-  onRememberChange,
   onPasswordChange,
+  onRememberChange,
   onSubmit,
   password,
   rememberMe,
@@ -94,6 +86,15 @@ export function SignInForm({
     </AuthFormShell>
   )
 }
+
+type SignUpFormProps = AuthFormBaseProps & {
+  acceptTerms: boolean
+  errors: RegisterErrors
+  legalLabel: React.ReactNode
+  onAcceptTermsChange: (checked: boolean) => void
+}
+
+const MERCHANT_TERMS_ID = 'merchant-terms'
 
 export function SignUpForm({
   acceptTerms,

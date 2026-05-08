@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { BodyText } from '@/components/ui/core/typography'
-import { withCanvasWidth } from '@/test/story-decorators'
+
+import { StoryContainer } from '../../../../.storybook/story-container'
 
 const meta: Meta<typeof BodyText> = {
   title: 'UI/Typography/BodyText',
@@ -17,11 +18,19 @@ type Story = StoryObj<typeof BodyText>
 
 export const Default: Story = {}
 
-export const Muted: Story = { args: { tone: 'muted' } }
+export const Error: Story = { args: { tone: 'error' } }
 
 export const Italic: Story = { args: { italic: true, tone: 'muted' } }
 
+export const Muted: Story = { args: { tone: 'muted' } }
+
 export const Centered: Story = {
   args: { align: 'center' },
-  decorators: [withCanvasWidth('w-72')],
+  decorators: [
+    (Story) => (
+      <StoryContainer width="narrow">
+        <Story />
+      </StoryContainer>
+    ),
+  ],
 }

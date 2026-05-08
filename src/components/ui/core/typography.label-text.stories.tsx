@@ -1,29 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
+import { Stack } from '@/components/ui/core/layout'
 import { LabelText } from '@/components/ui/core/typography'
-import { withCanvasWidth } from '@/test/story-decorators'
 
 const meta: Meta<typeof LabelText> = {
   title: 'UI/Typography/LabelText',
   component: LabelText,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
-  decorators: [withCanvasWidth('bg-surface-container rounded-control p-4')],
 }
 
 export default meta
 
 type Story = StoryObj<typeof LabelText>
-
-export const Primary: Story = {
-  name: 'LabelText / Primary',
-  args: { children: 'Hero name' },
-}
-
-export const PrimaryUppercase: Story = {
-  name: 'LabelText / Primary uppercase',
-  args: { children: 'Field label', uppercase: true },
-}
 
 export const Default: Story = {
   name: 'LabelText / Default',
@@ -35,6 +24,16 @@ export const Muted: Story = {
   args: { children: 'Recent chronicles', tone: 'muted' },
 }
 
+export const Primary: Story = {
+  name: 'LabelText / Primary',
+  args: { children: 'Hero name' },
+}
+
+export const PrimaryUppercase: Story = {
+  name: 'LabelText / Primary uppercase',
+  args: { children: 'Field label', uppercase: true },
+}
+
 export const SoftMeta: Story = {
   name: 'LabelText / Soft meta',
   args: { children: '2 hours ago', size: 'meta', tone: 'soft', uppercase: true },
@@ -43,4 +42,17 @@ export const SoftMeta: Story = {
 export const Error: Story = {
   name: 'LabelText / Error',
   args: { children: 'Invalid spell scroll', tone: 'error' },
+}
+
+export const ToneComparison: Story = {
+  name: 'LabelText / Tone comparison',
+  render: () => (
+    <Stack>
+      <LabelText tone="default">System notice (default)</LabelText>
+      <LabelText tone="muted">Recent chronicles (muted)</LabelText>
+      <LabelText tone="soft" size="meta" uppercase>
+        2 hours ago (soft)
+      </LabelText>
+    </Stack>
+  ),
 }

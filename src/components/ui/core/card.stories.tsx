@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { Card } from '@/components/ui/core/card'
 import { BodyText, LabelText } from '@/components/ui/core/typography'
-import { withCanvasWidth } from '@/test/story-decorators'
+
+import { StoryContainer } from '../../../../.storybook/story-container'
 
 const meta: Meta<typeof Card> = {
   title: 'UI/Core/Card',
@@ -29,9 +30,23 @@ export default meta
 
 type Story = StoryObj<typeof Card>
 
-export const Default: Story = {}
+export const Default: Story = {
+  decorators: [
+    (Story) => (
+      <StoryContainer width="narrow">
+        <Story />
+      </StoryContainer>
+    ),
+  ],
+}
 
 export const ContentWidth: Story = {
-  args: { width: 'content', centered: true },
-  decorators: [withCanvasWidth('w-[min(100vw-3rem,56rem)]')],
+  args: { centered: true, width: 'content' },
+  decorators: [
+    (Story) => (
+      <StoryContainer width="full">
+        <Story />
+      </StoryContainer>
+    ),
+  ],
 }

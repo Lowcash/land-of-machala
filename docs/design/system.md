@@ -1,89 +1,39 @@
 ---
 name: 'Land of Machala'
 colors:
-  surface: '#131313'
-  surface-dim: '#131313'
-  surface-bright: '#393939'
+  background: '#131313'
   surface-container-lowest: '#0e0e0e'
   surface-container-low: '#1c1b1b'
   surface-container: '#201f1f'
   surface-container-high: '#2a2a2a'
-  surface-container-highest: '#353534'
   on-surface: '#e5e2e1'
   on-surface-variant: '#d3c5b0'
-  inverse-surface: '#e5e2e1'
-  inverse-on-surface: '#313030'
   outline: '#9b8f7c'
   outline-variant: '#4f4536'
-  surface-tint: '#f5be4f'
-  primary: '#ffcd6b'
+  primary: '#e8c07a'
+  primary-container: '#d4a85c'
   on-primary: '#412d00'
-  primary-container: '#e5b042'
-  on-primary-container: '#604400'
-  inverse-primary: '#7b5800'
-  secondary: '#d5c3b5'
-  on-secondary: '#392e25'
   secondary-container: '#51443a'
-  on-secondary-container: '#c3b2a5'
-  tertiary: '#ffc7bd'
-  on-tertiary: '#640c04'
-  tertiary-container: '#ff9f8e'
-  on-tertiary-container: '#872619'
   error: '#ffb4ab'
-  on-error: '#690005'
-  error-container: '#93000a'
-  on-error-container: '#ffdad6'
-  primary-fixed: '#ffdea5'
-  primary-fixed-dim: '#f5be4f'
-  on-primary-fixed: '#271900'
-  on-primary-fixed-variant: '#5d4200'
-  secondary-fixed: '#f2dfd1'
-  secondary-fixed-dim: '#d5c3b5'
-  on-secondary-fixed: '#231a11'
-  on-secondary-fixed-variant: '#51443a'
-  tertiary-fixed: '#ffdad4'
-  tertiary-fixed-dim: '#ffb4a7'
-  on-tertiary-fixed: '#400200'
-  on-tertiary-fixed-variant: '#842417'
-  background: '#131313'
-  on-background: '#e5e2e1'
-  surface-variant: '#353534'
 typography:
-  headline-lg:
-    fontFamily: Noto Serif
-    fontSize: 40px
-    fontWeight: '700'
-    lineHeight: '1.2'
-  headline-md:
-    fontFamily: Noto Serif
-    fontSize: 28px
-    fontWeight: '600'
-    lineHeight: '1.3'
-  body-md:
-    fontFamily: Newsreader
-    fontSize: 18px
-    fontWeight: '400'
-    lineHeight: '1.6'
-  label-md:
-    fontFamily: Work Sans
-    fontSize: 14px
-    fontWeight: '500'
-    lineHeight: '1.4'
-    letterSpacing: 0.05em
-rounded:
-  sm: 0.125rem
-  DEFAULT: 0.25rem
-  md: 0.375rem
-  lg: 0.5rem
-  xl: 0.75rem
-  full: 9999px
+  font-display: Noto Serif (--font-display)
+  font-reading: Newsreader (--font-reading)
+  font-interface: Work Sans (--font-interface)
+  font-wordmark: wordmark face (--font-wordmark)
+radius:
+  compact: 0.5rem (--radius-compact)
+  control: 0.875rem (--radius-control)
+  panel: 1rem (--radius-panel)
 spacing:
-  stack-sm: 8px
-  stack-md: 16px
-  stack-lg: 24px
-  card-padding-v: 32px
-  card-padding-h: 24px
-  gutter: 16px
+  gap-stack-sm: clamp(0.5rem → 0.625rem)
+  gap-stack-md: clamp(0.75rem → 1rem)
+  gap-stack-lg: clamp(1rem → 1.25rem)
+  inset-panel: clamp(1.25rem → 2rem)
+  inset-control-x: clamp(1rem → 1.25rem)
+  inset-control-y: clamp(0.75rem → 1rem)
+shadows:
+  surface: 0 24px 80px rgba(0,0,0,0.45)
+  ring-primary: 0 0 0 1px rgba(232,192,122,0.22)
 ---
 
 # Design System Document: Sovereign Noir
@@ -100,10 +50,17 @@ This design system powers the interface for Land of Machala. While visual langua
 
 ### Color Palette
 
-- **Primary (Gold):** #E5B042 — Used for high-priority calls to action and brand-defining accents.
-- **Secondary (Deep Ebony):** #2B2118 — A warm, dark base for cards and elevated surfaces.
-- **Tertiary (Oxblood):** #8C2A1C — Reserved for highlights, badges, and decorative depth.
-- **Neutral (Midnight):** #121212 — Foundational background color, ensuring maximum depth and focus.
+- **Background:** `#131313` (`--color-background`) — foundational dark base.
+- **Surface containers:** `#0e0e0e` → `#1c1b1b` → `#201f1f` → `#2a2a2a` (lowest to high) — layered elevation surfaces.
+- **On-surface:** `#e5e2e1` — default text on dark.
+- **On-surface-variant:** `#d3c5b0` — muted, warm parchment tone for secondary text.
+- **Outline:** `#9b8f7c` — borders, dividers.
+- **Outline-variant:** `#4f4536` — subtle borders and separator lines.
+- **Primary:** `#e8c07a` (`--color-primary`) — main gold accent; calls to action, active states.
+- **Primary-container:** `#d4a85c` — pressed or deeper-toned gold.
+- **On-primary:** `#412d00` — text on primary-colored backgrounds.
+- **Secondary-container:** `#51443a` — warm dark tone for chips, secondary surfaces.
+- **Error:** `#ffb4ab` — inline error text and destructive states.
 
 ### Typography
 
@@ -117,8 +74,9 @@ The typographic system is built on a literary-first approach:
 
 ### Roundedness
 
-- Use subtle corner rounding, roughly 6-8 px.
-- Keep formal posture without looking sharp or sterile.
+- `--radius-compact: 0.5rem` — tight controls (small chips, badges, checkboxes).
+- `--radius-control: 0.875rem` — form inputs and buttons.
+- `--radius-panel: 1rem` — cards, dialogs, sheet surfaces.
 
 ### Spacing
 
@@ -127,29 +85,32 @@ The typographic system is built on a literary-first approach:
 
 ### Spacing Rules
 
-- Heading to body copy: medium vertical spacing.
-- Body copy to questions or interactive elements: small to medium spacing.
-- Between tutorial choice cards: consistent medium spacing with equal widths.
-- Between stacked buttons: small spacing so actions still read as one group.
-- Primary card padding: comfortable vertical padding with slightly reduced horizontal padding.
+- `--gap-stack-sm`: clamp(0.5 → 0.625rem) — tight stack between sibling items.
+- `--gap-stack-md`: clamp(0.75 → 1rem) — default stack gap.
+- `--gap-stack-lg`: clamp(1 → 1.25rem) — loose, sectional gap.
+- `--inset-panel`: clamp(1.25 → 2rem) — card / panel inner padding.
+- `--inset-control-x`: clamp(1 → 1.25rem) — horizontal input padding.
+- `--inset-control-y`: clamp(0.75 → 1rem) — vertical input padding.
+
+All spacing values are clamp-based and responsive; do not substitute raw px values.
 
 ## Components
 
 ### Buttons
 
 - **Primary button**
-  - Background: Primary Gold (#E5B042).
-  - Text: light or dark neutral, high contrast.
-  - Shape: same radius family as cards.
-  - Usage: main action per screen such as "ENTER THE REALM", "Confirm hero", or "Continue".
+  - Background: `--color-primary` (`#e8c07a`).
+  - Text: `--color-on-primary` (`#412d00`).
+  - Shape: `--radius-control` (0.875rem).
+  - Usage: main action per screen such as "ENTER THE REALM", "Confirm hero", "Continue".
 - **Secondary button**
-  - Background: Secondary Deep Ebony (#2B2118).
-  - Text: Primary Gold.
-  - Usage: important but not primary actions.
-- **Text or ghost button**
-  - No solid background, only text in Primary Gold with optional subtle underline on hover.
-  - Usage: links such as "Back to tutorial", "Forgotten scrolls?", and "Guest entry".
-- Buttons should use consistent padding and typography across screens.
+  - Background: `--color-secondary-container` (`#51443a`).
+  - Text: `--color-on-surface`.
+  - Usage: important but non-primary actions.
+- **Ghost / text button**
+  - No solid background; label in `--color-primary` with underline on hover.
+  - Usage: links such as "Back to tutorial", "Forgotten scrolls?", "Guest entry".
+- Buttons use `--radius-control`, `--inset-control-x`, `--inset-control-y` for consistent padding.
 
 ### Form Elements
 
@@ -167,11 +128,11 @@ The typographic system is built on a literary-first approach:
 
 ### Cards
 
-- Background: Secondary Deep Ebony (#2B2118) or nearby dark surface.
-- Corner radius: consistent with buttons.
-- Shadow: minimal, enough to separate from background.
-- Padding: medium vertical, slightly reduced horizontal padding for compact look.
-- Cards are primary container for auth, prologue, and character setup flows.
+- Background: `--color-surface-container` (`#201f1f`) or adjacent elevation level.
+- Corner radius: `--radius-panel` (1rem).
+- Shadow: `--shadow-surface` (`0 24px 80px rgba(0,0,0,0.45)`).
+- Padding: `--inset-panel` (responsive clamp).
+- Cards are the primary container for auth, prologue, and character setup flows.
 
 ## Layouts
 
@@ -268,8 +229,15 @@ The typographic system is built on a literary-first approach:
 - [README.md](./README.md) owns design-doc map and packet rules.
 - [flows/root-screen-flow.md](./flows/root-screen-flow.md) owns canonical root-state sequencing.
 - [screens/auth.md](./screens/auth.md) and [screens/origins.md](./screens/origins.md) own per-screen UX notes and ASCII layout intent.
-- Shared backdrop asset lives at `public/assets/locations/city.jpg`.
-- Storybook is approval surface for live baselines. Current root-state story anchors live under `src/components/features/auth/`.
+- [screens/gameplay.md](./screens/gameplay.md) owns gameplay shell layout (player panel, narrative log, action rail).
+
+## Token Reference
+
+All live tokens are defined in `src/app/globals.css` under the `@theme` block. That file is the source of truth. Do not derive styling from this doc — use it as a reading guide only.
+
+- CSS shadows: `--shadow-surface`, `--shadow-ring-primary` (`0 0 0 1px rgba(232,192,122,0.22)`).
+- Shared backdrop asset: `public/assets/locations/city.jpg`.
+- Storybook approval surface: `src/components/features/auth/` and `src/components/ui/core/tokens.stories.tsx`.
 
 ## Screen Packet Rule
 

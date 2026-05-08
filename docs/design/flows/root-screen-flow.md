@@ -58,18 +58,29 @@ Use it to keep design packets, Storybook, and runtime aligned.
 - Primary action: confirm hero.
 - Secondary actions: randomize, back to prologue if product keeps branch visible.
 - Exit:
-  - confirm hero -> entry state with completion note while deeper continuation is deferred
+  - confirm hero -> gameplay exploration state on `/game` (or root continuation state while route is deferred)
 - Packet: [../screens/origins.md](../screens/origins.md)
 - Storybook: [../../src/components/features/auth/origins/origins.stories.tsx](../../src/components/features/auth/origins/origins.stories.tsx)
 - Runtime: [../../src/components/features/auth/origins/view.tsx](../../src/components/features/auth/origins/view.tsx) and [../../src/components/features/auth/origins/step-creation.tsx](../../src/components/features/auth/origins/step-creation.tsx)
+
+### 5. Gameplay
+
+- Entry: character setup confirmation.
+- Goal: let the player explore, encounter, and act in the game world.
+- Primary actions: contextual per state — move, act, combat action.
+- Secondary actions: inventory, character sheet, flee (combat).
+- Exit: none yet; death/session-end screen deferred.
+- Packet: [../screens/gameplay.md](../screens/gameplay.md)
+- Storybook: `src/components/features/game/` (not yet created)
+- Runtime: `src/components/features/game/` (not yet created)
 
 ## Artifact Chain
 
 - Visual rules live in [../system.md](../system.md).
 - Flow ownership lives here.
-- Screen-specific UX and ASCII live in [../screens/auth.md](../screens/auth.md) and [../screens/origins.md](../screens/origins.md).
+- Screen-specific UX and ASCII live in [../screens/auth.md](../screens/auth.md), [../screens/origins.md](../screens/origins.md), and [../screens/gameplay.md](../screens/gameplay.md).
 - Shared backdrop asset lives at `public/assets/locations/city.jpg`.
-- Live approval states live in Storybook under `src/components/features/auth/`.
+- Live approval states live in Storybook under `src/components/features/auth/` (auth and origins) and `src/components/features/game/` (gameplay, once created).
 
 ## Rule For New Screens
 

@@ -15,16 +15,6 @@ type HeaderProps = {
   title: React.ReactNode
 }
 
-type ContentProps = React.PropsWithChildren
-
-type FooterProps = React.PropsWithChildren
-
-type PanelProps = React.PropsWithChildren
-
-type ColumnsProps = React.PropsWithChildren
-
-type ListProps = React.PropsWithChildren
-
 type ProgressActionsProps = {
   onPrimaryClick: () => void
   onSecondaryClick?: () => void
@@ -49,15 +39,15 @@ function Header({ description, overline, title }: HeaderProps) {
   return <FlowCard.Header description={description} overline={overline} showDivider title={title} />
 }
 
-function Content({ children }: ContentProps) {
+function Content({ children }: React.PropsWithChildren) {
   return (
-    <Stack as="section" className="mx-auto max-w-xl" fullWidth>
+    <FlowCard.Content as="section" className="mx-auto max-w-xl" fullWidth>
       {children}
-    </Stack>
+    </FlowCard.Content>
   )
 }
 
-function Footer({ children }: FooterProps) {
+function Footer({ children }: React.PropsWithChildren) {
   return (
     <Inline className={FOOTER_CLASS} fullWidth justify="between" wrap>
       {children}
@@ -65,7 +55,7 @@ function Footer({ children }: FooterProps) {
   )
 }
 
-function Panel({ children }: PanelProps) {
+function Panel({ children }: React.PropsWithChildren) {
   return (
     <Box border padding="panel" radius="panel" tone="panel">
       <Stack>{children}</Stack>
@@ -73,7 +63,7 @@ function Panel({ children }: PanelProps) {
   )
 }
 
-function Columns({ children }: ColumnsProps) {
+function Columns({ children }: React.PropsWithChildren) {
   return (
     <Grid as="section" className={COLUMNS_CLASS} mdColumns={2}>
       {children}
@@ -81,11 +71,11 @@ function Columns({ children }: ColumnsProps) {
   )
 }
 
-function Items({ children }: ListProps) {
+function Items({ children }: React.PropsWithChildren) {
   return <List>{children}</List>
 }
 
-function Prompt({ children }: { children: React.ReactNode }) {
+function Prompt({ children }: React.PropsWithChildren) {
   return <BodyText align="center">{children}</BodyText>
 }
 
@@ -97,14 +87,16 @@ function ProgressActions({
   secondaryLabel,
 }: ProgressActionsProps) {
   return (
-    <Footer>
-      <Button onClick={onSecondaryClick} variant="ghost">
-        {secondaryLabel}
-      </Button>
-      <Button disabled={primaryDisabled} onClick={onPrimaryClick}>
-        {primaryLabel}
-      </Button>
-    </Footer>
+    <FlowCard.Actions fullWidth>
+      <Footer>
+        <Button onClick={onSecondaryClick} variant="ghost">
+          {secondaryLabel}
+        </Button>
+        <Button disabled={primaryDisabled} onClick={onPrimaryClick}>
+          {primaryLabel}
+        </Button>
+      </Footer>
+    </FlowCard.Actions>
   )
 }
 

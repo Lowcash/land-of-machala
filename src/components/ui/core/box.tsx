@@ -3,7 +3,7 @@ import clsx from 'clsx'
 type BoxAs = 'div' | 'li' | 'section'
 type BoxTone = 'muted' | 'none' | 'panel' | 'surface'
 type BoxBorderTone = 'default' | 'none' | 'strong'
-type BoxPadding = 'none' | 'panel'
+type BoxPadding = 'item' | 'none' | 'panel'
 type BoxRadius = 'compact' | 'control' | 'none' | 'panel'
 
 const BOX_TONE_CLASS: Record<BoxTone, string> = {
@@ -21,6 +21,7 @@ const BOX_BORDER_TONE_CLASS: Record<BoxBorderTone, string> = {
 
 const BOX_PADDING_CLASS: Record<BoxPadding, string> = {
   none: '',
+  item: 'p-(--inset-item)',
   panel: 'p-(--inset-panel)',
 }
 
