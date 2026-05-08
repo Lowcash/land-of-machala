@@ -13,14 +13,14 @@ const eslintConfig = defineConfig([
     },
     rules: {
       'perfectionist/sort-interfaces': [
-        'warn',
+        'error',
         {
           order: 'asc',
           type: 'alphabetical',
         },
       ],
       'perfectionist/sort-object-types': [
-        'warn',
+        'error',
         {
           order: 'asc',
           type: 'alphabetical',
