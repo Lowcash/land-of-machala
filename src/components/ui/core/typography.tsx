@@ -31,13 +31,13 @@ type SizedTextProps<As, Tone, Size> = BaseTextProps<As, Tone> & {
   size?: Size
 }
 
-const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight'
+const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight text-trim'
 const HEADING_TEXT_SIZE_CLASS: Record<HeadingTextSize, string> = {
   page: 'text-3xl sm:text-4xl lg:text-5xl',
   section: 'text-2xl sm:text-3xl',
 }
-const LABEL_TEXT_BASE_CLASS = 'font-interface'
-const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums'
+const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
+const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums text-trim'
 const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
   default: 'text-3xl leading-none',
   hero: 'text-5xl leading-none',
@@ -81,13 +81,14 @@ export function HeadingText({
 
 type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
   italic?: boolean
+  mono?: boolean
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {
   default: 'text-on-surface',
+  error: 'text-error',
   inherit: '',
   muted: 'text-on-surface-variant',
-  error: 'text-error',
 }
 
 export function BodyText({
@@ -95,13 +96,20 @@ export function BodyText({
   as = 'p',
   children,
   italic = false,
+  mono = false,
   tone = 'default',
 }: BodyTextProps) {
   const Component = as as React.ElementType
 
   return (
     <Component
-      className={clsx(TEXT_ALIGN_CLASS[align], BODY_TEXT_TONE_CLASS[tone], italic && 'italic')}
+      className={clsx(
+        'text-trim',
+        TEXT_ALIGN_CLASS[align],
+        BODY_TEXT_TONE_CLASS[tone],
+        italic && 'italic',
+        mono && 'font-mono text-xs'
+      )}
     >
       {children}
     </Component>

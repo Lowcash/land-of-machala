@@ -19,6 +19,13 @@ const eslintConfig = defineConfig([
           type: 'alphabetical',
         },
       ],
+      'perfectionist/sort-jsx-props': [
+        'error',
+        {
+          order: 'asc',
+          type: 'alphabetical',
+        },
+      ],
       'perfectionist/sort-object-types': [
         'error',
         {

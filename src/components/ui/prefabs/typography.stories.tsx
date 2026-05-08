@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { BrandWordmark } from '@/components/ui/core/typography'
 import { PageHeadline, SectionHeading } from '@/components/ui/prefabs/typography'
 
 const meta: Meta<typeof PageHeadline> = {
@@ -13,11 +12,6 @@ const meta: Meta<typeof PageHeadline> = {
 export default meta
 
 type Story = StoryObj<typeof PageHeadline>
-
-export const BrandWordmarkExample: Story = {
-  name: 'BrandWordmark',
-  render: () => <BrandWordmark>Land of Machala</BrandWordmark>,
-}
 
 export const PageHeadlineDesktop: Story = {
   name: 'PageHeadline / Desktop',

@@ -44,9 +44,9 @@ function Root({ children }: React.PropsWithChildren) {
 function Header({ children, hasAction = false }: HeaderProps) {
   return (
     <Stack
+      className={clsx(hasAction && 'sm:flex-row sm:items-center sm:justify-between')}
       fullWidth
       gap="none"
-      className={clsx(hasAction && 'sm:flex-row sm:items-center sm:justify-between')}
     >
       {children}
     </Stack>

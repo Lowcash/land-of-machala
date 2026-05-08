@@ -110,7 +110,11 @@ function TokenCard({ children, label, token }: TokenCardProps) {
           <LabelText size="meta" tone="default" uppercase>
             {label}
           </LabelText>
-          <BodyText tone="muted">{token}</BodyText>
+          <div className="break-all">
+            <BodyText mono tone="muted">
+              {token}
+            </BodyText>
+          </div>
         </Stack>
       </Stack>
     </Box>
@@ -151,15 +155,16 @@ export const Overview: Story = {
           <Grid gap="loose" mdColumns={2} xlColumns={3}>
             {INK_SWATCHES.map((swatch) => (
               <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
-                <Stack className="bg-surface-container-lowest rounded-control border-outline-variant/40 border p-4">
-                  <div className={clsx('text-xl', swatch.className)}>
-                    <HeadingText as="p" tone="inherit">
-                      Token sample
-                    </HeadingText>
-                  </div>
-                  <div className={swatch.className}>
-                    <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
-                  </div>
+                <Stack
+                  className={clsx(
+                    'bg-surface-container-lowest rounded-control border-outline-variant/40 border p-4',
+                    swatch.className
+                  )}
+                >
+                  <HeadingText as="p" tone="inherit">
+                    Token sample
+                  </HeadingText>
+                  <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
                 </Stack>
               </TokenCard>
             ))}

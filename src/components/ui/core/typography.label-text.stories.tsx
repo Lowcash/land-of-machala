@@ -18,6 +18,11 @@ export const Primary: Story = {
   args: { children: 'Hero name' },
 }
 
+export const PrimaryUppercase: Story = {
+  name: 'LabelText / Primary uppercase',
+  args: { children: 'Field label', uppercase: true },
+}
+
 export const Default: Story = {
   name: 'LabelText / Default',
   args: { children: 'System notice', tone: 'default' },

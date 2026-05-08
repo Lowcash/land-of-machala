@@ -45,6 +45,10 @@
   --inset-control-y: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
 }
 
+@utility text-trim {
+  text-box: trim-both cap alphabetic;
+}
+
 @layer base {
   :root {
     color-scheme: dark;
