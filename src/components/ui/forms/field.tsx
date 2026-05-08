@@ -7,14 +7,6 @@ import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-pro
 import { FieldChrome } from '@/components/ui/forms/field-chrome'
 import { resolveFieldId } from '@/components/ui/forms/field-id'
 
-const TEXT_INPUT_BASE_CLASS =
-  'bg-surface-container-lowest/80 rounded-control px-(--inset-control-x) py-(--inset-control-y) text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
-
-const TEXT_INPUT_STATE_CLASS = {
-  default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',
-  error: 'border-error/65 focus:border-error focus:ring-error/25',
-} as const
-
 type TextInputControlProps = NativePropsWithoutClassNameStyle<
   React.InputHTMLAttributes<HTMLInputElement>
 > & {
@@ -28,6 +20,14 @@ type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTM
   label: string
   onActionClick?: () => void
 }
+
+const TEXT_INPUT_BASE_CLASS =
+  'bg-surface-container-lowest/80 rounded-control px-(--inset-control-x) py-(--inset-control-y) text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
+
+const TEXT_INPUT_STATE_CLASS = {
+  default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',
+  error: 'border-error/65 focus:border-error focus:ring-error/25',
+} as const
 
 export function TextInputControl({ invalid = false, ...props }: TextInputControlProps) {
   return (

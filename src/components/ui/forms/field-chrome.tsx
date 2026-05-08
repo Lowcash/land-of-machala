@@ -3,15 +3,17 @@ import clsx from 'clsx'
 import { Inline, Stack } from '@/components/ui/core/layout'
 import { BodyText, LabelText, TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
 
-const FIELD_ACTION_CLASS = `font-interface text-on-surface-variant hover:text-primary focus-visible:text-primary ${TEXT_TRACKING_CLASS.action} whitespace-nowrap uppercase underline-offset-4 transition focus-visible:underline`
-
-const CONTROL_LABEL_CLASS = 'cursor-pointer leading-6'
-
 type HelperTextTone = 'default' | 'error' | 'invisible'
 
 type HeaderProps = {
   children: React.ReactNode
   hasAction?: boolean
+}
+
+type ControlLabelProps = {
+  children: React.ReactNode
+  error?: boolean
+  htmlFor: string
 }
 
 type LabelProps = {
@@ -25,17 +27,15 @@ type ActionProps = {
   onClick?: () => void
 }
 
-type ControlLabelProps = {
-  children: React.ReactNode
-  error?: boolean
-  htmlFor: string
-}
-
 type HelperTextProps = {
   children?: React.ReactNode
   reserveSpace?: boolean
   tone?: HelperTextTone
 }
+
+const CONTROL_LABEL_CLASS = 'cursor-pointer leading-6'
+
+const FIELD_ACTION_CLASS = `font-interface text-on-surface-variant hover:text-primary focus-visible:text-primary ${TEXT_TRACKING_CLASS.action} whitespace-nowrap uppercase underline-offset-4 transition focus-visible:underline`
 
 function Root({ children }: React.PropsWithChildren) {
   return <Stack>{children}</Stack>

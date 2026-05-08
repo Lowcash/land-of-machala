@@ -59,9 +59,9 @@ const INK_SWATCHES = [
 ] as const
 
 const GAP_PREVIEWS = [
-  { className: 'gap-(--gap-stack-sm)', label: 'Stack gap / tight', token: '--gap-stack-sm' },
-  { className: 'gap-(--gap-stack-md)', label: 'Stack gap / base', token: '--gap-stack-md' },
-  { className: 'gap-(--gap-stack-lg)', label: 'Stack gap / loose', token: '--gap-stack-lg' },
+  { gap: 'tight', label: 'Stack gap / tight', token: '--gap-stack-sm' },
+  { gap: 'base', label: 'Stack gap / base', token: '--gap-stack-md' },
+  { gap: 'loose', label: 'Stack gap / loose', token: '--gap-stack-lg' },
 ] as const
 
 const meta = {
@@ -77,6 +77,7 @@ type Story = StoryObj<typeof meta>
 
 type SectionProps = {
   children: React.ReactNode
+  className?: string
   eyebrow: string
   title: string
 }
@@ -87,9 +88,9 @@ type TokenCardProps = {
   token: string
 }
 
-function Section({ children, eyebrow, title }: SectionProps) {
+function Section({ children, className = '', eyebrow, title }: SectionProps) {
   return (
-    <Stack gap="tight">
+    <Stack className={className} gap="tight">
       <LabelText size="meta" tone="default" uppercase>
         {eyebrow}
       </LabelText>
@@ -101,6 +102,10 @@ function Section({ children, eyebrow, title }: SectionProps) {
   )
 }
 
+function CodeLabel({ children }: React.PropsWithChildren) {
+  return <code className="text-on-surface-variant font-mono text-xs break-all">{children}</code>
+}
+
 function TokenCard({ children, label, token }: TokenCardProps) {
   return (
     <Box border fullHeight padding="panel" radius="panel" tone="surface">
@@ -110,11 +115,7 @@ function TokenCard({ children, label, token }: TokenCardProps) {
           <LabelText size="meta" tone="default" uppercase>
             {label}
           </LabelText>
-          <div className="break-all">
-            <BodyText mono tone="muted">
-              {token}
-            </BodyText>
-          </div>
+          <CodeLabel>{token}</CodeLabel>
         </Stack>
       </Stack>
     </Box>
@@ -136,64 +137,74 @@ export const Overview: Story = {
 
         <Divider />
 
-        <Section eyebrow="Palette" title="Surface and accent colors">
-          <Grid gap="loose" mdColumns={2} xlColumns={3}>
-            {COLOR_SWATCHES.map((swatch) => (
-              <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
-                <div
-                  className={clsx(
-                    'border-outline-variant/40 rounded-control h-20 w-full border',
-                    swatch.className
-                  )}
-                />
-              </TokenCard>
-            ))}
-          </Grid>
-        </Section>
-
-        <Section eyebrow="Ink" title="Text and outline colors">
-          <Grid gap="loose" mdColumns={2} xlColumns={3}>
-            {INK_SWATCHES.map((swatch) => (
-              <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
-                <Stack
-                  className={clsx(
-                    'bg-surface-container-lowest rounded-control border-outline-variant/40 border p-4',
-                    swatch.className
-                  )}
-                >
-                  <HeadingText as="p" tone="inherit">
-                    Token sample
-                  </HeadingText>
-                  <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
-                </Stack>
-              </TokenCard>
-            ))}
-          </Grid>
-        </Section>
-
         <Grid gap="loose" xlColumns={2}>
-          <Section eyebrow="Shape" title="Radius scale">
+          <Section eyebrow="Palette" title="Surface and accent colors">
+            <Grid gap="loose" mdColumns={2} xlColumns={3}>
+              {COLOR_SWATCHES.map((swatch) => (
+                <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
+                  <div
+                    className={clsx(
+                      'border-outline-variant/40 rounded-control h-20 w-full border',
+                      swatch.className
+                    )}
+                  />
+                </TokenCard>
+              ))}
+            </Grid>
+          </Section>
+          <Section eyebrow="Ink" title="Text and outline colors">
+            <Grid gap="loose" mdColumns={2} xlColumns={3}>
+              {INK_SWATCHES.map((swatch) => (
+                <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
+                  <Box
+                    border
+                    className={clsx('bg-surface-container-lowest', swatch.className)}
+                    padding="item"
+                    radius="control"
+                  >
+                    <HeadingText as="p" tone="inherit">
+                      Token sample
+                    </HeadingText>
+                    <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
+                  </Box>
+                </TokenCard>
+              ))}
+            </Grid>
+          </Section>
+          <Section className="xl:col-span-2" eyebrow="Shape" title="Radius scale">
             <Grid gap="loose" mdColumns={3}>
               <TokenCard label="Compact radius" token="--radius-compact">
-                <div className="bg-primary/20 border-primary/35 rounded-compact border p-6">
+                <Box
+                  className="bg-primary/20 border-primary/35 border"
+                  padding="panel"
+                  radius="compact"
+                >
                   <LabelText tone="primary" uppercase>
                     Checkboxes, compact actions
                   </LabelText>
-                </div>
+                </Box>
               </TokenCard>
               <TokenCard label="Control radius" token="--radius-control">
-                <div className="bg-primary/20 border-primary/35 rounded-control border p-6">
+                <Box
+                  className="bg-primary/20 border-primary/35 border"
+                  padding="panel"
+                  radius="control"
+                >
                   <LabelText tone="primary" uppercase>
                     Buttons, inputs, toggles
                   </LabelText>
-                </div>
+                </Box>
               </TokenCard>
               <TokenCard label="Panel radius" token="--radius-panel">
-                <div className="bg-primary/20 border-primary/35 rounded-panel border p-6">
+                <Box
+                  className="bg-primary/20 border-primary/35 border"
+                  padding="panel"
+                  radius="panel"
+                >
                   <LabelText tone="primary" uppercase>
                     Cards, panels, stat blocks
                   </LabelText>
-                </div>
+                </Box>
               </TokenCard>
             </Grid>
           </Section>
@@ -204,33 +215,37 @@ export const Overview: Story = {
                   <BodyText>Panel inset preview</BodyText>
                 </Box>
               </TokenCard>
+              <TokenCard label="Item inset" token="--inset-item">
+                <Box border className="border-dashed" padding="item" radius="panel" tone="panel">
+                  <BodyText>Item inset preview</BodyText>
+                </Box>
+              </TokenCard>
               <Grid gap="loose" mdColumns={3}>
                 {GAP_PREVIEWS.map((gap) => (
                   <TokenCard key={gap.token} label={gap.label} token={gap.token}>
-                    <div className={clsx('flex flex-col', gap.className)}>
+                    <Grid columns={1} gap={gap.gap}>
                       <div className="bg-primary/70 rounded-control h-3 w-full" />
                       <div className="bg-primary/55 rounded-control h-3 w-full" />
                       <div className="bg-primary/40 rounded-control h-3 w-full" />
-                    </div>
+                    </Grid>
                   </TokenCard>
                 ))}
               </Grid>
             </Grid>
           </Section>
+          <Section eyebrow="Display" title="Numeric accent sample">
+            <Box border padding="panel" radius="panel" tone="panel">
+              <Stack align="center">
+                <LabelText size="meta" tone="default" uppercase>
+                  Primary display value
+                </LabelText>
+                <DisplayValue align="center" size="hero" tone="primary">
+                  42
+                </DisplayValue>
+              </Stack>
+            </Box>
+          </Section>
         </Grid>
-
-        <Section eyebrow="Display" title="Numeric accent sample">
-          <Box border padding="panel" radius="panel" tone="panel">
-            <Stack align="center">
-              <LabelText size="meta" tone="default" uppercase>
-                Primary display value
-              </LabelText>
-              <DisplayValue align="center" size="hero" tone="primary">
-                42
-              </DisplayValue>
-            </Stack>
-          </Box>
-        </Section>
       </Stack>
     </div>
   ),

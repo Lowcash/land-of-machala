@@ -5,6 +5,8 @@
   --font-interface: var(--font-source-interface), 'Helvetica Neue', sans-serif;
   --font-display: var(--font-source-display), 'Times New Roman', serif;
   --font-wordmark: var(--font-source-wordmark), 'Times New Roman', serif;
+  --font-size-body-sm: 0.875rem;
+  --font-size-label-meta: 0.625rem;
 
   --color-background: #131313;
 
@@ -39,7 +41,8 @@
   --gap-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
   --gap-stack-lg: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
 
-  --inset-panel: clamp(1.25rem, 0.98rem + 0.92vw, 2rem);
+  --inset-panel: clamp(1.25rem, 1rem + 1vw, 2.5rem);
+  --inset-item: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
 
   --inset-control-x: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
   --inset-control-y: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
