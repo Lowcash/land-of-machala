@@ -1,7 +1,7 @@
 import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/layout'
 
-import { SectionTitle } from './typography'
+import { SectionHeading } from './typography'
 
 type FlowCardRootProps = React.PropsWithChildren<{
   centered?: boolean
@@ -45,7 +45,7 @@ function Header({
   title,
 }: FlowCardHeaderProps) {
   return (
-    <SectionTitle
+    <SectionHeading
       description={description}
       descriptionItalic={descriptionItalic}
       descriptionVisibility={descriptionVisibility}

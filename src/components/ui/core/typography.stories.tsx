@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
-import { BodyText, DisplayValue, LabelText } from '@/components/ui/core/typography'
-import { BrandWordmark, PageHeadline, SectionTitle } from '@/components/ui/prefabs/typography'
+import { BodyText, BrandWordmark, DisplayValue, LabelText } from '@/components/ui/core/typography'
+import { PageHeadline, SectionHeading } from '@/components/ui/prefabs/typography'
 
 // ---------------------------------------------------------------------------
 // BodyText
@@ -134,7 +134,7 @@ export const PageHeadlineMobile: StoryObj = {
 export const SectionTitleFull: StoryObj = {
   name: 'SectionTitle / Full',
   render: () => (
-    <SectionTitle
+    <SectionHeading
       description="Choose your lineage and shaping your destiny before entering the realm."
       descriptionItalic
       overline="Step 1 of 3"
@@ -147,14 +147,14 @@ export const SectionTitleFull: StoryObj = {
 
 export const SectionTitleMinimal: StoryObj = {
   name: 'SectionTitle / Title only',
-  render: () => <SectionTitle title="Character Setup" />,
+  render: () => <SectionHeading title="Character Setup" />,
   parameters: { layout: 'centered' },
 }
 
 export const SectionTitleLeft: StoryObj = {
   name: 'SectionTitle / Left aligned',
   render: () => (
-    <SectionTitle
+    <SectionHeading
       align="left"
       description="Select from the options below to define your character."
       overline="Class"

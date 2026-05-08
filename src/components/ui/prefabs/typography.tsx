@@ -2,15 +2,7 @@ import clsx from 'clsx'
 
 import { Divider } from '@/components/ui/core/divider'
 import { Stack } from '@/components/ui/core/layout'
-import {
-  BodyText,
-  BrandWordmark,
-  HeadingText,
-  LabelText,
-  type TextAlign,
-} from '@/components/ui/core/typography'
-
-export { BrandWordmark }
+import { BodyText, HeadingText, LabelText, type TextAlign } from '@/components/ui/core/typography'
 
 export function PageHeadline({ children }: React.PropsWithChildren) {
   return (
@@ -30,7 +22,7 @@ type SectionTitleProps = {
   title: React.ReactNode
 }
 
-export function SectionTitle({
+export function SectionHeading({
   align = 'center',
   description,
   descriptionItalic = false,

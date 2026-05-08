@@ -30,7 +30,6 @@ Design system, root-flow packets, and canonical screen packets live under [docs/
 ## Development Setup
 
 ```bash
-cp .env.example .env.local
 npm install
 npm run dev
 ```
@@ -41,13 +40,9 @@ npm run dev
 - `npm run lint` runs ESLint.
 - `npm run typecheck` runs TypeScript without emitting output.
 - `npm run test` runs the Vitest suite.
-- `npm run test:e2e` runs the Playwright end-to-end suite.
 - `npm run storybook` starts Storybook.
 - `npm run build` creates a production build.
 - `npm run preview` runs the production build locally on `127.0.0.1:3000`.
-- `npm run db:validate` validates the Prisma schema and datasource setup.
-- `npm run db:generate` generates the Prisma client.
-- `npm run db:migrate:dev` creates and applies a local Prisma migration.
 - `npm run format` formats the repository with Prettier.
 
 For the full script surface, see `package.json`.

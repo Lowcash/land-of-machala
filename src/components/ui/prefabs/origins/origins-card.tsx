@@ -51,7 +51,7 @@ function Header({ description, overline, title }: HeaderProps) {
 
 function Content({ children }: ContentProps) {
   return (
-    <Stack as="section" className="mx-auto w-full max-w-xl">
+    <Stack as="section" className="mx-auto max-w-xl" fullWidth>
       {children}
     </Stack>
   )

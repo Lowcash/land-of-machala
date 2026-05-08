@@ -3,7 +3,7 @@ import clsx from 'clsx'
 import { List } from '@/components/ui/core/layout'
 import { TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
 import { OriginsCard } from '@/components/ui/prefabs/origins/origins-card'
-import { SectionTitle } from '@/components/ui/prefabs/typography'
+import { SectionHeading } from '@/components/ui/prefabs/typography'
 
 type SelectionItem = {
   bonuses: string[]
@@ -26,7 +26,7 @@ export function SelectionColumn({ items, onSelect, selectedId, title }: Selectio
 
   return (
     <OriginsCard.Panel>
-      <SectionTitle
+      <SectionHeading
         align="left"
         description={selected.description}
         overline={title}

@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
+import { InlineTextButton } from '@/components/ui/core/inline-text-button'
 import { CheckboxField } from '@/components/ui/forms/checkbox-field'
 
 const meta: Meta<typeof CheckboxField> = {
@@ -45,15 +46,8 @@ export const InteractiveLegalLinks: Story = {
     checked: false,
     label: (
       <>
-        I accept{' '}
-        <button className="text-primary underline" onClick={() => undefined} type="button">
-          Merchant Laws
-        </button>{' '}
-        and{' '}
-        <button className="text-primary underline" onClick={() => undefined} type="button">
-          Privacy Codex
-        </button>{' '}
-        of realm.
+        I accept <InlineTextButton onClick={() => undefined}>Merchant Laws</InlineTextButton> and{' '}
+        <InlineTextButton onClick={() => undefined}>Privacy Codex</InlineTextButton> of realm.
       </>
     ),
   },

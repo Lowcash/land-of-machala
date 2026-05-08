@@ -17,7 +17,7 @@ export function RootStageFooter() {
         <BodyText align="center" italic tone="muted">
           {SITE_FOOTER_LABEL}
         </BodyText>
-        <nav className={FOOTER_NAV_CLASS}>
+        <nav aria-label="Site links" className={FOOTER_NAV_CLASS}>
           {SITE_FOOTER_LINKS.map((link, index) => (
             <Fragment key={link}>
               {index > 0 ? <span aria-hidden="true">|</span> : null}
