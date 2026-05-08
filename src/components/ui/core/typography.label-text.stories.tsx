@@ -1,12 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/nextjs-vite'
 
 import { LabelText } from '@/components/ui/core/typography'
+import { withCanvasWidth } from '@/test/story-decorators'
 
 const meta: Meta<typeof LabelText> = {
   title: 'UI/Typography/LabelText',
   component: LabelText,
   tags: ['autodocs'],
   parameters: { layout: 'centered' },
+  decorators: [withCanvasWidth('bg-surface-container rounded-control p-4')],
 }
 
 export default meta
