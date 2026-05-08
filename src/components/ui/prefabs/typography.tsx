@@ -4,20 +4,13 @@ import { Divider } from '@/components/ui/core/divider'
 import { Stack } from '@/components/ui/core/layout'
 import {
   BodyText,
+  BrandWordmark,
   HeadingText,
   LabelText,
-  TEXT_TRACKING_CLASS,
   type TextAlign,
 } from '@/components/ui/core/typography'
 
-const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-primary uppercase',
-  TEXT_TRACKING_CLASS.wordmark
-)
-
-export function BrandWordmark({ children }: { children: React.ReactNode }) {
-  return <p className={BRAND_WORDMARK_CLASS}>{children}</p>
-}
+export { BrandWordmark }
 
 export function PageHeadline({ children }: React.PropsWithChildren) {
   return (
@@ -61,7 +54,7 @@ export function SectionTitle({
       {description ? (
         <Stack
           className={clsx(
-            'w-full max-w-2xl',
+            'max-w-2xl',
             isCentered && 'mx-auto',
             descriptionVisibility === 'desktop' && 'hidden lg:flex'
           )}

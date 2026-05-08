@@ -33,6 +33,7 @@
   --radius-control: 0.875rem;
 
   --shadow-surface: 0 24px 80px rgba(0, 0, 0, 0.45);
+  --shadow-ring-primary: 0 0 0 1px rgba(232, 192, 122, 0.22);
 
   --gap-stack-sm: clamp(0.5rem, 0.48rem + 0.08vw, 0.625rem);
   --gap-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);

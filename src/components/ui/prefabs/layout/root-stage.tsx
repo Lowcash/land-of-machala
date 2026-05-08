@@ -4,7 +4,6 @@ import clsx from 'clsx'
 
 import { SITE_BACKGROUND_PATH } from '@/lib/site-config'
 
-import { Box } from '@/components/ui/core/box'
 import { RootStageFooter } from '@/components/ui/prefabs/layout/root-stage-footer'
 import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 import { RootStageHeader } from '@/components/ui/prefabs/layout/root-stage-header'
@@ -27,7 +26,10 @@ export const RootStage: RootStageComponent = Object.assign(RootStageBase, {
 function RootStageBase({ children, className = '', ...props }: RootStageProps) {
   return (
     <div
-      className={clsx('bg-background relative isolate min-h-dvh overflow-hidden', className)}
+      className={clsx(
+        'bg-background relative isolate flex min-h-dvh flex-col overflow-hidden',
+        className
+      )}
       {...props}
     >
       <div className="absolute inset-0 -z-20">
@@ -41,11 +43,9 @@ function RootStageBase({ children, className = '', ...props }: RootStageProps) {
         />
       </div>
       <div className={ROOT_STAGE_OVERLAY_CLASS} />
-      <Box className="relative flex min-h-dvh flex-col">
-        <RootStageHeader />
-        <main className="flex flex-1">{children}</main>
-        <RootStageFooter />
-      </Box>
+      <RootStageHeader />
+      <main className="flex flex-1">{children}</main>
+      <RootStageFooter />
     </div>
   )
 }

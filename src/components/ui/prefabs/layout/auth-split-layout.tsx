@@ -31,9 +31,9 @@ export function AuthSplitLayout({
           {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
         </Stack>
         <Stack as="section" className="order-3 lg:order-1">
-          <div className="hidden max-w-xl lg:block">
+          <Box className="hidden max-w-xl lg:block">
             <PageHeadline>{headline}</PageHeadline>
-          </div>
+          </Box>
           <ChronicleFeed chronicles={chronicles} />
           <RealmStatsGrid stats={stats} />
         </Stack>

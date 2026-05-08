@@ -37,8 +37,10 @@ type BoxProps = React.PropsWithChildren<{
   borderTone?: BoxBorderTone
   className?: string
   fullHeight?: boolean
+  grow?: boolean
   padding?: BoxPadding
   radius?: BoxRadius
+  shrink?: boolean
   tone?: BoxTone
 }>
 
@@ -49,8 +51,10 @@ export function Box({
   children,
   className = '',
   fullHeight = false,
+  grow,
   padding = 'none',
   radius = 'none',
+  shrink,
   tone = 'none',
 }: BoxProps) {
   const Component = as as React.ElementType
@@ -60,6 +64,8 @@ export function Box({
       className={clsx(
         className,
         fullHeight && 'h-full',
+        grow && 'flex-1',
+        shrink === false && 'shrink-0',
         BOX_TONE_CLASS[tone],
         BOX_PADDING_CLASS[padding],
         BOX_RADIUS_CLASS[radius],

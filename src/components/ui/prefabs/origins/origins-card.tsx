@@ -51,9 +51,9 @@ function Header({ description, overline, title }: HeaderProps) {
 
 function Content({ children }: ContentProps) {
   return (
-    <section className="mx-auto w-full max-w-xl">
-      <FlowCard.Content as="section">{children}</FlowCard.Content>
-    </section>
+    <Stack as="section" className="mx-auto w-full max-w-xl">
+      {children}
+    </Stack>
   )
 }
 

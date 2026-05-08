@@ -183,3 +183,12 @@ export function DisplayValue({
     </Component>
   )
 }
+
+const BRAND_WORDMARK_CLASS = clsx(
+  'font-wordmark text-primary uppercase',
+  TEXT_TRACKING_CLASS.wordmark
+)
+
+export function BrandWordmark({ children }: { children: React.ReactNode }) {
+  return <p className={BRAND_WORDMARK_CLASS}>{children}</p>
+}
