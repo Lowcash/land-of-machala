@@ -14,7 +14,7 @@ export type DisplayValueSize = 'default' | 'hero'
 
 export const TEXT_TRACKING_CLASS = {
   action: 'tracking-[0.18em]',
-  wordmark: 'tracking-[0.24em]',
+  wordmark: 'tracking-[0.15em]',
 } as const
 
 type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
@@ -33,13 +33,13 @@ type SizedTextProps<As, Tone, Size> = BaseTextProps<As, Tone> & {
 
 const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight text-trim'
 const HEADING_TEXT_SIZE_CLASS: Record<HeadingTextSize, string> = {
-  page: 'text-3xl sm:text-4xl lg:text-5xl',
+  page: 'text-3xl lg:text-4xl',
   section: 'text-2xl sm:text-3xl',
 }
 const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
 const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums text-trim'
 const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
-  default: 'text-3xl leading-none',
+  default: 'text-2xl leading-none',
   hero: 'text-5xl leading-none',
 }
 
@@ -193,7 +193,7 @@ export function DisplayValue({
 }
 
 const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-primary uppercase',
+  'font-wordmark text-xl md:text-2xl text-primary uppercase',
   TEXT_TRACKING_CLASS.wordmark
 )
 
