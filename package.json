@@ -36,6 +36,7 @@
     "@types/react-dom": "^19.2.2",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.4",
+    "eslint-plugin-perfectionist": "^5.9.0",
     "eslint-plugin-storybook": "^10.3.6",
     "jsdom": "^28.0.0",
     "prettier": "^3.6.2",

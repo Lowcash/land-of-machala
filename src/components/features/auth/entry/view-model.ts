@@ -8,9 +8,9 @@ type EntryFormFields = {
 
 type EntryPanelCommonProps = EntryFormFields & {
   onEmailChange: (value: string) => void
+  onGuestEntry?: () => void
   onPasswordChange: (value: string) => void
   onSubmit: FormSubmitHandler
-  onGuestEntry?: () => void
   statusMessage?: string
 }
 

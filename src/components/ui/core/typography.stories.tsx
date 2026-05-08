@@ -41,16 +41,6 @@ export const LabelMetaDefault: StoryObj = {
   parameters: { layout: 'centered' },
 }
 
-export const LabelMetaSoft: StoryObj = {
-  name: 'LabelText / Meta soft',
-  render: () => (
-    <LabelText size="meta" tone="soft" uppercase>
-      2 hours ago
-    </LabelText>
-  ),
-  parameters: { layout: 'centered' },
-}
-
 // ---------------------------------------------------------------------------
 // LabelText
 // ---------------------------------------------------------------------------
@@ -125,14 +115,8 @@ export const PageHeadlineDesktop: StoryObj = {
   parameters: { layout: 'centered' },
 }
 
-export const PageHeadlineMobile: StoryObj = {
-  name: 'PageHeadline / Mobile',
-  render: () => <PageHeadline>Enter the Realm</PageHeadline>,
-  parameters: { layout: 'centered' },
-}
-
-export const SectionTitleFull: StoryObj = {
-  name: 'SectionTitle / Full',
+export const SectionHeadingFull: StoryObj = {
+  name: 'SectionHeading / Full',
   render: () => (
     <SectionHeading
       description="Choose your lineage and shaping your destiny before entering the realm."
@@ -145,14 +129,14 @@ export const SectionTitleFull: StoryObj = {
   parameters: { layout: 'padded' },
 }
 
-export const SectionTitleMinimal: StoryObj = {
-  name: 'SectionTitle / Title only',
+export const SectionHeadingMinimal: StoryObj = {
+  name: 'SectionHeading / Title only',
   render: () => <SectionHeading title="Character Setup" />,
   parameters: { layout: 'centered' },
 }
 
-export const SectionTitleLeft: StoryObj = {
-  name: 'SectionTitle / Left aligned',
+export const SectionHeadingLeft: StoryObj = {
+  name: 'SectionHeading / Left aligned',
   render: () => (
     <SectionHeading
       align="left"

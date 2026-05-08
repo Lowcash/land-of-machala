@@ -23,10 +23,10 @@ type TextInputControlProps = NativePropsWithoutClassNameStyle<
 
 type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTMLInputElement>> & {
   actionLabel?: string
-  onActionClick?: () => void
   error?: string
   hint?: string
   label: string
+  onActionClick?: () => void
 }
 
 export function TextInputControl({ invalid = false, ...props }: TextInputControlProps) {

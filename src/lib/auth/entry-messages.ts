@@ -2,49 +2,49 @@ import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
 
 type EntryMessagesShape = {
+  legal: {
+    connector: string
+    merchantLawsLabel: string
+    prefix: string
+    privacyCodexLabel: string
+    suffix: string
+  }
   shared: {
     emailPlaceholder: string
     passwordPlaceholder: string
   }
+  side: {
+    recentChroniclesTitle: string
+  }
   signIn: {
-    title: string
+    createAccountLabel: string
     description: string
     emailLabel: string
-    passwordLabel: string
     forgotLabel: string
+    guestLabel: string
+    orLabel: string
+    passwordLabel: string
     rememberLabel: string
     submitLabel: string
-    orLabel: string
-    createAccountLabel: string
-    guestLabel: string
+    title: string
   }
   signUp: {
-    title: string
+    backLabel: string
     description: string
+    guestLabel: string
     passwordLabel: string
     submitLabel: string
-    backLabel: string
-    guestLabel: string
-  }
-  legal: {
-    prefix: string
-    merchantLawsLabel: string
-    connector: string
-    privacyCodexLabel: string
-    suffix: string
-  }
-  validation: {
-    emailInvalid: string
-    passwordRequired: string
-    passwordLength: string
-    acceptTermsRequired: string
+    title: string
   }
   status: {
     continuationPending: string
     heroPrepared: string
   }
-  side: {
-    recentChroniclesTitle: string
+  validation: {
+    acceptTermsRequired: string
+    emailInvalid: string
+    passwordLength: string
+    passwordRequired: string
   }
 }
 

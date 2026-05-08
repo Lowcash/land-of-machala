@@ -14,9 +14,9 @@ type SelectionItem = {
 
 type SelectionColumnProps = {
   items: SelectionItem[]
+  onSelect: (id: string) => void
   selectedId: string
   title: string
-  onSelect: (id: string) => void
 }
 
 const SELECTION_BUTTON_CLASS = `font-interface cursor-pointer rounded-compact border ${TEXT_TRACKING_CLASS.action} uppercase transition`

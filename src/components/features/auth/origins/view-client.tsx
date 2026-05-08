@@ -36,9 +36,9 @@ type HeroDraft = {
 }
 
 type OriginsViewState = {
+  hero: HeroDraft
   phase: OriginsPhase
   selectedChoiceId: string | null
-  hero: HeroDraft
 }
 
 export function OriginsViewClient({ initialPhase = 'prologue', onComplete }: OriginsViewProps) {

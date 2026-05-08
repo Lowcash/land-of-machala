@@ -12,7 +12,7 @@ export function PageHeadline({ children }: React.PropsWithChildren) {
   )
 }
 
-type SectionTitleProps = {
+type SectionHeadingProps = {
   align?: TextAlign
   description?: React.ReactNode
   descriptionItalic?: boolean
@@ -30,7 +30,7 @@ export function SectionHeading({
   overline,
   showDivider = false,
   title,
-}: SectionTitleProps) {
+}: SectionHeadingProps) {
   const isCentered = align === 'center'
 
   return (

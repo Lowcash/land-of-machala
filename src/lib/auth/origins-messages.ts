@@ -2,21 +2,21 @@ import csMessages from '../../../messages/cs.json'
 import enMessages from '../../../messages/en.json'
 
 type OriginsMessagesShape = {
+  setup: {
+    backLabel: string
+    classTitle: string
+    confirmLabel: string
+    description: string
+    heroNameLabel: string
+    heroNamePlaceholder: string
+    overline: string
+    raceTitle: string
+    randomizeLabel: string
+    title: string
+  }
   tutorial: {
     continueLabel: string
     skipLabel: string
-  }
-  setup: {
-    title: string
-    description: string
-    overline: string
-    raceTitle: string
-    classTitle: string
-    heroNameLabel: string
-    heroNamePlaceholder: string
-    randomizeLabel: string
-    backLabel: string
-    confirmLabel: string
   }
 }
 

@@ -7,9 +7,9 @@ import { BodyText, DisplayValue } from '@/components/ui/core/typography'
 type PrologueChoiceCardProps = {
   description: string
   isActive: boolean
+  onSelect: () => void
   optionLabel: string
   title: string
-  onSelect: () => void
 }
 
 const PROLOGUE_CHOICE_CARD_CLASS = 'flex w-full cursor-pointer items-start transition'
