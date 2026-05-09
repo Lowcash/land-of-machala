@@ -44,7 +44,7 @@ function RootStageBase({ children, className = '', ...props }: RootStageProps) {
       </div>
       <div className={ROOT_STAGE_OVERLAY_CLASS} />
       <RootStageHeader />
-      <main className="flex flex-1">{children}</main>
+      {children}
       <RootStageFooter />
     </div>
   )

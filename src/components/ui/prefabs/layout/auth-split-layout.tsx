@@ -16,6 +16,11 @@ type AuthSplitLayoutProps = {
   tagline?: string
 }
 
+const AUTH_SPLIT_MOBILE_HEADLINE_CLASS = 'order-1 lg:hidden'
+const AUTH_SPLIT_LORE_CLASS = 'order-3 lg:order-1'
+const AUTH_SPLIT_FORM_CLASS =
+  'order-2 w-full max-w-xl justify-self-center lg:order-2 lg:max-w-[30rem] lg:justify-self-end'
+
 export function AuthSplitLayout({
   children,
   chronicles,
@@ -26,18 +31,18 @@ export function AuthSplitLayout({
   return (
     <RootStage>
       <RootStage.Frame preset="split">
-        <Stack className="order-1 lg:hidden">
+        <Stack as="section" className={AUTH_SPLIT_MOBILE_HEADLINE_CLASS}>
           <PageHeadline italic>{headline}</PageHeadline>
           {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
         </Stack>
-        <Stack as="section" className="order-3 lg:order-1">
+        <Stack as="section" className={AUTH_SPLIT_LORE_CLASS}>
           <Box className="hidden max-w-xl lg:block">
             <PageHeadline italic>{headline}</PageHeadline>
           </Box>
           <ChronicleFeed chronicles={chronicles} />
           <RealmStatsGrid stats={stats} />
         </Stack>
-        <Box as="section" className="order-2 justify-self-center lg:order-2 lg:justify-self-end">
+        <Box as="section" className={AUTH_SPLIT_FORM_CLASS}>
           {children}
         </Box>
       </RootStage.Frame>

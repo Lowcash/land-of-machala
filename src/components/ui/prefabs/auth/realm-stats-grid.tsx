@@ -14,8 +14,8 @@ export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
       {stats.map((item) => (
         <Box as="li" border key={item.label} padding="item" radius="compact" tone="surface">
           <Stack align="center">
-            <LabelText size="meta" tone="default" uppercase>
-              {item.label}
+            <LabelText size="meta" tone="inherit" uppercase>
+              <span className="text-primary-bright">{item.label}</span>
             </LabelText>
             <DisplayValue align="center" tone="default">
               {item.value}

@@ -7,8 +7,9 @@ export type TextAlign = 'center' | 'left'
 export type TextTone = 'default' | 'error' | 'inherit' | 'muted' | 'primary' | 'soft'
 
 export const TEXT_TRACKING_CLASS = {
-  action: 'tracking-[0.18em]',
-  wordmark: 'tracking-[0.15em]',
+  action: 'tracking-form',
+  form: 'tracking-form',
+  wordmark: 'tracking-wordmark',
 } as const
 
 const TEXT_ALIGN_CLASS: Record<TextAlign, string> = {
@@ -86,9 +87,9 @@ type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
 }
 
 const BODY_TEXT_SIZE_CLASS: Record<BodyTextSize, string> = {
-  compact: 'text-sm',
-  default: '',
-  expanded: 'text-lg',
+  compact: 'text-label',
+  default: 'text-body',
+  expanded: 'text-body',
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {
@@ -138,7 +139,7 @@ const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
 
 const LABEL_TEXT_SIZE_CLASS: Record<LabelTextSize, string> = {
   default: '',
-  meta: 'text-xs',
+  meta: 'text-label',
 }
 
 const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
@@ -225,7 +226,7 @@ export function DisplayValue({
 // --- BrandWordmark ---
 
 const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-wordmark text-primary uppercase text-trim opacity-90',
+  'font-wordmark text-wordmark text-brand-wordmark uppercase text-trim opacity-90',
   TEXT_TRACKING_CLASS.wordmark
 )
 

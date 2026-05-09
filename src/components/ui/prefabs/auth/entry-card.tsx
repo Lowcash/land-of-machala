@@ -5,7 +5,9 @@ import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
 import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
-const Content = FlowCard.Content
+function Content({ children }: React.PropsWithChildren) {
+  return <FlowCard.Content fullWidth>{children}</FlowCard.Content>
+}
 
 type EntryCardRootProps = React.PropsWithChildren
 
@@ -33,7 +35,7 @@ function Header({ description, title }: EntryCardHeaderProps) {
     <FlowCard.Header
       description={description}
       descriptionItalic
-      descriptionSize="expanded"
+      descriptionSize="default"
       descriptionVisibility="desktop"
       title={title}
     />

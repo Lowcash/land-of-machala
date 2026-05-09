@@ -46,7 +46,7 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
           />
           <svg
             aria-hidden="true"
-            className="text-primary pointer-events-none absolute h-3 w-3 scale-90 opacity-0 transition peer-checked:scale-100 peer-checked:opacity-100"
+            className="text-on-primary pointer-events-none absolute h-3 w-3 scale-90 opacity-0 transition peer-checked:scale-100 peer-checked:opacity-100"
             fill="none"
             viewBox="0 0 24 24"
           >

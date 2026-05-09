@@ -33,12 +33,17 @@ type HelperTextProps = {
   tone?: HelperTextTone
 }
 
-const CONTROL_LABEL_CLASS = 'cursor-pointer leading-6 text-on-surface-variant/80 text-[11px] tracking-widest uppercase'
+const CONTROL_LABEL_CLASS = `cursor-pointer leading-6 ${TEXT_TRACKING_CLASS.form}`
 
-const FIELD_ACTION_CLASS = `font-interface text-primary/70 hover:text-primary focus-visible:text-primary ${TEXT_TRACKING_CLASS.action} text-[10px] whitespace-nowrap tracking-widest uppercase underline-offset-4 transition focus-visible:underline`
+const FIELD_LABEL_CLASS = TEXT_TRACKING_CLASS.form
+
+const FIELD_ACTION_CLASS =
+  'text-on-surface-variant/80 hover:text-primary focus-visible:text-primary whitespace-nowrap underline-offset-4 transition focus-visible:underline'
+
+const FIELD_ACTION_TEXT_CLASS = TEXT_TRACKING_CLASS.form
 
 function Root({ children }: React.PropsWithChildren) {
-  return <Stack>{children}</Stack>
+  return <Stack gap="tight">{children}</Stack>
 }
 
 function Header({ children, hasAction = false }: HeaderProps) {
@@ -63,7 +68,7 @@ function InlineControl({ children }: React.PropsWithChildren) {
 
 function ControlLabel({ children, error = false, htmlFor }: ControlLabelProps) {
   return (
-    <LabelText as="label" htmlFor={htmlFor} tone={error ? 'error' : 'muted'}>
+    <LabelText as="label" htmlFor={htmlFor} size="meta" tone={error ? 'error' : 'muted'}>
       <span className={CONTROL_LABEL_CLASS}>{children}</span>
     </LabelText>
   )
@@ -71,8 +76,8 @@ function ControlLabel({ children, error = false, htmlFor }: ControlLabelProps) {
 
 function Label({ children, error = false, htmlFor }: LabelProps) {
   return (
-    <LabelText as="label" htmlFor={htmlFor} tone={error ? 'error' : 'primary'} uppercase>
-      {children}
+    <LabelText as="label" htmlFor={htmlFor} size="meta" tone={error ? 'error' : 'muted'} uppercase>
+      <span className={FIELD_LABEL_CLASS}>{children}</span>
     </LabelText>
   )
 }
@@ -80,7 +85,9 @@ function Label({ children, error = false, htmlFor }: LabelProps) {
 function Action({ children, onClick }: ActionProps) {
   return (
     <button className={FIELD_ACTION_CLASS} onClick={onClick} type="button">
-      {children}
+      <LabelText as="span" size="meta" tone="inherit" uppercase>
+        <span className={FIELD_ACTION_TEXT_CLASS}>{children}</span>
+      </LabelText>
     </button>
   )
 }

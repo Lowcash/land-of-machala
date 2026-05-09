@@ -5,13 +5,16 @@
   --font-interface: var(--font-source-interface), 'Helvetica Neue', sans-serif;
   --font-display: var(--font-source-display), 'Times New Roman', serif;
   --font-wordmark: var(--font-source-wordmark), 'Times New Roman', serif;
-  --text-micro: 0.625rem;
-  --text-fine: 0.6875rem;
+  --text-label: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
+  --text-body: clamp(0.9375rem, 0.92rem + 0.08vw, 1rem);
   --text-heading-page: clamp(1.875rem, 1.5rem + 1vw, 2.25rem);
   --text-heading-section: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
   --text-display-default: 1.5rem;
   --text-display-hero: 3rem;
   --text-wordmark: clamp(1.25rem, 0.875rem + 1vw, 1.5rem);
+
+  --tracking-form: 0.1em;
+  --tracking-wordmark: 0.15em;
 
   --color-background: #131313;
 
@@ -27,7 +30,9 @@
   --color-outline-variant: #4f4536;
 
   --color-primary: #e8c07a;
+  --color-primary-bright: #ffcd6b;
   --color-primary-container: #d4a85c;
+  --color-brand-wordmark: #e5b042;
 
   --color-on-primary: #412d00;
 
