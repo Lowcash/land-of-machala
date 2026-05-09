@@ -9,7 +9,7 @@ import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 const FOOTER_LINK_CLASS = 'hover:text-primary cursor-pointer transition-colors'
 const FOOTER_LABEL_CLASS = 'text-sm'
 
-const FOOTER_NAV_CLASS = `font-interface text-micro text-on-surface-variant/80 flex flex-wrap items-center justify-center ${TEXT_TRACKING_CLASS.wordmark} uppercase`
+const FOOTER_NAV_CLASS = `font-interface text-micro text-on-surface-variant/80 flex flex-wrap items-center justify-center gap-x-1 ${TEXT_TRACKING_CLASS.wordmark} uppercase`
 
 export function RootStageFooter() {
   return (

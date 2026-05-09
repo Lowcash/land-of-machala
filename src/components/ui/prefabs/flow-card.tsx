@@ -14,6 +14,7 @@ type FlowCardHeaderProps = {
   align?: TextAlign
   description?: React.ReactNode
   descriptionItalic?: boolean
+  descriptionVariant?: 'body' | 'heading'
   descriptionVisibility?: 'always' | 'desktop'
   overline?: React.ReactNode
   showDivider?: boolean
@@ -50,6 +51,7 @@ function Header({
   align,
   description,
   descriptionItalic = false,
+  descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
   showDivider = false,
@@ -60,6 +62,7 @@ function Header({
       align={align}
       description={description}
       descriptionItalic={descriptionItalic}
+      descriptionVariant={descriptionVariant}
       descriptionVisibility={descriptionVisibility}
       overline={overline}
       showDivider={showDivider}

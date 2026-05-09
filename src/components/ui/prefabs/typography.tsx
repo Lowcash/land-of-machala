@@ -16,6 +16,7 @@ type SectionHeadingProps = {
   align?: TextAlign
   description?: React.ReactNode
   descriptionItalic?: boolean
+  descriptionVariant?: 'body' | 'heading'
   descriptionVisibility?: 'always' | 'desktop'
   overline?: React.ReactNode
   showDivider?: boolean
@@ -26,6 +27,7 @@ export function SectionHeading({
   align = 'center',
   description,
   descriptionItalic = false,
+  descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
   showDivider = false,
@@ -53,9 +55,15 @@ export function SectionHeading({
           fullWidth
           gap="none"
         >
-          <BodyText align={align} italic={descriptionItalic} tone="muted">
-            {description}
-          </BodyText>
+          {descriptionVariant === 'heading' ? (
+            <HeadingText align={align} as="p" italic size="section" tone="default">
+              {description}
+            </HeadingText>
+          ) : (
+            <BodyText align={align} italic={descriptionItalic} tone="muted">
+              {description}
+            </BodyText>
+          )}
         </Stack>
       ) : null}
       {showDivider ? <Divider align={align} short /> : null}

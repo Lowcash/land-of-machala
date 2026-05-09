@@ -33,13 +33,15 @@ export type HeadingTextAs = 'div' | 'h1' | 'h2' | 'h3' | 'p' | 'span'
 export type HeadingTextSize = 'page' | 'section'
 export type HeadingTextTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
 
-type HeadingTextProps = SizedTextProps<HeadingTextAs, HeadingTextTone, HeadingTextSize>
+type HeadingTextProps = SizedTextProps<HeadingTextAs, HeadingTextTone, HeadingTextSize> & {
+  italic?: boolean
+}
 
 const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight text-trim'
 
 const HEADING_TEXT_SIZE_CLASS: Record<HeadingTextSize, string> = {
-  page: 'text-3xl lg:text-4xl',
-  section: 'text-2xl sm:text-3xl',
+  page: 'text-heading-page',
+  section: 'text-heading-section',
 }
 
 const HEADING_TEXT_TONE_CLASS: Record<HeadingTextTone, string> = {
@@ -52,6 +54,7 @@ export function HeadingText({
   align = 'left',
   as = 'p',
   children,
+  italic = false,
   size = 'section',
   tone = 'default',
 }: HeadingTextProps) {
@@ -63,7 +66,8 @@ export function HeadingText({
         HEADING_TEXT_BASE_CLASS,
         HEADING_TEXT_SIZE_CLASS[size],
         TEXT_ALIGN_CLASS[align],
-        HEADING_TEXT_TONE_CLASS[tone]
+        HEADING_TEXT_TONE_CLASS[tone],
+        italic && 'italic'
       )}
     >
       {children}
@@ -172,11 +176,11 @@ type DisplayValueTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
 
 type DisplayValueProps = SizedTextProps<TextAs, DisplayValueTone, DisplayValueSize>
 
-const DISPLAY_VALUE_BASE_CLASS = 'font-display tabular-nums text-trim'
+const DISPLAY_VALUE_BASE_CLASS = 'font-display font-bold tabular-nums text-trim'
 
 const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
-  default: 'text-2xl leading-none',
-  hero: 'text-5xl leading-none',
+  default: 'text-display-default leading-none',
+  hero: 'text-display-hero leading-none',
 }
 
 const DISPLAY_VALUE_TONE_CLASS: Record<DisplayValueTone, string> = {
@@ -211,7 +215,7 @@ export function DisplayValue({
 // --- BrandWordmark ---
 
 const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-xl md:text-2xl text-primary uppercase',
+  'font-wordmark text-wordmark text-primary uppercase text-trim',
   TEXT_TRACKING_CLASS.wordmark
 )
 
