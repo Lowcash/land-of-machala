@@ -17,7 +17,7 @@ export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
             <LabelText size="meta" tone="default" uppercase>
               {item.label}
             </LabelText>
-            <DisplayValue align="center" tone="primary">
+            <DisplayValue align="center" tone="default">
               {item.value}
             </DisplayValue>
           </Stack>

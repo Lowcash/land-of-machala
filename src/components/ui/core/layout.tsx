@@ -173,17 +173,26 @@ type GridProps = React.PropsWithChildren<{
   xlColumns?: GridColumns
 }>
 
-const GRID_COLUMN_VALUES: GridColumns[] = [1, 2, 3, 4]
-
-function createGridColumnsClass(prefix = ''): Record<GridColumns, string> {
-  return Object.fromEntries(
-    GRID_COLUMN_VALUES.map((column) => [column, `${prefix}grid-cols-${column}`])
-  ) as Record<GridColumns, string>
+const GRID_COLUMNS_CLASS: Record<GridColumns, string> = {
+  1: 'grid-cols-1',
+  2: 'grid-cols-2',
+  3: 'grid-cols-3',
+  4: 'grid-cols-4',
 }
 
-const GRID_COLUMNS_CLASS = createGridColumnsClass()
-const GRID_COLUMNS_MD_CLASS = createGridColumnsClass('md:')
-const GRID_COLUMNS_XL_CLASS = createGridColumnsClass('xl:')
+const GRID_COLUMNS_MD_CLASS: Record<GridColumns, string> = {
+  1: 'md:grid-cols-1',
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-3',
+  4: 'md:grid-cols-4',
+}
+
+const GRID_COLUMNS_XL_CLASS: Record<GridColumns, string> = {
+  1: 'xl:grid-cols-1',
+  2: 'xl:grid-cols-2',
+  3: 'xl:grid-cols-3',
+  4: 'xl:grid-cols-4',
+}
 
 export function Grid({
   as = 'div',

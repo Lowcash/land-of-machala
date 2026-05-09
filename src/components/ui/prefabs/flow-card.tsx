@@ -1,6 +1,6 @@
 import { Card } from '@/components/ui/core/card'
 import { Stack } from '@/components/ui/core/layout'
-import type { TextAlign } from '@/components/ui/core/typography'
+import type { BodyTextSize, TextAlign } from '@/components/ui/core/typography'
 
 import { SectionHeading } from './typography'
 
@@ -14,6 +14,7 @@ type FlowCardHeaderProps = {
   align?: TextAlign
   description?: React.ReactNode
   descriptionItalic?: boolean
+  descriptionSize?: BodyTextSize
   descriptionVariant?: 'body' | 'heading'
   descriptionVisibility?: 'always' | 'desktop'
   overline?: React.ReactNode
@@ -51,6 +52,7 @@ function Header({
   align,
   description,
   descriptionItalic = false,
+  descriptionSize = 'default',
   descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
@@ -62,6 +64,7 @@ function Header({
       align={align}
       description={description}
       descriptionItalic={descriptionItalic}
+      descriptionSize={descriptionSize}
       descriptionVariant={descriptionVariant}
       descriptionVisibility={descriptionVisibility}
       overline={overline}

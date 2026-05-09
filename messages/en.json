@@ -9,7 +9,7 @@
     },
     "signIn": {
       "title": "Enter the realm",
-      "description": "Reconnect with your legacy.",
+      "description": "Reconnect with your legacy",
       "emailLabel": "Email",
       "passwordLabel": "Secret phrase",
       "forgotLabel": "Forgotten scrolls?",

@@ -27,12 +27,12 @@ export function AuthSplitLayout({
     <RootStage>
       <RootStage.Frame preset="split">
         <Stack className="order-1 lg:hidden">
-          <PageHeadline>{headline}</PageHeadline>
+          <PageHeadline italic>{headline}</PageHeadline>
           {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
         </Stack>
         <Stack as="section" className="order-3 lg:order-1">
           <Box className="hidden max-w-xl lg:block">
-            <PageHeadline>{headline}</PageHeadline>
+            <PageHeadline italic>{headline}</PageHeadline>
           </Box>
           <ChronicleFeed chronicles={chronicles} />
           <RealmStatsGrid stats={stats} />

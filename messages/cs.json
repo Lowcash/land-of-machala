@@ -9,7 +9,7 @@
     },
     "signIn": {
       "title": "Vstup do říše",
-      "description": "Navrať se ke svému odkazu.",
+      "description": "Navrať se ke svému odkazu",
       "emailLabel": "E-mail",
       "passwordLabel": "Tajná fráze",
       "forgotLabel": "Zapomenuté svitky?",

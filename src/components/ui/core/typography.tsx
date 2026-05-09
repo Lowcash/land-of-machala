@@ -78,9 +78,16 @@ export function HeadingText({
 // --- BodyText ---
 
 type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
+export type BodyTextSize = 'default' | 'lg'
 
 type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
   italic?: boolean
+  size?: BodyTextSize
+}
+
+const BODY_TEXT_SIZE_CLASS: Record<BodyTextSize, string> = {
+  default: '',
+  lg: 'text-xl',
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {
@@ -95,6 +102,7 @@ export function BodyText({
   as = 'p',
   children,
   italic = false,
+  size = 'default',
   tone = 'default',
 }: BodyTextProps) {
   const Component = as as React.ElementType
@@ -103,6 +111,7 @@ export function BodyText({
     <Component
       className={clsx(
         'text-trim',
+        BODY_TEXT_SIZE_CLASS[size],
         TEXT_ALIGN_CLASS[align],
         BODY_TEXT_TONE_CLASS[tone],
         italic && 'italic'
@@ -215,7 +224,7 @@ export function DisplayValue({
 // --- BrandWordmark ---
 
 const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-wordmark text-primary uppercase text-trim',
+  'font-wordmark text-wordmark text-primary uppercase text-trim opacity-90',
   TEXT_TRACKING_CLASS.wordmark
 )
 

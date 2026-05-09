@@ -2,11 +2,17 @@ import clsx from 'clsx'
 
 import { Divider } from '@/components/ui/core/divider'
 import { Stack } from '@/components/ui/core/layout'
-import { BodyText, HeadingText, LabelText, type TextAlign } from '@/components/ui/core/typography'
+import {
+  BodyText,
+  HeadingText,
+  LabelText,
+  type BodyTextSize,
+  type TextAlign,
+} from '@/components/ui/core/typography'
 
-export function PageHeadline({ children }: React.PropsWithChildren) {
+export function PageHeadline({ children, italic = false }: React.PropsWithChildren<{ italic?: boolean }>) {
   return (
-    <HeadingText align="left" as="h1" size="page">
+    <HeadingText align="left" as="h1" italic={italic} size="page">
       {children}
     </HeadingText>
   )
@@ -16,6 +22,7 @@ type SectionHeadingProps = {
   align?: TextAlign
   description?: React.ReactNode
   descriptionItalic?: boolean
+  descriptionSize?: BodyTextSize
   descriptionVariant?: 'body' | 'heading'
   descriptionVisibility?: 'always' | 'desktop'
   overline?: React.ReactNode
@@ -27,6 +34,7 @@ export function SectionHeading({
   align = 'center',
   description,
   descriptionItalic = false,
+  descriptionSize = 'default',
   descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
@@ -60,7 +68,7 @@ export function SectionHeading({
               {description}
             </HeadingText>
           ) : (
-            <BodyText align={align} italic={descriptionItalic} tone="muted">
+            <BodyText align={align} italic={descriptionItalic} size={descriptionSize} tone="muted">
               {description}
             </BodyText>
           )}
