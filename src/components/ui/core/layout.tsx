@@ -173,8 +173,6 @@ type GridProps = React.PropsWithChildren<{
   xlColumns?: GridColumns
 }>
 
-const GRID_COLUMN_VALUES: GridColumns[] = [1, 2, 3, 4]
-
 // Static Records required: Tailwind PurgeCSS scans only literal strings, not template
 // literals. Dynamic generation would break class detection. Keep static despite repetition.
 const GRID_COLUMNS_CLASS: Record<GridColumns, string> = {
