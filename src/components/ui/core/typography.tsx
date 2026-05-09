@@ -7,9 +7,8 @@ export type TextAlign = 'center' | 'left'
 export type TextTone = 'default' | 'error' | 'inherit' | 'muted' | 'primary' | 'soft'
 
 export const TEXT_TRACKING_CLASS = {
-  action: 'tracking-form',
-  form: 'tracking-form',
-  wordmark: 'tracking-wordmark',
+  display: 'tracking-display',
+  ui: 'tracking-ui',
 } as const
 
 const TEXT_ALIGN_CLASS: Record<TextAlign, string> = {
@@ -31,18 +30,18 @@ type SizedTextProps<As, Tone, Size> = BaseTextProps<As, Tone> & {
 // --- HeadingText ---
 
 export type HeadingTextAs = 'div' | 'h1' | 'h2' | 'h3' | 'p' | 'span'
-export type HeadingTextSize = 'page' | 'section'
+export type HeadingTextSize = 'heading' | 'page'
 export type HeadingTextTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
 
 type HeadingTextProps = SizedTextProps<HeadingTextAs, HeadingTextTone, HeadingTextSize> & {
   italic?: boolean
 }
 
-const HEADING_TEXT_BASE_CLASS = 'font-display leading-tight text-trim'
+const HEADING_TEXT_BASE_CLASS = 'font-display leading-(--line-height-tight) text-trim'
 
 const HEADING_TEXT_SIZE_CLASS: Record<HeadingTextSize, string> = {
-  page: 'text-heading-page',
-  section: 'text-heading-section',
+  heading: 'text-scale-4',
+  page: 'text-scale-5',
 }
 
 const HEADING_TEXT_TONE_CLASS: Record<HeadingTextTone, string> = {
@@ -56,7 +55,7 @@ export function HeadingText({
   as = 'p',
   children,
   italic = false,
-  size = 'section',
+  size = 'heading',
   tone = 'default',
 }: HeadingTextProps) {
   const Component = as as React.ElementType
@@ -79,7 +78,7 @@ export function HeadingText({
 // --- BodyText ---
 
 type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
-export type BodyTextSize = 'compact' | 'default' | 'expanded'
+export type BodyTextSize = 'body' | 'label' | 'title'
 
 type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
   italic?: boolean
@@ -87,9 +86,9 @@ type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
 }
 
 const BODY_TEXT_SIZE_CLASS: Record<BodyTextSize, string> = {
-  compact: 'text-label',
-  default: 'text-body',
-  expanded: 'text-body',
+  body: 'text-scale-2',
+  label: 'text-scale-1',
+  title: 'text-scale-3',
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {
@@ -104,7 +103,7 @@ export function BodyText({
   as = 'p',
   children,
   italic = false,
-  size = 'default',
+  size = 'body',
   tone = 'default',
 }: BodyTextProps) {
   const Component = as as React.ElementType
@@ -113,6 +112,7 @@ export function BodyText({
     <Component
       className={clsx(
         'text-trim',
+        'leading-(--line-height-relaxed)',
         BODY_TEXT_SIZE_CLASS[size],
         TEXT_ALIGN_CLASS[align],
         BODY_TEXT_TONE_CLASS[tone],
@@ -127,7 +127,7 @@ export function BodyText({
 // --- LabelText ---
 
 export type LabelTextAs = 'div' | 'label' | 'p' | 'span'
-export type LabelTextSize = 'default' | 'meta'
+export type LabelTextSize = 'body' | 'label'
 export type LabelTextTone = TextTone
 
 type LabelTextProps = SizedTextProps<LabelTextAs, LabelTextTone, LabelTextSize> & {
@@ -135,11 +135,11 @@ type LabelTextProps = SizedTextProps<LabelTextAs, LabelTextTone, LabelTextSize> 
   uppercase?: boolean
 }
 
-const LABEL_TEXT_BASE_CLASS = 'font-interface text-trim'
+const LABEL_TEXT_BASE_CLASS = 'font-interface leading-(--line-height-snug) text-trim'
 
 const LABEL_TEXT_SIZE_CLASS: Record<LabelTextSize, string> = {
-  default: '',
-  meta: 'text-label',
+  body: 'text-scale-2',
+  label: 'text-scale-1',
 }
 
 const LABEL_TEXT_TONE_CLASS: Record<LabelTextTone, string> = {
@@ -156,7 +156,7 @@ export function LabelText({
   as = 'p',
   children,
   htmlFor,
-  size = 'default',
+  size = 'label',
   tone = 'primary',
   uppercase = false,
 }: LabelTextProps) {
@@ -181,17 +181,19 @@ export function LabelText({
 
 // --- DisplayValue ---
 
-export type DisplayValueSize = 'default' | 'hero'
+export type DisplayValueSize = 'compact' | 'heading' | 'hero'
 
 type DisplayValueTone = Extract<TextTone, 'default' | 'inherit' | 'primary'>
 
 type DisplayValueProps = SizedTextProps<TextAs, DisplayValueTone, DisplayValueSize>
 
-const DISPLAY_VALUE_BASE_CLASS = 'font-display font-bold tabular-nums text-trim'
+const DISPLAY_VALUE_BASE_CLASS =
+  'font-display font-bold tabular-nums leading-(--line-height-solid) text-trim'
 
 const DISPLAY_VALUE_SIZE_CLASS: Record<DisplayValueSize, string> = {
-  default: 'text-display-default leading-none',
-  hero: 'text-display-hero leading-none',
+  compact: 'text-scale-3',
+  heading: 'text-scale-4',
+  hero: 'text-scale-6',
 }
 
 const DISPLAY_VALUE_TONE_CLASS: Record<DisplayValueTone, string> = {
@@ -204,7 +206,7 @@ export function DisplayValue({
   align = 'left',
   as = 'p',
   children,
-  size = 'default',
+  size = 'heading',
   tone = 'default',
 }: DisplayValueProps) {
   const Component = as as React.ElementType
@@ -226,8 +228,8 @@ export function DisplayValue({
 // --- BrandWordmark ---
 
 const BRAND_WORDMARK_CLASS = clsx(
-  'font-wordmark text-wordmark text-brand-wordmark uppercase text-trim opacity-90',
-  TEXT_TRACKING_CLASS.wordmark
+  'font-wordmark text-scale-3 text-brand-wordmark uppercase leading-(--line-height-tight) text-trim opacity-90',
+  TEXT_TRACKING_CLASS.display
 )
 
 export function BrandWordmark({ children }: { children: React.ReactNode }) {

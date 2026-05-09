@@ -13,11 +13,11 @@ export function RealmStatsGrid({ stats }: RealmStatsGridProps) {
     <Grid as="ul" columns={2} fullWidth>
       {stats.map((item) => (
         <Box as="li" border key={item.label} padding="item" radius="compact" tone="surface">
-          <Stack align="center">
-            <LabelText size="meta" tone="inherit" uppercase>
+          <Stack align="start">
+            <LabelText size="label" tone="inherit" uppercase>
               <span className="text-primary-bright">{item.label}</span>
             </LabelText>
-            <DisplayValue align="center" tone="default">
+            <DisplayValue align="left" size="heading" tone="default">
               {item.value}
             </DisplayValue>
           </Stack>

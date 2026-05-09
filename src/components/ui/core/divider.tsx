@@ -41,7 +41,7 @@ export function Divider({
   return (
     <Inline align="center" fullWidth gap="tight">
       <span className={clsx('h-px flex-1', DIVIDER_LINE_TONE_CLASS[tone])} />
-      <LabelText size="meta" tone={labelTone} uppercase>
+      <LabelText size="label" tone={labelTone} uppercase>
         {label}
       </LabelText>
       <span className={clsx('h-px flex-1', DIVIDER_LINE_TONE_CLASS[tone])} />

@@ -6,7 +6,11 @@ import { BodyText } from '@/components/ui/core/typography'
 import { FlowCard } from '@/components/ui/prefabs/flow-card'
 
 function Content({ children }: React.PropsWithChildren) {
-  return <FlowCard.Content fullWidth>{children}</FlowCard.Content>
+  return (
+    <FlowCard.Content fullWidth gap="loose">
+      {children}
+    </FlowCard.Content>
+  )
 }
 
 type EntryCardRootProps = React.PropsWithChildren
@@ -35,7 +39,7 @@ function Header({ description, title }: EntryCardHeaderProps) {
     <FlowCard.Header
       description={description}
       descriptionItalic
-      descriptionSize="default"
+      descriptionSize="body"
       descriptionVisibility="desktop"
       title={title}
     />
@@ -61,7 +65,7 @@ function Status({ message }: EntryCardStatusProps) {
 type EntryCardSupportProps = React.PropsWithChildren
 
 function Support({ children }: EntryCardSupportProps) {
-  return <Stack>{children}</Stack>
+  return <Stack gap="base">{children}</Stack>
 }
 
 type EntryCardDividerProps = {
@@ -86,7 +90,7 @@ function GuestSwitchActions({
   switchLabel,
 }: EntryCardGuestSwitchActionsProps) {
   return (
-    <FlowCard.Actions>
+    <FlowCard.Actions fullWidth gap="tight">
       <Button fullWidth onClick={onGuestClick} variant="ghost">
         {guestLabel}
       </Button>

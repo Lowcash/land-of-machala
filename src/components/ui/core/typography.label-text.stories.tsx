@@ -36,7 +36,7 @@ export const PrimaryUppercase: Story = {
 
 export const SoftMeta: Story = {
   name: 'LabelText / Soft meta',
-  args: { children: '2 hours ago', size: 'meta', tone: 'soft', uppercase: true },
+  args: { children: '2 hours ago', size: 'label', tone: 'soft', uppercase: true },
 }
 
 export const Error: Story = {
@@ -50,7 +50,7 @@ export const ToneComparison: Story = {
     <Stack>
       <LabelText tone="default">System notice (default)</LabelText>
       <LabelText tone="muted">Recent chronicles (muted)</LabelText>
-      <LabelText size="meta" tone="soft" uppercase>
+      <LabelText size="label" tone="soft" uppercase>
         2 hours ago (soft)
       </LabelText>
     </Stack>

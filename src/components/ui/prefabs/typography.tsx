@@ -37,7 +37,7 @@ export function SectionHeading({
   align = 'center',
   description,
   descriptionItalic = false,
-  descriptionSize = 'default',
+  descriptionSize = 'body',
   descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
@@ -53,7 +53,7 @@ export function SectionHeading({
           {overline}
         </LabelText>
       ) : null}
-      <HeadingText align={align} as="h2" size="section">
+      <HeadingText align={align} as="h2" size="heading">
         {title}
       </HeadingText>
       {description ? (
@@ -67,7 +67,7 @@ export function SectionHeading({
           gap="none"
         >
           {descriptionVariant === 'heading' ? (
-            <HeadingText align={align} as="p" italic size="section" tone="default">
+            <HeadingText align={align} as="p" italic size="heading" tone="default">
               {description}
             </HeadingText>
           ) : (

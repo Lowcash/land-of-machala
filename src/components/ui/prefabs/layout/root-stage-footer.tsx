@@ -7,13 +7,13 @@ import { BodyText, TEXT_TRACKING_CLASS } from '@/components/ui/core/typography'
 import { RootStageFrame } from '@/components/ui/prefabs/layout/root-stage-frame'
 
 const FOOTER_LINK_CLASS = 'hover:text-primary cursor-pointer transition-colors'
-const FOOTER_NAV_CLASS = `font-interface text-label text-on-surface-variant/80 ${TEXT_TRACKING_CLASS.wordmark} uppercase`
+const FOOTER_NAV_CLASS = `font-interface text-scale-1 text-on-surface-variant/80 ${TEXT_TRACKING_CLASS.display} uppercase`
 
 export function RootStageFooter() {
   return (
     <RootStageFrame as="footer">
       <Stack align="center">
-        <BodyText align="center" italic size="compact" tone="muted">
+        <BodyText align="center" italic size="label" tone="muted">
           {SITE_FOOTER_LABEL}
         </BodyText>
         <Inline

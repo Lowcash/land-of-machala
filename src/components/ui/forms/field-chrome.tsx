@@ -33,14 +33,14 @@ type HelperTextProps = {
   tone?: HelperTextTone
 }
 
-const CONTROL_LABEL_CLASS = `cursor-pointer leading-6 ${TEXT_TRACKING_CLASS.form}`
+const CONTROL_LABEL_CLASS = 'font-reading cursor-pointer leading-(--line-height-snug)'
 
-const FIELD_LABEL_CLASS = TEXT_TRACKING_CLASS.form
+const FIELD_LABEL_CLASS = TEXT_TRACKING_CLASS.ui
 
 const FIELD_ACTION_CLASS =
-  'text-on-surface-variant/80 hover:text-primary focus-visible:text-primary whitespace-nowrap underline-offset-4 transition focus-visible:underline'
+  'text-primary-bright hover:text-primary focus-visible:text-primary inline-flex items-center whitespace-nowrap underline decoration-transparent underline-offset-4 transition hover:decoration-current focus-visible:decoration-current'
 
-const FIELD_ACTION_TEXT_CLASS = TEXT_TRACKING_CLASS.form
+const FIELD_ACTION_TEXT_CLASS = TEXT_TRACKING_CLASS.ui
 
 function Root({ children }: React.PropsWithChildren) {
   return <Stack gap="tight">{children}</Stack>
@@ -49,9 +49,10 @@ function Root({ children }: React.PropsWithChildren) {
 function Header({ children, hasAction = false }: HeaderProps) {
   return (
     <Stack
-      className={clsx(hasAction && 'sm:flex-row sm:items-center sm:justify-between')}
+      className={clsx(hasAction && 'flex-row items-baseline')}
       fullWidth
       gap="none"
+      justify={hasAction ? 'between' : 'start'}
     >
       {children}
     </Stack>
@@ -60,7 +61,7 @@ function Header({ children, hasAction = false }: HeaderProps) {
 
 function InlineControl({ children }: React.PropsWithChildren) {
   return (
-    <Inline align="center" className="group" fullWidth>
+    <Inline align="center" className="group" fullWidth gap="tight">
       {children}
     </Inline>
   )
@@ -68,7 +69,7 @@ function InlineControl({ children }: React.PropsWithChildren) {
 
 function ControlLabel({ children, error = false, htmlFor }: ControlLabelProps) {
   return (
-    <LabelText as="label" htmlFor={htmlFor} size="meta" tone={error ? 'error' : 'muted'}>
+    <LabelText as="label" htmlFor={htmlFor} size="body" tone={error ? 'error' : 'muted'}>
       <span className={CONTROL_LABEL_CLASS}>{children}</span>
     </LabelText>
   )
@@ -76,7 +77,7 @@ function ControlLabel({ children, error = false, htmlFor }: ControlLabelProps) {
 
 function Label({ children, error = false, htmlFor }: LabelProps) {
   return (
-    <LabelText as="label" htmlFor={htmlFor} size="meta" tone={error ? 'error' : 'muted'} uppercase>
+    <LabelText as="label" htmlFor={htmlFor} size="label" tone={error ? 'error' : 'muted'} uppercase>
       <span className={FIELD_LABEL_CLASS}>{children}</span>
     </LabelText>
   )
@@ -85,7 +86,7 @@ function Label({ children, error = false, htmlFor }: LabelProps) {
 function Action({ children, onClick }: ActionProps) {
   return (
     <button className={FIELD_ACTION_CLASS} onClick={onClick} type="button">
-      <LabelText as="span" size="meta" tone="inherit" uppercase>
+      <LabelText as="span" size="label" tone="inherit" uppercase>
         <span className={FIELD_ACTION_TEXT_CLASS}>{children}</span>
       </LabelText>
     </button>
@@ -99,6 +100,7 @@ function HelperText({ children, reserveSpace = true, tone = 'default' }: HelperT
     <div className={clsx(reserveSpace && 'min-h-4', tone === 'invisible' && 'text-transparent')}>
       <BodyText
         as="p"
+        size="label"
         tone={tone === 'error' ? 'error' : tone === 'invisible' ? 'inherit' : 'muted'}
       >
         {text}

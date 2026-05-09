@@ -6,56 +6,94 @@ import { Divider } from '@/components/ui/core/divider'
 import { Grid, Stack } from '@/components/ui/core/layout'
 import { BodyText, DisplayValue, HeadingText, LabelText } from '@/components/ui/core/typography'
 
+type SurfaceSwatchTone =
+  | 'background'
+  | 'error'
+  | 'primary'
+  | 'primaryContainer'
+  | 'secondaryContainer'
+  | 'surface'
+  | 'surfaceHigh'
+  | 'surfaceLow'
+  | 'surfaceLowest'
+
+const SURFACE_SWATCH_CLASS: Record<SurfaceSwatchTone, string> = {
+  background: 'bg-background',
+  error: 'bg-error',
+  primary: 'bg-primary',
+  primaryContainer: 'bg-primary-container',
+  secondaryContainer: 'bg-secondary-container',
+  surface: 'bg-surface-container',
+  surfaceHigh: 'bg-surface-container-high',
+  surfaceLow: 'bg-surface-container-low',
+  surfaceLowest: 'bg-surface-container-lowest',
+}
+
 const COLOR_SWATCHES = [
-  { className: 'bg-background', label: 'Background', token: '--color-background' },
+  { label: 'Background', token: '--color-background', tone: 'background' },
   {
-    className: 'bg-surface-container-lowest',
     label: 'Surface lowest',
     token: '--color-surface-container-lowest',
+    tone: 'surfaceLowest',
   },
   {
-    className: 'bg-surface-container-low',
     label: 'Surface low',
     token: '--color-surface-container-low',
+    tone: 'surfaceLow',
   },
   {
-    className: 'bg-surface-container',
     label: 'Surface',
     token: '--color-surface-container',
+    tone: 'surface',
   },
   {
-    className: 'bg-surface-container-high',
     label: 'Surface high',
     token: '--color-surface-container-high',
+    tone: 'surfaceHigh',
   },
-  { className: 'bg-primary', label: 'Primary', token: '--color-primary' },
+  { label: 'Primary', token: '--color-primary', tone: 'primary' },
   {
-    className: 'bg-primary-container',
     label: 'Primary container',
     token: '--color-primary-container',
+    tone: 'primaryContainer',
   },
   {
-    className: 'bg-secondary-container',
     label: 'Secondary container',
     token: '--color-secondary-container',
+    tone: 'secondaryContainer',
   },
-  { className: 'bg-error', label: 'Error', token: '--color-error' },
+  { label: 'Error', token: '--color-error', tone: 'error' },
 ] as const
 
+type InkSwatchTone =
+  | 'onPrimary'
+  | 'onSurface'
+  | 'onSurfaceVariant'
+  | 'outline'
+  | 'outlineVariant'
+
+const INK_SWATCH_CLASS: Record<InkSwatchTone, string> = {
+  onPrimary: 'text-on-primary',
+  onSurface: 'text-on-surface',
+  onSurfaceVariant: 'text-on-surface-variant',
+  outline: 'text-outline',
+  outlineVariant: 'text-outline-variant',
+}
+
 const INK_SWATCHES = [
-  { className: 'text-on-surface', label: 'On surface', token: '--color-on-surface' },
+  { label: 'On surface', token: '--color-on-surface', tone: 'onSurface' },
   {
-    className: 'text-on-surface-variant',
     label: 'On surface variant',
     token: '--color-on-surface-variant',
+    tone: 'onSurfaceVariant',
   },
-  { className: 'text-outline', label: 'Outline', token: '--color-outline' },
+  { label: 'Outline', token: '--color-outline', tone: 'outline' },
   {
-    className: 'text-outline-variant',
     label: 'Outline variant',
     token: '--color-outline-variant',
+    tone: 'outlineVariant',
   },
-  { className: 'text-on-primary', label: 'On primary', token: '--color-on-primary' },
+  { label: 'On primary', token: '--color-on-primary', tone: 'onPrimary' },
 ] as const
 
 const GAP_PREVIEWS = [
@@ -90,14 +128,16 @@ type TokenCardProps = {
 
 function Section({ children, className = '', eyebrow, title }: SectionProps) {
   return (
-    <Stack className={className} gap="tight">
-      <LabelText size="meta" tone="default" uppercase>
-        {eyebrow}
-      </LabelText>
-      <HeadingText as="h2" size="section">
-        {title}
-      </HeadingText>
-      {children}
+    <Stack className={className} gap="base">
+      <Stack gap="tight">
+        <LabelText size="label" tone="default" uppercase>
+          {eyebrow}
+        </LabelText>
+        <HeadingText as="h2" size="heading">
+          {title}
+        </HeadingText>
+      </Stack>
+      <Stack gap="loose">{children}</Stack>
     </Stack>
   )
 }
@@ -109,10 +149,10 @@ function CodeLabel({ children }: React.PropsWithChildren) {
 function TokenCard({ children, label, token }: TokenCardProps) {
   return (
     <Box border fullHeight padding="panel" radius="panel" tone="surface">
-      <Stack fullWidth>
+      <Stack fullWidth gap="loose">
         {children}
-        <Stack gap="none">
-          <LabelText size="meta" tone="default" uppercase>
+        <Stack gap="tight">
+          <LabelText size="label" tone="default" uppercase>
             {label}
           </LabelText>
           <CodeLabel>{token}</CodeLabel>
@@ -145,7 +185,7 @@ export const Overview: Story = {
                   <div
                     className={clsx(
                       'border-outline-variant/40 rounded-control h-20 w-full border',
-                      swatch.className
+                      SURFACE_SWATCH_CLASS[swatch.tone]
                     )}
                   />
                 </TokenCard>
@@ -158,14 +198,16 @@ export const Overview: Story = {
                 <TokenCard key={swatch.token} label={swatch.label} token={swatch.token}>
                   <Box
                     border
-                    className={clsx('bg-surface-container-lowest', swatch.className)}
+                    className={clsx('bg-surface-container-lowest', INK_SWATCH_CLASS[swatch.tone])}
                     padding="item"
                     radius="control"
                   >
-                    <HeadingText as="p" tone="inherit">
-                      Token sample
-                    </HeadingText>
-                    <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
+                    <Stack gap="tight">
+                      <HeadingText as="p" tone="inherit">
+                        Token sample
+                      </HeadingText>
+                      <BodyText tone="inherit">Copy preview inside current surface.</BodyText>
+                    </Stack>
                   </Box>
                 </TokenCard>
               ))}
@@ -236,7 +278,7 @@ export const Overview: Story = {
           <Section eyebrow="Display" title="Numeric accent sample">
             <Box border padding="panel" radius="panel" tone="panel">
               <Stack align="center">
-                <LabelText size="meta" tone="default" uppercase>
+                <LabelText size="label" tone="default" uppercase>
                   Primary display value
                 </LabelText>
                 <DisplayValue align="center" size="hero" tone="primary">

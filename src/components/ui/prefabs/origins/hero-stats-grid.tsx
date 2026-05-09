@@ -13,7 +13,7 @@ function StatCell({ label, value }: StatCellProps) {
   return (
     <Box as="li" border className="bg-surface-container/60" padding="panel" radius="panel">
       <Stack align="center">
-        <LabelText size="meta" tone="default" uppercase>
+        <LabelText size="label" tone="default" uppercase>
           {label}
         </LabelText>
         <DisplayValue align="center">{value}</DisplayValue>

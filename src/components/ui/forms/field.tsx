@@ -22,7 +22,7 @@ type FieldProps = NativePropsWithoutClassNameStyle<React.InputHTMLAttributes<HTM
 }
 
 const TEXT_INPUT_BASE_CLASS =
-  'bg-surface-container-lowest/80 rounded-control px-(--inset-control-x) py-(--inset-control-y) text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2'
+  'bg-surface-container-lowest/80 rounded-control min-h-11 px-(--inset-control-x) py-(--inset-control-y) text-scale-2 leading-(--line-height-snug) text-on-surface placeholder:text-outline/60 w-full border transition outline-none focus:ring-2 align-middle'
 
 const TEXT_INPUT_STATE_CLASS = {
   default: 'border-outline-variant/70 focus:border-primary focus:ring-primary/30',

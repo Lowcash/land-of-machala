@@ -4,11 +4,11 @@ import type { NativePropsWithoutClassNameStyle } from '@/lib/types/component-pro
 
 const VARIANT_CLASSES = {
   ghost:
-    'border-transparent text-primary hover:text-white focus-visible:ring-primary bg-transparent hover:bg-white/5',
+    'border-outline-variant/45 text-primary hover:text-white focus-visible:ring-primary bg-transparent hover:border-primary/35 hover:bg-surface-container-high/40',
   primary:
     'border-primary/45 bg-primary-container text-on-primary hover:bg-primary focus-visible:ring-primary',
   secondary:
-    'border-white/10 bg-surface-container-high text-primary hover:bg-secondary-container focus-visible:ring-primary',
+    'border-white/10 bg-surface-container-high text-on-surface-variant hover:bg-secondary-container hover:text-on-surface focus-visible:ring-primary',
 } as const
 
 type ButtonProps = NativePropsWithoutClassNameStyle<

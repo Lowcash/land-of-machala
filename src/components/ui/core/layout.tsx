@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 
 type FlexAlign = 'center' | 'start' | 'stretch'
-type FlexGap = 'base' | 'loose' | 'none' | 'tight'
+export type FlexGap = 'base' | 'loose' | 'none' | 'section' | 'tight'
 type FlexJustify = 'between' | 'center' | 'start'
 
 const FLEX_ALIGN_CLASS: Record<FlexAlign, string> = {
@@ -20,7 +20,8 @@ const FLEX_GAP_CLASS: Record<FlexGap, string> = {
   none: '',
   tight: 'gap-(--gap-stack-sm)',
   base: 'gap-(--gap-stack-md)',
-  loose: 'gap-(--gap-stack-lg)',
+  loose: 'gap-(--gap-stack-lg) lg:gap-[1.5rem]',
+  section: 'gap-(--gap-section)',
 }
 
 type StackAs = 'div' | 'form' | 'li' | 'section'

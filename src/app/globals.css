@@ -5,16 +5,21 @@
   --font-interface: var(--font-source-interface), 'Helvetica Neue', sans-serif;
   --font-display: var(--font-source-display), 'Times New Roman', serif;
   --font-wordmark: var(--font-source-wordmark), 'Times New Roman', serif;
-  --text-label: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
-  --text-body: clamp(0.9375rem, 0.92rem + 0.08vw, 1rem);
-  --text-heading-page: clamp(1.875rem, 1.5rem + 1vw, 2.25rem);
-  --text-heading-section: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
-  --text-display-default: 1.5rem;
-  --text-display-hero: 3rem;
-  --text-wordmark: clamp(1.25rem, 0.875rem + 1vw, 1.5rem);
 
-  --tracking-form: 0.1em;
-  --tracking-wordmark: 0.15em;
+  --text-scale-1: clamp(0.6875rem, 0.67rem + 0.08vw, 0.75rem);
+  --text-scale-2: clamp(0.9375rem, 0.92rem + 0.08vw, 1rem);
+  --text-scale-3: clamp(1.25rem, 0.875rem + 1vw, 1.5rem);
+  --text-scale-4: clamp(1.5rem, 1.25rem + 1vw, 1.875rem);
+  --text-scale-5: clamp(1.875rem, 1.5rem + 1vw, 2.25rem);
+  --text-scale-6: 3rem;
+
+  --line-height-solid: 1;
+  --line-height-tight: 1.2;
+  --line-height-snug: 1.35;
+  --line-height-relaxed: 1.5;
+
+  --tracking-ui: 0.1em;
+  --tracking-display: 0.15em;
 
   --color-background: #131313;
 
@@ -50,6 +55,8 @@
   --gap-stack-sm: clamp(0.5rem, 0.48rem + 0.08vw, 0.625rem);
   --gap-stack-md: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);
   --gap-stack-lg: clamp(1rem, 0.93rem + 0.24vw, 1.25rem);
+  --gap-section: clamp(1.75rem, 1.25rem + 1.4vw, 3rem);
+  --gap-stage: clamp(3rem, 1.5rem + 6vw, 8rem);
 
   --inset-panel: clamp(1.25rem, 1rem + 1vw, 2.5rem);
   --inset-item: clamp(0.75rem, 0.68rem + 0.24vw, 1rem);

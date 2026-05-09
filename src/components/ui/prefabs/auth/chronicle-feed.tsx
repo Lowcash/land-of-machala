@@ -19,7 +19,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
     <Stack>
       <Inline align="center" as="header" className={clsx(CHRONICLE_HEADER_CLASS)}>
         <span aria-hidden="true" className={CHRONICLE_HEADER_MARK_CLASS} />
-        <LabelText size="meta" tone="primary" uppercase>
+        <LabelText size="label" tone="primary" uppercase>
           {ENTRY_SIDE_COPY.recentChroniclesTitle}
         </LabelText>
       </Inline>
@@ -38,7 +38,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
             <BodyText italic tone={item.tone === 'highlight' ? 'default' : 'muted'}>
               &quot;{item.text}&quot;
             </BodyText>
-            <LabelText size="meta" tone="default" uppercase>
+            <LabelText size="label" tone="default" uppercase>
               {item.timestamp}
             </LabelText>
           </Stack>

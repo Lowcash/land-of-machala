@@ -1,5 +1,5 @@
 import { Card } from '@/components/ui/core/card'
-import { Stack } from '@/components/ui/core/layout'
+import { type FlexGap, Stack } from '@/components/ui/core/layout'
 import type { BodyTextSize, TextAlign } from '@/components/ui/core/typography'
 
 import { SectionHeading } from './typography'
@@ -28,11 +28,13 @@ type FlowCardContentProps = React.PropsWithChildren<{
   as?: FlowCardContentAs
   className?: string
   fullWidth?: boolean
+  gap?: FlexGap
 }>
 
 type FlowCardActionsProps = React.PropsWithChildren<{
   className?: string
   fullWidth?: boolean
+  gap?: FlexGap
 }>
 
 function Root({
@@ -52,7 +54,7 @@ function Header({
   align,
   description,
   descriptionItalic = false,
-  descriptionSize = 'default',
+  descriptionSize = 'body',
   descriptionVariant = 'body',
   descriptionVisibility = 'always',
   overline,
@@ -79,17 +81,23 @@ function Content({
   children,
   className = '',
   fullWidth = false,
+  gap = 'base',
 }: FlowCardContentProps) {
   return (
-    <Stack as={as} className={className} fullWidth={fullWidth}>
+    <Stack as={as} className={className} fullWidth={fullWidth} gap={gap}>
       {children}
     </Stack>
   )
 }
 
-function Actions({ children, className = '', fullWidth = false }: FlowCardActionsProps) {
+function Actions({
+  children,
+  className = '',
+  fullWidth = false,
+  gap = 'base',
+}: FlowCardActionsProps) {
   return (
-    <Stack align="center" className={className} fullWidth={fullWidth}>
+    <Stack align="center" className={className} fullWidth={fullWidth} gap={gap}>
       {children}
     </Stack>
   )

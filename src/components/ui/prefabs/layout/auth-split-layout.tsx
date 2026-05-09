@@ -5,7 +5,7 @@ import { Stack } from '@/components/ui/core/layout'
 import { BodyText } from '@/components/ui/core/typography'
 import { ChronicleFeed } from '@/components/ui/prefabs/auth/chronicle-feed'
 import { RealmStatsGrid } from '@/components/ui/prefabs/auth/realm-stats-grid'
-import { RootStage } from '@/components/ui/prefabs/layout/root-stage'
+import { StageLayout } from '@/components/ui/prefabs/layout/stage-layout'
 import { PageHeadline } from '@/components/ui/prefabs/typography'
 
 type AuthSplitLayoutProps = {
@@ -29,23 +29,21 @@ export function AuthSplitLayout({
   tagline,
 }: AuthSplitLayoutProps) {
   return (
-    <RootStage>
-      <RootStage.Frame preset="split">
-        <Stack as="section" className={AUTH_SPLIT_MOBILE_HEADLINE_CLASS}>
+    <StageLayout frame="split" shell="auth">
+      <Stack as="section" className={AUTH_SPLIT_MOBILE_HEADLINE_CLASS} gap="section">
+        <PageHeadline italic>{headline}</PageHeadline>
+        {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
+      </Stack>
+      <Stack as="section" className={AUTH_SPLIT_LORE_CLASS} gap="section">
+        <Box className="hidden max-w-xl lg:block">
           <PageHeadline italic>{headline}</PageHeadline>
-          {tagline ? <BodyText tone="muted">{tagline}</BodyText> : null}
-        </Stack>
-        <Stack as="section" className={AUTH_SPLIT_LORE_CLASS}>
-          <Box className="hidden max-w-xl lg:block">
-            <PageHeadline italic>{headline}</PageHeadline>
-          </Box>
-          <ChronicleFeed chronicles={chronicles} />
-          <RealmStatsGrid stats={stats} />
-        </Stack>
-        <Box as="section" className={AUTH_SPLIT_FORM_CLASS}>
-          {children}
         </Box>
-      </RootStage.Frame>
-    </RootStage>
+        <ChronicleFeed chronicles={chronicles} />
+        <RealmStatsGrid stats={stats} />
+      </Stack>
+      <Box as="section" className={AUTH_SPLIT_FORM_CLASS}>
+        {children}
+      </Box>
+    </StageLayout>
   )
 }

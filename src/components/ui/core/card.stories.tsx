@@ -15,7 +15,7 @@ const meta: Meta<typeof Card> = {
   args: {
     children: (
       <>
-        <LabelText size="meta" tone="default" uppercase>
+        <LabelText size="label" tone="default" uppercase>
           Sample Content
         </LabelText>
         <BodyText tone="muted">
