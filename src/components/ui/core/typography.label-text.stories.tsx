@@ -50,7 +50,7 @@ export const ToneComparison: Story = {
     <Stack>
       <LabelText tone="default">System notice (default)</LabelText>
       <LabelText tone="muted">Recent chronicles (muted)</LabelText>
-      <LabelText tone="soft" size="meta" uppercase>
+      <LabelText size="meta" tone="soft" uppercase>
         2 hours ago (soft)
       </LabelText>
     </Stack>

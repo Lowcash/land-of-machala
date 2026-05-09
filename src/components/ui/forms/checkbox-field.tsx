@@ -16,7 +16,7 @@ type CheckboxFieldProps = Omit<
 }
 
 const CHECKBOX_SURFACE_BASE_CLASS =
-  'bg-surface-container-lowest/80 rounded-compact group-hover:border-primary/55 peer-checked:border-primary peer-checked:bg-primary h-5 w-5 cursor-pointer border transition peer-focus-visible:ring-2 md:h-6 md:w-6'
+  'bg-surface-container-lowest border-outline-variant/30 rounded-md peer-checked:border-primary peer-checked:bg-primary h-4 w-4 cursor-pointer border transition peer-focus-visible:ring-0 peer-focus-visible:ring-offset-0'
 
 const CHECKBOX_SURFACE_STATE_CLASS = {
   default: 'border-outline-variant peer-focus-visible:ring-primary/30',
@@ -35,7 +35,7 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
   return (
     <FieldChrome.Root>
       <FieldChrome.Inline>
-        <span className="relative flex h-5 w-5 shrink-0 items-center justify-center md:h-6 md:w-6">
+        <span className="relative flex h-4 w-4 shrink-0 items-center justify-center">
           <input className="peer sr-only" id={resolvedId} type="checkbox" {...props} />
           <label
             className={clsx(
@@ -46,7 +46,7 @@ export function CheckboxField({ error, id, label, ...props }: CheckboxFieldProps
           />
           <svg
             aria-hidden="true"
-            className="text-on-primary pointer-events-none absolute h-3.5 w-3.5 scale-90 opacity-0 transition peer-checked:scale-100 peer-checked:opacity-100 md:h-4 md:w-4"
+            className="text-primary pointer-events-none absolute h-3 w-3 scale-90 opacity-0 transition peer-checked:scale-100 peer-checked:opacity-100"
             fill="none"
             viewBox="0 0 24 24"
           >

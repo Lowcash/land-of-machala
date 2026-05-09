@@ -12,6 +12,7 @@ type ChronicleFeedProps = {
 
 const CHRONICLE_HEADER_CLASS = 'justify-center lg:justify-start'
 const CHRONICLE_HEADER_MARK_CLASS = 'bg-primary/45 hidden h-px w-10 lg:block'
+const CHRONICLE_HEADER_LABEL_CLASS = 'text-primary/70 text-xs tracking-[0.2em]'
 
 const CHRONICLE_ITEM_CLASS = 'border-l-2'
 
@@ -20,9 +21,7 @@ export function ChronicleFeed({ chronicles }: ChronicleFeedProps) {
     <Stack>
       <Inline as="header" className={clsx(CHRONICLE_HEADER_CLASS)}>
         <span aria-hidden="true" className={CHRONICLE_HEADER_MARK_CLASS} />
-        <LabelText tone="muted" uppercase>
-          {ENTRY_SIDE_COPY.recentChroniclesTitle}
-        </LabelText>
+        <span className={CHRONICLE_HEADER_LABEL_CLASS}>{ENTRY_SIDE_COPY.recentChroniclesTitle}</span>
       </Inline>
       <List>
         {chronicles.map((item) => (

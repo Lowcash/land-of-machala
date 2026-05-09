@@ -64,7 +64,7 @@ export function Stack({
   )
 }
 
-type InlineAs = 'div' | 'header' | 'li' | 'section' | 'span'
+type InlineAs = 'div' | 'header' | 'li' | 'nav' | 'section' | 'span'
 
 type InlineProps = React.PropsWithChildren<{
   align?: FlexAlign
@@ -173,6 +173,10 @@ type GridProps = React.PropsWithChildren<{
   xlColumns?: GridColumns
 }>
 
+const GRID_COLUMN_VALUES: GridColumns[] = [1, 2, 3, 4]
+
+// Static Records required: Tailwind PurgeCSS scans only literal strings, not template
+// literals. Dynamic generation would break class detection. Keep static despite repetition.
 const GRID_COLUMNS_CLASS: Record<GridColumns, string> = {
   1: 'grid-cols-1',
   2: 'grid-cols-2',

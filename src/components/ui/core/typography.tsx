@@ -78,7 +78,7 @@ export function HeadingText({
 // --- BodyText ---
 
 type BodyTextTone = Extract<TextTone, 'default' | 'error' | 'inherit' | 'muted'>
-export type BodyTextSize = 'default' | 'lg'
+export type BodyTextSize = 'compact' | 'default' | 'expanded'
 
 type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
   italic?: boolean
@@ -86,8 +86,9 @@ type BodyTextProps = BaseTextProps<TextAs, BodyTextTone> & {
 }
 
 const BODY_TEXT_SIZE_CLASS: Record<BodyTextSize, string> = {
+  compact: 'text-sm',
   default: '',
-  lg: 'text-xl',
+  expanded: 'text-lg',
 }
 
 const BODY_TEXT_TONE_CLASS: Record<BodyTextTone, string> = {

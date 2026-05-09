@@ -32,7 +32,8 @@ function Header({ description, title }: EntryCardHeaderProps) {
   return (
     <FlowCard.Header
       description={description}
-      descriptionSize="lg"
+      descriptionItalic
+      descriptionSize="expanded"
       descriptionVisibility="desktop"
       title={title}
     />

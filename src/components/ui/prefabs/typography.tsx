@@ -4,13 +4,16 @@ import { Divider } from '@/components/ui/core/divider'
 import { Stack } from '@/components/ui/core/layout'
 import {
   BodyText,
+  type BodyTextSize,
   HeadingText,
   LabelText,
-  type BodyTextSize,
   type TextAlign,
 } from '@/components/ui/core/typography'
 
-export function PageHeadline({ children, italic = false }: React.PropsWithChildren<{ italic?: boolean }>) {
+export function PageHeadline({
+  children,
+  italic = false,
+}: React.PropsWithChildren<{ italic?: boolean }>) {
   return (
     <HeadingText align="left" as="h1" italic={italic} size="page">
       {children}

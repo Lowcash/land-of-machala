@@ -18,18 +18,16 @@ export function RootStageFooter() {
         <BodyText align="center" italic tone="muted">
           <span className={FOOTER_LABEL_CLASS}>{SITE_FOOTER_LABEL}</span>
         </BodyText>
-        <nav aria-label="Site links">
-          <Inline className={FOOTER_NAV_CLASS} gap="tight" justify="center" wrap>
-            {SITE_FOOTER_LINKS.map((link, index) => (
-              <Fragment key={link}>
-                {index > 0 ? <span aria-hidden="true">•</span> : null}
-                <button aria-disabled="true" className={FOOTER_LINK_CLASS} type="button">
-                  {link}
-                </button>
-              </Fragment>
-            ))}
-          </Inline>
-        </nav>
+        <Inline aria-label="Site links" as="nav" className={FOOTER_NAV_CLASS} gap="tight" justify="center" wrap>
+          {SITE_FOOTER_LINKS.map((link, index) => (
+            <Fragment key={link}>
+              {index > 0 ? <span aria-hidden="true">•</span> : null}
+              <button aria-disabled="true" className={FOOTER_LINK_CLASS} type="button">
+                {link}
+              </button>
+            </Fragment>
+          ))}
+        </Inline>
       </Stack>
     </RootStageFrame>
   )

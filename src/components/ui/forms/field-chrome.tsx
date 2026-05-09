@@ -33,9 +33,9 @@ type HelperTextProps = {
   tone?: HelperTextTone
 }
 
-const CONTROL_LABEL_CLASS = 'cursor-pointer leading-6'
+const CONTROL_LABEL_CLASS = 'cursor-pointer leading-6 text-on-surface-variant/80 text-[11px] tracking-widest uppercase'
 
-const FIELD_ACTION_CLASS = `font-interface text-on-surface-variant hover:text-primary focus-visible:text-primary ${TEXT_TRACKING_CLASS.action} whitespace-nowrap uppercase underline-offset-4 transition focus-visible:underline`
+const FIELD_ACTION_CLASS = `font-interface text-primary/70 hover:text-primary focus-visible:text-primary ${TEXT_TRACKING_CLASS.action} text-[10px] whitespace-nowrap tracking-widest uppercase underline-offset-4 transition focus-visible:underline`
 
 function Root({ children }: React.PropsWithChildren) {
   return <Stack>{children}</Stack>
