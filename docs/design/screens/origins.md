@@ -13,7 +13,7 @@ This packet owns origins flow after auth. Feature name stays `Origins`; player-f
 - Canonical flow: [../flows/root-screen-flow.md](../flows/root-screen-flow.md)
 - Design system: [../system.md](../system.md)
 - Storybook: [../../src/components/features/auth/origins/origins.stories.tsx](../../src/components/features/auth/origins/origins.stories.tsx)
-- Runtime: [../../src/components/features/auth/origins/view.tsx](../../src/components/features/auth/origins/view.tsx), [../../src/components/features/auth/origins/step-tutorial.tsx](../../src/components/features/auth/origins/step-tutorial.tsx), and [../../src/components/features/auth/origins/step-creation.tsx](../../src/components/features/auth/origins/step-creation.tsx)
+- Runtime: [../../src/components/features/auth/origins/view-client.tsx](../../src/components/features/auth/origins/view-client.tsx), [../../src/components/features/auth/origins/step-prologue.tsx](../../src/components/features/auth/origins/step-prologue.tsx), and [../../src/components/features/auth/origins/step-setup.tsx](../../src/components/features/auth/origins/step-setup.tsx)
 
 ## Prologue
 

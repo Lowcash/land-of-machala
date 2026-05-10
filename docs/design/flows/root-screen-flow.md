@@ -21,8 +21,8 @@ Use it to keep design packets, Storybook, and runtime aligned.
   - register -> sign up state on `/`
   - guest entry -> prologue state on `/`
 - Packet: [../screens/auth.md](../screens/auth.md)
-- Storybook: [../../src/components/features/auth/root-entry-shell.stories.tsx](../../src/components/features/auth/root-entry-shell.stories.tsx)
-- Runtime: [../../src/components/features/auth/root-entry-shell.tsx](../../src/components/features/auth/root-entry-shell.tsx)
+- Storybook: [../../src/components/features/auth/entry/shell.stories.tsx](../../src/components/features/auth/entry/shell.stories.tsx)
+- Runtime: [../../src/components/features/auth/entry/shell.tsx](../../src/components/features/auth/entry/shell.tsx)
 
 ### 2. Sign up
 
@@ -35,8 +35,8 @@ Use it to keep design packets, Storybook, and runtime aligned.
   - back to sign in -> sign-in state on `/`
   - guest entry -> prologue state on `/`
 - Packet: [../screens/auth.md](../screens/auth.md)
-- Storybook: [../../src/components/features/auth/root-entry-shell.stories.tsx](../../src/components/features/auth/root-entry-shell.stories.tsx)
-- Runtime: [../../src/components/features/auth/root-entry-shell.tsx](../../src/components/features/auth/root-entry-shell.tsx)
+- Storybook: [../../src/components/features/auth/entry/shell.stories.tsx](../../src/components/features/auth/entry/shell.stories.tsx)
+- Runtime: [../../src/components/features/auth/entry/shell.tsx](../../src/components/features/auth/entry/shell.tsx)
 
 ### 3. Prologue
 
@@ -49,7 +49,7 @@ Use it to keep design packets, Storybook, and runtime aligned.
   - skip -> character setup
 - Packet: [../screens/origins.md](../screens/origins.md)
 - Storybook: [../../src/components/features/auth/origins/origins.stories.tsx](../../src/components/features/auth/origins/origins.stories.tsx)
-- Runtime: [../../src/components/features/auth/origins/view.tsx](../../src/components/features/auth/origins/view.tsx) and [../../src/components/features/auth/origins/step-tutorial.tsx](../../src/components/features/auth/origins/step-tutorial.tsx)
+- Runtime: [../../src/components/features/auth/origins/view-client.tsx](../../src/components/features/auth/origins/view-client.tsx) and [../../src/components/features/auth/origins/step-prologue.tsx](../../src/components/features/auth/origins/step-prologue.tsx)
 
 ### 4. Character setup
 
@@ -61,7 +61,7 @@ Use it to keep design packets, Storybook, and runtime aligned.
   - confirm hero -> gameplay exploration state on `/game` (or root continuation state while route is deferred)
 - Packet: [../screens/origins.md](../screens/origins.md)
 - Storybook: [../../src/components/features/auth/origins/origins.stories.tsx](../../src/components/features/auth/origins/origins.stories.tsx)
-- Runtime: [../../src/components/features/auth/origins/view.tsx](../../src/components/features/auth/origins/view.tsx) and [../../src/components/features/auth/origins/step-creation.tsx](../../src/components/features/auth/origins/step-creation.tsx)
+- Runtime: [../../src/components/features/auth/origins/view-client.tsx](../../src/components/features/auth/origins/view-client.tsx) and [../../src/components/features/auth/origins/step-setup.tsx](../../src/components/features/auth/origins/step-setup.tsx)
 
 ### 5. Gameplay
 

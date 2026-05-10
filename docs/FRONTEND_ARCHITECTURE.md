@@ -73,13 +73,13 @@ Current active locale scope is Czech and English only.
 
 - Storybook for canonical screen review and reusable UI approval
 - Vitest for unit and component tests
-- Playwright for end-to-end root-flow checks
+- add end-to-end tooling later only when repo actually introduces it
 
 Every meaningful UI or runtime boundary change should leave behind clear validation path.
 
 ## Current Constraints
 
-- this repo is still pre-bootstrap on runtime side
+- runtime foundation is already bootstrapped, but deeper route growth and backend ownership are intentionally deferred
 - root session model remains prototype until real server-backed session layer lands here
 - public route surface should stay smaller than internal UI state surface
 - design system is already rich enough; do not expand it unless root experience needs it
@@ -91,5 +91,5 @@ Every meaningful UI or runtime boundary change should leave behind clear validat
 3. Add client boundaries only where browser APIs or local interaction genuinely require them.
 4. Prefer composition over new global abstractions.
 5. Land Storybook baseline for canonical root states before deeper backend or gameplay expansion.
-6. Run lint, typecheck, and relevant Storybook, Playwright, or Vitest validation for every real boundary change once runtime exists here.
+6. Run lint, typecheck, and relevant Storybook or Vitest validation for every real boundary change once runtime exists here.
 7. Update this document only when runtime shape, ownership model, or delivery workflow materially changes.

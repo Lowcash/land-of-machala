@@ -42,9 +42,8 @@ npm run dev
 - `npm run test` runs the Vitest suite.
 - `npm run storybook` starts Storybook.
 - `npm run build` creates a production build.
-- `npm run preview` runs the production build locally on `127.0.0.1:3000`.
 - `npm run format` formats the repository with Prettier.
 
 For the full script surface, see `package.json`.
 
-Repository-specific coding guidance lives under `.github/`, with focused instruction files for architecture, App Router, testing, design system boundaries, and i18n or mutation patterns.
+Primary Codex guidance lives in [AGENTS.md](./AGENTS.md), with subtree-specific deltas in nested `AGENTS.md` files where needed.

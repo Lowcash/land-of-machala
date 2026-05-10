@@ -157,8 +157,8 @@ Sentry is a reasonable default for production error tracking.
 ## Recommended Implementation Order
 
 1. Finalize accepted design packets, Storybook baselines, and root experience shape.
-2. Bootstrap runnable app foundation in this repo.
-3. Add backend foundation: env schema, Postgres, Prisma, server session model, and password hashing.
+2. Keep current app foundation, docs, and Storybook baselines aligned while backend seams are prepared.
+3. Add backend foundation: env schema, Postgres, Prisma or equivalent query layer, server session model, and password hashing.
 4. Convert login and registration to real server-backed flows.
 5. Persist origins onboarding, character creation, and initial run state.
 6. Add save or resume behavior backed by `game_runs` and `game_state_snapshots`.
@@ -166,7 +166,7 @@ Sentry is a reasonable default for production error tracking.
 
 ## Current Gaps
 
-- runnable backend foundation has not been bootstrapped into this repo yet
+- runnable frontend foundation exists, but backend foundation has not been bootstrapped into this repo yet
 - root session is still prototype direction, not final database-backed session layer
 - user persistence and session rotation are not wired end to end yet
 - gameplay persistence and resume flow still need real database ownership

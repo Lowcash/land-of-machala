@@ -11,7 +11,7 @@ Use it to scale design references without turning `docs/` root into a flat list 
 - [screens/origins.md](./screens/origins.md) owns prologue and character-setup packet.
 - [screens/TEMPLATE.md](./screens/TEMPLATE.md) is template for future canonical screen families.
 
-Top-level compatibility entry points remain in [../DESIGN.md](../DESIGN.md), [../SCREEN_FLOW.md](../SCREEN_FLOW.md), [../SCREENS_AUTH.md](../SCREENS_AUTH.md), and [../SCREENS_CREATE.md](../SCREENS_CREATE.md) so older links do not break during migration.
+Use this subtree directly as source of truth. Older top-level compatibility files are not maintained in current repo shape.
 
 ## Artifact Chain
 

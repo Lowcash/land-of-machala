@@ -17,7 +17,7 @@ This packet owns both sign-in and sign-up states because they share shell, backd
 ### Sign up
 
 - Goal: allow players to create new account with minimum friction.
-- Primary action: `CREATE ACCOUNT` with hero name, email, secret phrase, and legal acceptance.
+- Primary action: `CREATE ACCOUNT` with email, secret phrase, and legal acceptance.
 - Secondary actions: `Back to sign in`, `Continue as guest`.
 - Layout: same responsive shell as sign in, but with registration-specific card content. Narrower viewports follow same top-to-bottom rhythm as sign in: hero intro, auth card, chronicles, stats.
 - Footer: same version line and links as sign in.
@@ -27,8 +27,8 @@ This packet owns both sign-in and sign-up states because they share shell, backd
 
 - Canonical flow: [../flows/root-screen-flow.md](../flows/root-screen-flow.md)
 - Design system: [../system.md](../system.md)
-- Storybook: [../../src/components/features/auth/root-entry-shell.stories.tsx](../../src/components/features/auth/root-entry-shell.stories.tsx)
-- Runtime: [../../src/components/features/auth/root-entry-shell.tsx](../../src/components/features/auth/root-entry-shell.tsx)
+- Storybook: [../../src/components/features/auth/entry/shell.stories.tsx](../../src/components/features/auth/entry/shell.stories.tsx)
+- Runtime: [../../src/components/features/auth/entry/shell.tsx](../../src/components/features/auth/entry/shell.tsx)
 
 ## ASCII
 
@@ -123,6 +123,6 @@ Desktop-leaning reference. Shared responsive shell rules below describe narrow v
 
 ## Approval Notes
 
-- `SignIn` and `SignUp` approval states now live in [../../src/components/features/auth/root-entry-shell.stories.tsx](../../src/components/features/auth/root-entry-shell.stories.tsx).
+- `SignIn` and `SignUp` approval states now live in [../../src/components/features/auth/entry/shell.stories.tsx](../../src/components/features/auth/entry/shell.stories.tsx).
 - Keep both auth states in same packet because they share shell, footer, background, and state switching behavior.
 - Future auth refinements should update packet, Storybook state, and runtime surface together.

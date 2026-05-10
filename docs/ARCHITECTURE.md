@@ -23,7 +23,7 @@ Current cross-cutting decisions:
 - `docs/FRONTEND_ARCHITECTURE.md` explains target runtime structure, UI layering, styling, i18n, testing, and frontend delivery rules.
 - `docs/BACKEND_ARCHITECTURE.md` explains target persistence, auth, session, server module ownership, and backend scope guardrails.
 - `docs/design/README.md` explains design-doc map, packet rules, and artifact chain for screen-level work.
-- `.github/` instruction files define operational coding rules for architecture, routing, testing, design system boundaries, and i18n or mutation behavior.
+- `AGENTS.md` defines primary operational coding rules for architecture, routing, testing, design system boundaries, and i18n or mutation behavior. Nested `AGENTS.md` files add subtree-specific deltas where needed.
 
 ## 3. Ownership Boundaries
 
@@ -32,8 +32,8 @@ Current cross-cutting decisions:
 - `BACKEND_ARCHITECTURE.md` owns server and persistence direction, not visual flow specs.
 - `docs/design/` owns visual system docs, root-flow docs, and canonical screen packets.
 - `local/` owns generated static references and workflow artifacts such as Stitch output.
-- Storybook is planned live approval surface for reusable UI and canonical root states.
-- Runtime implementation under `src/` should follow docs and `.github` instructions, not replace them.
+- Storybook is live approval surface for reusable UI and canonical root states in current repo.
+- Runtime implementation under `src/` should follow docs and applicable `AGENTS.md` files, not replace them.
 
 ## 4. Shared Constraints
 
@@ -42,9 +42,9 @@ These constraints apply across frontend, backend, and design docs:
 - Keep route surface intentionally small.
 - Keep server ownership explicit for auth, progression, and narrative-sensitive state.
 - Prefer pragmatic, compact structures until boundary becomes hard to reason about.
-- Keep `.github` instruction stack as active operational layer instead of flattening it into prose docs.
+- Keep `AGENTS.md` plus small subtree deltas as active operational layer instead of flattening all implementation rules into prose docs.
 - Grow screen documentation under `docs/design/` rather than adding more top-level `SCREENS_*` files.
-- Do not split `src/app/globals.css` or `prisma/schema.prisma` purely in anticipation of future scale.
+- Do not split `src/app/globals.css` or introduce larger schema modularization purely in anticipation of future scale.
 - Add new architecture documents only when they reduce ambiguity more than they increase maintenance overhead.
 
 ## 5. Update Policy
